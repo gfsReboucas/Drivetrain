@@ -56,6 +56,9 @@ classdef Rack
                 alpha_P = 20.0;
             end
             
+            % fit the module to [2]:
+            m = Rack.module(m, "calc", "nearest");
+            
             obj.type = type;
             obj.m = m;
             obj.alpha_P  = alpha_P;

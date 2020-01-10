@@ -47,10 +47,10 @@ classdef Drivetrain
         J_Rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
         m_Gen      (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 1900.0;     % [kg],     Generator mass according to [4]
         J_Gen      (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 534.116;    % [kg-m^2], Generator mass moment of inertia [4]
-%         S_H        (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 1.25;       % [-],      Safety factor for surface durability (against pitting)
-%         sigma_H    (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 1500.0;     % [N/mm^2], Contact stress
-        S_H        (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_H, 1.0)}      = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-        sigma_H    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeLessThanOrEqual(sigma_H, 1500.0)}  = 1500.0; % [N/mm^2], Contact stress
+        S_H        (1, 6)          {mustBeNumeric}                                          = 1.25;       % [-],      Safety factor for surface durability (against pitting)
+        sigma_H    (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 1500.0;     % [N/mm^2], Contact stress
+%         S_H        (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_H, 1.0)}      = 1.25;   % [-],      Safety factor for surface durability (against pitting)
+%         sigma_H    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeLessThanOrEqual(sigma_H, 1500.0)}  = 1500.0; % [N/mm^2], Contact stress
     end
     
     properties(Dependent)
@@ -60,7 +60,7 @@ classdef Drivetrain
     end
     
     methods
-        function obj = Drivetrain(stage, P_r, n_r, inp_shaft)
+        function obj = Drivetrain(stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G)
             if(nargin == 0)
                 for idx = 1:3
                     stage(idx) = Gear_Set.NREL_5MW(idx);
@@ -69,6 +69,10 @@ classdef Drivetrain
                 P_r = 5.0e3; % [kW], Rated power
                 n_r = 12.1; % [1/min.], Input speed
                 inp_shaft = Shaft;
+                
+                m_R = 110.0e3;      J_R = 57231535.0;
+                m_G = 1900.0;       J_G = 534.116;
+                
             end
             
             obj.stage = stage;
@@ -76,11 +80,14 @@ classdef Drivetrain
             obj.n_rotor = n_r;
             obj.main_shaft = inp_shaft;
             
-            S_Hmin = 1.25;      % [-], Minimum required safety factor for surface durability according to 
+            obj.m_Rotor = m_R;          obj.J_Rotor = J_R;
+            obj.m_Gen = m_G;            obj.J_Gen = J_G;
+            
+            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to 
             L_h    = 20*365*24; % [h],  Required life
             Q      = 6;         % [-],  ISO accuracy grade
             R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
-            K_A    = 1.25;      % [-], Application factor
+            K_A    = 1.25;      % [-],  Application factor
             
             S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
             S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
@@ -271,19 +278,27 @@ classdef Drivetrain
     
     methods
         %% Calculations:
-        function obj_sca = scale_drivetrain(obj_ref, gamma_P, gamma)
+        function obj_sca = scale_drivetrain(obj_ref, gamma_P, gamma_n, gamma)
             gamma_s1_mn = gamma(1, :);            gamma_s1_bb = gamma(2, :);            gamma_s1_LL = gamma(3, :);
             gamma_s2_mn = gamma(4, :);            gamma_s2_bb = gamma(5, :);            gamma_s2_LL = gamma(6, :);
             gamma_s3_mn = gamma(7, :);            gamma_s3_bb = gamma(8, :);            gamma_s3_LL = gamma(9, :);
             
             gamma_J_R   = gamma(10, :);           gamma_J_G   = gamma(11, :);
             gamma_m_R   = gamma(12, :);           gamma_m_G   = gamma(13, :);
-            gamma_shaft_d = gamma(14, :)
+            
+%             gamma_shaft_d = gamma(14, :);
+            gamma_shaft_d = nthroot(gamma_P/gamma_n, 3.0);
             
             main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_shaft_d, ...
                                    obj_ref.main_shaft.L*gamma_s3_LL);
 
            stage_sca = [Gear_Set, Gear_Set, Gear_Set];
+           
+           gamma_mn = [gamma_s1_mn gamma_s2_mn gamma_s3_mn];
+           gamma_bb = [gamma_s1_bb gamma_s2_bb gamma_s3_bb];
+           gamma_LL = [gamma_s1_LL gamma_s2_LL gamma_s3_LL];
+%            gamma_JJ = [gamma_J_R   gamma_J_G];
+%            gamma_MM = [gamma_m_R   gamma_m_G];
            
            for idx = 1:3
                % Reference stage idx:
@@ -293,29 +308,35 @@ classdef Drivetrain
                stage_shaft_ref = ref_stage.shaft;
                
                % Output shaft of scaled stage idx:
-               stage_shaft_sca = Shaft(stage_shaft_ref.d*obj.gamma(3, :), ...
-                                       stage_shaft_ref.L*obj.gamma(4, :));
+               stage_shaft_sca = Shaft(stage_shaft_ref.d*gamma_shaft_d, ...
+                                       stage_shaft_ref.L*gamma_LL(idx));
 
                % Scaled stage idx:
                stage_sca(idx) = Gear_Set(ref_stage.configuration, ...
-                                         ref_stage.m_n*obj.gamma(1, :), ...
+                                         ref_stage.m_n*gamma_mn(idx), ...
                                          ref_stage.alpha_n, ...
                                          ref_stage.z, ...
-                                         ref_stage.b*obj.gamma(2, :), ...
+                                         ref_stage.b*gamma_bb(idx), ...
                                          ref_stage.x, ...
                                          ref_stage.beta, ...
                                          ref_stage.k, ...
                                          ref_stage.bore_ratio, ...
                                          ref_stage.N_p, ...
-                                         ref_stage.a_w*obj.gamma(1, :), ...
+                                         ref_stage.a_w*gamma_mn(idx), ...
                                          ref_stage.type, ...
                                          ref_stage.bearing, ...
-                                         ref_stage.N_p, ...
                                          stage_shaft_sca);
-               
            end
+%         function obj = Drivetrain(stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G)
             
-            obj_sca = Drivetrain(stage_sca, P_sca, n_sca, main_shaft_sca);
+            obj_sca = Drivetrain(stage_sca, ...
+                                 obj_ref.P_rated *gamma_P, ...
+                                 obj_ref.n_rotor *gamma_n, ...
+                                 main_shaft_sca, ...
+                                 obj_ref.m_Rotor*gamma_m_R, ...
+                                 obj_ref.J_Rotor*gamma_J_R, ...
+                                 obj_ref.m_Gen  *gamma_m_G, ...
+                                 obj_ref.J_Gen  *gamma_J_G);
         end
         
         function [obj_scale, gamma, res] = scale(obj_ref, P_scale)
