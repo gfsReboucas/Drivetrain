@@ -461,7 +461,7 @@ classdef Gear_Set < Gear
             scaled_obj = obj_ref.scaled_Gear_Set(gamma);
         end
         
-        function obj_scale = scaled_Gear_Set(obj_ref, gamma)
+        function obj_sca = scaled_Gear_Set(obj_ref, gamma)
             %SCALED_GEAR_SET returns an scaled Gear_Set object obj_scale,
             % whose main parameters (normal module, face width and center
             % distance) are proportional to the reference object by a
@@ -471,19 +471,33 @@ classdef Gear_Set < Gear
             % scaling factor.
             %
             
-            if(length(gamma) == 1)
-                m_n_sca = Rack.module(obj_ref.m_n*gamma, "calc", "nearest");
-                b_sca   =             obj_ref.b  *gamma;
-            elseif(length(gamma) == 2)
-                m_n_sca = Rack.module(obj_ref.m_n*gamma(1), "calc", "nearest");
-                b_sca   =             obj_ref.b  *gamma(2);
-            else
-                error("prog:input", "Wrong size for gamma. %d ~= 1 or 3.", length(gamma));
+            gamma_mn = gamma(1, :);        gamma_bb = gamma(2, :);
+            
+            m_n_sca = Rack.module(obj_ref.m_n*gamma_mn, "calc", "nearest");
+            
+            gamma_mn = m_n_sca/obj_ref.m_n;
+            
+            obj_sca = Gear_Set(obj_ref.configuration, ... % planetary or parallel
+                               m_n_sca,               ... % normal module                  
+                               obj_ref.alpha_n,       ... % pressure angle
+                               obj_ref.z,             ... % number of teeth
+                               obj_ref.b*gamma_bb,    ... % face width
+                               obj_ref.x,             ... % profile shift coefficient
+                               obj_ref.beta,          ... % helix angle
+                               obj_ref.k,             ... % tip alteration coefficient
+                               obj_ref.bore_ratio,    ... % ratio btw bore and reference diameters
+                               obj_ref.N_p,           ... % number of planets
+                               obj_ref.a_w*gamma_mn,  ... % center distance
+                               obj_ref.type,          ... % rack type
+                               obj_ref.bearing,       ... % bearing array
+                               obj_ref.shaft);        ... % shaft
+
+            % To ensure that the scaled object will have the same contact
+            % characteristics (contact ratio, eps_alpha) as the original:
+            if(abs(obj_ref.alpha_wt - obj_sca.alpha_wt) > 1.0e-3)
+                obj_sca.a_w = obj_sca.find_center_distance(obj_ref.alpha_wt);
             end
             
-            a_w_sca = obj_ref.a_w*(m_n_sca/obj_ref.m_n);
-            
-            obj_scale = obj_ref.modify_Gear_Set(a_w_sca, b_sca, m_n_sca);
         end
         
         function mod_obj = modify_Gear_Set(obj, aw, bb, mn)
@@ -496,7 +510,7 @@ classdef Gear_Set < Gear
             mod_obj = Gear_Set(obj.configuration, ... % planetary or parallel
                                mn,                ... % normal module                  
                                obj.alpha_n,       ... % pressure angle
-                               abs(obj.z),        ... % number of teeth
+                               obj.z,             ... % number of teeth
                                bb,                ... % face width
                                obj.x,             ... % profile shift coefficient
                                obj.beta,          ... % helix angle
