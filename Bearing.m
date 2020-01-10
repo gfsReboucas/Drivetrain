@@ -169,8 +169,7 @@ classdef Bearing
     end
     
     methods(Static)
-%     
-        function val = NREL_5MW_Bearing(stage)
+        function val = NREL_5MW(stage)
             switch(stage)
                 case 0 % Input shaft
 %                                       Name,        Type,   K_x,    K_y,     K_z,     K_a, K_b,   K_g,   OD,     ID,     B

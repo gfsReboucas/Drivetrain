@@ -39,7 +39,7 @@ classdef Gear_Set < Gear
     properties(SetAccess = private)
         configuration(1, :) string      {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
         N_p          (1, 1)             {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
-        bearing_set         Bearing_Set;                                                                       % [-], Bearing set
+        bearing      (1, :) Bearing;                                                                           % [-], Bearing array
     end
     
     properties
@@ -63,7 +63,7 @@ classdef Gear_Set < Gear
     end
     
     methods
-        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, b_set, sha)
+        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, bear, sha)
             if(nargin == 0)
                 configuration = "parallel";
                 m_n = 1.0;
@@ -76,7 +76,7 @@ classdef Gear_Set < Gear
                 bore_R = 0.5*[1 1];
                 a_w = m_n*z(1);
                 rack_type = "A";
-                b_set = Bearing_Set;
+                bear = [Bearing, Bearing];
                 sha = Shaft;
             end
             
@@ -114,7 +114,7 @@ classdef Gear_Set < Gear
             end
             
             obj.a_w = a_w;
-            obj.bearing_set = b_set;
+            obj.bearing = bear;
             obj.shaft = sha;
         end
         
@@ -154,8 +154,8 @@ classdef Gear_Set < Gear
             if(strcmp(obj.configuration, "parallel"))
                 for idx = 1:length(obj.z)
                     jdx = 3*idx - 2;
-                    Value{end - 1, idx} = join(obj.bearing_set.name(jdx:jdx + 2), " / ");
-                    Value{end    , idx} = join(obj.bearing_set.type(jdx:jdx + 2), " / ");
+                    Value{end - 1, idx} = join(obj.bearing(jdx:jdx + 2).name, " / ");
+                    Value{end    , idx} = join(obj.bearing(jdx:jdx + 2).type, " / ");
                 end
 
                 v_pinion = Value(:,1);
@@ -164,14 +164,14 @@ classdef Gear_Set < Gear
                 tab = table(Parameter, Symbol, v_pinion, v_wheel, Unit, ...
                             'variableNames', ["Parameter", "Symbol", "Pinion", "Wheel", "Unit"]);
             elseif(strcmp(obj.configuration, "planetary"))
-                Value{end - 1, 1} = obj.bearing_set.name(1);
-                Value{end    , 1} = obj.bearing_set.type(1);
+                Value{end - 1, 1} = obj.bearing(1).name;
+                Value{end    , 1} = obj.bearing(1).type;
                 
-                Value{end - 1, 2} = join(obj.bearing_set.name(2:3), " / ");
-                Value{end    , 2} = join(obj.bearing_set.type(2:3), " / ");
+                Value{end - 1, 2} = join(obj.bearing(2:3).name, " / ");
+                Value{end    , 2} = join(obj.bearing(2:3).type, " / ");
                 
-                Value{end - 1, 3} = obj.bearing_set.name(4);
-                Value{end    , 3} = obj.bearing_set.type(4);
+                Value{end - 1, 3} = obj.bearing(4).name;
+                Value{end    , 3} = obj.bearing(4).type;
                 
                 v_sun = Value(:,1);
                 v_pla = Value(:,2);
@@ -179,7 +179,7 @@ classdef Gear_Set < Gear
                 v_car = {"-+-"; "-+-"; "-+-"; ... 
                          "-+-"; "-+-"; "-+-"; ...
                          "-+-"; "-+-"; "-+-"; ...
-                         "-+-"; obj.carrier.d_a; obj.carrier.d_f; obj.carrier.mass; obj.carrier.J_x; obj.carrier.J_y; obj.carrier.J_z; join(obj.bearing_set.name(5:6), " / "); join(obj.bearing_set.type(5:6), " / ")};
+                         "-+-"; obj.carrier.d_a; obj.carrier.d_f; obj.carrier.mass; obj.carrier.J_x; obj.carrier.J_y; obj.carrier.J_z; join(obj.bearing(5:6).name, " / "); join(obj.bearing(5:6).type, " / ")};
                 tab = table(Parameter, Symbol, v_sun, v_pla, v_rng, v_car, Unit, ...
                             'variableNames', ["Parameter", "Symbol", "Sun", "Planet", "Ring", "Carrier", "Unit"]);
 
@@ -191,7 +191,7 @@ classdef Gear_Set < Gear
                 fprintf("Gear set:\n");
                 disp(tab);
                 fprintf("Bearings:\n");
-                obj.bearing_set.disp;
+                obj.bearing.disp;
                 fprintf("Input shaft:\n");
                 obj.shaft.disp;
                 clear tab;
@@ -346,7 +346,7 @@ classdef Gear_Set < Gear
                     k_1 = [k_s1 k_p1 k_r1];
                     bore_R1 = [bore_Rs1 bore_Rp1 bore_Rr1];
 %                                 Sun,   Planet,   Ring,   Carrier
-                    bearing_1 = Bearing_Set.NREL_5MW(1);
+                    bearing_1 = Bearing.NREL_5MW(1);
                     shaft_1 = Shaft.NREL_5MW(1);
                     
                     obj = Gear_Set("planetary", m_n1, alpha_n, z_1, b_1, x_1, beta_1, k_1, bore_R1, p_1, a_w1, rack_type, bearing_1, shaft_1);
@@ -376,7 +376,7 @@ classdef Gear_Set < Gear
                     k_2 = [k_s2 k_p2 k_r2];
                     bore_R2 = [bore_Rs2 bore_Rp2 bore_Rr2];
 %                                 Sun,   Planet,   Ring,   Carrier
-                    bearing_2 = Bearing_Set.NREL_5MW(2);
+                    bearing_2 = Bearing.NREL_5MW(2);
                     shaft_2 = Shaft.NREL_5MW(2);
                     
                     obj = Gear_Set("planetary", m_n2, alpha_n, z_2, b_2, x_2, beta_2, k_2, bore_R2, p_2, a_w2, rack_type, bearing_2, shaft_2);
@@ -402,7 +402,7 @@ classdef Gear_Set < Gear
                     k_3 = [k_13 k_23];
                     bore_R3 = [bore_R13 bore_R23];
 %                                 Pinion, Wheel
-                    bearing_3 = Bearing_Set.NREL_5MW(3);
+                    bearing_3 = Bearing.NREL_5MW(3);
                     shaft_3 = Shaft.NREL_5MW(3);
                     
                     obj = Gear_Set("parallel", m_n3, alpha_n, z_3, b_3, x_3, beta_3, k_3, bore_R3, p_3, a_w3, rack_type, bearing_3, shaft_3);
@@ -497,7 +497,7 @@ classdef Gear_Set < Gear
                                obj.N_p,           ... % number of planets
                                aw,                ... % center distance
                                obj.type,          ... % rack type
-                               obj.bearing_set,   ... % bearing set
+                               obj.bearing,       ... % bearing array
                                obj.shaft);        ... % shaft
             
             if(abs(obj.alpha_wt - mod_obj.alpha_wt) > 1.0e-3)
@@ -569,7 +569,7 @@ classdef Gear_Set < Gear
                                    obj.beta,            obj.k(1:2), ...
                                    obj.bore_ratio(1:2), obj.N_p, ...
                                    obj.a_w,             obj.type, ...
-                                   obj.bearing_set,     obj.shaft);
+                                   obj.bearing,         obj.shaft);
 
                 pla_rng = Gear_Set("parallel",          obj.m_n, ...
                                    obj.alpha_n,         obj.z(2:3), ...
@@ -577,7 +577,7 @@ classdef Gear_Set < Gear
                                    obj.beta,            obj.k(2:3), ...
                                    obj.bore_ratio(2:3), obj.N_p, ...
                                    obj.a_w,             obj.type, ...
-                                   obj.bearing_set,     obj.shaft);
+                                   obj.bearing,         obj.shaft);
 
                 k_sp = sun_pla.k_mesh;
                 k_rp = pla_rng.k_mesh;
@@ -620,9 +620,9 @@ classdef Gear_Set < Gear
                 
                 alpha_nn = obj.alpha_n;
                 
-                b_set = obj.bearing_set;
-                b_p = parallel_association(b_set.bearing(1), b_set.bearing(2), b_set.bearing(3));
-                b_w = parallel_association(b_set.bearing(4), b_set.bearing(5), b_set.bearing(6));
+                bear = obj.bearing;
+                b_p = parallel_association(bear(4:6));
+                b_w = parallel_association(bear(1:3));
 
                 % [x, y, theta] = [y, z, alpha]
                 k_px = b_p.K_y;     k_py = b_p.K_z;     k_pu = b_p.K_alpha;
@@ -680,10 +680,10 @@ classdef Gear_Set < Gear
                 
                 psi = 360.0*((1:3) - 1)/obj.N_p;
                 
-                b_set = obj.bearing_set;
-                b_s =                      b_set.bearing(1);
-                b_p = parallel_association(b_set.bearing(2), b_set.bearing(3));
-                b_c = parallel_association(b_set.bearing(5), b_set.bearing(6));
+                bear = obj.bearing;
+                b_s = parallel_association(bear(1:2));
+                b_p = parallel_association(bear(3:4));
+                b_c = parallel_association(bear(7:8));
                 
                 % [x, y, theta] = [y, z, alpha]
                 k_sx = b_s.K_y;     k_sy = b_s.K_z;     k_su = b_s.K_alpha;
@@ -691,8 +691,8 @@ classdef Gear_Set < Gear
                 k_cx = b_c.K_y;     k_cy = b_c.K_z;     k_cu = b_c.K_alpha;
 
                 % Mesh stiffness:
-                sun_pla = Gear_Set("parallel", obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing_set, obj.shaft);
-                pla_rng = Gear_Set("parallel", obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing_set, obj.shaft);
+                sun_pla = Gear_Set("parallel", obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing, obj.shaft);
+                pla_rng = Gear_Set("parallel", obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing, obj.shaft);
                 
                 k_s = sun_pla.k_mesh;
                 k_r = pla_rng.k_mesh;
