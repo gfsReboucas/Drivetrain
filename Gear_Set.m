@@ -154,8 +154,8 @@ classdef Gear_Set < Gear
             if(strcmp(obj.configuration, "parallel"))
                 for idx = 1:length(obj.z)
                     jdx = 3*idx - 2;
-                    Value{end - 1, idx} = join(obj.bearing(jdx:jdx + 2).name, " / ");
-                    Value{end    , idx} = join(obj.bearing(jdx:jdx + 2).type, " / ");
+                    Value{end - 1, idx} = join([obj.bearing(jdx:jdx + 2).name], " / ");
+                    Value{end    , idx} = join([obj.bearing(jdx:jdx + 2).type], " / ");
                 end
 
                 v_pinion = Value(:,1);
@@ -164,14 +164,8 @@ classdef Gear_Set < Gear
                 tab = table(Parameter, Symbol, v_pinion, v_wheel, Unit, ...
                             'variableNames', ["Parameter", "Symbol", "Pinion", "Wheel", "Unit"]);
             elseif(strcmp(obj.configuration, "planetary"))
-                Value{end - 1, 1} = obj.bearing(1).name;
-                Value{end    , 1} = obj.bearing(1).type;
-                
-                Value{end - 1, 2} = join(obj.bearing(2:3).name, " / ");
-                Value{end    , 2} = join(obj.bearing(2:3).type, " / ");
-                
-                Value{end - 1, 3} = obj.bearing(4).name;
-                Value{end    , 3} = obj.bearing(4).type;
+                Value{end - 1, 2} = join([obj.bearing(1:2).name], " / ");
+                Value{end    , 2} = join([obj.bearing(1:2).type], " / ");
                 
                 v_sun = Value(:,1);
                 v_pla = Value(:,2);
@@ -179,7 +173,15 @@ classdef Gear_Set < Gear
                 v_car = {"-+-"; "-+-"; "-+-"; ... 
                          "-+-"; "-+-"; "-+-"; ...
                          "-+-"; "-+-"; "-+-"; ...
-                         "-+-"; obj.carrier.d_a; obj.carrier.d_f; obj.carrier.mass; obj.carrier.J_x; obj.carrier.J_y; obj.carrier.J_z; join(obj.bearing(5:6).name, " / "); join(obj.bearing(5:6).type, " / ")};
+                         "-+-"; obj.carrier.d_a;
+                                obj.carrier.d_f;
+                                obj.carrier.mass;
+                                obj.carrier.J_x;
+                                obj.carrier.J_y;
+                                obj.carrier.J_z;
+                                join([obj.bearing(3:4).name], " / ");
+                                join([obj.bearing(3:4).type], " / ")};
+                            
                 tab = table(Parameter, Symbol, v_sun, v_pla, v_rng, v_car, Unit, ...
                             'variableNames', ["Parameter", "Symbol", "Sun", "Planet", "Ring", "Carrier", "Unit"]);
 
@@ -192,7 +194,7 @@ classdef Gear_Set < Gear
                 disp(tab);
                 fprintf("Bearings:\n");
                 obj.bearing.disp;
-                fprintf("Input shaft:\n");
+                fprintf("Output shaft:\n");
                 obj.shaft.disp;
                 clear tab;
             end
@@ -312,12 +314,6 @@ classdef Gear_Set < Gear
             %
 
             alpha_n = 20.0;        % [deg.],   Pressure angle (at reference cylinder)
-%             P         = 5.0e3;     % [kW],     Rated power
-%             n_c1      = 12.1;      % [1/min.], Carrier speed at stage 01 (input speed)
-%             L_h       = 20*365*24; % [h],      Required life
-%             K_A       = 1.25;      % [-],      Application factor
-%             R_ah      = 0.8;       % [um],     Maximum arithmetic mean roughness for external gears according to [5], Sec. 7.2.7.2.
-%             Q         = 6;         % [-],      Maximum accuracy grade
             rack_type = "A";       % [-],      Type of the basic rack from A to D
 
             switch(stage)
@@ -681,9 +677,9 @@ classdef Gear_Set < Gear
                 psi = 360.0*((1:3) - 1)/obj.N_p;
                 
                 bear = obj.bearing;
-                b_s = parallel_association(bear(1:2));
-                b_p = parallel_association(bear(3:4));
-                b_c = parallel_association(bear(7:8));
+                b_s = Bearing;
+                b_p = parallel_association(bear(1:2));
+                b_c = parallel_association(bear(3:4));
                 
                 % [x, y, theta] = [y, z, alpha]
                 k_sx = b_s.K_y;     k_sy = b_s.K_z;     k_su = b_s.K_alpha;
@@ -755,12 +751,9 @@ classdef Gear_Set < Gear
             
             % [ 1   2   3       4      5       6   7   8   9    10      11      12]
             % [x_1 y_1 z_1 alpha_1 beta_1 gamma_1 x_2 y_2 z_2 alpha_2 beta_2 gamma_2]
-%             idx = [3 5 6 9 11 12];
             idx = [1 5 6 7 11 12];
             M_tmp(idx, :) = [];            M_tmp(:, idx) = [];
             K_tmp(idx, :) = [];            K_tmp(:, idx) = [];
-            
-%             M_tmp = diag(diag(M_tmp));           K_tmp = diag(diag(K_tmp));
             
             idx = (n - 5):n;
             
@@ -768,8 +761,6 @@ classdef Gear_Set < Gear
             K_b(idx, idx) = K_b(idx, idx) + K_tmp;
             
             K = @(Om)(K_b + K_m - K_Omega*Om^2);
-            % remove the shaft participation ?
-%             K_b(idx, idx) = K_b(idx, idx) - K_tmp;
         end
         
         function [M, K] = Eritenel_2011(obj)
@@ -793,8 +784,9 @@ classdef Gear_Set < Gear
             % Theory, vol. 56, pp. 28-51, 2012.
             % https://doi.org/10.1016/j.mechmachtheory.2012.05.002
             %
-            
+            M = NaN; K = NaN;
         end
+        
         %% Pitting:
         function [S_H, sigma_H, K_Halpha, K_v, Z_B, Z_D, Z_H, Z_NT1, Z_NT2, Z_v, Z_eps] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
             %PITTING_ISO calculates the safety factor against pitting S_H
@@ -816,8 +808,6 @@ classdef Gear_Set < Gear
             % ISO viscosity grade: VG 220
             nu_40      = 220.0;   % [mm/s^2],  Nominal kinematic viscosity
 
-%             Q    = 6;        % [-],  ISO accuracy grade
-%             R_ah = 0.8;      % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
             R_zh = 6.0*R_ah; % [um], Mean peak-to-valley roughness
 
             %% Preparatory calculations:
@@ -880,25 +870,6 @@ classdef Gear_Set < Gear
             % [N], Nominal tangential load
             F_t = 2.0e3*(T_1/obj.d(1))/obj.N_p; 
 
-            % Correction factor:
-%             C_M = 0.8; % solid disk gears
-
-            % Gear blank factor:
-%             C_R = 1.0; % solid disk gears
-
-            % Basic rack factor:
-%             alpha_Pn = obj.alpha_n; % [rad.], Normal pressure angle of basic rack
-%             C_B1 = (1.0 + 0.5*(1.2 - obj.h_fP/obj.m_n))*(1.0 - 0.02*(20.0 - alpha_Pn)); % 0.975
-%             C_B2 = (1.0 + 0.5*(1.2 - obj.h_fP/obj.m_n))*(1.0 - 0.02*(20.0 - alpha_Pn));
-
-%             C_B = 0.5*(C_B1 + C_B2); % 0.975
-
-            % c' is the Single stiffness:
-%             obj.cprime = obj.cprime_th*C_M*C_R*C_B*cosd(obj.beta);
-
-%             % mesh stiffness:
-%             obj.c_gamma_alpha = obj.cprime*(0.75*obj.eps_alpha + 0.25);
-            
             % Tip relief by running-in:
             C_ay = (1.0/18.0)*(sigma_Hlim/97.0 - 18.45)^2 + 1.5;
             
@@ -972,7 +943,6 @@ classdef Gear_Set < Gear
             rho_red = (rho_1*rho_2)/(rho_1 + rho_2);
             rho_red = real(rho_red);
 
-        %     R_z = (R_z1 + R_z2)/2.0;
             R_z10 = R_zh*nthroot(10.0/rho_red, 3.0);
 
             if(sigma_Hlim  < 850.0) % [N/mm^2]
@@ -1071,7 +1041,6 @@ classdef Gear_Set < Gear
                 v = pi*obj.d(1)*n/60.0e3;
             elseif(strcmp(obj.configuration, "planetary"))
                 v = (pi*n/60.0e3)*abs(obj.a_w/obj.u - obj.d(1));
-%                 v = (pi*n/60.0e3)*abs(obj.a_w - obj.u*obj.d(1));
             else
                 error("prog:input", "Configuration [%s] is NOT defined.", obj.configuration);
             end
@@ -1088,7 +1057,6 @@ classdef Gear_Set < Gear
                 num = rho*pi*(u*obj.d_m(1)^2)^2;
                 den = 8.0*(u^2 + 1.0)*obj.d_b(1)^2;
                 m_red = num/den;
-%                 (pi/8.0)*(rho*(obj.d_m(1)*u)^2)/(1.0 + u^2)*(obj.d_m(1)/obj.d_b(1))^2;  % solid construction, i.e. 1 - q^4 = 1
 
                 % Resonance running speed:
                 n_E1 = 3.0e4*sqrt(obj.c_gamma_alpha/m_red)/(pi*obj.z(1)); % [1/min]

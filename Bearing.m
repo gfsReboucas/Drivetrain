@@ -71,12 +71,13 @@ classdef Bearing
             Value     = tab_set(:, 4:end);
             
             n = numel(obj);
+            
             tab_val = cell(n + 2, 1);
             
             tab_val{1} = table(Parameter, Symbol);
             
-            for idx = 1:length(obj)
-                tab_val{idx + 1} = table(Value(:,idx), 'variableNames', obj(idx).name);
+            for idx = 1:n
+                tab_val{idx + 1} = table(Value(:, idx), 'variableNames', obj(idx).name);
             end
             
             tab_val{idx + 2} = table(Unit);
@@ -180,30 +181,22 @@ classdef Bearing
                     
                 case 1
 %                                       Name,        Type,   K_x,    K_y,     K_z,     K_a, K_b,   K_g,   OD,     ID,     B
-                    Sun       = Bearing;
                     PL_A      = Bearing("PL_A"     , "CRB",  9.1e4,  9.4e9,   3.2e9,   0.0, 1.4e6, 4.5e6, 600.0,  400.0,  272.0);
                     PL_B      = Bearing("PL_B"     , "CRB",  9.1e4,  9.4e9,   3.2e9,   0.0, 1.4e6, 4.5e6, 600.0,  400.0,  272.0);
-                    Ring      = Bearing;
                     PLC_A     = Bearing("PLC_A"    , "SRB",  6.6e4,  1.7e9,   1.1e9,   0.0, 5.6e5, 1.3e5, 1030.0,  710.0, 315.0);
                     PLC_B     = Bearing("PLC_B"    , "CRB",  6.6e7,  1.7e9,   1.1e9,   0.0, 5.6e5, 1.3e5, 1220.0, 1000.0, 128.0);
                     
-                    val = [Sun,   Sun,  ... % Sun
-                           PL_A,  PL_B, ... % Planet
-                           Ring,  Ring, ... % Ring
+                    val = [PL_A,  PL_B, ... % Planet
                            PLC_A, PLC_B];   % Carrier
                     
                 case 2
 %                                       Name,        Type,   K_x,    K_y,     K_z,     K_a, K_b,   K_g,   OD,     ID,     B
-                    Sun       = Bearing;
                     IMS_PL_A  = Bearing("IMS_PL_A" , "CRB",  9.1e4,  6.0e7,   1.2e9,   0.0, 7.5e4, 7.5e4, 520.0,  380.0,  140.0);
                     IMS_PL_B  = Bearing("IMS_PL_B" , "CRB",  9.1e4,  6.0e7,   1.2e9,   0.0, 7.5e4, 7.5e4, 520.0,  380.0,  140.0);
-                    Ring      = Bearing;
                     IMS_PLC_A = Bearing("IMS_PLC_A", "CARB", 9.1e4,  6.0e7,   1.2e9,   0.0, 7.5e4, 7.5e4, 1030.0, 710.0,  236.0);
                     IMS_PLC_B = Bearing("IMS_PLC_B", "CRB" , 9.1e7,  6.0e7,   1.2e9,   0.0, 7.5e4, 7.5e4,  870.0, 600.0,  155.0);
                     
-                    val = [Sun,       Sun,      ... % Sun
-                           IMS_PL_A,  IMS_PL_B, ... % Planet
-                           Ring,      Ring,     ... % Ring
+                    val = [IMS_PL_A,  IMS_PL_B, ... % Planet
                            IMS_PLC_A, IMS_PLC_B];   % Carrier
                     
                 case 3
