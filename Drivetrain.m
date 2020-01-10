@@ -41,7 +41,7 @@ classdef Drivetrain
         stage      (1, 3) Gear_Set;                                                                                                     % [-],      gearbox stages
         P_rated    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 5.0e3;      % [kW],     Rated power
         n_rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 12.1;       % [1/min.], Rated rotor speed
-        input_shaft(1, :) Shaft                                                                                           = Shaft;      % [-],      Input Shaft
+        main_shaft(1, :) Shaft                                                                                           = Shaft;      % [-],      Input Shaft
         S_shaft    (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_shaft, 1.0)}  = 1.0;        % [-],      Safey factor for the shafts
         m_Rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 110.0e3;    % [kg],     Rotor mass according to [3]
         J_Rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
@@ -74,7 +74,7 @@ classdef Drivetrain
             obj.stage = stage;
             obj.P_rated = P_r;
             obj.n_rotor = n_r;
-            obj.input_shaft = inp_shaft;
+            obj.main_shaft = inp_shaft;
             
             S_Hmin = 1.25;      % [-], Minimum required safety factor for surface durability according to 
             L_h    = 20*365*24; % [h],  Required life
@@ -88,7 +88,7 @@ classdef Drivetrain
             K_fs = 1.0;   % [-],   Fatigue stress-concentration factor for torsion
             T_m  = obj.T_1(1)*obj.stage(1).u;
 
-            obj.S_shaft = obj.input_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
+            obj.S_shaft = obj.main_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
             
             for idx = 1:3
                 obj.S_shaft(idx + 1) = obj.stage(idx).shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_1(idx));
@@ -163,7 +163,7 @@ classdef Drivetrain
                 fprintf("Drivetrain:\n");
                 disp(tab);
                 fprintf("Input shaft:\n");
-                disp(obj.input_shaft);
+                disp(obj.main_shaft);
                 clear tab;
             end
 
@@ -241,9 +241,9 @@ classdef Drivetrain
             color = linspecer(6, "qualitative");
             
             hold on;
-            C_s = [obj.input_shaft.L/2.0 0.0]';
-            rectangle(obj.input_shaft, C_s, color(6, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(6, :));
-            C = [obj.input_shaft.L;
+            C_s = [obj.main_shaft.L/2.0 0.0]';
+            rectangle(obj.main_shaft, C_s, color(6, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(6, :));
+            C = [obj.main_shaft.L;
                  obj.stage(1).carrier.b + obj.stage(1).b + obj.stage(1).shaft.L;
                  obj.stage(2).carrier.b + obj.stage(2).b + obj.stage(2).shaft.L];
 
@@ -271,9 +271,58 @@ classdef Drivetrain
     
     methods
         %% Calculations:
+        function obj_sca = scale_drivetrain(obj_ref, gamma_P, gamma)
+            gamma_s1_mn = gamma(1, :);            gamma_s1_bb = gamma(2, :);            gamma_s1_LL = gamma(3, :);
+            gamma_s2_mn = gamma(4, :);            gamma_s2_bb = gamma(5, :);            gamma_s2_LL = gamma(6, :);
+            gamma_s3_mn = gamma(7, :);            gamma_s3_bb = gamma(8, :);            gamma_s3_LL = gamma(9, :);
+            
+            gamma_J_R   = gamma(10, :);           gamma_J_G   = gamma(11, :);
+            gamma_m_R   = gamma(12, :);           gamma_m_G   = gamma(13, :);
+            gamma_shaft_d = gamma(14, :)
+            
+            main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_shaft_d, ...
+                                   obj_ref.main_shaft.L*gamma_s3_LL);
+
+           stage_sca = [Gear_Set, Gear_Set, Gear_Set];
+           
+           for idx = 1:3
+               % Reference stage idx:
+               ref_stage = obj_ref.stage(idx);
+               
+               % Output shaft of reference stage idx:
+               stage_shaft_ref = ref_stage.shaft;
+               
+               % Output shaft of scaled stage idx:
+               stage_shaft_sca = Shaft(stage_shaft_ref.d*obj.gamma(3, :), ...
+                                       stage_shaft_ref.L*obj.gamma(4, :));
+
+               % Scaled stage idx:
+               stage_sca(idx) = Gear_Set(ref_stage.configuration, ...
+                                         ref_stage.m_n*obj.gamma(1, :), ...
+                                         ref_stage.alpha_n, ...
+                                         ref_stage.z, ...
+                                         ref_stage.b*obj.gamma(2, :), ...
+                                         ref_stage.x, ...
+                                         ref_stage.beta, ...
+                                         ref_stage.k, ...
+                                         ref_stage.bore_ratio, ...
+                                         ref_stage.N_p, ...
+                                         ref_stage.a_w*obj.gamma(1, :), ...
+                                         ref_stage.type, ...
+                                         ref_stage.bearing, ...
+                                         ref_stage.N_p, ...
+                                         stage_shaft_sca);
+               
+           end
+            
+            obj_sca = Drivetrain(stage_sca, P_sca, n_sca, main_shaft_sca);
+        end
+        
         function [obj_scale, gamma, res] = scale(obj_ref, P_scale)
             gamma_P = P_scale/obj_ref.P_rated;
             
+            SH_ref = obj_ref.S_H';
+            fun_min = @(p)(SH_ref - obj_ref.de);
         end
         
         %% Dynamics:
@@ -284,8 +333,8 @@ classdef Drivetrain
                 obj.stage(idx).shaft = sca_shaft;
             end
             
-            LSS_sca = obj.input_shaft.scaled_shaft([gamma_d, gamma(3)]);
-            obj.input_shaft = LSS_sca;
+            LSS_sca = obj.main_shaft.scaled_shaft([gamma_d, gamma(3)]);
+            obj.main_shaft = LSS_sca;
             
             if(strcmp(calc_method, "Kahraman_1994"))
                 gm_L = gamma(4:5);
@@ -411,7 +460,7 @@ classdef Drivetrain
             
             U = obj.u;
             
-            k_LSS = obj.input_shaft.stiffness("torsional");
+            k_LSS = obj.main_shaft.stiffness("torsional");
             k_HSS = obj.stage(3).shaft.stiffness("torsional");
             
             k = (k_LSS*k_HSS*U^2)/(k_LSS + k_HSS*U^2);
@@ -453,8 +502,8 @@ classdef Drivetrain
             
             M(1, 1) = J_R;              M(end, end) = J_G;
             
-            M_tmp = obj.input_shaft.inertia_matrix("torsional");
-            K_tmp = obj.input_shaft.stiffness_matrix("torsional");
+            M_tmp = obj.main_shaft.inertia_matrix("torsional");
+            K_tmp = obj.main_shaft.stiffness_matrix("torsional");
             
             M(1:2, 1:2) = M(1:2, 1:2) + M_tmp;        K(1:2, 1:2) = K(1:2, 1:2) + K_tmp;
             
@@ -517,8 +566,8 @@ classdef Drivetrain
             M(2, 2) = m_R;              M(end - 1, end - 1) = m_G;
             M(3, 3) = J_R;              M(end    , end    ) = J_G;
             
-            M_tmp = obj.input_shaft.inertia_matrix("full");
-            K_tmp = obj.input_shaft.stiffness_matrix("full");
+            M_tmp = obj.main_shaft.inertia_matrix("full");
+            K_tmp = obj.main_shaft.stiffness_matrix("full");
             
 %             idx = [3 5 6 9 11 12];
             idx = [1 5 6 7 11 12];
@@ -564,6 +613,10 @@ classdef Drivetrain
             K = @(Om)(K_b + K_m - K_Omega*Om^2);
         end
         
+        %% Pitting:
+        function val = design_factors(obj, P, gamma)
+            
+        end
     end
     
     %% Get methods:

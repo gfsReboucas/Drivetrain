@@ -461,23 +461,38 @@ classdef Gear_Set < Gear
             scaled_obj = obj_ref.scaled_Gear_Set(gamma);
         end
         
-        function scaled_obj = scaled_Gear_Set(obj, gamma)
+        function obj_scale = scaled_Gear_Set(obj_ref, gamma)
+            %SCALED_GEAR_SET returns an scaled Gear_Set object obj_scale,
+            % whose main parameters (normal module, face width and center
+            % distance) are proportional to the reference object by a
+            % factor gamma, which can be a scalar or an array. When gamma
+            % is a scalar all of the parameter mentioned above are scaled
+            % by the same factor, otherwise each of them has its own
+            % scaling factor.
+            %
+            
             if(length(gamma) == 1)
-                m_n_sca = Rack.module(obj.m_n*gamma, "calc", "nearest");
-                b_sca   =             obj.b  *gamma;
+                m_n_sca = Rack.module(obj_ref.m_n*gamma, "calc", "nearest");
+                b_sca   =             obj_ref.b  *gamma;
             elseif(length(gamma) == 2)
-                m_n_sca = Rack.module(obj.m_n*gamma(1), "calc", "nearest");
-                b_sca   =             obj.b  *gamma(2);
+                m_n_sca = Rack.module(obj_ref.m_n*gamma(1), "calc", "nearest");
+                b_sca   =             obj_ref.b  *gamma(2);
             else
                 error("prog:input", "Wrong size for gamma. %d ~= 1 or 3.", length(gamma));
             end
             
-            a_w_sca = obj.a_w*(m_n_sca/obj.m_n);
+            a_w_sca = obj_ref.a_w*(m_n_sca/obj_ref.m_n);
             
-            scaled_obj = obj.modify_Gear_Set(a_w_sca, b_sca, m_n_sca);
+            obj_scale = obj_ref.modify_Gear_Set(a_w_sca, b_sca, m_n_sca);
         end
         
         function mod_obj = modify_Gear_Set(obj, aw, bb, mn)
+            %MODIFY_GEAR_SET modifies the main parameters of a Gear_Set:
+            % - aw: Center distance;
+            % - bb: Facewidth;
+            % - mn: Normal module;
+            % and returns the modified object.
+            
             mod_obj = Gear_Set(obj.configuration, ... % planetary or parallel
                                mn,                ... % normal module                  
                                obj.alpha_n,       ... % pressure angle
@@ -493,6 +508,8 @@ classdef Gear_Set < Gear
                                obj.bearing,       ... % bearing array
                                obj.shaft);        ... % shaft
             
+            % To ensure that the modified object will have the same contact
+            % characteristics (contact ratio, eps_alpha) as the original:
             if(abs(obj.alpha_wt - mod_obj.alpha_wt) > 1.0e-3)
                 mod_obj.a_w = mod_obj.find_center_distance(obj.alpha_wt);
             end
@@ -785,7 +802,8 @@ classdef Gear_Set < Gear
         end
         
         %% Pitting:
-        function [S_H, sigma_H, K_Halpha, K_v, Z_B, Z_D, Z_H, Z_NT1, Z_NT2, Z_v, Z_eps] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
+%         function [S_H, sigma_H, K_Halpha, K_v, Z_B, Z_D, Z_H, Z_NT1, Z_NT2, Z_v, Z_eps] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
+        function [S_H, sigma_H] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
             %PITTING_ISO calculates the safety factor against pitting S_H
             % and the contact stress sigma_H on a gear set. The
             % calculations are based on the ISO 6336-2:2006.
@@ -796,6 +814,7 @@ classdef Gear_Set < Gear
             % K_Halpha: function of b, m_n, P, n_c
             % Z_eps:    function of m_n, b
             % Z_H:      function of m_n, a_w
+            %
 
             %% Constants:
             E          = Material.E*1.0e-6;          % [N/mm^2],  Young's modulus
