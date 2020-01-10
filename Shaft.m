@@ -103,8 +103,8 @@ classdef Shaft
     %% Calculations:
     methods
         function k = stiffness(obj, option)
-            E  = 206.0e9;  % [Pa], Young's modulus
-            nu = 0.3;      % [-],  Poisson's ratio
+            E  = Material.E;  % [Pa], Young's modulus
+            nu = Material.nu; % [-],  Poisson's ratio
             
             G  = (E/2.0)/(1.0 + nu); % [Pa], Shear modulus
             LL = obj.L*1.0e-3;
@@ -296,7 +296,7 @@ classdef Shaft
         end
         
         function K = stiffness_matrix(obj, option)
-            E          = 206.0e9; % [N/m^2],  Young's modulus
+            E  = Material.E; % [N/m^2],  Young's modulus
             LL = obj.L*1.0e-3;
             
             switch option
@@ -433,7 +433,7 @@ classdef Shaft
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = 7.83e3; % [kg/m^3], Density
+            rho = Material.rho; % [kg/m^3], Density
             val = rho*obj.volume;
         end
         

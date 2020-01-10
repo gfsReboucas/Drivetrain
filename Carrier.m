@@ -119,7 +119,7 @@ classdef Carrier
         end
         
         function val = get.mass(obj)
-            rho = 7.83e-6; % [kg/mm^3], Density
+            rho = Material.rho*1.0e-9;
             val = rho*obj.V;
         end
         

@@ -294,7 +294,7 @@ classdef Gear < Rack
         function obj = get_mass(obj, rho)
             %GET_MASS Update the gear's mass with a user defined density.
             if(nargin == 0)
-                rho = 7.83e-6; % [kg/mm^3], Density
+                rho = Material.rho*1.0e-9;
             end
             obj.mass = rho.*obj.V;
         end
@@ -424,7 +424,7 @@ classdef Gear < Rack
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = 7.83e-6; % [kg/mm^3], Density
+            rho = Material.rho*1.0e-9;
             val = rho.*obj.V;
         end
         

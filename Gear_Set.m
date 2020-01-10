@@ -141,10 +141,10 @@ classdef Gear_Set < Gear
                        "Bearing Types"                          "-+-",     "-",      tmp_vec;
                        };
 
-            Parameter = tab_set(:,1);
-            Symbol    = tab_set(:,2);
-            Unit      = tab_set(:,3);
-            Value     = tab_set(:,4);
+            Parameter = tab_set(:, 1);
+            Symbol    = tab_set(:, 2);
+            Unit      = tab_set(:, 3);
+            Value     = tab_set(:, 4);
             
             Value = cell2mat(Value);
             Value = num2cell(Value);
@@ -217,7 +217,6 @@ classdef Gear_Set < Gear
                 legend(["Pinion", "Wheel"], "location", "best", "fontName", "Times", "fontSize", 12.0);
                 
             elseif(strcmp(obj.configuration, "planetary"))
-%                 subplot(1, 2, 1)
                 plot(obj.gear(1), C_p*0.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(1, :));
                 plot(obj.gear(2), C_p*1.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(2, :));
                 plot(obj.gear(3), C_p*0.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(3, :));
@@ -451,8 +450,6 @@ classdef Gear_Set < Gear
             
             gamma_min = ones(1, 2)*1.0e-6;
             gamma_Max = ones(1, 2);
-%             gamma_min(1) = 1.0/obj_ref.m_n;
-%             gamma_Max(1) = 50.0/obj_ref.m_n;
             
             opt_solver = optimoptions("fmincon", "Display", "notify");
 
@@ -801,10 +798,10 @@ classdef Gear_Set < Gear
             % Z_H:      function of m_n, a_w
 
             %% Constants:
-            E          = 206.0e3; % [N/mm^2],  Young's modulus
-            nu         = 0.3;     % [-],       Poisson's ratio
-            sigma_Hlim = 1500.0;  % [N/mm^2],  Allowable contact stress number
-            rho        = 7.83e-6; % [kg/mm^3], Density
+            E          = Material.E*1.0e-6;          % [N/mm^2],  Young's modulus
+            nu         = Material.nu;                % [-],       Poisson's ratio
+            sigma_Hlim = Material.sigma_Hlim*1.0e-6; % [N/mm^2],  Allowable contact stress number
+            rho        = Material.rho*1.0e-9;        % [kg/mm^3], Density
             % ISO viscosity grade: VG 220
             nu_40      = 220.0;   % [mm/s^2],  Nominal kinematic viscosity
 
