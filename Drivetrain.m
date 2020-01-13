@@ -38,25 +38,29 @@ classdef Drivetrain
     %
     
     properties(SetAccess = private)
-        stage      (1, 3) Gear_Set;                                                                                                     % [-],      gearbox stages
-        P_rated    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 5.0e3;      % [kW],     Rated power
-        n_rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 12.1;       % [1/min.], Rated rotor speed
-        main_shaft(1, :) Shaft                                                                                           = Shaft;      % [-],      Input Shaft
-        S_shaft    (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_shaft, 1.0)}  = 1.0;        % [-],      Safey factor for the shafts
-        m_Rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 110.0e3;    % [kg],     Rotor mass according to [3]
-        J_Rotor    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
-        m_Gen      (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 1900.0;     % [kg],     Generator mass according to [4]
-        J_Gen      (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 534.116;    % [kg-m^2], Generator mass moment of inertia [4]
-        S_H        (1, 6)          {mustBeNumeric}                                          = 1.25;       % [-],      Safety factor for surface durability (against pitting)
-        sigma_H    (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive}                                          = 1500.0;     % [N/mm^2], Contact stress
-%         S_H        (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_H, 1.0)}      = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-%         sigma_H    (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeLessThanOrEqual(sigma_H, 1500.0)}  = 1500.0; % [N/mm^2], Contact stress
+        stage       (1, 3) Gear_Set;                                                                                                        % [-],      gearbox stages
+        P_rated     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                             = 5.0e3;      % [kW],     Rated power
+        n_rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                             = 12.1;       % [1/min.], Rated rotor speed
+        main_shaft  (1, :) Shaft                                                                                              = Shaft;      % [-],      Input Shaft
+        m_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                             = 110.0e3;    % [kg],     Rotor mass according to [3]
+        J_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                             = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
+        m_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                             = 1900.0;     % [kg],     Generator mass according to [4]
+        J_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive}                                             = 534.116;    % [kg-m^2], Generator mass moment of inertia [4]
+    end
+    
+    properties(SetAccess = private)
+        S_H_val     (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_H_val, 1.25)}    = 1.25;   % [-],      Safety factor for surface durability (against pitting)
+        sigma_H_val (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeLessThanOrEqual(sigma_H_val, 1500.0)} = 1500.0; % [N/mm^2], Contact stress
+        S_shaft_val (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive, mustBeGreaterThanOrEqual(S_shaft_val, 1.0)} = 1.0;    % [-],      Safey factor for the shafts
     end
     
     properties(Dependent)
-        T_1; % [N-m],    Output torque for each stage
-        n_1; % [1/min.], Output speed  for each stage
-        u;   % [-],      Cumulative gear ratio
+        T_1;     % [N-m],    Output torque for each stage
+        n_1;     % [1/min.], Output speed  for each stage
+        u;       % [-],      Cumulative gear ratio
+        S_H;     % [-],      Safety factor for surface durability (against pitting)
+        sigma_H; % [N/mm^2], Contact stress
+        S_shaft; % [-],      Safey factor for the shafts
     end
     
     methods
@@ -83,30 +87,8 @@ classdef Drivetrain
             obj.m_Rotor = m_R;          obj.J_Rotor = J_R;
             obj.m_Gen = m_G;            obj.J_Gen = J_G;
             
-            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to 
-            L_h    = 20*365*24; % [h],  Required life
-            Q      = 6;         % [-],  ISO accuracy grade
-            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
-            K_A    = 1.25;      % [-],  Application factor
+            safety_factors(obj);
             
-            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
-            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
-            K_f  = 1.0;   % [-],   Fatigue stress-concentration factor for bending
-            K_fs = 1.0;   % [-],   Fatigue stress-concentration factor for torsion
-            T_m  = obj.T_1(1)*obj.stage(1).u;
-
-            obj.S_shaft = obj.main_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
-            
-            for idx = 1:3
-                obj.S_shaft(idx + 1) = obj.stage(idx).shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_1(idx));
-                
-                [SH, sigmaH] = obj.stage(idx).Pitting_ISO(obj.P_rated, obj.n_1(idx), S_Hmin, L_h, Q, R_a, K_A);
-                
-                jdx = 2*idx - 1;
-                kdx = jdx:(jdx + 1);
-                obj.S_H(kdx) = SH;
-                obj.sigma_H(kdx) = sigmaH;
-            end
         end
         
         function tab = disp(obj)
@@ -347,6 +329,94 @@ classdef Drivetrain
         end
         
         %% Dynamics:
+        function [f_n, mode_shape] = modal_analysis(obj, model_approach)
+            % MODAL_ANALYSIS calculates the resonances and mode shapes of
+            % the Drivetrain via a symmertic eigenvalue problem, [1]. The
+            % dynamic matrices M and K can be obtained using different
+            % modelling approaches, e.g. [2-3].
+            %
+            % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
+            % Pearson, 2014, pp. 408-413.
+            % [2] A. Kahraman, "Natural Modes of Planetary Gear Trains",
+            % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
+            % 1994. https://doi.org/10.1006/jsvi.1994.1222.
+            % [3] J. Lin and R. Parker, "Analytical Characterization of the
+            % Unique Properties of Planetary Gear Free Vibration", Journal
+            % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
+            % 1999. https://doi.org/10.1115/1.2893982
+            %
+
+            switch(model_approach)
+                case "Thomson_ToV"
+                    [M, K] = obj.Thomson_ToV;
+                    
+                case "Kahraman_1994"
+                    [M, K] = obj.Kahraman_1994;
+                    
+                case "Lin_Parker_1999"
+%                   [M, K, K_b, K_m, K_Omega, G]
+                    [M, ~, K_b, K_m,       ~, ~] = obj.Lin_Parker_1999;
+                    K = K_b + K_m;
+                    
+                otherwise
+                    error("Option [%s] is NOT available.", upper(model_approach));
+                    
+%                 case "Eritenel_2011"
+%                     [M, K] = obj.E
+            end
+            
+            % Symmetric eigenvalue problem [1]:
+            L = chol(M, "lower");
+            K_tilde = L\K/(L');
+            
+            % correcting numeric erros and make the problem symmetric:
+            K_tilde = (K_tilde + K_tilde')/2.0;
+
+            [mode_shape, D] = eig(K_tilde);
+            D = diag(D);   % matrix to vector
+            w_n = sqrt(D); % lambda to omega_n
+
+            f_n = w_n'./(2.0*pi); % rad/s to Hz
+            
+            % sorting in ascending order:
+            [f_n, idx] = sort(f_n);
+            mode_shape = mode_shape(:, idx);
+            
+            % Normalizing the mode shapes so that the maximum is always +1:
+            for idx = 1:length(f_n)
+                [ms_max, n] = max(abs(mode_shape(:, idx)));
+                mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
+            end
+            
+        end
+        
+        function [f_n, mode_shape] = scaled_modal_analysis(obj, model_approach, N, normalize, gamma_P, gamma_n, gamma)
+            %SCALED_MODAL_ANALYSIS performs modal analysis on a scaled
+            % Drivetrain object, returning only the N first resonances and
+            % mode shapes. The resonances can be normalized or not.
+            %
+            
+            obj_sca = scale_drivetrain(obj, gamma_P, gamma_n, gamma);
+            
+            [f_n, mode_shape] = obj_sca.modal_analysis(model_approach);
+            
+            N_fn = numel(f_n);
+            
+            if(N <= 0)
+                error("N = %d < 0. It should be positive and smaller than %d.", N, N_fn);
+            elseif(N > N_fn)
+                error("N = %d > %d. It should be positive and smaller than %d.", N, N_fn, N_fn);
+            else
+                f_n = f_n(1:N);
+            end
+            
+            if(normalize == true)
+                f_n = f_n./f_n(1);
+%                 f_n = f_n(2:end);
+            end
+
+        end
+        
         function f_n = natural_freq(obj, calc_method, opt_freq, N, gamma_d, gamma)
             
             for idx = 1:3
@@ -366,7 +436,7 @@ classdef Drivetrain
             f_n = obj.modal_analysis(calc_method, opt_freq, N, gm_L);
         end
         
-        function [f_n, eig_vec] = modal_analysis(obj, calc_method, opt_freq, n_f, gamma)
+        function [f_n, eig_vec] = modal_analysis_OLD(obj, calc_method, opt_freq, n_f, gamma)
             %MODAL_ANALYSIS calculates the first n_f resonances and mode
             % shapes of the drivetrain via an symmetric eigenvalue problem
             % [1]. The dynamic matrices M and K are obtained using
@@ -457,27 +527,15 @@ classdef Drivetrain
             
         end
         
-        function [M, K] = Thomson_ToV(obj, gamma, brake)
+        function [M, K] = Thomson_ToV(obj)
             %THOMSON_TOV Returns the inertia and stiffness matrices of the
             % drivetrain according to:
             % W. Thomson and M. Dahleh, Theory of vibration with
             % applications, 5th ed. Prentice-Hall: New Jersey, 1998,
             % pp. 380-381.
             %
-
-            if(~exist("gamma", "var"))
-                gamma_J_R = 1.0;
-                gamma_J_G = 1.0;
-            else
-                gamma_J_R = gamma(1);
-                gamma_J_G = gamma(2);
-            end
-            
             J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
             J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
-            
-            J_R = J_R*gamma_J_R;
-            J_G = J_G*gamma_J_G;
             
             U = obj.u;
             
@@ -489,34 +547,17 @@ classdef Drivetrain
             M = diag([J_R J_G*U^2]);
             K = k*[1.0 -1.0;
                   -1.0  1.0];
-              
-            if(strcmp(brake, "brake"))
-                M = M(1, 1);
-                K = K(1, 1);
-            end
-            
         end
         
-        function [M, K] = Kahraman_1994(obj, gamma)
+        function [M, K] = Kahraman_1994(obj)
             %KAHRAMAN_1994 Returns the inertia and stiffness matrices of
             % the drivetrain according to:
             % A. Kahraman, "Natural Modes of Planetary Gear Trains",
             % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
             % 1994. https://doi.org/10.1006/jsvi.1994.1222.
 
-            if(~exist("gamma", "var"))
-                gamma_J_R = 1.0;
-                gamma_J_G = 1.0;
-            else
-                gamma_J_R = gamma(1);
-                gamma_J_G = gamma(2);
-            end
-            
             J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
             J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
-            
-            J_R = J_R*gamma_J_R;
-            J_G = J_G*gamma_J_G;
             
             M = zeros(14, 14);
             K = zeros(14, 14);
@@ -547,7 +588,7 @@ classdef Drivetrain
             K(kdx, kdx) = K(kdx, kdx) + K_tmp;
         end
         
-        function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj, gamma)
+        function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
             %LIN_PARKER_1999 Returns the inertia and stiffness matrices of
             % the drivetrain according to:
             % J. Lin and R. Parker, "Analytical Characterization of the
@@ -556,26 +597,11 @@ classdef Drivetrain
             % 1999. https://doi.org/10.1115/1.2893982
             %
 
-            if(~exist("gamma", "var"))
-                gamma_m_R = 1.0;
-                gamma_m_G = 1.0;
-                gamma_J_R = 1.0;
-                gamma_J_G = 1.0;
-            else
-                gamma_m_R = gamma(1);
-                gamma_m_G = gamma(2);
-                gamma_J_R = gamma(3);
-                gamma_J_G = gamma(4);
-            end
-            
             m_R = obj.m_Rotor; % [kg], Rotor mass
             m_G = obj.m_Gen;   % [kg], Generator mass according to [?]
             
             J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
             J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
-            
-            J_R = J_R*gamma_J_R;            J_G = J_G*gamma_J_G;
-            m_R = m_R*gamma_m_R;            m_G = m_G*gamma_m_G;
             
             M       = zeros(42, 42);
             K_b     = zeros(42, 42);
@@ -635,8 +661,58 @@ classdef Drivetrain
         end
         
         %% Pitting:
-        function val = design_factors(obj, P, gamma)
+        function [SH, sigmaH, Sshaft] = safety_factors(obj)
+            %SAFETY_FACTORS returns the safety factors for a Drivetrain
+            % object. It calculates the safety factor against pitting
+            % for the Gear objects according to ISO 6336-2 and the safety
+            % against fatigue and yield according to Shigley's book.
             
+            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
+            L_h    = 20*365*24; % [h],  Required life
+            Q      = 6;         % [-],  ISO accuracy grade
+            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
+            K_A    = 1.25;      % [-],  Application factor
+            
+            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
+            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
+            K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
+            K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
+            
+            T_m  = obj.T_1(1)*obj.stage(1).u;
+
+            obj.S_shaft_val(1) = obj.main_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
+            
+            for idx = 1:3
+                obj.S_shaft_val(idx + 1) = obj.stage(idx).shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_1(idx));
+                
+                [SH, sigmaH] = obj.stage(idx).Pitting_ISO(obj.P_rated, obj.n_1(idx), S_Hmin, L_h, Q, R_a, K_A);
+                
+                jdx = 2*idx - 1;
+                kdx = jdx:(jdx + 1);
+                
+                obj.S_H_val(kdx)     = SH;
+                obj.sigma_H_val(kdx) = sigmaH;
+            end
+            
+            SH = obj.S_H_val;
+            sigmaH = obj.sigma_H_val;
+            Sshaft = obj.S_shaft_val;
+            
+        end
+        
+        function [SH, sigmaH, Sshaft] = scaled_safety_factors(obj, gamma_P, gamma_n, gamma)
+            %SCALED_SAFETY_FACTORS returns the safety factors of a scaled
+            % Drivetrain object.
+            %
+            
+            obj_sca = scale_drivetrain(obj, gamma_P, gamma_n, gamma);
+            
+            [SH, sigmaH, Sshaft] = safety_factors(obj_sca);
+            
+        end
+        
+        function val = design_factors(obj, P, gamma)
+            val = P/gamma;
         end
     end
     
@@ -656,6 +732,18 @@ classdef Drivetrain
         
         function val = get.u(obj)
             val = prod([obj.stage(1:end).u]);
+        end
+        
+        function val = get.S_H(obj)
+            val = obj.S_H_val;
+        end
+        
+        function val = get.sigma_H(obj)
+            val = obj.sigma_H_val;
+        end
+        
+        function val = get.S_shaft(obj)
+            val = obj.S_shaft_val;
         end
     end
     
