@@ -37,14 +37,14 @@ classdef Gear_Set < Gear
     %
     
     properties(SetAccess = private)
-        configuration(1, :) string      {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
-        N_p          (1, 1)             {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
-        bearing      (1, :) Bearing;                                                                           % [-], Bearing array
+        configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
+        N_p           (1, 1)          {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
+        bearing       (1, :) Bearing;                                                                        % [-], Bearing array
     end
     
     properties
-        shaft        (1, 1) Shaft;                                                                             % [-], Output shaft
-        a_w          (1, :)             {mustBeFinite,  mustBePositive}                          = 13;         % [mm], Center distance
+        out_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
+        a_w           (1, :)          {mustBeFinite,  mustBePositive}                          = 13;         % [mm], Center distance
     end
     
     properties(Dependent)
@@ -115,7 +115,7 @@ classdef Gear_Set < Gear
             
             obj.a_w = a_w;
             obj.bearing = bear;
-            obj.shaft = sha;
+            obj.out_shaft = sha;
         end
         
         function tab = disp(obj)
@@ -195,7 +195,7 @@ classdef Gear_Set < Gear
                 fprintf("Bearings:\n");
                 obj.bearing.disp;
                 fprintf("Output shaft:\n");
-                obj.shaft.disp;
+                obj.out_shaft.disp;
                 clear tab;
             end
         end
@@ -276,13 +276,13 @@ classdef Gear_Set < Gear
             
             hold on;
             if(strcmp(obj.configuration, "parallel"))
-                C_w = [obj.b/2.0 0.0]' + C;
-                C_p = [obj.b/2.0 obj.a_w]' + C;
-                C_s = C_p + [obj.b + obj.shaft.L 0.0]'./2.0;
+                C_w =       [obj.b/2.0 0.0]' + C;
+                C_p =       [obj.b/2.0 obj.a_w]' + C;
+                C_s = C_p + [obj.b + obj.out_shaft.L 0.0]'./2.0;
                 
-                rectangle(obj.gear(1), C_p, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
-                rectangle(obj.gear(2), C_w, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :));
-                rectangle(obj.shaft,   C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
+                rectangle(obj.gear(1)  , C_p, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
+                rectangle(obj.gear(2)  , C_w, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :));
+                rectangle(obj.out_shaft, C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
                 
 %                 legend([h_p h_w h_s], ["Pinion", "Wheel", "Shaft"], "location", "best", "fontName", "Times", "fontSize", 12.0);
                 
@@ -290,13 +290,13 @@ classdef Gear_Set < Gear
                 C_c = [obj.carrier.b/2.0, 0.0]' + C;
                 C_g = C_c + [obj.b + obj.carrier.b 0]'./2.0;
                 C_p = C_g + [0.0 obj.a_w]';
-                C_s = C_g + [obj.b + obj.shaft.L 0.0]'./2.0;
+                C_s = C_g + [obj.b + obj.out_shaft.L 0.0]'./2.0;
 
-                rectangle(obj.gear(3), C_g, color(3, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(3, :));
-                rectangle(obj.gear(1), C_g, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
-                rectangle(obj.gear(2), C_p, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :));
-                rectangle(obj.carrier, C_c, color(4, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(4, :));
-                rectangle(obj.shaft,   C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
+                rectangle(obj.gear(3)  , C_g, color(3, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(3, :));
+                rectangle(obj.gear(1)  , C_g, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
+                rectangle(obj.gear(2)  , C_p, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :));
+                rectangle(obj.carrier  , C_c, color(4, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(4, :));
+                rectangle(obj.out_shaft, C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
                 
 %                 legend([h_g h_p h_r h_c h_s], ["Sun", "Planet", "Ring", "Carrier", "Shaft"], "location", "best", "fontName", "Times", "fontSize", 12.0);
                 
@@ -461,7 +461,7 @@ classdef Gear_Set < Gear
             scaled_obj = obj_ref.scaled_Gear_Set(gamma);
         end
         
-        function obj_sca = scaled_Gear_Set(obj_ref, gamma)
+        function obj_sca = scaled_Gear_Set(obj_ref, gamma, gamma_shaft)
             %SCALED_GEAR_SET returns an scaled Gear_Set object obj_scale,
             % whose main parameters (normal module, face width and center
             % distance) are proportional to the reference object by a
@@ -471,11 +471,16 @@ classdef Gear_Set < Gear
             % scaling factor.
             %
             
+            if(numel(gamma) ~= 2) 
+                error("Scaling factor gamma should have two elements.");
+            end
+            
             gamma_mn = gamma(1, :);        gamma_bb = gamma(2, :);
             
             m_n_sca = Rack.module(obj_ref.m_n*gamma_mn, "calc", "nearest");
             
             gamma_mn = m_n_sca/obj_ref.m_n;
+            out_shaft_sca = obj_ref.out_shaft.scaled_Shaft(gamma_shaft);
             
             obj_sca = Gear_Set(obj_ref.configuration, ... % planetary or parallel
                                m_n_sca,               ... % normal module                  
@@ -490,7 +495,7 @@ classdef Gear_Set < Gear
                                obj_ref.a_w*gamma_mn,  ... % center distance
                                obj_ref.type,          ... % rack type
                                obj_ref.bearing,       ... % bearing array
-                               obj_ref.shaft);        ... % shaft
+                               out_shaft_sca);        ... % output shaft
 
             % To ensure that the scaled object will have the same contact
             % characteristics (contact ratio, eps_alpha) as the original:
@@ -520,7 +525,7 @@ classdef Gear_Set < Gear
                                aw,                ... % center distance
                                obj.type,          ... % rack type
                                obj.bearing,       ... % bearing array
-                               obj.shaft);        ... % shaft
+                               obj.out_shaft);    ... % shaft
             
             % To ensure that the modified object will have the same contact
             % characteristics (contact ratio, eps_alpha) as the original:
@@ -593,7 +598,7 @@ classdef Gear_Set < Gear
                                    obj.beta,            obj.k(1:2), ...
                                    obj.bore_ratio(1:2), obj.N_p, ...
                                    obj.a_w,             obj.type, ...
-                                   obj.bearing,         obj.shaft);
+                                   obj.bearing,         obj.out_shaft);
 
                 pla_rng = Gear_Set("parallel",          obj.m_n, ...
                                    obj.alpha_n,         obj.z(2:3), ...
@@ -601,7 +606,7 @@ classdef Gear_Set < Gear
                                    obj.beta,            obj.k(2:3), ...
                                    obj.bore_ratio(2:3), obj.N_p, ...
                                    obj.a_w,             obj.type, ...
-                                   obj.bearing,         obj.shaft);
+                                   obj.bearing,         obj.out_shaft);
 
                 k_sp = sun_pla.k_mesh;
                 k_rp = pla_rng.k_mesh;
@@ -617,8 +622,8 @@ classdef Gear_Set < Gear
             
             idx = (n - 1):n;
             
-            M(idx, idx) = M(idx, idx) + obj.shaft.inertia_matrix("torsional");
-            K(idx, idx) = K(idx, idx) + obj.shaft.stiffness_matrix("torsional");
+            M(idx, idx) = M(idx, idx) + obj.out_shaft.inertia_matrix("torsional");
+            K(idx, idx) = K(idx, idx) + obj.out_shaft.stiffness_matrix("torsional");
         end
         
         function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
@@ -715,8 +720,8 @@ classdef Gear_Set < Gear
                 k_cx = b_c.K_y;     k_cy = b_c.K_z;     k_cu = b_c.K_alpha;
 
                 % Mesh stiffness:
-                sun_pla = Gear_Set("parallel", obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing, obj.shaft);
-                pla_rng = Gear_Set("parallel", obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing, obj.shaft);
+                sun_pla = Gear_Set("parallel", obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
+                pla_rng = Gear_Set("parallel", obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
                 
                 k_s = sun_pla.k_mesh;
                 k_r = pla_rng.k_mesh;
@@ -774,8 +779,8 @@ classdef Gear_Set < Gear
                 
             end
             
-            M_tmp = obj.shaft.inertia_matrix("full");
-            K_tmp = obj.shaft.stiffness_matrix("full");
+            M_tmp = obj.out_shaft.inertia_matrix("full");
+            K_tmp = obj.out_shaft.stiffness_matrix("full");
             
             % [ 1   2   3       4      5       6   7   8   9    10      11      12]
             % [x_1 y_1 z_1 alpha_1 beta_1 gamma_1 x_2 y_2 z_2 alpha_2 beta_2 gamma_2]
@@ -1211,8 +1216,8 @@ classdef Gear_Set < Gear
             obj.cprime = val;
         end
         
-        function obj = set.shaft(obj, val)
-            obj.shaft = val;
+        function obj = set.out_shaft(obj, val)
+            obj.out_shaft = val;
         end
         
     end

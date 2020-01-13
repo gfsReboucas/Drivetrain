@@ -151,7 +151,7 @@ classdef Drivetrain
             if(nargout == 0)
                 fprintf("Drivetrain:\n");
                 disp(tab);
-                fprintf("Input shaft:\n");
+                fprintf("Main shaft:\n");
                 disp(obj.main_shaft);
                 clear tab;
             end
@@ -171,8 +171,7 @@ classdef Drivetrain
                        "Reference diameter (Sun/Pinion)",              "d_1",     "mm",     ref.stage(idx).d(1),    sca.stage(idx).d(1),    sca.stage(idx).d(1)   /ref.stage(idx).d(1);    % 10
                        "Mass (Sun/Pinion)",                            "m_1",     "kg",     ref.stage(idx).mass(1), sca.stage(idx).mass(1), sca.stage(idx).mass(1)/ref.stage(idx).mass(1); % 11
                        "Mass moment of inertia (Sun/Pinion)",          "J_xx1",   "kg-m^2", ref.stage(idx).J_x(1),  sca.stage(idx).J_x(1),  sca.stage(idx).J_x(1) /ref.stage(idx).J_x(1);  % 12
-                       "Shaft / Diameter",                             "d",       "mm",     ref.stage(idx).shaft.d, sca.stage(idx).shaft.d, sca.stage(idx).shaft.d/ref.stage(idx).shaft.d; % 13
-                       "Shaft / Length",                               "L",       "mm",     ref.stage(idx).shaft.L, sca.stage(idx).shaft.L, sca.stage(idx).shaft.L/ref.stage(idx).shaft.L; % 14
+                       "Shaft / Length",                               "L",       "mm",     ref.stage(idx).out_shaft.L, sca.stage(idx).out_shaft.L, sca.stage(idx).out_shaft.L/ref.stage(idx).out_shaft.L; % 14
                         };
 %                        "Reference diameter (Planet/Wheel)",            "d_2",     "mm",     ref.stage(idx).d(2),    sca.stage(idx).d(2),    sca.stage(idx).d(2)   /ref.stage(idx).d(2);    % 11
 %                        "Reference diameter (Ring)",                    "d_3",     "mm",     "-*-",                  "-*-",                  "-*-";                                         % 12
@@ -233,8 +232,8 @@ classdef Drivetrain
             C_s = [obj.main_shaft.L/2.0 0.0]';
             rectangle(obj.main_shaft, C_s, color(6, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(6, :));
             C = [obj.main_shaft.L;
-                 obj.stage(1).carrier.b + obj.stage(1).b + obj.stage(1).shaft.L;
-                 obj.stage(2).carrier.b + obj.stage(2).b + obj.stage(2).shaft.L];
+                 obj.stage(1).carrier.b + obj.stage(1).b + obj.stage(1).out_shaft.L;
+                 obj.stage(2).carrier.b + obj.stage(2).b + obj.stage(2).out_shaft.L];
 
             for idx = 1:3
                 rectangle(obj.stage(idx), [sum(C(1:idx)) 0.0]');
@@ -260,7 +259,7 @@ classdef Drivetrain
     
     methods
         %% Calculations:
-        function obj_sca = scale_drivetrain(obj_ref, gamma_P, gamma_n, gamma)
+        function obj_sca = scale_Drivetrain(obj_ref, gamma_P, gamma_n, gamma)
             gamma_s1_mn = gamma(1, :);            gamma_s1_bb = gamma(2, :);            gamma_s1_LL = gamma(3, :);
             gamma_s2_mn = gamma(4, :);            gamma_s2_bb = gamma(5, :);            gamma_s2_LL = gamma(6, :);
             gamma_s3_mn = gamma(7, :);            gamma_s3_bb = gamma(8, :);            gamma_s3_LL = gamma(9, :);
@@ -268,48 +267,25 @@ classdef Drivetrain
             gamma_J_R   = gamma(10, :);           gamma_J_G   = gamma(11, :);
             gamma_m_R   = gamma(12, :);           gamma_m_G   = gamma(13, :);
             
-%             gamma_shaft_d = gamma(14, :);
             gamma_shaft_d = nthroot(gamma_P/gamma_n, 3.0);
             
             main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_shaft_d, ...
-                                   obj_ref.main_shaft.L*gamma_s3_LL);
-
-           stage_sca = [Gear_Set, Gear_Set, Gear_Set];
-           
-           gamma_mn = [gamma_s1_mn gamma_s2_mn gamma_s3_mn];
-           gamma_bb = [gamma_s1_bb gamma_s2_bb gamma_s3_bb];
-           gamma_LL = [gamma_s1_LL gamma_s2_LL gamma_s3_LL];
-%            gamma_JJ = [gamma_J_R   gamma_J_G];
-%            gamma_MM = [gamma_m_R   gamma_m_G];
-           
-           for idx = 1:3
-               % Reference stage idx:
-               ref_stage = obj_ref.stage(idx);
-               
-               % Output shaft of reference stage idx:
-               stage_shaft_ref = ref_stage.shaft;
-               
-               % Output shaft of scaled stage idx:
-               stage_shaft_sca = Shaft(stage_shaft_ref.d*gamma_shaft_d, ...
-                                       stage_shaft_ref.L*gamma_LL(idx));
-
-               % Scaled stage idx:
-               stage_sca(idx) = Gear_Set(ref_stage.configuration, ...
-                                         ref_stage.m_n*gamma_mn(idx), ...
-                                         ref_stage.alpha_n, ...
-                                         ref_stage.z, ...
-                                         ref_stage.b*gamma_bb(idx), ...
-                                         ref_stage.x, ...
-                                         ref_stage.beta, ...
-                                         ref_stage.k, ...
-                                         ref_stage.bore_ratio, ...
-                                         ref_stage.N_p, ...
-                                         ref_stage.a_w*gamma_mn(idx), ...
-                                         ref_stage.type, ...
-                                         ref_stage.bearing, ...
-                                         stage_shaft_sca);
-           end
-%         function obj = Drivetrain(stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G)
+                obj_ref.main_shaft.L*gamma_s3_LL);
+            
+            stage_sca = [Gear_Set, Gear_Set, Gear_Set];
+            
+            gamma_mn = [gamma_s1_mn gamma_s2_mn gamma_s3_mn];
+            gamma_bb = [gamma_s1_bb gamma_s2_bb gamma_s3_bb];
+            gamma_LL = [gamma_s1_LL gamma_s2_LL gamma_s3_LL];
+            
+            for idx = 1:3
+                % Scaled stage idx:
+                gamma_stage = [gamma_mn(idx) gamma_bb(idx)];
+                % Scaled output shaft idx:
+                gamma_shaft = [gamma_shaft_d gamma_LL(idx)];
+                stage_sca(idx) = obj_ref.stage(idx).scaled_Gear_Set(gamma_stage, gamma_shaft);
+                
+            end
             
             obj_sca = Drivetrain(stage_sca, ...
                                  obj_ref.P_rated *gamma_P, ...
@@ -420,8 +396,8 @@ classdef Drivetrain
         function f_n = natural_freq(obj, calc_method, opt_freq, N, gamma_d, gamma)
             
             for idx = 1:3
-                sca_shaft = obj.stage(idx).shaft.scaled_shaft([gamma_d, gamma(idx)]);
-                obj.stage(idx).shaft = sca_shaft;
+                sca_shaft = obj.stage(idx).out_shaft.scaled_shaft([gamma_d, gamma(idx)]);
+                obj.stage(idx).out_shaft = sca_shaft;
             end
             
             LSS_sca = obj.main_shaft.scaled_shaft([gamma_d, gamma(3)]);
@@ -540,7 +516,7 @@ classdef Drivetrain
             U = obj.u;
             
             k_LSS = obj.main_shaft.stiffness("torsional");
-            k_HSS = obj.stage(3).shaft.stiffness("torsional");
+            k_HSS = obj.stage(3).out_shaft.stiffness("torsional");
             
             k = (k_LSS*k_HSS*U^2)/(k_LSS + k_HSS*U^2);
             
@@ -683,7 +659,7 @@ classdef Drivetrain
             obj.S_shaft_val(1) = obj.main_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
             
             for idx = 1:3
-                obj.S_shaft_val(idx + 1) = obj.stage(idx).shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_1(idx));
+                obj.S_shaft_val(idx + 1) = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_1(idx));
                 
                 [SH, sigmaH] = obj.stage(idx).Pitting_ISO(obj.P_rated, obj.n_1(idx), S_Hmin, L_h, Q, R_a, K_A);
                 

@@ -125,11 +125,17 @@ classdef Shaft
             end
         end
         
-        function sca = scaled_shaft(obj, gamma)
-            dd = obj.d*gamma(1);
-            LL = obj.L*gamma(2);
+        function obj_sca = scaled_Shaft(obj_ref, gamma)
             
-            sca = Shaft(dd, LL);
+            if(numel(gamma) ~= 2) 
+                error("Scaling factor gamma should have two elements.");
+            end
+            
+            gamma_d = gamma(1, :);      gamma_L = gamma(2, :);
+            
+            obj_sca = Shaft(obj_ref.d*gamma_d, ...
+                            obj_ref.L*gamma_L);
+
         end
         
         function sca = scaled_version(obj, T_scale, option)
