@@ -1,7 +1,8 @@
 classdef Rack
-    % This class implements the characteristics of the standard basic rack
-    % tooth profile for cylindrical involute gears (external or internal)
-    % for general and heavy engineering.
+    %RACK This class implements the characteristics of the standard basic 
+    % rack tooth profile for cylindrical involute gears (external or 
+    % internal) for general and heavy engineering.
+    %
     % References:
     % [1] ISO 53:1998 Cylindrical gears for general and heavy engineering
     % -- Standard basic rack tooth profile

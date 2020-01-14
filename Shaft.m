@@ -1,6 +1,7 @@
 classdef Shaft
-    % This class implements some geometrical concepts and parameters for
-    % cylindrical shafts.
+    %SHAFT This class implements some geometrical concepts and parameters 
+    % for cylindrical shafts.
+    %
     % References:
     % [1]  Budynas, R., Nisbett, J. (2015). Shigley's Mechanical
     % Engineering Design. 10th ed. New York: McGraw-Hill

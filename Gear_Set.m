@@ -442,7 +442,7 @@ classdef Gear_Set < Gear
     %% Calculation:
     methods
         %% Scaling:
-        function [scaled_obj, gamma, RN] = scaled_version(obj_ref, gamma_0, SHref, P, n)
+        function [scaled_obj, gamma, RN] = scaled_version_OLD(obj_ref, gamma_0, SHref, P, n)
             fun_min = @(g)(SHref - obj_ref.pitting_factors(P, n, g));
             fun = @(p)(norm(fun_min(p))^2);
             
@@ -535,21 +535,6 @@ classdef Gear_Set < Gear
         end
 
         %% Dynamics:
-        function [M, G, K_Omega] = dynamic_matrix(obj, option)
-            switch option
-                case "y-z-alpha" % "Lin_Parker_1999"
-                    [M, G, K_Omega] = obj.Lin_Parker_1999;
-                case "alpha" % "Kahraman_1994"
-                    M       = obj.Kahraman_1994;
-                    G       = zeros(size(M));
-                    K_Omega = zeros(size(M));
-                case "6DOF" % "Eritenel"
-                    error("prog:input", " Option [%s] is NOT implemented yet.", upper(option));
-                otherwise
-                    error("prog:input", " Option [%s] is NOT valid.", upper(option));
-            end
-        end
-        
         function [M, K] = Kahraman_1994(obj)
             %KAHRAMAN_1994 Returns the inertia and stiffness matrices of
             % the gear stage according to:
@@ -969,6 +954,10 @@ classdef Gear_Set < Gear
             
             S_H     = [S_H1 S_H2];
             sigma_H = [sigma_H1 sigma_H2];
+        end
+        
+        
+        function [S_H, sigma_H] = safety_factors(obj, P, n_1)
         end
         
         function Z_R = rough_factor(obj, R_zh, sigma_Hlim)

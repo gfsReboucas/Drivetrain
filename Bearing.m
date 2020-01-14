@@ -1,5 +1,6 @@
 classdef Bearing
-    %
+    %BEARING
+    % 
     % written by:
     % Geraldo Rebouças
     % - Geraldo.Reboucas@ntnu.no OR

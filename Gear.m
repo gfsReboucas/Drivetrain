@@ -1,5 +1,5 @@
 classdef Gear < Rack
-    % This class implements the geometric concepts and parameters for
+    %GEAR This class implements the geometric concepts and parameters for
     % cylindrical gears with involute helicoid tooth flanks. It also
     % implements the concepts and parameters for cylindrical gear pairs
     % with parallel axes and a constant gear ratio.
