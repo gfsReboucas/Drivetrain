@@ -2,3 +2,6 @@
 test_code.m
 *.asv
 *.mdmp
+*.gif
+*.fig
+*.png

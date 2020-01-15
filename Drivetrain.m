@@ -217,7 +217,11 @@ classdef Drivetrain
         end
         
         function rectangle(obj)
-            addpath("\\home.ansatt.ntnu.no\geraldod\Documents\MATLAB\Plot\linspecer");
+            
+            % LINSPECER: Plot lots of lines with very distinguishable and 
+            % aesthetically pleasing colors. It can be dowloaded from
+            % MATLAB's File Exchange on:
+            % https://se.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-+-colormap
             color = linspecer(6, "qualitative");
             
             hold on;
@@ -296,8 +300,8 @@ classdef Drivetrain
             gamma_s2_dd = gamma_shaft_d;
             gamma_s3_dd = gamma_shaft_d;
             
-            gamma_S_d = gamma_s3_dd; % Main shaft, diameter
             gamma_S_L = gamma_s3_LL; % Main shaft, length
+            gamma_S_d = gamma_s3_dd; % Main shaft, diameter
             
             main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_S_d, ...
                                    obj_ref.main_shaft.L*gamma_S_L);
@@ -325,6 +329,8 @@ classdef Drivetrain
                                  obj_ref.J_Rotor*gamma_R_J, ...
                                  obj_ref.m_Gen  *gamma_G_m, ...
                                  obj_ref.J_Gen  *gamma_G_J);
+                             
+            obj_sca.dynamic_model = obj_ref.dynamic_model;
         end
         
         function obj_sca = scale_by_stage(obj_ref, gamma_P, gamma_n, gamma)
@@ -477,7 +483,7 @@ classdef Drivetrain
             end
         end
            
-        function [obj_sca, gamma, res] = scaled_version(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq)
+        function [obj_sca, gamma, res, gamma_sep] = scaled_version(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq)
             %SCALED_VERSION returns an scaled Drivetrain object together
             % with the scaling factor for its parameters and residual error
             % from the scaling optimization process. Different scaling can
@@ -494,18 +500,18 @@ classdef Drivetrain
             gamma_n = n_R_scale/obj_ref.n_rotor;
             
             %% 1. Stage scaling:
-            aspect = "by_stage";
+            aspect_01 = "by_stage";
             
             S_H_ref = obj_ref.S_H;
             
-            fun_SH  = @(x)(S_H_ref - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect));
-            fun_eq = @(x)(norm(fun_SH(x))^2);
+            fun_SH  = @(x)(S_H_ref - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect_01));
+            fun_min = @(x)(norm(fun_SH(x))^2);
             
             gamma_min = ones(3, 1)*1.0e-6;
             gamma_Max = ones(3, 1);
-            gamma_0 = (0*gamma_min + 2*gamma_Max)/2.0;
+            gamma_0 = gamma_Max*nthroot(gamma_P, 3.0); % for faster conversion
             
-            fun_ineq = @(x)(1.25 - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect));
+            fun_ineq = @(x)(1.25 - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect_01));
 
             constraint_fun = @(x)deal(fun_ineq(x), fun_SH(x));
             
@@ -515,40 +521,174 @@ classdef Drivetrain
             id_2 = "MATLAB:nearlySingularMatrix";
             warning("off", id_1);
             warning("off", id_2);
-            [gamma_stage, res_stage] = fmincon(fun_eq, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+            [gamma_stage, res_stage] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
             
             %% 2. Gears:
-            aspect = "gear";
+            aspect_02 = "gear";
             
-            A = zeros(6, 3);
-            A(1, 1) = 1.0;      A(2, 1) = 1.0;
-            A(3, 2) = 1.0;      A(4, 2) = 1.0;
-            A(5, 3) = 1.0;      A(6, 3) = 1.0;
-            gamma_0 = A*gamma_stage;
+            gamma_0 = repmat(gamma_stage, [1 2]);
+            gamma_0 = gamma_0([1 4 ...
+                               2 5 ...
+                               3 6])';
             
             gamma_min = ones(6, 1)*1.0e-6;
             gamma_Max = ones(6, 1);
             
-            fun_SH  = @(x)(S_H_ref - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect));
-            fun_eq = @(x)(norm(fun_SH(x))^2);
+            fun_SH  = @(x)(S_H_ref - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect_02));
+            fun_min = @(x)(norm(fun_SH(x))^2);
             
-            fun_ineq = @(x)(1.25 - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect));
+            fun_ineq = @(x)(1.25 - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect_02));
 
             constraint_fun = @(x)deal(fun_ineq(x), fun_SH(x));
             
-            [gamma_gear, res_gear] = fmincon(fun_eq, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-            warning("on", id_1);
-            warning("on", id_2);
+            [gamma_gear, res_gear] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+            
+            obj_sca_gear = obj_ref.scale_aspect(gamma_P, gamma_n, gamma_gear, aspect_02);
             
             %% 3. Shaft and Mass moment of inertia:
             f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
-            aspect = "stiffness_mass_mom_inertia";
+            aspect_03 = "stiffness_mass_mom_inertia";
             
-            fun_fn = @(x)(1.0 - obj_ref.scale);
+            gamma_min = ones(5, 1)*1.0e-6;
+            gamma_Max = ones(5, 1);
+            
+            gamma_0 = [ones(3, 1)*nthroot(gamma_P, 3.0);
+                       ones(2, 1)*  power(gamma_P, 1.6)];
+            
+            % gamma_p and gamma_n are set to 1.0 because the Drivetrain is
+            % already scaled for these parameters
+            fun_fn  = @(x)(1.0 - obj_sca_gear.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, aspect_03)./f_n_ref);
+            fun_min = @(x)(norm(fun_fn(x))^2);
+            
+            fun_f1 = @(x)([obj_sca_gear.scale_nth_resonance(1     , 1.0, 1.0, x, aspect_03) - 5.0; ...
+                           obj_sca_gear.scale_nth_resonance(N_freq, 1.0, 1.0, x, aspect_03) - 5.0e3]);
+            
+            constraint_fun = @(x)deal(fun_f1(x), fun_fn(x));
+            
+            [gamma_KJ, res_KJ] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+%             [gamma_KJ, res_KJ] = lsqnonlin(fun_fn, gamma_0, gamma_min, gamma_Max, opt_solver);
+
+            obj_sca = obj_sca_gear.scale_aspect(1.0, 1.0, gamma_KJ, aspect_03);
+            
+            warning("on", id_2);
+            warning("on", id_1);
+            
+            %% Post processing:
+            % Analysis of the residuals at each step:
+            gamma = [gamma_gear(1), gamma_gear(2), gamma_KJ(1), 1.0        , ...
+                     gamma_gear(3), gamma_gear(4), gamma_KJ(2), 1.0        , ...
+                     gamma_gear(5), gamma_gear(6), gamma_KJ(3), 1.0        , ...
+                     1.0          , gamma_KJ(4)  , 1.0        , gamma_KJ(5), ...
+                     1.0          , 1.0]';
+                 
+            gamma_sep.stage = gamma_stage;
+            gamma_sep.gear = gamma_gear;
+            gamma_sep.KJ = gamma_KJ;
+            
+            res.stage = res_stage;
+            res.gear = res_gear;
+            res.KJ = res_KJ;
+            
+            res_tmp = [res_stage, res_gear, res_KJ];
+            aspect = [aspect_01, aspect_02, aspect_03];
+            
+            [~, IDX] = sort(res_tmp);
+            
+            for idx = IDX
+                fprintf("%d. %s:\t%.5e\n", idx, aspect(idx), res_tmp(idx));
+            end
+            
+        end
+        
+        function [gamma, res, SH, f_n, mode_shape, k_mesh] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq)
+            %SCALED_SWEEP performs a sweep on the rated power parameter of
+            % the Drivetrain object. Returns the scaling factors gamma
+            %
+            % see also SCALED_VERSION
+            %
+            
+            n_P = numel(P_scale);
+            n_fn = numel(obj_ref.modal_analysis);
+            
+            gamma = zeros(18, n_P);
+%             res =  zeros(size(P_scale));
+            res = struct;
+            SH = zeros(numel(obj_ref.S_H), n_P);
+            f_n = zeros(n_fn, n_P);
+            mode_shape = zeros(n_fn, n_fn, n_P);
+            k_mesh = zeros(numel(obj_ref.stage), n_P);
+            
+            gamma_P = P_scale./obj_ref.P_rated;
+            
+            figure("units", "centimeters", "position", [5.0 5.0 17.0 12.0]);
+            subplot(2,1,1)
+            rectangle(obj_ref);
+            xlim([0 6400])
+            ylim([-1 1]*1400)
+            title(sprintf("Reference: %.1f kW", obj_ref.P_rated));
+            
+            subplot(2,1,2)
+            axis equal;
+            xlim([0 6400])
+            ylim([-1 1]*1400)
+            
+            fig_axes = findobj(gcf, "Type", "Axes");
+            
+            font_setting = {"fontName", "Times", "fontSize", 12.0};
+            label_figure(fig_axes, font_setting);
+            
+            fig_name = @(i)(sprintf("plots\\sweep_scale\\scaled_%d_%d", i, n_P));
+            
+            file_name = "plots\scale_sweep.gif";
+            
+            for idx = 1:n_P
+                [obj_sca, gamma(:, idx), res_idx] = obj_ref.scaled_version(P_scale(idx), n_R_scale, normalize_freq, N_freq);
+                res(idx).stage = res_idx.stage;
+                res(idx).gear  = res_idx.gear;
+                res(idx).KJ    = res_idx.KJ;
+                
+                SH(:, idx) = obj_sca.S_H;
+                k_mesh(:, idx) = [obj_sca.stage.k_mesh]';
+                [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.modal_analysis;
+
+                subplot(2,1,2)
+                cla;
+                rectangle(obj_sca);
+                xlim([0 6400])
+                ylim([-1 1]*1400)
+                title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gamma_P(idx)*100.0));
+                
+                set(fig_axes, font_setting{:});
+                
+                savefig(gcf, fig_name(idx));
+                print(fig_name(idx), '-dpng');
+                saveasGIF(file_name, idx);
+                
+            end
+            
+            
             
         end
         
         %% Dynamics:
+        function [f, mode_shape] = nth_resonance(obj, n)
+            [f_n, mode_shape] = modal_analysis(obj);
+            
+            if((n < 1) || (n > numel(f_n)))
+                error("n = %d > or ~= 0.");
+            end
+            
+            f = f_n(n);
+            mode_shape = mode_shape(:, n);
+        end
+        
+        function [f, mode_shape] = scale_nth_resonance(obj, n, gamma_P, gamma_n, gamma, aspect)
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f, mode_shape] = obj_sca.nth_resonance(n);
+            
+        end
+        
         function [f_n, mode_shape] = modal_analysis(obj)
             % MODAL_ANALYSIS calculates the resonances and mode shapes of
             % the Drivetrain via a symmertic eigenvalue problem [1]. The
@@ -610,7 +750,7 @@ classdef Drivetrain
             
         end
         
-        function [f_n, mode_shape] = scaled_modal_analysis(obj, gamma_P, gamma_n, gamma, aspect)
+        function [f_n, mode_shape] = scale_modal_analysis(obj, gamma_P, gamma_n, gamma, aspect)
             %SCALED_MODAL_ANALYSIS performs modal analysis on a scaled
             % Drivetrain object, returning only the N first resonances and
             % mode shapes.
@@ -644,34 +784,21 @@ classdef Drivetrain
             
             if(normalize == true)
                 f_n = f_n./f_n(1);
-%                 f_n = f_n(2:end);
+                f_n = f_n(2:end);
             end
             
         end
         
-        function [f_n, mode_shape] = scaled_resonances(obj, N, normalize, gamma_P, gamma_n, gamma)
+        function [f_n, mode_shape] = scale_resonances(obj, N, normalize, gamma_P, gamma_n, gamma, aspect)
             %SCALED_RESONANCES returns the N first resonances and mode
             % shapes of a scaled Drivetrain object. The resonances can be
             % normalized or not.
             %
             
-            [f_n, mode_shape] = scaled_modal_analysis(obj, gamma_P, gamma_n, gamma);
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
             
-            N_fn = numel(f_n);
+            [f_n, mode_shape] = obj_sca.resonances(N, normalize);
             
-            if(N <= 0)
-                error("N = %d < 0. It should be positive and smaller than %d.", N, N_fn);
-            elseif(N > N_fn)
-                error("N = %d > %d. It should be positive and smaller than %d.", N, N_fn, N_fn);
-            else
-                f_n = f_n(1:N);
-            end
-            
-            if(normalize == true)
-                f_n = f_n./f_n(1);
-%                 f_n = f_n(2:end);
-            end
-
         end
         
         function f_n = natural_freq(obj, calc_method, opt_freq, N, gamma_d, gamma)
@@ -968,6 +1095,14 @@ classdef Drivetrain
             SH     = obj_sca.S_H;
             Sshaft = obj_sca.S_shaft;
 
+        end
+        
+    end
+    
+    %% Set methods:
+    methods
+        function obj = set.dynamic_model(obj, val)
+            obj.dynamic_model = val;
         end
         
     end

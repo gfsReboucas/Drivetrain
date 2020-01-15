@@ -201,7 +201,11 @@ classdef Gear_Set < Gear
         end
         
         function plot(obj)
-            addpath("\\home.ansatt.ntnu.no\geraldod\Documents\MATLAB\Plot\linspecer");
+
+            % LINSPECER: Plot lots of lines with very distinguishable and 
+            % aesthetically pleasing colors can be dowloaded from MATLAB's
+            % File Exchange on:
+            % https://se.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-+-colormap
             color = linspecer(4, 'qualitative');
             
             hold on;
@@ -238,7 +242,11 @@ classdef Gear_Set < Gear
         end
         
         function plot3(obj)
-            addpath("\\home.ansatt.ntnu.no\geraldod\Documents\MATLAB\Plot\linspecer");
+            
+            % LINSPECER: Plot lots of lines with very distinguishable and 
+            % aesthetically pleasing colors. It can be dowloaded from
+            % MATLAB's File Exchange on:
+            % https://se.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-+-colormap
             color = linspecer(4, 'qualitative');
             
             C_p = [obj.a_w, 0.0]';
@@ -271,7 +279,10 @@ classdef Gear_Set < Gear
                 C = varargin{1};
             end
             
-            addpath("\\home.ansatt.ntnu.no\geraldod\Documents\MATLAB\Plot\linspecer");
+            % LINSPECER: Plot lots of lines with very distinguishable and 
+            % aesthetically pleasing colors. It can be dowloaded from
+            % MATLAB's File Exchange on:
+            % https://se.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-+-colormap
             color = linspecer(6, 'qualitative');
             
             hold on;
@@ -309,7 +320,7 @@ classdef Gear_Set < Gear
         function obj = NREL_5MW(stage)
             %NREL_5MW returns the stages of the NREL 5 MW wind turbine
             % drivetrain according to [4], Table V. The values for the tip
-            % alteration coefficients were taken from KISSSoft.
+            % alteration coefficients were taken from KISSsoft.
             %
 
             alpha_n = 20.0;        % [deg.],   Pressure angle (at reference cylinder)
