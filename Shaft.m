@@ -21,8 +21,6 @@ classdef Shaft
     properties
         d(1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;   % [mm], diameter
         L(1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 100.0; % [mm], length
-%         F(6, 1) {mustBeNumeric, mustBeFinite}                 = ones(6, 1); % [N], applied force
-%         M(6, 1) {mustBeNumeric, mustBeFinite}                 = ones(6, 1); % [N-m], applied moment
     end
     
     properties(Dependent)
@@ -83,7 +81,7 @@ classdef Shaft
         
         function h = rectangle(obj, varargin)
             if(nargin == 1)
-                C = zeros(2,1);
+                C = zeros(2, 1);
                 plot_prop = {[1.0 0.0 0.0], "edgeColor", "k", "lineStyle", "-" , "faceColor", [1.0 0.0 0.0]};
             elseif(nargin > 1)
                 C = varargin{1};

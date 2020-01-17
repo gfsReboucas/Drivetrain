@@ -453,25 +453,6 @@ classdef Gear_Set < Gear
     %% Calculation:
     methods
         %% Scaling:
-        function [scaled_obj, gamma, RN] = scaled_version_OLD(obj_ref, gamma_0, SHref, P, n)
-            fun_min = @(g)(SHref - obj_ref.pitting_factors(P, n, g));
-            fun = @(p)(norm(fun_min(p))^2);
-            
-            const = @(g)deal(1.25 - obj_ref.pitting_factors(P, n, g), []);
-            
-            gamma_min = ones(1, 2)*1.0e-6;
-            gamma_Max = ones(1, 2);
-            
-            opt_solver = optimoptions("fmincon", "Display", "notify");
-
-            id = "prog:input";
-            warning("off", id);
-            [gamma, RN, ~]  = fmincon(fun, gamma_0*ones(1, 2), [], [], [], [], gamma_min, gamma_Max, const, opt_solver);
-            warning("on", id);
-            
-            scaled_obj = obj_ref.scaled_Gear_Set(gamma);
-        end
-        
         function obj_sca = scaled_Gear_Set(obj_ref, gamma, gamma_shaft)
             %SCALED_GEAR_SET returns an scaled Gear_Set object obj_scale,
             % whose main parameters (normal module, face width and center
@@ -967,10 +948,6 @@ classdef Gear_Set < Gear
             sigma_H = [sigma_H1 sigma_H2];
         end
         
-        
-        function [S_H, sigma_H] = safety_factors(obj, P, n_1)
-        end
-        
         function Z_R = rough_factor(obj, R_zh, sigma_Hlim)
             rho_1 = 0.5*obj.d_b(1)*tand(obj.alpha_wt);
             rho_2 = 0.5*obj.d_b(2)*tand(obj.alpha_wt);
@@ -1182,26 +1159,6 @@ classdef Gear_Set < Gear
         
         function aw = find_center_distance(obj, alpha_wt_star)
             aw = abs(obj.z(1) + obj.z(2))*obj.m_n*cosd(obj.alpha_t)/(2.0*cosd(alpha_wt_star)*cosd(obj.beta));
-        end
-        
-        function val = ISO_constraints(obj, varargin)
-           if(isempty(varargin))
-                aw = obj.a_w;
-                bb = obj.b;
-                mn = obj.m_n;
-            elseif(length(varargin) == 3)
-                aw = varargin{1};
-                bb = varargin{2};
-                mn = varargin{3};
-            else
-                error("prog:input", "Not enough input args. %d ~= 0 or 3.", length(varargin));
-            end
-            
-            tmp_set = obj.modify_Gear_Set(aw, bb, mn);
-            
-            val.eps_alp = tmp_set.eps_alpha;
-            val.eps_gam = tmp_set.eps_gamma;
-            val.d       = tmp_set.d;
         end
         
     end

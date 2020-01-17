@@ -307,7 +307,7 @@ classdef Gear < Rack
             R = obj.d/2.0;
             
             if(nargin == 1)
-                C = zeros(2,1);
+                C = zeros(2, 1);
             elseif(nargin == 2)
                 C = varargin{1};
             else

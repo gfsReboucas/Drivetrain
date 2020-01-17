@@ -58,7 +58,7 @@ classdef Carrier
         
         function h = rectangle(obj, varargin)
             if(nargin == 1)
-                C = zeros(2,1);
+                C = zeros(2, 1);
                 plot_prop = {[1.0 0.0 0.0], "edgeColor", "k", "lineStyle", "-" , "faceColor", [1.0 0.0 0.0]};
             elseif(nargin > 1)
                 C = varargin{1};
@@ -81,7 +81,7 @@ classdef Carrier
             R = obj.a_w;
             
             if(nargin == 1)
-                C = zeros(2,1);
+                C = zeros(2, 1);
             elseif(nargin == 2)
                 C = varargin{1};
             else
