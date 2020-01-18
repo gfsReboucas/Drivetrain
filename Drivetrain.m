@@ -268,50 +268,51 @@ classdef Drivetrain
             % output shaft in stage 03;
             %
             
-            if(numel(gamma) < 18)
-                error("gamma must have 18 elements.");
+            if((length(gamma) < 18) || (~isa(gamma, "containers.Map")))
+                error("gamma must be a container with 18 elements.");
             end
             
-            gamma_s1_mn = gamma( 1, :); % Stage 01, normal module
-            gamma_s1_bb = gamma( 2, :); % Stage 01, face width
-            gamma_s1_LL = gamma( 3, :); % Stage 01, output shaft length
-%             gamma_s1_dd = gamma( 4, :); % Stage 01, output shaft diameter
-            gamma_s2_mn = gamma( 5, :); % Stage 02, normal module
-            gamma_s2_bb = gamma( 6, :); % Stage 02, face width
-            gamma_s2_LL = gamma( 7, :); % Stage 02, output shaft length
-%             gamma_s2_dd = gamma( 8, :); % Stage 02, output shaft diameter
-            gamma_s3_mn = gamma( 9, :); % Stage 03, normal module
-            gamma_s3_bb = gamma(10, :); % Stage 03, face width
-            gamma_s3_LL = gamma(11, :); % Stage 02, output shaft length
-%             gamma_s3_dd = gamma(12, :); % Stage 03, output shaft diameter
-            gamma_R_m   = gamma(13, :); % Rotor, mass
-            gamma_R_J   = gamma(14, :); % Rotor, mass moment of inertia
-            gamma_G_m   = gamma(15, :); % Generator, mass
-            gamma_G_J   = gamma(16, :); % Generator, mass moment of inertia
-%             gamma_S_L     = gamma(17, :); % Main shaft, length
-%             gamma_S_d     = gamma(18, :); % Main shaft, diameter
+            %          Normal module, Face width, Length, Diameter (output shaft)
+            key_set = ["m_n1"       , "b_1"     , "L_1" , "d_1", ... % Stage 01
+                       "m_n2"       , "b_2"     , "L_2" , "d_2", ... % Stage 02
+                       "m_n3"       , "b_3"     , "L_3" , "d_3", ... % Stage 03
+               ... %   Mass         , M. M. Iner, Mass  , M. M. Iner,
+                       "m_R"        , "J_R"     , "m_G" , "J_G", ... % Rotor and Generator
+               ... %   Length       , Diameter
+                       "L_s"        , "d_s"];        %#ok<*CLARRSTR> % Main shaft
+            
+            gamma_mR  = gamma("m_R");
+            gamma_JR  = gamma("J_R");
+            gamma_mG  = gamma("m_G");
+            gamma_JG  = gamma("J_G");
+%             gamma_Ls  = gamma("L_s");
+%             gamma_ds  = gamma("d_s");
             
             gamma_Torque = gamma_P/gamma_n; % Applied torque
             
-            % Shaft diameters:
-            gamma_shaft_d = nthroot(gamma_Torque, 3.0);
+            % Main shaft:
+            gamma_Ls = gamma("L_3"); % length
+            gamma_ds = nthroot(gamma_Torque, 3.0);
             
-            gamma_s1_dd = gamma_shaft_d;
-            gamma_s2_dd = gamma_shaft_d;
-            gamma_s3_dd = gamma_shaft_d;
+            % Shaft diameters are scaled in the same way
+            gamma("d_1") = gamma_ds;
+            gamma("d_2") = gamma_ds;
+            gamma("d_3") = gamma_ds;
             
-            gamma_S_L = gamma_s3_LL; % Main shaft, length
-            gamma_S_d = gamma_s3_dd; % Main shaft, diameter
-            
-            main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_S_d, ...
-                                   obj_ref.main_shaft.L*gamma_S_L);
+            main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_ds, ...
+                                   obj_ref.main_shaft.L*gamma_Ls);
             
             stage_sca = [Gear_Set, Gear_Set, Gear_Set];
             
-            gamma_mn = [gamma_s1_mn gamma_s2_mn gamma_s3_mn]';
-            gamma_bb = [gamma_s1_bb gamma_s2_bb gamma_s3_bb]';
-            gamma_LL = [gamma_s1_LL gamma_s2_LL gamma_s3_LL]';
-            gamma_dd = [gamma_s1_dd gamma_s2_dd gamma_s3_dd]';
+            idx_mn = find(contains(key_set, "m_n"));
+            idx_bb = find(contains(key_set, "b"));
+            idx_LL = find(contains(key_set, "L"));
+            idx_dd = find(contains(key_set, "d"));
+            
+            gamma_mn = cell2mat(values(gamma, {key_set{idx_mn}}))'; %#ok<*FNDSB>
+            gamma_bb = cell2mat(values(gamma, {key_set{idx_bb}}))';
+            gamma_LL = cell2mat(values(gamma, {key_set{idx_LL}}))';
+            gamma_dd = cell2mat(values(gamma, {key_set{idx_dd}}))';
             
             for idx = 1:3
                 % Scaled stage idx:
@@ -325,10 +326,10 @@ classdef Drivetrain
                                  obj_ref.P_rated *gamma_P, ...
                                  obj_ref.n_rotor *gamma_n, ...
                                  main_shaft_sca, ...
-                                 obj_ref.m_Rotor*gamma_R_m, ...
-                                 obj_ref.J_Rotor*gamma_R_J, ...
-                                 obj_ref.m_Gen  *gamma_G_m, ...
-                                 obj_ref.J_Gen  *gamma_G_J);
+                                 obj_ref.m_Rotor*gamma_mR, ...
+                                 obj_ref.J_Rotor*gamma_JR, ...
+                                 obj_ref.m_Gen  *gamma_mG, ...
+                                 obj_ref.J_Gen  *gamma_JG);
                              
             obj_sca.dynamic_model = obj_ref.dynamic_model;
         end
@@ -340,12 +341,21 @@ classdef Drivetrain
             % considering various aspects.
             %
             
-            gamma_full = ones(18, 1);
+            %          Normal module, Face width, Length, Diameter (output shaft)
+            key_set = ["m_n1"       , "b_1"     , "L_1" , "d_1", ... % Stage 01
+                       "m_n2"       , "b_2"     , "L_2" , "d_2", ... % Stage 02
+                       "m_n3"       , "b_3"     , "L_3" , "d_3", ... % Stage 03
+               ... %   Mass         , M. M. Iner, Mass  , M. M. Iner,
+                       "m_R"        , "J_R"     , "m_G" , "J_G", ... % Rotor and Generator
+               ... %   Length       , Diameter
+                       "L_s"        , "d_s"];                        % Main shaft
+            
+            gamma_full = containers.Map(key_set, ones(18, 1));
             
             switch(aspect)
                 case "Drivetrain"
-                    % do nothing.
-                    gamma_full = gamma;
+                    gamma_full = containers.Map(key_set, gamma);
+                    
                 case "by_stage"
                     % scaled by stage (i.e. one scale factor for both the
                     % normal module and face width per stage).
@@ -353,11 +363,16 @@ classdef Drivetrain
                     if(numel(gamma) < 3)
                         error("gamma must have 3 elements.");
                     end
-
-                    gamma_full(1:2,  :) = gamma(1, :);
-                    gamma_full(5:6,  :) = gamma(2, :);
-                    gamma_full(9:10, :) = gamma(3, :);
                     
+                    sub_key ={"m_n1", "b_1", ...
+                              "m_n2", "b_2", ...
+                              "m_n3", "b_3"};
+                          
+                    for idx = 1:3
+                        gamma_full(sub_key{2*idx - 1}) = gamma(idx, :);
+                        gamma_full(sub_key{2*idx})     = gamma(idx, :);
+                    end
+
                 case "gear"
                     % scales only the gear dimensions (normal module and 
                     % face width).
@@ -366,12 +381,13 @@ classdef Drivetrain
                         error("gamma must have 6 elements.");
                     end
 
-                    gamma_full(1,  :) = gamma(1, :);
-                    gamma_full(2,  :) = gamma(2, :);
-                    gamma_full(5,  :) = gamma(3, :);
-                    gamma_full(6,  :) = gamma(4, :);
-                    gamma_full(9,  :) = gamma(5, :);
-                    gamma_full(10, :) = gamma(6, :);
+                    sub_key ={"m_n1", "b_1", ...
+                              "m_n2", "b_2", ...
+                              "m_n3", "b_3"};
+                          
+                    for idx = 1:6
+                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                    end
 
                 case "stiffness_mass_mom_inertia"
                     % scales only parameters related to the shaft's 
@@ -382,11 +398,12 @@ classdef Drivetrain
                         error("gamma must have 5 elements.");
                     end
                     
-                    gamma_full(3,  :) = gamma(1, :); % shaft length, stage 01
-                    gamma_full(7,  :) = gamma(2, :); % shaft length, stage 02
-                    gamma_full(11, :) = gamma(3, :); % shaft length, stage 03
-                    gamma_full(14, :) = gamma(4, :); % rotor mass mom. inertia
-                    gamma_full(16, :) = gamma(5, :); % generator mass mom. inertia
+                    sub_key = {"L_1", "L_2", "L_3", ...
+                               "J_R", "J_G"};
+                          
+                    for idx = 1:5
+                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                    end
                     
                 case "shaft_stiffness"
                     % scales only parameters related to the shaft's 
@@ -395,11 +412,13 @@ classdef Drivetrain
                     if(numel(gamma) < 3)
                         error("gamma must have 3 elements.");
                     end
-
-                    gamma_full(3,  :) = gamma(1, :); % shaft length, stage 01
-                    gamma_full(7,  :) = gamma(2, :); % shaft length, stage 02
-                    gamma_full(11, :) = gamma(3, :); % shaft length, stage 03
                     
+                    idx_L = find(contains(key_set, "L"));
+                    
+                    for idx = 1:3
+                        gamma_full(key_set{idx_L(idx)}) = gamma(idx, :);
+                    end
+
                 case "stiffness"
                     % scales only stiffness-related parameters. The mesh
                     % stiffness is assumed to be proportinal to the gear's 
