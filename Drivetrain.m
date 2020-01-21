@@ -46,6 +46,7 @@ classdef Drivetrain
         J_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
         m_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;     % [kg],     Generator mass according to [4]
         J_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;    % [kg-m^2], Generator mass moment of inertia [4]
+        N_stg       (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;          % [-],      Number of stages
     end
     
     properties(SetAccess = private)
@@ -60,17 +61,18 @@ classdef Drivetrain
     end
     
     properties(Dependent)
-        T_1;     % [N-m],    Output torque for each stage
-        n_1;     % [1/min.], Output speed  for each stage
+        T_out;     % [N-m],    Output torque for each stage
+        n_out;     % [1/min.], Output speed  for each stage
         u;       % [-],      Cumulative gear ratio
         S_H;     % [-],      Safety factor for surface durability (against pitting)
         S_shaft; % [-],      Safey factor for the shafts
     end
     
     methods
-        function obj = Drivetrain(stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G)
+        function obj = Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G)
             if(nargin == 0)
-                for idx = 1:3
+                N_st = 3;
+                for idx = 1:N_st
                     stage(idx) = Gear_Set.NREL_5MW(idx);
                 end
                 
@@ -91,16 +93,19 @@ classdef Drivetrain
             obj.m_Rotor = m_R;          obj.J_Rotor = J_R;
             obj.m_Gen = m_G;            obj.J_Gen = J_G;
             
+            obj.N_stg = N_st;
+            
             [obj.S_H_val, obj.S_shaft_val] = obj.safety_factors;
             
         end
         
         function tab = disp(obj)
+            %DISP display some properties of a Drivetrain object
             % description, symbol, unit, value
             
             tab_str = {"Rated power",                                  "P",       "kW",     "-+-",                obj.P_rated,          "-+-";            % 1
-                       "Speed (Sun/Pinion)",                           "n_1",     "1/min.", obj.n_1(1),           obj.n_1(2),           obj.n_1(3);
-                       "Torque (Sun/Pinion)",                          "T_1",     "N-m",    obj.T_1(1),           obj.T_1(2),           obj.T_1(3);
+                       "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.", obj.n_out(1),         obj.n_out(2),         obj.n_out(3);
+                       "Output Torque (Sun/Pinion)",                   "T_out",   "N-m",    obj.T_out(1),         obj.T_out(2),         obj.T_out(3);
                        "Minimum safety factor against pitting",        "S_Hmin",  "-",      1.25,                 1.25,                 1.25;
                        "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-",      obj.S_H(1),           obj.S_H(3),           obj.S_H(5);
                        "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-",      obj.S_H(2),           obj.S_H(4),           obj.S_H(6);
@@ -153,7 +158,7 @@ classdef Drivetrain
                 'variableNames', ["Parameter", "Symbol", "Stage_01", "Stage_02", "Stage_03", "Unit"]);
             
             if(nargout == 0)
-                fprintf("Drivetrain:\n");
+                fprintf("Gear box:\n");
                 disp(tab);
                 fprintf("Main shaft:\n");
                 disp(obj.main_shaft);
@@ -164,8 +169,8 @@ classdef Drivetrain
         
         function [tab, tab_str] = comp_stage(ref, sca, idx)
             tab_str = {"Rated power",                                  "P",       "kW",     ref.P_rated,                sca.P_rated,                sca.P_rated               /ref.P_rated;                % 1
-                       "Speed (Sun/Pinion)",                           "n_1",     "1/min.", ref.n_1(idx),               sca.n_1(idx),               sca.n_1(idx)              /ref.n_1(idx);               % 2
-                       "Torque (Sun/Pinion)",                          "T_1",     "N-m",    ref.T_1(idx),               sca.T_1(idx),               sca.T_1(idx)              /ref.T_1(idx);               % 3
+                       "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.", ref.n_out(idx),             sca.n_out(idx),             sca.n_out(idx)            /ref.n_out(idx);             % 2
+                       "Output Torque (Sun/Pinion)",                   "T_out",   "N-m",    ref.T_out(idx),             sca.T_out(idx),             sca.T_out(idx)            /ref.T_out(idx);             % 3
                        "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-",      ref.S_H(2*idx - 1),         sca.S_H(2*idx - 1),         sca.S_H(2*idx - 1)        /ref.S_H(2*idx - 1);         % 4
                        "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-",      ref.S_H(2*idx),             sca.S_H(2*idx),             sca.S_H(2*idx)            /ref.S_H(2*idx);             % 5
                        "Gear ratio",                                   "u",       "-",      ref.stage(idx).u,           sca.stage(idx).u,           sca.stage(idx).u          /ref.stage(idx).u;           % 6
@@ -210,8 +215,8 @@ classdef Drivetrain
             hold on;
             axis equal;
             box on;
-            for idx = 1:3
-                subplot(1, 3, idx)
+            for idx = 1:obj.N_stg
+                subplot(1, obj.N_stg, idx)
                 obj.stage(idx).plot;
             end
         end
@@ -231,21 +236,25 @@ classdef Drivetrain
                  obj.stage(1).carrier.b + obj.stage(1).b + obj.stage(1).out_shaft.L;
                  obj.stage(2).carrier.b + obj.stage(2).b + obj.stage(2).out_shaft.L];
 
-            for idx = 1:3
+            for idx = 1:obj.N_stg
                 rectangle(obj.stage(idx), [sum(C(1:idx)) 0.0]');
             end
             hold off;
         end
         
         function plot_comp(DT1, DT2)
+            if(DT1.N_stg ~= DT2.N_stg)
+                error("Both DT's should have the same number of stages.");
+            end
+            
             hold on;
             axis equal;
             box on;
-            for idx = 1:3
-                subplot(2, 3, idx)
+            for idx = 1:DT1.N_stg
+                subplot(2, DT1.N_stg, idx)
                 DT1.stage(idx).plot;
                 title(sprintf("Stage %d", idx));
-                subplot(2, 3, idx + 3)
+                subplot(2, DT2.N_stg, idx + DT2.N_stg)
                 DT2.stage(idx).plot;
             end
 
@@ -291,16 +300,14 @@ classdef Drivetrain
             gamma_Torque = gamma_P/gamma_n; % Applied torque
             
             % Main shaft:
-            gamma_Ls = gamma("L_3"); % length
+%             gamma_Ls = gamma("L_3"); % length
             gamma_ds = nthroot(gamma_Torque, 3.0);
             
             % Shaft diameters are scaled in the same way
             gamma("d_1") = gamma_ds;
             gamma("d_2") = gamma_ds;
             gamma("d_3") = gamma_ds;
-            
-            main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_ds, ...
-                                   obj_ref.main_shaft.L*gamma_Ls);
+            gamma("d_s") = gamma_ds;
             
             stage_sca = [Gear_Set, Gear_Set, Gear_Set];
             
@@ -314,7 +321,7 @@ classdef Drivetrain
             gamma_LL = cell2mat(values(gamma, {key_set{idx_LL}}))';
             gamma_dd = cell2mat(values(gamma, {key_set{idx_dd}}))';
             
-            for idx = 1:3
+            for idx = 1:obj_ref.N_stg
                 % Scaled stage idx:
                 gamma_stage = [gamma_mn(idx) gamma_bb(idx)]';
                 % Scaled output shaft idx:
@@ -322,7 +329,13 @@ classdef Drivetrain
                 stage_sca(idx) = obj_ref.stage(idx).scaled_Gear_Set(gamma_stage, gamma_shaft);
             end
             
-            obj_sca = Drivetrain(stage_sca, ...
+            idx = idx + 1;
+            
+            main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_dd(idx), ...
+                                   obj_ref.main_shaft.L*gamma_LL(idx));
+            
+            obj_sca = Drivetrain(obj_ref.N_stg, ...
+                                 stage_sca, ...
                                  obj_ref.P_rated *gamma_P, ...
                                  obj_ref.n_rotor *gamma_n, ...
                                  main_shaft_sca, ...
@@ -394,16 +407,23 @@ classdef Drivetrain
                     % stiffness (length) and mass moment of inertia of 
                     % rotor and generator.
 
-                    if(numel(gamma) < 5)
+                    if(numel(gamma) < 2)
                         error("gamma must have 5 elements.");
                     end
                     
                     sub_key = {"L_1", "L_2", "L_3", ...
-                               "J_R", "J_G"};
+                               "J_R", "J_G", ...
+                               "L_s"};
                           
-                    for idx = 1:5
-                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                    for idx = 1:3
+                        gamma_full(sub_key{idx}) = gamma(1, :);
                     end
+                    
+                    for idx = 4:5
+                        gamma_full(sub_key{idx}) = gamma(2, :);
+                    end
+                    
+                    gamma_full(sub_key{6}) = gamma(1, :);
                     
                 case "shaft_stiffness"
                     % scales only parameters related to the shaft's 
@@ -527,13 +547,13 @@ classdef Drivetrain
             fun_asp  = @(x)(1.0 - obj_sca_02.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, aspect_03)./f_n_ref);
             fun_min = @(x)(norm(fun_asp(x))^2);
 
-            gamma_min = ones(5, 1)*1.0e-6;
-            gamma_Max = ones(5, 1);
+            gamma_min = ones(2, 1)*1.0e-6;
+            gamma_Max = ones(2, 1);
             
 %             gamma_0 = [ones(3, 1)*nthroot(gamma_P, 3.0);
 %                        ones(2, 1)*  power(gamma_P, 1.6)];
 %             gamma_0 = gamma_Max*0.5;
-            gamma_0 = gamma_prev([3 7 11 14 16]);
+            gamma_0 = gamma_prev([3 14]);
             
             constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
             
@@ -557,10 +577,10 @@ classdef Drivetrain
             end
             
             gamma = [gamma_02(1), gamma_02(2), gamma_03(1), 1.0        , ...
-                     gamma_02(3), gamma_02(4), gamma_03(2), 1.0        , ...
-                     gamma_02(5), gamma_02(6), gamma_03(3), 1.0        , ...
-                     1.0          , gamma_03(4)  , 1.0        , gamma_03(5), ...
-                     1.0          , 1.0]';
+                     gamma_02(3), gamma_02(4), gamma_03(1), 1.0        , ...
+                     gamma_02(5), gamma_02(6), gamma_03(1), 1.0        , ...
+                     1.0        , gamma_03(2), 1.0        , gamma_03(2), ...
+                     gamma_03(1), 1.0]';
                  
             res.stage = res_01;
             res.gear = res_02;
@@ -593,13 +613,13 @@ classdef Drivetrain
             gamma_P = P_scale./obj_ref.P_rated;
             
             figure("units", "centimeters", "position", [5.0 5.0 17.0 12.0]);
-            subplot(2,1,1)
+            subplot(2, 1, 1)
             rectangle(obj_ref);
             xlim([0 6400])
             ylim([-1 1]*1400)
             title(sprintf("Reference: %.1f kW", obj_ref.P_rated));
             
-            subplot(2,1,2)
+            subplot(2, 1, 2)
             axis equal;
             xlim([0 6400])
             ylim([-1 1]*1400)
@@ -785,116 +805,6 @@ classdef Drivetrain
             
         end
         
-        function f_n = natural_freq(obj, calc_method, opt_freq, N, gamma_d, gamma)
-            
-            for idx = 1:3
-                sca_shaft = obj.stage(idx).out_shaft.scaled_shaft([gamma_d, gamma(idx)]);
-                obj.stage(idx).out_shaft = sca_shaft;
-            end
-            
-            LSS_sca = obj.main_shaft.scaled_shaft([gamma_d, gamma(3)]);
-            obj.main_shaft = LSS_sca;
-            
-            if(strcmp(calc_method, "Kahraman_1994"))
-                gm_L = gamma(4:5);
-            elseif(strcmp(calc_method, "Lin_Parker_1999"))
-                gm_L = gamma(4:7);
-            end
-            
-            f_n = obj.modal_analysis(calc_method, opt_freq, N, gm_L);
-        end
-        
-        function [f_n, eig_vec] = modal_analysis_OLD(obj, calc_method, opt_freq, n_f, gamma)
-            %MODAL_ANALYSIS calculates the first n_f resonances and mode
-            % shapes of the drivetrain via an symmetric eigenvalue problem
-            % [1]. The dynamic matrices M and K are obtained using
-            % different modelling approaches, e.g. [2-3].
-            %
-            % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
-            % Pearson, 2014, pp. 408-413.
-            % [2] A. Kahraman, "Natural Modes of Planetary Gear Trains",
-            % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
-            % 1994. https://doi.org/10.1006/jsvi.1994.1222.
-            % [3] J. Lin and R. Parker, "Analytical Characterization of the
-            % Unique Properties of Planetary Gear Free Vibration", Journal
-            % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
-            % 1999. https://doi.org/10.1115/1.2893982
-            %
-            
-            switch(calc_method)
-                case "Thomson_ToV"
-                    if(~exist("gamma", "var"))
-                        gamma = ones(2, 1);
-                    end
-                    
-                    [M, K] = obj.Thomson_ToV(gamma, "");
-                case "Kahraman_1994"
-                    if(~exist("gamma", "var"))
-                        gamma = ones(2, 1);
-                    end
-                    
-                    [M, K] = obj.Kahraman_1994(gamma);
-                case "Lin_Parker_1999"
-                    if(~exist("gamma", "var"))
-                        gamma = ones(4, 1);
-                    end
-                    
-%                   [M, K, K_b, K_m, K_Omega, G]
-                    [M, ~, K_b, K_m,       ~, ~] = obj.Lin_Parker_1999(gamma);
-                    K = K_b + K_m;
-                case "Eritenel_2011"
-                    if(~exist("gamma", "var"))
-                        gamma = ones(4, 1);
-                    end
-                    
-                    [M, K] = obj.Eritenel_2011(gamma);
-                otherwise
-                    error("Option [%s] is NOT available.", upper(calc_method));
-            end
-            
-            % Symmetric eigenvalue problem according to Inman:
-            L = chol(M, "lower");
-            K_tilde = L\K/(L');
-            
-            K_tilde = (K_tilde + K_tilde')/2.0;
-
-            [eig_vec, D] = eig(K_tilde);
-            D = diag(D);   % matrix to vector
-            w_n = sqrt(D); % lambda to omega_n
-
-            f_n = w_n'./(2.0*pi); % rad/s to Hz
-            
-            [f_n, idx] = sort(f_n); % ascending sorting
-            eig_vec = eig_vec(:, idx);
-
-            
-            if(any(imag(f_n) ~= 0))
-                idx_im =  find(imag(f_n) ~= 0);
-                idx = 1:length(f_n);
-                idx(idx_im) = [];
-                idx_2 = [idx, idx_im];
-                f_n = f_n(idx_2);
-                eig_vec = eig_vec(:, idx_2);
-            end
-            
-            % Normalizing eigenvectors:
-            for idx = 1:length(f_n)
-                [ev_max, n] = max(abs(eig_vec(:, idx)));
-                eig_vec(:, idx) = eig_vec(:, idx)*sign(eig_vec(n, idx))./ev_max;
-            end
-            
-            if(n_f < length(f_n))
-                f_n = f_n(1:n_f);
-%                 eig_vec = eig_vec(:,1:n_f);
-            end
-            
-            if(strcmp(opt_freq, "freq_ratio"))
-                f_n = f_n./f_n(1);
-                f_n = f_n(2:end);
-            end
-            
-        end
-        
         function [M, K] = Thomson_ToV(obj)
             %THOMSON_TOV Returns the inertia and stiffness matrices of the
             % drivetrain according to:
@@ -909,7 +819,7 @@ classdef Drivetrain
             U = obj.u;
             
             k_LSS = obj.main_shaft.stiffness("torsional");
-            k_HSS = obj.stage(3).out_shaft.stiffness("torsional");
+            k_HSS = obj.stage(end).out_shaft.stiffness("torsional");
             
             k = (k_LSS*k_HSS*U^2)/(k_LSS + k_HSS*U^2);
             
@@ -1047,17 +957,17 @@ classdef Drivetrain
             K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
             K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
             
-            T_m  = obj.T_1(1)*obj.stage(1).u;
+            T_m  = obj.T_out(1)*obj.stage(1).u;
 
             SH_vec     = zeros(6, 1);
             SShaft_vec = zeros(4, 1);
             
             SShaft_vec(1) = obj.main_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
             
-            for idx = 1:3
-                SShaft_vec(idx + 1) = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_1(idx));
+            for idx = 1:obj.N_stg
+                SShaft_vec(idx + 1) = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
                 
-                [SH, ~] = obj.stage(idx).Pitting_ISO(obj.P_rated, obj.n_1(idx), S_Hmin, L_h, Q, R_a, K_A);
+                [SH, ~] = obj.stage(idx).Pitting_ISO(obj.P_rated, obj.n_out(idx), S_Hmin, L_h, Q, R_a, K_A);
                 
                 jdx = 2*idx - 1;
                 kdx = jdx:(jdx + 1);
@@ -1093,16 +1003,16 @@ classdef Drivetrain
     
     %% Get methods:
     methods
-        function val = get.n_1(obj)
-            val = zeros(3, 1);
+        function val = get.n_out(obj)
+            val = zeros(obj.N_stg, 1);
             
-            for idx = 1:3
+            for idx = 1:obj.N_stg
                 val(idx) = obj.n_rotor*prod([obj.stage(1:idx).u]);
             end
         end
         
-        function val = get.T_1(obj)
-            val = (obj.P_rated*1.0e3)./(obj.n_1*pi/30.0);
+        function val = get.T_out(obj)
+            val = (obj.P_rated*1.0e3)./(obj.n_out*pi/30.0);
         end
         
         function val = get.u(obj)

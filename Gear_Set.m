@@ -119,6 +119,8 @@ classdef Gear_Set < Gear
         end
         
         function tab = disp(obj)
+            %DISP display some properties of a Gear_Set object
+
             tmp_vec = NaN(size(obj.z));
             tmp_vec(2) = 1;
             tab_set = {"Gear Ratio",                            "u",       "-",      obj.u  *tmp_vec;
