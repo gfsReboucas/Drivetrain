@@ -301,14 +301,13 @@ classdef Gear_Set < Gear
                 
             elseif(strcmp(obj.configuration, "planetary"))
                 C_c = [obj.carrier.b/2.0, 0.0]' + C;
-                C_g = C_c + [obj.b + obj.carrier.b 0]'./2.0;
-                C_p = C_g + [0.0 obj.a_w]';
-                C_s = C_g + [obj.b + obj.out_shaft.L 0.0]'./2.0;
+                C_p = C_c + [0.0 obj.a_w]';
+                C_s = C_c + [obj.carrier.b + obj.out_shaft.L 0.0]'./2.0;
 
-                rectangle(obj.gear(3)  , C_g, color(3, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(3, :));
-                rectangle(obj.gear(1)  , C_g, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
-                rectangle(obj.gear(2)  , C_p, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :));
                 rectangle(obj.carrier  , C_c, color(4, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(4, :));
+                rectangle(obj.gear(3)  , C_c, color(3, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(3, :)); % ring
+                rectangle(obj.gear(1)  , C_c, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :)); % sun
+                rectangle(obj.gear(2)  , C_p, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :)); % planet
                 rectangle(obj.out_shaft, C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
                 
 %                 legend([h_g h_p h_r h_c h_s], ["Sun", "Planet", "Ring", "Carrier", "Shaft"], "location", "best", "fontName", "Times", "fontSize", 12.0);

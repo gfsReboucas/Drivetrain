@@ -232,9 +232,10 @@ classdef Drivetrain
             hold on;
             C_s = [obj.main_shaft.L/2.0 0.0]';
             rectangle(obj.main_shaft, C_s, color(6, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(6, :));
+            
             C = [obj.main_shaft.L;
-                 obj.stage(1).carrier.b + obj.stage(1).b + obj.stage(1).out_shaft.L;
-                 obj.stage(2).carrier.b + obj.stage(2).b + obj.stage(2).out_shaft.L];
+                 obj.stage(1).carrier.b + obj.stage(1).out_shaft.L;
+                 obj.stage(2).carrier.b + obj.stage(2).out_shaft.L];
 
             for idx = 1:obj.N_stg
                 rectangle(obj.stage(idx), [sum(C(1:idx)) 0.0]');
@@ -402,13 +403,13 @@ classdef Drivetrain
                         gamma_full(sub_key{idx}) = gamma(idx, :);
                     end
 
-                case "stiffness_mass_mom_inertia"
+                case "stiff_mass_mom_inertia"
                     % scales only parameters related to the shaft's 
                     % stiffness (length) and mass moment of inertia of 
                     % rotor and generator.
 
                     if(numel(gamma) < 2)
-                        error("gamma must have 5 elements.");
+                        error("gamma must have 2 elements.");
                     end
                     
                     sub_key = {"L_1", "L_2", "L_3", ...
@@ -424,6 +425,23 @@ classdef Drivetrain
                     end
                     
                     gamma_full(sub_key{6}) = gamma(1, :);
+                    
+                case "stiff_mass_mom_inertia_detail"
+                    % scales only parameters related to the shaft's 
+                    % stiffness (length) and mass moment of inertia of 
+                    % rotor and generator.
+
+                    if(numel(gamma) < 6)
+                        error("gamma must have 6 elements.");
+                    end
+                    
+                    sub_key = {"L_1", "L_2", "L_3", ...
+                               "J_R", "J_G", ...
+                               "L_s"};
+                          
+                    for idx = 1:6
+                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                    end
                     
                 case "shaft_stiffness"
                     % scales only parameters related to the shaft's 
@@ -521,23 +539,19 @@ classdef Drivetrain
             gamma_min = ones(6, 1)*1.0e-6;
             gamma_Max = ones(6, 1);
             
-            gamma_0 = repmat(gamma_01, [1 2]);
-            gamma_0 = gamma_0([1 4 ... % for faster convergence
-                               2 5 ...
-                               3 6])';
+            gamma_0 = gamma_01([1 1 2 2 3 3]);
 %             gamma_0 = gamma_prev(1:6);
             
             fun_ineq = @(x)(1.25 - obj_ref.scaled_safety_factors(gamma_P, gamma_n, x, aspect_02));
 
             constraint_fun = @(x)deal(fun_ineq(x), fun_asp(x)); % inequalities, equalities
             
-            
             [gamma_02, res_02, ~] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
             
             obj_sca_02 = obj_ref.scale_aspect(gamma_P, gamma_n, gamma_02, aspect_02);
             
             %% 3. Shaft stiffness and Mass moment of inertia of rotor and generator:
-            aspect_03 = "stiffness_mass_mom_inertia";
+            aspect_03 = "stiff_mass_mom_inertia";
             
             f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
             
@@ -561,6 +575,28 @@ classdef Drivetrain
 
             obj_sca = obj_sca_02.scale_aspect(1.0, 1.0, gamma_03, aspect_03);
             
+            %% 4. Detailed version of 3:
+%             aspect_04 = "stiff_mass_mom_inertia_detail";
+%             
+%             % function for aspect_03: gamma_P and gamma_n are set to 1.0
+%             % because the Drivetrain is already scaled for these
+%             % parameters.
+%             fun_asp  = @(x)(1.0 - obj_sca_02.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, aspect_04)./f_n_ref);
+%             fun_min = @(x)(norm(fun_asp(x))^2);
+% 
+%             gamma_min = ones(6, 1)*1.0e-6;
+%             gamma_Max = ones(6, 1);
+%             
+% %             gamma_0 = [ones(3, 1)*nthroot(gamma_P, 3.0);
+% %                        ones(2, 1)*  power(gamma_P, 1.6)];
+% %             gamma_0 = gamma_Max*0.5;
+%             gamma_0 = gamma_03([1 1 1 2 2 1]);
+%             
+%             constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
+%             
+%             [gamma_04, res_04, ~] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+%             
+%             obj_sca = obj_sca_02.scale_aspect(1.0, 1.0, gamma_04, aspect_04);
             warning("on", id_2);
             warning("on", id_1);
             
@@ -585,10 +621,12 @@ classdef Drivetrain
             res.stage = res_01;
             res.gear = res_02;
             res.KJ = res_03;
+%             res.KJ2 = res_04;
             
             gamma_sep.stage = gamma_01;
             gamma_sep.gear = gamma_02;
             gamma_sep.KJ = gamma_03;
+%             gamma_sep.KJ2 = gamma_04;
             
         end
         
@@ -648,10 +686,12 @@ classdef Drivetrain
                 res(idx).stage = res_idx.stage;
                 res(idx).gear  = res_idx.gear;
                 res(idx).KJ    = res_idx.KJ;
+%                 res(idx).KJ2   = res_idx.KJ2;
                 
                 gamma_sep(idx).stage = gamma_idx.stage;
                 gamma_sep(idx).gear  = gamma_idx.gear;
                 gamma_sep(idx).KJ    = gamma_idx.KJ;
+%                 gamma_sep(idx).KJ2   = gamma_idx.KJ2;
                 
                 SH(:, idx) = obj_sca.S_H;
                 k_mesh(:, idx) = [obj_sca.stage.k_mesh]';

@@ -101,15 +101,16 @@ classdef Carrier
     % Get methods:
     methods
         function val = get.d_a(obj)
-            val = 2.4*obj.a_w;
+            val = 2.6*obj.a_w;
         end
         
         function val = get.d_f(obj)
-            val = 1.6*obj.a_w;
+            val = 1.4*obj.a_w;
         end
         
         function val = get.b(obj)
-            val = 0.75*obj.b_g;
+%             val = 0.75*obj.b_g;
+            val = 1.2*obj.b_g;
         end
         
         function val = get.V(obj)
