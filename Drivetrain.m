@@ -650,17 +650,38 @@ classdef Drivetrain
             
             gamma_P = P_scale./obj_ref.P_rated;
             
-            figure("units", "centimeters", "position", [5.0 5.0 17.0 12.0]);
-            subplot(2, 1, 1)
+            [~, MS_ref] = obj_ref.modal_analysis;
+            
+            SH_ref = obj_ref.S_H;
+            SS = [SH_ref, SH_ref];
+            
+            plot_prop1 = {'lineStyle', '-' , 'lineWidth', 2.0, 'color', [346.6667e-3   536.0000e-3   690.6667e-3]};
+            plot_prop2 = {'lineStyle', '--', 'lineWidth', 2.0, 'color', [915.2941e-3   281.5686e-3   287.8431e-3]};
+            
+            figure("units", "centimeters", "position", [5.0 5.0 34.0 12.0]);
+            subplot(2, 6, 1:3)
             rectangle(obj_ref);
-            xlim([0 6400])
-            ylim([-1 1]*1400)
+            xlim([0 6000])
+            ylim([-1 1]*1500)
             title(sprintf("Reference: %.1f kW", obj_ref.P_rated));
             
-            subplot(2, 1, 2)
+            subplot(2, 6, 7:9)
             axis equal;
-            xlim([0 6400])
-            ylim([-1 1]*1400)
+            xlim([0 6000])
+            ylim([-1 1]*1500)
+            
+            for idx = 1:3
+                subplot(2, 6, idx + 3)
+                plot(1:14, MS_ref(:, idx)*90.0, plot_prop1{:});
+                
+                if(idx ~= 3)
+                    subplot(2, 6, idx + 9)
+                    plot(1:14, MS_ref(:, idx + 3)*90.0, plot_prop1{:})
+                else
+                    subplot(2, 6, 12)
+%                     bar(SS);
+                end
+            end
             
             fig_axes = findobj(gcf, "Type", "Axes");
             
@@ -697,12 +718,39 @@ classdef Drivetrain
                 k_mesh(:, idx) = [obj_sca.stage.k_mesh]';
                 [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.modal_analysis;
 
-                subplot(2,1,2)
+                subplot(2, 6, 7:9)
                 cla;
                 rectangle(obj_sca);
-                xlim([0 6400])
-                ylim([-1 1]*1400)
+                xlim([0 6000])
+                ylim([-1 1]*1500)
                 title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gamma_P(idx)*100.0));
+                SS(:, 2) = SH(:, idx);
+                
+                for jdx = 1:3
+                    subplot(2, 6, jdx + 3)
+                    cla;
+                    hold on;
+                    plot(1:14, MS_ref(:, jdx)*90.0, plot_prop1{:});
+                    plot(1:14, mode_shape(:, jdx, idx)*90.0, plot_prop2{:});
+
+                    if(jdx ~= 3)
+                        subplot(2, 6, jdx + 9)
+                        cla;
+                        hold on;
+                        plot(1:14, MS_ref(:, jdx + 3)*90.0, plot_prop1{:})
+                        plot(1:14, mode_shape(:, jdx + 3, idx)*90.0, plot_prop2{:});
+                    else
+                        subplot(2, 6, 12)
+                        cla;
+                        bar(SS);
+                    end
+                end
+
+%                 set(fig_axes([4 6]), 'xticklabel', []);
+%                 set(fig_axes(2:4), 'yticklabel', []);
+                set(fig_axes(2:6), 'xlim', [1 14]);
+                set(fig_axes(2:6), 'ylim', [-1 1]*100);
+                set(fig_axes(2:6), 'xticklabel', ["C_1", "P_{21}", "S_1", "P_{12}", "P_{32}", "W_3", "G"]);
                 
                 set(fig_axes, font_setting{:});
                 
@@ -715,6 +763,60 @@ classdef Drivetrain
         end
         
         %% Dynamics:
+        function H = FRF(obj, freq, varargin)
+            
+            if(nargin == 2)
+                beta = 0.05;
+            else
+                beta = varargin{1};
+            end
+            
+            switch(obj.dynamic_model)
+                case "Thomson_ToV"
+                    [M, K_tmp] = obj.Thomson_ToV;
+                    
+                    K = @(x)(K_tmp);
+                    
+                    n = length(M);
+                    f = ones(n, 1);
+                case "Kahraman_1994"
+                    [M, K_tmp] = obj.Kahraman_1994;
+                    
+                    K = @(x)(K_tmp);
+                    
+                    n = length(M);
+                    f = zeros(n, 1);
+                    f(1)   = 1.0;
+                    f(end) = 1.0;
+                case "Lin_Parker_1999"
+%                   [M, K, K_b, K_m, K_Omega, G]
+                    [M, ~, K_b, K_m, K_Omega, ~] = obj.Lin_Parker_1999;
+                    K_tmp = K_b + K_m;
+                    
+                    K = @(x)(K_b + K_m - K_Omega.*x.^2);
+                    
+                    n = length(M);
+                    f = zeros(n, 1);
+                    f(1:3) = 1.0;
+                    f(end) = 1.0;
+                otherwise
+                    error("Option [%s] is NOT available or not implemented yet.", upper(obj.dynamic_model));
+                    
+%                 case "Eritenel_2011"
+%                     [M, K] = obj.E
+            end
+            
+            Omega = 2.0*pi*freq;
+            i = sqrt(-1.0);
+            
+            n_Om = length(Omega);
+            H = zeros(n_Om, n);
+            
+            for idx = 1:n_Om
+                H(idx, :) = (-M.*Omega(idx).^2 + i.*Omega(idx).*beta.*K(Omega(idx)) + K(Omega(idx)))\f;
+            end
+        end
+        
         function [f, mode_shape] = nth_resonance(obj, n)
             [f_n, mode_shape] = modal_analysis(obj);
             

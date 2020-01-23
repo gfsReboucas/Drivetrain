@@ -315,6 +315,21 @@ classdef Gear_Set < Gear
             end
             hold off;
         end
+        function KS = toKISSsoft(obj)
+            DLL_path = strcat(convertCharsToStrings(pwd), "\KISSsoft_CSharp\bin\Debug\KISSsoft_CSharp.dll");
+            NET.addAssembly(DLL_path);
+            
+            KS = KISSsoft_CSharp.Gear_Set(obj.configuration, ...
+                                          obj.N_p, ...
+                                          obj.a_w, ...
+                                          obj.m_n, ...
+                                          obj.alpha_n, ...
+                                          obj.type, ...
+                                          obj.z, ...
+                                          obj.b, ...
+                                          obj.x, ...
+                                          obj.beta);
+        end
     end
     
     methods(Static)
@@ -799,6 +814,7 @@ classdef Gear_Set < Gear
         end
         
         %% Pitting:
+        
 %         function [S_H, sigma_H, K_Halpha, K_v, Z_B, Z_D, Z_H, Z_NT1, Z_NT2, Z_v, Z_eps] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
         function [S_H, sigma_H] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
             %PITTING_ISO calculates the safety factor against pitting S_H

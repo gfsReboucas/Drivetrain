@@ -10,4 +10,15 @@ VB_test.vb
 CS_test.cs
 NREL_5MW.xlsm
 *.db
+*.suo
+*.lock
+*.ide
+*.dll
+*.config
+*.pdb
+*.csproj
+*.sln
+*.cache
+KISSsoft_CSharp/obj/Debug/KISSsoft_CSharp.csproj.FileListAbsolute.txt
+*.db
 *.db
