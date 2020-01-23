@@ -22,3 +22,4 @@ NREL_5MW.xlsm
 KISSsoft_CSharp/obj/Debug/KISSsoft_CSharp.csproj.FileListAbsolute.txt
 *.db
 *.db
+plots/Thumbs.db
