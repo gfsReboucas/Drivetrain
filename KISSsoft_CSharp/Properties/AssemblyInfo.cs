@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("KISSsoft_CSharp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Interface to KISSsoft 03-2017 using C#")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("NTNU IMT")]
 [assembly: AssemblyProduct("KISSsoft_CSharp")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]

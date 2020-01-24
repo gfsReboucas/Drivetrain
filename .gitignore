@@ -23,3 +23,10 @@ KISSsoft_CSharp/obj/Debug/KISSsoft_CSharp.csproj.FileListAbsolute.txt
 *.db
 *.db
 plots/Thumbs.db
+*.ide-shm
+*.ide-wal
+*.exe
+*.ide-shm
+*.ide-wal
+*.sqlite
+*.json
