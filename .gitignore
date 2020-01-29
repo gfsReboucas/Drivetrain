@@ -30,3 +30,5 @@ plots/Thumbs.db
 *.ide-wal
 *.sqlite
 *.json
+*.pdf
+figs_TORQUE_2020.m

@@ -469,6 +469,112 @@ classdef Gear_Set < Gear
     %% Calculation:
     methods
         %% Scaling:
+        function obj_sca = scale_Gear_Set(obj_ref, gamma)
+            
+            if((length(gamma) < 4) || (~isa(gamma, "containers.Map")))
+                error("gamma must be a container with 4 elements.");
+            end
+            
+            m_n_sca = Rack.module(obj_ref.m_n*gamma("m_n"), "calc", "nearest");
+            
+            gamma_mn = m_n_sca/obj_ref.m_n;
+            
+            shaft_sca = Shaft(obj_ref.out_shaft.d*gamma("d"), ...
+                              obj_ref.out_shaft.L*gamma("L"));
+            
+            obj_sca = Gear_Set(obj_ref.configuration, ...
+                               m_n_sca, ...
+                               obj_ref.alpha_n, ...
+                               obj_ref.z, ...
+                               obj_ref.b*gamma("b"), ...
+                               obj_ref.x, ...
+                               obj_ref.beta, ...
+                               obj_ref.k, ...
+                               obj_ref.bore_ratio, ...
+                               obj_ref.N_p, ...
+                               obj_ref.a_w*gamma_mn, ...
+                               obj_ref.type, ...
+                               obj_ref.bearing, ...
+                               shaft_sca);
+        end
+        
+        function obj_sca = scale_aspect(obj_ref, gamma, aspect)
+            key_set = ["m_n", "b", "d", "L"]; %#ok<*CLARRSTR>
+            
+            gamma_full = containers.Map(key_set, ones(4, 1));
+            
+            switch(aspect)
+                case "Gear_Set"
+                    gamma_full = containers.Map(key_set, gamma);
+                    
+                case "by_stage"
+                    if(numel(gamma) ~= 1)
+                        error("gamma must have 1 element.");
+                    end
+                    
+                    sub_key ={"m_n", "b"};
+                    
+                    for idx = 1:2
+                        gamma_full(sub_key{idx}) = gamma;
+                    end
+                    
+                case "gear"
+                    if(numel(gamma) ~= 2)
+                        error("gamma must have 2 element.");
+                    end
+                    
+                    sub_key ={"m_n", "b"};
+                    
+                    for idx = 1:2
+                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                    end
+            end
+            
+            obj_sca = obj_ref.scale_Gear_Set(gamma_full);
+            
+        end
+        
+        function [obj_sca, gamma, res] = scaled_version(obj_ref, P, n_1, SH_ref, aspect, varargin)
+            
+            if(strcmp(aspect, "Gear_Set"))
+                n = 4;
+            elseif(strcmp(aspect, "by_stage"))
+                n = 1;
+            elseif(strcmp(aspect, "gear"))
+                n = 2;
+            else
+                error("Aspect = %s is NOT defined.", upper(aspect));
+            end
+            
+            if(~isempty(varargin))
+                gamma_0 = varargin{1};
+            else
+                gamma_0 = ones(n, 1)*0.5;
+            end
+            
+            fun_asp = @(x)(SH_ref - obj_ref.pitting_safety(P, n_1, x, aspect));
+            fun_min = @(x)(norm(fun_asp(x))^2);
+            
+            gamma_min = ones(n, 1)*1.0e-6;
+            gamma_Max = ones(n, 1);
+            
+            fun_ineq = @(x)(1.25 - obj_ref.pitting_safety(P, n_1, x, aspect));
+
+            constraint_fun = @(x)deal(fun_ineq(x), fun_asp(x)); % inequalities, equalities
+            
+            opt_solver = optimoptions("fmincon", "display", "notify");
+            
+%             id_1 = "prog:input";
+%             id_2 = "MATLAB:nearlySingularMatrix";
+%             warning("off", id_1);
+%             warning("off", id_2);
+            [gamma, res] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+%             warning("on", id_2);
+%             warning("on", id_1);
+            
+            obj_sca = obj_ref.scale_aspect(gamma, aspect);
+        end
+        
         function obj_sca = scaled_Gear_Set(obj_ref, gamma, gamma_shaft)
             %SCALED_GEAR_SET returns an scaled Gear_Set object obj_scale,
             % whose main parameters (normal module, face width and center
@@ -814,6 +920,17 @@ classdef Gear_Set < Gear
         end
         
         %% Pitting:
+        function SH = pitting_safety(obj_ref, P, n_1, gamma, aspect)
+            obj_sca = obj_ref.scale_aspect(gamma, aspect);
+
+            S_Hmin = 1.25;      % [-], Minimum required safety factor for surface durability according to 
+            L_h    = 20*365*24; % [h],  Required life
+            Q      = 6;         % [-],  ISO accuracy grade
+            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
+            K_A    = 1.25;      % [-], Application factor
+            
+            SH = obj_sca.Pitting_ISO(P, n_1, S_Hmin, L_h, Q, R_a, K_A);
+        end
         
 %         function [S_H, sigma_H, K_Halpha, K_v, Z_B, Z_D, Z_H, Z_NT1, Z_NT2, Z_v, Z_eps] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
         function [S_H, sigma_H] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
@@ -961,8 +1078,8 @@ classdef Gear_Set < Gear
             S_H1 = sigma_HP1*S_Hmin/sigma_H1; % pinion/planet
             S_H2 = sigma_HP2*S_Hmin/sigma_H2; % wheel/sun
             
-            S_H     = [S_H1 S_H2];
-            sigma_H = [sigma_H1 sigma_H2];
+            S_H     = [S_H1 S_H2]';
+            sigma_H = [sigma_H1 sigma_H2]';
         end
         
         function Z_R = rough_factor(obj, R_zh, sigma_Hlim)
