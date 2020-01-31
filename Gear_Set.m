@@ -507,7 +507,7 @@ classdef Gear_Set < Gear
                 case "Gear_Set"
                     gamma_full = containers.Map(key_set, gamma);
                     
-                case "by_stage"
+                case "stage"
                     if(numel(gamma) ~= 1)
                         error("gamma must have 1 element.");
                     end
@@ -538,7 +538,7 @@ classdef Gear_Set < Gear
             
             if(strcmp(aspect, "Gear_Set"))
                 n = 4;
-            elseif(strcmp(aspect, "by_stage"))
+            elseif(strcmp(aspect, "stage"))
                 n = 1;
             elseif(strcmp(aspect, "gear"))
                 n = 2;

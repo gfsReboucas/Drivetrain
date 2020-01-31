@@ -32,3 +32,4 @@ plots/Thumbs.db
 *.json
 *.pdf
 figs_TORQUE_2020.m
+test_aspects.m
