@@ -221,7 +221,12 @@ classdef Drivetrain
             end
         end
         
-        function rectangle(obj)
+        function rectangle(obj, varargin)
+            if(nargin == 1)
+                C_0 = zeros(2, 1);
+            else
+                C_0 = varargin{1};
+            end
             
             % LINSPECER: Plot lots of lines with very distinguishable and 
             % aesthetically pleasing colors. It can be dowloaded from
@@ -230,15 +235,15 @@ classdef Drivetrain
             color = linspecer(6, "qualitative");
             
             hold on;
-            C_s = [obj.main_shaft.L/2.0 0.0]';
+            C_s = [obj.main_shaft.L/2.0 0.0]' + C_0;
             rectangle(obj.main_shaft, C_s, color(6, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(6, :));
             
-            C = [obj.main_shaft.L;
-                 obj.stage(1).carrier.b + obj.stage(1).out_shaft.L;
-                 obj.stage(2).carrier.b + obj.stage(2).out_shaft.L];
+            C_x = [obj.main_shaft.L + C_0(1);
+                   obj.stage(1).carrier.b + obj.stage(1).out_shaft.L;
+                   obj.stage(2).carrier.b + obj.stage(2).out_shaft.L];
 
             for idx = 1:obj.N_stg
-                rectangle(obj.stage(idx), [sum(C(1:idx)) 0.0]');
+                rectangle(obj.stage(idx), [sum(C_x(1:idx)) C_0(2)]');
             end
             hold off;
         end
@@ -351,13 +356,13 @@ classdef Drivetrain
             %
             
             %          Normal module, Face width, Length, Diameter (output shaft)
-            key_set = ["m_n1"       , "b_1"     , "L_1" , "d_1", ... % Stage 01
-                       "m_n2"       , "b_2"     , "L_2" , "d_2", ... % Stage 02
-                       "m_n3"       , "b_3"     , "L_3" , "d_3", ... % Stage 03
+            key_set = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
+                       "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
+                       "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
                ... %   Mass         , M. M. Iner, Mass  , M. M. Iner,
                        "m_R"        , "J_R"     , "m_G" , "J_G", ... % Rotor and Generator
                ... %   Length       , Diameter
-                       "L_s"        , "d_s"];                        % Main shaft
+                       "d_s"        , "L_s"];                        % Main shaft
             
             gamma_full = containers.Map(key_set, ones(18, 1));
             
@@ -430,7 +435,7 @@ classdef Drivetrain
                     % stiffness (length) and mass moment of inertia of 
                     % rotor and generator.
 
-                    if(numel(gamma) ~= 6)
+                    if(numel(gamma) ~= 5)
                         error("gamma must have 6 elements.");
                     end
                     
@@ -438,10 +443,32 @@ classdef Drivetrain
                                "J_R", "J_G", ...
                                "L_s"};
                           
-                    for idx = 1:6
+                    for idx = 1:5
                         gamma_full(sub_key{idx}) = gamma(idx, :);
                     end
                     
+                    gamma_full(sub_key{end}) = gamma(3, :);
+                    
+                case "K_MMI_stage"
+                    %scales parameters related to the stiffness and mass
+                    % moment of inertia, including the gear stages
+                    % min |1 - f(sca)/f(ref)|^2 = f(x)
+                    % subjected to: S(min) - S(sca) <= 0 = g(x)
+                    %               S(ref) - S(sca)  = 0 = h(x)
+                    
+%                     sub_key = {"m_n1", "b_1", ...
+%                                "m_n2", "b_2", ...
+%                                "m_n3", "b_3", ...
+%                                "L_1" , "L_2", "L_3", ...
+%                                "J_R", "J_G", ...
+%                                "L_s"};
+%                     for idx = 1:3
+%                         gamma_full()
+%                     end
+                    
+%                 case "K_MMI_gear"
+%                 case "M_MMI_stage_det"
+%                 case "K_MMI_gear_det"
                 case "K_shaft"
                     % scales only parameters related to the shaft's 
                     % stiffness (length).
@@ -521,7 +548,7 @@ classdef Drivetrain
             if(any(aspect_set == aspect_1))
                 fprintf("Optimizing Drivetrain w.r.t. [%s]...\n", upper(aspect_1));
                 
-                gamma_0 = mean(gamma_prev([1 2 5 6 7 8]));
+                gamma_0 = mean(gamma_prev([1 2 5 6 9 10]));
                 gamma_1 = zeros(obj_ref.N_stg, 1);
                 res_1   = zeros(obj_ref.N_stg, 1);
 
@@ -532,11 +559,17 @@ classdef Drivetrain
                     [~, gamma_1(idx, :), res_1(idx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_1, gamma_0);
                     gamma_0 = gamma_1(idx, :);
                 end
-            else
+            elseif(any(aspect_set == "DA"))
                 m_n_tmp =[obj_ref.stage.m_n]';
                 gamma_1 = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
                 
-                res_1 = NaN(3, 1);
+                res_1 = Inf(3, 1);
+            else
+                gamma_1 = [mean(gamma_prev([1  2]));
+                           mean(gamma_prev([5  6]));
+                           mean(gamma_prev([9 10]))];
+                       
+                res_1 = Inf(3, 1);
             end
             
             gamma_1 = gamma_1([1 1 2 2 3 3]);
@@ -559,22 +592,27 @@ classdef Drivetrain
                     [~, gamma_2(jdx, :), res_2(jdx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_2, gamma_0);
                     gamma_0 = gamma_2(jdx, :);
                 end
-            else
+            elseif(any(aspect_set == "DA"))
                 m_n_tmp = [obj_ref.stage.m_n]';
                 gamma_mn = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
                 
                 gamma_2 = ones(6, 1)*gamma_length;
                 gamma_2(1:2:end) = gamma_mn;
                 
-                res_2 = NaN(6, 1);
+                res_2 = Inf(6, 1);
+            else
+                gamma_2 = gamma_prev([1 2 5 6 9 10]);
+                res_2 = Inf(6, 1);
             end
             
-            if(all(isnan([res_1' res_2'])))
-                gamma_12 = ones(6, 1)*gamma_length;
+            if(all(isinf([res_1' res_2'])))
+                gamma_12 = gamma_1;
+                res_12 = res_1;
             else
                 idx_min = res_1 <= res_2;
 
                 gamma_12 = diag(idx_min)*gamma_1 + diag(~idx_min)*gamma_2;
+                res_12   = diag(idx_min)*res_1   + diag(~idx_min)*res_2;
             end
             
             obj_12 = obj_ref.scale_aspect(gamma_P, gamma_n, gamma_12, aspect_2);
@@ -604,13 +642,18 @@ classdef Drivetrain
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
                 [gamma_3, res_3, ~] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-            else
+            elseif(any(aspect_set == "DA"))
                 gamma_3 = [gamma_length;
                            gamma_MMI];
-                res_3 = NaN;
+                res_3 = Inf;
+            else
+                gamma_3 = [mean(gamma_prev([4 8 12 18]));
+                           mean(gamma_prev([    14 16]))];
+                       
+                res_3 = Inf;
             end
             
-            gamma_3 = gamma_3([1 1 1 2 2 1]);
+            gamma_3 = gamma_3([1 1 1 2 2]);
 
             %% 4. Detailed version of 3:
             aspect_4 = "K_MMI_detail";
@@ -626,31 +669,51 @@ classdef Drivetrain
                 fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, aspect_4)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
 
-                gamma_min = ones(6, 1)*1.0e-6;
-                gamma_Max = ones(6, 1);
+                gamma_min = ones(5, 1)*1.0e-6;
+                gamma_Max = ones(5, 1);
 
                 gamma_0 = gamma_3;
 
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
                 [gamma_4, res_4, ~] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-            else
-                gamma_4      = gamma_length*ones(6, 1);
+            elseif(any(aspect_set == "DA"))
+                gamma_4      = gamma_length*ones(5, 1);
                 gamma_4(4:5) = gamma_MMI; 
                 
-                res_4 = NaN;
+                res_4 = Inf;
+            else
+                gamma_4 = gamma_prev([4 8 12 14 16]);
+                
+                res_4 = Inf;
             end
             
-            if(res_3 <= res_4)
+            if(all(isinf([res_3 res_4])))
                 gamma_34 = gamma_3;
+                res_34 = res_3;
+            elseif(res_3 <= res_4)
+                gamma_34 = gamma_3;
+                res_34 = res_3;
             else
                 gamma_34 = gamma_4;
+                res_34 = res_4;
+            end
+            
+            %% 5. Drivetrain scaling:
+            aspect_5 = "Drivetrain";
+            
+            if(any(aspect_set == aspect_5))
+                fprintf("Optimizing Drivetrain w.r.t. [%s]...\n", upper(aspect_5));
+                
+                fprintf("\n\tto be done later...\n\n");
+            else
+                
             end
             
             %% Post processing:
             % Analysis of the residuals at each step:
             res_pp = [mean(res_1), mean(res_2),    res_3,    res_4];
-            idx = ~isnan(res_pp);
+            idx = ~isinf(res_pp);
             res_pp = res_pp(idx);
             aspect_set = aspect_set(idx);
             
@@ -677,7 +740,7 @@ classdef Drivetrain
                ... %     Mass       , M. M. Iner , Mass      , M. M. Iner,
                          1.0        , gamma_34(4), 1.0       , gamma_34(5), ... % Rotor and Generator
                ... %     Diameter   , Length
-                         gamma_d    , gamma_34(6)]';                            % Main shaft
+                         gamma_d    , gamma_34(3)]';                            % Main shaft
             
             key_set = ["m_n1"       , "b_1"     , "d_1"   , "L_1" , ... % Stage 01
                        "m_n2"       , "b_2"     , "d_2"   , "L_2" , ... % Stage 02
@@ -689,10 +752,12 @@ classdef Drivetrain
             
             gamma = containers.Map(key_set, gamma_val);
             
-            res.stage = mean(res_1);
-            res.gear  = mean(res_2);
-            res.KJ    =      res_3;
-            res.KJ2   =      res_4;
+            res.stage = res_1;
+            res.gear  = res_2;
+            res.KJ    = res_3;
+            res.KJ2   = res_4;
+            res.SG    = res_12;
+            res.KJg   = res_34;
             
             gamma_sep.stage = gamma_1;
             gamma_sep.gear  = gamma_2;

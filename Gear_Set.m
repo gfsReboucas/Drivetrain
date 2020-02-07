@@ -121,7 +121,7 @@ classdef Gear_Set < Gear
         function tab = disp(obj)
             %DISP display some properties of a Gear_Set object
 
-            tmp_vec = NaN(size(obj.z));
+            tmp_vec = Inf(size(obj.z));
             tmp_vec(2) = 1;
             tab_set = {"Gear Ratio",                            "u",       "-",      obj.u  *tmp_vec;
                        "Number of elements"                     "p",       "-",      obj.N_p*tmp_vec;
@@ -276,9 +276,9 @@ classdef Gear_Set < Gear
         
         function rectangle(obj, varargin)
             if(nargin == 1)
-                C = zeros(2, 1);
+                C_0 = zeros(2, 1);
             else
-                C = varargin{1};
+                C_0 = varargin{1};
             end
             
             % LINSPECER: Plot lots of lines with very distinguishable and 
@@ -289,8 +289,8 @@ classdef Gear_Set < Gear
             
             hold on;
             if(strcmp(obj.configuration, "parallel"))
-                C_w =       [obj.b/2.0 0.0]' + C;
-                C_p =       [obj.b/2.0 obj.a_w]' + C;
+                C_w =       [obj.b/2.0 0.0]' + C_0;
+                C_p =       [obj.b/2.0 obj.a_w]' + C_0;
                 C_s = C_p + [obj.b + obj.out_shaft.L 0.0]'./2.0;
                 
                 rectangle(obj.gear(1)  , C_p, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
@@ -300,7 +300,7 @@ classdef Gear_Set < Gear
 %                 legend([h_p h_w h_s], ["Pinion", "Wheel", "Shaft"], "location", "best", "fontName", "Times", "fontSize", 12.0);
                 
             elseif(strcmp(obj.configuration, "planetary"))
-                C_c = [obj.carrier.b/2.0, 0.0]' + C;
+                C_c = [obj.carrier.b/2.0, 0.0]' + C_0;
                 C_p = C_c + [0.0 obj.a_w]';
                 C_s = C_c + [obj.carrier.b + obj.out_shaft.L 0.0]'./2.0;
 
