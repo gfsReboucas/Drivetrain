@@ -1,11 +1,32 @@
 classdef NREL_5MW < Drivetrain 
-    %NREL_5MW Summary of this class goes here
-    %   Detailed explanation goes here
-    
-    properties
-        Property1
-    end
-    
+    %NREL_5MW This class contains some of the properties of the NREL 5MW
+    % wind turbine gearbox proposed by Nejad et. al. [1]. More information
+    % regarding the NREL 5MW wind turbine can be found at [2].
+    %
+    % [1] Nejad, A. R., Guo, Y., Gao, Z., Moan, T. (2016). Development of a
+    % 5 MW reference gearbox for offshore wind turbines. Wind Energy. 
+    % https://doi.org/10.1002/we.1884
+    % [2] Jonkman, J., Butterfield, S., Musial, W., & Scott, G. Definition
+    % of a 5-MW Reference Wind Turbine for Offshore System Development. 
+    % doi:10.2172/947422.
+    % [3] Anaya-Lara, O., Tande, J.O., Uhlen, K., Merz, K. and Nejad, A.R.
+    % (2019). Modelling and Analysis of Drivetrains in Offshore Wind
+    % Turbines. In Offshore Wind Energy Technology (eds O. Anaya-Lara, J.O.
+    % Tande, K. Uhlen and K. Merz). doi:10.1002/9781119097808.ch3
+    %
+    % written by:
+    % Geraldo Rebouças
+    % - Geraldo.Reboucas@ntnu.no OR
+    % - gfs.reboucas@gmail.com
+    %
+    % Postdoctoral Fellow at:
+    %    Norwegian University of Science and Technology, NTNU
+    %    Department of Marine Technology, IMT
+    %    Marine System Dynamics and Vibration Lab, MD Lab
+    %    https://www.ntnu.edu/imt/lab/md-lab
+    %    
+    % see also DRIVETRAIN.
+
     methods
         function obj = NREL_5MW
             N_st = 3;
@@ -19,11 +40,11 @@ classdef NREL_5MW < Drivetrain
             n_r = 12.1; % [1/min.], Input speed
             inp_shaft = NREL_5MW.shaft(0);
             
-            m_R = 110.0e3;      J_R = 57231535.0;
+            m_R = 110.0e3;      J_R = 57231535.0; % according to [1, 3]
             m_G = 1900.0;       J_G = 534.116;
             
             obj@Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G);
-            
+            obj.dynamic_model =  "Kahraman_1994";
         end
         
     end
@@ -225,4 +246,3 @@ classdef NREL_5MW < Drivetrain
         end
     end
 end
-

@@ -40,9 +40,6 @@ classdef Gear_Set < Gear
         configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
         N_p           (1, 1)          {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
         bearing       (1, :) Bearing;                                                                        % [-], Bearing array
-    end
-    
-    properties
         out_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
         a_w           (1, :)          {mustBeFinite,  mustBePositive}                          = 13;         % [mm], Center distance
     end
@@ -501,79 +498,6 @@ classdef Gear_Set < Gear
             obj_sca = obj_ref.scale_aspect(gamma, aspect);
         end
         
-        function obj_sca = scaled_Gear_Set(obj_ref, gamma, gamma_shaft)
-            %SCALED_GEAR_SET returns an scaled Gear_Set object obj_scale,
-            % whose main parameters (normal module, face width and center
-            % distance) are proportional to the reference object by a
-            % factor gamma, which can be a scalar or an array. When gamma
-            % is a scalar all of the parameter mentioned above are scaled
-            % by the same factor, otherwise each of them has its own
-            % scaling factor.
-            %
-            
-            if(numel(gamma) ~= 2) 
-                error("Scaling factor gamma should have two elements.");
-            end
-            
-            gamma_mn = gamma(1, :);        gamma_bb = gamma(2, :);
-            
-            m_n_sca = Rack.module(obj_ref.m_n*gamma_mn, "calc", "nearest");
-            
-            gamma_mn = m_n_sca/obj_ref.m_n;
-            out_shaft_sca = obj_ref.out_shaft.scaled_Shaft(gamma_shaft);
-            
-            obj_sca = Gear_Set(obj_ref.configuration, ... % planetary or parallel
-                               m_n_sca,               ... % normal module                  
-                               obj_ref.alpha_n,       ... % pressure angle
-                               obj_ref.z,             ... % number of teeth
-                               obj_ref.b*gamma_bb,    ... % face width
-                               obj_ref.x,             ... % profile shift coefficient
-                               obj_ref.beta,          ... % helix angle
-                               obj_ref.k,             ... % tip alteration coefficient
-                               obj_ref.bore_ratio,    ... % ratio btw bore and reference diameters
-                               obj_ref.N_p,           ... % number of planets
-                               obj_ref.a_w*gamma_mn,  ... % center distance
-                               obj_ref.type,          ... % rack type
-                               obj_ref.bearing,       ... % bearing array
-                               out_shaft_sca);        ... % output shaft
-
-            % To ensure that the scaled object will have the same contact
-            % characteristics (contact ratio, eps_alpha) as the original:
-            if(abs(obj_ref.alpha_wt - obj_sca.alpha_wt) > 1.0e-3)
-                obj_sca.a_w = obj_sca.find_center_distance(obj_ref.alpha_wt);
-            end
-            
-        end
-        
-        function mod_obj = modify_Gear_Set(obj, aw, bb, mn)
-            %MODIFY_GEAR_SET modifies the main parameters of a Gear_Set:
-            % - aw: Center distance;
-            % - bb: Facewidth;
-            % - mn: Normal module;
-            % and returns the modified object.
-            
-            mod_obj = Gear_Set(obj.configuration, ... % planetary or parallel
-                               mn,                ... % normal module                  
-                               obj.alpha_n,       ... % pressure angle
-                               obj.z,             ... % number of teeth
-                               bb,                ... % face width
-                               obj.x,             ... % profile shift coefficient
-                               obj.beta,          ... % helix angle
-                               obj.k,             ... % tip alteration coefficient
-                               obj.bore_ratio,    ... % ratio btw bore and reference diameters
-                               obj.N_p,           ... % number of planets
-                               aw,                ... % center distance
-                               obj.type,          ... % rack type
-                               obj.bearing,       ... % bearing array
-                               obj.out_shaft);    ... % shaft
-            
-            % To ensure that the modified object will have the same contact
-            % characteristics (contact ratio, eps_alpha) as the original:
-            if(abs(obj.alpha_wt - mod_obj.alpha_wt) > 1.0e-3)
-                mod_obj.a_w = mod_obj.find_center_distance(obj.alpha_wt);
-            end
-        end
-
         %% Dynamics:
         function [M, K] = Kahraman_1994(obj)
             %KAHRAMAN_1994 Returns the inertia and stiffness matrices of
@@ -1163,40 +1087,6 @@ classdef Gear_Set < Gear
             if(K_v < 1.05) % according to [7], Sec. 7.2.3.2
                 K_v = 1.05;
             end
-        end
-        
-        function [S_H, sigma_H] = pitting_factors(obj, P, n_1, varargin)
-            if(isempty(varargin))
-                mn = obj.m_n;
-                bb = obj.b;
-            elseif(length(varargin) == 2)
-                mn = varargin{1};
-                bb = varargin{2};
-            elseif(length(varargin{:}) == 1)
-                gm = varargin{:};
-                mn = obj.m_n*gm;
-                bb = obj.b  *gm;
-            elseif(length(varargin{:}) == 2) % varargin is a vector with 2 elements
-                gm = varargin{:};
-                mn = obj.m_n*gm(1);
-                bb = obj.b  *gm(2);
-            else
-                error("prog:input", "Not enough input args. %d ~= 0, 1 or 2.", length(varargin));
-            end
-            
-            aw = obj.a_w*(mn/obj.m_n);
-            
-            S_Hmin = 1.25;      % [-], Minimum required safety factor for surface durability according to 
-            L_h    = 20*365*24; % [h],  Required life
-            Q      = 6;         % [-],  ISO accuracy grade
-            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
-            K_A    = 1.25;      % [-], Application factor
-            
-            mn = Rack.module(mn, "calc", "nearest");
-
-            mod_set = obj.modify_Gear_Set(aw, bb, mn);
-            
-            [S_H, sigma_H] = mod_set.Pitting_ISO(P, n_1, S_Hmin, L_h, Q, R_a, K_A);
         end
         
         %% Misc.:

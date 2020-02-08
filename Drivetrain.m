@@ -12,13 +12,7 @@ classdef Drivetrain
     % factors
     % [2] ISO 6336-2:2006 Calculation of load capacity of spur and helical
     % gears -- Part 2: Calculation of surface durability (pitting)
-    % [3] Nejad, A. R., Guo, Y., Gao, Z., Moan, T. (2016). Development of a
-    % 5 MW reference gearbox for offshore wind turbines. Wind Energy. 
-    % https://doi.org/10.1002/we.1884
-    % [4] Jonkman, J., Butterfield, S., Musial, W., & Scott, G. Definition
-    % of a 5-MW Reference Wind Turbine for Offshore System Development. 
-    % doi:10.2172/947422.
-    % [5] IEC 61400-4:2012 Wind Turbines -- Part 4: Design Requirements for
+    % [3] IEC 61400-4:2012 Wind Turbines -- Part 4: Design Requirements for
     % wind turbine gearboxes.
     % [6] Anaya-Lara, O., Tande, J.O., Uhlen, K., Merz, K. and Nejad, A.R.
     % (2019). Modelling and Analysis of Drivetrains in Offshore Wind
@@ -1204,8 +1198,20 @@ classdef Drivetrain
             J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
             J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
             
-            M = zeros(14, 14);
-            K = zeros(14, 14);
+            N_DOF = 2;
+            
+            for idx = 1:obj.N_stg
+                if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    tmp = obj.stage(idx).N_p + 1;
+                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+                    tmp = obj.stage(idx).N_p + 2;
+                end
+                
+                N_DOF = N_DOF + tmp;
+            end
+            
+            M = zeros(N_DOF, N_DOF);
+            K = zeros(N_DOF, N_DOF);
             
             M(1, 1) = J_R;              M(end, end) = J_G;
             
@@ -1214,23 +1220,21 @@ classdef Drivetrain
             
             M(1:2, 1:2) = M(1:2, 1:2) + M_tmp;        K(1:2, 1:2) = K(1:2, 1:2) + K_tmp;
             
-            for idx = 1:2
+            for idx = 1:obj.N_stg
                 [M_tmp, K_tmp] = obj.stage(idx).Kahraman_1994;
                 
                 jdx = 5*idx - 3;
-                kdx = jdx:(jdx + 5);
+                
+                if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    kdx = jdx:(jdx + 2);
+                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+                    kdx = jdx:(jdx + 5);
+                end
+                
                 M(kdx, kdx) = M(kdx, kdx) + M_tmp;
                 K(kdx, kdx) = K(kdx, kdx) + K_tmp;
             end
             
-            idx = idx + 1;
-            
-            [M_tmp, K_tmp] = obj.stage(idx).Kahraman_1994;
-            
-            jdx = 5*idx - 3;
-            kdx = jdx:(jdx + 2);
-            M(kdx, kdx) = M(kdx, kdx) + M_tmp;
-            K(kdx, kdx) = K(kdx, kdx) + K_tmp;
         end
         
         function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
@@ -1248,11 +1252,23 @@ classdef Drivetrain
             J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
             J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
             
-            M       = zeros(42, 42);
-            K_b     = zeros(42, 42);
-            K_m     = zeros(42, 42);
-            K_Omega = zeros(42, 42);
-            G       = zeros(42, 42);
+            N_DOF = 6;
+            
+            for idx = 1:obj.N_stg
+                if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    tmp = obj.stage(idx).N_p + 1;
+                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+                    tmp = obj.stage(idx).N_p + 2;
+                end
+                
+                N_DOF = N_DOF + tmp*3;
+            end
+            
+            M       = zeros(N_DOF, N_DOF);
+            K_b     = zeros(N_DOF, N_DOF);
+            K_m     = zeros(N_DOF, N_DOF);
+            K_Omega = zeros(N_DOF, N_DOF);
+            G       = zeros(N_DOF, N_DOF);
             
             M(1, 1) = m_R;              M(end - 2, end - 2) = m_G;
             M(2, 2) = m_R;              M(end - 1, end - 1) = m_G;
@@ -1261,21 +1277,22 @@ classdef Drivetrain
             M_tmp = obj.main_shaft.inertia_matrix("full");
             K_tmp = obj.main_shaft.stiffness_matrix("full");
             
-%             idx = [3 5 6 9 11 12];
             idx = [1 5 6 7 11 12];
             M_tmp(idx, :) = [];                 M_tmp(:, idx) = [];
             K_tmp(idx, :) = [];                 K_tmp(:, idx) = [];
             
-%             M_tmp = diag(diag(M_tmp));           K_tmp = diag(diag(K_tmp));
-            
             M(  1:6, 1:6) = M(  1:6, 1:6) + M_tmp;
             K_b(1:6, 1:6) = K_b(1:6, 1:6) + K_tmp;
             
-            for idx = 1:2
+            for idx = 1:obj.N_stg
                 [M_tmp, ~, K_b_tmp, K_m_tmp, K_Omega_tmp, G_tmp] = obj.stage(idx).Lin_Parker_1999;
                 
                 jdx = 15*idx - 11;
-                kdx = jdx:(jdx + 17);
+                if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    kdx = jdx:(jdx + 8);
+                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+                    kdx = jdx:(jdx + 17);
+                end
                 
                 M(kdx, kdx) = M(kdx, kdx) + M_tmp;
                 
@@ -1286,21 +1303,6 @@ classdef Drivetrain
                 G(kdx, kdx) = G(kdx, kdx) + G_tmp;
                 
             end
-            
-            idx = idx + 1;
-            
-            [M_tmp, ~, K_b_tmp, K_m_tmp, K_Omega_tmp, G_tmp] = obj.stage(idx).Lin_Parker_1999;
-            
-            jdx = 15*idx - 11;
-            kdx = jdx:(jdx + 8);
-            
-            M(kdx, kdx) = M(kdx, kdx) + M_tmp;
-            
-            K_b(    kdx, kdx) = K_b(    kdx, kdx) + K_b_tmp;
-            K_m(    kdx, kdx) = K_m(    kdx, kdx) + K_m_tmp;
-            K_Omega(kdx, kdx) = K_Omega(kdx, kdx) + K_Omega_tmp;
-            
-            G(kdx, kdx) = G(kdx, kdx) + G_tmp;
             
             K = @(Om)(K_b + K_m - K_Omega*Om^2);
         end
