@@ -212,51 +212,63 @@ classdef Drivetrain
                 disp(obj.main_shaft);
                 clear tab;
             end
-
         end
         
-        function [tab, tab_str] = comp_stage(ref, sca, idx)
+        function tab = comparison(ref, sca)
+            tab_stg = cell(ref.N_stg, 1);
+            
+            for idx = 1:(ref.N_stg)
+                [~, tab_str] = stage_comparison(ref, sca, idx);
+                tab_tmp = table(tab_str(:, 4), tab_str(:, 5), tab_str(:, 6), 'variableNames', ["Reference", "Scale", "Ratio"]);
+                tab_stg{idx} = table(tab_tmp, 'variableNames', sprintf("Stage_%d", idx));
+            end
+            
+            tab_left =  table(tab_str(:, 1), tab_str(:, 2), 'variableNames', ["Parameter", "Symbol"]);
+            tab_right = table(tab_str(:, 3), 'variableNames', "Unit");
+            
+            tab = [tab_left, tab_stg{:}, tab_right];
+            
+            if(nargout == 0)
+                disp(tab);
+                clear tab;
+            end
+            
+        end
+        
+        function [tab, tab_str] = stage_comparison(ref, sca, idx)
+            if(ref.N_stg ~= sca.N_stg)
+                error("different number of gear stages.");
+            elseif(idx > ref.N_stg)
+                error("idx is bigger than the number of stages.");
+            elseif(idx < 1)
+                error("idx is smaller than 1.");
+            end
+            
             tab_str = {"Rated power",                                  "P",       "kW",     ref.P_rated,                sca.P_rated,                sca.P_rated               /ref.P_rated;                % 1
                        "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.", ref.n_out(idx),             sca.n_out(idx),             sca.n_out(idx)            /ref.n_out(idx);             % 2
                        "Output Torque (Sun/Pinion)",                   "T_out",   "N-m",    ref.T_out(idx),             sca.T_out(idx),             sca.T_out(idx)            /ref.T_out(idx);             % 3
                        "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-",      ref.S_H(2*idx - 1),         sca.S_H(2*idx - 1),         sca.S_H(2*idx - 1)        /ref.S_H(2*idx - 1);         % 4
                        "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-",      ref.S_H(2*idx),             sca.S_H(2*idx),             sca.S_H(2*idx)            /ref.S_H(2*idx);             % 5
-                       "Gear ratio",                                   "u",       "-",      ref.stage(idx).u,           sca.stage(idx).u,           sca.stage(idx).u          /ref.stage(idx).u;           % 6
-                       "Normal module",                                "m_n",     "mm",     ref.stage(idx).m_n,         sca.stage(idx).m_n,         sca.stage(idx).m_n        /ref.stage(idx).m_n;         % 7
-                       "Face width",                                   "b",       "mm",     ref.stage(idx).b,           sca.stage(idx).b,           sca.stage(idx).b          /ref.stage(idx).b;           % 8
-                       "Center distance",                              "a_w",     "mm",     ref.stage(idx).a_w,         sca.stage(idx).a_w,         sca.stage(idx).a_w        /ref.stage(idx).a_w;         % 9
-                       "Reference diameter (Sun/Pinion)",              "d_1",     "mm",     ref.stage(idx).d(1),        sca.stage(idx).d(1),        sca.stage(idx).d(1)       /ref.stage(idx).d(1);        % 10
-                       "Mass (Sun/Pinion)",                            "m_1",     "kg",     ref.stage(idx).mass(1),     sca.stage(idx).mass(1),     sca.stage(idx).mass(1)    /ref.stage(idx).mass(1);     % 11
-                       "Mass moment of inertia (Sun/Pinion)",          "J_xx1",   "kg-m^2", ref.stage(idx).J_x(1),      sca.stage(idx).J_x(1),      sca.stage(idx).J_x(1)     /ref.stage(idx).J_x(1);      % 12
-                       "Shaft / Diameter",                             "d",       "mm",     ref.stage(idx).out_shaft.d, sca.stage(idx).out_shaft.d, sca.stage(idx).out_shaft.d/ref.stage(idx).out_shaft.d; % 13
-                       "Shaft / Length",                               "L",       "mm",     ref.stage(idx).out_shaft.L, sca.stage(idx).out_shaft.L, sca.stage(idx).out_shaft.L/ref.stage(idx).out_shaft.L; % 14
-                        };
-
+                       "Safety factor (Shaft)",                        "S",       "-",      ref.S_shaft(idx + 1),       sca.S_shaft(idx + 1),       sca.S_shaft(idx + 1)      /ref.S_shaft(idx + 1);
+                       };
+            
+            [~, str_stg] = comparison(ref.stage(idx), sca.stage(idx));
+            tab_str = [tab_str; str_stg];
+            
+            Parameter = tab_str(:, 1);
+            Symbol    = tab_str(:, 2);
+            Unit      = tab_str(:, 3);
             Reference = tab_str(:, 4);
             Scale     = tab_str(:, 5);
             Ratio     = tab_str(:, 6);
             
-            tab = table(Scale, Reference, Ratio, ...
-                    'VariableNames', ["Scale", "Reference", "Ratio"]);
-        end
-        
-        function tab = disp_comp(ref, sca)
-             Stage_01           = comp_stage(ref, sca, 1);
-             Stage_02           = comp_stage(ref, sca, 2);
-            [Stage_03, tab_str] = comp_stage(ref, sca, 3);
-            
-            Parameter = tab_str(:,1);
-            Symbol    = tab_str(:,2);
-            Unit      = tab_str(:,3);
-            
-            tab = table(           Parameter,   Symbol,   Stage_01,   Stage_02,   Stage_03,   Unit, ...
-                'variableNames', ["Parameter", "Symbol", "Stage_01", "Stage_02", "Stage_03", "Unit"]);
-            disp(tab);
+            tab = table(Parameter, Symbol, Scale, Reference, Ratio, Unit);
             
             if(nargout == 0)
-                clear tab;
+                disp(tab);
+                clear tab tab_str;
             end
-
+            
         end
         
         function plot(obj)

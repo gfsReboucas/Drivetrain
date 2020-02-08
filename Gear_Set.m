@@ -202,6 +202,32 @@ classdef Gear_Set < Gear
             end
         end
         
+        function [tab, tab_str] = comparison(ref, sca)
+            tab_str = {"Normal module",                                "m_n",     "mm",     ref.m_n,         sca.m_n,         sca.m_n         / ref.m_n;         % 7
+                       "Face width",                                   "b",       "mm",     ref.b,           sca.b,           sca.b           / ref.b;           % 8
+                       "Center distance",                              "a_w",     "mm",     ref.a_w,         sca.a_w,         sca.a_w         / ref.a_w;         % 9
+                       "Reference diameter (Sun/Pinion)",              "d_1",     "mm",     ref.d(1),        sca.d(1),        sca.d(1)        / ref.d(1);        % 10
+                       "Mass (Sun/Pinion)",                            "m_1",     "kg",     ref.mass(1),     sca.mass(1),     sca.mass(1)     / ref.mass(1);     % 11
+                       "Mass moment of inertia (Sun/Pinion)",          "J_xx1",   "kg-m^2", ref.J_x(1),      sca.J_x(1),      sca.J_x(1)      / ref.J_x(1);      % 12
+                       "Diameter / Output shaft",                      "d",       "mm",     ref.out_shaft.d, sca.out_shaft.d, sca.out_shaft.d / ref.out_shaft.d; % 13
+                       "Length / Output shaft",                        "L",       "mm",     ref.out_shaft.L, sca.out_shaft.L, sca.out_shaft.L / ref.out_shaft.L; % 14
+                       };
+                   
+            Parameter = tab_str(:, 1);
+            Symbol    = tab_str(:, 2);
+            Unit      = tab_str(:, 3);
+            Reference = tab_str(:, 4);
+            Scale     = tab_str(:, 5);
+            Ratio     = tab_str(:, 6);
+            
+            tab = table(Parameter, Symbol, Scale, Reference, Ratio, Unit);
+            
+            if(nargout == 0)
+                disp(tab);
+                clear tab tab_str;
+            end
+        end
+        
         function plot(obj)
 
             % LINSPECER: Plot lots of lines with very distinguishable and 
