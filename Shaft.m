@@ -368,56 +368,6 @@ classdef Shaft
         end
     end
     
-    methods(Static)
-        function obj = NREL_5MW(stage)
-            %NREL_5MW returns the shafts of each stage of the NREL 5 MW
-            % wind turbine drivetrain according to [1]. Mainly on the
-            % SIMPACK simulation provided by its first author.
-            %
-            % [1] Nejad, A. R., Guo, Y., Gao, Z., Moan, T. (2016).
-            % Development of a 5 MW reference gearbox for offshore wind
-            % turbines. Wind Energy. https://doi.org/10.1002/we.1884
-            %
-            
-            switch(stage)
-                case 0 % LSS
-%                     d_0 = 1000.0;
-%                     L_0 = 3000.0;
-                    d_0 = 700.0;
-                    L_0 = 2000.0;
-
-                    obj = Shaft(d_0, L_0);
-                    
-                case 1 % ISS
-%                     d_1 = 800.0;
-%                     L_1 = 750.0;
-                    d_1 = 533.0;
-                    L_1 = 500.0;
-
-                    obj = Shaft(d_1, L_1);
-                    
-                case 2 % HS-IS
-%                     d_2 = 500.0;
-%                     L_2 = 1000.0;
-                    d_2 = 333.0;
-                    L_2 = 666.0;
-
-                    obj = Shaft(d_2, L_2);
-                    
-                case 3 % HSS
-%                     d_3 = 500.0;
-%                     L_3 = 1500.0;
-                    d_3 = 333.0;
-                    L_3 = 1000.0;
-
-                    obj = Shaft(d_3, L_3);
-                    
-                otherwise
-                    error("prog:input", "Option [%d] is NOT valid.", stage);
-            end
-        end
-    end
-    
     %% Get methods:
     methods
         function val = get.slender_ratio(obj)

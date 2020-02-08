@@ -121,7 +121,7 @@ classdef Gear_Set < Gear
         function tab = disp(obj)
             %DISP display some properties of a Gear_Set object
 
-            tmp_vec = Inf(size(obj.z));
+            tmp_vec = NaN(size(obj.z));
             tmp_vec(2) = 1;
             tab_set = {"Gear Ratio",                            "u",       "-",      obj.u  *tmp_vec;
                        "Number of elements"                     "p",       "-",      obj.N_p*tmp_vec;
@@ -137,8 +137,8 @@ classdef Gear_Set < Gear
                        "Root diameter",                         "d_f",     "mm",     obj.d_f;
                        "Mass",                                  "m",       "kg",     obj.mass;
                        "Mass moment of inertia (x axis, rot.)", "J_x",     "kg-m^2", obj.J_x;
-                       "Mass moment of inertia (x axis)",       "J_y",     "kg-m^2", obj.J_y;
-                       "Mass moment of inertia (x axis)",       "J_z",     "kg-m^2", obj.J_z;
+                       "Mass moment of inertia (y axis)",       "J_y",     "kg-m^2", obj.J_y;
+                       "Mass moment of inertia (z axis)",       "J_z",     "kg-m^2", obj.J_z;
                        "Bearing Names"                          "-+-",     "-",      tmp_vec;
                        "Bearing Types"                          "-+-",     "-",      tmp_vec;
                        };
@@ -160,8 +160,8 @@ classdef Gear_Set < Gear
                     Value{end    , idx} = join([obj.bearing(jdx:jdx + 2).type], " / ");
                 end
 
-                v_pinion = Value(:,1);
-                v_wheel  = Value(:,2);
+                v_pinion = Value(:, 1);
+                v_wheel  = Value(:, 2);
                 
                 tab = table(Parameter, Symbol, v_pinion, v_wheel, Unit, ...
                             'variableNames', ["Parameter", "Symbol", "Pinion", "Wheel", "Unit"]);
@@ -169,9 +169,9 @@ classdef Gear_Set < Gear
                 Value{end - 1, 2} = join([obj.bearing(1:2).name], " / ");
                 Value{end    , 2} = join([obj.bearing(1:2).type], " / ");
                 
-                v_sun = Value(:,1);
-                v_pla = Value(:,2);
-                v_rng = Value(:,3);
+                v_sun = Value(:, 1);
+                v_pla = Value(:, 2);
+                v_rng = Value(:, 3);
                 v_car = {"-+-"; "-+-"; "-+-"; ... 
                          "-+-"; "-+-"; "-+-"; ...
                          "-+-"; "-+-"; "-+-"; ...
@@ -315,6 +315,7 @@ classdef Gear_Set < Gear
             end
             hold off;
         end
+        
         function KS = toKISSsoft(obj)
             DLL_path = strcat(convertCharsToStrings(pwd), "\KISSsoft_CSharp\bin\Debug\KISSsoft_CSharp.dll");
             NET.addAssembly(DLL_path);
@@ -333,107 +334,6 @@ classdef Gear_Set < Gear
     end
     
     methods(Static)
-        function obj = NREL_5MW(stage)
-            %NREL_5MW returns the stages of the NREL 5 MW wind turbine
-            % drivetrain according to [4], Table V. The values for the tip
-            % alteration coefficients were taken from KISSsoft.
-            %
-
-            alpha_n = 20.0;        % [deg.],   Pressure angle (at reference cylinder)
-            rack_type = "A";       % [-],      Type of the basic rack from A to D
-
-            switch(stage)
-                case 1
-                    p_1    = 3;            % [-],    Number of planet gears
-                    m_n1   = 45.0;         % [mm],   Normal module
-                    beta_1 = 0.0;          % [deg.], Helix angle (at reference cylinder)
-                    b_1    = 491.0;        % [mm],   Face width
-                    a_w1   = 863.0;        % [mm],   Center distance
-                    z_s1   =  19;          % [-],    Number of teeth (sun)    [WHEEL]
-                    z_p1   =  17;          % [-],    Number of teeth (planet) [PINION]
-                    z_r1   =  56;          % [-],    Number of teeth (ring)
-                    x_s1   =  0.617;       % [-],    Profile shift coefficient (sun)
-                    x_p1   =  0.802;       % [-],    Profile shift coefficient (planet)
-                    x_r1   = -0.501;       % [-],    Profile shift coefficient (ring)
-                    k_s1   = -10.861/m_n1; % [-],    Tip alteration coefficient (sun)
-                    k_p1   = -10.861/m_n1; % [-],    Tip alteration coefficient (planet)
-                    k_r1   =   0.0;        % [-],    Tip alteration coefficient (ring)
-                    
-                    bore_Rs1 = 80.0/171.0;
-                    bore_Rp1 = 80.0/153.0;
-                    bore_Rr1 = 1.2;
-                    
-                    z_1 = [z_s1 z_p1 z_r1];
-                    x_1 = [x_s1 x_p1 x_r1];
-                    k_1 = [k_s1 k_p1 k_r1];
-                    bore_R1 = [bore_Rs1 bore_Rp1 bore_Rr1];
-%                                 Sun,   Planet,   Ring,   Carrier
-                    bearing_1 = Bearing.NREL_5MW(1);
-                    shaft_1 = Shaft.NREL_5MW(1);
-                    
-                    obj = Gear_Set("planetary", m_n1, alpha_n, z_1, b_1, x_1, beta_1, k_1, bore_R1, p_1, a_w1, rack_type, bearing_1, shaft_1);
-
-                case 2
-                    p_2    = 3;          % [-],    Number of planet gears
-                    m_n2   = 21.0;       % [mm],   Normal module
-                    beta_2 = 0.0;        % [deg.], Helix angle (at reference cylinder)
-                    b_2    = 550.0;      % [mm],   Face width
-                    a_w2   = 584.0;      % [mm],   Center distance
-                    z_s2   =  18;        % [-],    Number of teeth (sun)    [PINION]
-                    z_p2   =  36;        % [-],    Number of teeth (planet) [WHEEL]
-                    z_r2   =  93;        % [-],    Number of teeth (ring)
-                    x_s2   = 0.389;      % [-],    Profile shift coefficient (sun)
-                    x_p2   = 0.504;      % [-],    Profile shift coefficient (planet)
-                    x_r2   = 0.117;      % [-],    Profile shift coefficient (ring)
-                    k_s2   = -1.75/m_n2; % [-],    Tip alteration coefficient (sun)
-                    k_p2   = -1.75/m_n2; % [-],    Tip alteration coefficient (planet)
-                    k_r2   =   0.0;      % [-],    Tip alteration coefficient (ring)
-                    
-                    bore_Rs2 = 100.0/189.0;
-                    bore_Rp2 = 95.0/189.0;
-                    bore_Rr2 = 1.2;
-
-                    z_2 = [z_s2 z_p2 z_r2];
-                    x_2 = [x_s2 x_p2 x_r2];
-                    k_2 = [k_s2 k_p2 k_r2];
-                    bore_R2 = [bore_Rs2 bore_Rp2 bore_Rr2];
-%                                 Sun,   Planet,   Ring,   Carrier
-                    bearing_2 = Bearing.NREL_5MW(2);
-                    shaft_2 = Shaft.NREL_5MW(2);
-                    
-                    obj = Gear_Set("planetary", m_n2, alpha_n, z_2, b_2, x_2, beta_2, k_2, bore_R2, p_2, a_w2, rack_type, bearing_2, shaft_2);
-
-                case 3
-                    p_3    = 1;            % [-],    Number of planet gears
-                    m_n3   = 14.0;         % [mm],   Normal module
-                    beta_3 = 10.0;         % [deg.], Helix angle (at reference cylinder)
-                    b_3    = 360.0;        % [mm],   Face width
-                    a_w3   = 861.0;        % [mm],   Center distance
-                    z_13   =  24;          % [-],    Number of teeth (pinion)
-                    z_23   =  95;          % [-],    Number of teeth (wheel)
-                    x_13   =  0.480;       % [-],    Profile shift coefficient (pinion)
-                    x_23   =  0.669;       % [-],    Profile shift coefficient (wheel)
-                    k_13   =  -0.938/14.0; % [-],    Tip alteration coefficient (pinion)
-                    k_23   =  -0.938/14.0; % [-],    Tip alteration coefficient (wheel)
-                    
-                    bore_R13 = 1809.0/3086.0;
-                    bore_R23 = 3385.0/9143.0;
-
-                    z_3 = [z_13 z_23];
-                    x_3 = [x_13 x_23];
-                    k_3 = [k_13 k_23];
-                    bore_R3 = [bore_R13 bore_R23];
-%                                 Pinion, Wheel
-                    bearing_3 = Bearing.NREL_5MW(3);
-                    shaft_3 = Shaft.NREL_5MW(3);
-                    
-                    obj = Gear_Set("parallel", m_n3, alpha_n, z_3, b_3, x_3, beta_3, k_3, bore_R3, p_3, a_w3, rack_type, bearing_3, shaft_3);
-                    
-                otherwise
-                    error("prog:input", "Option [%d] is NOT valid.", stage);
-            end
-        end
-        
         function Z_NT = interp_ZNT(N, line)
             switch line
                 case 1

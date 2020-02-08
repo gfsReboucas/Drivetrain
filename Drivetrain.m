@@ -103,62 +103,110 @@ classdef Drivetrain
             %DISP display some properties of a Drivetrain object
             % description, symbol, unit, value
             
-            tab_str = {"Rated power",                                  "P",       "kW",     "-+-",                obj.P_rated,          "-+-";            % 1
-                       "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.", obj.n_out(1),         obj.n_out(2),         obj.n_out(3);
-                       "Output Torque (Sun/Pinion)",                   "T_out",   "N-m",    obj.T_out(1),         obj.T_out(2),         obj.T_out(3);
-                       "Minimum safety factor against pitting",        "S_Hmin",  "-",      1.25,                 1.25,                 1.25;
-                       "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-",      obj.S_H(1),           obj.S_H(3),           obj.S_H(5);
-                       "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-",      obj.S_H(2),           obj.S_H(4),           obj.S_H(6);
-                       "Safety factor (Shaft)",                        "S",        "-",     obj.S_shaft(2),       obj.S_shaft(3),       obj.S_shaft(4);
-                       "Type",                                         "-",       "-",      obj.stage(:).configuration;
-                       "Gear ratio",                                   "u",       "-",      obj.stage(:).u;
-                       "Number of planets",                            "p",       "-",      obj.stage(:).N_p;
-                       "Normal module",                                "m_n",     "mm",     obj.stage(:).m_n;
-                       "Normal pressure angle",                        "alpha_n", "deg.",   obj.stage(:).alpha_n;
-                       "Helix angle",                                  "beta",    "deg.",   obj.stage(:).beta;
-                       "Face width",                                   "b",       "mm",     obj.stage(:).b;
-                       "Center distance",                              "a_w",     "mm",     obj.stage(:).a_w;
-                       "Number of teeth (Sun/Pinion)",                 "z_1",     "-",      obj.stage(1).z(1),    obj.stage(2).z(1),    obj.stage(3).z(1);
-                       "Number of teeth (Planet/Wheel)",               "z_2",     "-",      obj.stage(1).z(2),    obj.stage(2).z(2),    obj.stage(3).z(2);
-                       "Number of teeth (Ring)",                       "z_3",     "-",      obj.stage(1).z(3),    obj.stage(2).z(3),    "-*-";
-                       "Profile shift coefficient (Sun/Pinion)",       "x_1",     "-",      obj.stage(1).x(1),    obj.stage(2).x(1),    obj.stage(3).x(1);
-                       "Profile shift coefficient (Planet/Wheel)",     "x_2",     "-",      obj.stage(1).x(2),    obj.stage(2).x(2),    obj.stage(3).x(2);
-                       "Profile shift coefficient (Ring)",             "x_3",     "-",      obj.stage(1).x(3),    obj.stage(2).x(3),    "-*-";
-                       "Reference diameter (Sun/Pinion)",              "d_1",     "mm",     obj.stage(1).d(1),    obj.stage(2).d(1),    obj.stage(3).d(1);
-                       "Reference diameter (Planet/Wheel)",            "d_2",     "mm",     obj.stage(1).d(2),    obj.stage(2).d(2),    obj.stage(3).d(2);
-                       "Reference diameter (Ring)",                    "d_3",     "mm",     obj.stage(1).d(3),    obj.stage(2).d(3),    "-*-";
-                       "Tip diameter (Sun/Pinion)",                    "d_a1",    "mm",     obj.stage(1).d_a(1),  obj.stage(2).d_a(1),  obj.stage(3).d_a(1);
-                       "Tip diameter (Planet/Wheel)",                  "d_a2",    "mm",     obj.stage(1).d_a(2),  obj.stage(2).d_a(2),  obj.stage(3).d_a(2);
-                       "Tip diameter (Ring)",                          "d_a3",    "mm",     obj.stage(1).d_a(3),  obj.stage(2).d_a(3),  "-*-";
-                       "Root diameter (Sun/Pinion)",                   "d_f1",    "mm",     obj.stage(1).d_f(1),  obj.stage(2).d_f(1),  obj.stage(3).d_f(1);
-                       "Root diameter (Planet/Wheel)",                 "d_f2",    "mm",     obj.stage(1).d_f(2),  obj.stage(2).d_f(2),  obj.stage(3).d_f(2);
-                       "Root diameter (Ring)",                         "d_f3",    "mm",     obj.stage(1).d_f(3),  obj.stage(2).d_f(3),  "-*-";
-                       "Mass (Sun/Pinion)",                            "m_1",     "kg",     obj.stage(1).mass(1), obj.stage(2).mass(1), obj.stage(3).mass(1);
-                       "Mass (Planet/Wheel)",                          "m_2",     "kg",     obj.stage(1).mass(2), obj.stage(2).mass(2), obj.stage(3).mass(2);
-                       "Mass (Ring)",                                  "m_3",     "kg",     obj.stage(1).mass(3), obj.stage(2).mass(3), "-*-";
-                       "Mass moment of inertia (Sun/Pinion)",          "J_xx1",   "kg-m^2", obj.stage(1).J_x(1),  obj.stage(2).J_x(1),  obj.stage(3).J_x(1);
-                       "Mass moment of inertia (Planet/Wheel)",        "J_xx2",   "kg-m^2", obj.stage(1).J_x(2),  obj.stage(2).J_x(2),  obj.stage(3).J_x(2);
-                       "Mass moment of inertia (Ring)",                "J_xx3",   "kg-m^2", obj.stage(1).J_x(3),  obj.stage(2).J_x(3),  "-*-";
-                       "Mass moment of inertia (Sun/Pinion)",          "J_yy1",   "kg-m^2", obj.stage(1).J_y(1),  obj.stage(2).J_y(1),  obj.stage(3).J_y(1);
-                       "Mass moment of inertia (Planet/Wheel)",        "J_yy2",   "kg-m^2", obj.stage(1).J_y(2),  obj.stage(2).J_y(2),  obj.stage(3).J_y(2);
-                       "Mass moment of inertia (Ring)",                "J_yy3",   "kg-m^2", obj.stage(1).J_y(3),  obj.stage(2).J_y(3),  "-*-";
-                       "Mass moment of inertia (Sun/Pinion)",          "J_zz1",   "kg-m^2", obj.stage(1).J_z(1),  obj.stage(2).J_z(1),  obj.stage(3).J_z(1);
-                       "Mass moment of inertia (Planet/Wheel)",        "J_zz2",   "kg-m^2", obj.stage(1).J_z(2),  obj.stage(2).J_z(2),  obj.stage(3).J_z(2);
-                       "Mass moment of inertia (Ring)",                "J_zz3",   "kg-m^2", obj.stage(1).J_z(3),  obj.stage(2).J_z(3),  "-*-";
+            tab_str = {"Rated power",                                  "P",       "kW";
+                       "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.";
+                       "Output Torque (Sun/Pinion)",                   "T_out",   "N-m";
+                       "Minimum safety factor against pitting",        "S_Hmin",  "-";
+                       "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-";
+                       "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-";
+                       "Safety factor (Shaft)",                        "S",       "-";
+                       "Type",                                         "-",       "-";
+                       "Gear ratio",                                   "u",       "-";
+                       "Number of planets",                            "p",       "-";
+                       "Normal module",                                "m_n",     "mm";
+                       "Normal pressure angle",                        "alpha_n", "deg.";
+                       "Helix angle",                                  "beta",    "deg.";
+                       "Face width",                                   "b",       "mm";
+                       "Center distance",                              "a_w",     "mm";
+                       "Number of teeth (Sun/Pinion)",                 "z_1",     "-";
+                       "Number of teeth (Planet/Wheel)",               "z_2",     "-";
+                       "Number of teeth (Ring)",                       "z_3",     "-";
+                       "Profile shift coefficient (Sun/Pinion)",       "x_1",     "-";
+                       "Profile shift coefficient (Planet/Wheel)",     "x_2",     "-";
+                       "Profile shift coefficient (Ring)",             "x_3",     "-";
+                       "Reference diameter (Sun/Pinion)",              "d_1",     "mm";
+                       "Reference diameter (Planet/Wheel)",            "d_2",     "mm";
+                       "Reference diameter (Ring)",                    "d_3",     "mm";
+                       "Mass (Sun/Pinion)",                            "m_1",     "kg";
+                       "Mass (Planet/Wheel)",                          "m_2",     "kg";
+                       "Mass (Ring)",                                  "m_3",     "kg";
+                       "Mass mom. inertia (Sun/Pinion)",               "J_xx1",   "kg-m^2";
+                       "Mass mom. inertia (Planet/Wheel)",             "J_xx2",   "kg-m^2";
+                       "Mass mom. inertia (Ring)",                     "J_xx3",   "kg-m^2";
+                       "Mass mom. inertia (Sun/Pinion)",               "J_yy1",   "kg-m^2";
+                       "Mass mom. inertia (Planet/Wheel)",             "J_yy2",   "kg-m^2";
+                       "Mass mom. inertia (Ring)",                     "J_yy3",   "kg-m^2";
+                       "Mass mom. inertia (Sun/Pinion)",               "J_zz1",   "kg-m^2";
+                       "Mass mom. inertia (Planet/Wheel)",             "J_zz2",   "kg-m^2";
+                       "Mass mom. inertia (Ring)",                     "J_zz3",   "kg-m^2";
                        };
 
-            Parameter = tab_str(:,1);
-            Symbol    = tab_str(:,2);
-            Unit      = tab_str(:,3);
-            Stage_01  = tab_str(:,4);
-            Stage_02  = tab_str(:,5);
-            Stage_03  = tab_str(:,6);
-
-            tab = table(           Parameter,   Symbol,   Stage_01,   Stage_02,   Stage_03,   Unit, ...
-                'variableNames', ["Parameter", "Symbol", "Stage_01", "Stage_02", "Stage_03", "Unit"]);
+            Parameter = tab_str(:, 1);
+            Symbol    = tab_str(:, 2);
+            Unit      = tab_str(:, 3);
+            
+            tab_val = cell(obj.N_stg + 2, 1);
+            
+            tab_val{1} = table(Parameter, Symbol);
+            
+            for idx = 1:obj.N_stg
+                val_stg = {obj.P_rated;
+                           obj.n_out(idx);
+                           obj.T_out(idx);
+                           1.25;
+                           obj.S_H(2*idx - 1);
+                           obj.S_H(2*idx);
+                           obj.S_shaft(idx + 1);
+                           obj.stage(idx).configuration;
+                           obj.stage(idx).u;
+                           obj.stage(idx).N_p;
+                           obj.stage(idx).m_n;
+                           obj.stage(idx).alpha_n;
+                           obj.stage(idx).beta;
+                           obj.stage(idx).b;
+                           obj.stage(idx).a_w;
+                           obj.stage(idx).z(1);
+                           obj.stage(idx).z(2);
+                           "-*-";
+                           obj.stage(idx).x(1);
+                           obj.stage(idx).x(2);
+                           "-*-";
+                           obj.stage(idx).d(1);
+                           obj.stage(idx).d(2);
+                           "-*-";
+                           obj.stage(idx).mass(1);
+                           obj.stage(idx).mass(2);
+                           "-*-";
+                           obj.stage(idx).J_x(1);
+                           obj.stage(idx).J_x(2);
+                           "-*-";
+                           obj.stage(idx).J_y(1);
+                           obj.stage(idx).J_y(2);
+                           "-*-";
+                           obj.stage(idx).J_z(1);
+                           obj.stage(idx).J_z(2);
+                           "-*-";
+                           };
+                
+                if(strcmp(obj.stage(idx).configuration, "planetary"))
+                    val_stg{18} = obj.stage(idx).z(3);
+                    val_stg{21} = obj.stage(idx).x(3);
+                    val_stg{24} = obj.stage(idx).d(3);
+                    val_stg{27} = obj.stage(idx).mass(3);
+                    val_stg{30} = obj.stage(idx).J_x(3);
+                    val_stg{33} = obj.stage(idx).J_y(3);
+                    val_stg{36} = obj.stage(idx).J_z(3);
+                end
+                
+                tab_val{idx + 1} =  table(val_stg, 'variableNames', sprintf("Stage_%d", idx));
+            end
+            
+            tab_val{idx + 2} = table(Unit);
+            
+            tab = [tab_val{:}];
             
             if(nargout == 0)
-                fprintf("Gear box:\n");
+                fprintf("Gear stages:\n");
                 disp(tab);
                 fprintf("Main shaft:\n");
                 disp(obj.main_shaft);
