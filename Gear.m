@@ -41,11 +41,14 @@ classdef Gear < Rack
     
     properties(SetAccess = private)
         z         (1, :) {mustBeInteger, mustBeFinite}                    = 13;  % [-],    Number of teeth
-        b         (1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 13;  % [mm],   Face width
         x         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Profile shift coefficient
         beta      (1, :) {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 0.0; % [deg.], Helix angle (at reference cylinder)
         k         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Tip alteration coefficient
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
+    end
+    
+    properties(Access = public)
+        b         (1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 13;  % [mm],   Face width
     end
     
     properties(Dependent)
@@ -320,6 +323,17 @@ classdef Gear < Rack
             x = [x, C(1)];
             y = [y, C(2)];
             
+        end
+    end
+    
+    %% Set methods:
+    methods
+        function obj = set.m_n(obj, val)
+            obj.m = Rack.module(val, "calc", "nearest");
+        end
+        
+        function obj = set.b(obj, val)
+            obj.b = val;
         end
     end
     

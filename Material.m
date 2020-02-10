@@ -23,7 +23,7 @@ classdef Material
     end
     
     methods(Static)
-        function disp()
+        function disp(obj)
             tab_set = {"Young's modulus",                 "E",            Material.E,          "Pa";
                        "Poisson's ratio",                 "nu",           Material.nu,         "-";
                        "Density",                         "rho",          Material.rho,        "kg/m^3";
