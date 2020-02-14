@@ -1083,6 +1083,52 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             
         end
         
+        function [f, mode_shape] = scale_nth_resonance(obj, n, gamma_P, gamma_n, gamma, aspect)
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f, mode_shape] = obj_sca.nth_resonance(n);
+            
+        end
+        
+        function [f_n, mode_shape] = scale_modal_analysis(obj, gamma_P, gamma_n, gamma, aspect)
+            %SCALED_MODAL_ANALYSIS performs modal analysis on a scaled
+            % Drivetrain object, returning only the N first resonances and
+            % mode shapes.
+            %
+            % See also: MODAL_ANALYSIS.
+            %
+            
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f_n, mode_shape] = obj_sca.modal_analysis;
+            
+        end
+        
+        function [f_n, mode_shape] = scale_resonances(obj, N, normalize, gamma_P, gamma_n, gamma, aspect)
+            %SCALED_RESONANCES returns the N first resonances and mode
+            % shapes of a scaled Drivetrain object. The resonances can be
+            % normalized or not.
+            %
+            
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f_n, mode_shape] = obj_sca.resonances(N, normalize);
+            
+        end
+        
+        function [SH, Sshaft] = scaled_safety_factors(obj_ref, gamma_P, gamma_n, gamma, aspect)
+            %SCALED_SAFETY_FACTORS returns the safety factors of a scaled
+            % Drivetrain object. Partial scaling is possible through the
+            % argument opt_idx, which should be equal to [] for scaling all
+            % parameters.
+            %
+            
+            obj_sca = obj_ref.scale_aspect(gamma_P, gamma_n, gamma, aspect);
+            
+            SH     = obj_sca.S_H;
+            Sshaft = obj_sca.S_shaft;
+
+        end
         
     end
     

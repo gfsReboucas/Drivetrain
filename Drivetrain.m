@@ -1,4 +1,4 @@
-classdef (HandleCompatible) Drivetrain
+classdef Drivetrain
     %DRIVETRAIN This class implements SOME procedures for the dynamic
     % analysis and scaling of drivetrains. The safety factor for surface 
     % durability (pitting) is calculated according to ISO 6336 [1, 2]. The
@@ -391,13 +391,6 @@ classdef (HandleCompatible) Drivetrain
             mode_shape = mode_shape(:, n);
         end
         
-        function [f, mode_shape] = scale_nth_resonance(obj, n, gamma_P, gamma_n, gamma, aspect)
-            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
-            
-            [f, mode_shape] = obj_sca.nth_resonance(n);
-            
-        end
-        
         function [f_n, mode_shape] = modal_analysis(obj)
             % MODAL_ANALYSIS calculates the resonances and mode shapes of
             % the Drivetrain via a symmertic eigenvalue problem [1]. The
@@ -459,20 +452,6 @@ classdef (HandleCompatible) Drivetrain
             
         end
         
-        function [f_n, mode_shape] = scale_modal_analysis(obj, gamma_P, gamma_n, gamma, aspect)
-            %SCALED_MODAL_ANALYSIS performs modal analysis on a scaled
-            % Drivetrain object, returning only the N first resonances and
-            % mode shapes.
-            %
-            % See also: MODAL_ANALYSIS.
-            %
-            
-            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
-            
-            [f_n, mode_shape] = obj_sca.modal_analysis;
-            
-        end
-        
         function [f_n, mode_shape] = resonances(obj, N, normalize)
             %RESONANCES returns the first N resonances and mode shapes of a
             % Drivetrain object. The resonances can be normalized or not.
@@ -495,18 +474,6 @@ classdef (HandleCompatible) Drivetrain
                 f_n = f_n./f_n(1);
                 f_n = f_n(2:end);
             end
-            
-        end
-        
-        function [f_n, mode_shape] = scale_resonances(obj, N, normalize, gamma_P, gamma_n, gamma, aspect)
-            %SCALED_RESONANCES returns the N first resonances and mode
-            % shapes of a scaled Drivetrain object. The resonances can be
-            % normalized or not.
-            %
-            
-            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
-            
-            [f_n, mode_shape] = obj_sca.resonances(N, normalize);
             
         end
         
@@ -688,20 +655,6 @@ classdef (HandleCompatible) Drivetrain
                 SH_vec(kdx)     = SH;
             end
             
-        end
-        
-        function [SH, Sshaft] = scaled_safety_factors(obj_ref, gamma_P, gamma_n, gamma, aspect)
-            %SCALED_SAFETY_FACTORS returns the safety factors of a scaled
-            % Drivetrain object. Partial scaling is possible through the
-            % argument opt_idx, which should be equal to [] for scaling all
-            % parameters.
-            %
-            
-            obj_sca = obj_ref.scale_aspect(gamma_P, gamma_n, gamma, aspect);
-            
-            SH     = obj_sca.S_H;
-            Sshaft = obj_sca.S_shaft;
-
         end
         
     end
