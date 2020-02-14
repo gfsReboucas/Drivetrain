@@ -56,6 +56,11 @@ classdef scaling_factor
             if isequal(obj,[])
                 % obj = ClassName.empty;
             end
+            
+            if(isrow(varargin{:}))
+                varargin{:} = varargin{:}';
+            end
+            
             switch(par(1).type)
                 case '.'
                     if length(par) == 1
@@ -63,12 +68,13 @@ classdef scaling_factor
                     elseif((length(par) == 2) && (strcmp(par(2).type, '()')))
                         obj.(par(1).subs)(par(2).subs{:}) = varargin{:};
                     else
-                    obj = builtin('subsasgn', obj, par, varargin{:});
+                        obj = builtin('subsasgn', obj, par, varargin{:});
                     end
                 case '()'
                     par_idx = par.subs{:};
+                    par_idx(par_idx == "*") = [];
 
-                    if(numel(par_idx) ~= numel(val))
+                    if(numel(par_idx) ~= numel(varargin{:}))
                         error("Name and value should have the same number of elements.");
                     end
 
@@ -82,7 +88,7 @@ classdef scaling_factor
                         idx = ismember(obj.name, par_idx);
                     end
                     
-                    obj.value(idx) = val;
+                    obj.value(idx) = varargin{:}';
                 otherwise
                     error("Operator [%s] not implemented yet.", par(1).type);
             end
@@ -116,7 +122,13 @@ classdef scaling_factor
                     par_idx = par.subs{:};
 
                     if(isnumeric(par_idx))
-                        if((min(par_idx) >= 1) && (max(par_idx) <= numel(obj)))
+                        if((min(par_idx) >= 1) && (max(par_idx) <= length(obj)))
+                            idx = par_idx;
+                        else
+                            error("Indexes out of range.");
+                        end
+                    elseif(islogical(par_idx))
+                        if((numel(par_idx) > 1) && (numel(par_idx) <= length(obj)))
                             idx = par_idx;
                         else
                             error("Indexes out of range.");

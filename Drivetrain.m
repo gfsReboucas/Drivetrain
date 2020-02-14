@@ -1,4 +1,4 @@
-classdef (HandleCompatible) Drivetrain
+classdef Drivetrain
     %DRIVETRAIN This class implements SOME procedures for the dynamic
     % analysis and scaling of drivetrains. The safety factor for surface 
     % durability (pitting) is calculated according to ISO 6336 [1, 2]. The
@@ -38,18 +38,9 @@ classdef (HandleCompatible) Drivetrain
         main_shaft  (1, :) Shaft                                                  = Shaft;      % [-],      Input Shaft
         m_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 110.0e3;    % [kg],     Rotor mass according to [3]
         J_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
-    end
-    
-    properties(SetAccess = private)
         m_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;     % [kg],     Generator mass according to [4]
         J_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;    % [kg-m^2], Generator mass moment of inertia [4]
         N_stg       (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;          % [-],      Number of stages
-        % to store the values of some dependent variables:
-        S_shaft_val (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
-        S_H_val     (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-    end
-    
-    properties
         dynamic_model (1, :) string {mustBeMember(dynamic_model, ["Thomson_ToV", ...
                                                                   "Kahraman_1994", ...
                                                                   "Lin_Parker_1999"])} = "Thomson_ToV"; % which dynamic model should be used to perform modal analysis on the Drivetrain.
@@ -61,6 +52,12 @@ classdef (HandleCompatible) Drivetrain
         u;       % [-],      Cumulative gear ratio
         S_H;     % [-],      Safety factor for surface durability (against pitting)
         S_shaft; % [-],      Safey factor for the shafts
+    end
+    
+    properties(SetAccess = private)
+        % to store the values of some dependent variables:
+        S_shaft_val (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
+        S_H_val     (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
     end
     
     methods

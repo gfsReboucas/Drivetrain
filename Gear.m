@@ -39,7 +39,7 @@ classdef Gear < Rack
     %    https://www.ntnu.edu/imt/lab/md-lab
     %
     
-    properties(SetAccess = private)
+    properties
         z         (1, :) {mustBeInteger, mustBeFinite}                    = 13;  % [-],    Number of teeth
         x         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Profile shift coefficient
         beta      (1, :) {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 0.0; % [deg.], Helix angle (at reference cylinder)
@@ -47,7 +47,7 @@ classdef Gear < Rack
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
     end
     
-    properties(Access = public)
+    properties(Access = protected)
         b         (1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 13;  % [mm],   Face width
     end
     
