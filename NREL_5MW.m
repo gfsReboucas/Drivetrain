@@ -1,4 +1,4 @@
-classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
+classdef NREL_5MW < Drivetrain
     %NREL_5MW This class contains some of the properties of the NREL 5MW
     % wind turbine gearbox proposed by Nejad et. al. [1]. More information
     % regarding the NREL 5MW wind turbine can be found at [2].
@@ -512,6 +512,25 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             % considering various aspects.
             %
             
+%             asp_tmp = reshape(aspect, 1, numel(aspect));
+%             flag = any(ismember(key_set, asp_tmp));
+%             
+%             if(~flag)
+%                 error("Aspect contains NO parameter related to NREL_5MW");
+%             end
+%             
+%             lin = size(aspect, 1);
+%             
+%             for idx = 1:lin
+%                 asp_tmp = aspect(lin, :);
+%                 asp_tmp = asp_tmp(asp_tmp ~= "*");
+%                 col = numel(asp_tmp);
+%                 
+%                 for jdx = 1:col
+%                     gamma_full(aspect(idx, jdx)) = gamma(idx, :);
+%                 end
+%             end
+%             
             %          Normal module, Face width, Length, Diameter (output shaft)
             key_set = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
                        "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
@@ -703,7 +722,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             aspect_1 = "stage";
             
             if(any(aspect_set == aspect_1))
-                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_1));
+                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_1));
                 
                 gamma_0 = mean(gamma_prev([1 2 5 6 9 10]));
                 gamma_1 = zeros(obj_ref.N_stg, 1);
@@ -736,7 +755,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             aspect_2 = "gear";
             
             if(any(aspect_set == aspect_2))
-                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_2));
+                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_2));
                 
                 gamma_0 = gamma_1([1 1]);
                 gamma_2 = zeros(2*obj_ref.N_stg, 1);
@@ -780,7 +799,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             opt_solver = optimoptions("fmincon", "display", "notify");
 
             if(any(aspect_set == aspect_3))
-                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_3));
+                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_3));
                 
                 f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
 
@@ -816,7 +835,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             aspect_4 = "K_MMI_det";
             
             if(any(aspect_set == aspect_4))
-                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_4));
+                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_4));
                 
                 f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
 
@@ -860,7 +879,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             aspect_5 = "Drivetrain";
             
             if(any(aspect_set == aspect_5))
-                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_5));
+                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_5));
                 
                 fprintf("\n\tto be done later...\n\n");
             else
