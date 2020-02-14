@@ -1,4 +1,4 @@
-classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
+classdef NREL_5MW < Drivetrain
     %NREL_5MW This class contains some of the properties of the NREL 5MW
     % wind turbine gearbox proposed by Nejad et. al. [1]. More information
     % regarding the NREL 5MW wind turbine can be found at [2].
@@ -28,7 +28,10 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
     % see also DRIVETRAIN.
     
     properties
-        gamma containers.Map;
+        gamma_P (1, 1)                {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % Scaling factor for the rated power
+        gamma_n (1, 1)                {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % Scaling factor for the rotor speed
+        param   (1, :) string;                                                                % Array containing the names of the parameters that can be scaled
+        gamma          scaling_factor; % Scaling factors
     end
     
     properties(Dependent)
@@ -49,14 +52,15 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
         L_3;  % Length of the output shaft, [mm]
         
         J_R;  % Mass moment of inertia of the rotor, [kg-m^2] 
-        J_G;  % Mass moment of inertia of the rotor, [kg-m^2]
+        J_G;  % Mass moment of inertia of the generator, [kg-m^2]
         
         d_s;  % Diameter of the main shaft, [mm]
         L_s;  % Length of the main shaft, [mm]
     end
 
     methods
-        function obj = NREL_5MW
+%         function obj = NREL_5MW(gamma_P, gamma_n, gamma) % varargin?
+        function obj = NREL_5MW()
             N_st = 3;
             stage = [Gear_Set Gear_Set Gear_Set];
             
@@ -77,17 +81,16 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             obj@Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G);
             obj.dynamic_model =  "Kahraman_1994";
             
-            %          Normal module, Face width, Length, Diameter (output shaft)
-            key_set = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                       "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                       "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-                       "J_R",                                    ... %   M. M. Inertia (rotor)
-                       "J_G",                                    ... %   M. M. Inertia (generator)
-                                                  "d_s" , "L_s"];    % Main shaft
-                   
-            val_set = ones(size(key_set));
-            
-            obj.gamma = containers.Map(key_set, val_set);
+            %        Gear stage               , Output shaft
+            %        Normal module, Face width, Length, Diameter
+            param = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
+                     "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
+                     "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
+                     "J_R",                                    ... %   M. M. Inertia (rotor)
+                     "J_G",                                    ... %   M. M. Inertia (generator)
+                                                "d_s" , "L_s"]';    % Main shaft
+
+            obj.gamma = scaling_factor(param, ones(size(param)));
         end
     end
     
@@ -291,71 +294,77 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
     
     %% Set methods:
     methods
-%         function obj = set.gamma(obj, val)
-%             obj.gamma = containers.Map(obj.gamma.keys, val);
-%         end
+        function obj = set.gamma_P(obj, val)
+            obj.gamma_P = val;
+            obj.P_rated = obj.P_rated*obj.gamma_P;
+        end
         
-        function set.m_n1(obj, val)
+        function obj = set.gamma_n(obj, val)
+            obj.gamma_n = val;
+            obj.n_rotor = obj.n_rotor*obj.gamma_n;
+        end
+        
+        function obj = set.m_n1(obj, val)
             obj.stage(1).m_n = val;
         end
         
-        function set.b_1(obj, val)
+        function obj = set.b_1(obj, val)
             obj.stage(1).b = val;
         end
         
-        function set.d_1(obj, val)
+        function obj = set.d_1(obj, val)
             obj.stage(1).out_shaft.d = val;
         end
         
-        function set.L_1(obj, val)
+        function obj = set.L_1(obj, val)
             obj.stage(1).out_shaft.L = val;
         end
         
-        function set.m_n2(obj, val)
+        function obj = set.m_n2(obj, val)
             obj.stage(2).m_n = val;
         end
         
-        function set.b_2(obj, val)
+        function obj = set.b_2(obj, val)
             obj.stage(2).b = val;
         end
         
-        function set.d_2(obj, val)
+        function obj = set.d_2(obj, val)
             obj.stage(2).out_shaft.d = val;
         end
         
-        function set.L_2(obj, val)
+        function obj = set.L_2(obj, val)
             obj.stage(2).out_shaft.L = val;
         end
         
-        function set.m_n3(obj, val)
+        function obj = set.m_n3(obj, val)
             obj.stage(3).m_n = val;
         end
         
-        function set.b_3(obj, val)
+        function obj = set.b_3(obj, val)
             obj.stage(3).b = val;
         end
         
-        function set.d_3(obj, val)
+        function obj = set.d_3(obj, val)
             obj.stage(3).out_shaft.d = val;
         end
         
-        function set.L_3(obj, val)
+        function obj = set.L_3(obj, val)
             obj.stage(3).out_shaft.L = val;
         end
         
-        function set.J_R(obj, val)
+        function obj = set.J_R(obj, val)
             obj.J_Rotor = val;
         end
         
-        function set.J_G(obj, val)
+        function obj = set.J_G(obj, val)
             obj.J_Gen = val;
         end
         
-        function set.d_s(obj, val)
+        function obj = set.d_s(obj, val)
             obj.main_shaft.d = val;
         end
         
-        function set.L_s(obj, val)
+        function obj = set.L_s(obj, val)
             obj.main_shaft.L = val;
         end
         
@@ -505,63 +514,56 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             obj_sca.dynamic_model = obj_ref.dynamic_model;
         end
         
-        function obj_sca = scale_aspect(obj_ref, gamma_P, gamma_n, gamma, aspect)
+        function obj_sca = scale_aspect(obj_ref, gamma_P, gamma_n, gm_val, aspect)
             %SCALE_ASPECT returns a NREL_5MW object scaled by the factors
             % gamma_P and gamma_n for its rated power and rotor speed. The
             % argument gamma can be used to scale the NREL_5MW
             % considering various aspects.
             %
             
-            %          Normal module, Face width, Length, Diameter (output shaft)
-            key_set = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                       "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                       "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-               ... %   Mass         , M. M. Iner, Mass  , M. M. Iner,
-                       "m_R"        , "J_R"     , "m_G" , "J_G", ... % Rotor and Generator
-               ... %   Length       , Diameter
-                       "d_s"        , "L_s"];                        % Main shaft
+            key_set = obj_ref.gamma.name;
             
-            gamma_full = containers.Map(key_set, ones(18, 1));
+            gamma_full = obj_ref.gamma;
             
             switch(aspect)
                 case "all"
-                    if(numel(gamma) ~= 18)
-                        error("gamma must have 18 elements.");
+                    if(numel(gm_val) ~= numel(obj_ref.gamma))
+                        error("gamma must have %d elements.", numel(obj_ref.gamma));
                     end
                     
-                    gamma_full = containers.Map(key_set, gamma);
+                    gamma_full = scaling_factor(key_set, gm_val);
                     
                 case "stage"
                     % scaled by stage (i.e. one scale factor for both the
                     % normal module and face width per stage).
                     
-                    if(numel(gamma) ~= 3)
+                    if(numel(gm_val) ~= 3)
                         error("gamma must have 3 elements.");
                     end
                     
-                    sub_key ={"m_n1", "b_1", ...
+                    sub_key =["m_n1", "b_1", ...
                               "m_n2", "b_2", ...
-                              "m_n3", "b_3"};
+                              "m_n3", "b_3"];
                           
                     for idx = 1:3
-                        gamma_full(sub_key{2*idx - 1}) = gamma(idx, :);
-                        gamma_full(sub_key{2*idx})     = gamma(idx, :);
+                        gamma_full(sub_key{2*idx - 1}) = gm_val(idx, :);
+                        gamma_full(sub_key{2*idx})     = gm_val(idx, :);
                     end
 
                 case "gear"
                     % scales only the gear dimensions (normal module and 
                     % face width).
                     
-                    if(numel(gamma) ~= 6)
+                    if(numel(gm_val) ~= 6)
                         error("gamma must have 6 elements.");
                     end
 
-                    sub_key ={"m_n1", "b_1", ...
+                    sub_key =["m_n1", "b_1", ...
                               "m_n2", "b_2", ...
-                              "m_n3", "b_3"};
+                              "m_n3", "b_3"];
                           
                     for idx = 1:6
-                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                        gamma_full(sub_key{idx}) = gm_val(idx, :);
                     end
 
                 case "K_MMI"
@@ -569,42 +571,42 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                     % stiffness (length) and mass moment of inertia of 
                     % rotor and generator.
 
-                    if(numel(gamma) ~= 2)
+                    if(numel(gm_val) ~= 2)
                         error("gamma must have 2 elements.");
                     end
                     
-                    sub_key = {"L_1", "L_2", "L_3", ...
+                    sub_key = ["L_1", "L_2", "L_3", ...
                                "J_R", "J_G", ...
-                               "L_s"};
+                               "L_s"];
                           
                     for idx = 1:3
-                        gamma_full(sub_key{idx}) = gamma(1, :);
+                        gamma_full(sub_key{idx}) = gm_val(1, :);
                     end
                     
                     for idx = 4:5
-                        gamma_full(sub_key{idx}) = gamma(2, :);
+                        gamma_full(sub_key{idx}) = gm_val(2, :);
                     end
                     
-                    gamma_full(sub_key{6}) = gamma(1, :);
+                    gamma_full(sub_key{6}) = gm_val(1, :);
                     
                 case "K_MMI_det"
                     % scales only parameters related to the shaft's 
                     % stiffness (length) and mass moment of inertia of 
                     % rotor and generator.
 
-                    if(numel(gamma) ~= 5)
+                    if(numel(gm_val) ~= 5)
                         error("gamma must have 6 elements.");
                     end
                     
-                    sub_key = {"L_1", "L_2", "L_3", ...
+                    sub_key = ["L_1", "L_2", "L_3", ...
                                "J_R", "J_G", ...
-                               "L_s"};
+                               "L_s"];
                           
                     for idx = 1:5
-                        gamma_full(sub_key{idx}) = gamma(idx, :);
+                        gamma_full(sub_key{idx}) = gm_val(idx, :);
                     end
                     
-                    gamma_full(sub_key{end}) = gamma(3, :);
+                    gamma_full(sub_key{end}) = gm_val(3, :);
                     
                 case "K_MMI_stage"
                     %scales parameters related to the stiffness and mass
@@ -630,14 +632,14 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                     % scales only parameters related to the shaft's 
                     % stiffness (length).
                     
-                    if(numel(gamma) ~= 3)
+                    if(numel(gm_val) ~= 3)
                         error("gamma must have 3 elements.");
                     end
                     
                     idx_L = find(contains(key_set, "L"));
                     
                     for idx = 1:3
-                        gamma_full(key_set{idx_L(idx)}) = gamma(idx, :);
+                        gamma_full(key_set{idx_L(idx)}) = gm_val(idx, :);
                     end
 
                 case "K"
@@ -645,16 +647,16 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                     % stiffness is assumed to be proportinal to the gear's 
                     % face width.
                     
-                    if(numel(gamma) ~= 6)
+                    if(numel(gm_val) ~= 6)
                         error("gamma must have 6 elements.");
                     end
 
-                    gamma_full(2,  :) = gamma(1, :); % face width, stage 01 
-                    gamma_full(3,  :) = gamma(2, :); % shaft length
-                    gamma_full(6,  :) = gamma(3, :); % face width, stage 02
-                    gamma_full(7,  :) = gamma(4, :); % shaft length
-                    gamma_full(10, :) = gamma(5, :); % face width, stage 03
-                    gamma_full(11, :) = gamma(6, :); % shaft length
+                    gamma_full(2,  :) = gm_val(1, :); % face width, stage 01 
+                    gamma_full(3,  :) = gm_val(2, :); % shaft length
+                    gamma_full(6,  :) = gm_val(3, :); % face width, stage 02
+                    gamma_full(7,  :) = gm_val(4, :); % shaft length
+                    gamma_full(10, :) = gm_val(5, :); % face width, stage 03
+                    gamma_full(11, :) = gm_val(6, :); % shaft length
 
                 otherwise
                     error("Option [%s] is NOT valid.", aspect);
@@ -677,27 +679,49 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             % used on the optimization process
             
             if(~isempty(varargin))
-                gamma_prev = varargin{1};
+                gamma_val_0 = varargin{1};
             else
-                gamma_prev = ones(18, 1)*0.5;
+                gamma_val_0 = ones(size(obj_ref.param))*0.5;
             end
             
+            gamma_0 = obj_ref.gamma;
+            field_set = fields(obj_ref.gamma);
+            
+            for idx = 1:numel(gamma_val_0)
+                gamma_0.(field_set{idx}) = gamma_val_0;
+            end
+            
+            obj_sca = obj_ref;
+            
             % Input scaling factors:
-            gamma_P = P_scale/obj_ref.P_rated;
-            gamma_n = n_R_scale/obj_ref.n_rotor;
+            obj_sca.gamma_P = P_scale/obj_ref.P_rated;
+            obj_sca.gamma_n = n_R_scale/obj_ref.n_rotor;
+            gamma_T = obj_sca.gamma_P/obj_sca.gamma_n;
             
             % Scaling factors from dimensional analysis:
-            gamma_length = nthroot(gamma_P,     3.0);
-            gamma_MMI    = power(  gamma_P, 5.0/3.0);
+            gamma_length = nthroot(      gamma_T,     3.0);
+            gamma_MMI    = power(obj_sca.gamma_P, 5.0/3.0);
             
             S_H_ref = obj_ref.S_H;
+            f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
+            
+            name = fields(aspect_set);
+            
+            fprintf("Scaling NREL 5MW drivetrain with rated power %.1f kW, which is %.2f %% of its reference.\n", obj_sca.gamma_P*[obj_ref.P_rated 100.0]);
             
             id_1 = "prog:input";
             id_2 = "MATLAB:nearlySingularMatrix";
             warning("off", id_1);
             warning("off", id_2);
-            
-            fprintf("Scaling NREL 5MW drivetrain with rated power %.1f kW, which is %.2f %% of its reference.\n", gamma_P*[obj_ref.P_rated 100.0]);
+            for idx = 1:numel(name)
+                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(name{idx}));
+                
+                [lin, col] = size(aspect_set.(name{idx}));
+                
+                gamma_tmp = 0;
+            end
+            warning("on", id_1);
+            warning("on", id_2);
             
             %% 1. Stage scaling:
             aspect_1 = "stage";
@@ -705,13 +729,13 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             if(any(aspect_set == aspect_1))
                 fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_1));
                 
-                gamma_0 = mean(gamma_prev([1 2 5 6 9 10]));
+                gamma_0 = mean(gamma_val_0([1 2 5 6 9 10]));
                 gamma_1 = zeros(obj_ref.N_stg, 1);
                 res_1   = zeros(obj_ref.N_stg, 1);
 
                 for idx = 1:obj_ref.N_stg
                     jdx = 2*idx + (-1:0);
-                    n_stage = obj_ref.n_out(idx)*gamma_n;
+                    n_stage = obj_ref.n_out(idx)*obj_sca.gamma_n;
 
                     [~, gamma_1(idx, :), res_1(idx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_1, gamma_0);
                     gamma_0 = gamma_1(idx, :);
@@ -722,9 +746,9 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                 
                 res_1 = Inf(3, 1);
             else
-                gamma_1 = [mean(gamma_prev([1  2]));
-                           mean(gamma_prev([5  6]));
-                           mean(gamma_prev([9 10]))];
+                gamma_1 = [mean(gamma_val_0([1  2]));
+                           mean(gamma_val_0([5  6]));
+                           mean(gamma_val_0([9 10]))];
                        
                 res_1 = Inf(3, 1);
             end
@@ -744,7 +768,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
 
                 for idx = 1:obj_ref.N_stg
                     jdx = 2*idx + (-1:0);
-                    n_stage = obj_ref.n_out(idx)*gamma_n;
+                    n_stage = obj_ref.n_out(idx)*obj_sca.gamma_n;
 
                     [~, gamma_2(jdx, :), res_2(jdx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_2, gamma_0);
                     gamma_0 = gamma_2(jdx, :);
@@ -758,7 +782,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                 
                 res_2 = Inf(6, 1);
             else
-                gamma_2 = gamma_prev([1 2 5 6 9 10]);
+                gamma_2 = gamma_val_0([1 2 5 6 9 10]);
                 res_2 = Inf(6, 1);
             end
             
@@ -772,7 +796,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                 res_12   = diag(idx_min)*res_1   + diag(~idx_min)*res_2;
             end
             
-            obj_12 = obj_ref.scale_aspect(gamma_P, gamma_n, gamma_12, aspect_2);
+            obj_12 = obj_ref.scale_aspect(obj_sca.gamma_P, obj_sca.gamma_n, gamma_12, aspect_2);
             
             %% 3. Shaft stiffness and Mass moment of inertia of rotor and generator:
             aspect_3 = "K_MMI";
@@ -793,8 +817,8 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                 gamma_min = ones(2, 1)*1.0e-6;
                 gamma_Max = ones(2, 1);
 
-                gamma_0 = [mean(gamma_prev([4 8 12 18])); ... % length
-                           mean(gamma_prev([14 16]))]; % mass mom. inertia
+                gamma_0 = [mean(gamma_val_0([4 8 12 18])); ... % length
+                           mean(gamma_val_0([14 16]))]; % mass mom. inertia
 
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
@@ -804,8 +828,8 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                            gamma_MMI];
                 res_3 = Inf;
             else
-                gamma_3 = [mean(gamma_prev([4 8 12 18]));
-                           mean(gamma_prev([    14 16]))];
+                gamma_3 = [mean(gamma_val_0([4 8 12 18]));
+                           mean(gamma_val_0([    14 16]))];
                        
                 res_3 = Inf;
             end
@@ -840,7 +864,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                 
                 res_4 = Inf;
             else
-                gamma_4 = gamma_prev([4 8 12 14 16]);
+                gamma_4 = gamma_val_0([4 8 12 14 16]);
                 
                 res_4 = Inf;
             end
@@ -874,8 +898,8 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             res_pp = res_pp(idx);
             aspect_set = aspect_set(idx);
             
-            fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", gamma_P*obj_ref.P_rated, ...
-                                                          gamma_P*100.0);
+            fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", obj_sca.gamma_P*[obj_ref.P_rated, ...
+                                                                           100.0]);
 
             if(~isempty(res_pp))
                 [~, sorted_idx] = sort(res_pp);
@@ -889,7 +913,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
                 fprintf("\tScaled version obtained by dimensional analysis scaling rules.\n");
             end
             
-            gamma_d = nthroot(gamma_P/gamma_n, 3.0);
+            gamma_d = nthroot(obj_sca.gamma_P/obj_sca.gamma_n, 3.0);
             
             gamma_val = [gamma_12(1), gamma_12(2), gamma_d   , gamma_34(1), ... % Stage 01
                          gamma_12(3), gamma_12(4), gamma_d   , gamma_34(2), ... % Stage 02
@@ -921,7 +945,7 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             gamma_sep.KJ    = gamma_3;
             gamma_sep.KJ2   = gamma_4;
             
-            obj_sca = obj_ref.scale_all(gamma_P, gamma_n, gamma);
+            obj_sca = obj_ref.scale_all(obj_sca.gamma_P, obj_sca.gamma_n, gamma);
             
             warning("on", id_1);
             warning("on", id_2);
@@ -1083,6 +1107,52 @@ classdef NREL_5MW < Drivetrain % matlab.mixin.SetGet &
             
         end
         
+        function [f, mode_shape] = scale_nth_resonance(obj, n, gamma_P, gamma_n, gamma, aspect)
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f, mode_shape] = obj_sca.nth_resonance(n);
+            
+        end
+        
+        function [f_n, mode_shape] = scale_modal_analysis(obj, gamma_P, gamma_n, gamma, aspect)
+            %SCALED_MODAL_ANALYSIS performs modal analysis on a scaled
+            % Drivetrain object, returning only the N first resonances and
+            % mode shapes.
+            %
+            % See also: MODAL_ANALYSIS.
+            %
+            
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f_n, mode_shape] = obj_sca.modal_analysis;
+            
+        end
+        
+        function [f_n, mode_shape] = scale_resonances(obj, N, normalize, gamma_P, gamma_n, gamma, aspect)
+            %SCALED_RESONANCES returns the N first resonances and mode
+            % shapes of a scaled Drivetrain object. The resonances can be
+            % normalized or not.
+            %
+            
+            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            
+            [f_n, mode_shape] = obj_sca.resonances(N, normalize);
+            
+        end
+        
+        function [SH, Sshaft] = scaled_safety_factors(obj_ref, gamma_P, gamma_n, gamma, aspect)
+            %SCALED_SAFETY_FACTORS returns the safety factors of a scaled
+            % Drivetrain object. Partial scaling is possible through the
+            % argument opt_idx, which should be equal to [] for scaling all
+            % parameters.
+            %
+            
+            obj_sca = obj_ref.scale_aspect(gamma_P, gamma_n, gamma, aspect);
+            
+            SH     = obj_sca.S_H;
+            Sshaft = obj_sca.S_shaft;
+
+        end
         
     end
     
