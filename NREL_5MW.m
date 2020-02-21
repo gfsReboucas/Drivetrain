@@ -15,7 +15,7 @@ classdef NREL_5MW < Drivetrain
     % Tande, K. Uhlen and K. Merz). doi:10.1002/9781119097808.ch3
     %
     % written by:
-    % Geraldo Rebouças
+    % Geraldo Rebouï¿½as
     % - Geraldo.Reboucas@ntnu.no OR
     % - gfs.reboucas@gmail.com
     %
@@ -28,66 +28,77 @@ classdef NREL_5MW < Drivetrain
     % see also DRIVETRAIN.
     
     properties
-        gamma containers.Map;
+        gamma_P (1, 1)                {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % Scaling factor for the rated power
+        gamma_n (1, 1)                {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % Scaling factor for the rotor speed
+        param   (1, :) string;                                                                % Array containing the names of the parameters that can be scaled
+        gamma          scaling_factor; % Scaling factors
     end
     
-    properties(Dependent)
-        % Stage 1:
-        m_n1; % Normal module, [mm]
-        b_1;  % Face width, [mm]
-        d_1;  % Diameter of the output shaft, [mm]
-        L_1;  % Length of the output shaft, [mm]
-        % Stage 2:
-        m_n2; % Normal module, [mm]
-        b_2;  % Face width, [mm]
-        d_2;  % Diameter of the output shaft, [mm]
-        L_2;  % Length of the output shaft, [mm]
-        % Stage 3:
-        m_n3; % Normal module, [mm]
-        b_3;  % Face width, [mm]
-        d_3;  % Diameter of the output shaft, [mm]
-        L_3;  % Length of the output shaft, [mm]
-        
-        J_R;  % Mass moment of inertia of the rotor, [kg-m^2] 
-        J_G;  % Mass moment of inertia of the rotor, [kg-m^2]
-        
-        d_s;  % Diameter of the main shaft, [mm]
-        L_s;  % Length of the main shaft, [mm]
-    end
-
     methods
-        function obj = NREL_5MW
+        function obj = NREL_5MW(varargin)
+            
             N_st = 3;
             stage = [Gear_Set Gear_Set Gear_Set];
             
-            for idx = 1:N_st
-                stage(idx) =  NREL_5MW.gear_stage(idx);
+            %        Gear stage               , Output shaft
+            %        Normal module, Face width, Length, Diameter
+            param = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
+                     "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
+                     "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
+                     "J_R",                                    ... %   M. M. Inertia (rotor)
+                     "J_G",                                    ... %   M. M. Inertia (generator)
+                                                "d_s" , "L_s"]';    % Main shaft
+                                            
+            if(isempty(varargin))
+
+                for idx = 1:N_st
+                    stage(idx) =  NREL_5MW.gear_stage(idx);
+                end
+
+                P_r = 5.0e3; % [kW], Rated power
+                n_r = 12.1; % [1/min.], Input speed
+                inp_shaft = NREL_5MW.shaft(0);
+
+                m_R = 110.0e3;      J_R = 57231535.0; % according to [1, 3]
+                m_G = 1900.0;       J_G = 534.116;
+
+%                 r_R: 3.226e+04	h_R: 4.297e+00 [mm]
+%                 r_G: 7.498e+02	h_G: 1.374e+02 [mm]
+                gm_val = ones(size(param));
+                
+            elseif(length(varargin) == 3)
+                if(isa(varargin{3}, "scaling_factor"))
+                    gm_P = varargin{1};
+                    gm_n = varargin{2};
+                    gm   = varargin{3};
+                    
+                    for idx = 1:N_st
+                        stg = NREL_5MW.gear_stage(idx);
+                        
+                        jdx = 4*idx + (-3:0);
+                        gm_stg = gm(jdx);
+                        stage(idx) = stg.scale_aspect(gm_stg, "Gear_Set");
+                    end
+                    
+                    P_r = gm_P*5.0e3; % [kW], Rated power
+                    n_r = gm_n*12.1; % [1/min.], Input speed
+                    
+                    LSS = NREL_5MW.shaft(0);
+                    
+                    inp_shaft = Shaft(LSS.d*gm("d_s"), ...
+                                      LSS.L*gm("L_s"));
+                                  
+                    m_R = 110.0e3;      J_R = 57231535.0*gm("J_R"); % according to [1, 3]
+                    m_G = 1900.0;       J_G = 534.116*gm("J_G");
+                    
+                    gm_val = gm.value;
+                end
             end
-            
-            P_r = 5.0e3; % [kW], Rated power
-            n_r = 12.1; % [1/min.], Input speed
-            inp_shaft = NREL_5MW.shaft(0);
-            
-            m_R = 110.0e3;      J_R = 57231535.0; % according to [1, 3]
-            m_G = 1900.0;       J_G = 534.116;
-            
-%             r_R: 3.226e+04	h_R: 4.297e+00 [mm]
-%             r_G: 7.498e+02	h_G: 1.374e+02 [mm]
             
             obj@Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G);
             obj.dynamic_model =  "Kahraman_1994";
             
-            %          Normal module, Face width, Length, Diameter (output shaft)
-            key_set = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                       "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                       "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-                       "J_R",                                    ... %   M. M. Inertia (rotor)
-                       "J_G",                                    ... %   M. M. Inertia (generator)
-                                                  "d_s" , "L_s"];    % Main shaft
-                   
-            val_set = ones(size(key_set));
-            
-            obj.gamma = containers.Map(key_set, val_set);
+            obj.gamma = scaling_factor(param, gm_val);
         end
     end
     
@@ -291,145 +302,21 @@ classdef NREL_5MW < Drivetrain
     
     %% Set methods:
     methods
-%         function obj = set.gamma(obj, val)
-%             obj.gamma = containers.Map(obj.gamma.keys, val);
-%         end
-        
-        function set.m_n1(obj, val)
-            obj.stage(1).m_n = val;
+        function obj = set.gamma_P(obj, val)
+            obj.gamma_P = val;
+            obj.P_rated = obj.P_rated*obj.gamma_P;
         end
         
-        function set.b_1(obj, val)
-            obj.stage(1).b = val;
+        function obj = set.gamma_n(obj, val)
+            obj.gamma_n = val;
+            obj.n_rotor = obj.n_rotor*obj.gamma_n;
         end
-        
-        function set.d_1(obj, val)
-            obj.stage(1).out_shaft.d = val;
-        end
-        
-        function set.L_1(obj, val)
-            obj.stage(1).out_shaft.L = val;
-        end
-        
-        function set.m_n2(obj, val)
-            obj.stage(2).m_n = val;
-        end
-        
-        function set.b_2(obj, val)
-            obj.stage(2).b = val;
-        end
-        
-        function set.d_2(obj, val)
-            obj.stage(2).out_shaft.d = val;
-        end
-        
-        function set.L_2(obj, val)
-            obj.stage(2).out_shaft.L = val;
-        end
-        
-        function set.m_n3(obj, val)
-            obj.stage(3).m_n = val;
-        end
-        
-        function set.b_3(obj, val)
-            obj.stage(3).b = val;
-        end
-        
-        function set.d_3(obj, val)
-            obj.stage(3).out_shaft.d = val;
-        end
-        
-        function set.L_3(obj, val)
-            obj.stage(3).out_shaft.L = val;
-        end
-        
-        function set.J_R(obj, val)
-            obj.J_Rotor = val;
-        end
-        
-        function set.J_G(obj, val)
-            obj.J_Gen = val;
-        end
-        
-        function set.d_s(obj, val)
-            obj.main_shaft.d = val;
-        end
-        
-        function set.L_s(obj, val)
-            obj.main_shaft.L = val;
-        end
-        
     end
     %% Get methods:
     methods
 %         function val = get.gamma(obj)
 %             val = obj.gamma;
 %         end
-        
-        function val = get.m_n1(obj)
-            val = obj.stage(1).m;
-        end
-        
-        function val = get.b_1(obj)
-            val = obj.stage(1).b;
-        end
-        
-        function val = get.d_1(obj)
-            val = obj.stage(1).out_shaft.d;
-        end
-        
-        function val = get.L_1(obj)
-            val = obj.stage(1).out_shaft.L;
-        end
-        
-        function val = get.m_n2(obj)
-            val = obj.stage(2).m;
-        end
-        
-        function val = get.b_2(obj)
-            val = obj.stage(2).b;
-        end
-        
-        function val = get.d_2(obj)
-            val = obj.stage(2).out_shaft.d;
-        end
-        
-        function val = get.L_2(obj)
-            val = obj.stage(2).out_shaft.L;
-        end
-        
-        function val = get.m_n3(obj)
-            val = obj.stage(3).m_n;
-        end
-        
-        function val = get.b_3(obj)
-            val = obj.stage(3).b;
-        end
-        
-        function val = get.d_3(obj)
-            val = obj.stage(3).out_shaft.d;
-        end
-        
-        function val = get.L_3(obj)
-            val = obj.stage(3).out_shaft.L;
-        end
-        
-        function val = get.J_R(obj)
-            val = obj.J_Rotor;
-        end
-        
-        function val = get.J_G(obj)
-            val = obj.J_Gen;
-        end
-        
-        function val = get.d_s(obj)
-            val = obj.main_shaft.d;
-        end
-        
-        function val = get.L_s(obj)
-            val = obj.main_shaft.L;
-        end
-        
     end
     
     %% Scaling calculations:
@@ -447,15 +334,15 @@ classdef NREL_5MW < Drivetrain
             % output shaft in stage 03;
             %
             
-            if((length(gamma) ~= 18) || (~isa(gamma, "containers.Map")))
-                error("gamma must be a container with 18 elements.");
+            if((length(gamma) ~= length(obj_ref.gamma)) || (~isa(gamma, "scaling_factor")))
+                error("gamma must be a scaling_factor object with %d elements.", length(obj_ref.gamma));
             end
             
-            key_set = obj_ref.gamma.keys;
+            key_set = obj_ref.gamma.name;
             
-            gamma_mR  = gamma("m_R");
+            gamma_mR  = 1.0; %gamma("m_R");
             gamma_JR  = gamma("J_R");
-            gamma_mG  = gamma("m_G");
+            gamma_mG  = 1.0; %gamma("m_G");
             gamma_JG  = gamma("J_G");
 %             gamma_Ls  = gamma("L_s");
 %             gamma_ds  = gamma("d_s");
@@ -467,22 +354,19 @@ classdef NREL_5MW < Drivetrain
             gamma_ds = nthroot(gamma_Torque, 3.0);
             
             % Shaft diameters are scaled in the same way
-            idx_dd = find(contains(key_set, "d"));
+            idx_dd = contains(key_set, "d");
+            idx_LL = contains(key_set, "L");
             
-            for idx = idx_dd
-                gamma(key_set(idx)) = gamma_ds;
-            end
+            gamma(key_set(idx_dd)) = gamma_ds*ones(sum(idx_dd), 1);
+            
+            gamma_dd = gamma(key_set(idx_dd));
+            gamma_LL = gamma(key_set(idx_LL));
             
             stage_sca = [Gear_Set, Gear_Set, Gear_Set];
             
-            idx_LL = find(contains(key_set, "L"));
-            
-            gamma_dd = cell2mat(values(gamma, {key_set{idx_dd}}))';%#ok<*FNDSB>
-            gamma_LL = cell2mat(values(gamma, {key_set{idx_LL}}))';
-            
             for idx = 1:obj_ref.N_stg
                 jdx = 4*idx + (-3:0);
-                gamma_stage = cell2mat(values(gamma, {key_set{jdx}}));
+                gamma_stage = gamma(key_set(jdx));
                 
                 stage_sca(idx) = obj_ref.stage(idx).scale_aspect(gamma_stage, "Gear_Set");
             end
@@ -505,182 +389,82 @@ classdef NREL_5MW < Drivetrain
             obj_sca.dynamic_model = obj_ref.dynamic_model;
         end
         
-        function obj_sca = scale_aspect(obj_ref, gamma_P, gamma_n, gamma, aspect)
+        function obj_sca = scale_aspect(obj_ref, gamma_P, gamma_n, gm_val, aspect)
             %SCALE_ASPECT returns a NREL_5MW object scaled by the factors
             % gamma_P and gamma_n for its rated power and rotor speed. The
             % argument gamma can be used to scale the NREL_5MW
             % considering various aspects.
             %
             
-%             asp_tmp = reshape(aspect, 1, numel(aspect));
-%             flag = any(ismember(key_set, asp_tmp));
-%             
-%             if(~flag)
-%                 error("Aspect contains NO parameter related to NREL_5MW");
-%             end
-%             
-%             lin = size(aspect, 1);
-%             
-%             for idx = 1:lin
-%                 asp_tmp = aspect(lin, :);
-%                 asp_tmp = asp_tmp(asp_tmp ~= "*");
-%                 col = numel(asp_tmp);
-%                 
-%                 for jdx = 1:col
-%                     gamma_full(aspect(idx, jdx)) = gamma(idx, :);
-%                 end
-%             end
-%             
-            %          Normal module, Face width, Length, Diameter (output shaft)
-            key_set = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                       "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                       "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-               ... %   Mass         , M. M. Iner, Mass  , M. M. Iner,
-                       "m_R"        , "J_R"     , "m_G" , "J_G", ... % Rotor and Generator
-               ... %   Length       , Diameter
-                       "d_s"        , "L_s"];                        % Main shaft
+            key_set = obj_ref.gamma.name;
             
-            gamma_full = containers.Map(key_set, ones(18, 1));
+            gamma_full = obj_ref.gamma;
             
-            switch(aspect)
-                case "all"
-                    if(numel(gamma) ~= 18)
-                        error("gamma must have 18 elements.");
-                    end
-                    
-                    gamma_full = containers.Map(key_set, gamma);
-                    
-                case "stage"
-                    % scaled by stage (i.e. one scale factor for both the
-                    % normal module and face width per stage).
-                    
-                    if(numel(gamma) ~= 3)
-                        error("gamma must have 3 elements.");
-                    end
-                    
-                    sub_key ={"m_n1", "b_1", ...
-                              "m_n2", "b_2", ...
-                              "m_n3", "b_3"};
-                          
-                    for idx = 1:3
-                        gamma_full(sub_key{2*idx - 1}) = gamma(idx, :);
-                        gamma_full(sub_key{2*idx})     = gamma(idx, :);
-                    end
-
-                case "gear"
-                    % scales only the gear dimensions (normal module and 
-                    % face width).
-                    
-                    if(numel(gamma) ~= 6)
-                        error("gamma must have 6 elements.");
-                    end
-
-                    sub_key ={"m_n1", "b_1", ...
-                              "m_n2", "b_2", ...
-                              "m_n3", "b_3"};
-                          
-                    for idx = 1:6
-                        gamma_full(sub_key{idx}) = gamma(idx, :);
-                    end
-
-                case "K_MMI"
-                    % scales only parameters related to the shaft's 
-                    % stiffness (length) and mass moment of inertia of 
-                    % rotor and generator.
-
-                    if(numel(gamma) ~= 2)
-                        error("gamma must have 2 elements.");
-                    end
-                    
-                    sub_key = {"L_1", "L_2", "L_3", ...
-                               "J_R", "J_G", ...
-                               "L_s"};
-                          
-                    for idx = 1:3
-                        gamma_full(sub_key{idx}) = gamma(1, :);
-                    end
-                    
-                    for idx = 4:5
-                        gamma_full(sub_key{idx}) = gamma(2, :);
-                    end
-                    
-                    gamma_full(sub_key{6}) = gamma(1, :);
-                    
-                case "K_MMI_det"
-                    % scales only parameters related to the shaft's 
-                    % stiffness (length) and mass moment of inertia of 
-                    % rotor and generator.
-
-                    if(numel(gamma) ~= 5)
-                        error("gamma must have 6 elements.");
-                    end
-                    
-                    sub_key = {"L_1", "L_2", "L_3", ...
-                               "J_R", "J_G", ...
-                               "L_s"};
-                          
-                    for idx = 1:5
-                        gamma_full(sub_key{idx}) = gamma(idx, :);
-                    end
-                    
-                    gamma_full(sub_key{end}) = gamma(3, :);
-                    
-                case "K_MMI_stage"
-                    %scales parameters related to the stiffness and mass
-                    % moment of inertia, including the gear stages
-                    % min |1 - f(sca)/f(ref)|^2 = f(x)
-                    % subjected to: S(min) - S(sca) <= 0 = g(x)
-                    %               S(ref) - S(sca)  = 0 = h(x)
-                    
-%                     sub_key = {"m_n1", "b_1", ...
-%                                "m_n2", "b_2", ...
-%                                "m_n3", "b_3", ...
-%                                "L_1" , "L_2", "L_3", ...
-%                                "J_R", "J_G", ...
-%                                "L_s"};
-%                     for idx = 1:3
-%                         gamma_full()
-%                     end
-                    
-%                 case "K_MMI_gear"
-%                 case "M_MMI_stage_det"
-%                 case "K_MMI_gear_det"
-                case "K_shaft"
-                    % scales only parameters related to the shaft's 
-                    % stiffness (length).
-                    
-                    if(numel(gamma) ~= 3)
-                        error("gamma must have 3 elements.");
-                    end
-                    
-                    idx_L = find(contains(key_set, "L"));
-                    
-                    for idx = 1:3
-                        gamma_full(key_set{idx_L(idx)}) = gamma(idx, :);
-                    end
-
-                case "K"
-                    % scales only stiffness-related parameters. The mesh
-                    % stiffness is assumed to be proportinal to the gear's 
-                    % face width.
-                    
-                    if(numel(gamma) ~= 6)
-                        error("gamma must have 6 elements.");
-                    end
-
-                    gamma_full(2,  :) = gamma(1, :); % face width, stage 01 
-                    gamma_full(3,  :) = gamma(2, :); % shaft length
-                    gamma_full(6,  :) = gamma(3, :); % face width, stage 02
-                    gamma_full(7,  :) = gamma(4, :); % shaft length
-                    gamma_full(10, :) = gamma(5, :); % face width, stage 03
-                    gamma_full(11, :) = gamma(6, :); % shaft length
-
-                otherwise
-                    error("Option [%s] is NOT valid.", aspect);
+            asp_tmp = reshape(aspect, 1, numel(aspect));
+            flag = any(ismember(key_set, asp_tmp));
+            
+            if(~flag)
+                error("Aspect contains NO parameter related to NREL_5MW.");
             end
             
-            obj_sca = obj_ref.scale_all(gamma_P, gamma_n, gamma_full);
+            lin = size(aspect, 1);
             
+            if(numel(gm_val) ~= lin)
+                error("gm_val should have the same number of lines of aspect.")
+            end
+            
+            for idx = 1:lin
+                asp_tmp = aspect(idx, :);
+                asp_tmp = asp_tmp(asp_tmp ~= "*");
+                col = numel(asp_tmp);
+                
+                for jdx = 1:col
+                    gamma_full(aspect(idx, jdx)) = gm_val(idx, :);
+                end
+            end
+            
+            % Scaling the shaft's diameter:
+            gamma_T = gamma_P/gamma_n; % Applied torque scaling factor
+            gamma_ds = nthroot(gamma_T, 3.0);
+
+            idx_D = contains(key_set, "d");
+            gamma_full(key_set(idx_D)) = gamma_ds*ones(sum(idx_D), 1);
+            
+            obj_sca = NREL_5MW(gamma_P, gamma_n, gamma_full);
+            
+            % Examples of aspects:
+            % stage:
+            % ["m_n1", "b_1"; ...
+            %  "m_n2", "b_2"; ...
+            %  "m_n3", "b_3"];
+            % gear:
+            % reshape(stage', numel(stage), 1);
+            % K_MMI:
+            % ["L_1", "L_2", "L_3", "L_s"; ...
+            %  "J_R", "J_G", "*",   "*" ]; % '*' are used to complete the
+            %  string array.
+            %
+            
+            % [TODO]:
+            % "K_MMI_stage": scales parameters related to the stiffness and
+            % mass moment of inertia, including the gear stages:
+            % min |1 - f(sca)/f(ref)|^2 = f(x)
+            % subjected to: S(min) - S(sca) <= 0 = g(x)
+            %               S(ref) - S(sca)  = 0 = h(x)
+            % ["m_n1", "b_1"; ...
+            %  "m_n2", "b_2"; ...
+            %  "m_n3", "b_3"; ...
+            %  "L_1" , "L_2", "L_3"; ...
+            %  "J_R", "J_G"; ...
+            %  "L_s"];
+            % "K_MMI_gear"
+            % "M_MMI_stage_det"
+            % "K_MMI_gear_det"
+            % "K_shaft" : scales only parameters related to the shaft's 
+            % "K": scales only stiffness-related parameters. The mesh
+            % stiffnesss is assumed to be proportinal to the gear's face
+            % width.
+
         end
         
         function [obj_sca, gamma_val, res, gamma_sep] = scaled_version(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set, varargin)
@@ -696,190 +480,214 @@ classdef NREL_5MW < Drivetrain
             % used on the optimization process
             
             if(~isempty(varargin))
-                gamma_prev = varargin{1};
+                gamma_prev_val = varargin{1};
             else
-                gamma_prev = ones(18, 1)*0.5;
+                gamma_prev_val = ones(size(obj_ref.gamma.name))*0.5;
             end
             
+            gamma_prev = scaling_factor(obj_ref.gamma.name, gamma_prev_val);
+            
             % Input scaling factors:
-            gamma_P = P_scale/obj_ref.P_rated;
-            gamma_n = n_R_scale/obj_ref.n_rotor;
+            gm_P = P_scale/obj_ref.P_rated;
+            gm_n = n_R_scale/obj_ref.n_rotor;
+            gm_T = gm_P/gm_n;
             
             % Scaling factors from dimensional analysis:
-            gamma_length = nthroot(gamma_P,     3.0);
-            gamma_MMI    = power(  gamma_P, 5.0/3.0);
+            gamma_length = nthroot(gm_T,     3.0);
+            gamma_MMI    = power(  gm_P, 5.0/3.0);
             
             S_H_ref = obj_ref.S_H;
+            f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
+            
+            fprintf("Scaling NREL 5MW drivetrain to rated power %.1f kW, which is %.2f %% of its reference.\n", gm_P*[obj_ref.P_rated 100.0]);
             
             id_1 = "prog:input";
             id_2 = "MATLAB:nearlySingularMatrix";
             warning("off", id_1);
             warning("off", id_2);
             
-            fprintf("Scaling NREL 5MW drivetrain with rated power %.1f kW, which is %.2f %% of its reference.\n", gamma_P*[obj_ref.P_rated 100.0]);
-            
             %% 1. Stage scaling:
             aspect_1 = "stage";
             
-            if(any(aspect_set == aspect_1))
-                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_1));
+            if(any(fields(aspect_set) == aspect_1))
+                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_1));
                 
-                gamma_0 = mean(gamma_prev([1 2 5 6 9 10]));
-                gamma_1 = zeros(obj_ref.N_stg, 1);
-                res_1   = zeros(obj_ref.N_stg, 1);
+                gm_01 = mean(gamma_prev(["m_n1" "b_1" "m_n2" "b_2" "m_n3" "b_3"]));
+                gm_val_1  = zeros(obj_ref.N_stg, 1);
+                res_1 = zeros(obj_ref.N_stg, 1);
 
                 for idx = 1:obj_ref.N_stg
                     jdx = 2*idx + (-1:0);
-                    n_stage = obj_ref.n_out(idx)*gamma_n;
+                    n_stage = obj_ref.n_out(idx)*gm_n;
 
-                    [~, gamma_1(idx, :), res_1(idx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_1, gamma_0);
-                    gamma_0 = gamma_1(idx, :);
+                    [~, gm_val_1(idx, :), res_1(idx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_1, gm_01);
+                    gm_01 = gm_val_1(idx, :);
                 end
-            elseif(any(aspect_set == "DA"))
+            elseif(any(fields(aspect_set) == "DA"))
                 m_n_tmp =[obj_ref.stage.m_n]';
-                gamma_1 = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
+                gm_val_1 = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
                 
                 res_1 = Inf(3, 1);
             else
-                gamma_1 = [mean(gamma_prev([1  2]));
-                           mean(gamma_prev([5  6]));
-                           mean(gamma_prev([9 10]))];
+                gm_val_1 = [mean(gamma_prev(["m_n1" "b_1"]));
+                            mean(gamma_prev(["m_n2" "b_2"]));
+                            mean(gamma_prev(["m_n3" "b_3"]))];
                        
                 res_1 = Inf(3, 1);
             end
             
-            gamma_1 = gamma_1([1 1 2 2 3 3]);
-            res_1   = res_1  ([1 1 2 2 3 3]);
+            gm_val_1  =  gm_val_1([1 1 2 2 3 3]);
+            res_1     = res_1([1 1 2 2 3 3]);
             
             %% 2. Gears:
             aspect_2 = "gear";
             
-            if(any(aspect_set == aspect_2))
-                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_2));
+            if(any(fields(aspect_set) == aspect_2))
+                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_2));
                 
-                gamma_0 = gamma_1([1 1]);
-                gamma_2 = zeros(2*obj_ref.N_stg, 1);
-                res_2   = zeros(2*obj_ref.N_stg, 1);
+                gm_02     = gm_val_1([1 1]);
+                gm_val_2  = zeros(2*obj_ref.N_stg, 1);
+                res_2     = zeros(2*obj_ref.N_stg, 1);
 
                 for idx = 1:obj_ref.N_stg
                     jdx = 2*idx + (-1:0);
-                    n_stage = obj_ref.n_out(idx)*gamma_n;
+                    n_stage = obj_ref.n_out(idx)*gm_n;
 
-                    [~, gamma_2(jdx, :), res_2(jdx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_2, gamma_0);
-                    gamma_0 = gamma_2(jdx, :);
+                    [~, gm_val_2(jdx, :), res_2(jdx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_2, gm_02);
+                    gm_02 = gm_val_2(jdx, :);
                 end
-            elseif(any(aspect_set == "DA"))
+            elseif(any(fields(aspect_set) == "DA"))
                 m_n_tmp = [obj_ref.stage.m_n]';
                 gamma_mn = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
                 
-                gamma_2 = ones(6, 1)*gamma_length;
-                gamma_2(1:2:end) = gamma_mn;
+                gm_val_2          = ones(6, 1)*gamma_length;
+                gm_val_2(1:2:end) = gamma_mn;
                 
                 res_2 = Inf(6, 1);
             else
-                gamma_2 = gamma_prev([1 2 5 6 9 10]);
-                res_2 = Inf(6, 1);
+                gm_val_2 = gamma_prev(["m_n1" "b_1" "m_n2" "b_2" "m_n3" "b_3"]);
+                res_2 = Inf(size(gm_val_2));
             end
             
             if(all(isinf([res_1' res_2'])))
-                gamma_12 = gamma_1;
+                gm_val_12 = gm_val_1;
                 res_12 = res_1;
             else
                 idx_min = res_1 <= res_2;
 
-                gamma_12 = diag(idx_min)*gamma_1 + diag(~idx_min)*gamma_2;
+                gm_val_12 = diag(idx_min)*gm_val_1 + diag(~idx_min)*gm_val_2;
                 res_12   = diag(idx_min)*res_1   + diag(~idx_min)*res_2;
             end
             
-            obj_12 = obj_ref.scale_aspect(gamma_P, gamma_n, gamma_12, aspect_2);
+            gamma_sca = obj_ref.gamma;
+            
+            gamma_sca(["m_n1" "b_1" ...
+                       "m_n2" "b_2" ...
+                       "m_n3" "b_3"]) = gm_val_12;
+                 
+            obj_12 = NREL_5MW(gm_P, gm_n, gamma_sca);
             
             %% 3. Shaft stiffness and Mass moment of inertia of rotor and generator:
             aspect_3 = "K_MMI";
             
             opt_solver = optimoptions("fmincon", "display", "notify");
 
-            if(any(aspect_set == aspect_3))
-                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_3));
+            if(any(fields(aspect_set) == aspect_3))
+                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_3));
                 
-                f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
-
-                % function for aspect_3: gamma_P and gamma_n are set to 1.0
-                % because the drivetrain is already scaled for these
-                % parameters.
-                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, aspect_3)./f_n_ref);
+                asp_set = aspect_set.(aspect_3);
+                n = size(asp_set, 1);
+                
+                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, gm_P, gm_n, x, asp_set)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
 
-                gamma_min = ones(2, 1)*1.0e-6;
-                gamma_Max = ones(2, 1);
+                gamma_min = ones(n, 1)*1.0e-6;
+                gamma_Max = ones(n, 1);
+                
+                idx_L = contains(obj_ref.gamma.name, "L");
+                idx_J = contains(obj_ref.gamma.name, "J");
 
-                gamma_0 = [mean(gamma_prev([4 8 12 18])); ... % length
-                           mean(gamma_prev([14 16]))]; % mass mom. inertia
+                gm_03 = [mean(gamma_prev(idx_L)); ... % length
+                         mean(gamma_prev(idx_J))]; % mass mom. inertia
 
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
-                [gamma_3, res_3, ~] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+                [gm_val_3, res_3, ~] = fmincon(fun_min, gm_03, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
             elseif(any(aspect_set == "DA"))
-                gamma_3 = [gamma_length;
-                           gamma_MMI];
+                gm_val_3 = [gamma_length;
+                            gamma_MMI];
                 res_3 = Inf;
             else
-                gamma_3 = [mean(gamma_prev([4 8 12 18]));
-                           mean(gamma_prev([    14 16]))];
+                gm_val_3 = [mean(gamma_prev(["L_1" "L_2" "L_3" "L_s"]));
+                            mean(gamma_prev(["J_R" "J_G"]))];
                        
                 res_3 = Inf;
             end
             
-            gamma_3 = gamma_3([1 1 1 2 2]);
+            gamma_sca(["L_1" "L_2" "L_3" "L_s"]) = gm_val_3(1)*ones(4, 1);
+            gamma_sca(["J_R" "J_G"])             = gm_val_3(2)*ones(2, 1);
 
             %% 4. Detailed version of 3:
             aspect_4 = "K_MMI_det";
             
-            if(any(aspect_set == aspect_4))
-                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_4));
+            if(any(fields(aspect_set) == aspect_4))
+                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_4));
                 
-                f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
-
+                asp_set = aspect_set.(aspect_4);
+                n = size(asp_set, 1);
+                
                 % function for aspect_4: gamma_P and gamma_n are set to 1.0
                 % because the drivetrain is already scaled for these
                 % parameters.
-                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, aspect_4)./f_n_ref);
+                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, gm_P, gm_n, x, asp_set)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
 
-                gamma_min = ones(5, 1)*1.0e-6;
-                gamma_Max = ones(5, 1);
+                gamma_min = ones(n, 1)*1.0e-6;
+                gamma_Max = ones(n, 1);
 
-                gamma_0 = gamma_3;
+                gm_04 = ones(n, 1);
+                
+                for idx = 1:n
+                    gm_04(idx) = mean(gamma_sca(asp_set(idx, :)));
+                end
 
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
-                [gamma_4, res_4, ~] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-            elseif(any(aspect_set == "DA"))
-                gamma_4      = gamma_length*ones(5, 1);
-                gamma_4(4:5) = gamma_MMI; 
+                [gm_val_4, res_4, ~] = fmincon(fun_min, gm_04, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+            elseif(any(fields(aspect_set) == "DA"))
+                gm_val_4      = gamma_length*ones(6, 1);
+                gm_val_4(4:5) = gamma_MMI; 
                 
                 res_4 = Inf;
             else
-                gamma_4 = gamma_prev([4 8 12 14 16]);
-                
-                res_4 = Inf;
+                gm_val_4 = gamma_prev(["L_1" "L_2" "L_3" "L_s" "J_R" "J_G"]);
+                res_4    = Inf;
             end
             
-            if(all(isinf([res_3 res_4])))
-                gamma_34 = gamma_3;
+            if(all(isinf([res_3 res_4])) || (res_3 <= res_4))
+                gm_val_34 = gm_val_3;
                 res_34 = res_3;
-            elseif(res_3 <= res_4)
-                gamma_34 = gamma_3;
-                res_34 = res_3;
+                
+                gamma_sca(["L_1" "L_2" "L_3" "L_s"]) = gm_val_34(1)*ones(4, 1);
+                gamma_sca(["J_R" "J_G"            ]) = gm_val_34(2)*ones(2, 1);
             else
-                gamma_34 = gamma_4;
+                gm_val_34 = gm_val_4;
                 res_34 = res_4;
+                
+                for idx = 1:n
+                    asp_tmp = asp_set(idx, :);
+                    asp_tmp(asp_tmp == "*") = [];
+                    
+                    m = size(asp_tmp);
+                    gamma_sca(asp_set(idx, :)) = gm_val_34(idx)*ones(m);
+                end
             end
             
             %% 5. Drivetrain scaling:
             aspect_5 = "Drivetrain";
             
-            if(any(aspect_set == aspect_5))
-                fprintf("Optimizing NREL 5MW drivetrain w.r.t. [%s]...\n", upper(aspect_5));
+            if(any(fields(aspect_set) == aspect_5))
+                fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_5));
                 
                 fprintf("\n\tto be done later...\n\n");
             else
@@ -891,42 +699,29 @@ classdef NREL_5MW < Drivetrain
             res_pp = [mean(res_1), mean(res_2),    res_3,    res_4];
             idx = ~isinf(res_pp);
             res_pp = res_pp(idx);
-            aspect_set = aspect_set(idx);
             
-            fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", gamma_P*obj_ref.P_rated, ...
-                                                          gamma_P*100.0);
+            asp_name = fields(aspect_set);
+            asp_name = asp_name(idx);
+            
+            fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", gm_P*[obj_ref.P_rated, ...
+                                                                100.0]);
 
-            if(~isempty(res_pp))
+            if(isempty(res_pp))
+                fprintf("\tScaled version obtained by dimensional analysis scaling rules.\n");
+            else
                 [~, sorted_idx] = sort(res_pp);
                 
                 fprintf("\tOptimization residua:\n");
 
                 for idx = sorted_idx
-                    fprintf("\t%d. %s:\t%.5e\n", idx, aspect_set(idx), res_pp(idx));
+                    fprintf("\t%d. %s:\t%.5e\n", idx, asp_name{idx}, res_pp(idx));
                 end
-            else
-                fprintf("\tScaled version obtained by dimensional analysis scaling rules.\n");
             end
             
-            gamma_d = nthroot(gamma_P/gamma_n, 3.0);
+            gm_d = nthroot(gm_P/gm_n, 3.0);
             
-            gamma_val = [gamma_12(1), gamma_12(2), gamma_d   , gamma_34(1), ... % Stage 01
-                         gamma_12(3), gamma_12(4), gamma_d   , gamma_34(2), ... % Stage 02
-                         gamma_12(5), gamma_12(6), gamma_d   , gamma_34(3), ... % Stage 03
-               ... %     Mass       , M. M. Iner , Mass      , M. M. Iner,
-                         1.0        , gamma_34(4), 1.0       , gamma_34(5), ... % Rotor and Generator
-               ... %     Diameter   , Length
-                         gamma_d    , gamma_34(3)]';                            % Main shaft
-            
-            key_set = ["m_n1"       , "b_1"     , "d_1"   , "L_1" , ... % Stage 01
-                       "m_n2"       , "b_2"     , "d_2"   , "L_2" , ... % Stage 02
-                       "m_n3"       , "b_3"     , "d_3"   , "L_3" , ... % Stage 03
-               ... %   Mass         , M. M. Iner, Mass    , M. M. Iner,
-                       "m_R"        , "J_R"     , "m_G" , "J_G", ...    % Rotor and Generator
-               ... %   Diameter     , Length
-                       "d_s"        , "L_s"];                           % Main shaft
-            
-            gamma = containers.Map(key_set, gamma_val);
+            gamma_sca(["d_1" "d_2" "d_3" "d_s"]) = gm_d*ones(4, 1);
+            gamma_val = gamma_sca.value;
             
             res.stage = res_1;
             res.gear  = res_2;
@@ -935,16 +730,17 @@ classdef NREL_5MW < Drivetrain
             res.SG    = res_12;
             res.KJg   = res_34;
             
-            gamma_sep.stage = gamma_1;
-            gamma_sep.gear  = gamma_2;
-            gamma_sep.KJ    = gamma_3;
-            gamma_sep.KJ2   = gamma_4;
+            gamma_sep.stage = gm_val_1;
+            gamma_sep.gear  = gm_val_2;
+            gamma_sep.KJ    = gm_val_3;
+            gamma_sep.KJ2   = gm_val_4;
+            gamma_sep.SG    = gm_val_12;
+            gamma_sep.KJg   = gm_val_34;
             
-            obj_sca = obj_ref.scale_all(gamma_P, gamma_n, gamma);
+            obj_sca = NREL_5MW(gm_P, gm_n, gamma_sca);
             
             warning("on", id_1);
             warning("on", id_2);
-            
         end
         
         function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set)
@@ -959,7 +755,7 @@ classdef NREL_5MW < Drivetrain
             n_P = numel(P_scale);
             n_fn = numel(obj_ref.modal_analysis);
             
-            gamma = zeros(18, n_P);
+            gamma = zeros(length(obj_ref.gamma), n_P);
             res = struct;
             gamma_asp = struct;
             SH = zeros(numel(obj_ref.S_H), n_P);
@@ -967,7 +763,7 @@ classdef NREL_5MW < Drivetrain
             mode_shape = zeros(n_fn, n_fn, n_P);
             k_mesh = zeros(numel(obj_ref.stage), n_P);
             
-            gamma_P = P_scale./obj_ref.P_rated;
+            gm_P = P_scale./obj_ref.P_rated;
             
             [~, MS_ref] = obj_ref.modal_analysis;
             
@@ -1033,9 +829,9 @@ classdef NREL_5MW < Drivetrain
             k_P = mean(diff(P_scale));
             
             if(k_P > 0.0)
-                gamma_0 = ones(18, 1)*1.0e-3;
+                gamma_0 = ones(size(obj_ref.gamma))*1.0e-3;
             else
-                gamma_0 = ones(18, 1);
+                gamma_0 = ones(size(obj_ref.gamma));
             end
             
 
@@ -1062,7 +858,7 @@ classdef NREL_5MW < Drivetrain
                 rectangle(obj_sca);
                 xlim([0 6000]);
                 ylim([-1 1]*1500);
-                title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gamma_P(idx)*100.0));
+                title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gm_P(idx)*100.0));
                 SS(:, 2) = SH(:, idx);
                 
                 for jdx = 1:3

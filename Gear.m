@@ -39,7 +39,7 @@ classdef Gear < Rack
     %    https://www.ntnu.edu/imt/lab/md-lab
     %
     
-    properties(SetAccess = private)
+    properties
         z         (1, :) {mustBeInteger, mustBeFinite}                    = 13;  % [-],    Number of teeth
         x         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Profile shift coefficient
         beta      (1, :) {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 0.0; % [deg.], Helix angle (at reference cylinder)

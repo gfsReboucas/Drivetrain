@@ -54,40 +54,44 @@ classdef Bearing
         end
         
         function tab = disp(obj)
-            tab_set = {"Type",                             "-+-",     "-",       obj.type;
-                       "Translational Stiffness",          "K_x",     "N/m",     obj.K_x;
-                       "Translational Stiffness",          "K_y",     "N/m",     obj.K_y;
-                       "Translational Stiffness",          "K_z",     "N/m",     obj.K_z;
-                       "Rotational Stiffness (rot. axis)", "K_alpha", "N-m/rad", obj.K_alpha;
-                       "Rotational Stiffness",             "K_beta",  "N-m/rad", obj.K_beta;
-                       "Rotational Stiffness",             "K_gamma", "N-m/rad", obj.K_gamma;
-                       "Outer diameter",                   "OD",      "mm",      obj.OD;
-                       "Inner diameter",                   "ID",      "mm",      obj.ID;
-                       "Width",                            "B",       "mm",      obj.B;
-                       };
-            
-            Parameter = tab_set(:, 1);
-            Symbol    = tab_set(:, 2);
-            Unit      = tab_set(:, 3);
-            Value     = tab_set(:, 4:end);
-            
-            n = numel(obj);
-            
-            tab_val = cell(n + 2, 1);
-            
-            tab_val{1} = table(Parameter, Symbol);
-            
-            for idx = 1:n
-                tab_val{idx + 1} = table(Value(:, idx), 'variableNames', obj(idx).name);
-            end
-            
-            tab_val{idx + 2} = table(Unit);
-            
-            tab = [tab_val{:}];
-
-            if(nargout == 0)
-                disp(tab);
-                clear tab;
+            if(isempty(obj))
+                disp("\t0x0 empty Rack object")
+            else
+                tab_set = {"Type",                             "-+-",     "-",       obj.type;
+                    "Translational Stiffness",          "K_x",     "N/m",     obj.K_x;
+                    "Translational Stiffness",          "K_y",     "N/m",     obj.K_y;
+                    "Translational Stiffness",          "K_z",     "N/m",     obj.K_z;
+                    "Rotational Stiffness (rot. axis)", "K_alpha", "N-m/rad", obj.K_alpha;
+                    "Rotational Stiffness",             "K_beta",  "N-m/rad", obj.K_beta;
+                    "Rotational Stiffness",             "K_gamma", "N-m/rad", obj.K_gamma;
+                    "Outer diameter",                   "OD",      "mm",      obj.OD;
+                    "Inner diameter",                   "ID",      "mm",      obj.ID;
+                    "Width",                            "B",       "mm",      obj.B;
+                    };
+                
+                Parameter = tab_set(:, 1);
+                Symbol    = tab_set(:, 2);
+                Unit      = tab_set(:, 3);
+                Value     = tab_set(:, 4:end);
+                
+                n = numel(obj);
+                
+                tab_val = cell(n + 2, 1);
+                
+                tab_val{1} = table(Parameter, Symbol);
+                
+                for idx = 1:n
+                    tab_val{idx + 1} = table(Value(:, idx), 'variableNames', obj(idx).name);
+                end
+                
+                tab_val{idx + 2} = table(Unit);
+                
+                tab = [tab_val{:}];
+                
+                if(nargout == 0)
+                    disp(tab);
+                    clear tab;
+                end
             end
         end
     end

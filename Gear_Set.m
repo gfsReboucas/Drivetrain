@@ -341,6 +341,7 @@ classdef Gear_Set < Gear
         
         function ks = toKISSsoft(obj)
             ks = actxserver('KISSsoftCOM.KISSsoft');
+            ks.SetSilentMode(true);
             
             if(strcmp(obj.configuration, "parallel"))
                 ks.GetModule("Z012", false);
@@ -350,27 +351,44 @@ classdef Gear_Set < Gear
                 std_file = "PlanetarySet 1 (ISO6336).Z14";
             end
             
-            ks.LoadFile(join(["C:\Program Files (x86)\KISSsoft 03-2017\example" std_file], "\"));
-            ks.SetSilentMode(1);
+            file_name = join(["C:\Program Files (x86)\KISSsoft 03-2017\example" std_file], "\");
             
-            ks.SetVar("ZS.Geo.mn"  , num2str(obj.m_n));
-            ks.SetVar("ZP[0].a"    , num2str(obj.a_w));
-            ks.SetVar("ZS.Geo.alfn", num2str(obj.alpha_n));
-            ks.SetVar("ZS.Geo.beta", num2str(obj.beta));
-            
-            for idx = 1:numel(obj.z)
-                ks.SetVar(sprintf("ZR[%d].z"      , idx - 1), num2str(abs(obj.z(idx)), "%d"));
-                ks.SetVar(sprintf("ZR[%d].x.nul"  , idx - 1), num2str(    obj.x(idx), "%.3f"));
-                ks.SetVar(sprintf("ZR[%d].b"      , idx - 1), num2str(    obj.b     , "%.3f"));
-                ks.SetVar(sprintf("ZR[%d].Vqual"  , idx - 1), num2str(    6.0       , "%d"));
-                ks.SetVar(sprintf("ZR[%d].RAH"    , idx - 1), num2str(    0.8       , "%.1f"));
-                ks.SetVar(sprintf("ZR[%d].mat.bez", idx - 1), "18CrNiMo7-6");
+            try
+                ks.LoadFile(file_name);
+            catch ks_err
+                ks.ReleaseModule();
+                disp(ks_err);
             end
             
-            ks.SetVar("ZR[0].Tool.RefProfile.name", "1.25 / 0.38 / 1.0 ISO 53:1998 Profil A");
-            ks.SetVar("ZS.Oil.SchmierTyp"         , "Oil: ISO-VG 220");
-            ks.SetVar("RechSt.ISO6336_2017"       , "0");
-            ks.SetVar("ZR[0].mat.comment"         , "ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28");
+            ks.SetVar("ZS.AnzahlZwi", num2str(        obj.N_p));
+            ks.SetVar("ZS.Geo.mn"   , num2str(        obj.m_n));
+            ks.SetVar("ZP[0].a"     , num2str(        obj.a_w));
+            ks.SetVar("ZS.Geo.alfn" , num2str(deg2rad(obj.alpha_n)));
+            ks.SetVar("ZS.Geo.beta" , num2str(deg2rad(obj.beta)));
+            
+            for idx = 1:numel(obj.z)
+                ks.SetVar(sprintf("ZR[%d].z"    , idx - 1), num2str(obj.z(idx), "%d"));
+                ks.SetVar(sprintf("ZR[%d].x.nul", idx - 1), num2str(obj.x(idx), "%.3f"));
+                ks.SetVar(sprintf("ZR[%d].b"    , idx - 1), num2str(obj.b     , "%.3f"));
+            end
+            
+            try
+                ks.CalculateRetVal();
+            catch ks_err
+                ks.ReleaseModule();
+                disp(ks_err);
+            end
+            
+            if(nargout == 0)
+                ks.ReleaseModule();
+                clear ks;
+            end
+            
+%             ks.SetVar("ZR[0].Tool.RefProfile.name", "1.25 / 0.38 / 1.0 ISO 53:1998 Profil A");
+%             ks.SetVar("ZS.Oil.SchmierTyp"         , "Oil: ISO-VG 220");
+%             ks.SetVar("RechSt.ISO6336_2017"       , "0");
+%             ks.SetVar("ZR[0].mat.comment"         , "ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28");
+            
         end
     end
     

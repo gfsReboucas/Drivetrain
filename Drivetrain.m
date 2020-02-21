@@ -20,7 +20,7 @@ classdef Drivetrain
     % Tande, K. Uhlen and K. Merz). doi:10.1002/9781119097808.ch3
     %
     % written by:
-    % Geraldo Rebouças
+    % Geraldo Rebouï¿½as
     % - Geraldo.Reboucas@ntnu.no OR
     % - gfs.reboucas@gmail.com
     %
@@ -38,18 +38,9 @@ classdef Drivetrain
         main_shaft  (1, :) Shaft                                                  = Shaft;      % [-],      Input Shaft
         m_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 110.0e3;    % [kg],     Rotor mass according to [3]
         J_Rotor     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0; % [kg-m^2], Rotor mass moment of inertia according to [6]
-    end
-    
-    properties(SetAccess = private)
         m_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;     % [kg],     Generator mass according to [4]
         J_Gen       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;    % [kg-m^2], Generator mass moment of inertia [4]
         N_stg       (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;          % [-],      Number of stages
-        % to store the values of some dependent variables:
-        S_shaft_val (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
-        S_H_val     (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-    end
-    
-    properties
         dynamic_model (1, :) string {mustBeMember(dynamic_model, ["Thomson_ToV", ...
                                                                   "Kahraman_1994", ...
                                                                   "Lin_Parker_1999"])} = "Thomson_ToV"; % which dynamic model should be used to perform modal analysis on the Drivetrain.
@@ -61,6 +52,12 @@ classdef Drivetrain
         u;       % [-],      Cumulative gear ratio
         S_H;     % [-],      Safety factor for surface durability (against pitting)
         S_shaft; % [-],      Safey factor for the shafts
+    end
+    
+    properties(SetAccess = private)
+        % to store the values of some dependent variables:
+        S_shaft_val (1, 4)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
+        S_H_val     (1, 6)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
     end
     
     methods
@@ -97,116 +94,119 @@ classdef Drivetrain
         function tab = disp(obj)
             %DISP display some properties of a Drivetrain object
             % description, symbol, unit, value
-            
-            tab_str = {"Rated power",                                  "P",       "kW";
-                       "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.";
-                       "Output Torque (Sun/Pinion)",                   "T_out",   "N-m";
-                       "Minimum safety factor against pitting",        "S_Hmin",  "-";
-                       "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-";
-                       "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-";
-                       "Safety factor (Shaft)",                        "S",       "-";
-                       "Type",                                         "-",       "-";
-                       "Gear ratio",                                   "u",       "-";
-                       "Number of planets",                            "p",       "-";
-                       "Normal module",                                "m_n",     "mm";
-                       "Normal pressure angle",                        "alpha_n", "deg.";
-                       "Helix angle",                                  "beta",    "deg.";
-                       "Face width",                                   "b",       "mm";
-                       "Center distance",                              "a_w",     "mm";
-                       "Number of teeth (Sun/Pinion)",                 "z_1",     "-";
-                       "Number of teeth (Planet/Wheel)",               "z_2",     "-";
-                       "Number of teeth (Ring)",                       "z_3",     "-";
-                       "Profile shift coefficient (Sun/Pinion)",       "x_1",     "-";
-                       "Profile shift coefficient (Planet/Wheel)",     "x_2",     "-";
-                       "Profile shift coefficient (Ring)",             "x_3",     "-";
-                       "Reference diameter (Sun/Pinion)",              "d_1",     "mm";
-                       "Reference diameter (Planet/Wheel)",            "d_2",     "mm";
-                       "Reference diameter (Ring)",                    "d_3",     "mm";
-                       "Mass (Sun/Pinion)",                            "m_1",     "kg";
-                       "Mass (Planet/Wheel)",                          "m_2",     "kg";
-                       "Mass (Ring)",                                  "m_3",     "kg";
-                       "Mass mom. inertia (Sun/Pinion)",               "J_xx1",   "kg-m^2";
-                       "Mass mom. inertia (Planet/Wheel)",             "J_xx2",   "kg-m^2";
-                       "Mass mom. inertia (Ring)",                     "J_xx3",   "kg-m^2";
-                       "Mass mom. inertia (Sun/Pinion)",               "J_yy1",   "kg-m^2";
-                       "Mass mom. inertia (Planet/Wheel)",             "J_yy2",   "kg-m^2";
-                       "Mass mom. inertia (Ring)",                     "J_yy3",   "kg-m^2";
-                       "Mass mom. inertia (Sun/Pinion)",               "J_zz1",   "kg-m^2";
-                       "Mass mom. inertia (Planet/Wheel)",             "J_zz2",   "kg-m^2";
-                       "Mass mom. inertia (Ring)",                     "J_zz3",   "kg-m^2";
-                       };
-
-            Parameter = tab_str(:, 1);
-            Symbol    = tab_str(:, 2);
-            Unit      = tab_str(:, 3);
-            
-            tab_val = cell(obj.N_stg + 2, 1);
-            
-            tab_val{1} = table(Parameter, Symbol);
-            
-            for idx = 1:obj.N_stg
-                val_stg = {obj.P_rated;
-                           obj.n_out(idx);
-                           obj.T_out(idx);
-                           1.25;
-                           obj.S_H(2*idx - 1);
-                           obj.S_H(2*idx);
-                           obj.S_shaft(idx + 1);
-                           obj.stage(idx).configuration;
-                           obj.stage(idx).u;
-                           obj.stage(idx).N_p;
-                           obj.stage(idx).m_n;
-                           obj.stage(idx).alpha_n;
-                           obj.stage(idx).beta;
-                           obj.stage(idx).b;
-                           obj.stage(idx).a_w;
-                           obj.stage(idx).z(1);
-                           obj.stage(idx).z(2);
-                           "-*-";
-                           obj.stage(idx).x(1);
-                           obj.stage(idx).x(2);
-                           "-*-";
-                           obj.stage(idx).d(1);
-                           obj.stage(idx).d(2);
-                           "-*-";
-                           obj.stage(idx).mass(1);
-                           obj.stage(idx).mass(2);
-                           "-*-";
-                           obj.stage(idx).J_x(1);
-                           obj.stage(idx).J_x(2);
-                           "-*-";
-                           obj.stage(idx).J_y(1);
-                           obj.stage(idx).J_y(2);
-                           "-*-";
-                           obj.stage(idx).J_z(1);
-                           obj.stage(idx).J_z(2);
-                           "-*-";
-                           };
+            if(isempty(obj))
+                disp("\t0x0 empty Drivetrain object")
+            else
+                tab_str = ["Rated power",                                  "P",       "kW";
+                    "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.";
+                    "Output Torque (Sun/Pinion)",                   "T_out",   "N-m";
+                    "Minimum safety factor against pitting",        "S_Hmin",  "-";
+                    "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-";
+                    "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-";
+                    "Safety factor (Shaft)",                        "S",       "-";
+                    "Type",                                         "-",       "-";
+                    "Gear ratio",                                   "u",       "-";
+                    "Number of planets",                            "p",       "-";
+                    "Normal module",                                "m_n",     "mm";
+                    "Normal pressure angle",                        "alpha_n", "deg.";
+                    "Helix angle",                                  "beta",    "deg.";
+                    "Face width",                                   "b",       "mm";
+                    "Center distance",                              "a_w",     "mm";
+                    "Number of teeth (Sun/Pinion)",                 "z_1",     "-";
+                    "Number of teeth (Planet/Wheel)",               "z_2",     "-";
+                    "Number of teeth (Ring)",                       "z_3",     "-";
+                    "Profile shift coefficient (Sun/Pinion)",       "x_1",     "-";
+                    "Profile shift coefficient (Planet/Wheel)",     "x_2",     "-";
+                    "Profile shift coefficient (Ring)",             "x_3",     "-";
+                    "Reference diameter (Sun/Pinion)",              "d_1",     "mm";
+                    "Reference diameter (Planet/Wheel)",            "d_2",     "mm";
+                    "Reference diameter (Ring)",                    "d_3",     "mm";
+                    "Mass (Sun/Pinion)",                            "m_1",     "kg";
+                    "Mass (Planet/Wheel)",                          "m_2",     "kg";
+                    "Mass (Ring)",                                  "m_3",     "kg";
+                    "Mass mom. inertia (Sun/Pinion)",               "J_xx1",   "kg-m^2";
+                    "Mass mom. inertia (Planet/Wheel)",             "J_xx2",   "kg-m^2";
+                    "Mass mom. inertia (Ring)",                     "J_xx3",   "kg-m^2";
+                    "Mass mom. inertia (Sun/Pinion)",               "J_yy1",   "kg-m^2";
+                    "Mass mom. inertia (Planet/Wheel)",             "J_yy2",   "kg-m^2";
+                    "Mass mom. inertia (Ring)",                     "J_yy3",   "kg-m^2";
+                    "Mass mom. inertia (Sun/Pinion)",               "J_zz1",   "kg-m^2";
+                    "Mass mom. inertia (Planet/Wheel)",             "J_zz2",   "kg-m^2";
+                    "Mass mom. inertia (Ring)",                     "J_zz3",   "kg-m^2";
+                    ];
                 
-                if(strcmp(obj.stage(idx).configuration, "planetary"))
-                    val_stg{18} = obj.stage(idx).z(3);
-                    val_stg{21} = obj.stage(idx).x(3);
-                    val_stg{24} = obj.stage(idx).d(3);
-                    val_stg{27} = obj.stage(idx).mass(3);
-                    val_stg{30} = obj.stage(idx).J_x(3);
-                    val_stg{33} = obj.stage(idx).J_y(3);
-                    val_stg{36} = obj.stage(idx).J_z(3);
+                Parameter = tab_str(:, 1);
+                Symbol    = tab_str(:, 2);
+                Unit      = tab_str(:, 3);
+                
+                tab_val = cell(obj.N_stg + 2, 1);
+                
+                tab_val{1} = table(Parameter, Symbol);
+                
+                for idx = 1:obj.N_stg
+                    val_stg = {obj.P_rated;
+                        obj.n_out(idx);
+                        obj.T_out(idx);
+                        1.25;
+                        obj.S_H(2*idx - 1);
+                        obj.S_H(2*idx);
+                        obj.S_shaft(idx + 1);
+                        obj.stage(idx).configuration;
+                        obj.stage(idx).u;
+                        obj.stage(idx).N_p;
+                        obj.stage(idx).m_n;
+                        obj.stage(idx).alpha_n;
+                        obj.stage(idx).beta;
+                        obj.stage(idx).b;
+                        obj.stage(idx).a_w;
+                        obj.stage(idx).z(1);
+                        obj.stage(idx).z(2);
+                        "-*-";
+                        obj.stage(idx).x(1);
+                        obj.stage(idx).x(2);
+                        "-*-";
+                        obj.stage(idx).d(1);
+                        obj.stage(idx).d(2);
+                        "-*-";
+                        obj.stage(idx).mass(1);
+                        obj.stage(idx).mass(2);
+                        "-*-";
+                        obj.stage(idx).J_x(1);
+                        obj.stage(idx).J_x(2);
+                        "-*-";
+                        obj.stage(idx).J_y(1);
+                        obj.stage(idx).J_y(2);
+                        "-*-";
+                        obj.stage(idx).J_z(1);
+                        obj.stage(idx).J_z(2);
+                        "-*-";
+                        };
+                    
+                    if(strcmp(obj.stage(idx).configuration, "planetary"))
+                        val_stg{18} = obj.stage(idx).z(3);
+                        val_stg{21} = obj.stage(idx).x(3);
+                        val_stg{24} = obj.stage(idx).d(3);
+                        val_stg{27} = obj.stage(idx).mass(3);
+                        val_stg{30} = obj.stage(idx).J_x(3);
+                        val_stg{33} = obj.stage(idx).J_y(3);
+                        val_stg{36} = obj.stage(idx).J_z(3);
+                    end
+                    
+                    tab_val{idx + 1} =  table(val_stg, 'variableNames', sprintf("Stage_%d", idx));
                 end
                 
-                tab_val{idx + 1} =  table(val_stg, 'variableNames', sprintf("Stage_%d", idx));
-            end
-            
-            tab_val{idx + 2} = table(Unit);
-            
-            tab = [tab_val{:}];
-            
-            if(nargout == 0)
-                fprintf("Gear stages:\n");
-                disp(tab);
-                fprintf("Main shaft:\n");
-                disp(obj.main_shaft);
-                clear tab;
-            end
+                tab_val{idx + 2} = table(Unit);
+                
+                tab = [tab_val{:}];
+                
+                if(nargout == 0)
+                    fprintf("Gear stages:\n");
+                    disp(tab);
+                    fprintf("Main shaft:\n");
+                    disp(obj.main_shaft);
+                    clear tab;
+                end
+            end            
         end
         
         function tab = comparison(ref, sca)
@@ -655,6 +655,96 @@ classdef Drivetrain
                 SH_vec(kdx)     = SH;
             end
             
+        end
+        
+        function [SH_vec, SF_vec] = safety_factors_KS(obj)
+            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
+            S_Fmin = 1.56;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
+            L_h    = 20*365*24; % [h],  Required life
+            Q      = 6;         % [-],  ISO accuracy grade
+            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
+            K_A    = 1.25;      % [-],  Application factor
+            
+            max_Np = max([obj.stage.N_p]) + 1;
+            
+            SH_vec = zeros(obj.N_stg, max_Np);
+            SF_vec = zeros(obj.N_stg, max_Np);
+            
+            n_inp = [obj.n_out];
+            
+            for idx = 1:obj.N_stg
+                n_gear = numel(obj.stage(idx).z);
+                ks = obj.stage(idx).toKISSsoft();
+                
+                ks.SetVar("ZS.SSi.Flanke", num2str(S_Hmin));
+                ks.SetVar("ZS.SSi.Fuss"  , num2str(S_Fmin));
+                ks.SetVar("ZS.H"         , num2str(L_h));
+                ks.SetVar("ZS.KA"        , num2str(K_A));
+                
+                for jdx = 1:n_gear
+                    ks.SetVar(sprintf("ZR[%d].Vqual", jdx - 1), num2str(    Q  , "%d"));
+                    ks.SetVar(sprintf("ZR[%d].RAH"  , jdx - 1), num2str(    R_a, "%.1f"));
+                    ks.SetVar(sprintf("ZR[%d].RAF"  , jdx - 1), num2str(6.0*R_a, "%.1f"));
+                end
+                
+                % [5], Table 3, p. 35:
+                if(obj.stage(idx).N_p < 3)
+                    ks.SetVar("ZS.Kgam", num2str(1.00));
+                elseif(obj.stage(idx).N_p == 3)
+                    ks.SetVar("ZS.Kgam", num2str(1.10));
+                elseif(obj.stage(idx).N_p == 4)
+                    ks.SetVar("ZS.Kgam", num2str(1.25));
+                elseif(obj.stage(idx).N_p == 5)
+                    ks.SetVar("ZS.Kgam", num2str(1.35));
+                elseif(obj.stage(idx).N_p == 6)
+                    ks.SetVar("ZS.Kgam", num2str(1.44));
+                elseif(obj.stage(idx).N_p == 7)
+                    ks.SetVar("ZS.Kgam", num2str(1.47));
+                end
+
+                ks.SetVar("ZS.P"   , num2str(obj.P_rated));
+                
+%                 if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    ks.SetVar("ZR[0].n", num2str(n_inp(idx)));
+%                 elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+%                     ks.SetVar("ZS.Planet.nSteg", num2str(n_inp(idx)));
+%                 end
+                
+%                 for jdx = 1:n_gear
+%                     kv = str2double(ks.GetVar(sprintf("ZP[%d].KV.KV", jdx - 1)));
+%                     if(kv < 1.05)
+%                         ks.SetVar(sprintf("ZP[%d].KV.KV", jdx), num2str(1.05));
+%                     end
+%                 end
+                
+                try
+                    ks.CalculateRetVal();
+                catch ks_err
+                    ks.ReleaseModule();
+                    disp(ks_err);
+                end
+                
+                ks.Calculate();
+
+                for jdx = 1:n_gear
+                    SH_vec(jdx, idx) = str2double(ks.GetVar(sprintf("ZPP[%d].Flanke.SH", jdx - 1)));
+                    SF_vec(jdx, idx) = str2double(ks.GetVar(sprintf("ZPP[%d].Fuss.SF"  , jdx - 1)));
+                end
+                
+                ks.ReleaseModule();
+                clear ks;
+            end
+            
+            SH_vec(SH_vec == 0) = [];
+            SF_vec(SF_vec == 0) = [];
+            
+            if(isrow(SH_vec))
+                SH_vec = SH_vec';
+            end
+            
+            if(isrow(SF_vec))
+                SF_vec = SF_vec';
+            end
         end
         
     end
