@@ -47,7 +47,7 @@ classdef Gear < Rack
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
     end
     
-    properties(Access = protected)
+    properties(Access = public)
         b         (1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 13;  % [mm],   Face width
     end
     

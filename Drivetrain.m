@@ -657,6 +657,96 @@ classdef Drivetrain
             
         end
         
+        function [SH_vec, SF_vec] = safety_factors_KS(obj)
+            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
+            S_Fmin = 1.56;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
+            L_h    = 20*365*24; % [h],  Required life
+            Q      = 6;         % [-],  ISO accuracy grade
+            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
+            K_A    = 1.25;      % [-],  Application factor
+            
+            max_Np = max([obj.stage.N_p]) + 1;
+            
+            SH_vec = zeros(obj.N_stg, max_Np);
+            SF_vec = zeros(obj.N_stg, max_Np);
+            
+            n_inp = [obj.n_out];
+            
+            for idx = 1:obj.N_stg
+                n_gear = numel(obj.stage(idx).z);
+                ks = obj.stage(idx).toKISSsoft();
+                
+                ks.SetVar("ZS.SSi.Flanke", num2str(S_Hmin));
+                ks.SetVar("ZS.SSi.Fuss"  , num2str(S_Fmin));
+                ks.SetVar("ZS.H"         , num2str(L_h));
+                ks.SetVar("ZS.KA"        , num2str(K_A));
+                
+                for jdx = 1:n_gear
+                    ks.SetVar(sprintf("ZR[%d].Vqual", jdx - 1), num2str(    Q  , "%d"));
+                    ks.SetVar(sprintf("ZR[%d].RAH"  , jdx - 1), num2str(    R_a, "%.1f"));
+                    ks.SetVar(sprintf("ZR[%d].RAF"  , jdx - 1), num2str(6.0*R_a, "%.1f"));
+                end
+                
+                % [5], Table 3, p. 35:
+                if(obj.stage(idx).N_p < 3)
+                    ks.SetVar("ZS.Kgam", num2str(1.00));
+                elseif(obj.stage(idx).N_p == 3)
+                    ks.SetVar("ZS.Kgam", num2str(1.10));
+                elseif(obj.stage(idx).N_p == 4)
+                    ks.SetVar("ZS.Kgam", num2str(1.25));
+                elseif(obj.stage(idx).N_p == 5)
+                    ks.SetVar("ZS.Kgam", num2str(1.35));
+                elseif(obj.stage(idx).N_p == 6)
+                    ks.SetVar("ZS.Kgam", num2str(1.44));
+                elseif(obj.stage(idx).N_p == 7)
+                    ks.SetVar("ZS.Kgam", num2str(1.47));
+                end
+
+                ks.SetVar("ZS.P"   , num2str(obj.P_rated));
+                
+%                 if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    ks.SetVar("ZR[0].n", num2str(n_inp(idx)));
+%                 elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+%                     ks.SetVar("ZS.Planet.nSteg", num2str(n_inp(idx)));
+%                 end
+                
+%                 for jdx = 1:n_gear
+%                     kv = str2double(ks.GetVar(sprintf("ZP[%d].KV.KV", jdx - 1)));
+%                     if(kv < 1.05)
+%                         ks.SetVar(sprintf("ZP[%d].KV.KV", jdx), num2str(1.05));
+%                     end
+%                 end
+                
+                try
+                    ks.CalculateRetVal();
+                catch ks_err
+                    ks.ReleaseModule();
+                    disp(ks_err);
+                end
+                
+                ks.Calculate();
+
+                for jdx = 1:n_gear
+                    SH_vec(jdx, idx) = str2double(ks.GetVar(sprintf("ZPP[%d].Flanke.SH", jdx - 1)));
+                    SF_vec(jdx, idx) = str2double(ks.GetVar(sprintf("ZPP[%d].Fuss.SF"  , jdx - 1)));
+                end
+                
+                ks.ReleaseModule();
+                clear ks;
+            end
+            
+            SH_vec(SH_vec == 0) = [];
+            SF_vec(SF_vec == 0) = [];
+            
+            if(isrow(SH_vec))
+                SH_vec = SH_vec';
+            end
+            
+            if(isrow(SF_vec))
+                SF_vec = SF_vec';
+            end
+        end
+        
     end
     
     %% Set methods:

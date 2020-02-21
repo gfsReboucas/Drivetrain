@@ -423,6 +423,13 @@ classdef NREL_5MW < Drivetrain
                 end
             end
             
+            % Scaling the shaft's diameter:
+            gamma_T = gamma_P/gamma_n; % Applied torque scaling factor
+            gamma_ds = nthroot(gamma_T, 3.0);
+
+            idx_D = contains(key_set, "d");
+            gamma_full(key_set(idx_D)) = gamma_ds*ones(sum(idx_D), 1);
+            
             obj_sca = NREL_5MW(gamma_P, gamma_n, gamma_full);
             
             % Examples of aspects:
@@ -492,7 +499,7 @@ classdef NREL_5MW < Drivetrain
             S_H_ref = obj_ref.S_H;
             f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
             
-            fprintf("Scaling NREL 5MW drivetrain with rated power %.1f kW, which is %.2f %% of its reference.\n", gm_P*[obj_ref.P_rated 100.0]);
+            fprintf("Scaling NREL 5MW drivetrain to rated power %.1f kW, which is %.2f %% of its reference.\n", gm_P*[obj_ref.P_rated 100.0]);
             
             id_1 = "prog:input";
             id_2 = "MATLAB:nearlySingularMatrix";
@@ -523,8 +530,8 @@ classdef NREL_5MW < Drivetrain
                 res_1 = Inf(3, 1);
             else
                 gm_val_1 = [mean(gamma_prev(["m_n1" "b_1"]));
-                        mean(gamma_prev(["m_n2" "b_2"]));
-                        mean(gamma_prev(["m_n3" "b_3"]))];
+                            mean(gamma_prev(["m_n2" "b_2"]));
+                            mean(gamma_prev(["m_n3" "b_3"]))];
                        
                 res_1 = Inf(3, 1);
             end
@@ -591,10 +598,7 @@ classdef NREL_5MW < Drivetrain
                 asp_set = aspect_set.(aspect_3);
                 n = size(asp_set, 1);
                 
-                % function for aspect_4: gamma_P and gamma_n are set to 1.0
-                % because the drivetrain is already scaled for these
-                % parameters.
-                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, asp_set)./f_n_ref);
+                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, gm_P, gm_n, x, asp_set)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
 
                 gamma_min = ones(n, 1)*1.0e-6;
@@ -635,7 +639,7 @@ classdef NREL_5MW < Drivetrain
                 % function for aspect_4: gamma_P and gamma_n are set to 1.0
                 % because the drivetrain is already scaled for these
                 % parameters.
-                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, 1.0, 1.0, x, asp_set)./f_n_ref);
+                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, gm_P, gm_n, x, asp_set)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
 
                 gamma_min = ones(n, 1)*1.0e-6;
@@ -759,7 +763,7 @@ classdef NREL_5MW < Drivetrain
             mode_shape = zeros(n_fn, n_fn, n_P);
             k_mesh = zeros(numel(obj_ref.stage), n_P);
             
-            gamma_P = P_scale./obj_ref.P_rated;
+            gm_P = P_scale./obj_ref.P_rated;
             
             [~, MS_ref] = obj_ref.modal_analysis;
             
@@ -854,7 +858,7 @@ classdef NREL_5MW < Drivetrain
                 rectangle(obj_sca);
                 xlim([0 6000]);
                 ylim([-1 1]*1500);
-                title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gamma_P(idx)*100.0));
+                title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gm_P(idx)*100.0));
                 SS(:, 2) = SH(:, idx);
                 
                 for jdx = 1:3
