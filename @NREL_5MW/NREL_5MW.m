@@ -15,7 +15,7 @@ classdef NREL_5MW < Drivetrain
     % Tande, K. Uhlen and K. Merz). doi:10.1002/9781119097808.ch3
     %
     % written by:
-    % Geraldo Rebouï¿½as
+    % Geraldo Rebouças
     % - Geraldo.Reboucas@ntnu.no OR
     % - gfs.reboucas@gmail.com
     %

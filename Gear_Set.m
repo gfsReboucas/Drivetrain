@@ -358,37 +358,51 @@ classdef Gear_Set < Gear
             catch ks_err
                 ks.ReleaseModule();
                 disp(ks_err);
+                return;
             end
             
-            ks.SetVar("ZS.AnzahlZwi", num2str(        obj.N_p));
-            ks.SetVar("ZS.Geo.mn"   , num2str(        obj.m_n));
-            ks.SetVar("ZP[0].a"     , num2str(        obj.a_w));
-            ks.SetVar("ZS.Geo.alfn" , num2str(deg2rad(obj.alpha_n)));
-            ks.SetVar("ZS.Geo.beta" , num2str(deg2rad(obj.beta)));
+            ks.SetVar("ZS.AnzahlZwi", num2str(        obj.N_p));              % number of planets
+            ks.SetVar("ZS.Geo.mn"   , num2str(        obj.m_n));              % normal module
+            ks.SetVar("ZP[0].a"     , num2str(        obj.a_w));              % center distance
+            ks.SetVar("ZS.Geo.alfn" , num2str(deg2rad(obj.alpha_n), "%.6f")); % normal pressure angle
+            ks.SetVar("ZS.Geo.beta" , num2str(deg2rad(obj.beta)   , "%.6f")); % helix angle
+            
+            ks.SetVar("RechSt.GeometrieMeth", num2str(1));    % tooth geometry according to ISO 21771:2007
+            
+            Q      = 6;         % [-],  ISO accuracy grade
+            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
             
             for idx = 1:numel(obj.z)
-                ks.SetVar(sprintf("ZR[%d].z"    , idx - 1), num2str(obj.z(idx), "%d"));
-                ks.SetVar(sprintf("ZR[%d].x.nul", idx - 1), num2str(obj.x(idx), "%.3f"));
-                ks.SetVar(sprintf("ZR[%d].b"    , idx - 1), num2str(obj.b     , "%.3f"));
+                ks.SetVar(sprintf("ZR[%d].z"                   , idx - 1), num2str(obj.z(idx), "%d"));
+                ks.SetVar(sprintf("ZR[%d].x.nul"               , idx - 1), num2str(obj.x(idx), "%.4f"));
+                ks.SetVar(sprintf("ZR[%d].b"                   , idx - 1), num2str(obj.b     , "%.3f"));
+                ks.SetVar(sprintf("ZR[%d].Tool.type"           , idx - 1), num2str(2));
+                ks.SetVar(sprintf("ZR[%d].Tool.RefProfile.name", idx - 1), sprintf("1.25 / 0.38 / 1.0 ISO 53:1998 Profil %s", obj.type));
+                
+                ks.SetVar(sprintf("ZR[%d].Vqual"    , idx - 1), num2str(    Q  , "%d"));
+                ks.SetVar(sprintf("ZR[%d].RAH"      , idx - 1), num2str(    R_a, "%.1f"));
+                ks.SetVar(sprintf("ZR[%d].RAF"      , idx - 1), num2str(6.0*R_a, "%.1f"));
+                % material properties:
+                ks.SetVar(sprintf("ZR[%d].mat.bez"    , idx - 1), "18CrNiMo7-6");
+                ks.SetVar(sprintf("ZR[%d].WerkstArt"  , idx - 1), "Case-carburized steel");
+                ks.SetVar(sprintf("ZR[%d].WerkstBh"   , idx - 1), "case-hardened");
+                ks.SetVar(sprintf("ZR[%d].mat.comment", idx - 1), "ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28");
             end
+            
+            ks.SetVar("ZS.Oil.SchmierTypID"         , "Oil: ISO-VG 220");
             
             try
                 ks.CalculateRetVal();
             catch ks_err
                 ks.ReleaseModule();
                 disp(ks_err);
+                return;
             end
             
             if(nargout == 0)
                 ks.ReleaseModule();
-                clear ks;
+                clear("ks");
             end
-            
-%             ks.SetVar("ZR[0].Tool.RefProfile.name", "1.25 / 0.38 / 1.0 ISO 53:1998 Profil A");
-%             ks.SetVar("ZS.Oil.SchmierTyp"         , "Oil: ISO-VG 220");
-%             ks.SetVar("RechSt.ISO6336_2017"       , "0");
-%             ks.SetVar("ZR[0].mat.comment"         , "ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28");
-            
         end
     end
     
@@ -1215,6 +1229,9 @@ classdef Gear_Set < Gear
 
             xi_fw1 = min([xi_fw1_1, xi_fw1_2, xi_fw1_3]);
             xi_fw2 = min([xi_fw2_1, xi_fw2_2, xi_fw2_3]);
+            
+            xi_fw1 = abs(xi_fw1);
+            xi_fw2 = abs(xi_fw2);
 
             % roll angle from the working pitch point to the tip diameter:
             xi_aw1 = xi_fw2*obj.z(2)/obj.z(1);
@@ -1224,7 +1241,8 @@ classdef Gear_Set < Gear
 
             % Transverse contact ratio:
             val = (xi_fw1 + xi_aw1)/tau_1;
-
+            
+            val = abs(val);
         end
         
         function val = get.eps_beta(obj)
