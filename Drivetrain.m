@@ -448,6 +448,7 @@ classdef Drivetrain
 
             [mode_shape, D] = eig(K_tilde);
             D = diag(D);   % matrix to vector
+            
             w_n = sqrt(D); % lambda to omega_n
 
             f_n = w_n./(2.0*pi); % rad/s to Hz
@@ -455,6 +456,27 @@ classdef Drivetrain
             % sorting in ascending order:
             [f_n, idx] = sort(f_n);
             mode_shape = mode_shape(:, idx);
+            
+            flag_im = any(imag(f_n) ~= 0.0);
+            if(flag_im)
+                idx = (imag(f_n) ~= 0.0);
+                
+                f_n = [f_n(~idx);
+                       f_n(idx)];
+                   
+                mode_shape = [mode_shape(:,idx), mode_shape(:,~idx)];
+            end
+            
+            flag_RB = any(abs(f_n) < 1.0e-2);
+            if(flag_RB)
+                idx = (abs(f_n) < 1.0e-2);
+                f_n(idx) = 0.0;
+                
+                f_n = [f_n(~idx);
+                       f_n(idx)];
+                   
+                mode_shape = [mode_shape(:,idx), mode_shape(:,~idx)];
+            end
             
             % Normalizing the mode shapes so that the maximum is always +1:
             for idx = 1:length(f_n)
@@ -522,7 +544,7 @@ classdef Drivetrain
             J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
             J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
             
-            N_DOF = 2;
+            N_DOF = ones(obj.N_stg + 1, 1)*2.0;
             
             for idx = 1:obj.N_stg
                 if(strcmp(obj.stage(idx).configuration, "parallel"))
@@ -531,8 +553,11 @@ classdef Drivetrain
                     tmp = obj.stage(idx).N_p + 2;
                 end
                 
-                N_DOF = N_DOF + tmp;
+                N_DOF(idx + 1) = N_DOF(idx) + tmp;
             end
+            
+            n = N_DOF(1:end - 1);
+            N_DOF = N_DOF(end);
             
             M = zeros(N_DOF, N_DOF);
             K = zeros(N_DOF, N_DOF);
@@ -547,13 +572,8 @@ classdef Drivetrain
             for idx = 1:obj.N_stg
                 [M_tmp, K_tmp] = obj.stage(idx).Kahraman_1994;
                 
-                jdx = 5*idx - 3;
-                
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    kdx = jdx:(jdx + 2);
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    kdx = jdx:(jdx + 5);
-                end
+                jdx = n(idx);
+                kdx = jdx:(jdx + length(M_tmp) - 1);
                 
                 M(kdx, kdx) = M(kdx, kdx) + M_tmp;
                 K(kdx, kdx) = K(kdx, kdx) + K_tmp;

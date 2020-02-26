@@ -59,11 +59,12 @@ classdef NREL_5MW < Drivetrain
                 n_r = 12.1; % [1/min.], Input speed
                 inp_shaft = NREL_5MW.shaft(0);
 
-                m_R = 110.0e3;      J_R = 57231535.0; % according to [1, 3]
-                m_G = 1900.0;       J_G = 534.116;
+                m_R = 110.0e3; % [kg], according to [2], Table 1-1
+                J_R = 57231535.0; % [kg-m^2], according to [3], p. 45
+%                 J_R = 58.1164e6; % according to property_estimation
+                m_G = 0.1*m_R; % 1900.0; % [kg], but according to ???
+                J_G = 534.116; % [kg-m^2], according to [2], Table 5-1
 
-%                 r_R: 3.226e+04	h_R: 4.297e+00 [mm]
-%                 r_G: 7.498e+02	h_G: 1.374e+02 [mm]
                 gm_val = ones(size(param));
                 
             elseif(length(varargin) == 3)
@@ -88,8 +89,10 @@ classdef NREL_5MW < Drivetrain
                     inp_shaft = Shaft(LSS.d*gm("d_s"), ...
                                       LSS.L*gm("L_s"));
                                   
-                    m_R = 110.0e3;      J_R = 57231535.0*gm("J_R"); % according to [1, 3]
-                    m_G = 1900.0;       J_G = 534.116*gm("J_G");
+                    m_R = 110.0e3;
+                    J_R = 57231535.0*gm("J_R"); % according to [1, 3]
+                    m_G = 0.1*m_R;
+                    J_G = 534.116*gm("J_G");
                     
                     gm_val = gm.value;
                 end
@@ -297,6 +300,30 @@ classdef NREL_5MW < Drivetrain
                 otherwise
                     error("prog:input", "Option [%d] is NOT valid.", idx);
             end
+        end
+        
+        function property_estimation()
+            u = 97.0;
+            m_r = 110.0e3; % [kg], according to [2], Table 1-1
+            J_g = 534.116; % [kg-m^2], according to [2], Table 5-1
+            k_eq = 867637.0e3; % [N-m/rad], taken from [2], Table 5-1
+            
+            freq_free = 2.18; % [Hz], taken from [3], p. 45
+            freq_fix  = mean([0.6205 0.6094]); % [Hz], taken from [2], Table 9-1. Mean of the results obtained using FAST and ADAMS, respectively.
+            
+            J_r_fix   = k_eq/(2*pi*freq_fix)^2;
+            J_r_free  = (k_eq*J_g*u^2)/(J_g*(2.0*pi*u*freq_free)^2 - k_eq);
+            J_r_ratio = ((freq_free/freq_fix)^2 - 1.0)*J_g*u^2;
+            
+            R_cyl = sqrt(2.0*J_r_ratio/m_r); % [m], cylinder radius
+            h_cyl = m_r/(Material.rho*pi*R_cyl^2); % [m], cylinder height
+            
+            fprintf("Rotor mass moment of inertia using:\n")
+            fprintf("\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
+            fprintf("\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
+            fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
+            fprintf("Cylindric rotor dimensions: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
+            
         end
     end
     

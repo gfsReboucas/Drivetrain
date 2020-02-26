@@ -1,18 +1,14 @@
 classdef DTU_10MW < Drivetrain
-    %DTU_10MW This class contains some of the properties of the NREL 5MW
-    % wind turbine gearbox proposed by Nejad et. al. [1]. More information
-    % regarding the NREL 5MW wind turbine can be found at [2].
+    %DTU_10MW This class contains some of the properties of the DTU 10MW
+    % wind turbine gearbox proposed by Wang et. al. [1]. More information
+    % regarding the DTU 10MW wind turbine can be found at [2].
     %
-    % [1] Nejad, A. R., Guo, Y., Gao, Z., Moan, T. (2016). Development of a
-    % 5 MW reference gearbox for offshore wind turbines. Wind Energy. 
-    % https://doi.org/10.1002/we.1884
-    % [2] Jonkman, J., Butterfield, S., Musial, W., & Scott, G. Definition
-    % of a 5-MW Reference Wind Turbine for Offshore System Development. 
-    % doi:10.2172/947422.
-    % [3] Anaya-Lara, O., Tande, J.O., Uhlen, K., Merz, K. and Nejad, A.R.
-    % (2019). Modelling and Analysis of Drivetrains in Offshore Wind
-    % Turbines. In Offshore Wind Energy Technology (eds O. Anaya-Lara, J.O.
-    % Tande, K. Uhlen and K. Merz). doi:10.1002/9781119097808.ch3
+    % [1] S. Wang, A. Nejad and T. Moan, "On design, modelling, and
+    % analysis of a 10?MW medium?speed drivetrain for offshore wind
+    % turbines", Wind Energy, 2020. doi:10.1002/we.2476
+    % [2] C. Bak; F. Zahle; R. Bitsche; T. Kim; A. Yde; L.C. Henriksen;
+    % P.B. Andersen; A. Natarajan, M.H. Hansen; “Design and performance of
+    % a 10 MW wind turbine”, J. Wind Energy, To be accepted.
     %
     % written by:
     % Geraldo Rebouças
@@ -59,8 +55,10 @@ classdef DTU_10MW < Drivetrain
                 n_r = 9.6; % [1/min.], Input speed
                 inp_shaft = DTU_10MW.shaft(0);
 
-                m_R = 227962.0;      J_R = 57231535.0; % according to [1, 3]
-                m_G = 1900.0;       J_G = 1500.5;
+                m_R = 227962.0; % [kg], according to [2], Table 2.1
+                J_R = 156.7374e6; % [kg-m^2] according to property_estimation
+                m_G = 0.1*m_R; % [kg], according to ???
+                J_G = 1500.5; % [kg-m^2] according to [2], Table 6.3
 
                 gm_val = ones(size(param));
                 
@@ -86,8 +84,10 @@ classdef DTU_10MW < Drivetrain
                     inp_shaft = Shaft(LSS.d*gm("d_s"), ...
                                       LSS.L*gm("L_s"));
                                   
-                    m_R = 110.0e3;      J_R = 57231535.0*gm("J_R"); % according to [1, 3]
-                    m_G = 1900.0;       J_G = 534.116*gm("J_G");
+                    m_R = 227962.0; % [kg], according to [2], Table 2.1
+                    J_R = 156.7374e6*gm("J_R"); % [kg-m^2] according to property_estimation
+                    m_G = 0.1*m_R; % [kg], according to ???
+                    J_G = 1500.5*gm("J_G"); % [kg-m^2] according to [2], Table 6.3
                     
                     gm_val = gm.value;
                 end
@@ -296,6 +296,30 @@ classdef DTU_10MW < Drivetrain
                     error("prog:input", "Option [%d] is NOT valid.", idx);
             end
         end
+        
+        function property_estimation()
+            u = 50.0;
+            m_r = 227962.0; % [kg], according to [2], Table 2.1
+            J_g = 1500.5;        % [kg-m^2], taken from [2], Table 6.3
+            k_eq = 2317025352.0; % [N-m/rad], taken from [2], Table 6.3
+            
+            freq_free = 4.003; % [Hz], taken from [2], Table 6.2
+            freq_fix  = 0.612; % [Hz], taken from [2], Table 6.2
+            
+            J_r_fix   = k_eq/(2*pi*freq_fix)^2;
+            J_r_free  = (k_eq*J_g*u^2)/(J_g*(2.0*pi*u*freq_free)^2 - k_eq);
+            J_r_ratio = ((freq_free/freq_fix)^2 - 1.0)*J_g*u^2;
+            
+            R_cyl = sqrt(2.0*J_r_ratio/m_r); % [m], cylinder radius
+            h_cyl = m_r/(Material.rho*pi*R_cyl^2); % [m], cylinder height
+            
+            fprintf("Rotor mass moment of inertia using:\n")
+            fprintf("\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
+            fprintf("\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
+            fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
+            fprintf("Cylindric rotor dimensions: R = %3.4e \t h = %3.4e [m]\n", R_cyl, h_cyl);
+            
+        end
     end
     
     %% Set methods:
@@ -494,10 +518,7 @@ classdef DTU_10MW < Drivetrain
             gamma_length = nthroot(gm_T,     3.0);
             gamma_MMI    = power(  gm_P, 5.0/3.0);
             
-            S_H_ref = obj_ref.S_H;
-            f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
-            
-            fprintf("Scaling NREL 5MW drivetrain to rated power %.1f kW, which is %.2f %% of its reference.\n", gm_P*[obj_ref.P_rated 100.0]);
+            fprintf("Scaling DTU 10MW drivetrain to rated power %.1f kW, which is %.2f %% of its reference.\n", gm_P*[obj_ref.P_rated 100.0]);
             
             id_1 = "prog:input";
             id_2 = "MATLAB:nearlySingularMatrix";
@@ -508,6 +529,8 @@ classdef DTU_10MW < Drivetrain
             aspect_1 = "stage";
             
             if(any(fields(aspect_set) == aspect_1))
+                S_H_ref = obj_ref.S_H;
+                
                 fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_1));
                 
                 gm_01 = mean(gamma_prev(["m_n1" "b_1" "m_n2" "b_2" "m_n3" "b_3"]));
@@ -541,6 +564,8 @@ classdef DTU_10MW < Drivetrain
             aspect_2 = "gear";
             
             if(any(fields(aspect_set) == aspect_2))
+                S_H_ref = obj_ref.S_H;
+                
                 fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_2));
                 
                 gm_02     = gm_val_1([1 1]);
@@ -591,6 +616,8 @@ classdef DTU_10MW < Drivetrain
             opt_solver = optimoptions("fmincon", "display", "notify");
 
             if(any(fields(aspect_set) == aspect_3))
+                f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
+            
                 fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_3));
                 
                 asp_set = aspect_set.(aspect_3);
@@ -611,7 +638,7 @@ classdef DTU_10MW < Drivetrain
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
                 [gm_val_3, res_3, ~] = fmincon(fun_min, gm_03, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-            elseif(any(aspect_set == "DA"))
+            elseif(any(fields(aspect_set) == "DA"))
                 gm_val_3 = [gamma_length;
                             gamma_MMI];
                 res_3 = Inf;
@@ -629,6 +656,8 @@ classdef DTU_10MW < Drivetrain
             aspect_4 = "K_MMI_det";
             
             if(any(fields(aspect_set) == aspect_4))
+                f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
+                
                 fprintf("Optimizing drivetrain w.r.t. [%s]...\n", upper(aspect_4));
                 
                 asp_set = aspect_set.(aspect_4);
@@ -735,7 +764,7 @@ classdef DTU_10MW < Drivetrain
             gamma_sep.SG    = gm_val_12;
             gamma_sep.KJg   = gm_val_34;
             
-            obj_sca = NREL_5MW(gm_P, gm_n, gamma_sca);
+            obj_sca = DTU_10MW(gm_P, gm_n, gamma_sca);
             
             warning("on", id_1);
             warning("on", id_2);

@@ -567,28 +567,28 @@ classdef Gear_Set < Gear
                 m_p = obj.mass(1);
                 m_w = obj.mass(2);
                 
-                r_p = obj.d(1)*1.0e-3/2.0;
-                r_w = obj.d(2)*1.0e-3/2.0;
+                r_p = (obj.d(1)*1.0e-3)/2.0;
+                r_w = (obj.d(2)*1.0e-3)/2.0;
                 
                 k_pw = obj.k_mesh;
                 
                 idx = 1:2;
                 M(idx, idx) = diag([m_w*r_w^2 m_p*r_p^2]);
                 
-                K(idx, idx) = [r_w ^ 2 * k_pw             r_p     * k_pw * r_w;
-                               r_w     * k_pw * r_p   3 * r_p ^ 2 * k_pw;];
+                K(idx, idx) = [r_w ^ 2 * k_pw         r_p     * k_pw * r_w;
+                               r_w     * k_pw * r_p   r_p ^ 2 * k_pw];
                 
             elseif(strcmp(obj.configuration, "planetary"))
-                n = 6;
+                n = obj.N_p + 3;
                 M = zeros(n, n);                K = zeros(n, n);
                 
-                m_1 = obj.mass(1);
-                m_2 = obj.mass(2);
+                m_s = obj.mass(1);
+                m_p = obj.mass(2);
                 m_c = obj.carrier.mass;
                 
-                aw = obj.a_w*1.0e-3/2.0;
-                r_1 = obj.d(1)*1.0e-3/2.0;
-                r_2 = obj.d(2)*1.0e-3/2.0;
+                aw  =  obj.a_w *1.0e-3;
+                r_s = (obj.d(1)*1.0e-3)/2.0;
+                r_p = (obj.d(2)*1.0e-3)/2.0;
 
                 % Mesh stiffness:
                 sun_pla = Gear_Set("parallel",          obj.m_n, ...
@@ -607,16 +607,25 @@ classdef Gear_Set < Gear
                                    obj.a_w,             obj.type, ...
                                    obj.bearing,         obj.out_shaft);
 
-                k_sp = sun_pla.k_mesh;
-                k_rp = pla_rng.k_mesh;
+                k_sp = abs(sun_pla.k_mesh);
+                k_rp = abs(pla_rng.k_mesh); % got a negative k_mesh for DTU_10MW
                 
-                idx = 1:5;
-                M(idx, idx) = diag([m_c*aw^2 ones(1, 3)*m_2*r_2^2 m_1*r_1^2]);
-                K(idx, idx) = [3 * aw ^ 2 * (k_rp + k_sp) aw * (k_rp - k_sp) * r_2 aw * (k_rp - k_sp) * r_2 aw * (k_rp - k_sp) * r_2 -3 * aw * k_sp * r_1;
-                                   aw     * (k_rp - k_sp) * r_2 r_2 ^ 2 * (k_rp + k_sp) 0 0 r_2 * k_sp * r_1;
-                                   aw     * (k_rp - k_sp) * r_2 0 r_2 ^ 2 * (k_rp + k_sp) 0 r_2 * k_sp * r_1;
-                                   aw     * (k_rp - k_sp) * r_2 0 0 r_2 ^ 2 * (k_rp + k_sp) r_2 * k_sp * r_1;
-                              -3 * aw * k_sp * r_1 r_2 * k_sp * r_1 r_2 * k_sp * r_1 r_2 * k_sp * r_1 r_1 ^ 2 * (3 * k_sp)];
+                n1 = n - 1;
+                idx = 1:n1;
+                M(idx, idx) = diag([m_c*aw^2 ones(1, obj.N_p)*m_p*r_p^2 m_s*r_s^2]);
+                
+                K( 1,  1) =  obj.N_p*(k_rp + k_sp)*aw^2;
+                K( 1, n1) = -obj.N_p*  r_s * k_sp *aw;
+                K(n1,  1) = K(1, n1);
+                K(n1, n1) = obj.N_p*k_sp*r_s^2;
+                
+                for idx = 2:(n - 2)
+                    K(1, idx) = aw*r_p*(k_rp - k_sp);
+                    K(idx, 1) = K(1, idx);
+                    K(idx, idx) = (k_rp + k_sp)*r_p^2;
+                    K(n1, idx) = r_s*r_p*k_sp;
+                    K(idx, n1) = K(n1, idx);
+                end
             end
             
             idx = (n - 1):n;
@@ -1208,7 +1217,9 @@ classdef Gear_Set < Gear
         end
         
         function val = get.alpha_wt(obj)
-            val = acosd(abs(obj.z(1) + obj.z(2))*(obj.m_n*cosd(obj.alpha_t)/(2.0*obj.a_w*cosd(obj.beta))));
+            num = obj.m_n*cosd(obj.alpha_t);
+            den = 2.0*obj.a_w*cosd(obj.beta);
+            val = acosd(abs(obj.z(1) + obj.z(2))*num/den);
         end
         
         function val = get.eps_alpha(obj)
