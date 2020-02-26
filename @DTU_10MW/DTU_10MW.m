@@ -47,7 +47,7 @@ classdef DTU_10MW < Drivetrain
                      "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
                      "J_R",                                    ... %   M. M. Inertia (rotor)
                      "J_G",                                    ... %   M. M. Inertia (generator)
-                                                "d_s" , "L_s"]';    % Main shaft
+                                                "d_s" , "L_s"]';   % Main shaft
                                             
             if(isempty(varargin))
 
@@ -62,8 +62,6 @@ classdef DTU_10MW < Drivetrain
                 m_R = 227962.0;      J_R = 57231535.0; % according to [1, 3]
                 m_G = 1900.0;       J_G = 1500.5;
 
-%                 r_R: 3.226e+04	h_R: 4.297e+00 [mm]
-%                 r_G: 7.498e+02	h_G: 1.374e+02 [mm]
                 gm_val = ones(size(param));
                 
             elseif(length(varargin) == 3)
@@ -80,8 +78,8 @@ classdef DTU_10MW < Drivetrain
                         stage(idx) = stg.scale_aspect(gm_stg, "Gear_Set");
                     end
                     
-                    P_r = gm_P*5.0e3; % [kW], Rated power
-                    n_r = gm_n*12.1; % [1/min.], Input speed
+                    P_r = gm_P*10.0e3; % [kW], Rated power
+                    n_r = gm_n*9.6; % [1/min.], Input speed
                     
                     LSS = DTU_10MW.shaft(0);
                     
@@ -220,8 +218,8 @@ classdef DTU_10MW < Drivetrain
                     x_s1   =   0.2702;     % [-],    Profile shift coefficient (sun)
                     x_p1   =   0.2093;     % [-],    Profile shift coefficient (planet)
                     x_r1   =  -0.1591;     % [-],    Profile shift coefficient (ring)
-                    k_s1   = -10.861/m_n1; % [-],    Tip alteration coefficient (sun)
-                    k_p1   = -10.861/m_n1; % [-],    Tip alteration coefficient (planet)
+                    k_s1   = -0.756/m_n1; % [-],    Tip alteration coefficient (sun)
+                    k_p1   = -0.756/m_n1; % [-],    Tip alteration coefficient (planet)
                     k_r1   =   0.0;        % [-],    Tip alteration coefficient (ring)
                     
                     bore_Rs1 = 80.0/171.0;

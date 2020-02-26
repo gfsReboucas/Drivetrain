@@ -95,6 +95,7 @@ classdef Drivetrain
                 [obj.S_H_val, obj.S_F_val]     = obj.safety_factors_KS;
                 [~          , obj.S_shaft_val] = obj.safety_factors;
             catch err
+                disp(err);
                 [obj.S_H_val, obj.S_shaft_val] = obj.safety_factors;
             end
 %             [obj.S_H_val, obj.S_shaft_val] = obj.safety_factors;
@@ -693,40 +694,52 @@ classdef Drivetrain
             for idx = 1:obj.N_stg
                 ks = obj.stage(idx).toKISSsoft();
                 
-                ks.SetVar("ZS.P"   , num2str(obj.P_rated));    % rated power
+                ks.SetVar('ZS.P'       , num2str(obj.P_rated, '%.6f'));    % rated power
+                ks.SetVar('ZS.Pnominal', num2str(obj.P_rated, '%.6f'));    % rated power
                 
                 flag_impul = true;
                 if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    ks.SetVar("ZR[0].n", num2str(speed(idx))); % speed at gear 1
-                    
                     flag_impul = true;
                     template_code = 12;
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    ks.SetVar("ZS.Planet.nSteg", num2str(speed(idx))); % speed at planet carrier
-                    ks.SetVar("ZR[0].n", num2str(speed(idx + 1))); % speed at gear 1
+                elseif(strcmp(obj.stage(idx).configuration, 'planetary'))
+                    n_c = speed(idx);
+                    T_c =obj.P_rated/(n_c*pi/30.0);
+                    n_planet = n_c*(1.0 - obj.stage(idx).z(3)./obj.stage(idx).z(2));
+                    ks.SetVar('ZR[1].n'               , num2str(abs(n_planet), '%.6f')); % speed at gear 2: planet
+                    ks.SetVar('ZR[2].n'               , num2str(0.0          , '%.6f')); % speed at gear 3: ring
+                    ks.SetVar('ZS.Planet.nStegnominal', num2str(n_c          , '%.6f')); % speed at planet carrier
+                    ks.SetVar('ZS.Planet.nSteg'       , num2str(n_c          , '%.6f')); % speed at planet carrier
+                    
+                    ks.SetVar('ZR[1].T'               , num2str(abs(n_planet), '%.6f')); % speed at gear 2: planet
+                    ks.SetVar('ZS.Planet.TStegnominal', num2str(T_c          , '%.6f')); % torque at planet carrier
+                    ks.SetVar('ZS.Planet.nSteg'       , num2str(T_c          , '%.6f')); % torque at planet carrier
                     
                     flag_impul = false;
                     template_code = 14;
                 end
                 
-                ks.SetVar("ZP[0].Impuls", num2str(flag_impul));    % tooth geometry according to ISO 21771:2007
+                n_1 = obj.n_out(idx);
+                T_1 = obj.P_rated/(n_1*pi/30.0);
+                ks.SetVar('ZR[0].Tnominal', num2str(T_1, '%.6f')); % torque at gear 1
+                ks.SetVar('ZR[0].n'       , num2str(n_1, '%.6f')); % speed at gear 1
+                ks.SetVar('ZP[0].Impuls'  , num2str(flag_impul));  % sense of rotation, gear 1
                 
-                ks.SetVar("ZS.SSi.Flanke", num2str(S_Hmin));
-                ks.SetVar("ZS.SSi.Fuss"  , num2str(S_Fmin));
-                ks.SetVar("ZS.H"         , num2str(L_h));
-                ks.SetVar("ZS.KA"        , num2str(K_A));
+                ks.SetVar('ZS.SSi.Flanke'      , num2str(S_Hmin, '%.6f'));
+                ks.SetVar('ZS.SSi_0to05.Flanke', num2str(S_Hmin, '%.6f'));
+                ks.SetVar('ZS.SSi_at1.Flanke'  , num2str(S_Hmin, '%.6f'));
+                ks.SetVar('ZS.SSi_2to20.Flanke', num2str(S_Hmin, '%.6f'));
+                ks.SetVar('ZS.SSi_fix.Flanke'  , num2str(S_Hmin, '%.6f'));
+                
+                ks.SetVar('ZS.SSi.Fuss'      , num2str(S_Fmin, '%.6f'));
+                ks.SetVar('ZS.SSi_0to05.Fuss', num2str(S_Fmin, '%.6f'));
+                ks.SetVar('ZS.SSi_at1.Fuss'  , num2str(S_Fmin, '%.6f'));
+                ks.SetVar('ZS.SSi_2to20.Fuss', num2str(S_Fmin, '%.6f'));
+                ks.SetVar('ZS.SSi_fix.Fuss'  , num2str(S_Fmin, '%.6f'));
+                
+                ks.SetVar('ZS.H'         , num2str(L_h, '%.6f'));
+                ks.SetVar('ZS.KA'        , num2str(K_A, '%.6f'));
                 
                 n_gear = numel(obj.stage(idx).z);
-%                 for jdx = 1:n_gear
-%                     ks.SetVar(sprintf("ZR[%d].Vqual"    , jdx - 1), num2str(    Q  , "%d"));
-%                     ks.SetVar(sprintf("ZR[%d].RAH"      , jdx - 1), num2str(    R_a, "%.1f"));
-%                     ks.SetVar(sprintf("ZR[%d].RAF"      , jdx - 1), num2str(6.0*R_a, "%.1f"));
-%                     % material properties:
-%                     ks.SetVar(sprintf("ZR[%d].mat.bez"    , jdx - 1), "18CrNiMo7-6");
-%                     ks.SetVar(sprintf("ZR[%d].WerkstArt"  , jdx - 1), "Case-carburized steel");
-%                     ks.SetVar(sprintf("ZR[%d].WerkstBh"   , jdx - 1), "case-hardened");
-%                     ks.SetVar(sprintf("ZR[%d].mat.comment", jdx - 1), "ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28");
-%                 end
                 
                 % [5], Table 3, p. 35:
                 switch(obj.stage(idx).N_p)
@@ -744,38 +757,41 @@ classdef Drivetrain
                         K_gam = 1.0;
                 end
                 
-                ks.SetVar("ZS.Kgam", num2str(K_gam));
+                ks.SetVar('ZS.Kgam', num2str(K_gam, '%.6f'));
                 
-                try
-                    ks.CalculateRetVal();
-                catch ks_err
+                if(~ks.CalculateRetVal())
                     ks.ReleaseModule();
-                    disp(ks_err);
+                    error("Error in KISSsoft calculation.");
                 end
                 
-                kv = str2double(ks.GetVar("ZS.KVcalc"));
+                kv = str2double(ks.GetVar('ZS.KVcalc'));
                 flag_kv = false;
                 if(kv < 1.05)
                     flag_kv = true;
                     for jdx = 1:n_gear
-                        ks.SetVar(sprintf("ZP[%d].KV.KV", jdx), num2str(1.05));
+                        ks.SetVar(sprintf('ZP[%d].KV.KV', jdx), num2str(1.05, '%.6f'));
                     end
                     
-                    ks.SetVar("Zst.KVFlag", num2str(flag_kv));
+                    ks.SetVar('Zst.KVFlag', num2str(flag_kv));
                 end
                 
                 flag_khb = false;
                 for jdx = 1:2
-                    khb = str2double(ks.GetVar(sprintf("ZP[%d].KHb", jdx - 1)));
+                    khb = str2double(ks.GetVar(sprintf('ZP[%d].KHb', jdx - 1)));
                     
                     if(khb < 1.15)
                         flag_khb = true;
-                        ks.SetVar(sprintf("ZP[%d].KHb", jdx - 1), num2str(1.15));
+                        ks.SetVar(sprintf('ZP[%d].KHb', jdx - 1), num2str(1.15, '%.6f'));
                     end
                 end
                 
                 if(flag_khb)
-                    ks.SetVar("Zst.KHbVariant", num2str(true));
+                    ks.SetVar('Zst.KHbVariant', num2str(true));
+                end
+                
+                if(~ks.CalculateRetVal())
+                    ks.ReleaseModule();
+                    error("Error in KISSsoft calculation.");
                 end
                 
                 if(flag_kv || flag_khb)
@@ -783,19 +799,23 @@ classdef Drivetrain
                 end
 
                 for jdx = 1:n_gear
-                    SH_vec(jdx, idx) = str2double(ks.GetVar(sprintf("ZPP[%d].Flanke.SH", jdx - 1)));
-                    SF_vec(jdx, idx) = str2double(ks.GetVar(sprintf("ZPP[%d].Fuss.SF"  , jdx - 1)));
+                    SH_vec(jdx, idx) = str2double(ks.GetVar(sprintf('ZPP[%d].Flanke.SH', jdx - 1)));
+                    SF_vec(jdx, idx) = str2double(ks.GetVar(sprintf('ZPP[%d].Fuss.SF'  , jdx - 1)));
                 end
                 
                 if(save_report)
                     if(strcmp(class(obj), "Drivetrain"))
-                        file_name = sprintf("%s\\stage_%02d.rtf", pwd, idx);
+                        report_name = sprintf("%s\\stage_%02d.rtf" , pwd, idx);
+                        file_name   = sprintf("%s\\stage_%02d.Z0%d", pwd, idx, template_code);
                     else
-                        file_name = sprintf("%s\\@%s\\stage_%02d.rtf", pwd, class(obj), idx);
+                        report_name = sprintf("%s\\@%s\\stage_%02d.rtf" , pwd, class(obj), idx);
+                        file_name   = sprintf("%s\\@%s\\stage_%02d.Z0%d", pwd, class(obj), idx, template_code);
                     end
+                    
+                    ks.SaveFile(file_name);
 
                     ks.ReportWithParameters(sprintf("C:\\Program Files (x86)\\KISSsoft 03-2017\\rpt\\Z0%dLe0.RPT", template_code), ... % template file
-                                            file_name, show_report, 0); % output format
+                                            report_name, show_report, 0); % output format
                 else
                     ks.Report(show_report);
                 end

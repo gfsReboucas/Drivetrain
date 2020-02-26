@@ -128,6 +128,7 @@ classdef Rack
                     fprintf("Obs.: According to ISO 54:1996, preference should be \ngiven to the use of the normal modules as given in \nseries I and the module 6.5 in series II should be avoided.\n");
                 case "calc"
                     m_2(9) = 21.0; % removing the value 6.5 which should be avoided according to ISO 54:1996
+                    m_2(end + 1) = 30.0;
                     x = sort([m_1 m_2]);
                 case "calc_1"
                     x = m_1;
