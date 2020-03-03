@@ -95,7 +95,7 @@ classdef Drivetrain
                 [obj.S_H_val, obj.S_F_val]     = obj.safety_factors_KS;
                 [~          , obj.S_shaft_val] = obj.safety_factors;
             catch err
-                disp(err);
+                warning(err.identifier, "%s", err.message)
                 [obj.S_H_val, obj.S_shaft_val] = obj.safety_factors;
             end
 %             [obj.S_H_val, obj.S_shaft_val] = obj.safety_factors;
@@ -460,11 +460,12 @@ classdef Drivetrain
             flag_im = any(imag(f_n) ~= 0.0);
             if(flag_im)
                 idx = (imag(f_n) ~= 0.0);
+                f_n(idx) = 0.0;
                 
                 f_n = [f_n(~idx);
                        f_n(idx)];
                    
-                mode_shape = [mode_shape(:,idx), mode_shape(:,~idx)];
+                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
             end
             
             flag_RB = any(abs(f_n) < 1.0e-2);
@@ -475,7 +476,7 @@ classdef Drivetrain
                 f_n = [f_n(~idx);
                        f_n(idx)];
                    
-                mode_shape = [mode_shape(:,idx), mode_shape(:,~idx)];
+                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
             end
             
             % Normalizing the mode shapes so that the maximum is always +1:

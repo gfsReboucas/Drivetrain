@@ -4,7 +4,7 @@ classdef DTU_10MW < Drivetrain
     % regarding the DTU 10MW wind turbine can be found at [2].
     %
     % [1] S. Wang, A. Nejad and T. Moan, "On design, modelling, and
-    % analysis of a 10?MW medium?speed drivetrain for offshore wind
+    % analysis of a 10-MW medium-speed drivetrain for offshore wind
     % turbines", Wind Energy, 2020. doi:10.1002/we.2476
     % [2] C. Bak; F. Zahle; R. Bitsche; T. Kim; A. Yde; L.C. Henriksen;
     % P.B. Andersen; A. Natarajan, M.H. Hansen; “Design and performance of
@@ -306,18 +306,25 @@ classdef DTU_10MW < Drivetrain
             freq_free = 4.003; % [Hz], taken from [2], Table 6.2
             freq_fix  = 0.612; % [Hz], taken from [2], Table 6.2
             
-            J_r_fix   = k_eq/(2*pi*freq_fix)^2;
+            J_r_fix   = k_eq/(2.0*pi*freq_fix)^2;
             J_r_free  = (k_eq*J_g*u^2)/(J_g*(2.0*pi*u*freq_free)^2 - k_eq);
             J_r_ratio = ((freq_free/freq_fix)^2 - 1.0)*J_g*u^2;
             
             R_cyl = sqrt(2.0*J_r_ratio/m_r); % [m], cylinder radius
             h_cyl = m_r/(Material.rho*pi*R_cyl^2); % [m], cylinder height
             
+            f = @(x)([(pi*Material.rho/m_r)            .*x(1, :).*(1.0 - x(3, :).^2).*x(2, :)^2 - 1.0; ...
+                      (pi*Material.rho/(2.0*J_r_ratio)).*x(1, :).*(1.0 - x(3, :).^4).*x(2, :)^4 - 1.0]);
+            x = fmincon(@(x)(norm(f(x)))^2, rand*ones(3,1), [], [], [], [], zeros(3, 1), [Inf, Inf, 1.0]');
+            r_ext = x(2);           r_int = x(3)*r_ext;           h = x(1);
+
             fprintf("Rotor mass moment of inertia using:\n")
             fprintf("\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
             fprintf("\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
             fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
-            fprintf("Cylindric rotor dimensions: R = %3.4e \t h = %3.4e [m]\n", R_cyl, h_cyl);
+            fprintf("Rotor dimensions assuming:\n")
+            fprintf("\tCylindric geometry: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
+            fprintf("\tCylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n", r_ext, r_int, h);
             
         end
     end
@@ -522,9 +529,11 @@ classdef DTU_10MW < Drivetrain
             
             id_1 = "prog:input";
             id_2 = "MATLAB:nearlySingularMatrix";
+            id_3 = "MATLAB:COM:InvalidProgid";
             warning("off", id_1);
             warning("off", id_2);
-            
+            warning("off", id_3);
+
             %% 1. Stage scaling:
             aspect_1 = "stage";
             
@@ -768,6 +777,7 @@ classdef DTU_10MW < Drivetrain
             
             warning("on", id_1);
             warning("on", id_2);
+            warning("on", id_3);
         end
         
         function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set)

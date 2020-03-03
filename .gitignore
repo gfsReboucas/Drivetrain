@@ -33,3 +33,10 @@ plots/Thumbs.db
 *.pdf
 figs_TORQUE_2020.m
 test_aspects.m
+@DTU_10MW/stage_01.Z14
+combine_length.m
+compare_length.m
+sim_steps_13.m
+sim_steps_14.m
+sim_steps_14_alt.m
+test.m

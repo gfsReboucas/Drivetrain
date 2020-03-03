@@ -651,9 +651,9 @@ classdef Gear_Set < Gear
                 K_Omega = zeros(n, n);
                 G       = zeros(n, n);
                 
-                J_p = obj.J_x(1);               J_w = obj.J_x(2);
-                m_p = obj.mass(1);              m_w = obj.mass(2);
-                r_p = obj.d(1)*1.0e-3/2.0;      r_w = obj.d(2)*1.0e-3/2.0;
+                J_p =  obj.J_x(1);              J_w =  obj.J_x(2);
+                m_p =  obj.mass(1);             m_w =  obj.mass(2);
+                r_p = (obj.d(1)*1.0e-3)/2.0;    r_w = (obj.d(2)*1.0e-3)/2.0;
                 
                 alpha_nn = obj.alpha_n;
                 
@@ -709,9 +709,9 @@ classdef Gear_Set < Gear
                 m_p = obj.mass(2);
                 m_c = obj.carrier.mass;
                 
-                r_s = obj.d(1)*1.0e-3/2.0;
-                r_p = obj.d(2)*1.0e-3/2.0;
-                r_c = obj.a_w*1.0e-3;
+                r_s = (obj.d(1)*1.0e-3)/2.0;
+                r_p = (obj.d(2)*1.0e-3)/2.0;
+                r_c =  obj.a_w*1.0e-3;
                 
                 alpha_nn = obj.alpha_n;
                 

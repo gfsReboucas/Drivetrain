@@ -530,8 +530,10 @@ classdef NREL_5MW < Drivetrain
             
             id_1 = "prog:input";
             id_2 = "MATLAB:nearlySingularMatrix";
+            id_3 = "MATLAB:COM:InvalidProgid";
             warning("off", id_1);
             warning("off", id_2);
+            warning("off", id_3);
             
             %% 1. Stage scaling:
             aspect_1 = "stage";
@@ -728,7 +730,10 @@ classdef NREL_5MW < Drivetrain
             res_pp = res_pp(idx);
             
             asp_name = fields(aspect_set);
-            asp_name = asp_name(idx);
+            
+            if(numel(asp_name) ~= sum(idx))
+                asp_name = asp_name(idx);
+            end
             
             fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", gm_P*[obj_ref.P_rated, ...
                                                                 100.0]);
@@ -768,6 +773,7 @@ classdef NREL_5MW < Drivetrain
             
             warning("on", id_1);
             warning("on", id_2);
+            warning("on", id_3);
         end
         
         function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set)
@@ -920,8 +926,9 @@ classdef NREL_5MW < Drivetrain
                 savefig(gcf, fig_name(idx));
                 print(fig_name(idx), '-dpng');
                 saveasGIF(file_name, idx);
-                
             end
+            
+            close all;
             
         end
         
