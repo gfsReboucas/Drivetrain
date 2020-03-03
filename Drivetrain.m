@@ -974,12 +974,11 @@ classdef Drivetrain
             idx_D = contains(key_set, "d");
             gamma_full(key_set(idx_D)) = gamma_ds*ones(sum(idx_D), 1);
             
-            if(    strcmp(class(obj_ref), "Drivetrain"))
+            if(strcmp(class(obj_ref), "Drivetrain"))
                 obj_sca = scale_all(gamma_P, gamma_n, gamma_full);
-            elseif(strcmp(class(obj_ref), "NREL_5MW"))
-                obj_sca = NREL_5MW(gamma_P, gamma_n, gamma_full);
-            elseif(strcmp(class(obj_ref), "DTU_10MW"))
-                obj_sca = DTU_10MW(gamma_P, gamma_n, gamma_full);
+            else
+                scale_func = str2func(class(obj_ref));
+                obj_sca = scale_func(gamma_P, gamma_n, gamma_full);
             end
             
             % Examples of aspects:
@@ -1141,12 +1140,11 @@ classdef Drivetrain
                        "m_n2" "b_2" ...
                        "m_n3" "b_3"]) = gm_val_12;
                  
-            if(    strcmp(class(obj_ref), "Drivetrain"))
+            if(strcmp(class(obj_ref), "Drivetrain"))
                 obj_12 = scale_all(gm_P, gm_n, gamma_sca);
-            elseif(strcmp(class(obj_ref), "NREL_5MW"))
-                obj_12 = NREL_5MW(gm_P, gm_n, gamma_sca);
-            elseif(strcmp(class(obj_ref), "DTU_10MW"))
-                obj_12 = DTU_10MW(gm_P, gm_n, gamma_sca);
+            else
+                scale_func = str2func(class(obj_ref));
+                obj_12 = scale_func(gm_P, gm_n, gamma_sca);
             else
                 error("Class [%s] undefined.");
             end
@@ -1304,12 +1302,11 @@ classdef Drivetrain
             gamma_sep.SG    = gm_val_12;
             gamma_sep.KJg   = gm_val_34;
             
-            if(    strcmp(class(obj_ref), "Drivetrain"))
+            if(strcmp(class(obj_ref), "Drivetrain"))
                 obj_sca = scale_all(gm_P, gm_n, gamma_sca);
-            elseif(strcmp(class(obj_ref), "NREL_5MW"))
-                obj_sca = NREL_5MW(gm_P, gm_n, gamma_sca);
-            elseif(strcmp(class(obj_ref), "DTU_10MW"))
-                obj_sca = DTU_10MW(gm_P, gm_n, gamma_sca);
+            else
+                scale_func = str2func(class(obj_ref));
+                obj_sca = scale_func(gm_P, gm_n, gamma_sca);
             end
             
             warning("on", id_1);
