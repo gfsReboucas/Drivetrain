@@ -1145,8 +1145,6 @@ classdef Drivetrain
             else
                 scale_func = str2func(class(obj_ref));
                 obj_12 = scale_func(gm_P, gm_n, gamma_sca);
-            else
-                error("Class [%s] undefined.");
             end
             
             %% 3. Shaft stiffness and Mass moment of inertia of rotor and generator:

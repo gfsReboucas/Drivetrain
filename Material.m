@@ -14,12 +14,13 @@ classdef Material
     %
     
     properties(Constant)
-        E         (1, 1) = 206.0e9;  % [Pa],     Young's modulus
-        nu        (1, 1) = 0.3;      % [-],      Poisson's ratio
-        sigma_Hlim(1, 1) = 1500.0e6; % [Pa],     Allowable contact stress number
-        rho       (1, 1) = 7.83e3;   % [kg/m^3], Density
-        S_ut      (1, 1) = 700.0e6;  % [Pa],     Tensile strength
-        S_y       (1, 1) = 490.0e6;  % [Pa],     Yield strength
+        E         (1, 1) = 206.0e9;                   % [Pa],     Young's modulus
+        nu        (1, 1) = 0.3;                       % [-],      Poisson's ratio
+        sigma_Hlim(1, 1) = 1500.0e6;                  % [Pa],     Allowable contact stress number
+        rho       (1, 1) = 7.83e3;                    % [kg/m^3], Density
+        S_ut      (1, 1) = 700.0e6;                   % [Pa],     Tensile strength
+        S_y       (1, 1) = 490.0e6;                   % [Pa],     Yield strength
+        G         (1, 1) = (206.0e9/2.0)/(1.0 + 0.3); % [Pa],     Shear modulus
     end
     
     methods(Static)

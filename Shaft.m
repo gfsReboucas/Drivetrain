@@ -5,6 +5,10 @@ classdef Shaft
     % References:
     % [1]  Budynas, R., Nisbett, J. (2015). Shigley's Mechanical
     % Engineering Design. 10th ed. New York: McGraw-Hill
+    % [2] Neto M. A., Amaro A., Roseiro L., Cirne J., Leal R. (2015) Finite 
+    % Element Method for Beams. In: Engineering Computation of Structures: 
+    % The Finite Element Method. Springer, Cham 
+    % https://doi.org/10.1007/978-3-319-17710-6_4
     %
     % written by:
     % Geraldo Rebouças
@@ -259,12 +263,13 @@ classdef Shaft
                 case "bending"
                     LL = obj.L*1.0e-3;
                     
-                    M = diag([156.0 4.0*LL^2 156.0 4.0*LL^2]);
-                    M(1, 2) = 22.0*LL;   M(1, 3) = 54.0;        M(1, 4) = -13.0*LL;
-                    M(2, 1) = M(1, 2);   M(2, 3) = 13.0*LL;     M(2, 4) = - 3.0*LL^2;
-                    M(3, 1) = M(1, 3);   M(3, 2) = M(2, 3);     M(3, 4) = -22.0*LL;
-                    M(4, 1) = M(1, 4);   M(4, 2) = M(2, 4);     M(4, 3) = M(3, 4);
+                    M_d = diag([156.0 4.0*LL^2 156.0 4.0*LL^2]);
+                    M_u = zeros(4);
+                    M_u(1, 2) = 22.0*LL; M_u(1, 3) = 54.0;    M_u(1, 4) = -13.0*LL;
+                                         M_u(2, 3) = 13.0*LL; M_u(2, 4) = - 3.0*LL^2;
+                                                              M_u(3, 4) = -22.0*LL;
                     
+                    M = M_u + M_u' + M_d;
                     M = M*(obj.mass/420.0);
                     
                 case "full"
@@ -286,6 +291,8 @@ classdef Shaft
                     M = M(vec, :);
                     M = M(:, vec);
                     
+                    % those steps are necessary in order to obtain a
+                    % stiffness matrix like Eq. 4.72 in [2]:
                     M(3, 5)  = -M(3, 5);
                     M(3, 11) = -M(3, 11);
                     M(5, 3)  = -M(5, 3);
@@ -314,8 +321,7 @@ classdef Shaft
 
                 case "torsional"
                     % [alpha_1 alpha_2]
-                    nu = 0.3;                % [-],      Poisson's ratio
-                    G  = (E/2.0)/(1.0 + nu); % [N/mm^2], Shear modulus
+                    G  = Material.G; % [Pa], Shear modulus
                     
                     K = eye(2);
                     K(1, 2) = -1.0;      K(2, 1) = K(1, 2);
@@ -325,12 +331,13 @@ classdef Shaft
                 case "bending"
                     % [y_1 gamma_1 y_2 gamma_2] OR [z_1 beta_1 z_2 beta_2] 
                     LL = obj.L*1.0e-3;
-                    K = diag([12.0 4.0*LL^2 12.0 4.0*LL^2]);
-                    K(1, 2) = 6.0*LL;   K(1, 3) = -12.0;     K(1, 4) =  6.0*LL;
-                    K(2, 1) = K(1, 2);  K(2, 3) =  -6.0*LL;  K(2, 4) =  2.0*LL^2;
-                    K(3, 1) = K(1, 3);  K(3, 2) = K(2, 3);   K(3, 4) = -6.0*LL;
-                    K(4, 1) = K(1, 4);  K(4, 2) = K(2, 4);   K(4, 3) = K(3, 4);
+                    K_d = diag([12.0 4.0*LL^2 12.0 4.0*LL^2]);
                     
+                    K_u = zeros(4);
+                    K_u(1, 2) = 6.0*LL; K_u(1, 3) = -12.0;    K_u(1, 4) =  6.0*LL;
+                                        K_u(2, 3) =  -6.0*LL; K_u(2, 4) =  2.0*LL^2;
+                                                              K_u(3, 4) = -6.0*LL;
+                    K = K_u + K_u' + K_d;
                     K = K*(E*obj.I_y/LL^3);
                     
                 case "full"
@@ -355,6 +362,8 @@ classdef Shaft
                     K = K(vec, :);
                     K = K(:, vec);
                     
+                    % those steps are necessary in order to obtain a
+                    % stiffness matrix like Eq. 4.71 in [2]:
                     K(3, 5)  = -K(3, 5);
                     K(3, 11) = -K(3, 11);
                     K(5, 3)  = -K(5, 3);
