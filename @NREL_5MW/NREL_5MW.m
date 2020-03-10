@@ -326,23 +326,8 @@ classdef NREL_5MW < Drivetrain
         end
     end
     
-    %% Set methods:
     methods
-        function obj = set.gamma_P(obj, val)
-            obj.gamma_P = val;
-            obj.P_rated = obj.P_rated*obj.gamma_P;
-        end
-        
-        function obj = set.gamma_n(obj, val)
-            obj.gamma_n = val;
-            obj.n_rotor = obj.n_rotor*obj.gamma_n;
-        end
-    end
-    %% Get methods:
-    methods
-%         function val = get.gamma(obj)
-%             val = obj.gamma;
-%         end
+        update_subvar(obj)
     end
     
 end
