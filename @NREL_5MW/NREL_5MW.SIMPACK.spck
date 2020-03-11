@@ -58,13 +58,13 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 2.4527909755706787E+00  ! Position
-view.pos (                2 ,       $V_WorkingView                ) = 1.6744136810302734E-03  ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 3.6183009147644043E+00  ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 4.4969439506530762E-01  ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 2.4831514060497284E-01  ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 3.1782877445220947E-01  ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 7.9693132638931274E-01  ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 3.3675713539123535E+00  ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.0967680215835571E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.7655782699584961E+00  ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.2440571784973145E-01  ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 2.1178941428661346E-01  ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 2.8827568888664246E-01  ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.7268427610397339E-01  ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
@@ -78,9 +78,9 @@ view.stereo.balance (               $V_WorkingView                ) = 1.00000000
 view.stereo.offset (                $V_WorkingView                ) = 1.0000000000000000E+00  ! Stereo offset
 
 view.type (                         $V_Ortho                      ) = 0                       ! Projection type
-view.pos (                1 ,       $V_Ortho                      ) = 2.6115269660949707E+00  ! Position
-view.pos (                2 ,       $V_Ortho                      ) = -2.7029627561569214E-01 ! Position
-view.pos (                3 ,       $V_Ortho                      ) = 3.3329591751098633E+00  ! Position
+view.pos (                1 ,       $V_Ortho                      ) = 3.3675713539123535E+00  ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -1.0967680215835571E+00 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.7655782699584961E+00  ! Position
 view.orient (             1 ,       $V_Ortho                      ) = 5.2440571784973145E-01  ! Orientation
 view.orient (             2 ,       $V_Ortho                      ) = 2.1178941428661346E-01  ! Orientation
 view.orient (             3 ,       $V_Ortho                      ) = 2.8827568888664246E-01  ! Orientation
@@ -89,7 +89,7 @@ view.angle (                        $V_Ortho                      ) = 7.85398185
 view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_Ortho                      ) = 9.9999997764825821E-03  ! Front clipping plane value
-view.bclip.value (                  $V_Ortho                      ) = 1.1830349922180176E+01  ! Back clipping plane value
+view.bclip.value (                  $V_Ortho                      ) = 1.2101546287536621E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
@@ -398,6 +398,115 @@ subvargroup.begin (                 $SVG_GB_frame                 )             
 
 subvargroup.end (                   $SVG_GB_frame                 )                           ! $SVG_GB_frame
 
+subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
+   subvar.str (                     $_normal_module               ) = '21.0 mm'               ! $SVG_stage_02.$_normal_module, Definition
+
+   subvar.str (                     $_face_width                  ) = '550.0 mm'              ! $SVG_stage_02.$_face_width, Definition
+
+   subvar.str (                     $_center_distance             ) = '584.0 mm'              ! $SVG_stage_02.$_center_distance, Definition
+
+   subvar.str (                     $_pressure_angle              ) = '20.0 deg'              ! $SVG_stage_02.$_pressure_angle, Definition
+
+   subvar.str (                     $_helix_angle                 ) = '0.0 deg'               ! $SVG_stage_02.$_helix_angle, Definition
+
+   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
+      subvar.str (                  $_num_teeth                   ) = '18'                    ! $SVG_stage_02.$SVG_sun.$_num_teeth, Definition
+
+      subvar.str (                  $_prof_shift_coeff            ) = '0.389'                 ! $SVG_stage_02.$SVG_sun.$_prof_shift_coeff, Definition
+
+      subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_02.$SVG_sun.$_diam_bore, Definition
+
+      subvar.str (                  $_angle                       ) = '11.5*(180deg)/$SVG_stage_02.$SVG_sun.$_num_teeth' ! $SVG_stage_02.$SVG_sun.$_angle, Definition
+
+   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
+   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
+      subvar.str (                  $_num_teeth                   ) = '36'                    ! $SVG_stage_02.$SVG_planet.$_num_teeth, Definition
+
+      subvar.str (                  $_prof_shift_coeff            ) = '0.504'                 ! $SVG_stage_02.$SVG_planet.$_prof_shift_coeff, Definition
+
+      subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_02.$SVG_planet.$_diam_bore, Definition
+
+      subvar.str (                  $_pin_width                   ) = '1.4*$SVG_stage_02.$_face_width' ! $SVG_stage_02.$SVG_planet.$_pin_width, Definition
+
+      subvar.str (                  $_angle                       ) = '5.25*(360deg)/$SVG_stage_02.$SVG_planet.$_num_teeth' ! $SVG_stage_02.$SVG_planet.$_angle, Definition
+
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A
+         subvar.str (               $_x                           ) = '$SVG_stage_02.$SVG_carrier.$_width/2.0' ! $SVG_stage_02.$SVG_planet.$SVG_A.$_x, Definition
+
+         subvar.str (               $_K_x                         ) = '9.1e4 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_x, Definition
+
+         subvar.str (               $_K_y                         ) = '6.0e7 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_y, Definition
+
+         subvar.str (               $_K_z                         ) = '1.2e9 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_z, Definition
+
+         subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha, Definition
+
+         subvar.str (               $_K_beta                      ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta, Definition
+
+         subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma, Definition
+
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A
+   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
+   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
+      subvar.str (                  $_num_teeth                   ) = '93'                    ! $SVG_stage_02.$SVG_ring.$_num_teeth, Definition
+
+      subvar.str (                  $_prof_shift_coeff            ) = '0.117'                 ! $SVG_stage_02.$SVG_ring.$_prof_shift_coeff, Definition
+
+      subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_02.$SVG_ring.$_diam_bore, Definition
+
+      subvar.str (                  $_angle                       ) = '27*(180 deg)/$SVG_stage_02.$SVG_ring.$_num_teeth' ! $SVG_stage_02.$SVG_ring.$_angle, Definition
+
+      subvar.str (                  $_x                           ) = '$SVG_main_shaft.$_length + $SVG_stage_02.$SVG_carrier.$_width/2.0' ! $SVG_stage_02.$SVG_ring.$_x, Definition
+
+   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
+   subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
+      subvar.str (                  $_diameter_in                 ) = '1.4*$SVG_stage_02.$_center_distance	' ! $SVG_stage_02.$SVG_carrier.$_diameter_in, Definition
+
+      subvar.str (                  $_diameter_out                ) = '2.6*$SVG_stage_02.$_center_distance	' ! $SVG_stage_02.$SVG_carrier.$_diameter_out, Definition
+
+      subvar.str (                  $_width                       ) = '1.2*$SVG_stage_02.$_face_width' ! $SVG_stage_02.$SVG_carrier.$_width, Definition
+
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
+         subvar.str (               $_x                           ) = '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width + $SVG_stage_01.$SVG_shaft.$_length' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_x, Definition
+
+         subvar.str (               $_K_x                         ) = '9.1e4 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x, Definition
+
+         subvar.str (               $_K_y                         ) = '6.0e7 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y, Definition
+
+         subvar.str (               $_K_z                         ) = '1.2e9 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z, Definition
+
+         subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha, Definition
+
+         subvar.str (               $_K_beta                      ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta, Definition
+
+         subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma, Definition
+
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
+      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
+         subvar.str (               $_x                           ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_x + $SVG_stage_02.$SVG_carrier.$_width' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_x, Definition
+
+         subvar.str (               $_K_x                         ) = '9.1e7 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_x, Definition
+
+         subvar.str (               $_K_y                         ) = '6.0e7 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y, Definition
+
+         subvar.str (               $_K_z                         ) = '1.2e9 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z, Definition
+
+         subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha, Definition
+
+         subvar.str (               $_K_beta                      ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta, Definition
+
+         subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma, Definition
+
+      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
+   subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
+      subvar.str (                  $_diameter                    ) = '333.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_diameter, Definition
+
+      subvar.str (                  $_length                      ) = '666.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_length, Definition
+
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
+subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
+
 !**********************************************************************
 ! Reference systems
 !**********************************************************************
@@ -473,6 +582,18 @@ marker.type (                       $M_bed_plate_rotor            ) = 2         
 marker.parent (                     $M_bed_plate_rotor            ) = $B_bed_plate            ! Body
 marker.pos (              2 ,       $M_bed_plate_rotor            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
 marker.pos (              3 ,       $M_bed_plate_rotor            ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_IMS_PLC_A        ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_IMS_PLC_A        ) = $B_bed_plate            ! Body
+marker.pos (              1 ,       $M_bed_plate_IMS_PLC_A        ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_x ! Position
+marker.pos (              2 ,       $M_bed_plate_IMS_PLC_A        ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_IMS_PLC_A        ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_IMS_PLC_B        ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_IMS_PLC_B        ) = $B_bed_plate            ! Body
+marker.pos (              1 ,       $M_bed_plate_IMS_PLC_B        ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_x ! Position
+marker.pos (              2 ,       $M_bed_plate_IMS_PLC_B        ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_IMS_PLC_B        ) = $_height                ! Position
 
 joint.from (                        $J_bed_plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_bed_plate                  ) = $M_bed_plate_BRF        ! To Marker
@@ -1707,6 +1828,117 @@ bodygroup.begin (                   $BG_stage_01                  )             
    bodygroup.end (                  $BG_planet_03                 )                           ! $BG_stage_01.$BG_planet_03
 bodygroup.end (                     $BG_stage_01                  )                           ! $BG_stage_01
 
+bodygroup.begin (                   $BG_stage_02                  )                           ! $BG_stage_02
+   body.m (                         $B_carrier                    ) = 1.0000000000000000E+00  ! Mass of the Body
+   body.mp (                        $B_carrier                    ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_carrier                    ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_carrier                    ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_carrier                    ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.kind (                    $B_carrier                    ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.flx.cosim.job.type (        $B_carrier                    ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+   body.flx.cosim.job.previous (    $B_carrier                    ) = ''                      ! previous abaqus job run
+   body.flx.cosim.job.cmdoptions (  $B_carrier                    ) = ''                      ! additional command line options for the abaqus run
+   body.flx.cosim.job.solver (      $B_carrier                    ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+   marker.type (                    $M_carrier_BRF                ) = 1                       ! Type
+   marker.parent (                  $M_carrier_BRF                ) = $BG_stage_02.$B_carrier ! Body
+   marker.flx.type (                $M_carrier_BRF                ) = 4                       ! Flexible type
+
+   marker.type (                    $M_carrier_pin_01             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_01             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_01             ) = { $SVG_stage_02.$SVG_carrier.$_width/2.0 } ! Position
+   marker.pos (           2 ,       $M_carrier_pin_01             ) = $SVG_stage_02.$_center_distance ! Position
+
+   marker.type (                    $M_carrier_pin_A1             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_A1             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_A1             ) = 0.0000000000000000E+00  ! Position
+   marker.pos (           2 ,       $M_carrier_pin_A1             ) = $SVG_stage_02.$_center_distance ! Position
+
+   marker.type (                    $M_carrier_pin_B1             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_B1             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_B1             ) = $SVG_stage_02.$SVG_carrier.$_width ! Position
+   marker.pos (           2 ,       $M_carrier_pin_B1             ) = $SVG_stage_02.$_center_distance ! Position
+
+   marker.type (                    $M_carrier_pin_02             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_02             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_02             ) = { $SVG_stage_02.$SVG_carrier.$_width/2.0 } ! Position
+   marker.pos (           2 ,       $M_carrier_pin_02             ) = { $SVG_stage_02.$_center_distance*cos(120 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_02             ) = { $SVG_stage_02.$_center_distance*sin(120 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_A2             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_A2             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_A2             ) = 0.0000000000000000E+00  ! Position
+   marker.pos (           2 ,       $M_carrier_pin_A2             ) = { $SVG_stage_02.$_center_distance*cos(120 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_A2             ) = { $SVG_stage_02.$_center_distance*sin(120 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_B2             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_B2             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_B2             ) = $SVG_stage_02.$SVG_carrier.$_width ! Position
+   marker.pos (           2 ,       $M_carrier_pin_B2             ) = { $SVG_stage_02.$_center_distance*cos(120 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_B2             ) = { $SVG_stage_02.$_center_distance*sin(120 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_03             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_03             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_03             ) = { $SVG_stage_02.$SVG_carrier.$_width/2.0 } ! Position
+   marker.pos (           2 ,       $M_carrier_pin_03             ) = { $SVG_stage_02.$_center_distance*cos(240 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_03             ) = { $SVG_stage_02.$_center_distance*sin(240 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_A3             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_A3             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_A3             ) = 0.0000000000000000E+00  ! Position
+   marker.pos (           2 ,       $M_carrier_pin_A3             ) = { $SVG_stage_02.$_center_distance*cos(240 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_A3             ) = { $SVG_stage_02.$_center_distance*sin(240 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_B3             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_B3             ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_B3             ) = $SVG_stage_02.$SVG_carrier.$_width ! Position
+   marker.pos (           2 ,       $M_carrier_pin_B3             ) = { $SVG_stage_02.$_center_distance*cos(240 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_B3             ) = { $SVG_stage_02.$_center_distance*sin(240 deg) } ! Position
+
+   marker.type (                    $M_carrier_IMS_PLC_A          ) = 2                       ! Type
+   marker.parent (                  $M_carrier_IMS_PLC_A          ) = $BG_stage_02.$B_carrier ! Body
+
+   marker.type (                    $M_carrier_IMS_PLC_B          ) = 2                       ! Type
+   marker.parent (                  $M_carrier_IMS_PLC_B          ) = $BG_stage_02.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_IMS_PLC_B          ) = $SVG_stage_02.$SVG_carrier.$_width ! Position
+
+   joint.from (                     $J_carrier                    ) = $BG_stage_01.$M_shaft_carrier_02 ! From Marker
+   joint.to (                       $J_carrier                    ) = $BG_stage_02.$M_carrier_BRF ! To Marker
+   joint.type (                     $J_carrier                    ) = 0                       ! Type
+   joint.par (            1 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+   joint.par (            2 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+   joint.par (            3 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+   joint.par (            4 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [m] Translation in x
+   joint.par (            5 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [m] Translation in y
+   joint.par (            6 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [m] Translation in z
+   joint.par (            7 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+   prim.type (                      $P_carrier                    ) = 2                       ! Type
+   prim.ref (                       $P_carrier                    ) = $BG_stage_02.$M_carrier_BRF ! Reference Marker
+   prim.pos (             1 ,       $P_carrier                    ) = { $SVG_stage_02.$SVG_carrier.$_width/2.0 } ! Position
+   prim.pos (             3 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Position
+   prim.ang (             3 ,       $P_carrier                    ) = { 90 deg }              ! Angles
+   prim.color.r (         1 ,       $P_carrier                    ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.r (         2 ,       $P_carrier                    ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.g (         1 ,       $P_carrier                    ) = 1.3980000000000001E+02  ! Colors (green component)
+   prim.color.g (         2 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Colors (green component)
+   prim.color.b (         1 ,       $P_carrier                    ) = 2.5500000000000000E+01  ! Colors (blue component)
+   prim.color.b (         2 ,       $P_carrier                    ) = 2.5500000000000000E+02  ! Colors (blue component)
+   prim.color.t (         1 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_carrier                    ) = $SVG_material.$_rho     ! Density
+   prim.par (             2 ,       $P_carrier                    ) = $SVG_stage_02.$SVG_carrier.$_width ! [m] Height
+   prim.par (             3 ,       $P_carrier                    ) = $SVG_stage_02.$SVG_carrier.$_diameter_out ! [m] Outer diameter
+   prim.par (             4 ,       $P_carrier                    ) = $SVG_stage_02.$SVG_carrier.$_diameter_in ! [m] Inner diameter
+   prim.par (             5 ,       $P_carrier                    ) = $SVG_stage_02.$SVG_ring.$_num_teeth ! [-] Number of planes
+   prim.par (             6 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Number of highlighted planes
+   prim.par (             7 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Show bottom cap
+   prim.par (             8 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Show top cap
+   prim.par (             9 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! [rad] Start angle
+
+
+bodygroup.end (                     $BG_stage_02                  )                           ! $BG_stage_02
+
 !**********************************************************************
 ! Force Elements
 !**********************************************************************
@@ -2337,7 +2569,234 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.plot.par (       1 ,   1 ,   1 ,   8 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
    force.plot.par (       1 ,   1 ,   2 ,   1 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
 
+   force.type (                     $F_sun_planet_01              ) = 225                     ! Type
+   force.from (                     $F_sun_planet_01              ) = $BG_stage_01.$M_sun_BRF ! From Marker
+   force.to (                       $F_sun_planet_01              ) = $BG_stage_01.$BG_planet_01.$M_planet_BRF ! To Marker
+   force.par (            1 ,       $F_sun_planet_01              ) = $BG_stage_01.$P_sun     ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_sun_planet_01              ) = $BG_stage_01.$BG_planet_01.$P_planet ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_sun_planet_01              ) = 1.0000000000000000E+00  ! [-] Basic Output Values
+   force.par (            4 ,       $F_sun_planet_01              ) = 7.0000000000000000E+00  ! [-] Advanced Output Values
+   force.par (            6 ,       $F_sun_planet_01              ) = 1.0000000000000000E+00  ! [-] Damping model
+   force.par (            7 ,       $F_sun_planet_01              ) = 1.0000000000000000E+00  ! [-] Friction model
+   force.par (            8 ,       $F_sun_planet_01              ) = 5.0000000000000000E+00  ! [-] Number of slices
+   force.par (           10 ,       $F_sun_planet_01              ) = 1.0000000000000000E+00  ! [-] Gear blank factor
+   force.par (           11 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_sun_planet_01              ) = $_tooth_stiff_ratio     ! [-] Teeth stiffness ratio
+   force.par (           14 ,       $F_sun_planet_01              ) = $Mat_steel              ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_sun_planet_01              ) = $Mat_steel              ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_sun_planet_01              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_sun_planet_01              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [m] Full damping starts at
+   force.par (           31 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] Friction coefficient
+   force.par (           32 ,       $F_sun_planet_01              ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           44 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_sun_planet_01              ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_sun_planet_01              ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_sun_planet_01              ) = 0.0000000000000000E+00  ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_sun_planet_01              ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_sun_planet_01              ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_01        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_01  ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_01  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   force.type (                     $F_sun_planet_02              ) = 225                     ! Type
+   force.from (                     $F_sun_planet_02              ) = $BG_stage_01.$M_sun_BRF ! From Marker
+   force.to (                       $F_sun_planet_02              ) = $BG_stage_01.$BG_planet_02.$M_planet_BRF ! To Marker
+   force.par (            1 ,       $F_sun_planet_02              ) = $BG_stage_01.$P_sun     ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_sun_planet_02              ) = $BG_stage_01.$BG_planet_02.$P_planet ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_sun_planet_02              ) = 1.0000000000000000E+00  ! [-] Basic Output Values
+   force.par (            4 ,       $F_sun_planet_02              ) = 7.0000000000000000E+00  ! [-] Advanced Output Values
+   force.par (            6 ,       $F_sun_planet_02              ) = 1.0000000000000000E+00  ! [-] Damping model
+   force.par (            7 ,       $F_sun_planet_02              ) = 1.0000000000000000E+00  ! [-] Friction model
+   force.par (            8 ,       $F_sun_planet_02              ) = 5.0000000000000000E+00  ! [-] Number of slices
+   force.par (           10 ,       $F_sun_planet_02              ) = 1.0000000000000000E+00  ! [-] Gear blank factor
+   force.par (           11 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_sun_planet_02              ) = $_tooth_stiff_ratio     ! [-] Teeth stiffness ratio
+   force.par (           14 ,       $F_sun_planet_02              ) = $Mat_steel              ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_sun_planet_02              ) = $Mat_steel              ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_sun_planet_02              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_sun_planet_02              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [m] Full damping starts at
+   force.par (           31 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] Friction coefficient
+   force.par (           32 ,       $F_sun_planet_02              ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           44 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_sun_planet_02              ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_sun_planet_02              ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_sun_planet_02              ) = 0.0000000000000000E+00  ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_sun_planet_02              ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_sun_planet_02              ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_02        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_02  ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_02  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   force.type (                     $F_sun_planet_03              ) = 225                     ! Type
+   force.from (                     $F_sun_planet_03              ) = $BG_stage_01.$M_sun_BRF ! From Marker
+   force.to (                       $F_sun_planet_03              ) = $BG_stage_01.$BG_planet_03.$M_planet_BRF ! To Marker
+   force.par (            1 ,       $F_sun_planet_03              ) = $BG_stage_01.$P_sun     ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_sun_planet_03              ) = $BG_stage_01.$BG_planet_03.$P_planet ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_sun_planet_03              ) = 1.0000000000000000E+00  ! [-] Basic Output Values
+   force.par (            4 ,       $F_sun_planet_03              ) = 7.0000000000000000E+00  ! [-] Advanced Output Values
+   force.par (            6 ,       $F_sun_planet_03              ) = 1.0000000000000000E+00  ! [-] Damping model
+   force.par (            7 ,       $F_sun_planet_03              ) = 1.0000000000000000E+00  ! [-] Friction model
+   force.par (            8 ,       $F_sun_planet_03              ) = 5.0000000000000000E+00  ! [-] Number of slices
+   force.par (           10 ,       $F_sun_planet_03              ) = 1.0000000000000000E+00  ! [-] Gear blank factor
+   force.par (           11 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_sun_planet_03              ) = $_tooth_stiff_ratio     ! [-] Teeth stiffness ratio
+   force.par (           14 ,       $F_sun_planet_03              ) = $Mat_steel              ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_sun_planet_03              ) = $Mat_steel              ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_sun_planet_03              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_sun_planet_03              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [m] Full damping starts at
+   force.par (           31 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] Friction coefficient
+   force.par (           32 ,       $F_sun_planet_03              ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           44 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_sun_planet_03              ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_sun_planet_03              ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_sun_planet_03              ) = 0.0000000000000000E+00  ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_sun_planet_03              ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_sun_planet_03              ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_03        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_03  ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_03  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
 forcegroup.end (                    $FEG_stage_01                 )                           ! $FEG_stage_01
+
+forcegroup.begin (                  $FEG_stage_02                 )                           ! $FEG_stage_02
+   force.type (                     $F_IMS_PLC_A                  ) = 43                      ! Type
+   force.from (                     $F_IMS_PLC_A                  ) = $M_bed_plate_IMS_PLC_A  ! From Marker
+   force.to (                       $F_IMS_PLC_A                  ) = $BG_stage_02.$M_carrier_IMS_PLC_A ! To Marker
+   force.par (            1 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+   force.par (            2 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+   force.par (            3 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+   force.par (            4 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+   force.par (            5 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+   force.par (            6 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+   force.par (            7 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+   force.par (            8 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+   force.par (            9 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+   force.par (           10 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+   force.par (           11 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+   force.par (           12 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+   force.par (           13 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           19 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_IMS_PLC_A                  ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function Set
+   force.par (           40 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+   force.par (           41 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+   force.par (           42 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+   force.par (           43 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+   force.par (           44 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+   force.par (           45 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+   force.par (           46 ,       $F_IMS_PLC_A                  ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+   force.type (                     $F_IMS_PLC_B                  ) = 43                      ! Type
+   force.from (                     $F_IMS_PLC_B                  ) = $M_bed_plate_IMS_PLC_B  ! From Marker
+   force.to (                       $F_IMS_PLC_B                  ) = $BG_stage_02.$M_carrier_IMS_PLC_B ! To Marker
+   force.par (            1 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+   force.par (            2 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+   force.par (            3 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+   force.par (            4 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+   force.par (            5 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+   force.par (            6 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+   force.par (            7 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+   force.par (            8 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+   force.par (            9 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+   force.par (           10 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+   force.par (           11 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+   force.par (           12 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+   force.par (           13 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_x } ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y } ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z } ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           19 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_IMS_PLC_B                  ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function Set
+   force.par (           40 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+   force.par (           41 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+   force.par (           42 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+   force.par (           43 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+   force.par (           44 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+   force.par (           45 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+   force.par (           46 ,       $F_IMS_PLC_B                  ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+forcegroup.end (                    $FEG_stage_02                 )                           ! $FEG_stage_02
 
 !**********************************************************************
 ! Input Functions
