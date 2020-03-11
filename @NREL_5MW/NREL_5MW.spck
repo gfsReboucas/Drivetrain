@@ -10,6 +10,7 @@ version.build  = 66
 !**********************************************************************
 !  Global parameters
 !**********************************************************************
+searchpath (              1                                       ) = '//home.ansatt.ntnu.no/geraldod/Documents/coding/Drivetrain/@NREL_5MW'
 gravity (                 1                                       ) = 0.0000000000000000E+00  ! Gravity
 gravity (                 2                                       ) = 0.0000000000000000E+00  ! Gravity
 gravity (                 3                                       ) = -9.8100000000000005E+00 ! Gravity
@@ -57,9 +58,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 6.3839917182922363E+00  ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -6.9490728378295898E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 3.6132991313934326E+00  ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 5.3664913177490234E+00  ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -5.8367877006530762E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.0310716629028320E+00  ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.2440571784973145E-01  ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 2.1178941428661346E-01  ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 2.8827568888664246E-01  ! Orientation
@@ -67,8 +68,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 7.72684276
 view.angle (                        $V_WorkingView                ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.4967577531933784E-02  ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.4967576980590820E+01  ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.3833854347467422E-02  ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.3833853721618652E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -198,6 +199,32 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 !**********************************************************************
 subvar.str (                        $_rated_speed                 ) = '12.1 rpm'              ! Definition
 
+subvar.str (                        $_damping_coeff               ) = '0.05 s'                ! Definition
+
+subvar.str (                        $_addendum_coeff              ) = '1.0'                   ! Definition
+
+subvar.str (                        $_dedendum_coeff              ) = '1.25'                  ! Definition
+
+subvar.str (                        $_regularization_vel          ) = '1.0e-3'                ! Definition
+
+subvar.str (                        $_tooth_damping               ) = '5.0e8 N/(m/s)'         ! Definition
+
+subvar.str (                        $_tooth_stiff_ratio           ) = '0.8'                   ! Definition
+
+subvar.str (                        $_height                      ) = '2 m'                   ! Definition
+
+subvargroup.begin (                 $SVG_material                 )                           ! $SVG_material
+   subvar.str (                     $_E                           ) = '206.0e9 Pa'            ! $SVG_material.$_E, Definition
+   subvar.desc (          1 ,       $_E                           ) = 'Young\'s modulus'      ! Description
+
+   subvar.str (                     $_nu                          ) = '0.3'                   ! $SVG_material.$_nu, Definition
+   subvar.desc (          1 ,       $_nu                          ) = 'Poisson\'s ratio'      ! Description
+
+   subvar.str (                     $_rho                         ) = '7.83e3 kg/m^3'         ! $SVG_material.$_rho, Definition
+   subvar.desc (          1 ,       $_rho                         ) = 'Density'               ! Description
+
+subvargroup.end (                   $SVG_material                 )                           ! $SVG_material
+
 subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
    subvar.str (                     $_length                      ) = '10 m'                  ! $SVG_bed_plate.$_length, Definition
 
@@ -206,6 +233,47 @@ subvargroup.begin (                 $SVG_bed_plate                )             
    subvar.str (                     $_thickness                   ) = '0.5 m'                 ! $SVG_bed_plate.$_thickness, Definition
 
 subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
+
+subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
+   subvar.str (                     $_diameter                    ) = '700.0 mm'              ! $SVG_main_shaft.$_diameter, Definition
+
+   subvar.str (                     $_length                      ) = '2000.0 mm'             ! $SVG_main_shaft.$_length, Definition
+
+subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
+
+subvargroup.begin (                 $SVG_INP_A                    )                           ! $SVG_INP_A
+   subvar.str (                     $_x                           ) = '$SVG_main_shaft.$_length/6.0' ! $SVG_INP_A.$_x, Definition
+
+   subvar.str (                     $_K_x                         ) = '0.0 N/m'               ! $SVG_INP_A.$_K_x, Definition
+
+   subvar.str (                     $_K_y                         ) = '1.50e10 N/m'           ! $SVG_INP_A.$_K_y, Definition
+
+   subvar.str (                     $_K_z                         ) = '1.50e10 N/m'           ! $SVG_INP_A.$_K_z, Definition
+
+   subvar.str (                     $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_INP_A.$_K_alpha, Definition
+
+   subvar.str (                     $_K_beta                      ) = '5.0e6 Nm/rad'          ! $SVG_INP_A.$_K_beta, Definition
+
+   subvar.str (                     $_K_gamma                     ) = '5.0e6 Nm/rad'          ! $SVG_INP_A.$_K_gamma, Definition
+
+subvargroup.end (                   $SVG_INP_A                    )                           ! $SVG_INP_A
+
+subvargroup.begin (                 $SVG_INP_B                    )                           ! $SVG_INP_B
+   subvar.str (                     $_x                           ) = '$SVG_main_shaft.$_length*3.0/4.0' ! $SVG_INP_B.$_x, Definition
+
+   subvar.str (                     $_K_x                         ) = '4.06e8 N/m'            ! $SVG_INP_B.$_K_x, Definition
+
+   subvar.str (                     $_K_y                         ) = '1.54e10 N/m'           ! $SVG_INP_B.$_K_y, Definition
+
+   subvar.str (                     $_K_z                         ) = '1.54e10 N/m'           ! $SVG_INP_B.$_K_z, Definition
+
+   subvar.str (                     $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_INP_B.$_K_alpha, Definition
+
+   subvar.str (                     $_K_beta                      ) = '0.0 Nm/rad'            ! $SVG_INP_B.$_K_beta, Definition
+
+   subvar.str (                     $_K_gamma                     ) = '0.0 Nm/rad'            ! $SVG_INP_B.$_K_gamma, Definition
+
+subvargroup.end (                   $SVG_INP_B                    )                           ! $SVG_INP_B
 
 !**********************************************************************
 ! Reference systems
@@ -245,10 +313,46 @@ marker.type (                       $M_bed_plate_BRF              ) = 1         
 marker.parent (                     $M_bed_plate_BRF              ) = $B_bed_plate            ! Body
 marker.flx.type (                   $M_bed_plate_BRF              ) = 4                       ! Flexible type
 
+marker.type (                       $M_bed_plate_main_shaft       ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_main_shaft       ) = $B_bed_plate            ! Body
+marker.pos (              2 ,       $M_bed_plate_main_shaft       ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_main_shaft       ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_INP_A            ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_INP_A            ) = $B_bed_plate            ! Body
+marker.pos (              1 ,       $M_bed_plate_INP_A            ) = $SVG_INP_A.$_x          ! Position
+marker.pos (              2 ,       $M_bed_plate_INP_A            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_INP_A            ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_INP_B            ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_INP_B            ) = $B_bed_plate            ! Body
+marker.pos (              1 ,       $M_bed_plate_INP_B            ) = $SVG_INP_B.$_x          ! Position
+marker.pos (              2 ,       $M_bed_plate_INP_B            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_INP_B            ) = $_height                ! Position
+
 joint.from (                        $J_bed_plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_bed_plate                  ) = $M_bed_plate_BRF        ! To Marker
-joint.type (                        $J_bed_plate                  ) = 1                       ! Type
+joint.type (                        $J_bed_plate                  ) = 35                      ! Type
 joint.st.vel (            1 ,       $J_bed_plate                  ) = 0.0000000000000000E+00  ! Velocity
+joint.par (               1 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_x     ! [-] IFctn for x
+joint.par (               2 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_y     ! [-] IFctn for y
+joint.par (               3 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_z     ! [-] IFctn for z
+joint.par (               4 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_alpha ! [-] IFctn for al
+joint.par (               5 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_beta  ! [-] IFctn for be
+joint.par (               6 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_gamma ! [-] IFctn for ga
+joint.par (               7 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_x_dot ! [-] IFctn for v_x
+joint.par (               8 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_y_dot ! [-] IFctn for v_y
+joint.par (               9 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_z_dot ! [-] IFctn for v_z
+joint.par (              10 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_alpha_dot ! [-] IFctn for w_x
+joint.par (              11 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_beta_dot ! [-] IFctn for w_y
+joint.par (              12 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_gamma_dot ! [-] IFctn for w_z
+joint.par (              13 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_x_ddot ! [-] IFctn for a_x
+joint.par (              14 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_y_ddot ! [-] IFctn for a_y
+joint.par (              15 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_z_ddot ! [-] IFctn for a_z
+joint.par (              16 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_alpha_ddot ! [-] IFctn for wd_x
+joint.par (              17 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_beta_ddot ! [-] IFctn for wd_y
+joint.par (              18 ,       $J_bed_plate                  ) = $IFG_bed_plate.$I_gamma_ddot ! [-] IFctn for wd_z
+joint.par (              19 ,       $J_bed_plate                  ) = 1.0000000000000000E+00  ! [-] Rotation sequence
 joint.attr.2d.pos.x (     1 ,       $J_bed_plate                  ) = 20
 joint.attr.2d.pos.y (     1 ,       $J_bed_plate                  ) = 170
 joint.attr.2d.ori (       1 ,       $J_bed_plate                  ) = 270
@@ -273,4 +377,508 @@ prim.par (                3 ,       $P_bed_plate                  ) = $SVG_bed_p
 prim.par (                4 ,       $P_bed_plate                  ) = $SVG_bed_plate.$_thickness ! [m] Length in Z
 
 
-                                                                                                                                                                            
+body.sb.node.id (         1 ,       $B_main_shaft                 ) = 1                       ! Node ID
+body.sb.node.pos (        1 ,   1 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.pos (        2 ,   1 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.pos (        3 ,   1 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.id (         2 ,       $B_main_shaft                 ) = 2                       ! Node ID
+body.sb.node.pos (        1 ,   2 , $B_main_shaft                 ) = $SVG_INP_A.$_x          ! Node Position
+body.sb.node.pos (        2 ,   2 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.pos (        3 ,   2 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.id (         3 ,       $B_main_shaft                 ) = 3                       ! Node ID
+body.sb.node.pos (        1 ,   3 , $B_main_shaft                 ) = $SVG_INP_B.$_x          ! Node Position
+body.sb.node.pos (        2 ,   3 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.pos (        3 ,   3 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.id (         4 ,       $B_main_shaft                 ) = 4                       ! Node ID
+body.sb.node.pos (        1 ,   4 , $B_main_shaft                 ) = $SVG_main_shaft.$_length ! Node Position
+body.sb.node.pos (        2 ,   4 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.node.pos (        3 ,   4 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Node Position
+body.sb.ele.from (        1 ,       $B_main_shaft                 ) = 1                       ! From Node
+body.sb.ele.to (          1 ,       $B_main_shaft                 ) = 2                       ! To Node
+body.sb.ele.type (        1 ,       $B_main_shaft                 ) = 3                       ! Type
+body.sb.ele.xsec (        1 ,   1 , $B_main_shaft                 ) = $XSc_main_shaft         ! Cross Section
+body.sb.ele.xsec (        2 ,   1 , $B_main_shaft                 ) = $XSc_main_shaft         ! Cross Section
+body.sb.ele.ori.vec (     1 ,   1 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.ori.vec (     2 ,   1 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.ori.vec (     3 ,   1 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.nodes.num (   1 ,       $B_main_shaft                 ) = 2                       ! Number of intermediate nodes along element axis
+body.sb.ele.dmp.par (     1 ,   1 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Damping
+body.sb.ele.dmp.par (     2 ,   1 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Damping
+body.sb.ele.active (      1 ,       $B_main_shaft                 ) = 1                       ! Active
+body.sb.ele.from (        2 ,       $B_main_shaft                 ) = 2                       ! From Node
+body.sb.ele.to (          2 ,       $B_main_shaft                 ) = 3                       ! To Node
+body.sb.ele.type (        2 ,       $B_main_shaft                 ) = 3                       ! Type
+body.sb.ele.xsec (        1 ,   2 , $B_main_shaft                 ) = $XSc_main_shaft         ! Cross Section
+body.sb.ele.xsec (        2 ,   2 , $B_main_shaft                 ) = $XSc_main_shaft         ! Cross Section
+body.sb.ele.ori.vec (     1 ,   2 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.ori.vec (     2 ,   2 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.ori.vec (     3 ,   2 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.nodes.num (   2 ,       $B_main_shaft                 ) = 2                       ! Number of intermediate nodes along element axis
+body.sb.ele.dmp.par (     1 ,   2 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Damping
+body.sb.ele.dmp.par (     2 ,   2 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Damping
+body.sb.ele.active (      2 ,       $B_main_shaft                 ) = 1                       ! Active
+body.sb.ele.from (        3 ,       $B_main_shaft                 ) = 3                       ! From Node
+body.sb.ele.to (          3 ,       $B_main_shaft                 ) = 4                       ! To Node
+body.sb.ele.type (        3 ,       $B_main_shaft                 ) = 3                       ! Type
+body.sb.ele.xsec (        1 ,   3 , $B_main_shaft                 ) = $XSc_main_shaft         ! Cross Section
+body.sb.ele.xsec (        2 ,   3 , $B_main_shaft                 ) = $XSc_main_shaft         ! Cross Section
+body.sb.ele.ori.vec (     1 ,   3 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.ori.vec (     2 ,   3 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.ori.vec (     3 ,   3 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Orientation Vector
+body.sb.ele.nodes.num (   3 ,       $B_main_shaft                 ) = 2                       ! Number of intermediate nodes along element axis
+body.sb.ele.dmp.par (     1 ,   3 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Damping
+body.sb.ele.dmp.par (     2 ,   3 , $B_main_shaft                 ) = 0.0000000000000000E+00  ! Damping
+body.sb.ele.active (      3 ,       $B_main_shaft                 ) = 1                       ! Active
+body.m (                            $B_main_shaft                 ) = 1.0000000000000000E+00  ! Mass of the Body
+body.I.tens (             1 ,   1 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_main_shaft                 ) = 1.0000000000000000E+00  ! Moments of inertia
+body.I.kind (                       $B_main_shaft                 ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.type (                         $B_main_shaft                 ) = 2                       ! Body type: 0=rigid; 1=flex modal; 2=SIMBEAM; 4=nonlinear SIMBEAM
+body.flx.st.pos (         1 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         2 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         3 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         4 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         5 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         6 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.vel (         1 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         2 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         3 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         4 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         5 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         6 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.dep (         1 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         2 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         3 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         4 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         5 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         6 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.scal.stiff (   1 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   2 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   3 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   4 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   5 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   6 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.prestress (   1 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   2 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   3 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   4 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   5 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   6 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.cosim.job.type (           $B_main_shaft                 ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_main_shaft                 ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_main_shaft                 ) = ''                      ! additional command line options for the abaqus run
+body.flx.cosim.job.solver (         $B_main_shaft                 ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+marker.type (                       $M_main_shaft_BRF             ) = 1                       ! Type
+marker.parent (                     $M_main_shaft_BRF             ) = $B_main_shaft           ! Body
+marker.flx.type (                   $M_main_shaft_BRF             ) = 4                       ! Flexible type
+
+marker.type (                       $M_main_shaft_INP_A           ) = 2                       ! Type
+marker.parent (                     $M_main_shaft_INP_A           ) = $B_main_shaft           ! Body
+marker.pos (              1 ,       $M_main_shaft_INP_A           ) = $SVG_INP_A.$_x          ! Position
+
+marker.type (                       $M_main_shaft_INP_B           ) = 2                       ! Type
+marker.parent (                     $M_main_shaft_INP_B           ) = $B_main_shaft           ! Body
+marker.pos (              1 ,       $M_main_shaft_INP_B           ) = $SVG_INP_B.$_x          ! Position
+
+marker.type (                       $M_main_shaft_carrier         ) = 2                       ! Type
+marker.parent (                     $M_main_shaft_carrier         ) = $B_main_shaft           ! Body
+marker.pos (              1 ,       $M_main_shaft_carrier         ) = $SVG_main_shaft.$_length ! Position
+
+joint.from (                        $J_main_shaft                 ) = $M_bed_plate_main_shaft ! From Marker
+joint.to (                          $J_main_shaft                 ) = $M_main_shaft_BRF       ! To Marker
+joint.type (                        $J_main_shaft                 ) = 20                      ! Type
+
+prim.type (                         $P_main_shaft_Flex            ) = 28                      ! Type
+prim.ref (                          $P_main_shaft_Flex            ) = $M_main_shaft_BRF       ! Reference Marker
+prim.color.r (            1 ,       $P_main_shaft_Flex            ) = 1.2800000000000000E+02  ! Colors (red component)
+prim.color.g (            1 ,       $P_main_shaft_Flex            ) = 1.2800000000000000E+02  ! Colors (green component)
+prim.color.b (            1 ,       $P_main_shaft_Flex            ) = 1.2800000000000000E+02  ! Colors (blue component)
+prim.color.t (            1 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! Colors (transparency component)
+prim.mp.incl (                      $P_main_shaft_Flex            ) = 0                       ! Include Primitive in computation
+prim.par (                3 ,       $P_main_shaft_Flex            ) = 1.0000000000000000E+00  ! [-] Deformation
+prim.par (                4 ,       $P_main_shaft_Flex            ) = 1.0000000000000000E+00  ! [-] Deformation scaling factor
+
+
+!**********************************************************************
+! Force Elements
+!**********************************************************************
+force.type (                        $F_INP_A                      ) = 43                      ! Type
+force.from (                        $F_INP_A                      ) = $M_bed_plate_INP_A      ! From Marker
+force.to (                          $F_INP_A                      ) = $M_main_shaft_INP_A     ! To Marker
+force.par (               1 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_x        ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_y        ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_z        ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_alpha    ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_beta     ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_gamma    ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_INP_A                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_INP_A                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_INP_A                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_INP_A                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_INP_A                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_INP_A                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_INP_A                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_INP_B                      ) = 43                      ! Type
+force.from (                        $F_INP_B                      ) = $M_bed_plate_INP_B      ! From Marker
+force.to (                          $F_INP_B                      ) = $M_main_shaft_INP_B     ! To Marker
+force.par (               1 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_x        ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_y        ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_z        ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_alpha    ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_beta     ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_gamma    ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_INP_B                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_INP_B                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_INP_B                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_INP_B                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_INP_B                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_INP_B                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_INP_B                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_INP_B                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_INP_B                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_INP_B                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_INP_B                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_INP_B                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_INP_B                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_INP_B                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+!**********************************************************************
+! Input Functions
+!**********************************************************************
+ifctngroup.begin (                  $IFG_bed_plate                )                           ! $IFG_bed_plate
+   ifctn.file (                     $I_x                          ) = 'EC4_s01_X.if2'         ! File
+   ifctn.range.handling (           $I_x                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_x                          ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_x                          ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_x                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_x                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_x                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_x                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_x                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_x                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_x                    ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_x                    ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_x                    ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_y                          ) = 'EC4_s01_Y.if2'         ! File
+   ifctn.range.handling (           $I_y                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_y                          ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_y                          ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_y                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_y                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_y                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_y                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_y                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_y                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_y                    ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_y                    ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_y                    ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_z                          ) = 'EC4_s01_Z.if2'         ! File
+   ifctn.range.handling (           $I_z                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_z                          ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_z                          ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_z                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_z                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_z                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_z                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_z                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_z                          ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_z                    ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_z                    ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_z                    ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_alpha                      ) = 'EC4_s01_X_rot.if2'     ! File
+   ifctn.range.handling (           $I_alpha                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_alpha                      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_alpha                      ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_alpha                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_alpha                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_alpha                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_alpha                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_alpha                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_alpha                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_alpha                ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_alpha                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_alpha                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_beta                       ) = 'EC4_s01_Y_rot.if2'     ! File
+   ifctn.range.handling (           $I_beta                       ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_beta                       ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_beta                       ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_beta                       ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_beta                       ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_beta                       ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_beta                       ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_beta                       ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_beta                       ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_beta                 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_beta                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_beta                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_gamma                      ) = 'EC4_s01_Z_rot.if2'     ! File
+   ifctn.range.handling (           $I_gamma                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_gamma                      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_gamma                      ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_gamma                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_gamma                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_gamma                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_gamma                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_gamma                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_gamma                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_gamma                ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_gamma                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_gamma                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_x_dot                      ) = 'EC4_s01_XD.if2'        ! File
+   ifctn.range.handling (           $I_x_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_x_dot                      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_x_dot                      ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_x_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_x_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_x_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_x_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_x_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_x_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_x_dot                ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_x_dot                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_x_dot                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_y_dot                      ) = 'EC4_s01_YD.if2'        ! File
+   ifctn.range.handling (           $I_y_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_y_dot                      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_y_dot                      ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_y_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_y_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_y_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_y_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_y_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_y_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_y_dot                ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_y_dot                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_y_dot                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_z_dot                      ) = 'EC4_s01_ZD.if2'        ! File
+   ifctn.range.handling (           $I_z_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_z_dot                      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_z_dot                      ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_z_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_z_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_z_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_z_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_z_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_z_dot                      ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_z_dot                ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_z_dot                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_z_dot                ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_alpha_dot                  ) = 'EC4_s01_X_rotD.if2'    ! File
+   ifctn.range.handling (           $I_alpha_dot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_alpha_dot                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_alpha_dot                  ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_alpha_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_alpha_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_alpha_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_alpha_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_alpha_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_alpha_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_alpha_dot            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_alpha_dot            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_alpha_dot            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_beta_dot                   ) = 'EC4_s01_Y_rotD.if2'    ! File
+   ifctn.range.handling (           $I_beta_dot                   ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_beta_dot                   ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_beta_dot                   ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_beta_dot                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_beta_dot                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_beta_dot                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_beta_dot                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_beta_dot                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_beta_dot                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_beta_dot             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_beta_dot             ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_beta_dot             ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_gamma_dot                  ) = 'EC4_s01_Z_rotD.if2'    ! File
+   ifctn.range.handling (           $I_gamma_dot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_gamma_dot                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_gamma_dot                  ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_gamma_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_gamma_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_gamma_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_gamma_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_gamma_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_gamma_dot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_gamma_dot            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_gamma_dot            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_gamma_dot            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_x_ddot                     ) = 'EC4_s01_XDD.if2'       ! File
+   ifctn.range.handling (           $I_x_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_x_ddot                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_x_ddot                     ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_x_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_x_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_x_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_x_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_x_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_x_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_x_ddot               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_x_ddot               ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_x_ddot               ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_y_ddot                     ) = 'EC4_s01_YDD.if2'       ! File
+   ifctn.range.handling (           $I_y_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_y_ddot                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_y_ddot                     ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_y_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_y_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_y_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_y_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_y_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_y_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_y_ddot               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_y_ddot               ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_y_ddot               ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_z_ddot                     ) = 'EC4_s01_ZDD.if2'       ! File
+   ifctn.range.handling (           $I_z_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_z_ddot                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_z_ddot                     ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_z_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_z_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_z_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_z_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_z_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_z_ddot                     ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_z_ddot               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_z_ddot               ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_z_ddot               ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_alpha_ddot                 ) = 'EC4_s01_X_rotDD.if2'   ! File
+   ifctn.range.handling (           $I_alpha_ddot                 ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_alpha_ddot                 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_alpha_ddot                 ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_alpha_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_alpha_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_alpha_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_alpha_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_alpha_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_alpha_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_alpha_ddot           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_alpha_ddot           ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_alpha_ddot           ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_beta_ddot                  ) = 'EC4_s01_Y_rotDD.if2'   ! File
+   ifctn.range.handling (           $I_beta_ddot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_beta_ddot                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_beta_ddot                  ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_beta_ddot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_beta_ddot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_beta_ddot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_beta_ddot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_beta_ddot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_beta_ddot                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_beta_ddot            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_beta_ddot            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_beta_ddot            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_gamma_ddot                 ) = 'EC4_s01_Z_rotDD.if2'   ! File
+   ifctn.range.handling (           $I_gamma_ddot                 ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_gamma_ddot                 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_gamma_ddot                 ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_gamma_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_gamma_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_gamma_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_gamma_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_gamma_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_gamma_ddot                 ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_gamma_ddot           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_gamma_ddot           ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_gamma_ddot           ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+ifctngroup.end (                    $IFG_bed_plate                )                           ! $IFG_bed_plate
+
+!**********************************************************************
+! Materials
+!**********************************************************************
+material.type (                     $Mat_steel                    ) = 1                       ! Type
+material.par (            2 ,       $Mat_steel                    ) = $SVG_material.$_rho     ! [kg/m³] Density
+material.par (            3 ,       $Mat_steel                    ) = 0.0000000000000000E+00  ! [-] Input mode
+material.par (            4 ,       $Mat_steel                    ) = $SVG_material.$_E       ! [Pa] Young's modulus
+material.par (            5 ,       $Mat_steel                    ) = $SVG_material.$_nu      ! [-] Poisson's ratio
+material.par (            6 ,       $Mat_steel                    ) = 7.5000000000000000E+10  ! [Pa] Shear modulus
+
+!**********************************************************************
+! Cross Sections
+!**********************************************************************
+xsection.type (                     $XSc_main_shaft               ) = 1                       ! Type
+xsection.par (            1 ,       $XSc_main_shaft               ) = $Mat_steel              ! [-] Material
+xsection.par (            3 ,       $XSc_main_shaft               ) = $SVG_main_shaft.$_diameter ! [m] Diameter
+xsection.par (            4 ,       $XSc_main_shaft               ) = 3.6000000000000000E+01  ! [-] Number of cross section nodes
+xsection.plot.par (       1 ,       $XSc_main_shaft               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   1 ,   1 , $XSc_main_shaft         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   2 ,   1 , $XSc_main_shaft         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+                                                                                                                                                            

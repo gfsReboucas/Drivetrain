@@ -1,0 +1,217 @@
+================================================================================
+
+ T E S T  C A L L  of Right Hand Side
+ Simpack version = 2018.1-build66, 64bit
+
+ Model = NREL_5MW
+ Date  = 20-03-11
+
+ Error code of right hand side = 0
+
+================================================================================
+
+
+================================================================================
+Kinematic Tree:
+================================================================================
+
+  $R_Isys
+   ---->$B_bed_plate.......... [0 dof]  Joint $J_bed_plate of type 35
+        ---->$B_main_shaft.... [6 dof]  Joint $J_main_shaft of type 20
+
+
+================================================================================
+Time:
+================================================================================
+
+t =   0.0000000E+00  [s]
+
+
+================================================================================
+States (position, velocity, lambda, algebraic) and their derivatives:
+================================================================================
+
+X(    1) =   0.0000000E+00  , Xd(    1) =   0.0000000E+00  : joint.st.pos(     1): $J_main_shaft
+X(    2) =   0.0000000E+00  , Xd(    2) =   0.0000000E+00  : joint.st.pos(     2): $J_main_shaft
+X(    3) =   0.0000000E+00  , Xd(    3) =   0.0000000E+00  : joint.st.pos(     3): $J_main_shaft
+X(    4) =   0.0000000E+00  , Xd(    4) =   0.0000000E+00  : joint.st.pos(     4): $J_main_shaft
+X(    5) =   0.0000000E+00  , Xd(    5) =   0.0000000E+00  : joint.st.pos(     5): $J_main_shaft
+X(    6) =   0.0000000E+00  , Xd(    6) =   0.0000000E+00  : joint.st.pos(     6): $J_main_shaft
+X(    7) =   0.0000000E+00  , Xd(    7) =   1.1700000E-04  : joint.st.vel(     1): $J_main_shaft
+X(    8) =   0.0000000E+00  , Xd(    8) =  -1.5660018E-03  : joint.st.vel(     2): $J_main_shaft
+X(    9) =   0.0000000E+00  , Xd(    9) =  -7.6293129E-04  : joint.st.vel(     3): $J_main_shaft
+X(   10) =   0.0000000E+00  , Xd(   10) =  -1.6870537E-01  : joint.st.vel(     4): $J_main_shaft
+X(   11) =   0.0000000E+00  , Xd(   11) =  -3.2849278E-03  : joint.st.vel(     5): $J_main_shaft
+X(   12) =   0.0000000E+00  , Xd(   12) =  -9.8421709E+00  : joint.st.vel(     6): $J_main_shaft
+
+
+================================================================================
+Body BRF measurements:
+================================================================================
+
+Body $B_bed_plate
+brf.st.pos =  -1.4273150E+00  1.1834200E-01  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.4850000E-01 -4.1600000E-03  6.0500000E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.6750000E-01  3.0500000E-03  3.2500000E-02 -1.1700000E-04  1.5660000E-03  7.6300000E-04
+
+Body $B_main_shaft
+brf.st.pos =  -1.4273150E+00  2.6183420E+00  2.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5691600E-01 -4.1980000E-03  6.0547500E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.8917648E-05  1.3902649E-08 -9.8100000E+00  0.0000000E+00 -1.7698838E-09  6.8709351E-08
+
+
+================================================================================
+u-Vector Elements:
+================================================================================
+
+
+
+================================================================================
+u-Inputs:
+================================================================================
+
+
+
+================================================================================
+y-Outputs:
+================================================================================
+
+
+
+================================================================================
+Joint Accelerations:
+================================================================================
+
+joint.st.acc($J_bed_plate ) =
+joint.st.acc($J_main_shaft) =   1.1700000E-04 -1.5660018E-03 -7.6293129E-04 -1.6870537E-01 -3.2849278E-03 -9.8421709E+00
+
+
+================================================================================
+Joint Forces F_J and Torques T_J:
+================================================================================
+The constraint forces  are the components 1..3 and
+the constraint torques are the components 4..6 of vector FT_J.
+The forces/torques act on From-Body B_i at the origin of To-Marker M_j.
+The coordinates are given with respect to From-Marker M_i.
+
+FT_J($J_bed_plate ) =  -1.6750000E-01 -3.0500000E-03 -9.8425000E+00  1.1700004E-04 -1.5660000E-03 -7.6300000E-04
+FT_J($J_main_shaft) =  -1.3877788E-17 -1.7347235E-18  1.4551915E-11  0.0000000E+00 -7.2759576E-12 -1.8431437E-18
+
+
+================================================================================
+Flexible Body Accelerations:
+================================================================================
+
+body.flx.st.acc($B_main_shaft) =
+
+
+================================================================================
+Derivatives of Force Dynamic States:
+================================================================================
+
+
+
+================================================================================
+Constraint Residuals Delta:
+================================================================================
+
+
+================================================================================
+Kinematic Measurements
+================================================================================
+The transformation A_ij is defined by: (M_i) = A_ij * (M_j).
+
+
+================================================================================
+Applied Forces F_F and Torques T_F:
+================================================================================
+The applied forces  are the components 1..3 and
+the applied torques are the components 4..6 of vector FT_F.
+The forces/torques act on From-Body B_i at the origin of To-Marker M_j.
+The coordinates are given with respect to From-Marker M_i.
+
+
+
+================================================================================
+Output Values of Force/Control Elements:
+================================================================================
+
+
+================================================================================
+Result Elements:
+================================================================================
+
+
+
+================================================================================
+Element Indices and Names:
+================================================================================
+
+Bodies:
+     1: $B_bed_plate
+     2: $B_main_shaft
+
+Connections:
+
+Markers:
+     1: $M_Isys
+     2: $M_bed_plate_BRF
+     3: $M_main_shaft_BRF
+     4: $M_main_shaft_INP_A
+     5: $M_main_shaft_INP_B
+     6: $M_main_shaft_carrier
+     7: $M_bed_plate_main_shaft
+
+Joints:
+     1: $J_bed_plate
+     2: $J_main_shaft
+
+Constraints:
+
+Force/Control Elements:
+
+Sensors:
+
+Input Functions:
+     1: $IFG_bed_plate.$I_x
+     2: $IFG_bed_plate.$I_y
+     3: $IFG_bed_plate.$I_z
+     4: $IFG_bed_plate.$I_alpha
+     5: $IFG_bed_plate.$I_beta
+     6: $IFG_bed_plate.$I_gamma
+     7: $IFG_bed_plate.$I_x_dot
+     8: $IFG_bed_plate.$I_y_dot
+     9: $IFG_bed_plate.$I_z_dot
+    10: $IFG_bed_plate.$I_alpha_dot
+    11: $IFG_bed_plate.$I_beta_dot
+    12: $IFG_bed_plate.$I_gamma_dot
+    13: $IFG_bed_plate.$I_x_ddot
+    14: $IFG_bed_plate.$I_y_ddot
+    15: $IFG_bed_plate.$I_z_ddot
+    16: $IFG_bed_plate.$I_alpha_ddot
+    17: $IFG_bed_plate.$I_beta_ddot
+    18: $IFG_bed_plate.$I_gamma_ddot
+
+Substitution Variables:
+     1: $_rated_speed              =   1.2671090E+00 
+     2: $_damping_coeff            =   5.0000000E-02 
+     3: $_addendum_coeff           =   1.0000000E+00 
+     4: $_dedendum_coeff           =   1.2500000E+00 
+     5: $_regularization_vel       =   1.0000000E-03 
+     6: $_tooth_damping            =   5.0000000E+08 
+     7: $_tooth_stiff_ratio        =   8.0000000E-01 
+     8: $_height                   =   2.0000000E+00 
+     9: $SVG_material.$_E          =   2.0600000E+11 
+    10: $SVG_material.$_nu         =   3.0000000E-01 
+    11: $SVG_material.$_rho        =   7.8300000E+03 
+    12: $SVG_bed_plate.$_length    =   1.0000000E+01 
+    13: $SVG_bed_plate.$_width     =   5.0000000E+00 
+    14: $SVG_bed_plate.$_thickness =   5.0000000E-01 
+    15: $SVG_main_shaft.$_diameter =   7.0000000E-01 
+    16: $SVG_main_shaft.$_length   =   2.0000000E+00 
+    17: $SVG_INP_A.$_x             =   3.3333333E-01 
+    18: $SVG_INP_A.$_K_x           =   0.0000000E+00 
+    19: $SVG_INP_B.$_x             =   1.5000000E+00 
+    20: $SVG_INP_B.$_K_x           =   0.0000000E+00 
+
+Expressions:

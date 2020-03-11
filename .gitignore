@@ -40,3 +40,6 @@ sim_steps_13.m
 sim_steps_14.m
 sim_steps_14_alt.m
 test.m
+@NREL_5MW/NREL_5MW.output/NREL_5MW-B_main_shaft.fecache
+@NREL_5MW/NREL_5MW.output/NREL_5MW.intinfo
+@NREL_5MW/NREL_5MW.output/NREL_5MW.licreq.log
