@@ -58,18 +58,18 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 3.5107994079589844E+00  ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -1.2533425092697144E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 3.8475346565246582E+00  ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 5.2440571784973145E-01  ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 2.1178941428661346E-01  ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.8827568888664246E-01  ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 7.7268427610397339E-01  ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 2.4527909755706787E+00  ! Position
+view.pos (                2 ,       $V_WorkingView                ) = 1.6744136810302734E-03  ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.6183009147644043E+00  ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 4.4969439506530762E-01  ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 2.4831514060497284E-01  ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 3.1782877445220947E-01  ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.9693132638931274E-01  ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.9999997764825821E-03  ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.1830349922180176E+01  ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.2101546287536621E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -332,11 +332,13 @@ subvargroup.begin (                 $SVG_stage_01                 )             
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
       subvar.str (                  $_num_teeth                   ) = '56'                    ! $SVG_stage_01.$SVG_ring.$_num_teeth, Definition
 
-      subvar.str (                  $_prof_shift_coeff            ) = '0.802'                 ! $SVG_stage_01.$SVG_ring.$_prof_shift_coeff, Definition
+      subvar.str (                  $_prof_shift_coeff            ) = '-0.501'                ! $SVG_stage_01.$SVG_ring.$_prof_shift_coeff, Definition
 
       subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_01.$SVG_ring.$_diam_bore, Definition
 
       subvar.str (                  $_angle                       ) = '27*(180 deg)/$SVG_stage_01.$SVG_ring.$_num_teeth' ! $SVG_stage_01.$SVG_ring.$_angle, Definition
+
+      subvar.str (                  $_x                           ) = '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width/2.0' ! $SVG_stage_01.$SVG_ring.$_x, Definition
 
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
    subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
@@ -380,8 +382,21 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
    subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+      subvar.str (                  $_diameter                    ) = '533.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_diameter, Definition
+
+      subvar.str (                  $_length                      ) = '500.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_length, Definition
+
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
 subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
+
+subvargroup.begin (                 $SVG_GB_frame                 )                           ! $SVG_GB_frame
+   subvar.str (                     $_length                      ) = '3.5 m'                 ! $SVG_GB_frame.$_length, Definition
+
+   subvar.str (                     $_width                       ) = '2.0*$_height'          ! $SVG_GB_frame.$_width, Definition
+
+   subvar.str (                     $_x                           ) = '($SVG_main_shaft.$_length*7/4 - $SVG_bed_plate.$_length + $SVG_GB_frame.$_length)/2.0' ! $SVG_GB_frame.$_x, Definition
+
+subvargroup.end (                   $SVG_GB_frame                 )                           ! $SVG_GB_frame
 
 !**********************************************************************
 ! Reference systems
@@ -453,6 +468,11 @@ marker.parent (                     $M_bed_plate_PLC_B            ) = $B_bed_pla
 marker.pos (              1 ,       $M_bed_plate_PLC_B            ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_x ! Position
 marker.pos (              2 ,       $M_bed_plate_PLC_B            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
 marker.pos (              3 ,       $M_bed_plate_PLC_B            ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_rotor            ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_rotor            ) = $B_bed_plate            ! Body
+marker.pos (              2 ,       $M_bed_plate_rotor            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_rotor            ) = $_height                ! Position
 
 joint.from (                        $J_bed_plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_bed_plate                  ) = $M_bed_plate_BRF        ! To Marker
@@ -670,6 +690,9 @@ marker.type (                       $M_main_shaft_carrier         ) = 2         
 marker.parent (                     $M_main_shaft_carrier         ) = $B_main_shaft           ! Body
 marker.pos (              1 ,       $M_main_shaft_carrier         ) = $SVG_main_shaft.$_length ! Position
 
+marker.type (                       $M_main_shaft_rotor           ) = 2                       ! Type
+marker.parent (                     $M_main_shaft_rotor           ) = $B_main_shaft           ! Body
+
 joint.from (                        $J_main_shaft                 ) = $M_bed_plate_main_shaft ! From Marker
 joint.to (                          $J_main_shaft                 ) = $M_main_shaft_BRF       ! To Marker
 joint.type (                        $J_main_shaft                 ) = 20                      ! Type
@@ -686,6 +709,60 @@ prim.par (                4 ,       $P_main_shaft_Flex            ) = 1.00000000
 prim.par (               11 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! [-] Interpolation type
 prim.par (               12 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! [-] Num. master nodes for interpol
 prim.par (               21 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! [-] Graphics mode
+
+
+body.m (                            $B_GB_frame                   ) = 1.0000000000000000E+00  ! Mass of the Body
+body.mp (                           $B_GB_frame                   ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.I.tens (             1 ,   1 , $B_GB_frame                   ) = 1.0000000000000000E+00  ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_GB_frame                   ) = 1.0000000000000000E+00  ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_GB_frame                   ) = 1.0000000000000000E+00  ! Moments of inertia
+body.I.kind (                       $B_GB_frame                   ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.flx.cosim.job.type (           $B_GB_frame                   ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_GB_frame                   ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_GB_frame                   ) = ''                      ! additional command line options for the abaqus run
+body.flx.cosim.job.solver (         $B_GB_frame                   ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+marker.type (                       $M_GB_frame_BRF               ) = 1                       ! Type
+marker.parent (                     $M_GB_frame_BRF               ) = $B_GB_frame             ! Body
+marker.flx.type (                   $M_GB_frame_BRF               ) = 4                       ! Flexible type
+
+marker.type (                       $M_GB_frame_ring_01           ) = 2                       ! Type
+marker.parent (                     $M_GB_frame_ring_01           ) = $B_GB_frame             ! Body
+marker.pos (              1 ,       $M_GB_frame_ring_01           ) = $SVG_stage_01.$SVG_ring.$_x ! Position
+marker.pos (              2 ,       $M_GB_frame_ring_01           ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_GB_frame_ring_01           ) = $_height                ! Position
+
+marker.type (                       $M_GB_frame_shaft_01          ) = 2                       ! Type
+marker.parent (                     $M_GB_frame_shaft_01          ) = $B_GB_frame             ! Body
+marker.pos (              1 ,       $M_GB_frame_shaft_01          ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_x ! Position
+marker.pos (              2 ,       $M_GB_frame_shaft_01          ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_GB_frame_shaft_01          ) = $_height                ! Position
+
+joint.from (                        $J_GB_frame                   ) = $M_bed_plate_BRF        ! From Marker
+joint.to (                          $J_GB_frame                   ) = $M_GB_frame_BRF         ! To Marker
+joint.type (                        $J_GB_frame                   ) = 0                       ! Type
+joint.par (               1 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+joint.par (               2 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+joint.par (               3 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+joint.par (               4 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [m] Translation in x
+joint.par (               5 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [m] Translation in y
+joint.par (               6 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [m] Translation in z
+joint.par (               7 ,       $J_GB_frame                   ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+prim.type (                         $P_GB_frame                   ) = 1                       ! Type
+prim.ref (                          $P_GB_frame                   ) = $M_GB_frame_BRF         ! Reference Marker
+prim.pos (                1 ,       $P_GB_frame                   ) = { $SVG_GB_frame.$_length/2.0 + $SVG_main_shaft.$_length*7/8 } ! Position
+prim.pos (                2 ,       $P_GB_frame                   ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+prim.pos (                3 ,       $P_GB_frame                   ) = { $SVG_GB_frame.$_width/2.0 } ! Position
+prim.color.r (            1 ,       $P_GB_frame                   ) = 0.0000000000000000E+00  ! Colors (red component)
+prim.color.g (            1 ,       $P_GB_frame                   ) = 0.0000000000000000E+00  ! Colors (green component)
+prim.color.b (            1 ,       $P_GB_frame                   ) = 0.0000000000000000E+00  ! Colors (blue component)
+prim.color.t (            1 ,       $P_GB_frame                   ) = 0.0000000000000000E+00  ! Colors (transparency component)
+prim.drawstyle (                    $P_GB_frame                   ) = 2                       ! Draw style
+prim.mp.dens.solid (                $P_GB_frame                   ) = $SVG_material.$_rho     ! Density
+prim.par (                2 ,       $P_GB_frame                   ) = $SVG_GB_frame.$_length  ! [m] Length in X
+prim.par (                3 ,       $P_GB_frame                   ) = $SVG_GB_frame.$_width   ! [m] Length in Y
+prim.par (                4 ,       $P_GB_frame                   ) = $SVG_GB_frame.$_width   ! [m] Length in Z
 
 
 bodygroup.begin (                   $BG_stage_01                  )                           ! $BG_stage_01
@@ -795,6 +872,309 @@ bodygroup.begin (                   $BG_stage_01                  )             
    prim.par (             7 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Show bottom cap
    prim.par (             8 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Show top cap
    prim.par (             9 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! [rad] Start angle
+
+
+   body.m (                         $B_ring                       ) = 1.0000000000000000E+00  ! Mass of the Body
+   body.mp (                        $B_ring                       ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_ring                       ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_ring                       ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_ring                       ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.kind (                    $B_ring                       ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.flx.cosim.job.type (        $B_ring                       ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+   body.flx.cosim.job.previous (    $B_ring                       ) = ''                      ! previous abaqus job run
+   body.flx.cosim.job.cmdoptions (  $B_ring                       ) = ''                      ! additional command line options for the abaqus run
+   body.flx.cosim.job.solver (      $B_ring                       ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+   marker.type (                    $M_ring_BRF                   ) = 1                       ! Type
+   marker.parent (                  $M_ring_BRF                   ) = $BG_stage_01.$B_ring    ! Body
+   marker.flx.type (                $M_ring_BRF                   ) = 4                       ! Flexible type
+
+   marker.type (                    $M_ring_rot                   ) = 2                       ! Type
+   marker.parent (                  $M_ring_rot                   ) = $BG_stage_01.$B_ring    ! Body
+   marker.ang (           2 ,       $M_ring_rot                   ) = { 90 deg }              ! Angles
+
+   joint.from (                     $J_ring                       ) = $M_GB_frame_ring_01     ! From Marker
+   joint.to (                       $J_ring                       ) = $BG_stage_01.$M_ring_BRF ! To Marker
+   joint.type (                     $J_ring                       ) = 0                       ! Type
+   joint.par (            1 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+   joint.par (            2 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+   joint.par (            3 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+   joint.par (            4 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [m] Translation in x
+   joint.par (            5 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [m] Translation in y
+   joint.par (            6 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [m] Translation in z
+   joint.par (            7 ,       $J_ring                       ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+   prim.type (                      $P_ring                       ) = 25                      ! Type
+   prim.ref (                       $P_ring                       ) = $BG_stage_01.$M_ring_rot ! Reference Marker
+   prim.color.r (         1 ,       $P_ring                       ) = 9.4799999999999997E+01  ! Colors (red component)
+   prim.color.r (         2 ,       $P_ring                       ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.g (         1 ,       $P_ring                       ) = 1.8300000000000000E+02  ! Colors (green component)
+   prim.color.g (         2 ,       $P_ring                       ) = 0.0000000000000000E+00  ! Colors (green component)
+   prim.color.b (         1 ,       $P_ring                       ) = 9.2099999999999994E+01  ! Colors (blue component)
+   prim.color.b (         2 ,       $P_ring                       ) = 2.5500000000000000E+02  ! Colors (blue component)
+   prim.color.t (         1 ,       $P_ring                       ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_ring                       ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_ring                       ) = $SVG_material.$_rho     ! Density
+   prim.par (             2 ,       $P_ring                       ) = 0.0000000000000000E+00  ! [-] Profile Definition Parameters
+   prim.par (             2 ,   1 , $P_ring                       ) = 2.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   2 , $P_ring                       ) = $SVG_stage_01.$SVG_ring.$_angle ! [rad] Initial gear angle
+   prim.par (             2 ,   3 ,   1 , $P_ring                 ) = $SVG_stage_01.$_normal_module ! [m] Normal module
+   prim.par (             2 ,   3 ,   2 , $P_ring                 ) = $SVG_stage_01.$_pressure_angle ! [rad] Normal pressure angle
+   prim.par (             2 ,   3 ,   3 , $P_ring                 ) = $SVG_stage_01.$SVG_ring.$_prof_shift_coeff ! [-] Shift factor
+   prim.par (             2 ,   3 ,   4 , $P_ring                 ) = $SVG_stage_01.$_helix_angle ! [rad] Helix angle
+   prim.par (             2 ,   3 ,   5 , $P_ring                 ) = 0.0000000000000000E+00  ! [rad] Bevel angle
+   prim.par (             2 ,   3 ,   6 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   3 ,   6 ,   2 , $P_ring           ) = $_addendum_coeff        ! [-] Addendum value
+   prim.par (             2 ,   3 ,   6 ,   3 , $P_ring           ) = $_dedendum_coeff        ! [-] Dedendum value
+   prim.par (             2 ,   3 ,   7 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   3 ,   7 ,   2 , $P_ring           ) = 8.0000000000000002E-03  ! [-] Value
+   prim.par (             2 ,   3 ,   8 , $P_ring                 ) = $SVG_stage_01.$SVG_ring.$_num_teeth ! [-] Number of teeth
+   prim.par (             2 ,   3 ,   9 , $P_ring                 ) = $SVG_stage_01.$_face_width ! [m] Flank width
+   prim.par (             2 ,   4 ,   1 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Method
+   prim.par (             2 ,   4 ,   1 ,   2 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Manufacturing process
+   prim.par (             2 ,   4 ,   1 ,   3 , $P_ring           ) = 0.0000000000000000E+00  ! [rad] Shaft angle
+   prim.par (             2 ,   4 ,   1 ,   5 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Number of teeth (pinion)
+   prim.par (             2 ,   4 ,   1 ,   6 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Number of teeth (wheel)
+   prim.par (             2 ,   4 ,   1 ,   8 , $P_ring           ) = 0.0000000000000000E+00  ! [m] Outer pitch diameter of wheel
+   prim.par (             2 ,   4 ,   1 ,   9 , $P_ring           ) = 0.0000000000000000E+00  ! [m] Wheel face width
+   prim.par (             2 ,   4 ,   1 ,  11 , $P_ring           ) = 0.0000000000000000E+00  ! [rad] Mean spiral angle of wheel
+   prim.par (             2 ,   4 ,   1 ,  12 , $P_ring           ) = 0.0000000000000000E+00  ! [m] Cutter radius
+   prim.par (             2 ,   4 ,   2 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   4 ,   2 ,   2 , $P_ring           ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (drive side)
+   prim.par (             2 ,   4 ,   2 ,   3 , $P_ring           ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (coast side)
+   prim.par (             2 ,   4 ,   2 ,   5 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Profile shift coefficient
+   prim.par (             2 ,   4 ,   2 ,   6 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Crown gear addendum factor
+   prim.par (             2 ,   4 ,   2 ,   7 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Crown gear dedendum factor
+   prim.par (             2 ,   4 ,   2 ,   8 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Thickness modification coeff.
+   prim.par (             2 ,   4 ,   2 ,  13 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Backlash
+   prim.par (             2 ,   4 ,   2 ,  13 ,   1 , $P_ring     ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   4 ,   2 ,  13 ,   2 , $P_ring     ) = 0.0000000000000000E+00  ! [m] Value
+   prim.par (             2 ,   4 ,   2 ,  14 , $P_ring           ) = 0.0000000000000000E+00  ! [rad] Addendum angle of wheel
+   prim.par (             2 ,   4 ,   2 ,  15 , $P_ring           ) = 0.0000000000000000E+00  ! [rad] Dedendum angle of wheel
+   prim.par (             3 ,       $P_ring                       ) = 0.0000000000000000E+00  ! [-] Graphical representation
+   prim.par (             3 ,   1 , $P_ring                       ) = 0.0000000000000000E+00  ! [m] Ring Diameter
+   prim.par (             3 ,   3 , $P_ring                       ) = $SVG_stage_01.$SVG_ring.$_num_teeth ! [-] Number of visible teeth
+   prim.par (             3 ,   4 , $P_ring                       ) = 1.0000000000000000E+00  ! [-] Number of highlighted teeth
+   prim.par (             3 ,   5 , $P_ring                       ) = 1.0000000000000000E+00  ! [-] Tip discretisation
+   prim.par (             3 ,   6 , $P_ring                       ) = 1.5000000000000000E+01  ! [-] Flank discretisation
+   prim.par (             3 ,   7 , $P_ring                       ) = 1.0000000000000000E+00  ! [-] Root discretisation
+   prim.par (             3 ,   8 , $P_ring                       ) = 1.0000000000000000E+00  ! [-] Face discretisation
+   prim.par (             3 ,   9 , $P_ring                       ) = 0.0000000000000000E+00  ! [-] Ring discretisation per tooth
+   prim.par (             4 ,       $P_ring                       ) = 0.0000000000000000E+00  ! [-] Profile modification
+   prim.par (             4 ,   1 , $P_ring                       ) = 1.0000000000000000E+00  ! [-] Scale factor
+   prim.par (             4 ,   2 ,   1 , $P_ring                 ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   3 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   4 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   5 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   6 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   7 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   8 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   9 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,  10 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,  11 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   1 , $P_ring                 ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   3 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   4 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   5 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   6 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   7 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   8 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   9 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,  10 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,  11 ,   1 , $P_ring           ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   4 ,   1 , $P_ring                 ) = 0.0000000000000000E+00  ! [m] Circular mod. amount
+   prim.par (             4 ,   4 ,   2 , $P_ring                 ) = 0.0000000000000000E+00  ! [m] Lead crowning amount
+   prim.par (             5 ,   1 , $P_ring                       ) = 0.0000000000000000E+00  ! [-] Type
+   prim.plot.par (        1 ,       $P_ring                       ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 , $P_ring                       ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 , $P_ring                 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   1 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   2 , $P_ring           ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   3 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   4 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   5 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   6 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   2 ,   1 , $P_ring           ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+
+   body.m (                         $B_shaft                      ) = 1.0000000000000000E+00  ! Mass of the Body
+   body.mp (                        $B_shaft                      ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_shaft                      ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_shaft                      ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_shaft                      ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.kind (                    $B_shaft                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.flx.cosim.job.type (        $B_shaft                      ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+   body.flx.cosim.job.previous (    $B_shaft                      ) = ''                      ! previous abaqus job run
+   body.flx.cosim.job.cmdoptions (  $B_shaft                      ) = ''                      ! additional command line options for the abaqus run
+   body.flx.cosim.job.solver (      $B_shaft                      ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+   marker.type (                    $M_shaft_BRF                  ) = 1                       ! Type
+   marker.parent (                  $M_shaft_BRF                  ) = $BG_stage_01.$B_shaft   ! Body
+   marker.flx.type (                $M_shaft_BRF                  ) = 4                       ! Flexible type
+
+   marker.type (                    $M_shaft_sun                  ) = 2                       ! Type
+   marker.parent (                  $M_shaft_sun                  ) = $BG_stage_01.$B_shaft   ! Body
+   marker.pos (           1 ,       $M_shaft_sun                  ) = { -0.1*$SVG_stage_01.$_face_width } ! Position
+
+   marker.type (                    $M_shaft_carrier_02           ) = 2                       ! Type
+   marker.parent (                  $M_shaft_carrier_02           ) = $BG_stage_01.$B_shaft   ! Body
+   marker.pos (           1 ,       $M_shaft_carrier_02           ) = $SVG_stage_01.$SVG_shaft.$_length ! Position
+
+   joint.from (                     $J_shaft                      ) = $M_GB_frame_shaft_01    ! From Marker
+   joint.to (                       $J_shaft                      ) = $BG_stage_01.$M_shaft_BRF ! To Marker
+   joint.type (                     $J_shaft                      ) = 20                      ! Type
+
+   prim.type (                      $P_shaft                      ) = 2                       ! Type
+   prim.ref (                       $P_shaft                      ) = $BG_stage_01.$M_shaft_BRF ! Reference Marker
+   prim.pos (             1 ,       $P_shaft                      ) = { $SVG_stage_01.$SVG_shaft.$_length/2.0 } ! Position
+   prim.ang (             2 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! Angles
+   prim.ang (             3 ,       $P_shaft                      ) = { 90 deg }              ! Angles
+   prim.color.r (         1 ,       $P_shaft                      ) = 2.2057499999999999E+02  ! Colors (red component)
+   prim.color.r (         2 ,       $P_shaft                      ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.g (         1 ,       $P_shaft                      ) = 2.0680500000000001E+02  ! Colors (green component)
+   prim.color.g (         2 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! Colors (green component)
+   prim.color.b (         1 ,       $P_shaft                      ) = 1.1041500000000001E+02  ! Colors (blue component)
+   prim.color.b (         2 ,       $P_shaft                      ) = 2.5500000000000000E+02  ! Colors (blue component)
+   prim.color.t (         1 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_shaft                      ) = $SVG_material.$_rho     ! Density
+   prim.par (             2 ,       $P_shaft                      ) = $SVG_stage_01.$SVG_shaft.$_length ! [m] Height
+   prim.par (             3 ,       $P_shaft                      ) = $SVG_stage_01.$SVG_shaft.$_diameter ! [m] Outer diameter
+   prim.par (             4 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! [m] Inner diameter
+   prim.par (             5 ,       $P_shaft                      ) = $SVG_stage_01.$SVG_sun.$_num_teeth ! [-] Number of planes
+   prim.par (             6 ,       $P_shaft                      ) = 1.0000000000000000E+00  ! [-] Number of highlighted planes
+   prim.par (             7 ,       $P_shaft                      ) = 1.0000000000000000E+00  ! [-] Show bottom cap
+   prim.par (             8 ,       $P_shaft                      ) = 1.0000000000000000E+00  ! [-] Show top cap
+   prim.par (             9 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! [rad] Start angle
+   prim.par (            10 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! [rad] Delta angle
+   prim.par (            11 ,       $P_shaft                      ) = 0.0000000000000000E+00  ! [-] Close geometry with
+
+
+   body.m (                         $B_sun                        ) = 1.0000000000000000E+00  ! Mass of the Body
+   body.mp (                        $B_sun                        ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_sun                        ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_sun                        ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_sun                        ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.kind (                    $B_sun                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.flx.cosim.job.type (        $B_sun                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+   body.flx.cosim.job.previous (    $B_sun                        ) = ''                      ! previous abaqus job run
+   body.flx.cosim.job.cmdoptions (  $B_sun                        ) = ''                      ! additional command line options for the abaqus run
+   body.flx.cosim.job.solver (      $B_sun                        ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+   marker.type (                    $M_sun_BRF                    ) = 1                       ! Type
+   marker.parent (                  $M_sun_BRF                    ) = $BG_stage_01.$B_sun     ! Body
+   marker.flx.type (                $M_sun_BRF                    ) = 4                       ! Flexible type
+
+   marker.type (                    $M_sun_rot                    ) = 2                       ! Type
+   marker.parent (                  $M_sun_rot                    ) = $BG_stage_01.$B_sun     ! Body
+   marker.ang (           2 ,       $M_sun_rot                    ) = { 90 deg }              ! Angles
+
+   marker.type (                    $M_sun_shaft                  ) = 2                       ! Type
+   marker.parent (                  $M_sun_shaft                  ) = $BG_stage_01.$B_sun     ! Body
+   marker.pos (           1 ,       $M_sun_shaft                  ) = { $SVG_stage_01.$_face_width/2.0 } ! Position
+
+   joint.from (                     $J_sun                        ) = $BG_stage_01.$M_shaft_sun ! From Marker
+   joint.to (                       $J_sun                        ) = $BG_stage_01.$M_sun_shaft ! To Marker
+   joint.type (                     $J_sun                        ) = 0                       ! Type
+   joint.par (            1 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+   joint.par (            2 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+   joint.par (            3 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+   joint.par (            4 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [m] Translation in x
+   joint.par (            5 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [m] Translation in y
+   joint.par (            6 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [m] Translation in z
+   joint.par (            7 ,       $J_sun                        ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+   prim.type (                      $P_sun                        ) = 25                      ! Type
+   prim.ref (                       $P_sun                        ) = $BG_stage_01.$M_sun_rot ! Reference Marker
+   prim.color.r (         1 ,       $P_sun                        ) = 2.3069999999999999E+02  ! Colors (red component)
+   prim.color.r (         2 ,       $P_sun                        ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.g (         1 ,       $P_sun                        ) = 4.8899999999999999E+01  ! Colors (green component)
+   prim.color.g (         2 ,       $P_sun                        ) = 0.0000000000000000E+00  ! Colors (green component)
+   prim.color.b (         1 ,       $P_sun                        ) = 5.0700000000000003E+01  ! Colors (blue component)
+   prim.color.b (         2 ,       $P_sun                        ) = 2.5500000000000000E+02  ! Colors (blue component)
+   prim.color.t (         1 ,       $P_sun                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_sun                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_sun                        ) = $SVG_material.$_rho     ! Density
+   prim.par (             2 ,       $P_sun                        ) = 0.0000000000000000E+00  ! [-] Profile Definition Parameters
+   prim.par (             2 ,   1 , $P_sun                        ) = 3.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   2 , $P_sun                        ) = $SVG_stage_01.$SVG_sun.$_angle ! [rad] Initial gear angle
+   prim.par (             2 ,   3 ,   1 , $P_sun                  ) = $SVG_stage_01.$_normal_module ! [m] Normal module
+   prim.par (             2 ,   3 ,   2 , $P_sun                  ) = $SVG_stage_01.$_pressure_angle ! [rad] Normal pressure angle
+   prim.par (             2 ,   3 ,   3 , $P_sun                  ) = $SVG_stage_01.$SVG_sun.$_prof_shift_coeff ! [-] Shift factor
+   prim.par (             2 ,   3 ,   4 , $P_sun                  ) = $SVG_stage_01.$_helix_angle ! [rad] Helix angle
+   prim.par (             2 ,   3 ,   5 , $P_sun                  ) = 0.0000000000000000E+00  ! [rad] Bevel angle
+   prim.par (             2 ,   3 ,   6 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   3 ,   6 ,   2 , $P_sun            ) = $_addendum_coeff        ! [-] Addendum value
+   prim.par (             2 ,   3 ,   6 ,   3 , $P_sun            ) = $_dedendum_coeff        ! [-] Dedendum value
+   prim.par (             2 ,   3 ,   7 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   3 ,   7 ,   2 , $P_sun            ) = 8.0000000000000002E-03  ! [-] Value
+   prim.par (             2 ,   3 ,   8 , $P_sun                  ) = $SVG_stage_01.$SVG_sun.$_num_teeth ! [-] Number of teeth
+   prim.par (             2 ,   3 ,   9 , $P_sun                  ) = $SVG_stage_01.$_face_width ! [m] Flank width
+   prim.par (             2 ,   4 ,   1 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Method
+   prim.par (             2 ,   4 ,   1 ,   2 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Manufacturing process
+   prim.par (             2 ,   4 ,   1 ,   3 , $P_sun            ) = 0.0000000000000000E+00  ! [rad] Shaft angle
+   prim.par (             2 ,   4 ,   1 ,   5 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Number of teeth (pinion)
+   prim.par (             2 ,   4 ,   1 ,   6 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Number of teeth (wheel)
+   prim.par (             2 ,   4 ,   1 ,   8 , $P_sun            ) = 0.0000000000000000E+00  ! [m] Outer pitch diameter of wheel
+   prim.par (             2 ,   4 ,   1 ,   9 , $P_sun            ) = 0.0000000000000000E+00  ! [m] Wheel face width
+   prim.par (             2 ,   4 ,   1 ,  11 , $P_sun            ) = 0.0000000000000000E+00  ! [rad] Mean spiral angle of wheel
+   prim.par (             2 ,   4 ,   1 ,  12 , $P_sun            ) = 0.0000000000000000E+00  ! [m] Cutter radius
+   prim.par (             2 ,   4 ,   2 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   4 ,   2 ,   2 , $P_sun            ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (drive side)
+   prim.par (             2 ,   4 ,   2 ,   3 , $P_sun            ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (coast side)
+   prim.par (             2 ,   4 ,   2 ,   5 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Profile shift coefficient
+   prim.par (             2 ,   4 ,   2 ,   6 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Crown gear addendum factor
+   prim.par (             2 ,   4 ,   2 ,   7 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Crown gear dedendum factor
+   prim.par (             2 ,   4 ,   2 ,   8 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Thickness modification coeff.
+   prim.par (             2 ,   4 ,   2 ,  13 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Backlash
+   prim.par (             2 ,   4 ,   2 ,  13 ,   1 , $P_sun      ) = 0.0000000000000000E+00  ! [-] Type
+   prim.par (             2 ,   4 ,   2 ,  13 ,   2 , $P_sun      ) = 0.0000000000000000E+00  ! [m] Value
+   prim.par (             2 ,   4 ,   2 ,  14 , $P_sun            ) = 0.0000000000000000E+00  ! [rad] Addendum angle of wheel
+   prim.par (             2 ,   4 ,   2 ,  15 , $P_sun            ) = 0.0000000000000000E+00  ! [rad] Dedendum angle of wheel
+   prim.par (             3 ,       $P_sun                        ) = 0.0000000000000000E+00  ! [-] Graphical representation
+   prim.par (             3 ,   1 , $P_sun                        ) = $SVG_stage_01.$SVG_sun.$_diam_bore ! [m] Bore Diameter
+   prim.par (             3 ,   3 , $P_sun                        ) = $SVG_stage_01.$SVG_sun.$_num_teeth ! [-] Number of visible teeth
+   prim.par (             3 ,   4 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Number of highlighted teeth
+   prim.par (             3 ,   5 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Tip discretisation
+   prim.par (             3 ,   6 , $P_sun                        ) = 1.5000000000000000E+01  ! [-] Flank discretisation
+   prim.par (             3 ,   7 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Root discretisation
+   prim.par (             3 ,   8 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Face discretisation
+   prim.par (             3 ,   9 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Bore discretisation per tooth
+   prim.par (             4 ,       $P_sun                        ) = 0.0000000000000000E+00  ! [-] Profile modification
+   prim.par (             4 ,   1 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Scale factor
+   prim.par (             4 ,   2 ,   1 , $P_sun                  ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   3 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   4 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   5 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   6 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   7 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   8 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,   9 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,  10 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   2 ,  11 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   1 , $P_sun                  ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   3 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   4 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   5 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   6 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   7 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   8 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,   9 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,  10 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   3 ,  11 ,   1 , $P_sun            ) = 0.0000000000000000E+00  ! [-] Mode
+   prim.par (             4 ,   4 ,   1 , $P_sun                  ) = 0.0000000000000000E+00  ! [m] Circular mod. amount
+   prim.par (             4 ,   4 ,   2 , $P_sun                  ) = 0.0000000000000000E+00  ! [m] Lead crowning amount
+   prim.par (             5 ,   1 , $P_sun                        ) = 0.0000000000000000E+00  ! [-] Type
+   prim.plot.par (        1 ,       $P_sun                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 , $P_sun                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 , $P_sun                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   1 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   2 , $P_sun            ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   3 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   4 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   5 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   1 ,   6 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   prim.plot.par (        1 ,   1 ,   2 ,   1 , $P_sun            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
 
 
    bodygroup.begin (                $BG_planet_01                 )                           ! $BG_stage_01.$BG_planet_01
@@ -1820,6 +2200,145 @@ force.par (              44 ,       $F_PLC_B                      ) = 0.00000000
 force.par (              45 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
 force.par (              46 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
 
+force.type (                        $F_rotor                      ) = 93                      ! Type
+force.from (                        $F_rotor                      ) = $M_bed_plate_rotor      ! From Marker
+force.to (                          $F_rotor                      ) = $M_main_shaft_rotor     ! To Marker
+force.par (               1 ,       $F_rotor                      ) = $UE_F_x                 ! [-] u-Vector Element force x
+force.par (               2 ,       $F_rotor                      ) = $UE_F_y                 ! [-] u-Vector Element force y
+force.par (               3 ,       $F_rotor                      ) = $UE_F_z                 ! [-] u-Vector Element force z
+force.par (               4 ,       $F_rotor                      ) = $UE_M_x                 ! [-] u-Vector Element torque x
+force.par (               5 ,       $F_rotor                      ) = $UE_M_y                 ! [-] u-Vector Element torque y
+force.par (               6 ,       $F_rotor                      ) = $UE_M_z                 ! [-] u-Vector Element torque z
+
+forcegroup.begin (                  $FEG_stage_01                 )                           ! $FEG_stage_01
+   force.type (                     $F_ring_planet_01             ) = 225                     ! Type
+   force.from (                     $F_ring_planet_01             ) = $BG_stage_01.$BG_planet_01.$M_planet_BRF ! From Marker
+   force.to (                       $F_ring_planet_01             ) = $BG_stage_01.$M_ring_BRF ! To Marker
+   force.par (            1 ,       $F_ring_planet_01             ) = $BG_stage_01.$BG_planet_01.$P_planet ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_ring_planet_01             ) = $BG_stage_01.$P_ring    ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_ring_planet_01             ) = 1.0000000000000000E+00  ! [-] Basic Output Values
+   force.par (            4 ,       $F_ring_planet_01             ) = 7.0000000000000000E+00  ! [-] Advanced Output Values
+   force.par (            6 ,       $F_ring_planet_01             ) = 1.0000000000000000E+00  ! [-] Damping model
+   force.par (            7 ,       $F_ring_planet_01             ) = 1.0000000000000000E+00  ! [-] Friction model
+   force.par (            8 ,       $F_ring_planet_01             ) = 5.0000000000000000E+00  ! [-] Number of slices
+   force.par (           10 ,       $F_ring_planet_01             ) = 1.0000000000000000E+00  ! [-] Gear blank factor
+   force.par (           11 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_ring_planet_01             ) = $_tooth_stiff_ratio     ! [-] Teeth stiffness ratio
+   force.par (           14 ,       $F_ring_planet_01             ) = $Mat_steel              ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_ring_planet_01             ) = $Mat_steel              ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_ring_planet_01             ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_ring_planet_01             ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [m] Full damping starts at
+   force.par (           31 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] Friction coefficient
+   force.par (           32 ,       $F_ring_planet_01             ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           44 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_ring_planet_01             ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_ring_planet_01             ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_ring_planet_01             ) = 0.0000000000000000E+00  ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_ring_planet_01             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_ring_planet_01             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_ring_planet_01       ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_ring_planet_01 ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_ring_planet_01 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   force.type (                     $F_ring_planet_02             ) = 225                     ! Type
+   force.from (                     $F_ring_planet_02             ) = $BG_stage_01.$BG_planet_02.$M_planet_BRF ! From Marker
+   force.to (                       $F_ring_planet_02             ) = $BG_stage_01.$M_ring_BRF ! To Marker
+   force.par (            1 ,       $F_ring_planet_02             ) = $BG_stage_01.$BG_planet_02.$P_planet ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_ring_planet_02             ) = $BG_stage_01.$P_ring    ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_ring_planet_02             ) = 1.0000000000000000E+00  ! [-] Basic Output Values
+   force.par (            4 ,       $F_ring_planet_02             ) = 7.0000000000000000E+00  ! [-] Advanced Output Values
+   force.par (            6 ,       $F_ring_planet_02             ) = 1.0000000000000000E+00  ! [-] Damping model
+   force.par (            7 ,       $F_ring_planet_02             ) = 1.0000000000000000E+00  ! [-] Friction model
+   force.par (            8 ,       $F_ring_planet_02             ) = 5.0000000000000000E+00  ! [-] Number of slices
+   force.par (           10 ,       $F_ring_planet_02             ) = 1.0000000000000000E+00  ! [-] Gear blank factor
+   force.par (           11 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_ring_planet_02             ) = $_tooth_stiff_ratio     ! [-] Teeth stiffness ratio
+   force.par (           14 ,       $F_ring_planet_02             ) = $Mat_steel              ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_ring_planet_02             ) = $Mat_steel              ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_ring_planet_02             ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_ring_planet_02             ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [m] Full damping starts at
+   force.par (           31 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] Friction coefficient
+   force.par (           32 ,       $F_ring_planet_02             ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           44 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_ring_planet_02             ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_ring_planet_02             ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_ring_planet_02             ) = 0.0000000000000000E+00  ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_ring_planet_02             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_ring_planet_02             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_ring_planet_02       ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_ring_planet_02 ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_ring_planet_02 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   force.type (                     $F_ring_planet_03             ) = 225                     ! Type
+   force.from (                     $F_ring_planet_03             ) = $BG_stage_01.$BG_planet_03.$M_planet_BRF ! From Marker
+   force.to (                       $F_ring_planet_03             ) = $BG_stage_01.$M_ring_BRF ! To Marker
+   force.par (            1 ,       $F_ring_planet_03             ) = $BG_stage_01.$BG_planet_03.$P_planet ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_ring_planet_03             ) = $BG_stage_01.$P_ring    ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_ring_planet_03             ) = 1.0000000000000000E+00  ! [-] Basic Output Values
+   force.par (            4 ,       $F_ring_planet_03             ) = 7.0000000000000000E+00  ! [-] Advanced Output Values
+   force.par (            6 ,       $F_ring_planet_03             ) = 1.0000000000000000E+00  ! [-] Damping model
+   force.par (            7 ,       $F_ring_planet_03             ) = 1.0000000000000000E+00  ! [-] Friction model
+   force.par (            8 ,       $F_ring_planet_03             ) = 5.0000000000000000E+00  ! [-] Number of slices
+   force.par (           10 ,       $F_ring_planet_03             ) = 1.0000000000000000E+00  ! [-] Gear blank factor
+   force.par (           11 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_ring_planet_03             ) = $_tooth_stiff_ratio     ! [-] Teeth stiffness ratio
+   force.par (           14 ,       $F_ring_planet_03             ) = $Mat_steel              ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_ring_planet_03             ) = $Mat_steel              ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_ring_planet_03             ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_ring_planet_03             ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [m] Full damping starts at
+   force.par (           31 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] Friction coefficient
+   force.par (           32 ,       $F_ring_planet_03             ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           44 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_ring_planet_03             ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_ring_planet_03             ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_ring_planet_03             ) = 0.0000000000000000E+00  ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_ring_planet_03             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_ring_planet_03             ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_ring_planet_03       ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_ring_planet_03 ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_ring_planet_03 ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+forcegroup.end (                    $FEG_stage_01                 )                           ! $FEG_stage_01
+
 !**********************************************************************
 ! Input Functions
 !**********************************************************************
@@ -2077,6 +2596,235 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,  10 ,   1 , $I_gamma_ddot           ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
 
 ifctngroup.end (                    $IFG_bed_plate                )                           ! $IFG_bed_plate
+
+ifctngroup.begin (                  $IFG_rotor                    )                           ! $IFG_rotor
+   ifctn.file (                     $I_F_x                        ) = 'Fx.if2'                ! File
+   ifctn.range.handling (           $I_F_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_F_x                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_F_x                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_F_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_F_x                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_F_x                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_F_y                        ) = 'Fy.if2'                ! File
+   ifctn.range.handling (           $I_F_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_F_y                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_F_y                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_F_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_F_y                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_F_y                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_F_z                        ) = 'Fz.if2'                ! File
+   ifctn.range.handling (           $I_F_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_F_z                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_F_z                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_F_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_F_z                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_F_z                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_M_x                        ) = 'Mx.if2'                ! File
+   ifctn.range.handling (           $I_M_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_M_x                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_M_x                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_M_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_M_x                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_M_x                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_M_y                        ) = 'My.if2'                ! File
+   ifctn.range.handling (           $I_M_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_M_y                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_M_y                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_M_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_M_y                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_M_y                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+   ifctn.file (                     $I_M_z                        ) = 'Mz.if2'                ! File
+   ifctn.range.handling (           $I_M_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_M_z                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_M_z                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_M_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_M_z                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_M_z                  ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+
+ifctngroup.end (                    $IFG_rotor                    )                           ! $IFG_rotor
+
+!**********************************************************************
+! Excitations
+!**********************************************************************
+excit.type (                        $E_F_x                        ) = 2                       ! Type
+excit.disabled (                    $E_F_x                        ) = { 0 }                   ! Disabled
+excit.par (               1 ,       $E_F_x                        ) = $IFG_rotor.$I_F_x       ! [-] Input Function f(t)
+excit.par (               2 ,       $E_F_x                        ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_F_x                        ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_F_x                        ) = 1.0000000000000000E+00  ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_F_x                        ) = 0.0000000000000000E+00  ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_F_x                        ) = 0.0000000000000000E+00  ! [s] Time offset t0
+excit.par (               7 ,       $E_F_x                        ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
+excit.par (               8 ,       $E_F_x                        ) = 1.0000000000000000E+00  ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_F_x                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_F_x                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_F_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_F_x                        ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_F_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_F_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_F_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+excit.type (                        $E_F_y                        ) = 2                       ! Type
+excit.par (               1 ,       $E_F_y                        ) = $IFG_rotor.$I_F_y       ! [-] Input Function f(t)
+excit.par (               2 ,       $E_F_y                        ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_F_y                        ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_F_y                        ) = 1.0000000000000000E+00  ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_F_y                        ) = 0.0000000000000000E+00  ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_F_y                        ) = 0.0000000000000000E+00  ! [s] Time offset t0
+excit.par (               7 ,       $E_F_y                        ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
+excit.par (               8 ,       $E_F_y                        ) = 1.0000000000000000E+00  ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_F_y                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_F_y                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_F_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_F_y                        ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_F_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_F_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_F_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+excit.type (                        $E_F_z                        ) = 2                       ! Type
+excit.par (               1 ,       $E_F_z                        ) = $IFG_rotor.$I_F_z       ! [-] Input Function f(t)
+excit.par (               2 ,       $E_F_z                        ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_F_z                        ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_F_z                        ) = 1.0000000000000000E+00  ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_F_z                        ) = 0.0000000000000000E+00  ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_F_z                        ) = 0.0000000000000000E+00  ! [s] Time offset t0
+excit.par (               7 ,       $E_F_z                        ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
+excit.par (               8 ,       $E_F_z                        ) = 1.0000000000000000E+00  ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_F_z                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_F_z                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_F_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_F_z                        ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_F_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_F_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_F_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+excit.type (                        $E_M_x                        ) = 2                       ! Type
+excit.disabled (                    $E_M_x                        ) = { 0 }                   ! Disabled
+excit.par (               1 ,       $E_M_x                        ) = $IFG_rotor.$I_M_x       ! [-] Input Function f(t)
+excit.par (               2 ,       $E_M_x                        ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_M_x                        ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_M_x                        ) = 1.0000000000000000E+00  ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_M_x                        ) = 0.0000000000000000E+00  ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_M_x                        ) = 0.0000000000000000E+00  ! [s] Time offset t0
+excit.par (               7 ,       $E_M_x                        ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
+excit.par (               8 ,       $E_M_x                        ) = 1.0000000000000000E+00  ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_M_x                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_M_x                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_M_x                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_M_x                        ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_M_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_M_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_M_x                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+excit.type (                        $E_M_y                        ) = 2                       ! Type
+excit.disabled (                    $E_M_y                        ) = { 0 }                   ! Disabled
+excit.par (               1 ,       $E_M_y                        ) = $IFG_rotor.$I_M_y       ! [-] Input Function f(t)
+excit.par (               2 ,       $E_M_y                        ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_M_y                        ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_M_y                        ) = 1.0000000000000000E+00  ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_M_y                        ) = 0.0000000000000000E+00  ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_M_y                        ) = 0.0000000000000000E+00  ! [s] Time offset t0
+excit.par (               7 ,       $E_M_y                        ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
+excit.par (               8 ,       $E_M_y                        ) = 1.0000000000000000E+00  ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_M_y                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_M_y                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_M_y                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_M_y                        ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_M_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_M_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_M_y                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+excit.type (                        $E_M_z                        ) = 2                       ! Type
+excit.disabled (                    $E_M_z                        ) = { 0 }                   ! Disabled
+excit.par (               1 ,       $E_M_z                        ) = $IFG_rotor.$I_M_z       ! [-] Input Function f(t)
+excit.par (               2 ,       $E_M_z                        ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_M_z                        ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_M_z                        ) = 1.0000000000000000E+00  ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_M_z                        ) = 0.0000000000000000E+00  ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_M_z                        ) = 0.0000000000000000E+00  ! [s] Time offset t0
+excit.par (               7 ,       $E_M_z                        ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
+excit.par (               8 ,       $E_M_z                        ) = 1.0000000000000000E+00  ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_M_z                        ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_M_z                        ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_M_z                        ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_M_z                        ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_M_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_M_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_M_z                  ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+!**********************************************************************
+! u-Vector
+!**********************************************************************
+uele.type (                         $UE_F_x                       ) = 1                       ! Type
+uele.excit (                        $UE_F_x                       ) = $E_F_x                  ! Referenced Excitation
+
+uele.type (                         $UE_F_y                       ) = 1                       ! Type
+uele.excit (                        $UE_F_y                       ) = $E_F_y                  ! Referenced Excitation
+
+uele.type (                         $UE_F_z                       ) = 1                       ! Type
+uele.excit (                        $UE_F_z                       ) = $E_F_z                  ! Referenced Excitation
+
+uele.type (                         $UE_M_x                       ) = 1                       ! Type
+uele.excit (                        $UE_M_x                       ) = $E_M_x                  ! Referenced Excitation
+
+uele.type (                         $UE_M_y                       ) = 1                       ! Type
+uele.excit (                        $UE_M_y                       ) = $E_M_y                  ! Referenced Excitation
+
+uele.type (                         $UE_M_z                       ) = 1                       ! Type
+uele.excit (                        $UE_M_z                       ) = $E_M_z                  ! Referenced Excitation
 
 !**********************************************************************
 ! Materials

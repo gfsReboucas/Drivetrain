@@ -1,0 +1,1267 @@
+================================================================================
+
+ T E S T  C A L L  of Right Hand Side
+ Simpack version = 2018.1-build66, 64bit
+
+ Model = NREL_5MW.SIMPACK
+ Date  = 20-03-11
+
+ Error code of right hand side = 0
+
+================================================================================
+
+
+================================================================================
+Kinematic Tree:
+================================================================================
+
+  $R_Isys
+   ---->$B_bed_plate................................................ [0 dof]  Joint $J_bed_plate of type 35
+        ---->$B_main_shaft.......................................... [6 dof]  Joint $J_main_shaft of type 20
+             ---->$BG_stage_01.$B_carrier........................... [0 dof]  Joint $BG_stage_01.$J_carrier of type 0
+                  ---->$BG_stage_01.$BG_planet_01.$B_pin............ [6 dof]  Joint $BG_stage_01.$BG_planet_01.$J_pin of type 20
+                       ---->$BG_stage_01.$BG_planet_01.$B_planet.... [0 dof]  Joint $BG_stage_01.$BG_planet_01.$J_planet of type 0
+
+                  ---->$BG_stage_01.$BG_planet_02.$B_pin............ [6 dof]  Joint $BG_stage_01.$BG_planet_02.$J_pin of type 20
+                       ---->$BG_stage_01.$BG_planet_02.$B_planet.... [0 dof]  Joint $BG_stage_01.$BG_planet_02.$J_planet of type 0
+
+                  ---->$BG_stage_01.$BG_planet_03.$B_pin............ [6 dof]  Joint $BG_stage_01.$BG_planet_03.$J_pin of type 20
+                       ---->$BG_stage_01.$BG_planet_03.$B_planet.... [0 dof]  Joint $BG_stage_01.$BG_planet_03.$J_planet of type 0
+
+        ---->$B_GB_frame............................................ [0 dof]  Joint $J_GB_frame of type 0
+             ---->$BG_stage_01.$B_ring.............................. [0 dof]  Joint $BG_stage_01.$J_ring of type 0
+
+
+================================================================================
+Time:
+================================================================================
+
+t =   0.0000000E+00  [s]
+
+
+================================================================================
+States (position, velocity, lambda, algebraic) and their derivatives:
+================================================================================
+
+X(    1) =   0.0000000E+00  , Xd(    1) =   0.0000000E+00  : joint.st.pos(     1): $J_main_shaft
+X(    2) =   0.0000000E+00  , Xd(    2) =   0.0000000E+00  : joint.st.pos(     2): $J_main_shaft
+X(    3) =   0.0000000E+00  , Xd(    3) =   0.0000000E+00  : joint.st.pos(     3): $J_main_shaft
+X(    4) =   0.0000000E+00  , Xd(    4) =   0.0000000E+00  : joint.st.pos(     4): $J_main_shaft
+X(    5) =   0.0000000E+00  , Xd(    5) =   0.0000000E+00  : joint.st.pos(     5): $J_main_shaft
+X(    6) =   0.0000000E+00  , Xd(    6) =   0.0000000E+00  : joint.st.pos(     6): $J_main_shaft
+X(    7) =   0.0000000E+00  , Xd(    7) =   0.0000000E+00  : joint.st.pos(     1): $BG_stage_01.$BG_planet_01.$J_pin
+X(    8) =   0.0000000E+00  , Xd(    8) =   0.0000000E+00  : joint.st.pos(     2): $BG_stage_01.$BG_planet_01.$J_pin
+X(    9) =   0.0000000E+00  , Xd(    9) =   0.0000000E+00  : joint.st.pos(     3): $BG_stage_01.$BG_planet_01.$J_pin
+X(   10) =   0.0000000E+00  , Xd(   10) =   0.0000000E+00  : joint.st.pos(     4): $BG_stage_01.$BG_planet_01.$J_pin
+X(   11) =   0.0000000E+00  , Xd(   11) =   0.0000000E+00  : joint.st.pos(     5): $BG_stage_01.$BG_planet_01.$J_pin
+X(   12) =   0.0000000E+00  , Xd(   12) =   0.0000000E+00  : joint.st.pos(     6): $BG_stage_01.$BG_planet_01.$J_pin
+X(   13) =   0.0000000E+00  , Xd(   13) =   0.0000000E+00  : joint.st.pos(     1): $BG_stage_01.$BG_planet_02.$J_pin
+X(   14) =   0.0000000E+00  , Xd(   14) =   0.0000000E+00  : joint.st.pos(     2): $BG_stage_01.$BG_planet_02.$J_pin
+X(   15) =   0.0000000E+00  , Xd(   15) =   0.0000000E+00  : joint.st.pos(     3): $BG_stage_01.$BG_planet_02.$J_pin
+X(   16) =   0.0000000E+00  , Xd(   16) =   0.0000000E+00  : joint.st.pos(     4): $BG_stage_01.$BG_planet_02.$J_pin
+X(   17) =   0.0000000E+00  , Xd(   17) =   0.0000000E+00  : joint.st.pos(     5): $BG_stage_01.$BG_planet_02.$J_pin
+X(   18) =   0.0000000E+00  , Xd(   18) =   0.0000000E+00  : joint.st.pos(     6): $BG_stage_01.$BG_planet_02.$J_pin
+X(   19) =   0.0000000E+00  , Xd(   19) =   0.0000000E+00  : joint.st.pos(     1): $BG_stage_01.$BG_planet_03.$J_pin
+X(   20) =   0.0000000E+00  , Xd(   20) =   0.0000000E+00  : joint.st.pos(     2): $BG_stage_01.$BG_planet_03.$J_pin
+X(   21) =   0.0000000E+00  , Xd(   21) =   0.0000000E+00  : joint.st.pos(     3): $BG_stage_01.$BG_planet_03.$J_pin
+X(   22) =   0.0000000E+00  , Xd(   22) =   0.0000000E+00  : joint.st.pos(     4): $BG_stage_01.$BG_planet_03.$J_pin
+X(   23) =   0.0000000E+00  , Xd(   23) =   0.0000000E+00  : joint.st.pos(     5): $BG_stage_01.$BG_planet_03.$J_pin
+X(   24) =   0.0000000E+00  , Xd(   24) =   0.0000000E+00  : joint.st.pos(     6): $BG_stage_01.$BG_planet_03.$J_pin
+X(   25) =   0.0000000E+00  , Xd(   25) =   0.0000000E+00  : body.flx.st.pos(  1): $B_main_shaft
+X(   26) =   0.0000000E+00  , Xd(   26) =   0.0000000E+00  : body.flx.st.pos(  2): $B_main_shaft
+X(   27) =   0.0000000E+00  , Xd(   27) =   0.0000000E+00  : body.flx.st.pos(  3): $B_main_shaft
+X(   28) =   0.0000000E+00  , Xd(   28) =   0.0000000E+00  : body.flx.st.pos(  4): $B_main_shaft
+X(   29) =   0.0000000E+00  , Xd(   29) =   0.0000000E+00  : body.flx.st.pos(  5): $B_main_shaft
+X(   30) =   0.0000000E+00  , Xd(   30) =   0.0000000E+00  : body.flx.st.pos(  6): $B_main_shaft
+X(   31) =   0.0000000E+00  , Xd(   31) =   0.0000000E+00  : body.flx.st.pos(  7): $B_main_shaft
+X(   32) =   0.0000000E+00  , Xd(   32) =   0.0000000E+00  : body.flx.st.pos(  8): $B_main_shaft
+X(   33) =   0.0000000E+00  , Xd(   33) =   0.0000000E+00  : body.flx.st.pos(  9): $B_main_shaft
+X(   34) =   0.0000000E+00  , Xd(   34) =   0.0000000E+00  : body.flx.st.pos( 10): $B_main_shaft
+X(   35) =   0.0000000E+00  , Xd(   35) =   0.0000000E+00  : body.flx.st.pos( 11): $B_main_shaft
+X(   36) =   0.0000000E+00  , Xd(   36) =   0.0000000E+00  : body.flx.st.pos( 12): $B_main_shaft
+X(   37) =   0.0000000E+00  , Xd(   37) =   0.0000000E+00  : body.flx.st.pos( 13): $B_main_shaft
+X(   38) =   0.0000000E+00  , Xd(   38) =   0.0000000E+00  : body.flx.st.pos( 14): $B_main_shaft
+X(   39) =   0.0000000E+00  , Xd(   39) =   0.0000000E+00  : body.flx.st.pos( 15): $B_main_shaft
+X(   40) =   0.0000000E+00  , Xd(   40) =   0.0000000E+00  : body.flx.st.pos( 16): $B_main_shaft
+X(   41) =   0.0000000E+00  , Xd(   41) =   0.0000000E+00  : body.flx.st.pos( 17): $B_main_shaft
+X(   42) =   0.0000000E+00  , Xd(   42) =   0.0000000E+00  : body.flx.st.pos( 18): $B_main_shaft
+X(   43) =   0.0000000E+00  , Xd(   43) =  -1.1654404E+04  : joint.st.vel(     1): $J_main_shaft
+X(   44) =   0.0000000E+00  , Xd(   44) =   1.2988486E+03  : joint.st.vel(     2): $J_main_shaft
+X(   45) =   0.0000000E+00  , Xd(   45) =   1.5637101E+02  : joint.st.vel(     3): $J_main_shaft
+X(   46) =   0.0000000E+00  , Xd(   46) =  -1.5217823E+02  : joint.st.vel(     4): $J_main_shaft
+X(   47) =   0.0000000E+00  , Xd(   47) =  -1.4947446E+02  : joint.st.vel(     5): $J_main_shaft
+X(   48) =   0.0000000E+00  , Xd(   48) =   1.4726136E+03  : joint.st.vel(     6): $J_main_shaft
+X(   49) =   0.0000000E+00  , Xd(   49) =  -1.4270899E+01  : joint.st.vel(     1): $BG_stage_01.$BG_planet_01.$J_pin
+X(   50) =   0.0000000E+00  , Xd(   50) =  -1.1034630E+01  : joint.st.vel(     2): $BG_stage_01.$BG_planet_01.$J_pin
+X(   51) =   0.0000000E+00  , Xd(   51) =  -2.3761844E+00  : joint.st.vel(     3): $BG_stage_01.$BG_planet_01.$J_pin
+X(   52) =   0.0000000E+00  , Xd(   52) =  -3.3592347E-01  : joint.st.vel(     4): $BG_stage_01.$BG_planet_01.$J_pin
+X(   53) =   0.0000000E+00  , Xd(   53) =   1.8142202E+00  : joint.st.vel(     5): $BG_stage_01.$BG_planet_01.$J_pin
+X(   54) =   0.0000000E+00  , Xd(   54) =  -2.0745586E+01  : joint.st.vel(     6): $BG_stage_01.$BG_planet_01.$J_pin
+X(   55) =   0.0000000E+00  , Xd(   55) =  -1.4270899E+01  : joint.st.vel(     1): $BG_stage_01.$BG_planet_02.$J_pin
+X(   56) =   0.0000000E+00  , Xd(   56) =  -1.1034630E+01  : joint.st.vel(     2): $BG_stage_01.$BG_planet_02.$J_pin
+X(   57) =   0.0000000E+00  , Xd(   57) =  -2.3761844E+00  : joint.st.vel(     3): $BG_stage_01.$BG_planet_02.$J_pin
+X(   58) =   0.0000000E+00  , Xd(   58) =  -1.1658955E+01  : joint.st.vel(     4): $BG_stage_01.$BG_planet_02.$J_pin
+X(   59) =   0.0000000E+00  , Xd(   59) =   1.2480003E+01  : joint.st.vel(     5): $BG_stage_01.$BG_planet_02.$J_pin
+X(   60) =   0.0000000E+00  , Xd(   60) =  -2.2718931E+00  : joint.st.vel(     6): $BG_stage_01.$BG_planet_02.$J_pin
+X(   61) =   0.0000000E+00  , Xd(   61) =  -1.4270899E+01  : joint.st.vel(     1): $BG_stage_01.$BG_planet_03.$J_pin
+X(   62) =   0.0000000E+00  , Xd(   62) =  -1.1034630E+01  : joint.st.vel(     2): $BG_stage_01.$BG_planet_03.$J_pin
+X(   63) =   0.0000000E+00  , Xd(   63) =  -2.3761844E+00  : joint.st.vel(     3): $BG_stage_01.$BG_planet_03.$J_pin
+X(   64) =   0.0000000E+00  , Xd(   64) =   4.8351666E+00  : joint.st.vel(     4): $BG_stage_01.$BG_planet_03.$J_pin
+X(   65) =   0.0000000E+00  , Xd(   65) =  -8.8515627E+00  : joint.st.vel(     5): $BG_stage_01.$BG_planet_03.$J_pin
+X(   66) =   0.0000000E+00  , Xd(   66) =  -2.2719213E+00  : joint.st.vel(     6): $BG_stage_01.$BG_planet_03.$J_pin
+X(   67) =   0.0000000E+00  , Xd(   67) =  -1.0993867E+05  : body.flx.st.vel(  1): $B_main_shaft
+X(   68) =   0.0000000E+00  , Xd(   68) =  -1.9611423E+04  : body.flx.st.vel(  2): $B_main_shaft
+X(   69) =   0.0000000E+00  , Xd(   69) =  -3.1492394E+05  : body.flx.st.vel(  3): $B_main_shaft
+X(   70) =   0.0000000E+00  , Xd(   70) =  -1.6634405E+04  : body.flx.st.vel(  4): $B_main_shaft
+X(   71) =   0.0000000E+00  , Xd(   71) =   3.2997013E+04  : body.flx.st.vel(  5): $B_main_shaft
+X(   72) =   0.0000000E+00  , Xd(   72) =   1.5945391E+05  : body.flx.st.vel(  6): $B_main_shaft
+X(   73) =   0.0000000E+00  , Xd(   73) =  -3.1184663E+05  : body.flx.st.vel(  7): $B_main_shaft
+X(   74) =   0.0000000E+00  , Xd(   74) =  -8.0752606E+05  : body.flx.st.vel(  8): $B_main_shaft
+X(   75) =   0.0000000E+00  , Xd(   75) =  -2.1613488E+01  : body.flx.st.vel(  9): $B_main_shaft
+X(   76) =   0.0000000E+00  , Xd(   76) =  -1.6163086E+05  : body.flx.st.vel( 10): $B_main_shaft
+X(   77) =   0.0000000E+00  , Xd(   77) =  -1.6413580E+04  : body.flx.st.vel( 11): $B_main_shaft
+X(   78) =   0.0000000E+00  , Xd(   78) =  -8.3953113E+04  : body.flx.st.vel( 12): $B_main_shaft
+X(   79) =   0.0000000E+00  , Xd(   79) =   3.3387514E+05  : body.flx.st.vel( 13): $B_main_shaft
+X(   80) =   0.0000000E+00  , Xd(   80) =  -4.2616572E+04  : body.flx.st.vel( 14): $B_main_shaft
+X(   81) =   0.0000000E+00  , Xd(   81) =  -8.4743911E+04  : body.flx.st.vel( 15): $B_main_shaft
+X(   82) =   0.0000000E+00  , Xd(   82) =  -4.5841519E+04  : body.flx.st.vel( 16): $B_main_shaft
+X(   83) =   0.0000000E+00  , Xd(   83) =   3.2074727E+05  : body.flx.st.vel( 17): $B_main_shaft
+X(   84) =   0.0000000E+00  , Xd(   84) =   6.2071317E+05  : body.flx.st.vel( 18): $B_main_shaft
+
+
+================================================================================
+Body BRF measurements:
+================================================================================
+
+Body $B_bed_plate
+brf.st.pos =  -1.4273150E+00  1.1834200E-01  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.4850000E-01 -4.1600000E-03  6.0500000E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.6750000E-01  3.0500000E-03  3.2500000E-02 -1.1700000E-04  1.5660000E-03  7.6300000E-04
+
+Body $B_main_shaft
+brf.st.pos =  -1.4273150E+00  2.6183420E+00  2.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5691600E-01 -4.1980000E-03  6.0547500E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =  -1.5200951E+02 -1.4947117E+02  1.4726457E+03 -1.1654404E+04  1.2988502E+03  1.5637178E+02
+
+Body $B_GB_frame
+brf.st.pos =  -1.4273150E+00  1.1834200E-01  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.4850000E-01 -4.1600000E-03  6.0500000E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.6750000E-01  3.0500000E-03  3.2500000E-02 -1.1700000E-04  1.5660000E-03  7.6300000E-04
+
+Body $BG_stage_01.$B_carrier
+brf.st.pos =   5.7268500E-01  2.6183420E+00  2.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5691600E-01 -4.4220000E-03  6.9243500E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   2.3865762E+00 -2.5142441E+00  1.8706022E+00  1.4270899E+01  1.1034630E+01  2.3761843E+00
+
+Body $BG_stage_01.$B_ring
+brf.st.pos =   8.6728500E-01  2.6183420E+00  2.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5691600E-01 -4.4549952E-03  7.0524421E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.6868088E-01  5.0355319E-03  2.8577558E-02 -1.1700000E-04  1.5660000E-03  7.6300000E-04
+
+Body $BG_stage_01.$BG_planet_01.$B_pin
+brf.st.pos =   8.6728500E-01  3.4813420E+00  2.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5681934E-01 -4.4549952E-03  7.0540818E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =  -2.3139585E-16 -2.0380827E-16 -9.8100000E+00 -3.3573144E-13  4.7511151E-10 -1.8444491E-08
+
+Body $BG_stage_01.$BG_planet_01.$B_planet
+brf.st.pos =   8.6728500E-01  3.4813420E+00  2.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5681934E-01 -4.4549952E-03  7.0540818E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =  -2.3139585E-16 -2.0380827E-16 -9.8100000E+00 -3.3573144E-13  4.7511151E-10 -1.8444491E-08
+
+Body $BG_stage_01.$BG_planet_02.$B_pin
+brf.st.pos =   8.6728500E-01  2.1868420E+00  2.7473799E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.6021394E-01 -4.4691954E-03  7.0516222E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   5.4805912E-16  1.2255793E-15 -9.8100000E+00 -3.3573144E-13  4.7511151E-10 -1.8444491E-08
+
+Body $BG_stage_01.$BG_planet_02.$B_planet
+brf.st.pos =   8.6728500E-01  2.1868420E+00  2.7473799E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.6021394E-01 -4.4691954E-03  7.0516222E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   5.4805912E-16  1.2255793E-15 -9.8100000E+00 -3.3573144E-13  4.7511151E-10 -1.8444491E-08
+
+Body $BG_stage_01.$BG_planet_03.$B_pin
+brf.st.pos =   8.6728500E-01  2.1868420E+00  1.2526201E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5371472E-01 -4.4407950E-03  7.0516222E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.4064643E-16 -1.8508377E-13 -9.8100000E+00 -3.3573144E-13  4.7511151E-10 -1.8443680E-08
+
+Body $BG_stage_01.$BG_planet_03.$B_planet
+brf.st.pos =   8.6728500E-01  2.1868420E+00  1.2526201E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+brf.st.vel =  -5.5371472E-01 -4.4407950E-03  7.0516222E-02  1.9000000E-05 -4.3480000E-03 -1.1200000E-04
+brf.st.acc =   1.4064643E-16 -1.8508377E-13 -9.8100000E+00 -3.3573144E-13  4.7511151E-10 -1.8443680E-08
+
+
+================================================================================
+u-Vector Elements:
+================================================================================
+
+   1: $UE_F_x       =   8.8526300E+05  ! Value      of $E_F_x
+   2: $UE_F_y       =  -1.8137000E+04  ! Value      of $E_F_y
+   3: $UE_F_z       =  -1.2154950E+06  ! Value      of $E_F_z
+   4: $UE_M_x       =   4.1525990E+06  ! Value      of $E_M_x
+   5: $UE_M_y       =  -1.5543140E+06  ! Value      of $E_M_y
+   6: $UE_M_z       =  -3.4410220E+05  ! Value      of $E_M_z
+
+
+================================================================================
+u-Inputs:
+================================================================================
+
+
+
+================================================================================
+y-Outputs:
+================================================================================
+
+
+
+================================================================================
+Joint Accelerations:
+================================================================================
+
+joint.st.acc($J_bed_plate                        ) =
+joint.st.acc($J_main_shaft                       ) =  -1.1654404E+04  1.2988486E+03  1.5637101E+02 -1.5217823E+02 -1.4947446E+02  1.4726136E+03
+joint.st.acc($J_GB_frame                         ) =
+joint.st.acc($BG_stage_01.$J_carrier             ) =
+joint.st.acc($BG_stage_01.$J_ring                ) =
+joint.st.acc($BG_stage_01.$BG_planet_01.$J_pin   ) =  -1.4270899E+01 -1.1034630E+01 -2.3761844E+00 -3.3592347E-01  1.8142202E+00 -2.0745586E+01
+joint.st.acc($BG_stage_01.$BG_planet_02.$J_pin   ) =  -1.4270899E+01 -1.1034630E+01 -2.3761844E+00 -1.1658955E+01  1.2480003E+01 -2.2718931E+00
+joint.st.acc($BG_stage_01.$BG_planet_03.$J_pin   ) =  -1.4270899E+01 -1.1034630E+01 -2.3761844E+00  4.8351666E+00 -8.8515627E+00 -2.2719213E+00
+joint.st.acc($BG_stage_01.$BG_planet_01.$J_planet) =
+joint.st.acc($BG_stage_01.$BG_planet_02.$J_planet) =
+joint.st.acc($BG_stage_01.$BG_planet_03.$J_planet) =
+
+
+================================================================================
+Joint Forces F_J and Torques T_J:
+================================================================================
+The constraint forces  are the components 1..3 and
+the constraint torques are the components 4..6 of vector FT_J.
+The forces/torques act on From-Body B_i at the origin of To-Marker M_j.
+The coordinates are given with respect to From-Marker M_i.
+
+FT_J($J_bed_plate                        ) =   7.7793832E+05 -2.2117606E+04 -7.5151238E+06 -1.4593800E+07  2.4932457E+07 -2.3071972E+06
+FT_J($J_main_shaft                       ) =   1.1665955E-10  4.3653050E-10  1.9209555E-09  1.1517007E-33 -9.3147942E-10  2.3279698E-10
+FT_J($J_GB_frame                         ) =  -7.5005141E+04 -2.6426185E+03 -4.3745483E+06 -1.0930947E+07  1.5085324E+07  1.7750931E+05
+FT_J($BG_stage_01.$J_carrier             ) =  -3.0848918E+04  2.3450691E+04 -1.0896397E+05 -1.4943553E+05 -2.9799295E+04 -6.4209183E+03
+FT_J($BG_stage_01.$J_ring                ) =  -1.0519471E+03 -3.1403162E+01 -6.1356466E+04  1.3830906E+00 -9.4560324E+00 -4.6077173E+00
+FT_J($BG_stage_01.$BG_planet_01.$J_pin   ) =   1.4986662E-19 -9.4999081E-13  1.1645667E-20 -2.8701277E-13 -3.6284119E-13 -1.2282261E-22
+FT_J($BG_stage_01.$BG_planet_02.$J_pin   ) =   2.0243902E-18 -4.4801534E-12  1.1645667E-20 -2.8701277E-13 -3.6284119E-13  7.9589778E-21
+FT_J($BG_stage_01.$BG_planet_03.$J_pin   ) =  -1.6201925E-19  2.5801717E-12  1.1645667E-20 -2.8701278E-13 -3.6284119E-13 -8.6281396E-21
+FT_J($BG_stage_01.$BG_planet_01.$J_planet) =  -5.3218165E-14 -9.8918151E-13  1.2732926E-11 -4.4732823E-12  5.7079731E-08 -2.2159266E-06
+FT_J($BG_stage_01.$BG_planet_02.$J_planet) =  -1.2746407E-12 -3.2290623E-12  1.4551915E-11 -4.4732823E-12  5.7079731E-08 -2.2159266E-06
+FT_J($BG_stage_01.$BG_planet_03.$J_planet) =  -6.3622166E-13  2.8872166E-10  1.4551915E-11 -4.4732827E-12  5.7079731E-08 -2.2160203E-06
+
+
+================================================================================
+Flexible Body Accelerations:
+================================================================================
+
+body.flx.st.acc($B_main_shaft) = -1.0993867E+05 -1.9611423E+04 -3.1492394E+05 -1.6634405E+04  3.2997013E+04
+                                  1.5945391E+05 -3.1184663E+05 -8.0752606E+05 -2.1613488E+01 -1.6163086E+05
+                                 -1.6413580E+04 -8.3953113E+04  3.3387514E+05 -4.2616572E+04 -8.4743911E+04
+                                 -4.5841519E+04  3.2074727E+05  6.2071317E+05
+
+
+================================================================================
+Derivatives of Force Dynamic States:
+================================================================================
+
+
+
+================================================================================
+Constraint Residuals Delta:
+================================================================================
+
+
+================================================================================
+Kinematic Measurements
+================================================================================
+The transformation A_ij is defined by: (M_i) = A_ij * (M_j).
+
+
+================================================================================
+Applied Forces F_F and Torques T_F:
+================================================================================
+The applied forces  are the components 1..3 and
+the applied torques are the components 4..6 of vector FT_F.
+The forces/torques act on From-Body B_i at the origin of To-Marker M_j.
+The coordinates are given with respect to From-Marker M_i.
+
+FT_F($F_INP_A                       ) =   0.0000000E+00  0.0000000E+00 -5.2041704E-09  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_INP_B                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PL_A1                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PL_B1                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PL_A2                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PL_B2                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PL_A3                       ) =   0.0000000E+00  4.0766002E-10  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PL_B3                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PLC_A                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_PLC_B                       ) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($F_rotor                       ) =   8.8526300E+05 -1.8137000E+04 -1.2154950E+06  4.1525990E+06 -1.5543140E+06 -3.4410220E+05
+FT_F($FEG_stage_01.$F_ring_planet_01) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($FEG_stage_01.$F_ring_planet_02) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+FT_F($FEG_stage_01.$F_ring_planet_03) =   0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+
+
+================================================================================
+Output Values of Force/Control Elements:
+================================================================================
+
+$F_INP_A:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =  -5.2041704E-09  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =  -5.2041704E-09  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =  -6.9388939E-18  [m/s]
+  13:  Absolute force                  =   5.2041704E-09  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_INP_B:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PL_A1:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PL_B1:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PL_A2:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PL_B2:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PL_A3:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   4.0766002E-10  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   4.0766002E-10  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   8.6736174E-19  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   4.0766002E-10  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PL_B3:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PLC_A:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_PLC_B:
+---------
+   1:  Force in x                      =   0.0000000E+00  [N]
+   2:  Force in y                      =   0.0000000E+00  [N]
+   3:  Force in z                      =   0.0000000E+00  [N]
+   4:  Force in x of From BRF          =   0.0000000E+00  [N]
+   5:  Force in y of From BRF          =   0.0000000E+00  [N]
+   6:  Force in z of From BRF          =   0.0000000E+00  [N]
+   7:  Displacement in x               =   0.0000000E+00  [m]
+   8:  Displacement in y               =   0.0000000E+00  [m]
+   9:  Displacement in z               =   0.0000000E+00  [m]
+  10:  Velocity in x                   =   0.0000000E+00  [m/s]
+  11:  Velocity in y                   =   0.0000000E+00  [m/s]
+  12:  Velocity in z                   =   0.0000000E+00  [m/s]
+  13:  Absolute force                  =   0.0000000E+00  [N]
+  14:  Angle in al                     =   0.0000000E+00  [rad]
+  15:  Angle in be                     =   0.0000000E+00  [rad]
+  16:  Angle in ga                     =   0.0000000E+00  [rad]
+  17:  Rot. velocity in al             =   0.0000000E+00  [rad/s]
+  18:  Rot. velocity in be             =   0.0000000E+00  [rad/s]
+  19:  Rot. velocity in ga             =   0.0000000E+00  [rad/s]
+  20:  Torque in al                    =   0.0000000E+00  [Nm]
+  21:  Torque in be                    =   0.0000000E+00  [Nm]
+  22:  Torque in ga                    =   0.0000000E+00  [Nm]
+  23:  Largest angle 1/2/3 = al/be/ga  =   0.0000000E+00  [-]
+
+$F_rotor:
+---------
+   1:  Force x                         =   8.8526300E+05  [N]
+   2:  Force y                         =  -1.8137000E+04  [N]
+   3:  Force z                         =  -1.2154950E+06  [N]
+   4:  Torque x                        =   4.1525990E+06  [Nm]
+   5:  Torque y                        =  -1.5543140E+06  [Nm]
+   6:  Torque z                        =  -3.4410220E+05  [Nm]
+
+$FEG_stage_01.$F_ring_planet_01:
+--------------------------------
+   3:  Difference in angle rel. 1      =  -1.0971616E-15  [rad]
+   4:  Difference in ang. vel. rel. 1  =  -3.5210661E-18  [rad/s]
+   5:  Circumferential backlash        =   3.7114615E-04  [m]
+   6:  Contact flag 1                  =   0.0000000E+00  [-]
+   7:  Contact flag 2                  =   0.0000000E+00  [-]
+   8:  Total normal contact stiffness  =   0.0000000E+00  [N/m]
+   9:  Total rotat. stiffness rel. 1   =   0.0000000E+00  [Nm/rad]
+  10:  Total circumferential force     =   0.0000000E+00  [N]
+  11:  Total radial force              =   0.0000000E+00  [N]
+  12:  Total axial force               =   0.0000000E+00  [N]
+  13:  Total stiff. force in transv.   =   0.0000000E+00  [N]
+  14:  Total damp. force in transv.    =   0.0000000E+00  [N]
+  15:  Total friction force            =   0.0000000E+00  [N]
+  16:  Dynamic transmission error      =  -3.9435545E-16  [m]
+  17:  Teeth meshing frequency         =  -4.1526712E-18  [Hz]
+  18:  Axle distance deviation         =  -9.1121761E-06  [m]
+  20:  Max. Hertzian pressure          =   0.0000000E+00  [N/m^2]
+  21:  fl_x slice 1                    =   0.0000000E+00  [N]
+  22:  fl_x slice 2                    =   0.0000000E+00  [N]
+  23:  fl_x slice 3                    =   0.0000000E+00  [N]
+  24:  fl_x slice 4                    =   0.0000000E+00  [N]
+  25:  fl_x slice 5                    =   0.0000000E+00  [N]
+  26:  fl_x slice 1   tooth -1         =   0.0000000E+00  [N]
+  27:  fl_x slice 1   tooth  0         =   0.0000000E+00  [N]
+  28:  fl_x slice 1   tooth +1         =   0.0000000E+00  [N]
+  29:  fl_x slice 2   tooth -1         =   0.0000000E+00  [N]
+  30:  fl_x slice 2   tooth  0         =   0.0000000E+00  [N]
+  31:  fl_x slice 2   tooth +1         =   0.0000000E+00  [N]
+  32:  fl_x slice 3   tooth -1         =   0.0000000E+00  [N]
+  33:  fl_x slice 3   tooth  0         =   0.0000000E+00  [N]
+  34:  fl_x slice 3   tooth +1         =   0.0000000E+00  [N]
+  35:  fl_x slice 4   tooth -1         =   0.0000000E+00  [N]
+  36:  fl_x slice 4   tooth  0         =   0.0000000E+00  [N]
+  37:  fl_x slice 4   tooth +1         =   0.0000000E+00  [N]
+  38:  fl_x slice 5   tooth -1         =   0.0000000E+00  [N]
+  39:  fl_x slice 5   tooth  0         =   0.0000000E+00  [N]
+  40:  fl_x slice 5   tooth +1         =   0.0000000E+00  [N]
+  41:  fl_y slice 1   tooth -1         =   0.0000000E+00  [N]
+  42:  fl_y slice 1   tooth  0         =   0.0000000E+00  [N]
+  43:  fl_y slice 1   tooth +1         =   0.0000000E+00  [N]
+  44:  fl_y slice 2   tooth -1         =   0.0000000E+00  [N]
+  45:  fl_y slice 2   tooth  0         =   0.0000000E+00  [N]
+  46:  fl_y slice 2   tooth +1         =   0.0000000E+00  [N]
+  47:  fl_y slice 3   tooth -1         =   0.0000000E+00  [N]
+  48:  fl_y slice 3   tooth  0         =   0.0000000E+00  [N]
+  49:  fl_y slice 3   tooth +1         =   0.0000000E+00  [N]
+  50:  fl_y slice 4   tooth -1         =   0.0000000E+00  [N]
+  51:  fl_y slice 4   tooth  0         =   0.0000000E+00  [N]
+  52:  fl_y slice 4   tooth +1         =   0.0000000E+00  [N]
+  53:  fl_y slice 5   tooth -1         =   0.0000000E+00  [N]
+  54:  fl_y slice 5   tooth  0         =   0.0000000E+00  [N]
+  55:  fl_y slice 5   tooth +1         =   0.0000000E+00  [N]
+  56:  fl_z slice 1   tooth -1         =   0.0000000E+00  [N]
+  57:  fl_z slice 1   tooth  0         =   0.0000000E+00  [N]
+  58:  fl_z slice 1   tooth +1         =   0.0000000E+00  [N]
+  59:  fl_z slice 2   tooth -1         =   0.0000000E+00  [N]
+  60:  fl_z slice 2   tooth  0         =   0.0000000E+00  [N]
+  61:  fl_z slice 2   tooth +1         =   0.0000000E+00  [N]
+  62:  fl_z slice 3   tooth -1         =   0.0000000E+00  [N]
+  63:  fl_z slice 3   tooth  0         =   0.0000000E+00  [N]
+  64:  fl_z slice 3   tooth +1         =   0.0000000E+00  [N]
+  65:  fl_z slice 4   tooth -1         =   0.0000000E+00  [N]
+  66:  fl_z slice 4   tooth  0         =   0.0000000E+00  [N]
+  67:  fl_z slice 4   tooth +1         =   0.0000000E+00  [N]
+  68:  fl_z slice 5   tooth -1         =   0.0000000E+00  [N]
+  69:  fl_z slice 5   tooth  0         =   0.0000000E+00  [N]
+  70:  fl_z slice 5   tooth +1         =   0.0000000E+00  [N]
+  71:  PosX slice 1   tooth -1         =   0.0000000E+00  [m]
+  72:  PosY slice 1   tooth -1         =   0.0000000E+00  [m]
+  73:  PosZ slice 1   tooth -1         =   0.0000000E+00  [m]
+  74:  Mi alpha  1   tooth -1          =   0.0000000E+00  [rad]
+  75:  Mi beta   1   tooth -1          =   0.0000000E+00  [rad]
+  76:  Mi gamma 1   tooth -1           =   0.0000000E+00  [rad]
+  77:  PosX slice 1   tooth  0         =   0.0000000E+00  [m]
+  78:  PosY slice 1   tooth  0         =   0.0000000E+00  [m]
+  79:  PosZ slice 1   tooth  0         =   0.0000000E+00  [m]
+  80:  Mi alpha  1   tooth  0          =   0.0000000E+00  [rad]
+  81:  Mi beta   1   tooth  0          =   0.0000000E+00  [rad]
+  82:  Mi gamma 1   tooth  0           =   0.0000000E+00  [rad]
+  83:  PosX slice 1   tooth +1         =   0.0000000E+00  [m]
+  84:  PosY slice 1   tooth +1         =   0.0000000E+00  [m]
+  85:  PosZ slice 1   tooth +1         =   0.0000000E+00  [m]
+  86:  Mi alpha  1   tooth +1          =   0.0000000E+00  [rad]
+  87:  Mi beta   1   tooth +1          =   0.0000000E+00  [rad]
+  88:  Mi gamma 1   tooth +1           =   0.0000000E+00  [rad]
+  89:  PosX slice 2   tooth -1         =   0.0000000E+00  [m]
+  90:  PosY slice 2   tooth -1         =   0.0000000E+00  [m]
+  91:  PosZ slice 2   tooth -1         =   0.0000000E+00  [m]
+  92:  Mi alpha  2   tooth -1          =   0.0000000E+00  [rad]
+  93:  Mi beta   2   tooth -1          =   0.0000000E+00  [rad]
+  94:  Mi gamma 2   tooth -1           =   0.0000000E+00  [rad]
+  95:  PosX slice 2   tooth  0         =   0.0000000E+00  [m]
+  96:  PosY slice 2   tooth  0         =   0.0000000E+00  [m]
+  97:  PosZ slice 2   tooth  0         =   0.0000000E+00  [m]
+  98:  Mi alpha  2   tooth  0          =   0.0000000E+00  [rad]
+  99:  Mi beta   2   tooth  0          =   0.0000000E+00  [rad]
+ 100:  Mi gamma 2   tooth  0           =   0.0000000E+00  [rad]
+ 101:  PosX slice 2   tooth +1         =   0.0000000E+00  [m]
+ 102:  PosY slice 2   tooth +1         =   0.0000000E+00  [m]
+ 103:  PosZ slice 2   tooth +1         =   0.0000000E+00  [m]
+ 104:  Mi alpha  2   tooth +1          =   0.0000000E+00  [rad]
+ 105:  Mi beta   2   tooth +1          =   0.0000000E+00  [rad]
+ 106:  Mi gamma 2   tooth +1           =   0.0000000E+00  [rad]
+ 107:  PosX slice 3   tooth -1         =   0.0000000E+00  [m]
+ 108:  PosY slice 3   tooth -1         =   0.0000000E+00  [m]
+ 109:  PosZ slice 3   tooth -1         =   0.0000000E+00  [m]
+ 110:  Mi alpha  3   tooth -1          =   0.0000000E+00  [rad]
+ 111:  Mi beta   3   tooth -1          =   0.0000000E+00  [rad]
+ 112:  Mi gamma 3   tooth -1           =   0.0000000E+00  [rad]
+ 113:  PosX slice 3   tooth  0         =   0.0000000E+00  [m]
+ 114:  PosY slice 3   tooth  0         =   0.0000000E+00  [m]
+ 115:  PosZ slice 3   tooth  0         =   0.0000000E+00  [m]
+ 116:  Mi alpha  3   tooth  0          =   0.0000000E+00  [rad]
+ 117:  Mi beta   3   tooth  0          =   0.0000000E+00  [rad]
+ 118:  Mi gamma 3   tooth  0           =   0.0000000E+00  [rad]
+ 119:  PosX slice 3   tooth +1         =   0.0000000E+00  [m]
+ 120:  PosY slice 3   tooth +1         =   0.0000000E+00  [m]
+ 121:  PosZ slice 3   tooth +1         =   0.0000000E+00  [m]
+ 122:  Mi alpha  3   tooth +1          =   0.0000000E+00  [rad]
+ 123:  Mi beta   3   tooth +1          =   0.0000000E+00  [rad]
+ 124:  Mi gamma 3   tooth +1           =   0.0000000E+00  [rad]
+ 125:  PosX slice 4   tooth -1         =   0.0000000E+00  [m]
+ 126:  PosY slice 4   tooth -1         =   0.0000000E+00  [m]
+ 127:  PosZ slice 4   tooth -1         =   0.0000000E+00  [m]
+ 128:  Mi alpha  4   tooth -1          =   0.0000000E+00  [rad]
+ 129:  Mi beta   4   tooth -1          =   0.0000000E+00  [rad]
+ 130:  Mi gamma 4   tooth -1           =   0.0000000E+00  [rad]
+ 131:  PosX slice 4   tooth  0         =   0.0000000E+00  [m]
+ 132:  PosY slice 4   tooth  0         =   0.0000000E+00  [m]
+ 133:  PosZ slice 4   tooth  0         =   0.0000000E+00  [m]
+ 134:  Mi alpha  4   tooth  0          =   0.0000000E+00  [rad]
+ 135:  Mi beta   4   tooth  0          =   0.0000000E+00  [rad]
+ 136:  Mi gamma 4   tooth  0           =   0.0000000E+00  [rad]
+ 137:  PosX slice 4   tooth +1         =   0.0000000E+00  [m]
+ 138:  PosY slice 4   tooth +1         =   0.0000000E+00  [m]
+ 139:  PosZ slice 4   tooth +1         =   0.0000000E+00  [m]
+ 140:  Mi alpha  4   tooth +1          =   0.0000000E+00  [rad]
+ 141:  Mi beta   4   tooth +1          =   0.0000000E+00  [rad]
+ 142:  Mi gamma 4   tooth +1           =   0.0000000E+00  [rad]
+ 143:  PosX slice 5   tooth -1         =   0.0000000E+00  [m]
+ 144:  PosY slice 5   tooth -1         =   0.0000000E+00  [m]
+ 145:  PosZ slice 5   tooth -1         =   0.0000000E+00  [m]
+ 146:  Mi alpha  5   tooth -1          =   0.0000000E+00  [rad]
+ 147:  Mi beta   5   tooth -1          =   0.0000000E+00  [rad]
+ 148:  Mi gamma 5   tooth -1           =   0.0000000E+00  [rad]
+ 149:  PosX slice 5   tooth  0         =   0.0000000E+00  [m]
+ 150:  PosY slice 5   tooth  0         =   0.0000000E+00  [m]
+ 151:  PosZ slice 5   tooth  0         =   0.0000000E+00  [m]
+ 152:  Mi alpha  5   tooth  0          =   0.0000000E+00  [rad]
+ 153:  Mi beta   5   tooth  0          =   0.0000000E+00  [rad]
+ 154:  Mi gamma 5   tooth  0           =   0.0000000E+00  [rad]
+ 155:  PosX slice 5   tooth +1         =   0.0000000E+00  [m]
+ 156:  PosY slice 5   tooth +1         =   0.0000000E+00  [m]
+ 157:  PosZ slice 5   tooth +1         =   0.0000000E+00  [m]
+ 158:  Mi alpha  5   tooth +1          =   0.0000000E+00  [rad]
+ 159:  Mi beta   5   tooth +1          =   0.0000000E+00  [rad]
+ 160:  Mi gamma 5   tooth +1           =   0.0000000E+00  [rad]
+
+$FEG_stage_01.$F_ring_planet_02:
+--------------------------------
+   3:  Difference in angle rel. 1      =   0.0000000E+00  [rad]
+   4:  Difference in ang. vel. rel. 1  =  -6.9954956E-20  [rad/s]
+   5:  Circumferential backlash        =   3.7114615E-04  [m]
+   6:  Contact flag 1                  =   0.0000000E+00  [-]
+   7:  Contact flag 2                  =   0.0000000E+00  [-]
+   8:  Total normal contact stiffness  =   0.0000000E+00  [N/m]
+   9:  Total rotat. stiffness rel. 1   =   0.0000000E+00  [Nm/rad]
+  10:  Total circumferential force     =   0.0000000E+00  [N]
+  11:  Total radial force              =   0.0000000E+00  [N]
+  12:  Total axial force               =   0.0000000E+00  [N]
+  13:  Total stiff. force in transv.   =   0.0000000E+00  [N]
+  14:  Total damp. force in transv.    =   0.0000000E+00  [N]
+  15:  Total friction force            =   0.0000000E+00  [N]
+  16:  Dynamic transmission error      =   0.0000000E+00  [m]
+  17:  Teeth meshing frequency         =  -8.2503402E-20  [Hz]
+  18:  Axle distance deviation         =  -9.1121761E-06  [m]
+  20:  Max. Hertzian pressure          =   0.0000000E+00  [N/m^2]
+  21:  fl_x slice 1                    =   0.0000000E+00  [N]
+  22:  fl_x slice 2                    =   0.0000000E+00  [N]
+  23:  fl_x slice 3                    =   0.0000000E+00  [N]
+  24:  fl_x slice 4                    =   0.0000000E+00  [N]
+  25:  fl_x slice 5                    =   0.0000000E+00  [N]
+  26:  fl_x slice 1   tooth -1         =   0.0000000E+00  [N]
+  27:  fl_x slice 1   tooth  0         =   0.0000000E+00  [N]
+  28:  fl_x slice 1   tooth +1         =   0.0000000E+00  [N]
+  29:  fl_x slice 2   tooth -1         =   0.0000000E+00  [N]
+  30:  fl_x slice 2   tooth  0         =   0.0000000E+00  [N]
+  31:  fl_x slice 2   tooth +1         =   0.0000000E+00  [N]
+  32:  fl_x slice 3   tooth -1         =   0.0000000E+00  [N]
+  33:  fl_x slice 3   tooth  0         =   0.0000000E+00  [N]
+  34:  fl_x slice 3   tooth +1         =   0.0000000E+00  [N]
+  35:  fl_x slice 4   tooth -1         =   0.0000000E+00  [N]
+  36:  fl_x slice 4   tooth  0         =   0.0000000E+00  [N]
+  37:  fl_x slice 4   tooth +1         =   0.0000000E+00  [N]
+  38:  fl_x slice 5   tooth -1         =   0.0000000E+00  [N]
+  39:  fl_x slice 5   tooth  0         =   0.0000000E+00  [N]
+  40:  fl_x slice 5   tooth +1         =   0.0000000E+00  [N]
+  41:  fl_y slice 1   tooth -1         =   0.0000000E+00  [N]
+  42:  fl_y slice 1   tooth  0         =   0.0000000E+00  [N]
+  43:  fl_y slice 1   tooth +1         =   0.0000000E+00  [N]
+  44:  fl_y slice 2   tooth -1         =   0.0000000E+00  [N]
+  45:  fl_y slice 2   tooth  0         =   0.0000000E+00  [N]
+  46:  fl_y slice 2   tooth +1         =   0.0000000E+00  [N]
+  47:  fl_y slice 3   tooth -1         =   0.0000000E+00  [N]
+  48:  fl_y slice 3   tooth  0         =   0.0000000E+00  [N]
+  49:  fl_y slice 3   tooth +1         =   0.0000000E+00  [N]
+  50:  fl_y slice 4   tooth -1         =   0.0000000E+00  [N]
+  51:  fl_y slice 4   tooth  0         =   0.0000000E+00  [N]
+  52:  fl_y slice 4   tooth +1         =   0.0000000E+00  [N]
+  53:  fl_y slice 5   tooth -1         =   0.0000000E+00  [N]
+  54:  fl_y slice 5   tooth  0         =   0.0000000E+00  [N]
+  55:  fl_y slice 5   tooth +1         =   0.0000000E+00  [N]
+  56:  fl_z slice 1   tooth -1         =   0.0000000E+00  [N]
+  57:  fl_z slice 1   tooth  0         =   0.0000000E+00  [N]
+  58:  fl_z slice 1   tooth +1         =   0.0000000E+00  [N]
+  59:  fl_z slice 2   tooth -1         =   0.0000000E+00  [N]
+  60:  fl_z slice 2   tooth  0         =   0.0000000E+00  [N]
+  61:  fl_z slice 2   tooth +1         =   0.0000000E+00  [N]
+  62:  fl_z slice 3   tooth -1         =   0.0000000E+00  [N]
+  63:  fl_z slice 3   tooth  0         =   0.0000000E+00  [N]
+  64:  fl_z slice 3   tooth +1         =   0.0000000E+00  [N]
+  65:  fl_z slice 4   tooth -1         =   0.0000000E+00  [N]
+  66:  fl_z slice 4   tooth  0         =   0.0000000E+00  [N]
+  67:  fl_z slice 4   tooth +1         =   0.0000000E+00  [N]
+  68:  fl_z slice 5   tooth -1         =   0.0000000E+00  [N]
+  69:  fl_z slice 5   tooth  0         =   0.0000000E+00  [N]
+  70:  fl_z slice 5   tooth +1         =   0.0000000E+00  [N]
+  71:  PosX slice 1   tooth -1         =   0.0000000E+00  [m]
+  72:  PosY slice 1   tooth -1         =   0.0000000E+00  [m]
+  73:  PosZ slice 1   tooth -1         =   0.0000000E+00  [m]
+  74:  Mi alpha  1   tooth -1          =   0.0000000E+00  [rad]
+  75:  Mi beta   1   tooth -1          =   0.0000000E+00  [rad]
+  76:  Mi gamma 1   tooth -1           =   0.0000000E+00  [rad]
+  77:  PosX slice 1   tooth  0         =   0.0000000E+00  [m]
+  78:  PosY slice 1   tooth  0         =   0.0000000E+00  [m]
+  79:  PosZ slice 1   tooth  0         =   0.0000000E+00  [m]
+  80:  Mi alpha  1   tooth  0          =   0.0000000E+00  [rad]
+  81:  Mi beta   1   tooth  0          =   0.0000000E+00  [rad]
+  82:  Mi gamma 1   tooth  0           =   0.0000000E+00  [rad]
+  83:  PosX slice 1   tooth +1         =   0.0000000E+00  [m]
+  84:  PosY slice 1   tooth +1         =   0.0000000E+00  [m]
+  85:  PosZ slice 1   tooth +1         =   0.0000000E+00  [m]
+  86:  Mi alpha  1   tooth +1          =   0.0000000E+00  [rad]
+  87:  Mi beta   1   tooth +1          =   0.0000000E+00  [rad]
+  88:  Mi gamma 1   tooth +1           =   0.0000000E+00  [rad]
+  89:  PosX slice 2   tooth -1         =   0.0000000E+00  [m]
+  90:  PosY slice 2   tooth -1         =   0.0000000E+00  [m]
+  91:  PosZ slice 2   tooth -1         =   0.0000000E+00  [m]
+  92:  Mi alpha  2   tooth -1          =   0.0000000E+00  [rad]
+  93:  Mi beta   2   tooth -1          =   0.0000000E+00  [rad]
+  94:  Mi gamma 2   tooth -1           =   0.0000000E+00  [rad]
+  95:  PosX slice 2   tooth  0         =   0.0000000E+00  [m]
+  96:  PosY slice 2   tooth  0         =   0.0000000E+00  [m]
+  97:  PosZ slice 2   tooth  0         =   0.0000000E+00  [m]
+  98:  Mi alpha  2   tooth  0          =   0.0000000E+00  [rad]
+  99:  Mi beta   2   tooth  0          =   0.0000000E+00  [rad]
+ 100:  Mi gamma 2   tooth  0           =   0.0000000E+00  [rad]
+ 101:  PosX slice 2   tooth +1         =   0.0000000E+00  [m]
+ 102:  PosY slice 2   tooth +1         =   0.0000000E+00  [m]
+ 103:  PosZ slice 2   tooth +1         =   0.0000000E+00  [m]
+ 104:  Mi alpha  2   tooth +1          =   0.0000000E+00  [rad]
+ 105:  Mi beta   2   tooth +1          =   0.0000000E+00  [rad]
+ 106:  Mi gamma 2   tooth +1           =   0.0000000E+00  [rad]
+ 107:  PosX slice 3   tooth -1         =   0.0000000E+00  [m]
+ 108:  PosY slice 3   tooth -1         =   0.0000000E+00  [m]
+ 109:  PosZ slice 3   tooth -1         =   0.0000000E+00  [m]
+ 110:  Mi alpha  3   tooth -1          =   0.0000000E+00  [rad]
+ 111:  Mi beta   3   tooth -1          =   0.0000000E+00  [rad]
+ 112:  Mi gamma 3   tooth -1           =   0.0000000E+00  [rad]
+ 113:  PosX slice 3   tooth  0         =   0.0000000E+00  [m]
+ 114:  PosY slice 3   tooth  0         =   0.0000000E+00  [m]
+ 115:  PosZ slice 3   tooth  0         =   0.0000000E+00  [m]
+ 116:  Mi alpha  3   tooth  0          =   0.0000000E+00  [rad]
+ 117:  Mi beta   3   tooth  0          =   0.0000000E+00  [rad]
+ 118:  Mi gamma 3   tooth  0           =   0.0000000E+00  [rad]
+ 119:  PosX slice 3   tooth +1         =   0.0000000E+00  [m]
+ 120:  PosY slice 3   tooth +1         =   0.0000000E+00  [m]
+ 121:  PosZ slice 3   tooth +1         =   0.0000000E+00  [m]
+ 122:  Mi alpha  3   tooth +1          =   0.0000000E+00  [rad]
+ 123:  Mi beta   3   tooth +1          =   0.0000000E+00  [rad]
+ 124:  Mi gamma 3   tooth +1           =   0.0000000E+00  [rad]
+ 125:  PosX slice 4   tooth -1         =   0.0000000E+00  [m]
+ 126:  PosY slice 4   tooth -1         =   0.0000000E+00  [m]
+ 127:  PosZ slice 4   tooth -1         =   0.0000000E+00  [m]
+ 128:  Mi alpha  4   tooth -1          =   0.0000000E+00  [rad]
+ 129:  Mi beta   4   tooth -1          =   0.0000000E+00  [rad]
+ 130:  Mi gamma 4   tooth -1           =   0.0000000E+00  [rad]
+ 131:  PosX slice 4   tooth  0         =   0.0000000E+00  [m]
+ 132:  PosY slice 4   tooth  0         =   0.0000000E+00  [m]
+ 133:  PosZ slice 4   tooth  0         =   0.0000000E+00  [m]
+ 134:  Mi alpha  4   tooth  0          =   0.0000000E+00  [rad]
+ 135:  Mi beta   4   tooth  0          =   0.0000000E+00  [rad]
+ 136:  Mi gamma 4   tooth  0           =   0.0000000E+00  [rad]
+ 137:  PosX slice 4   tooth +1         =   0.0000000E+00  [m]
+ 138:  PosY slice 4   tooth +1         =   0.0000000E+00  [m]
+ 139:  PosZ slice 4   tooth +1         =   0.0000000E+00  [m]
+ 140:  Mi alpha  4   tooth +1          =   0.0000000E+00  [rad]
+ 141:  Mi beta   4   tooth +1          =   0.0000000E+00  [rad]
+ 142:  Mi gamma 4   tooth +1           =   0.0000000E+00  [rad]
+ 143:  PosX slice 5   tooth -1         =   0.0000000E+00  [m]
+ 144:  PosY slice 5   tooth -1         =   0.0000000E+00  [m]
+ 145:  PosZ slice 5   tooth -1         =   0.0000000E+00  [m]
+ 146:  Mi alpha  5   tooth -1          =   0.0000000E+00  [rad]
+ 147:  Mi beta   5   tooth -1          =   0.0000000E+00  [rad]
+ 148:  Mi gamma 5   tooth -1           =   0.0000000E+00  [rad]
+ 149:  PosX slice 5   tooth  0         =   0.0000000E+00  [m]
+ 150:  PosY slice 5   tooth  0         =   0.0000000E+00  [m]
+ 151:  PosZ slice 5   tooth  0         =   0.0000000E+00  [m]
+ 152:  Mi alpha  5   tooth  0          =   0.0000000E+00  [rad]
+ 153:  Mi beta   5   tooth  0          =   0.0000000E+00  [rad]
+ 154:  Mi gamma 5   tooth  0           =   0.0000000E+00  [rad]
+ 155:  PosX slice 5   tooth +1         =   0.0000000E+00  [m]
+ 156:  PosY slice 5   tooth +1         =   0.0000000E+00  [m]
+ 157:  PosZ slice 5   tooth +1         =   0.0000000E+00  [m]
+ 158:  Mi alpha  5   tooth +1          =   0.0000000E+00  [rad]
+ 159:  Mi beta   5   tooth +1          =   0.0000000E+00  [rad]
+ 160:  Mi gamma 5   tooth +1           =   0.0000000E+00  [rad]
+
+$FEG_stage_01.$F_ring_planet_03:
+--------------------------------
+   3:  Difference in angle rel. 1      =   0.0000000E+00  [rad]
+   4:  Difference in ang. vel. rel. 1  =  -2.0753304E-18  [rad/s]
+   5:  Circumferential backlash        =   3.7114615E-04  [m]
+   6:  Contact flag 1                  =   0.0000000E+00  [-]
+   7:  Contact flag 2                  =   0.0000000E+00  [-]
+   8:  Total normal contact stiffness  =   0.0000000E+00  [N/m]
+   9:  Total rotat. stiffness rel. 1   =   0.0000000E+00  [Nm/rad]
+  10:  Total circumferential force     =   0.0000000E+00  [N]
+  11:  Total radial force              =   0.0000000E+00  [N]
+  12:  Total axial force               =   0.0000000E+00  [N]
+  13:  Total stiff. force in transv.   =   0.0000000E+00  [N]
+  14:  Total damp. force in transv.    =   0.0000000E+00  [N]
+  15:  Total friction force            =   0.0000000E+00  [N]
+  16:  Dynamic transmission error      =   0.0000000E+00  [m]
+  17:  Teeth meshing frequency         =  -2.4476009E-18  [Hz]
+  18:  Axle distance deviation         =  -9.1121761E-06  [m]
+  20:  Max. Hertzian pressure          =   0.0000000E+00  [N/m^2]
+  21:  fl_x slice 1                    =   0.0000000E+00  [N]
+  22:  fl_x slice 2                    =   0.0000000E+00  [N]
+  23:  fl_x slice 3                    =   0.0000000E+00  [N]
+  24:  fl_x slice 4                    =   0.0000000E+00  [N]
+  25:  fl_x slice 5                    =   0.0000000E+00  [N]
+  26:  fl_x slice 1   tooth -1         =   0.0000000E+00  [N]
+  27:  fl_x slice 1   tooth  0         =   0.0000000E+00  [N]
+  28:  fl_x slice 1   tooth +1         =   0.0000000E+00  [N]
+  29:  fl_x slice 2   tooth -1         =   0.0000000E+00  [N]
+  30:  fl_x slice 2   tooth  0         =   0.0000000E+00  [N]
+  31:  fl_x slice 2   tooth +1         =   0.0000000E+00  [N]
+  32:  fl_x slice 3   tooth -1         =   0.0000000E+00  [N]
+  33:  fl_x slice 3   tooth  0         =   0.0000000E+00  [N]
+  34:  fl_x slice 3   tooth +1         =   0.0000000E+00  [N]
+  35:  fl_x slice 4   tooth -1         =   0.0000000E+00  [N]
+  36:  fl_x slice 4   tooth  0         =   0.0000000E+00  [N]
+  37:  fl_x slice 4   tooth +1         =   0.0000000E+00  [N]
+  38:  fl_x slice 5   tooth -1         =   0.0000000E+00  [N]
+  39:  fl_x slice 5   tooth  0         =   0.0000000E+00  [N]
+  40:  fl_x slice 5   tooth +1         =   0.0000000E+00  [N]
+  41:  fl_y slice 1   tooth -1         =   0.0000000E+00  [N]
+  42:  fl_y slice 1   tooth  0         =   0.0000000E+00  [N]
+  43:  fl_y slice 1   tooth +1         =   0.0000000E+00  [N]
+  44:  fl_y slice 2   tooth -1         =   0.0000000E+00  [N]
+  45:  fl_y slice 2   tooth  0         =   0.0000000E+00  [N]
+  46:  fl_y slice 2   tooth +1         =   0.0000000E+00  [N]
+  47:  fl_y slice 3   tooth -1         =   0.0000000E+00  [N]
+  48:  fl_y slice 3   tooth  0         =   0.0000000E+00  [N]
+  49:  fl_y slice 3   tooth +1         =   0.0000000E+00  [N]
+  50:  fl_y slice 4   tooth -1         =   0.0000000E+00  [N]
+  51:  fl_y slice 4   tooth  0         =   0.0000000E+00  [N]
+  52:  fl_y slice 4   tooth +1         =   0.0000000E+00  [N]
+  53:  fl_y slice 5   tooth -1         =   0.0000000E+00  [N]
+  54:  fl_y slice 5   tooth  0         =   0.0000000E+00  [N]
+  55:  fl_y slice 5   tooth +1         =   0.0000000E+00  [N]
+  56:  fl_z slice 1   tooth -1         =   0.0000000E+00  [N]
+  57:  fl_z slice 1   tooth  0         =   0.0000000E+00  [N]
+  58:  fl_z slice 1   tooth +1         =   0.0000000E+00  [N]
+  59:  fl_z slice 2   tooth -1         =   0.0000000E+00  [N]
+  60:  fl_z slice 2   tooth  0         =   0.0000000E+00  [N]
+  61:  fl_z slice 2   tooth +1         =   0.0000000E+00  [N]
+  62:  fl_z slice 3   tooth -1         =   0.0000000E+00  [N]
+  63:  fl_z slice 3   tooth  0         =   0.0000000E+00  [N]
+  64:  fl_z slice 3   tooth +1         =   0.0000000E+00  [N]
+  65:  fl_z slice 4   tooth -1         =   0.0000000E+00  [N]
+  66:  fl_z slice 4   tooth  0         =   0.0000000E+00  [N]
+  67:  fl_z slice 4   tooth +1         =   0.0000000E+00  [N]
+  68:  fl_z slice 5   tooth -1         =   0.0000000E+00  [N]
+  69:  fl_z slice 5   tooth  0         =   0.0000000E+00  [N]
+  70:  fl_z slice 5   tooth +1         =   0.0000000E+00  [N]
+  71:  PosX slice 1   tooth -1         =   0.0000000E+00  [m]
+  72:  PosY slice 1   tooth -1         =   0.0000000E+00  [m]
+  73:  PosZ slice 1   tooth -1         =   0.0000000E+00  [m]
+  74:  Mi alpha  1   tooth -1          =   0.0000000E+00  [rad]
+  75:  Mi beta   1   tooth -1          =   0.0000000E+00  [rad]
+  76:  Mi gamma 1   tooth -1           =   0.0000000E+00  [rad]
+  77:  PosX slice 1   tooth  0         =   0.0000000E+00  [m]
+  78:  PosY slice 1   tooth  0         =   0.0000000E+00  [m]
+  79:  PosZ slice 1   tooth  0         =   0.0000000E+00  [m]
+  80:  Mi alpha  1   tooth  0          =   0.0000000E+00  [rad]
+  81:  Mi beta   1   tooth  0          =   0.0000000E+00  [rad]
+  82:  Mi gamma 1   tooth  0           =   0.0000000E+00  [rad]
+  83:  PosX slice 1   tooth +1         =   0.0000000E+00  [m]
+  84:  PosY slice 1   tooth +1         =   0.0000000E+00  [m]
+  85:  PosZ slice 1   tooth +1         =   0.0000000E+00  [m]
+  86:  Mi alpha  1   tooth +1          =   0.0000000E+00  [rad]
+  87:  Mi beta   1   tooth +1          =   0.0000000E+00  [rad]
+  88:  Mi gamma 1   tooth +1           =   0.0000000E+00  [rad]
+  89:  PosX slice 2   tooth -1         =   0.0000000E+00  [m]
+  90:  PosY slice 2   tooth -1         =   0.0000000E+00  [m]
+  91:  PosZ slice 2   tooth -1         =   0.0000000E+00  [m]
+  92:  Mi alpha  2   tooth -1          =   0.0000000E+00  [rad]
+  93:  Mi beta   2   tooth -1          =   0.0000000E+00  [rad]
+  94:  Mi gamma 2   tooth -1           =   0.0000000E+00  [rad]
+  95:  PosX slice 2   tooth  0         =   0.0000000E+00  [m]
+  96:  PosY slice 2   tooth  0         =   0.0000000E+00  [m]
+  97:  PosZ slice 2   tooth  0         =   0.0000000E+00  [m]
+  98:  Mi alpha  2   tooth  0          =   0.0000000E+00  [rad]
+  99:  Mi beta   2   tooth  0          =   0.0000000E+00  [rad]
+ 100:  Mi gamma 2   tooth  0           =   0.0000000E+00  [rad]
+ 101:  PosX slice 2   tooth +1         =   0.0000000E+00  [m]
+ 102:  PosY slice 2   tooth +1         =   0.0000000E+00  [m]
+ 103:  PosZ slice 2   tooth +1         =   0.0000000E+00  [m]
+ 104:  Mi alpha  2   tooth +1          =   0.0000000E+00  [rad]
+ 105:  Mi beta   2   tooth +1          =   0.0000000E+00  [rad]
+ 106:  Mi gamma 2   tooth +1           =   0.0000000E+00  [rad]
+ 107:  PosX slice 3   tooth -1         =   0.0000000E+00  [m]
+ 108:  PosY slice 3   tooth -1         =   0.0000000E+00  [m]
+ 109:  PosZ slice 3   tooth -1         =   0.0000000E+00  [m]
+ 110:  Mi alpha  3   tooth -1          =   0.0000000E+00  [rad]
+ 111:  Mi beta   3   tooth -1          =   0.0000000E+00  [rad]
+ 112:  Mi gamma 3   tooth -1           =   0.0000000E+00  [rad]
+ 113:  PosX slice 3   tooth  0         =   0.0000000E+00  [m]
+ 114:  PosY slice 3   tooth  0         =   0.0000000E+00  [m]
+ 115:  PosZ slice 3   tooth  0         =   0.0000000E+00  [m]
+ 116:  Mi alpha  3   tooth  0          =   0.0000000E+00  [rad]
+ 117:  Mi beta   3   tooth  0          =   0.0000000E+00  [rad]
+ 118:  Mi gamma 3   tooth  0           =   0.0000000E+00  [rad]
+ 119:  PosX slice 3   tooth +1         =   0.0000000E+00  [m]
+ 120:  PosY slice 3   tooth +1         =   0.0000000E+00  [m]
+ 121:  PosZ slice 3   tooth +1         =   0.0000000E+00  [m]
+ 122:  Mi alpha  3   tooth +1          =   0.0000000E+00  [rad]
+ 123:  Mi beta   3   tooth +1          =   0.0000000E+00  [rad]
+ 124:  Mi gamma 3   tooth +1           =   0.0000000E+00  [rad]
+ 125:  PosX slice 4   tooth -1         =   0.0000000E+00  [m]
+ 126:  PosY slice 4   tooth -1         =   0.0000000E+00  [m]
+ 127:  PosZ slice 4   tooth -1         =   0.0000000E+00  [m]
+ 128:  Mi alpha  4   tooth -1          =   0.0000000E+00  [rad]
+ 129:  Mi beta   4   tooth -1          =   0.0000000E+00  [rad]
+ 130:  Mi gamma 4   tooth -1           =   0.0000000E+00  [rad]
+ 131:  PosX slice 4   tooth  0         =   0.0000000E+00  [m]
+ 132:  PosY slice 4   tooth  0         =   0.0000000E+00  [m]
+ 133:  PosZ slice 4   tooth  0         =   0.0000000E+00  [m]
+ 134:  Mi alpha  4   tooth  0          =   0.0000000E+00  [rad]
+ 135:  Mi beta   4   tooth  0          =   0.0000000E+00  [rad]
+ 136:  Mi gamma 4   tooth  0           =   0.0000000E+00  [rad]
+ 137:  PosX slice 4   tooth +1         =   0.0000000E+00  [m]
+ 138:  PosY slice 4   tooth +1         =   0.0000000E+00  [m]
+ 139:  PosZ slice 4   tooth +1         =   0.0000000E+00  [m]
+ 140:  Mi alpha  4   tooth +1          =   0.0000000E+00  [rad]
+ 141:  Mi beta   4   tooth +1          =   0.0000000E+00  [rad]
+ 142:  Mi gamma 4   tooth +1           =   0.0000000E+00  [rad]
+ 143:  PosX slice 5   tooth -1         =   0.0000000E+00  [m]
+ 144:  PosY slice 5   tooth -1         =   0.0000000E+00  [m]
+ 145:  PosZ slice 5   tooth -1         =   0.0000000E+00  [m]
+ 146:  Mi alpha  5   tooth -1          =   0.0000000E+00  [rad]
+ 147:  Mi beta   5   tooth -1          =   0.0000000E+00  [rad]
+ 148:  Mi gamma 5   tooth -1           =   0.0000000E+00  [rad]
+ 149:  PosX slice 5   tooth  0         =   0.0000000E+00  [m]
+ 150:  PosY slice 5   tooth  0         =   0.0000000E+00  [m]
+ 151:  PosZ slice 5   tooth  0         =   0.0000000E+00  [m]
+ 152:  Mi alpha  5   tooth  0          =   0.0000000E+00  [rad]
+ 153:  Mi beta   5   tooth  0          =   0.0000000E+00  [rad]
+ 154:  Mi gamma 5   tooth  0           =   0.0000000E+00  [rad]
+ 155:  PosX slice 5   tooth +1         =   0.0000000E+00  [m]
+ 156:  PosY slice 5   tooth +1         =   0.0000000E+00  [m]
+ 157:  PosZ slice 5   tooth +1         =   0.0000000E+00  [m]
+ 158:  Mi alpha  5   tooth +1          =   0.0000000E+00  [rad]
+ 159:  Mi beta   5   tooth +1          =   0.0000000E+00  [rad]
+ 160:  Mi gamma 5   tooth +1           =   0.0000000E+00  [rad]
+
+
+================================================================================
+Result Elements:
+================================================================================
+
+
+
+================================================================================
+Element Indices and Names:
+================================================================================
+
+Bodies:
+     1: $B_bed_plate
+     2: $B_main_shaft
+     3: $B_GB_frame
+     4: $BG_stage_01.$B_carrier
+     5: $BG_stage_01.$B_ring
+     6: $BG_stage_01.$BG_planet_01.$B_pin
+     7: $BG_stage_01.$BG_planet_01.$B_planet
+     8: $BG_stage_01.$BG_planet_02.$B_pin
+     9: $BG_stage_01.$BG_planet_02.$B_planet
+    10: $BG_stage_01.$BG_planet_03.$B_pin
+    11: $BG_stage_01.$BG_planet_03.$B_planet
+
+Connections:
+
+Markers:
+     1: $M_Isys
+     2: $M_bed_plate_BRF
+     3: $M_bed_plate_main_shaft
+     4: $M_bed_plate_INP_A
+     5: $M_bed_plate_INP_B
+     6: $M_bed_plate_PLC_A
+     7: $M_bed_plate_PLC_B
+     8: $M_main_shaft_BRF
+     9: $M_main_shaft_INP_A
+    10: $M_main_shaft_INP_B
+    11: $M_main_shaft_carrier
+    12: $M_GB_frame_BRF
+    13: $M_GB_frame_ring_01
+    14: $M_bed_plate_rotor
+    15: $M_main_shaft_rotor
+    16: $BG_stage_01.$M_carrier_BRF
+    17: $BG_stage_01.$M_carrier_pin_01
+    18: $BG_stage_01.$M_carrier_pin_A1
+    19: $BG_stage_01.$M_carrier_pin_B1
+    20: $BG_stage_01.$M_carrier_pin_02
+    21: $BG_stage_01.$M_carrier_pin_A2
+    22: $BG_stage_01.$M_carrier_pin_B2
+    23: $BG_stage_01.$M_carrier_pin_03
+    24: $BG_stage_01.$M_carrier_pin_A3
+    25: $BG_stage_01.$M_carrier_pin_B3
+    26: $BG_stage_01.$M_carrier_PLC_A
+    27: $BG_stage_01.$M_carrier_PLC_B
+    28: $BG_stage_01.$M_ring_BRF
+    29: $BG_stage_01.$M_ring_rot
+    30: $BG_stage_01.$BG_planet_01.$M_pin_BRF
+    31: $BG_stage_01.$BG_planet_01.$M_pin_A
+    32: $BG_stage_01.$BG_planet_01.$M_pin_B
+    33: $BG_stage_01.$BG_planet_01.$M_planet_BRF
+    34: $BG_stage_01.$BG_planet_01.$M_planet_rot
+    35: $BG_stage_01.$BG_planet_02.$M_pin_BRF
+    36: $BG_stage_01.$BG_planet_02.$M_pin_A
+    37: $BG_stage_01.$BG_planet_02.$M_pin_B
+    38: $BG_stage_01.$BG_planet_02.$M_planet_BRF
+    39: $BG_stage_01.$BG_planet_02.$M_planet_rot
+    40: $BG_stage_01.$BG_planet_03.$M_pin_BRF
+    41: $BG_stage_01.$BG_planet_03.$M_pin_A
+    42: $BG_stage_01.$BG_planet_03.$M_pin_B
+    43: $BG_stage_01.$BG_planet_03.$M_planet_BRF
+    44: $BG_stage_01.$BG_planet_03.$M_planet_rot
+
+Joints:
+     1: $J_bed_plate
+     2: $J_main_shaft
+     3: $J_GB_frame
+     4: $BG_stage_01.$J_carrier
+     5: $BG_stage_01.$J_ring
+     6: $BG_stage_01.$BG_planet_01.$J_pin
+     7: $BG_stage_01.$BG_planet_01.$J_planet
+     8: $BG_stage_01.$BG_planet_02.$J_pin
+     9: $BG_stage_01.$BG_planet_02.$J_planet
+    10: $BG_stage_01.$BG_planet_03.$J_pin
+    11: $BG_stage_01.$BG_planet_03.$J_planet
+
+Constraints:
+
+Force/Control Elements:
+     1: $F_INP_A
+     2: $F_INP_B
+     3: $F_PL_A1
+     4: $F_PL_B1
+     5: $F_PL_A2
+     6: $F_PL_B2
+     7: $F_PL_A3
+     8: $F_PL_B3
+     9: $F_PLC_A
+    10: $F_PLC_B
+    11: $F_rotor
+    12: $FEG_stage_01.$F_ring_planet_01
+    13: $FEG_stage_01.$F_ring_planet_02
+    14: $FEG_stage_01.$F_ring_planet_03
+
+Sensors:
+
+Input Functions:
+     1: $IFG_bed_plate.$I_x
+     2: $IFG_bed_plate.$I_y
+     3: $IFG_bed_plate.$I_z
+     4: $IFG_bed_plate.$I_alpha
+     5: $IFG_bed_plate.$I_beta
+     6: $IFG_bed_plate.$I_gamma
+     7: $IFG_bed_plate.$I_x_dot
+     8: $IFG_bed_plate.$I_y_dot
+     9: $IFG_bed_plate.$I_z_dot
+    10: $IFG_bed_plate.$I_alpha_dot
+    11: $IFG_bed_plate.$I_beta_dot
+    12: $IFG_bed_plate.$I_gamma_dot
+    13: $IFG_bed_plate.$I_x_ddot
+    14: $IFG_bed_plate.$I_y_ddot
+    15: $IFG_bed_plate.$I_z_ddot
+    16: $IFG_bed_plate.$I_alpha_ddot
+    17: $IFG_bed_plate.$I_beta_ddot
+    18: $IFG_bed_plate.$I_gamma_ddot
+    19: $IFG_rotor.$I_F_x
+    20: $IFG_rotor.$I_F_y
+    21: $IFG_rotor.$I_F_z
+    22: $IFG_rotor.$I_M_x
+    23: $IFG_rotor.$I_M_y
+    24: $IFG_rotor.$I_M_z
+
+Substitution Variables:
+     1: $_rated_speed                                =   1.2671090E+00 
+     2: $_damping_coeff                              =   5.0000000E-02 
+     3: $_addendum_coeff                             =   1.0000000E+00 
+     4: $_dedendum_coeff                             =   1.2500000E+00 
+     5: $_regularization_vel                         =   1.0000000E-03 
+     6: $_tooth_damping                              =   5.0000000E+08 
+     7: $_tooth_stiff_ratio                          =   8.0000000E-01 
+     8: $_height                                     =   2.0000000E+00 
+     9: $SVG_material.$_E                            =   2.0600000E+11 
+    10: $SVG_material.$_nu                           =   3.0000000E-01 
+    11: $SVG_material.$_rho                          =   7.8300000E+03 
+    12: $SVG_bed_plate.$_length                      =   1.0000000E+01 
+    13: $SVG_bed_plate.$_width                       =   5.0000000E+00 
+    14: $SVG_bed_plate.$_thickness                   =   5.0000000E-01 
+    15: $SVG_main_shaft.$_diameter                   =   7.0000000E-01 
+    16: $SVG_main_shaft.$_length                     =   2.0000000E+00 
+    17: $SVG_INP_A.$_x                               =   3.3333333E-01 
+    18: $SVG_INP_A.$_K_x                             =   0.0000000E+00 
+    19: $SVG_INP_A.$_K_y                             =   1.5000000E+10 
+    20: $SVG_INP_A.$_K_z                             =   1.5000000E+10 
+    21: $SVG_INP_A.$_K_alpha                         =   0.0000000E+00 
+    22: $SVG_INP_A.$_K_beta                          =   5.0000000E+06 
+    23: $SVG_INP_A.$_K_gamma                         =   5.0000000E+06 
+    24: $SVG_INP_B.$_x                               =   1.5000000E+00 
+    25: $SVG_INP_B.$_K_x                             =   4.0600000E+08 
+    26: $SVG_INP_B.$_K_y                             =   1.5400000E+10 
+    27: $SVG_INP_B.$_K_z                             =   1.5400000E+10 
+    28: $SVG_INP_B.$_K_alpha                         =   0.0000000E+00 
+    29: $SVG_INP_B.$_K_beta                          =   0.0000000E+00 
+    30: $SVG_INP_B.$_K_gamma                         =   0.0000000E+00 
+    31: $SVG_stage_01.$_normal_module                =   4.5000000E-02 
+    32: $SVG_stage_01.$_face_width                   =   4.9100000E-01 
+    33: $SVG_stage_01.$_center_distance              =   8.6300000E-01 
+    34: $SVG_stage_01.$_pressure_angle               =   3.4906585E-01 
+    35: $SVG_stage_01.$_helix_angle                  =   0.0000000E+00 
+    36: $SVG_stage_01.$SVG_sun.$_num_teeth           =   1.9000000E+01 
+    37: $SVG_stage_01.$SVG_sun.$_prof_shift_coeff    =   6.1700000E-01 
+    38: $SVG_stage_01.$SVG_sun.$_diam_bore           =   4.0000000E-01 
+    39: $SVG_stage_01.$SVG_sun.$_angle               =   1.9014903E+00 
+    40: $SVG_stage_01.$SVG_planet.$_num_teeth        =   1.7000000E+01 
+    41: $SVG_stage_01.$SVG_planet.$_prof_shift_coeff =   8.0200000E-01 
+    42: $SVG_stage_01.$SVG_planet.$_diam_bore        =   4.0000000E-01 
+    43: $SVG_stage_01.$SVG_planet.$_pin_width        =   6.8740000E-01 
+    44: $SVG_stage_01.$SVG_planet.$_angle            =   1.9403955E+00 
+    45: $SVG_stage_01.$SVG_planet.$SVG_A.$_x         =   2.9460000E-01 
+    46: $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x       =   9.1000000E+04 
+    47: $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y       =   9.4000000E+09 
+    48: $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z       =   3.2000000E+09 
+    49: $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha   =   0.0000000E+00 
+    50: $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta    =   1.4000000E+06 
+    51: $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma   =   4.5000000E+06 
+    52: $SVG_stage_01.$SVG_ring.$_num_teeth          =   5.6000000E+01 
+    53: $SVG_stage_01.$SVG_ring.$_prof_shift_coeff   =  -5.0100000E-01 
+    54: $SVG_stage_01.$SVG_ring.$_diam_bore          =   4.0000000E-01 
+    55: $SVG_stage_01.$SVG_ring.$_angle              =   1.5146965E+00 
+    56: $SVG_stage_01.$SVG_ring.$_x                  =   2.2946000E+00 
+    57: $SVG_stage_01.$SVG_carrier.$_diameter_in     =   1.2082000E+00 
+    58: $SVG_stage_01.$SVG_carrier.$_diameter_out    =   2.2438000E+00 
+    59: $SVG_stage_01.$SVG_carrier.$_width           =   5.8920000E-01 
+    60: $SVG_stage_01.$SVG_carrier.$SVG_A.$_x        =   2.9460000E-01 
+    61: $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x      =   6.6000000E+04 
+    62: $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y      =   1.7000000E+09 
+    63: $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z      =   1.1000000E+09 
+    64: $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha  =   0.0000000E+00 
+    65: $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta   =   5.6000000E+05 
+    66: $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma  =   1.3000000E+05 
+    67: $SVG_stage_01.$SVG_carrier.$SVG_B.$_x        =   2.5892000E+00 
+    68: $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x      =   6.6000000E+07 
+    69: $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y      =   1.7000000E+09 
+    70: $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z      =   1.1000000E+09 
+    71: $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha  =   0.0000000E+00 
+    72: $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta   =   5.6000000E+05 
+    73: $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma  =   1.3000000E+05 
+    74: $SVG_GB_frame.$_length                       =   3.5000000E+00 
+    75: $SVG_GB_frame.$_width                        =   4.0000000E+00 
+    76: $SVG_GB_frame.$_x                            =  -1.5000000E+00 
+
+Expressions:
