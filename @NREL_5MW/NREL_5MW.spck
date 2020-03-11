@@ -58,9 +58,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 5.3664913177490234E+00  ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -5.8367877006530762E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 3.0310716629028320E+00  ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 3.5107994079589844E+00  ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.2533425092697144E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.8475346565246582E+00  ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.2440571784973145E-01  ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 2.1178941428661346E-01  ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 2.8827568888664246E-01  ! Orientation
@@ -68,16 +68,19 @@ view.orient (             4 ,       $V_WorkingView                ) = 7.72684276
 view.angle (                        $V_WorkingView                ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.3833854347467422E-02  ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.3833853721618652E+01  ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 9.9999997764825821E-03  ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.1830349922180176E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.0000000000000000E+00  ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.0000000000000000E+00  ! Stereo offset
 
 view.type (                         $V_Ortho                      ) = 0                       ! Projection type
-view.pos (                1 ,       $V_Ortho                      ) = 6.8524776119738817E-01  ! Position
-view.pos (                2 ,       $V_Ortho                      ) = -7.1946778753772378E-01 ! Position
-view.pos (                3 ,       $V_Ortho                      ) = 3.5240458619955461E-01  ! Position
+view.pos (                1 ,       $V_Ortho                      ) = 2.6115269660949707E+00  ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -2.7029627561569214E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.3329591751098633E+00  ! Position
 view.orient (             1 ,       $V_Ortho                      ) = 5.2440571784973145E-01  ! Orientation
 view.orient (             2 ,       $V_Ortho                      ) = 2.1178941428661346E-01  ! Orientation
 view.orient (             3 ,       $V_Ortho                      ) = 2.8827568888664246E-01  ! Orientation
@@ -85,6 +88,8 @@ view.orient (             4 ,       $V_Ortho                      ) = 7.72684276
 view.angle (                        $V_Ortho                      ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.fclip.value (                  $V_Ortho                      ) = 9.9999997764825821E-03  ! Front clipping plane value
+view.bclip.value (                  $V_Ortho                      ) = 1.1830349922180176E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
@@ -275,6 +280,109 @@ subvargroup.begin (                 $SVG_INP_B                    )             
 
 subvargroup.end (                   $SVG_INP_B                    )                           ! $SVG_INP_B
 
+subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
+   subvar.str (                     $_normal_module               ) = '45.0 mm'               ! $SVG_stage_01.$_normal_module, Definition
+
+   subvar.str (                     $_face_width                  ) = '491.0 mm'              ! $SVG_stage_01.$_face_width, Definition
+
+   subvar.str (                     $_center_distance             ) = '863.0 mm'              ! $SVG_stage_01.$_center_distance, Definition
+
+   subvar.str (                     $_pressure_angle              ) = '20.0 deg'              ! $SVG_stage_01.$_pressure_angle, Definition
+
+   subvar.str (                     $_helix_angle                 ) = '0.0 deg'               ! $SVG_stage_01.$_helix_angle, Definition
+
+   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
+      subvar.str (                  $_num_teeth                   ) = '19'                    ! $SVG_stage_01.$SVG_sun.$_num_teeth, Definition
+
+      subvar.str (                  $_prof_shift_coeff            ) = '0.617'                 ! $SVG_stage_01.$SVG_sun.$_prof_shift_coeff, Definition
+
+      subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_01.$SVG_sun.$_diam_bore, Definition
+
+      subvar.str (                  $_angle                       ) = '11.5*(180deg)/$SVG_stage_01.$SVG_sun.$_num_teeth' ! $SVG_stage_01.$SVG_sun.$_angle, Definition
+
+   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
+   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
+      subvar.str (                  $_num_teeth                   ) = '17'                    ! $SVG_stage_01.$SVG_planet.$_num_teeth, Definition
+
+      subvar.str (                  $_prof_shift_coeff            ) = '0.802'                 ! $SVG_stage_01.$SVG_planet.$_prof_shift_coeff, Definition
+
+      subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_01.$SVG_planet.$_diam_bore, Definition
+
+      subvar.str (                  $_pin_width                   ) = '1.4*$SVG_stage_01.$_face_width' ! $SVG_stage_01.$SVG_planet.$_pin_width, Definition
+
+      subvar.str (                  $_angle                       ) = '5.25*(360deg)/$SVG_stage_01.$SVG_planet.$_num_teeth' ! $SVG_stage_01.$SVG_planet.$_angle, Definition
+
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A
+         subvar.str (               $_x                           ) = '$SVG_stage_01.$SVG_carrier.$_width/2.0' ! $SVG_stage_01.$SVG_planet.$SVG_A.$_x, Definition
+
+         subvar.str (               $_K_x                         ) = '9.1e4 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x, Definition
+
+         subvar.str (               $_K_y                         ) = '9.4e9 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y, Definition
+
+         subvar.str (               $_K_z                         ) = '3.2e9 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z, Definition
+
+         subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha, Definition
+
+         subvar.str (               $_K_beta                      ) = '1.4e6 Nm/rad'          ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta, Definition
+
+         subvar.str (               $_K_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma, Definition
+
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A
+   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
+   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
+      subvar.str (                  $_num_teeth                   ) = '56'                    ! $SVG_stage_01.$SVG_ring.$_num_teeth, Definition
+
+      subvar.str (                  $_prof_shift_coeff            ) = '0.802'                 ! $SVG_stage_01.$SVG_ring.$_prof_shift_coeff, Definition
+
+      subvar.str (                  $_diam_bore                   ) = '400.0 mm'              ! $SVG_stage_01.$SVG_ring.$_diam_bore, Definition
+
+      subvar.str (                  $_angle                       ) = '27*(180 deg)/$SVG_stage_01.$SVG_ring.$_num_teeth' ! $SVG_stage_01.$SVG_ring.$_angle, Definition
+
+   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
+   subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
+      subvar.str (                  $_diameter_in                 ) = '1.4*$SVG_stage_01.$_center_distance	' ! $SVG_stage_01.$SVG_carrier.$_diameter_in, Definition
+
+      subvar.str (                  $_diameter_out                ) = '2.6*$SVG_stage_01.$_center_distance	' ! $SVG_stage_01.$SVG_carrier.$_diameter_out, Definition
+
+      subvar.str (                  $_width                       ) = '1.2*$SVG_stage_01.$_face_width' ! $SVG_stage_01.$SVG_carrier.$_width, Definition
+
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
+         subvar.str (               $_x                           ) = '$SVG_stage_01.$SVG_carrier.$_width/2.0' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_x, Definition
+
+         subvar.str (               $_K_x                         ) = '6.6e4 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x, Definition
+
+         subvar.str (               $_K_y                         ) = '1.7e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y, Definition
+
+         subvar.str (               $_K_z                         ) = '1.1e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z, Definition
+
+         subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha, Definition
+
+         subvar.str (               $_K_beta                      ) = '5.6e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta, Definition
+
+         subvar.str (               $_K_gamma                     ) = '1.3e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma, Definition
+
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
+      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
+         subvar.str (               $_x                           ) = '$SVG_main_shaft.$_length+$SVG_stage_01.$SVG_carrier.$_width' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_x, Definition
+
+         subvar.str (               $_K_x                         ) = '6.6e7 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x, Definition
+
+         subvar.str (               $_K_y                         ) = '1.7e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y, Definition
+
+         subvar.str (               $_K_z                         ) = '1.1e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z, Definition
+
+         subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha, Definition
+
+         subvar.str (               $_K_beta                      ) = '5.6e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta, Definition
+
+         subvar.str (               $_K_gamma                     ) = '1.3e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma, Definition
+
+      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
+   subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
+
 !**********************************************************************
 ! Reference systems
 !**********************************************************************
@@ -300,10 +408,14 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 ! Bodies
 !**********************************************************************
 body.m (                            $B_bed_plate                  ) = 1.0000000000000000E+00  ! Mass of the Body
-body.mp (                           $B_bed_plate                  ) = 0                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.mp (                           $B_bed_plate                  ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
 body.I.tens (             1 ,   1 , $B_bed_plate                  ) = 1.0000000000000000E+00  ! Moments of inertia
 body.I.tens (             2 ,   2 , $B_bed_plate                  ) = 1.0000000000000000E+00  ! Moments of inertia
 body.I.tens (             3 ,   3 , $B_bed_plate                  ) = 1.0000000000000000E+00  ! Moments of inertia
+body.flx.cosim.job.type (           $B_bed_plate                  ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_bed_plate                  ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_bed_plate                  ) = ''                      ! additional command line options for the abaqus run
+body.flx.cosim.job.solver (         $B_bed_plate                  ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
 body.attr.2d.pos.x (                $B_bed_plate                  ) = -3.0000000000000000E+01
 body.attr.2d.pos.y (                $B_bed_plate                  ) = 3.0000000000000000E+01
 body.attr.2d.width (                $B_bed_plate                  ) = 1.1000000000000000E+02
@@ -329,6 +441,18 @@ marker.parent (                     $M_bed_plate_INP_B            ) = $B_bed_pla
 marker.pos (              1 ,       $M_bed_plate_INP_B            ) = $SVG_INP_B.$_x          ! Position
 marker.pos (              2 ,       $M_bed_plate_INP_B            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
 marker.pos (              3 ,       $M_bed_plate_INP_B            ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_PLC_A            ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_PLC_A            ) = $B_bed_plate            ! Body
+marker.pos (              1 ,       $M_bed_plate_PLC_A            ) = $SVG_main_shaft.$_length ! Position
+marker.pos (              2 ,       $M_bed_plate_PLC_A            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_PLC_A            ) = $_height                ! Position
+
+marker.type (                       $M_bed_plate_PLC_B            ) = 2                       ! Type
+marker.parent (                     $M_bed_plate_PLC_B            ) = $B_bed_plate            ! Body
+marker.pos (              1 ,       $M_bed_plate_PLC_B            ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_x ! Position
+marker.pos (              2 ,       $M_bed_plate_PLC_B            ) = { $SVG_bed_plate.$_width/2.0 } ! Position
+marker.pos (              3 ,       $M_bed_plate_PLC_B            ) = $_height                ! Position
 
 joint.from (                        $J_bed_plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_bed_plate                  ) = $M_bed_plate_BRF        ! To Marker
@@ -366,12 +490,12 @@ prim.ref (                          $P_bed_plate                  ) = $M_bed_pla
 prim.pos (                1 ,       $P_bed_plate                  ) = { $SVG_bed_plate.$_length/2.0 } ! Position
 prim.pos (                2 ,       $P_bed_plate                  ) = { $SVG_bed_plate.$_width/2.0 } ! Position
 prim.pos (                3 ,       $P_bed_plate                  ) = { -$SVG_bed_plate.$_thickness/2.0 } ! Position
-prim.color.r (            1 ,       $P_bed_plate                  ) = 3.0000000000000000E+01  ! Colors (red component)
-prim.color.g (            1 ,       $P_bed_plate                  ) = 1.4400000000000000E+02  ! Colors (green component)
-prim.color.b (            1 ,       $P_bed_plate                  ) = 2.5500000000000000E+02  ! Colors (blue component)
+prim.color.r (            1 ,       $P_bed_plate                  ) = 1.2800000000000000E+02  ! Colors (red component)
+prim.color.g (            1 ,       $P_bed_plate                  ) = 1.2800000000000000E+02  ! Colors (green component)
+prim.color.b (            1 ,       $P_bed_plate                  ) = 1.2800000000000000E+02  ! Colors (blue component)
 prim.color.t (            1 ,       $P_bed_plate                  ) = 0.0000000000000000E+00  ! Colors (transparency component)
 prim.transparency (                 $P_bed_plate                  ) = 2.5000000000000000E-01  ! Transparency
-prim.mp.dens.solid (                $P_bed_plate                  ) = 7.8500000000000000E+03  ! Density
+prim.mp.dens.solid (                $P_bed_plate                  ) = $SVG_material.$_rho     ! Density
 prim.par (                2 ,       $P_bed_plate                  ) = $SVG_bed_plate.$_length ! [m] Length in X
 prim.par (                3 ,       $P_bed_plate                  ) = $SVG_bed_plate.$_width  ! [m] Length in Y
 prim.par (                4 ,       $P_bed_plate                  ) = $SVG_bed_plate.$_thickness ! [m] Length in Z
@@ -441,30 +565,90 @@ body.flx.st.pos (         3 ,       $B_main_shaft                 ) = 0.00000000
 body.flx.st.pos (         4 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
 body.flx.st.pos (         5 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
 body.flx.st.pos (         6 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         7 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         8 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (         9 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        10 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        11 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        12 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        13 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        14 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        15 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        16 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        17 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
+body.flx.st.pos (        18 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Flexible position
 body.flx.st.vel (         1 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
 body.flx.st.vel (         2 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
 body.flx.st.vel (         3 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
 body.flx.st.vel (         4 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
 body.flx.st.vel (         5 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
 body.flx.st.vel (         6 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         7 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         8 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (         9 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        10 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        11 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        12 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        13 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        14 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        15 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        16 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        17 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
+body.flx.st.vel (        18 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Velocity state
 body.flx.st.dep (         1 ,       $B_main_shaft                 ) = 0                       ! State dependency
 body.flx.st.dep (         2 ,       $B_main_shaft                 ) = 0                       ! State dependency
 body.flx.st.dep (         3 ,       $B_main_shaft                 ) = 0                       ! State dependency
 body.flx.st.dep (         4 ,       $B_main_shaft                 ) = 0                       ! State dependency
 body.flx.st.dep (         5 ,       $B_main_shaft                 ) = 0                       ! State dependency
 body.flx.st.dep (         6 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         7 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         8 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (         9 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        10 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        11 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        12 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        13 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        14 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        15 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        16 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        17 ,       $B_main_shaft                 ) = 0                       ! State dependency
+body.flx.st.dep (        18 ,       $B_main_shaft                 ) = 0                       ! State dependency
 body.flx.st.scal.stiff (   1 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
 body.flx.st.scal.stiff (   2 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
 body.flx.st.scal.stiff (   3 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
 body.flx.st.scal.stiff (   4 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
 body.flx.st.scal.stiff (   5 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
 body.flx.st.scal.stiff (   6 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   7 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   8 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (   9 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  10 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  11 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  12 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  13 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  14 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  15 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  16 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  17 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
+body.flx.st.scal.stiff (  18 ,      $B_main_shaft                 ) = 1.0000000000000000E+00  ! Frequency scaling factor
 body.flx.st.prestress (   1 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
 body.flx.st.prestress (   2 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
 body.flx.st.prestress (   3 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
 body.flx.st.prestress (   4 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
 body.flx.st.prestress (   5 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
 body.flx.st.prestress (   6 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   7 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   8 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (   9 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  10 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  11 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  12 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  13 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  14 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  15 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  16 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  17 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
+body.flx.st.prestress (  18 ,       $B_main_shaft                 ) = 0.0000000000000000E+00  ! Pre-Stress Forces
 body.flx.cosim.job.type (           $B_main_shaft                 ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
 body.flx.cosim.job.previous (       $B_main_shaft                 ) = ''                      ! previous abaqus job run
 body.flx.cosim.job.cmdoptions (     $B_main_shaft                 ) = ''                      ! additional command line options for the abaqus run
@@ -492,14 +676,656 @@ joint.type (                        $J_main_shaft                 ) = 20        
 
 prim.type (                         $P_main_shaft_Flex            ) = 28                      ! Type
 prim.ref (                          $P_main_shaft_Flex            ) = $M_main_shaft_BRF       ! Reference Marker
-prim.color.r (            1 ,       $P_main_shaft_Flex            ) = 1.2800000000000000E+02  ! Colors (red component)
-prim.color.g (            1 ,       $P_main_shaft_Flex            ) = 1.2800000000000000E+02  ! Colors (green component)
-prim.color.b (            1 ,       $P_main_shaft_Flex            ) = 1.2800000000000000E+02  ! Colors (blue component)
+prim.color.r (            1 ,       $P_main_shaft_Flex            ) = 1.7490000000000001E+02  ! Colors (red component)
+prim.color.g (            1 ,       $P_main_shaft_Flex            ) = 1.0290000000000001E+02  ! Colors (green component)
+prim.color.b (            1 ,       $P_main_shaft_Flex            ) = 6.1500000000000000E+01  ! Colors (blue component)
 prim.color.t (            1 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! Colors (transparency component)
 prim.mp.incl (                      $P_main_shaft_Flex            ) = 0                       ! Include Primitive in computation
 prim.par (                3 ,       $P_main_shaft_Flex            ) = 1.0000000000000000E+00  ! [-] Deformation
 prim.par (                4 ,       $P_main_shaft_Flex            ) = 1.0000000000000000E+00  ! [-] Deformation scaling factor
+prim.par (               11 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! [-] Interpolation type
+prim.par (               12 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! [-] Num. master nodes for interpol
+prim.par (               21 ,       $P_main_shaft_Flex            ) = 0.0000000000000000E+00  ! [-] Graphics mode
 
+
+bodygroup.begin (                   $BG_stage_01                  )                           ! $BG_stage_01
+   body.m (                         $B_carrier                    ) = 1.0000000000000000E+00  ! Mass of the Body
+   body.mp (                        $B_carrier                    ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_carrier                    ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_carrier                    ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_carrier                    ) = 1.0000000000000000E+00  ! Moments of inertia
+   body.I.kind (                    $B_carrier                    ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.flx.cosim.job.type (        $B_carrier                    ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+   body.flx.cosim.job.previous (    $B_carrier                    ) = ''                      ! previous abaqus job run
+   body.flx.cosim.job.cmdoptions (  $B_carrier                    ) = ''                      ! additional command line options for the abaqus run
+   body.flx.cosim.job.solver (      $B_carrier                    ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+   marker.type (                    $M_carrier_BRF                ) = 1                       ! Type
+   marker.parent (                  $M_carrier_BRF                ) = $BG_stage_01.$B_carrier ! Body
+   marker.flx.type (                $M_carrier_BRF                ) = 4                       ! Flexible type
+
+   marker.type (                    $M_carrier_pin_01             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_01             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_01             ) = { $SVG_stage_01.$SVG_carrier.$_width/2.0 } ! Position
+   marker.pos (           2 ,       $M_carrier_pin_01             ) = $SVG_stage_01.$_center_distance ! Position
+
+   marker.type (                    $M_carrier_pin_A1             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_A1             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_A1             ) = 0.0000000000000000E+00  ! Position
+   marker.pos (           2 ,       $M_carrier_pin_A1             ) = $SVG_stage_01.$_center_distance ! Position
+
+   marker.type (                    $M_carrier_pin_B1             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_B1             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_B1             ) = $SVG_stage_01.$SVG_carrier.$_width ! Position
+   marker.pos (           2 ,       $M_carrier_pin_B1             ) = $SVG_stage_01.$_center_distance ! Position
+
+   marker.type (                    $M_carrier_pin_02             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_02             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_02             ) = { $SVG_stage_01.$SVG_carrier.$_width/2.0 } ! Position
+   marker.pos (           2 ,       $M_carrier_pin_02             ) = { $SVG_stage_01.$_center_distance*cos(120 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_02             ) = { $SVG_stage_01.$_center_distance*sin(120 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_A2             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_A2             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_A2             ) = 0.0000000000000000E+00  ! Position
+   marker.pos (           2 ,       $M_carrier_pin_A2             ) = { $SVG_stage_01.$_center_distance*cos(120 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_A2             ) = { $SVG_stage_01.$_center_distance*sin(120 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_B2             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_B2             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_B2             ) = $SVG_stage_01.$SVG_carrier.$_width ! Position
+   marker.pos (           2 ,       $M_carrier_pin_B2             ) = { $SVG_stage_01.$_center_distance*cos(120 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_B2             ) = { $SVG_stage_01.$_center_distance*sin(120 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_03             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_03             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_03             ) = { $SVG_stage_01.$SVG_carrier.$_width/2.0 } ! Position
+   marker.pos (           2 ,       $M_carrier_pin_03             ) = { $SVG_stage_01.$_center_distance*cos(240 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_03             ) = { $SVG_stage_01.$_center_distance*sin(240 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_A3             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_A3             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_A3             ) = 0.0000000000000000E+00  ! Position
+   marker.pos (           2 ,       $M_carrier_pin_A3             ) = { $SVG_stage_01.$_center_distance*cos(240 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_A3             ) = { $SVG_stage_01.$_center_distance*sin(240 deg) } ! Position
+
+   marker.type (                    $M_carrier_pin_B3             ) = 2                       ! Type
+   marker.parent (                  $M_carrier_pin_B3             ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_pin_B3             ) = $SVG_stage_01.$SVG_carrier.$_width ! Position
+   marker.pos (           2 ,       $M_carrier_pin_B3             ) = { $SVG_stage_01.$_center_distance*cos(240 deg) } ! Position
+   marker.pos (           3 ,       $M_carrier_pin_B3             ) = { $SVG_stage_01.$_center_distance*sin(240 deg) } ! Position
+
+   marker.type (                    $M_carrier_PLC_A              ) = 2                       ! Type
+   marker.parent (                  $M_carrier_PLC_A              ) = $BG_stage_01.$B_carrier ! Body
+
+   marker.type (                    $M_carrier_PLC_B              ) = 2                       ! Type
+   marker.parent (                  $M_carrier_PLC_B              ) = $BG_stage_01.$B_carrier ! Body
+   marker.pos (           1 ,       $M_carrier_PLC_B              ) = $SVG_stage_01.$SVG_carrier.$_width ! Position
+
+   joint.from (                     $J_carrier                    ) = $M_main_shaft_carrier   ! From Marker
+   joint.to (                       $J_carrier                    ) = $BG_stage_01.$M_carrier_BRF ! To Marker
+   joint.type (                     $J_carrier                    ) = 0                       ! Type
+   joint.par (            1 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+   joint.par (            2 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+   joint.par (            3 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+   joint.par (            4 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [m] Translation in x
+   joint.par (            5 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [m] Translation in y
+   joint.par (            6 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [m] Translation in z
+   joint.par (            7 ,       $J_carrier                    ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+   prim.type (                      $P_carrier                    ) = 2                       ! Type
+   prim.ref (                       $P_carrier                    ) = $BG_stage_01.$M_carrier_BRF ! Reference Marker
+   prim.pos (             1 ,       $P_carrier                    ) = { $SVG_stage_01.$SVG_carrier.$_width/2.0 } ! Position
+   prim.pos (             3 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Position
+   prim.ang (             3 ,       $P_carrier                    ) = { 90 deg }              ! Angles
+   prim.color.r (         1 ,       $P_carrier                    ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.r (         2 ,       $P_carrier                    ) = 2.5500000000000000E+02  ! Colors (red component)
+   prim.color.g (         1 ,       $P_carrier                    ) = 1.3980000000000001E+02  ! Colors (green component)
+   prim.color.g (         2 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Colors (green component)
+   prim.color.b (         1 ,       $P_carrier                    ) = 2.5500000000000000E+01  ! Colors (blue component)
+   prim.color.b (         2 ,       $P_carrier                    ) = 2.5500000000000000E+02  ! Colors (blue component)
+   prim.color.t (         1 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_carrier                    ) = $SVG_material.$_rho     ! Density
+   prim.par (             2 ,       $P_carrier                    ) = $SVG_stage_01.$SVG_carrier.$_width ! [m] Height
+   prim.par (             3 ,       $P_carrier                    ) = $SVG_stage_01.$SVG_carrier.$_diameter_out ! [m] Outer diameter
+   prim.par (             4 ,       $P_carrier                    ) = $SVG_stage_01.$SVG_carrier.$_diameter_in ! [m] Inner diameter
+   prim.par (             5 ,       $P_carrier                    ) = $SVG_stage_01.$SVG_ring.$_num_teeth ! [-] Number of planes
+   prim.par (             6 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Number of highlighted planes
+   prim.par (             7 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Show bottom cap
+   prim.par (             8 ,       $P_carrier                    ) = 1.0000000000000000E+00  ! [-] Show top cap
+   prim.par (             9 ,       $P_carrier                    ) = 0.0000000000000000E+00  ! [rad] Start angle
+
+
+   bodygroup.begin (                $BG_planet_01                 )                           ! $BG_stage_01.$BG_planet_01
+      body.m (                      $B_pin                        ) = 1.0000000000000000E+00  ! Mass of the Body
+      body.mp (                     $B_pin                        ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+      body.I.tens (       1 ,   1 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       2 ,   2 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       3 ,   3 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.kind (                 $B_pin                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+      body.flx.cosim.job.type (     $B_pin                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+      body.flx.cosim.job.previous ( $B_pin                        ) = ''                      ! previous abaqus job run
+      body.flx.cosim.job.cmdoptions ( $B_pin                      ) = ''                      ! additional command line options for the abaqus run
+      body.flx.cosim.job.solver (   $B_pin                        ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+      marker.type (                 $M_pin_BRF                    ) = 1                       ! Type
+      marker.parent (               $M_pin_BRF                    ) = $BG_stage_01.$BG_planet_01.$B_pin ! Body
+      marker.flx.type (             $M_pin_BRF                    ) = 4                       ! Flexible type
+
+      marker.type (                 $M_pin_A                      ) = 2                       ! Type
+      marker.parent (               $M_pin_A                      ) = $BG_stage_01.$BG_planet_01.$B_pin ! Body
+      marker.pos (        1 ,       $M_pin_A                      ) = { -$SVG_stage_01.$SVG_planet.$SVG_A.$_x } ! Position
+
+      marker.type (                 $M_pin_B                      ) = 2                       ! Type
+      marker.parent (               $M_pin_B                      ) = $BG_stage_01.$BG_planet_01.$B_pin ! Body
+      marker.pos (        1 ,       $M_pin_B                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_x ! Position
+
+      joint.from (                  $J_pin                        ) = $BG_stage_01.$M_carrier_pin_01 ! From Marker
+      joint.to (                    $J_pin                        ) = $BG_stage_01.$BG_planet_01.$M_pin_BRF ! To Marker
+      joint.type (                  $J_pin                        ) = 20                      ! Type
+
+      prim.type (                   $P_pin                        ) = 2                       ! Type
+      prim.ref (                    $P_pin                        ) = $BG_stage_01.$BG_planet_01.$M_pin_BRF ! Reference Marker
+      prim.ang (          3 ,       $P_pin                        ) = { 90 deg }              ! Angles
+      prim.color.r (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (red component)
+      prim.color.r (      2 ,       $P_pin                        ) = 2.5500000000000000E+02  ! Colors (red component)
+      prim.color.g (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (green component)
+      prim.color.g (      2 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (green component)
+      prim.color.b (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (blue component)
+      prim.color.b (      2 ,       $P_pin                        ) = 2.5500000000000000E+02  ! Colors (blue component)
+      prim.color.t (      1 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.color.t (      2 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.mp.dens.solid (          $P_pin                        ) = $SVG_material.$_rho     ! Density
+      prim.par (          2 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_pin_width ! [m] Height
+      prim.par (          3 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_diam_bore ! [m] Outer diameter
+      prim.par (          4 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [m] Inner diameter
+      prim.par (          5 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of planes
+      prim.par (          6 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Number of highlighted planes
+      prim.par (          7 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Show bottom cap
+      prim.par (          8 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Show top cap
+      prim.par (          9 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [rad] Start angle
+      prim.par (         10 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [rad] Delta angle
+      prim.par (         11 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [-] Close geometry with
+
+
+      body.m (                      $B_planet                     ) = 1.0000000000000000E+00  ! Mass of the Body
+      body.mp (                     $B_planet                     ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+      body.I.tens (       1 ,   1 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       2 ,   2 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       3 ,   3 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.kind (                 $B_planet                     ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+      body.flx.cosim.job.type (     $B_planet                     ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+      body.flx.cosim.job.previous ( $B_planet                     ) = ''                      ! previous abaqus job run
+      body.flx.cosim.job.cmdoptions ( $B_planet                   ) = ''                      ! additional command line options for the abaqus run
+      body.flx.cosim.job.solver (   $B_planet                     ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+      marker.type (                 $M_planet_BRF                 ) = 1                       ! Type
+      marker.parent (               $M_planet_BRF                 ) = $BG_stage_01.$BG_planet_01.$B_planet ! Body
+      marker.flx.type (             $M_planet_BRF                 ) = 4                       ! Flexible type
+
+      marker.type (                 $M_planet_rot                 ) = 2                       ! Type
+      marker.parent (               $M_planet_rot                 ) = $BG_stage_01.$BG_planet_01.$B_planet ! Body
+      marker.ang (        2 ,       $M_planet_rot                 ) = { 90 deg }              ! Angles
+
+      joint.from (                  $J_planet                     ) = $BG_stage_01.$BG_planet_01.$M_pin_BRF ! From Marker
+      joint.to (                    $J_planet                     ) = $BG_stage_01.$BG_planet_01.$M_planet_BRF ! To Marker
+      joint.type (                  $J_planet                     ) = 0                       ! Type
+      joint.par (         1 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+      joint.par (         2 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+      joint.par (         3 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+      joint.par (         4 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in x
+      joint.par (         5 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in y
+      joint.par (         6 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in z
+      joint.par (         7 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+      prim.type (                   $P_planet                     ) = 25                      ! Type
+      prim.ref (                    $P_planet                     ) = $BG_stage_01.$BG_planet_01.$M_planet_rot ! Reference Marker
+      prim.color.r (      1 ,       $P_planet                     ) = 7.5000000000000000E+01  ! Colors (red component)
+      prim.color.r (      2 ,       $P_planet                     ) = 2.5500000000000000E+02  ! Colors (red component)
+      prim.color.g (      1 ,       $P_planet                     ) = 1.3890000000000001E+02  ! Colors (green component)
+      prim.color.g (      2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (green component)
+      prim.color.b (      1 ,       $P_planet                     ) = 1.9109999999999999E+02  ! Colors (blue component)
+      prim.color.b (      2 ,       $P_planet                     ) = 2.5500000000000000E+02  ! Colors (blue component)
+      prim.color.t (      1 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.color.t (      2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.mp.dens.solid (          $P_planet                     ) = $SVG_material.$_rho     ! Density
+      prim.par (          2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Profile Definition Parameters
+      prim.par (          2 ,   1 , $P_planet                     ) = 3.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   2 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_angle ! [rad] Initial gear angle
+      prim.par (          2 ,   3 ,   1 , $P_planet               ) = $SVG_stage_01.$_normal_module ! [m] Normal module
+      prim.par (          2 ,   3 ,   2 , $P_planet               ) = $SVG_stage_01.$_pressure_angle ! [rad] Normal pressure angle
+      prim.par (          2 ,   3 ,   3 , $P_planet               ) = $SVG_stage_01.$SVG_planet.$_prof_shift_coeff ! [-] Shift factor
+      prim.par (          2 ,   3 ,   4 , $P_planet               ) = $SVG_stage_01.$_helix_angle ! [rad] Helix angle
+      prim.par (          2 ,   3 ,   5 , $P_planet               ) = 0.0000000000000000E+00  ! [rad] Bevel angle
+      prim.par (          2 ,   3 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   3 ,   6 ,   2 , $P_planet         ) = $_addendum_coeff        ! [-] Addendum value
+      prim.par (          2 ,   3 ,   6 ,   3 , $P_planet         ) = $_dedendum_coeff        ! [-] Dedendum value
+      prim.par (          2 ,   3 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   3 ,   7 ,   2 , $P_planet         ) = 8.0000000000000002E-03  ! [-] Value
+      prim.par (          2 ,   3 ,   8 , $P_planet               ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of teeth
+      prim.par (          2 ,   3 ,   9 , $P_planet               ) = $SVG_stage_01.$_face_width ! [m] Flank width
+      prim.par (          2 ,   4 ,   1 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Method
+      prim.par (          2 ,   4 ,   1 ,   2 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Manufacturing process
+      prim.par (          2 ,   4 ,   1 ,   3 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Shaft angle
+      prim.par (          2 ,   4 ,   1 ,   5 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Number of teeth (pinion)
+      prim.par (          2 ,   4 ,   1 ,   6 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Number of teeth (wheel)
+      prim.par (          2 ,   4 ,   1 ,   8 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Outer pitch diameter of wheel
+      prim.par (          2 ,   4 ,   1 ,   9 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Wheel face width
+      prim.par (          2 ,   4 ,   1 ,  11 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Mean spiral angle of wheel
+      prim.par (          2 ,   4 ,   1 ,  12 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Cutter radius
+      prim.par (          2 ,   4 ,   2 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   4 ,   2 ,   2 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (drive side)
+      prim.par (          2 ,   4 ,   2 ,   3 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (coast side)
+      prim.par (          2 ,   4 ,   2 ,   5 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Profile shift coefficient
+      prim.par (          2 ,   4 ,   2 ,   6 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Crown gear addendum factor
+      prim.par (          2 ,   4 ,   2 ,   7 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Crown gear dedendum factor
+      prim.par (          2 ,   4 ,   2 ,   8 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Thickness modification coeff.
+      prim.par (          2 ,   4 ,   2 ,  13 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Backlash
+      prim.par (          2 ,   4 ,   2 ,  13 ,   1 , $P_planet   ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   4 ,   2 ,  13 ,   2 , $P_planet   ) = 0.0000000000000000E+00  ! [m] Value
+      prim.par (          2 ,   4 ,   2 ,  14 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Addendum angle of wheel
+      prim.par (          2 ,   4 ,   2 ,  15 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Dedendum angle of wheel
+      prim.par (          3 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Graphical representation
+      prim.par (          3 ,   1 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_diam_bore ! [m] Bore Diameter
+      prim.par (          3 ,   3 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of visible teeth
+      prim.par (          3 ,   4 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Number of highlighted teeth
+      prim.par (          3 ,   5 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Tip discretisation
+      prim.par (          3 ,   6 , $P_planet                     ) = 1.5000000000000000E+01  ! [-] Flank discretisation
+      prim.par (          3 ,   7 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Root discretisation
+      prim.par (          3 ,   8 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Face discretisation
+      prim.par (          3 ,   9 , $P_planet                     ) = 0.0000000000000000E+00  ! [-] Bore discretisation per tooth
+      prim.par (          4 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Profile modification
+      prim.par (          4 ,   1 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Scale factor
+      prim.par (          4 ,   2 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   3 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   4 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   5 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   8 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   9 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,  10 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,  11 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   3 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   4 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   5 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   8 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   9 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,  10 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,  11 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   4 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [m] Circular mod. amount
+      prim.par (          4 ,   4 ,   2 , $P_planet               ) = 0.0000000000000000E+00  ! [m] Lead crowning amount
+      prim.par (          5 ,   1 , $P_planet                     ) = 0.0000000000000000E+00  ! [-] Type
+      prim.plot.par (     1 ,       $P_planet                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 , $P_planet               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   1 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   2 , $P_planet         ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   3 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   4 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   5 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   6 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   2 ,   1 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+
+   bodygroup.end (                  $BG_planet_01                 )                           ! $BG_stage_01.$BG_planet_01
+   bodygroup.begin (                $BG_planet_02                 )                           ! $BG_stage_01.$BG_planet_02
+      body.m (                      $B_pin                        ) = 1.0000000000000000E+00  ! Mass of the Body
+      body.mp (                     $B_pin                        ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+      body.I.tens (       1 ,   1 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       2 ,   2 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       3 ,   3 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.kind (                 $B_pin                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+      body.flx.cosim.job.type (     $B_pin                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+      body.flx.cosim.job.previous ( $B_pin                        ) = ''                      ! previous abaqus job run
+      body.flx.cosim.job.cmdoptions ( $B_pin                      ) = ''                      ! additional command line options for the abaqus run
+      body.flx.cosim.job.solver (   $B_pin                        ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+      marker.type (                 $M_pin_BRF                    ) = 1                       ! Type
+      marker.parent (               $M_pin_BRF                    ) = $BG_stage_01.$BG_planet_02.$B_pin ! Body
+      marker.flx.type (             $M_pin_BRF                    ) = 4                       ! Flexible type
+
+      marker.type (                 $M_pin_A                      ) = 2                       ! Type
+      marker.parent (               $M_pin_A                      ) = $BG_stage_01.$BG_planet_02.$B_pin ! Body
+      marker.pos (        1 ,       $M_pin_A                      ) = { -$SVG_stage_01.$SVG_planet.$SVG_A.$_x } ! Position
+
+      marker.type (                 $M_pin_B                      ) = 2                       ! Type
+      marker.parent (               $M_pin_B                      ) = $BG_stage_01.$BG_planet_02.$B_pin ! Body
+      marker.pos (        1 ,       $M_pin_B                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_x ! Position
+
+      joint.from (                  $J_pin                        ) = $BG_stage_01.$M_carrier_pin_02 ! From Marker
+      joint.to (                    $J_pin                        ) = $BG_stage_01.$BG_planet_02.$M_pin_BRF ! To Marker
+      joint.type (                  $J_pin                        ) = 20                      ! Type
+
+      prim.type (                   $P_pin                        ) = 2                       ! Type
+      prim.ref (                    $P_pin                        ) = $BG_stage_01.$BG_planet_02.$M_pin_BRF ! Reference Marker
+      prim.ang (          3 ,       $P_pin                        ) = { 90 deg }              ! Angles
+      prim.color.r (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (red component)
+      prim.color.r (      2 ,       $P_pin                        ) = 2.5500000000000000E+02  ! Colors (red component)
+      prim.color.g (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (green component)
+      prim.color.g (      2 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (green component)
+      prim.color.b (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (blue component)
+      prim.color.b (      2 ,       $P_pin                        ) = 2.5500000000000000E+02  ! Colors (blue component)
+      prim.color.t (      1 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.color.t (      2 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.mp.dens.solid (          $P_pin                        ) = $SVG_material.$_rho     ! Density
+      prim.par (          2 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_pin_width ! [m] Height
+      prim.par (          3 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_diam_bore ! [m] Outer diameter
+      prim.par (          4 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [m] Inner diameter
+      prim.par (          5 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of planes
+      prim.par (          6 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Number of highlighted planes
+      prim.par (          7 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Show bottom cap
+      prim.par (          8 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Show top cap
+      prim.par (          9 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [rad] Start angle
+      prim.par (         10 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [rad] Delta angle
+      prim.par (         11 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [-] Close geometry with
+
+
+      body.m (                      $B_planet                     ) = 1.0000000000000000E+00  ! Mass of the Body
+      body.mp (                     $B_planet                     ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+      body.I.tens (       1 ,   1 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       2 ,   2 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       3 ,   3 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.kind (                 $B_planet                     ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+      body.flx.cosim.job.type (     $B_planet                     ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+      body.flx.cosim.job.previous ( $B_planet                     ) = ''                      ! previous abaqus job run
+      body.flx.cosim.job.cmdoptions ( $B_planet                   ) = ''                      ! additional command line options for the abaqus run
+      body.flx.cosim.job.solver (   $B_planet                     ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+      marker.type (                 $M_planet_BRF                 ) = 1                       ! Type
+      marker.parent (               $M_planet_BRF                 ) = $BG_stage_01.$BG_planet_02.$B_planet ! Body
+      marker.flx.type (             $M_planet_BRF                 ) = 4                       ! Flexible type
+
+      marker.type (                 $M_planet_rot                 ) = 2                       ! Type
+      marker.parent (               $M_planet_rot                 ) = $BG_stage_01.$BG_planet_02.$B_planet ! Body
+      marker.ang (        2 ,       $M_planet_rot                 ) = { 90 deg }              ! Angles
+
+      joint.from (                  $J_planet                     ) = $BG_stage_01.$BG_planet_02.$M_pin_BRF ! From Marker
+      joint.to (                    $J_planet                     ) = $BG_stage_01.$BG_planet_02.$M_planet_BRF ! To Marker
+      joint.type (                  $J_planet                     ) = 0                       ! Type
+      joint.par (         1 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+      joint.par (         2 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+      joint.par (         3 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+      joint.par (         4 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in x
+      joint.par (         5 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in y
+      joint.par (         6 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in z
+      joint.par (         7 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+      prim.type (                   $P_planet                     ) = 25                      ! Type
+      prim.ref (                    $P_planet                     ) = $BG_stage_01.$BG_planet_02.$M_planet_rot ! Reference Marker
+      prim.color.r (      1 ,       $P_planet                     ) = 7.5000000000000000E+01  ! Colors (red component)
+      prim.color.r (      2 ,       $P_planet                     ) = 2.5500000000000000E+02  ! Colors (red component)
+      prim.color.g (      1 ,       $P_planet                     ) = 1.3890000000000001E+02  ! Colors (green component)
+      prim.color.g (      2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (green component)
+      prim.color.b (      1 ,       $P_planet                     ) = 1.9109999999999999E+02  ! Colors (blue component)
+      prim.color.b (      2 ,       $P_planet                     ) = 2.5500000000000000E+02  ! Colors (blue component)
+      prim.color.t (      1 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.color.t (      2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.mp.dens.solid (          $P_planet                     ) = $SVG_material.$_rho     ! Density
+      prim.par (          2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Profile Definition Parameters
+      prim.par (          2 ,   1 , $P_planet                     ) = 3.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   2 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_angle ! [rad] Initial gear angle
+      prim.par (          2 ,   3 ,   1 , $P_planet               ) = $SVG_stage_01.$_normal_module ! [m] Normal module
+      prim.par (          2 ,   3 ,   2 , $P_planet               ) = $SVG_stage_01.$_pressure_angle ! [rad] Normal pressure angle
+      prim.par (          2 ,   3 ,   3 , $P_planet               ) = $SVG_stage_01.$SVG_planet.$_prof_shift_coeff ! [-] Shift factor
+      prim.par (          2 ,   3 ,   4 , $P_planet               ) = $SVG_stage_01.$_helix_angle ! [rad] Helix angle
+      prim.par (          2 ,   3 ,   5 , $P_planet               ) = 0.0000000000000000E+00  ! [rad] Bevel angle
+      prim.par (          2 ,   3 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   3 ,   6 ,   2 , $P_planet         ) = $_addendum_coeff        ! [-] Addendum value
+      prim.par (          2 ,   3 ,   6 ,   3 , $P_planet         ) = $_dedendum_coeff        ! [-] Dedendum value
+      prim.par (          2 ,   3 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   3 ,   7 ,   2 , $P_planet         ) = 8.0000000000000002E-03  ! [-] Value
+      prim.par (          2 ,   3 ,   8 , $P_planet               ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of teeth
+      prim.par (          2 ,   3 ,   9 , $P_planet               ) = $SVG_stage_01.$_face_width ! [m] Flank width
+      prim.par (          2 ,   4 ,   1 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Method
+      prim.par (          2 ,   4 ,   1 ,   2 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Manufacturing process
+      prim.par (          2 ,   4 ,   1 ,   3 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Shaft angle
+      prim.par (          2 ,   4 ,   1 ,   5 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Number of teeth (pinion)
+      prim.par (          2 ,   4 ,   1 ,   6 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Number of teeth (wheel)
+      prim.par (          2 ,   4 ,   1 ,   8 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Outer pitch diameter of wheel
+      prim.par (          2 ,   4 ,   1 ,   9 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Wheel face width
+      prim.par (          2 ,   4 ,   1 ,  11 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Mean spiral angle of wheel
+      prim.par (          2 ,   4 ,   1 ,  12 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Cutter radius
+      prim.par (          2 ,   4 ,   2 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   4 ,   2 ,   2 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (drive side)
+      prim.par (          2 ,   4 ,   2 ,   3 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (coast side)
+      prim.par (          2 ,   4 ,   2 ,   5 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Profile shift coefficient
+      prim.par (          2 ,   4 ,   2 ,   6 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Crown gear addendum factor
+      prim.par (          2 ,   4 ,   2 ,   7 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Crown gear dedendum factor
+      prim.par (          2 ,   4 ,   2 ,   8 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Thickness modification coeff.
+      prim.par (          2 ,   4 ,   2 ,  13 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Backlash
+      prim.par (          2 ,   4 ,   2 ,  13 ,   1 , $P_planet   ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   4 ,   2 ,  13 ,   2 , $P_planet   ) = 0.0000000000000000E+00  ! [m] Value
+      prim.par (          2 ,   4 ,   2 ,  14 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Addendum angle of wheel
+      prim.par (          2 ,   4 ,   2 ,  15 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Dedendum angle of wheel
+      prim.par (          3 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Graphical representation
+      prim.par (          3 ,   1 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_diam_bore ! [m] Bore Diameter
+      prim.par (          3 ,   3 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of visible teeth
+      prim.par (          3 ,   4 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Number of highlighted teeth
+      prim.par (          3 ,   5 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Tip discretisation
+      prim.par (          3 ,   6 , $P_planet                     ) = 1.5000000000000000E+01  ! [-] Flank discretisation
+      prim.par (          3 ,   7 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Root discretisation
+      prim.par (          3 ,   8 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Face discretisation
+      prim.par (          3 ,   9 , $P_planet                     ) = 0.0000000000000000E+00  ! [-] Bore discretisation per tooth
+      prim.par (          4 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Profile modification
+      prim.par (          4 ,   1 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Scale factor
+      prim.par (          4 ,   2 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   3 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   4 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   5 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   8 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   9 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,  10 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,  11 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   3 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   4 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   5 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   8 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   9 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,  10 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,  11 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   4 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [m] Circular mod. amount
+      prim.par (          4 ,   4 ,   2 , $P_planet               ) = 0.0000000000000000E+00  ! [m] Lead crowning amount
+      prim.par (          5 ,   1 , $P_planet                     ) = 0.0000000000000000E+00  ! [-] Type
+      prim.plot.par (     1 ,       $P_planet                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 , $P_planet               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   1 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   2 , $P_planet         ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   3 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   4 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   5 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   6 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   2 ,   1 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+
+   bodygroup.end (                  $BG_planet_02                 )                           ! $BG_stage_01.$BG_planet_02
+   bodygroup.begin (                $BG_planet_03                 )                           ! $BG_stage_01.$BG_planet_03
+      body.m (                      $B_pin                        ) = 1.0000000000000000E+00  ! Mass of the Body
+      body.mp (                     $B_pin                        ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+      body.I.tens (       1 ,   1 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       2 ,   2 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       3 ,   3 , $B_pin                        ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.kind (                 $B_pin                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+      body.flx.cosim.job.type (     $B_pin                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+      body.flx.cosim.job.previous ( $B_pin                        ) = ''                      ! previous abaqus job run
+      body.flx.cosim.job.cmdoptions ( $B_pin                      ) = ''                      ! additional command line options for the abaqus run
+      body.flx.cosim.job.solver (   $B_pin                        ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+      marker.type (                 $M_pin_BRF                    ) = 1                       ! Type
+      marker.parent (               $M_pin_BRF                    ) = $BG_stage_01.$BG_planet_03.$B_pin ! Body
+      marker.flx.type (             $M_pin_BRF                    ) = 4                       ! Flexible type
+
+      marker.type (                 $M_pin_A                      ) = 2                       ! Type
+      marker.parent (               $M_pin_A                      ) = $BG_stage_01.$BG_planet_03.$B_pin ! Body
+      marker.pos (        1 ,       $M_pin_A                      ) = { -$SVG_stage_01.$SVG_planet.$SVG_A.$_x } ! Position
+
+      marker.type (                 $M_pin_B                      ) = 2                       ! Type
+      marker.parent (               $M_pin_B                      ) = $BG_stage_01.$BG_planet_03.$B_pin ! Body
+      marker.pos (        1 ,       $M_pin_B                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_x ! Position
+
+      joint.from (                  $J_pin                        ) = $BG_stage_01.$M_carrier_pin_03 ! From Marker
+      joint.to (                    $J_pin                        ) = $BG_stage_01.$BG_planet_03.$M_pin_BRF ! To Marker
+      joint.type (                  $J_pin                        ) = 20                      ! Type
+
+      prim.type (                   $P_pin                        ) = 2                       ! Type
+      prim.ref (                    $P_pin                        ) = $BG_stage_01.$BG_planet_03.$M_pin_BRF ! Reference Marker
+      prim.ang (          3 ,       $P_pin                        ) = { 90 deg }              ! Angles
+      prim.color.r (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (red component)
+      prim.color.r (      2 ,       $P_pin                        ) = 2.5500000000000000E+02  ! Colors (red component)
+      prim.color.g (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (green component)
+      prim.color.g (      2 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (green component)
+      prim.color.b (      1 ,       $P_pin                        ) = 1.2800000000000000E+02  ! Colors (blue component)
+      prim.color.b (      2 ,       $P_pin                        ) = 2.5500000000000000E+02  ! Colors (blue component)
+      prim.color.t (      1 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.color.t (      2 ,       $P_pin                        ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.mp.dens.solid (          $P_pin                        ) = $SVG_material.$_rho     ! Density
+      prim.par (          2 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_pin_width ! [m] Height
+      prim.par (          3 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_diam_bore ! [m] Outer diameter
+      prim.par (          4 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [m] Inner diameter
+      prim.par (          5 ,       $P_pin                        ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of planes
+      prim.par (          6 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Number of highlighted planes
+      prim.par (          7 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Show bottom cap
+      prim.par (          8 ,       $P_pin                        ) = 1.0000000000000000E+00  ! [-] Show top cap
+      prim.par (          9 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [rad] Start angle
+      prim.par (         10 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [rad] Delta angle
+      prim.par (         11 ,       $P_pin                        ) = 0.0000000000000000E+00  ! [-] Close geometry with
+
+
+      body.m (                      $B_planet                     ) = 1.0000000000000000E+00  ! Mass of the Body
+      body.mp (                     $B_planet                     ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+      body.I.tens (       1 ,   1 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       2 ,   2 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.tens (       3 ,   3 , $B_planet                     ) = 1.0000000000000000E+00  ! Moments of inertia
+      body.I.kind (                 $B_planet                     ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+      body.flx.cosim.job.type (     $B_planet                     ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+      body.flx.cosim.job.previous ( $B_planet                     ) = ''                      ! previous abaqus job run
+      body.flx.cosim.job.cmdoptions ( $B_planet                   ) = ''                      ! additional command line options for the abaqus run
+      body.flx.cosim.job.solver (   $B_planet                     ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+
+      marker.type (                 $M_planet_BRF                 ) = 1                       ! Type
+      marker.parent (               $M_planet_BRF                 ) = $BG_stage_01.$BG_planet_03.$B_planet ! Body
+      marker.flx.type (             $M_planet_BRF                 ) = 4                       ! Flexible type
+
+      marker.type (                 $M_planet_rot                 ) = 2                       ! Type
+      marker.parent (               $M_planet_rot                 ) = $BG_stage_01.$BG_planet_03.$B_planet ! Body
+      marker.ang (        2 ,       $M_planet_rot                 ) = { 90 deg }              ! Angles
+
+      joint.from (                  $J_planet                     ) = $BG_stage_01.$BG_planet_03.$M_pin_BRF ! From Marker
+      joint.to (                    $J_planet                     ) = $BG_stage_01.$BG_planet_03.$M_planet_BRF ! To Marker
+      joint.type (                  $J_planet                     ) = 0                       ! Type
+      joint.par (         1 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about alpha
+      joint.par (         2 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about beta
+      joint.par (         3 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [rad] Rotation about gamma
+      joint.par (         4 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in x
+      joint.par (         5 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in y
+      joint.par (         6 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [m] Translation in z
+      joint.par (         7 ,       $J_planet                     ) = 0.0000000000000000E+00  ! [-] Rotation sequence
+
+      prim.type (                   $P_planet                     ) = 25                      ! Type
+      prim.ref (                    $P_planet                     ) = $BG_stage_01.$BG_planet_03.$M_planet_rot ! Reference Marker
+      prim.color.r (      1 ,       $P_planet                     ) = 7.5000000000000000E+01  ! Colors (red component)
+      prim.color.r (      2 ,       $P_planet                     ) = 2.5500000000000000E+02  ! Colors (red component)
+      prim.color.g (      1 ,       $P_planet                     ) = 1.3890000000000001E+02  ! Colors (green component)
+      prim.color.g (      2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (green component)
+      prim.color.b (      1 ,       $P_planet                     ) = 1.9109999999999999E+02  ! Colors (blue component)
+      prim.color.b (      2 ,       $P_planet                     ) = 2.5500000000000000E+02  ! Colors (blue component)
+      prim.color.t (      1 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.color.t (      2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! Colors (transparency component)
+      prim.mp.dens.solid (          $P_planet                     ) = $SVG_material.$_rho     ! Density
+      prim.par (          2 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Profile Definition Parameters
+      prim.par (          2 ,   1 , $P_planet                     ) = 3.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   2 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_angle ! [rad] Initial gear angle
+      prim.par (          2 ,   3 ,   1 , $P_planet               ) = $SVG_stage_01.$_normal_module ! [m] Normal module
+      prim.par (          2 ,   3 ,   2 , $P_planet               ) = $SVG_stage_01.$_pressure_angle ! [rad] Normal pressure angle
+      prim.par (          2 ,   3 ,   3 , $P_planet               ) = $SVG_stage_01.$SVG_planet.$_prof_shift_coeff ! [-] Shift factor
+      prim.par (          2 ,   3 ,   4 , $P_planet               ) = $SVG_stage_01.$_helix_angle ! [rad] Helix angle
+      prim.par (          2 ,   3 ,   5 , $P_planet               ) = 0.0000000000000000E+00  ! [rad] Bevel angle
+      prim.par (          2 ,   3 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   3 ,   6 ,   2 , $P_planet         ) = $_addendum_coeff        ! [-] Addendum value
+      prim.par (          2 ,   3 ,   6 ,   3 , $P_planet         ) = $_dedendum_coeff        ! [-] Dedendum value
+      prim.par (          2 ,   3 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   3 ,   7 ,   2 , $P_planet         ) = 8.0000000000000002E-03  ! [-] Value
+      prim.par (          2 ,   3 ,   8 , $P_planet               ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of teeth
+      prim.par (          2 ,   3 ,   9 , $P_planet               ) = $SVG_stage_01.$_face_width ! [m] Flank width
+      prim.par (          2 ,   4 ,   1 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Method
+      prim.par (          2 ,   4 ,   1 ,   2 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Manufacturing process
+      prim.par (          2 ,   4 ,   1 ,   3 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Shaft angle
+      prim.par (          2 ,   4 ,   1 ,   5 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Number of teeth (pinion)
+      prim.par (          2 ,   4 ,   1 ,   6 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Number of teeth (wheel)
+      prim.par (          2 ,   4 ,   1 ,   8 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Outer pitch diameter of wheel
+      prim.par (          2 ,   4 ,   1 ,   9 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Wheel face width
+      prim.par (          2 ,   4 ,   1 ,  11 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Mean spiral angle of wheel
+      prim.par (          2 ,   4 ,   1 ,  12 , $P_planet         ) = 0.0000000000000000E+00  ! [m] Cutter radius
+      prim.par (          2 ,   4 ,   2 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   4 ,   2 ,   2 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (drive side)
+      prim.par (          2 ,   4 ,   2 ,   3 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Nom. pres. angle (coast side)
+      prim.par (          2 ,   4 ,   2 ,   5 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Profile shift coefficient
+      prim.par (          2 ,   4 ,   2 ,   6 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Crown gear addendum factor
+      prim.par (          2 ,   4 ,   2 ,   7 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Crown gear dedendum factor
+      prim.par (          2 ,   4 ,   2 ,   8 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Thickness modification coeff.
+      prim.par (          2 ,   4 ,   2 ,  13 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Backlash
+      prim.par (          2 ,   4 ,   2 ,  13 ,   1 , $P_planet   ) = 0.0000000000000000E+00  ! [-] Type
+      prim.par (          2 ,   4 ,   2 ,  13 ,   2 , $P_planet   ) = 0.0000000000000000E+00  ! [m] Value
+      prim.par (          2 ,   4 ,   2 ,  14 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Addendum angle of wheel
+      prim.par (          2 ,   4 ,   2 ,  15 , $P_planet         ) = 0.0000000000000000E+00  ! [rad] Dedendum angle of wheel
+      prim.par (          3 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Graphical representation
+      prim.par (          3 ,   1 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_diam_bore ! [m] Bore Diameter
+      prim.par (          3 ,   3 , $P_planet                     ) = $SVG_stage_01.$SVG_planet.$_num_teeth ! [-] Number of visible teeth
+      prim.par (          3 ,   4 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Number of highlighted teeth
+      prim.par (          3 ,   5 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Tip discretisation
+      prim.par (          3 ,   6 , $P_planet                     ) = 1.5000000000000000E+01  ! [-] Flank discretisation
+      prim.par (          3 ,   7 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Root discretisation
+      prim.par (          3 ,   8 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Face discretisation
+      prim.par (          3 ,   9 , $P_planet                     ) = 0.0000000000000000E+00  ! [-] Bore discretisation per tooth
+      prim.par (          4 ,       $P_planet                     ) = 0.0000000000000000E+00  ! [-] Profile modification
+      prim.par (          4 ,   1 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Scale factor
+      prim.par (          4 ,   2 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   3 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   4 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   5 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   8 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,   9 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,  10 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   2 ,  11 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   3 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   4 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   5 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   6 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   7 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   8 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,   9 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,  10 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   3 ,  11 ,   1 , $P_planet         ) = 0.0000000000000000E+00  ! [-] Mode
+      prim.par (          4 ,   4 ,   1 , $P_planet               ) = 0.0000000000000000E+00  ! [m] Circular mod. amount
+      prim.par (          4 ,   4 ,   2 , $P_planet               ) = 0.0000000000000000E+00  ! [m] Lead crowning amount
+      prim.par (          5 ,   1 , $P_planet                     ) = 0.0000000000000000E+00  ! [-] Type
+      prim.plot.par (     1 ,       $P_planet                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 , $P_planet                     ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 , $P_planet               ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   1 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   2 , $P_planet         ) = 3.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   3 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   4 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   5 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   1 ,   6 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+      prim.plot.par (     1 ,   1 ,   2 ,   1 , $P_planet         ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
+
+   bodygroup.end (                  $BG_planet_03                 )                           ! $BG_stage_01.$BG_planet_03
+bodygroup.end (                     $BG_stage_01                  )                           ! $BG_stage_01
 
 !**********************************************************************
 ! Force Elements
@@ -537,7 +1363,7 @@ force.par (              27 ,       $F_INP_A                      ) = null      
 force.par (              28 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_d(ald)
 force.par (              29 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_d(bed)
 force.par (              30 ,       $F_INP_A                      ) = null                    ! [-] Input Function T_d(gad)
-force.par (              31 ,       $F_INP_A                      ) = 0.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              31 ,       $F_INP_A                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
 force.par (              33 ,       $F_INP_A                      ) = null                    ! [-] Expression for force in x
 force.par (              34 ,       $F_INP_A                      ) = null                    ! [-] Expression for force in y
 force.par (              35 ,       $F_INP_A                      ) = null                    ! [-] Expression for force in z
@@ -601,6 +1427,398 @@ force.par (              43 ,       $F_INP_B                      ) = 0.00000000
 force.par (              44 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
 force.par (              45 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
 force.par (              46 ,       $F_INP_B                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PL_A1                      ) = 43                      ! Type
+force.from (                        $F_PL_A1                      ) = $BG_stage_01.$M_carrier_pin_A1 ! From Marker
+force.to (                          $F_PL_A1                      ) = $BG_stage_01.$BG_planet_01.$M_pin_A ! To Marker
+force.par (               1 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PL_A1                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PL_A1                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PL_A1                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PL_A1                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PL_A1                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PL_A1                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PL_A1                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PL_A1                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PL_A1                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PL_A1                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PL_A1                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PL_A1                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PL_A1                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PL_A1                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PL_A1                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PL_B1                      ) = 43                      ! Type
+force.from (                        $F_PL_B1                      ) = $BG_stage_01.$M_carrier_pin_B1 ! From Marker
+force.to (                          $F_PL_B1                      ) = $BG_stage_01.$BG_planet_01.$M_pin_B ! To Marker
+force.par (               1 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PL_B1                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PL_B1                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PL_B1                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PL_B1                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PL_B1                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PL_B1                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PL_B1                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PL_B1                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PL_B1                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PL_B1                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PL_B1                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PL_B1                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PL_B1                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PL_B1                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PL_B1                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PL_A2                      ) = 43                      ! Type
+force.from (                        $F_PL_A2                      ) = $BG_stage_01.$M_carrier_pin_A2 ! From Marker
+force.to (                          $F_PL_A2                      ) = $BG_stage_01.$BG_planet_02.$M_pin_A ! To Marker
+force.par (               1 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PL_A2                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PL_A2                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PL_A2                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PL_A2                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PL_A2                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PL_A2                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PL_A2                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PL_A2                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PL_A2                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PL_A2                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PL_A2                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PL_A2                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PL_A2                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PL_A2                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PL_A2                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PL_B2                      ) = 43                      ! Type
+force.from (                        $F_PL_B2                      ) = $BG_stage_01.$M_carrier_pin_B2 ! From Marker
+force.to (                          $F_PL_B2                      ) = $BG_stage_01.$BG_planet_02.$M_pin_B ! To Marker
+force.par (               1 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PL_B2                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PL_B2                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PL_B2                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PL_B2                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PL_B2                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PL_B2                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PL_B2                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PL_B2                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PL_B2                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PL_B2                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PL_B2                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PL_B2                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PL_B2                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PL_B2                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PL_B2                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PL_A3                      ) = 43                      ! Type
+force.from (                        $F_PL_A3                      ) = $BG_stage_01.$M_carrier_pin_A3 ! From Marker
+force.to (                          $F_PL_A3                      ) = $BG_stage_01.$BG_planet_03.$M_pin_A ! To Marker
+force.par (               1 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PL_A3                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PL_A3                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PL_A3                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PL_A3                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PL_A3                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PL_A3                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PL_A3                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PL_A3                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PL_A3                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PL_A3                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PL_A3                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PL_A3                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PL_A3                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PL_A3                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PL_A3                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PL_B3                      ) = 43                      ! Type
+force.from (                        $F_PL_B3                      ) = $BG_stage_01.$M_carrier_pin_B3 ! From Marker
+force.to (                          $F_PL_B3                      ) = $BG_stage_01.$BG_planet_03.$M_pin_B ! To Marker
+force.par (               1 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PL_B3                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PL_B3                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PL_B3                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PL_B3                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PL_B3                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PL_B3                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PL_B3                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PL_B3                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PL_B3                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PL_B3                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PL_B3                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PL_B3                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PL_B3                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PL_B3                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PL_B3                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PLC_A                      ) = 43                      ! Type
+force.from (                        $F_PLC_A                      ) = $M_bed_plate_PLC_A      ! From Marker
+force.to (                          $F_PLC_A                      ) = $BG_stage_01.$M_carrier_PLC_A ! To Marker
+force.par (               1 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PLC_A                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PLC_A                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PLC_A                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PLC_A                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PLC_A                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PLC_A                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PLC_A                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PLC_A                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PLC_A                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PLC_A                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PLC_A                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PLC_A                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PLC_A                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PLC_A                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PLC_A                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+
+force.type (                        $F_PLC_B                      ) = 43                      ! Type
+force.from (                        $F_PLC_B                      ) = $M_bed_plate_PLC_B      ! From Marker
+force.to (                          $F_PLC_B                      ) = $BG_stage_01.$M_carrier_PLC_B ! To Marker
+force.par (               1 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x } ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y } ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z } ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_PLC_B                      ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_PLC_B                      ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_PLC_B                      ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_PLC_B                      ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_PLC_B                      ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_PLC_B                      ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_PLC_B                      ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_PLC_B                      ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_PLC_B                      ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_PLC_B                      ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_PLC_B                      ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_PLC_B                      ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_PLC_B                      ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_PLC_B                      ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_PLC_B                      ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
 
 !**********************************************************************
 ! Input Functions
