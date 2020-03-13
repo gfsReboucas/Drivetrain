@@ -1,11 +1,11 @@
  # Time Integration Statistics used by Simpack ModelExpert
            1  # ModelExpertVersion
            8  # N-Values for IntegratorSettings
-          96  # nx
+         132  # nx
            0  # nlages
            0  # n_add_eq
            0  # n_roots
-  0.8500000      # tend
+  0.5700000      # tend
            1  # integration method
   9.9999997E-06  #   atolg(1)
   1.0000000E-07  #   rtolg(1)
@@ -112,17 +112,17 @@
   0.0000000E+00  #   vipar
   
           14  # N-Values for IntegrationOutputInfos
-      164562  #   nrhs_total
-       42126  #   nrhs_nojac
-        1276  #   n jacobi
+       77213  #   nrhs_total
+       26244  #   nrhs_nojac
+         388  #   n jacobi
            0  #   n mass
-       24206  #   n steps
+       16750  #   n steps
            0  #   n roots
-        1215  #   n error test failors
-           1  #   n convergence test failors
-        1215  #   n steps_rejected
-  2.6504191E-05  #   last step size
-           2  #   last order
+         564  #   n error test failors
+           4  #   n convergence test failors
+         564  #   n steps_rejected
+  8.8530935E-05  #   last step size
+           1  #   last order
            0  #   rhs_error_flag
            0  #   integrator_error_flag
-  0.8413517      #   tout required
+  0.5640724      #   tout required
