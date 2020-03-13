@@ -47,3 +47,5 @@ test.m
 @NREL_5MW/NREL_5MW.SIMPACK.output/NREL_5MW.SIMPACK.licreq.log
 @NREL_5MW/NREL_5MW.SIMPACK_rigid.output/NREL_5MW.SIMPACK_rigid-B_main_shaft.fecache
 @NREL_5MW/NREL_5MW.SIMPACK_rigid.output/NREL_5MW.SIMPACK_rigid.intinfo
+@NREL_5MW/NREL_5MW.SIMPACK_rigid.output/NREL_5MW.SIMPACK_rigid.ev.sbr
+@NREL_5MW/NREL_5MW.SIMPACK_rigid.output/NREL_5MW.SIMPACK_rigid.lsa.sbr
