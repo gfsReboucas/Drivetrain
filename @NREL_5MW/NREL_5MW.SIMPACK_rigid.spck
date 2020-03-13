@@ -58,9 +58,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 6.5428457260131836E+00  ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -2.3299233913421631E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 3.6357033252716064E+00  ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 6.3914170265197754E+00  ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -2.1643881797790527E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.5490536689758301E+00  ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.2440571784973145E-01  ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 2.1178941428661346E-01  ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 2.8827568888664246E-01  ! Orientation
@@ -68,8 +68,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 7.72684276
 view.angle (                        $V_WorkingView                ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.2350013479590416E-02  ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.2350012779235840E+01  ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.2109512463212013E-02  ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.2109512329101563E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -223,15 +223,16 @@ slv.meas.subvar (                   $SLV_SolverSettings           ) = 1         
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
 slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
 slv.lsa.type (                      $SLV_SolverSettings           ) = 0                       ! Analysis type: 0 = Frequency Response; 1 = System Response; 2 = Power Response
-slv.lsa.freq.num (                  $SLV_SolverSettings           ) = { 5.0e3 }               ! Number of frequencies
+slv.lsa.freq.num (                  $SLV_SolverSettings           ) = 4000                    ! Number of frequencies
 slv.lsa.freq.distrib (              $SLV_SolverSettings           ) = 1                       ! Frequency distribution: 0 = linear; 1 = logarithmical
 slv.lsa.plot.ampl.type (            $SLV_SolverSettings           ) = 1                       ! Amplitude axis type: 0 = linear; 1 = logarithmical
-slv.lsa.freq.min (                  $SLV_SolverSettings           ) = 0.0000000000000000E+00  ! Lower frequency bound
-slv.lsa.freq.max (                  $SLV_SolverSettings           ) = 5.0000000000000000E+03  ! Upper frequency bound
-slv.lsa.plot.freq.max (             $SLV_SolverSettings           ) = 5.0000000000000000E+03  ! Frequency max
+slv.lsa.freq.min (                  $SLV_SolverSettings           ) = 1.0000000000000001E-01  ! Lower frequency bound
+slv.lsa.freq.max (                  $SLV_SolverSettings           ) = 2.0000000000000000E+03  ! Upper frequency bound
+slv.lsa.plot.freq.min (             $SLV_SolverSettings           ) = 1.0000000000000001E-01  ! Frequency min
+slv.lsa.plot.freq.max (             $SLV_SolverSettings           ) = 2.0000000000000000E+03  ! Frequency max
 slv.lsa.plot.phase.min (            $SLV_SolverSettings           ) = -2.0000000000000000E+02 ! Phase min
 slv.lsa.plot.phase.max (            $SLV_SolverSettings           ) = 2.0000000000000000E+02  ! Phase max
-slv.lsa.plot.ampl.min (             $SLV_SolverSettings           ) = 0.0000000000000000E+00  ! Amplitude min
+slv.lsa.plot.ampl.min (             $SLV_SolverSettings           ) = 9.9999999999999995E-07  ! Amplitude min
 slv.lsa.plot.ampl.max (             $SLV_SolverSettings           ) = 1.0000000000000000E+07  ! Amplitude max
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
@@ -310,16 +311,6 @@ subvargroup.begin (                 $SVG_INP_A                    )             
 
    subvar.str (                     $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_INP_A.$_D_x, Definition
 
-   subvar.str (                     $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_INP_A.$_D_y, Definition
-
-   subvar.str (                     $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_INP_A.$_D_z, Definition
-
-   subvar.str (                     $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_INP_A.$_D_alpha, Definition
-
-   subvar.str (                     $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_INP_A.$_D_beta, Definition
-
-   subvar.str (                     $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_INP_A.$_D_gamma, Definition
-
 subvargroup.end (                   $SVG_INP_A                    )                           ! $SVG_INP_A
 
 subvargroup.begin (                 $SVG_INP_B                    )                           ! $SVG_INP_B
@@ -329,25 +320,13 @@ subvargroup.begin (                 $SVG_INP_B                    )             
 
    subvar.str (                     $_K_y                         ) = '1.54e10 N/m'           ! $SVG_INP_B.$_K_y, Definition
 
-   subvar.str (                     $_K_z                         ) = '1.54e10 N/m'           ! $SVG_INP_B.$_K_z, Definition
+   subvar.str (                     $_K_z                         ) = '$SVG_INP_B.$_K_y'      ! $SVG_INP_B.$_K_z, Definition
 
    subvar.str (                     $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_INP_B.$_K_alpha, Definition
 
    subvar.str (                     $_K_beta                      ) = '0.0 Nm/rad'            ! $SVG_INP_B.$_K_beta, Definition
 
-   subvar.str (                     $_K_gamma                     ) = '0.0 Nm/rad'            ! $SVG_INP_B.$_K_gamma, Definition
-
-   subvar.str (                     $_D_x                         ) = '453.0 N/(m/s)'         ! $SVG_INP_B.$_D_x, Definition
-
-   subvar.str (                     $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_INP_B.$_D_y, Definition
-
-   subvar.str (                     $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_INP_B.$_D_z, Definition
-
-   subvar.str (                     $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_INP_B.$_D_alpha, Definition
-
-   subvar.str (                     $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_INP_B.$_D_beta, Definition
-
-   subvar.str (                     $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_INP_B.$_D_gamma, Definition
+   subvar.str (                     $_K_gamma                     ) = '$SVG_INP_B.$_K_beta'   ! $SVG_INP_B.$_K_gamma, Definition
 
 subvargroup.end (                   $SVG_INP_B                    )                           ! $SVG_INP_B
 
@@ -398,19 +377,8 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
          subvar.str (               $_K_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma, Definition
 
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_01.$SVG_planet.$SVG_A.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_01.$SVG_planet.$SVG_A.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_01.$SVG_planet.$SVG_A.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_01.$SVG_planet.$SVG_A.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_01.$SVG_planet.$SVG_A.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_01.$SVG_planet.$SVG_A.$_D_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A
+      subvargroup.desc (   1 ,      $SVG_A                        ) = 'PL_A, PL_B, and PL_C'  ! Description
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
       subvar.str (                  $_num_teeth                   ) = '56'                    ! $SVG_stage_01.$SVG_ring.$_num_teeth, Definition
@@ -446,48 +414,27 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
          subvar.str (               $_K_gamma                     ) = '1.3e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma, Definition
 
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_D_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
+      subvargroup.desc (   1 ,      $SVG_A                        ) = 'PLC_A'                 ! Description
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
          subvar.str (               $_x                           ) = '$SVG_main_shaft.$_length+$SVG_stage_01.$SVG_carrier.$_width' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_x, Definition
 
          subvar.str (               $_K_x                         ) = '6.6e7 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x, Definition
 
-         subvar.str (               $_K_y                         ) = '1.7e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y, Definition
+         subvar.str (               $_K_y                         ) = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y, Definition
 
-         subvar.str (               $_K_z                         ) = '1.1e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z, Definition
+         subvar.str (               $_K_z                         ) = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z, Definition
 
          subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha, Definition
 
-         subvar.str (               $_K_beta                      ) = '5.6e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta, Definition
+         subvar.str (               $_K_beta                      ) = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '1.3e5 Nm/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_D_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma, Definition
 
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
+      subvargroup.desc (   1 ,      $SVG_B                        ) = 'PLC_B'                 ! Description
    subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
+   subvargroup.desc (     1 ,       $SVG_carrier                  ) = 'PLC_A and PLC_B'       ! Description
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
       subvar.str (                  $_diameter                    ) = '533.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_diameter, Definition
 
@@ -543,18 +490,6 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 
          subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma, Definition
 
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_02.$SVG_planet.$SVG_A.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_02.$SVG_planet.$SVG_A.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_02.$SVG_planet.$SVG_A.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_02.$SVG_planet.$SVG_A.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_02.$SVG_planet.$SVG_A.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_02.$SVG_planet.$SVG_A.$_D_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
@@ -589,19 +524,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 
          subvar.str (               $_K_beta                      ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_D_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma, Definition
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
@@ -609,27 +532,15 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 
          subvar.str (               $_K_x                         ) = '9.1e7 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_x, Definition
 
-         subvar.str (               $_K_y                         ) = '6.0e7 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y, Definition
+         subvar.str (               $_K_y                         ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y, Definition
 
-         subvar.str (               $_K_z                         ) = '1.2e9 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z, Definition
+         subvar.str (               $_K_z                         ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z, Definition
 
          subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha, Definition
 
-         subvar.str (               $_K_beta                      ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta, Definition
+         subvar.str (               $_K_beta                      ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_D_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma, Definition
 
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
    subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
@@ -666,87 +577,51 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
          subvar.str (               $_x                           ) = '$SVG_stage_01.$SVG_carrier.$_width/2.0' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_x, Definition
 
-         subvar.str (               $_K_x                         ) = '9.1e4 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_x, Definition
+         subvar.str (               $_K_x                         ) = '1.3e8 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_x, Definition
 
-         subvar.str (               $_K_y                         ) = '9.4e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y, Definition
+         subvar.str (               $_K_y                         ) = '8.2e8 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y, Definition
 
-         subvar.str (               $_K_z                         ) = '3.2e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_z, Definition
+         subvar.str (               $_K_z                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_z, Definition
 
          subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha, Definition
 
-         subvar.str (               $_K_beta                      ) = '1.4e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta, Definition
+         subvar.str (               $_K_beta                      ) = '1.7e5 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '1.0e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma, Definition
 
          subvar.str (               $_y                           ) = '-$SVG_stage_03.$_center_distance + $SVG_bed_plate.$_width/2.0' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_y, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_D_gamma, Definition
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
          subvar.str (               $_x                           ) = '$SVG_stage_01.$SVG_carrier.$_width/2.0' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_x, Definition
 
-         subvar.str (               $_K_x                         ) = '9.1e4 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_x, Definition
+         subvar.str (               $_K_x                         ) = '6.7e7 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_x, Definition
 
-         subvar.str (               $_K_y                         ) = '9.4e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_y, Definition
+         subvar.str (               $_K_y                         ) = '8.0e8 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_y, Definition
 
-         subvar.str (               $_K_z                         ) = '3.2e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_z, Definition
+         subvar.str (               $_K_z                         ) = '1.3e8 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_z, Definition
 
          subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_alpha, Definition
 
-         subvar.str (               $_K_beta                      ) = '1.4e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_beta, Definition
+         subvar.str (               $_K_beta                      ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_gamma, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_D_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_gamma, Definition
 
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
       subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
          subvar.str (               $_x                           ) = '$SVG_stage_01.$SVG_carrier.$_width/2.0' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_x, Definition
 
-         subvar.str (               $_K_x                         ) = '9.1e4 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_x, Definition
+         subvar.str (               $_K_x                         ) = '8.0e7 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_x, Definition
 
-         subvar.str (               $_K_y                         ) = '9.4e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_y, Definition
+         subvar.str (               $_K_y                         ) = '1.0e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_y, Definition
 
-         subvar.str (               $_K_z                         ) = '3.2e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_z, Definition
+         subvar.str (               $_K_z                         ) = '7.3e7 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_z, Definition
 
          subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_alpha, Definition
 
-         subvar.str (               $_K_beta                      ) = '1.4e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_beta, Definition
+         subvar.str (               $_K_beta                      ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_gamma, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_D_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_gamma, Definition
 
       subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
    subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
@@ -774,21 +649,9 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
          subvar.str (               $_K_beta                      ) = '7.5e4 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta, Definition
 
-         subvar.str (               $_K_gamma                     ) = '7.5e4 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_gamma, Definition
+         subvar.str (               $_K_gamma                     ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_gamma, Definition
 
          subvar.str (               $_x_GB                        ) = '$SVG_stage_02.$SVG_carrier.$SVG_B.$_x + $SVG_stage_02.$SVG_shaft.$_length' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_D_gamma, Definition
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
@@ -798,7 +661,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
          subvar.str (               $_K_y                         ) = '5.0e8 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y, Definition
 
-         subvar.str (               $_K_z                         ) = '5.0e8 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_z, Definition
+         subvar.str (               $_K_z                         ) = '$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_z, Definition
 
          subvar.str (               $_K_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_alpha, Definition
 
@@ -807,18 +670,6 @@ subvargroup.begin (                 $SVG_stage_03                 )             
          subvar.str (               $_K_gamma                     ) = '1.8e6 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_gamma, Definition
 
          subvar.str (               $_x_GB                        ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB + $SVG_stage_03.$SVG_wheel.$SVG_A.$_x + $SVG_stage_03.$SVG_wheel.$SVG_B.$_x' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_x_GB, Definition
-
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_D_gamma, Definition
 
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
       subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
@@ -838,18 +689,6 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
          subvar.str (               $_x_GB                        ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB + $SVG_stage_03.$SVG_wheel.$_pin_width' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_x_GB, Definition
 
-         subvar.str (               $_D_x                         ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_D_x, Definition
-
-         subvar.str (               $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_D_y, Definition
-
-         subvar.str (               $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_D_z, Definition
-
-         subvar.str (               $_D_alpha                     ) = '0.0 N/(m/s)'           ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_D_alpha, Definition
-
-         subvar.str (               $_D_beta                      ) = '34.3 N/(m/s)'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_D_beta, Definition
-
-         subvar.str (               $_D_gamma                     ) = '47.8 N/(m/s)'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_D_gamma, Definition
-
       subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
    subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
@@ -859,6 +698,21 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
+
+subvargroup.begin (                 $SVG_bearing_damping          )                           ! $SVG_bearing_damping
+   subvar.str (                     $_D_x                         ) = '453.0 N/(m/s)'         ! $SVG_bearing_damping.$_D_x, Definition
+
+   subvar.str (                     $_D_y                         ) = '4.2e4 N/(m/s)'         ! $SVG_bearing_damping.$_D_y, Definition
+
+   subvar.str (                     $_D_z                         ) = '3.06e4 N/(m/s)'        ! $SVG_bearing_damping.$_D_z, Definition
+
+   subvar.str (                     $_D_alpha                     ) = '0.0 Nm/(rad/s)'        ! $SVG_bearing_damping.$_D_alpha, Definition
+
+   subvar.str (                     $_D_beta                      ) = '34.3 Nm/(rad/s)'       ! $SVG_bearing_damping.$_D_beta, Definition
+
+   subvar.str (                     $_D_gamma                     ) = '47.8 Nm/(rad/s)'       ! $SVG_bearing_damping.$_D_gamma, Definition
+
+subvargroup.end (                   $SVG_bearing_damping          )                           ! $SVG_bearing_damping
 
 !**********************************************************************
 ! Reference systems
@@ -3800,12 +3654,12 @@ force.par (               9 ,       $F_INP_A                      ) = $SVG_INP_A
 force.par (              10 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_alpha    ! [Nm/rad] Rotat. stiffness in al
 force.par (              11 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_beta     ! [Nm/rad] Rotat. stiffness in be
 force.par (              12 ,       $F_INP_A                      ) = $SVG_INP_A.$_K_gamma    ! [Nm/rad] Rotat. stiffness in ga
-force.par (              13 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_x } ! [Ns/m] Transl. damping in x
-force.par (              14 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_y } ! [Ns/m] Transl. damping in y
-force.par (              15 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_z } ! [Ns/m] Transl. damping in z
-force.par (              16 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-force.par (              17 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-force.par (              18 ,       $F_INP_A                      ) = { $_damping_coeff*$SVG_INP_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              13 ,       $F_INP_A                      ) = $SVG_INP_A.$_D_x        ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_INP_A                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_INP_A                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_INP_A                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_INP_A                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_INP_A                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
 force.par (              19 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_c(x)
 force.par (              20 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_c(y)
 force.par (              21 ,       $F_INP_A                      ) = null                    ! [-] Input Function F_c(z)
@@ -3856,12 +3710,12 @@ force.par (               9 ,       $F_INP_B                      ) = $SVG_INP_B
 force.par (              10 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_alpha    ! [Nm/rad] Rotat. stiffness in al
 force.par (              11 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_beta     ! [Nm/rad] Rotat. stiffness in be
 force.par (              12 ,       $F_INP_B                      ) = $SVG_INP_B.$_K_gamma    ! [Nm/rad] Rotat. stiffness in ga
-force.par (              13 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_x } ! [Ns/m] Transl. damping in x
-force.par (              14 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_y } ! [Ns/m] Transl. damping in y
-force.par (              15 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_z } ! [Ns/m] Transl. damping in z
-force.par (              16 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-force.par (              17 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
-force.par (              18 ,       $F_INP_B                      ) = { $_damping_coeff*$SVG_INP_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+force.par (              13 ,       $F_INP_B                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_INP_B                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_INP_B                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_INP_B                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_INP_B                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_INP_B                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
 force.par (              19 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_c(x)
 force.par (              20 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_c(y)
 force.par (              21 ,       $F_INP_B                      ) = null                    ! [-] Input Function F_c(z)
@@ -3939,12 +3793,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PLC_A                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PLC_A                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PLC_A                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PLC_A                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PLC_A                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PLC_A                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PLC_A                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PLC_A                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PLC_A                      ) = null                    ! [-] Input Function F_c(z)
@@ -3995,12 +3849,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PLC_B                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PLC_B                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PLC_B                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PLC_B                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PLC_B                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PLC_B                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PLC_B                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PLC_B                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PLC_B                      ) = null                    ! [-] Input Function F_c(z)
@@ -4051,12 +3905,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_A1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(z)
@@ -4107,12 +3961,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_B1                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(z)
@@ -4163,12 +4017,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_A2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(z)
@@ -4219,12 +4073,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_B2                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(z)
@@ -4275,12 +4129,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_A3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(z)
@@ -4325,12 +4179,12 @@ forcegroup.begin (                  $FEG_stage_01                 )             
    force.par (           10 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_B3                      ) = $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(z)
@@ -4636,12 +4490,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_IMS_PLC_A                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_IMS_PLC_A                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_IMS_PLC_A                  ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_PLC_A                  ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_PLC_A                  ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_PLC_A                  ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_PLC_A                  ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_PLC_A                  ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_IMS_PLC_A                  ) = null                    ! [-] Input Function F_c(z)
@@ -4686,12 +4540,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_IMS_PLC_B                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_IMS_PLC_B                  ) = { $_damping_coeff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_IMS_PLC_B                  ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_PLC_B                  ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_PLC_B                  ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_PLC_B                  ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_PLC_B                  ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_PLC_B                  ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_IMS_PLC_B                  ) = null                    ! [-] Input Function F_c(z)
@@ -4736,12 +4590,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_PL_A1                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_A1                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_A1                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_A1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_A1                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_A1                      ) = null                    ! [-] Input Function F_c(z)
@@ -4786,12 +4640,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_PL_B1                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_B1                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_B1                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_B1                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_B1                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_B1                      ) = null                    ! [-] Input Function F_c(z)
@@ -4836,12 +4690,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_PL_A2                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_A2                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_A2                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_A2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_A2                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_A2                      ) = null                    ! [-] Input Function F_c(z)
@@ -4886,12 +4740,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_PL_B2                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_B2                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_B2                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_B2                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_B2                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_B2                      ) = null                    ! [-] Input Function F_c(z)
@@ -4936,12 +4790,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_PL_A3                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_A3                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_A3                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_A3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_A3                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_A3                      ) = null                    ! [-] Input Function F_c(z)
@@ -4986,12 +4840,12 @@ forcegroup.begin (                  $FEG_stage_02                 )             
    force.par (           10 ,       $F_PL_B3                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_PL_B3                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_PL_B3                      ) = $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_PL_B3                      ) = { $_damping_coeff*$SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_PL_B3                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_PL_B3                      ) = null                    ! [-] Input Function F_c(z)
@@ -5297,12 +5151,12 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_IMS_A                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_IMS_A                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_IMS_A                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_IMS_A                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_IMS_A                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_IMS_A                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_IMS_A                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_IMS_A                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_IMS_A                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_IMS_A                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_A                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_A                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_A                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_A                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_A                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_IMS_A                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_IMS_A                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_IMS_A                      ) = null                    ! [-] Input Function F_c(z)
@@ -5347,12 +5201,12 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_IMS_B                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_IMS_B                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_IMS_B                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_IMS_B                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_IMS_B                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_IMS_B                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_IMS_B                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_IMS_B                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_IMS_B                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_IMS_B                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_B                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_B                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_B                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_B                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_B                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_IMS_B                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_IMS_B                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_IMS_B                      ) = null                    ! [-] Input Function F_c(z)
@@ -5397,12 +5251,12 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_IMS_C                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_IMS_C                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_IMS_C                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_IMS_C                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_IMS_C                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_IMS_C                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_IMS_C                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_IMS_C                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_IMS_C                      ) = { $_damping_coeff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_IMS_C                      ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_IMS_C                      ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_IMS_C                      ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_IMS_C                      ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_IMS_C                      ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_IMS_C                      ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_IMS_C                      ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_IMS_C                      ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_IMS_C                      ) = null                    ! [-] Input Function F_c(z)
@@ -5447,12 +5301,12 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_HS_A                       ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_HS_A                       ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_HS_A                       ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_HS_A                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_HS_A                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_HS_A                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_HS_A                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_HS_A                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_HS_A                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_HS_A                       ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_HS_A                       ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_HS_A                       ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_HS_A                       ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_HS_A                       ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_HS_A                       ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_HS_A                       ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_HS_A                       ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_HS_A                       ) = null                    ! [-] Input Function F_c(z)
@@ -5497,12 +5351,12 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_HS_B                       ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_HS_B                       ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_HS_B                       ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_HS_B                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_HS_B                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_HS_B                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_HS_B                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_HS_B                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_HS_B                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_HS_B                       ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_HS_B                       ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_HS_B                       ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_HS_B                       ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_HS_B                       ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_HS_B                       ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_HS_B                       ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_HS_B                       ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_HS_B                       ) = null                    ! [-] Input Function F_c(z)
@@ -5547,12 +5401,12 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_HS_C                       ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha ! [Nm/rad] Rotat. stiffness in al
    force.par (           11 ,       $F_HS_C                       ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta ! [Nm/rad] Rotat. stiffness in be
    force.par (           12 ,       $F_HS_C                       ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma ! [Nm/rad] Rotat. stiffness in ga
-   force.par (           13 ,       $F_HS_C                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_x } ! [Ns/m] Transl. damping in x
-   force.par (           14 ,       $F_HS_C                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y } ! [Ns/m] Transl. damping in y
-   force.par (           15 ,       $F_HS_C                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_z } ! [Ns/m] Transl. damping in z
-   force.par (           16 ,       $F_HS_C                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha } ! [Nms/rad] Rotat. damping in al
-   force.par (           17 ,       $F_HS_C                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta } ! [Nms/rad] Rotat. damping in be
-   force.par (           18 ,       $F_HS_C                       ) = { $_damping_coeff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma } ! [Nms/rad] Rotat. damping in ga
+   force.par (           13 ,       $F_HS_C                       ) = $SVG_bearing_damping.$_D_x ! [Ns/m] Transl. damping in x
+   force.par (           14 ,       $F_HS_C                       ) = $SVG_bearing_damping.$_D_y ! [Ns/m] Transl. damping in y
+   force.par (           15 ,       $F_HS_C                       ) = $SVG_bearing_damping.$_D_z ! [Ns/m] Transl. damping in z
+   force.par (           16 ,       $F_HS_C                       ) = $SVG_bearing_damping.$_D_alpha ! [Nms/rad] Rotat. damping in al
+   force.par (           17 ,       $F_HS_C                       ) = $SVG_bearing_damping.$_D_beta ! [Nms/rad] Rotat. damping in be
+   force.par (           18 ,       $F_HS_C                       ) = $SVG_bearing_damping.$_D_gamma ! [Nms/rad] Rotat. damping in ga
    force.par (           19 ,       $F_HS_C                       ) = null                    ! [-] Input Function F_c(x)
    force.par (           20 ,       $F_HS_C                       ) = null                    ! [-] Input Function F_c(y)
    force.par (           21 ,       $F_HS_C                       ) = null                    ! [-] Input Function F_c(z)
