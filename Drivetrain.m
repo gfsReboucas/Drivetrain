@@ -661,6 +661,35 @@ classdef Drivetrain
             K = @(Om)(K_b + K_m - K_Omega*Om^2);
         end
         
+        function SIMPACK_version(obj)
+            % create SIMPACK COM solver interface:
+            solver = actxserver('Simpack.Slv.2018');
+            
+            % Open model:
+            file = dir(sprintf("@%s\\*.spck", class(obj)));
+            file_name = sprintf("%s\\%s", file.folder, file.name);
+            model = solver.Spck.openModel(file_name);
+            
+            % Linear System Analysis:
+            solver.Spck.Slv.lsa(model);
+            
+            % create SIMPACK COM result interface:
+            post = actxserver('Simpack.Post.2018');
+            
+            % add project:
+            project = post.Spck.addProject();
+            file = dir(sprintf("@%s\\*\\*.lsa.sbr", class(obj)));
+            file_name = sprintf("%s\\%s", file.folder, file.name);
+            
+            % add Linear System Response result file to project:
+            result = project.addResultFile(file_name);
+            
+            % Modal Analysis:
+            res = solver.Spck.Slv.eigen(model, false);
+            n = res.numEigenvalues; % number of eigenvalues
+            
+        end
+        
         %% Pitting:
         function [SH_vec, SShaft_vec] = safety_factors(obj)
             %SAFETY_FACTORS returns the safety factors for a Drivetrain

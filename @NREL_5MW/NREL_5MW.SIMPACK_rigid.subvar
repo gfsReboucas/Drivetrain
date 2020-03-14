@@ -1,0 +1,284 @@
+!file.version=2.5! Removing this line will make the file unreadable
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvar($_rated_speed, str= '12.1 rpm')                                                        ! $_rated_speed
+subvar($_damping_coeff, str= '0.05 s')                                                        ! $_damping_coeff
+subvar($_addendum_coeff, str= '1.0')                                                          ! $_addendum_coeff
+subvar($_dedendum_coeff, str= '1.25')                                                         ! $_dedendum_coeff
+subvar($_regularization_vel, str= '1.0e-3')                                                   ! $_regularization_vel
+subvar($_tooth_damping, str= '5.0e8 N/(m/s)')                                                 ! $_tooth_damping
+subvar($_tooth_stiff_ratio, str= '0.8')                                                       ! $_tooth_stiff_ratio
+subvar($_height, str= '1.75 m')                                                               ! $_height
+subvargroup.begin (                 $SVG_material                 )                           ! $SVG_material
+   subvar($_E, str= '206.0e9 Pa', desc (   1) = 'Young\'s modulus')                           ! $SVG_material.$_E
+   subvar($_nu, str= '0.3', desc (   1) = 'Poisson\'s ratio')                                 ! $SVG_material.$_nu
+   subvar($_rho, str= '7.83e3 kg/m^3', desc (   1) = 'Density')                               ! $SVG_material.$_rho
+subvargroup.end (                   $SVG_material                 )                           ! $SVG_material
+
+subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
+   subvar($_length, str= 'anint($SVG_bed_plate.$_x_gen) m')                                   ! $SVG_bed_plate.$_length
+   subvar($_width, str= '$SVG_bed_plate.$_length')                                            ! $SVG_bed_plate.$_width
+   subvar($_thickness, str= '0.5 m')                                                          ! $SVG_bed_plate.$_thickness
+   subvar($_x_gen, str= '$SVG_stage_03.$SVG_wheel.$SVG_C.$_x_GB + $SVG_stage_03.$SVG_shaft.$_length') ! $SVG_bed_plate.$_x_gen
+subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
+
+subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
+   subvar($_diameter, str= '700.0 mm')                                                        ! $SVG_main_shaft.$_diameter
+   subvar($_length, str= '2000.0 mm')                                                         ! $SVG_main_shaft.$_length
+subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
+
+subvargroup.begin (                 $SVG_GB_frame                 )                           ! $SVG_GB_frame
+   subvar($_length, str= '3.5 m')                                                             ! $SVG_GB_frame.$_length
+   subvar($_width, str= '2.0*$_height')                                                       ! $SVG_GB_frame.$_width
+   subvar($_x, str= '($SVG_main_shaft.$_length*7/4 - $SVG_bed_plate.$_length + $SVG_GB_frame.$_length)/2.0') ! $SVG_GB_frame.$_x
+subvargroup.end (                   $SVG_GB_frame                 )                           ! $SVG_GB_frame
+
+subvargroup.begin (                 $SVG_INP_A                    )                           ! $SVG_INP_A
+   subvar($_x, str= '$SVG_main_shaft.$_length/6.0')                                           ! $SVG_INP_A.$_x
+   subvar($_K_x, str= '0.0 N/m')                                                              ! $SVG_INP_A.$_K_x
+   subvar($_K_y, str= '1.50e10 N/m')                                                          ! $SVG_INP_A.$_K_y
+   subvar($_K_z, str= '$SVG_INP_A.$_K_y')                                                     ! $SVG_INP_A.$_K_z
+   subvar($_K_alpha, str= '0.0 Nm/rad')                                                       ! $SVG_INP_A.$_K_alpha
+   subvar($_K_beta, str= '5.0e6 Nm/rad')                                                      ! $SVG_INP_A.$_K_beta
+   subvar($_K_gamma, str= '$SVG_INP_A.$_K_beta')                                              ! $SVG_INP_A.$_K_gamma
+   subvar($_D_x, str= '0.0 N/(m/s)')                                                          ! $SVG_INP_A.$_D_x
+subvargroup.end (                   $SVG_INP_A                    )                           ! $SVG_INP_A
+
+subvargroup.begin (                 $SVG_INP_B                    )                           ! $SVG_INP_B
+   subvar($_x, str= '$SVG_main_shaft.$_length*3.0/4.0')                                       ! $SVG_INP_B.$_x
+   subvar($_K_x, str= '4.06e8 N/m')                                                           ! $SVG_INP_B.$_K_x
+   subvar($_K_y, str= '1.54e10 N/m')                                                          ! $SVG_INP_B.$_K_y
+   subvar($_K_z, str= '$SVG_INP_B.$_K_y')                                                     ! $SVG_INP_B.$_K_z
+   subvar($_K_alpha, str= '0.0 Nm/rad')                                                       ! $SVG_INP_B.$_K_alpha
+   subvar($_K_beta, str= '0.0 Nm/rad')                                                        ! $SVG_INP_B.$_K_beta
+   subvar($_K_gamma, str= '$SVG_INP_B.$_K_beta')                                              ! $SVG_INP_B.$_K_gamma
+subvargroup.end (                   $SVG_INP_B                    )                           ! $SVG_INP_B
+
+subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
+   subvar($_normal_module, str= '45.0 mm')                                                    ! $SVG_stage_01.$_normal_module
+   subvar($_face_width, str= '491.0 mm')                                                      ! $SVG_stage_01.$_face_width
+   subvar($_center_distance, str= '863.0 mm')                                                 ! $SVG_stage_01.$_center_distance
+   subvar($_pressure_angle, str= '20.0 deg')                                                  ! $SVG_stage_01.$_pressure_angle
+   subvar($_helix_angle, str= '0.0 deg')                                                      ! $SVG_stage_01.$_helix_angle
+   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
+      subvar($_num_teeth, str= '19')                                                          ! $SVG_stage_01.$SVG_sun.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.617')                                                ! $SVG_stage_01.$SVG_sun.$_prof_shift_coeff
+      subvar($_diam_bore, str= '400.0 mm')                                                    ! $SVG_stage_01.$SVG_sun.$_diam_bore
+      subvar($_angle, str= '11.5*(180deg)/$SVG_stage_01.$SVG_sun.$_num_teeth')                ! $SVG_stage_01.$SVG_sun.$_angle
+   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
+   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
+      subvar($_num_teeth, str= '17')                                                          ! $SVG_stage_01.$SVG_planet.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.802')                                                ! $SVG_stage_01.$SVG_planet.$_prof_shift_coeff
+      subvar($_diam_bore, str= '400.0 mm')                                                    ! $SVG_stage_01.$SVG_planet.$_diam_bore
+      subvar($_pin_width, str= '1.4*$SVG_stage_01.$_face_width')                              ! $SVG_stage_01.$SVG_planet.$_pin_width
+      subvar($_angle, str= '5.25*(360deg)/$SVG_stage_01.$SVG_planet.$_num_teeth')             ! $SVG_stage_01.$SVG_planet.$_angle
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A
+         subvar($_x, str= '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_01.$SVG_planet.$SVG_A.$_x
+         subvar($_K_x, str= '9.1e4 N/m')                                                      ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x
+         subvar($_K_y, str= '9.4e9 N/m')                                                      ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y
+         subvar($_K_z, str= '3.2e9 N/m')                                                      ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha
+         subvar($_K_beta, str= '1.4e6 Nm/rad')                                                ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta
+         subvar($_K_gamma, str= '4.5e6 Nm/rad')                                               ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A
+      subvargroup.desc (   1 ,      $SVG_A                        ) = 'PL_A, PL_B, and PL_C'  ! Description
+   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
+   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
+      subvar($_num_teeth, str= '56')                                                          ! $SVG_stage_01.$SVG_ring.$_num_teeth
+      subvar($_prof_shift_coeff, str= '-0.501')                                               ! $SVG_stage_01.$SVG_ring.$_prof_shift_coeff
+      subvar($_diam_bore, str= '400.0 mm')                                                    ! $SVG_stage_01.$SVG_ring.$_diam_bore
+      subvar($_angle, str= '27*(180 deg)/$SVG_stage_01.$SVG_ring.$_num_teeth')                ! $SVG_stage_01.$SVG_ring.$_angle
+      subvar($_x, str= '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width/2.0')   ! $SVG_stage_01.$SVG_ring.$_x
+   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
+   subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
+      subvar($_diameter_in, str= '1.4*$SVG_stage_01.$_center_distance	')                      ! $SVG_stage_01.$SVG_carrier.$_diameter_in
+      subvar($_diameter_out, str= '2.6*$SVG_stage_01.$_center_distance	')                     ! $SVG_stage_01.$SVG_carrier.$_diameter_out
+      subvar($_width, str= '1.2*$SVG_stage_01.$_face_width')                                  ! $SVG_stage_01.$SVG_carrier.$_width
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
+         subvar($_x, str= '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_x
+         subvar($_K_x, str= '6.6e4 N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x
+         subvar($_K_y, str= '1.7e9 N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y
+         subvar($_K_z, str= '1.1e9 N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha
+         subvar($_K_beta, str= '5.6e5 Nm/rad')                                                ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta
+         subvar($_K_gamma, str= '1.3e5 Nm/rad')                                               ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
+      subvargroup.desc (   1 ,      $SVG_A                        ) = 'PLC_A'                 ! Description
+      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
+         subvar($_x, str= '$SVG_main_shaft.$_length+$SVG_stage_01.$SVG_carrier.$_width')      ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_x
+         subvar($_K_x, str= '6.6e7 N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x
+         subvar($_K_y, str= '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y')                        ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y
+         subvar($_K_z, str= '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z')                        ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha
+         subvar($_K_beta, str= '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta')                  ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta
+         subvar($_K_gamma, str= '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma')                ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma
+      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
+      subvargroup.desc (   1 ,      $SVG_B                        ) = 'PLC_B'                 ! Description
+   subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
+   subvargroup.desc (     1 ,       $SVG_carrier                  ) = 'PLC_A and PLC_B'       ! Description
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+      subvar($_diameter, str= '533.0 mm')                                                     ! $SVG_stage_01.$SVG_shaft.$_diameter
+      subvar($_length, str= '500.0 mm')                                                       ! $SVG_stage_01.$SVG_shaft.$_length
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
+
+subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
+   subvar($_normal_module, str= '21.0 mm')                                                    ! $SVG_stage_02.$_normal_module
+   subvar($_face_width, str= '550.0 mm')                                                      ! $SVG_stage_02.$_face_width
+   subvar($_center_distance, str= '584.0 mm')                                                 ! $SVG_stage_02.$_center_distance
+   subvar($_pressure_angle, str= '20.0 deg')                                                  ! $SVG_stage_02.$_pressure_angle
+   subvar($_helix_angle, str= '0.0 deg')                                                      ! $SVG_stage_02.$_helix_angle
+   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
+      subvar($_num_teeth, str= '18')                                                          ! $SVG_stage_02.$SVG_sun.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.389')                                                ! $SVG_stage_02.$SVG_sun.$_prof_shift_coeff
+      subvar($_diam_bore, str= '400.0 mm')                                                    ! $SVG_stage_02.$SVG_sun.$_diam_bore
+      subvar($_angle, str= '12*(180deg)/$SVG_stage_02.$SVG_sun.$_num_teeth')                  ! $SVG_stage_02.$SVG_sun.$_angle
+   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
+   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
+      subvar($_num_teeth, str= '36')                                                          ! $SVG_stage_02.$SVG_planet.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.504')                                                ! $SVG_stage_02.$SVG_planet.$_prof_shift_coeff
+      subvar($_diam_bore, str= '380.0 mm')                                                    ! $SVG_stage_02.$SVG_planet.$_diam_bore
+      subvar($_pin_width, str= '1.4*$SVG_stage_02.$_face_width')                              ! $SVG_stage_02.$SVG_planet.$_pin_width
+      subvar($_angle, str= '20*(180 deg)/$SVG_stage_02.$SVG_planet.$_num_teeth')              ! $SVG_stage_02.$SVG_planet.$_angle
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A
+         subvar($_x, str= '$SVG_stage_02.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_02.$SVG_planet.$SVG_A.$_x
+         subvar($_K_x, str= '9.1e4 N/m')                                                      ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_x
+         subvar($_K_y, str= '6.0e7 N/m')                                                      ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_y
+         subvar($_K_z, str= '1.2e9 N/m')                                                      ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha
+         subvar($_K_beta, str= '7.5e4 Nm/rad')                                                ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta
+         subvar($_K_gamma, str= '7.5e4 Nm/rad')                                               ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A
+   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
+   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
+      subvar($_num_teeth, str= '93')                                                          ! $SVG_stage_02.$SVG_ring.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.117')                                                ! $SVG_stage_02.$SVG_ring.$_prof_shift_coeff
+      subvar($_diam_bore, str= '400.0 mm')                                                    ! $SVG_stage_02.$SVG_ring.$_diam_bore
+      subvar($_angle, str= '45.5*(180 deg)/$SVG_stage_02.$SVG_ring.$_num_teeth')              ! $SVG_stage_02.$SVG_ring.$_angle
+      subvar($_x, str= '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width + $SVG_stage_01.$SVG_shaft.$_length + $SVG_stage_02.$SVG_carrier.$_width/2.0') ! $SVG_stage_02.$SVG_ring.$_x
+   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
+   subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
+      subvar($_diameter_in, str= '1.4*$SVG_stage_02.$_center_distance	')                      ! $SVG_stage_02.$SVG_carrier.$_diameter_in
+      subvar($_diameter_out, str= '2.6*$SVG_stage_02.$_center_distance	')                     ! $SVG_stage_02.$SVG_carrier.$_diameter_out
+      subvar($_width, str= '1.2*$SVG_stage_02.$_face_width')                                  ! $SVG_stage_02.$SVG_carrier.$_width
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
+         subvar($_x, str= '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width + $SVG_stage_01.$SVG_shaft.$_length') ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_x
+         subvar($_K_x, str= '9.1e4 N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x
+         subvar($_K_y, str= '6.0e7 N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y
+         subvar($_K_z, str= '1.2e9 N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha
+         subvar($_K_beta, str= '7.5e4 Nm/rad')                                                ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta
+         subvar($_K_gamma, str= '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta')                 ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
+      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
+         subvar($_x, str= '$SVG_stage_02.$SVG_carrier.$SVG_A.$_x + $SVG_stage_02.$SVG_carrier.$_width') ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_x
+         subvar($_K_x, str= '9.1e7 N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_x
+         subvar($_K_y, str= '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y')                        ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y
+         subvar($_K_z, str= '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z')                        ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha
+         subvar($_K_beta, str= '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta')                  ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta
+         subvar($_K_gamma, str= '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta')                 ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma
+      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
+   subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
+      subvar($_diameter, str= '333.0 mm')                                                     ! $SVG_stage_02.$SVG_shaft.$_diameter
+      subvar($_length, str= '666.0 mm')                                                       ! $SVG_stage_02.$SVG_shaft.$_length
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
+subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
+
+subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
+   subvar($_normal_module, str= '14.0 mm')                                                    ! $SVG_stage_03.$_normal_module
+   subvar($_face_width, str= '360.0 mm')                                                      ! $SVG_stage_03.$_face_width
+   subvar($_center_distance, str= '861.0 mm')                                                 ! $SVG_stage_03.$_center_distance
+   subvar($_pressure_angle, str= '20.0 deg')                                                  ! $SVG_stage_03.$_pressure_angle
+   subvar($_helix_angle, str= '10.0 deg')                                                     ! $SVG_stage_03.$_helix_angle
+   subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
+      subvar($_num_teeth, str= '24')                                                          ! $SVG_stage_03.$SVG_pinion.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.480')                                                ! $SVG_stage_03.$SVG_pinion.$_prof_shift_coeff
+      subvar($_diam_bore, str= '200.0 mm')                                                    ! $SVG_stage_03.$SVG_pinion.$_diam_bore
+      subvar($_pin_width, str= '1.4*$SVG_stage_03.$_face_width')                              ! $SVG_stage_03.$SVG_pinion.$_pin_width
+      subvar($_angle, str= '12.5*(180.0 deg)/$SVG_stage_03.$SVG_pinion.$_num_teeth')          ! $SVG_stage_03.$SVG_pinion.$_angle
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
+         subvar($_x, str= '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_x
+         subvar($_K_x, str= '1.3e8 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_x
+         subvar($_K_y, str= '8.2e8 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y
+         subvar($_K_z, str= '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y')                         ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha
+         subvar($_K_beta, str= '1.7e5 Nm/rad')                                                ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta
+         subvar($_K_gamma, str= '1.0e6 Nm/rad')                                               ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma
+         subvar($_y, str= '-$SVG_stage_03.$_center_distance + $SVG_bed_plate.$_width/2.0')    ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_y
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
+      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
+         subvar($_x, str= '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_x
+         subvar($_K_x, str= '6.7e7 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_x
+         subvar($_K_y, str= '8.0e8 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_y
+         subvar($_K_z, str= '1.3e8 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_alpha
+         subvar($_K_beta, str= '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta')                   ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_beta
+         subvar($_K_gamma, str= '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma')                 ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_gamma
+      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
+      subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
+         subvar($_x, str= '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_x
+         subvar($_K_x, str= '8.0e7 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_x
+         subvar($_K_y, str= '1.0e9 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_y
+         subvar($_K_z, str= '7.3e7 N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_alpha
+         subvar($_K_beta, str= '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta')                   ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_beta
+         subvar($_K_gamma, str= '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma')                 ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_gamma
+      subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
+   subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
+   subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
+      subvar($_num_teeth, str= '95')                                                          ! $SVG_stage_03.$SVG_wheel.$_num_teeth
+      subvar($_prof_shift_coeff, str= '0.669')                                                ! $SVG_stage_03.$SVG_wheel.$_prof_shift_coeff
+      subvar($_diam_bore, str= '400.0 mm')                                                    ! $SVG_stage_03.$SVG_wheel.$_diam_bore
+      subvar($_pin_width, str= '1.4*$SVG_stage_03.$_face_width')                              ! $SVG_stage_03.$SVG_wheel.$_pin_width
+      subvar($_angle, str= '51*(180 deg)/$SVG_stage_03.$SVG_wheel.$_num_teeth')               ! $SVG_stage_03.$SVG_wheel.$_angle
+      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
+         subvar($_x, str= '$SVG_stage_03.$SVG_wheel.$_pin_width/2.0')                         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_x
+         subvar($_K_x, str= '0.0 N/m')                                                        ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_x
+         subvar($_K_y, str= '6.0e7 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_y
+         subvar($_K_z, str= '1.2e9 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_alpha
+         subvar($_K_beta, str= '7.5e4 Nm/rad')                                                ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta
+         subvar($_K_gamma, str= '$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta')                   ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_gamma
+         subvar($_x_GB, str= '$SVG_stage_02.$SVG_carrier.$SVG_B.$_x + $SVG_stage_02.$SVG_shaft.$_length') ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB
+      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
+      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
+         subvar($_x, str= '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x*6.0/7.0')                      ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_x
+         subvar($_K_x, str= '7.4e7 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_x
+         subvar($_K_y, str= '5.0e8 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y
+         subvar($_K_z, str= '$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y')                          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_alpha
+         subvar($_K_beta, str= '1.6e6 Nm/rad')                                                ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_beta
+         subvar($_K_gamma, str= '1.8e6 Nm/rad')                                               ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_gamma
+         subvar($_x_GB, str= '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB + $SVG_stage_03.$SVG_wheel.$SVG_A.$_x + $SVG_stage_03.$SVG_wheel.$SVG_B.$_x') ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_x_GB
+      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
+      subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
+         subvar($_x, str= '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x*6.0/7.0')                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_x
+         subvar($_K_x, str= '7.8e7 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_x
+         subvar($_K_y, str= '7.4e8 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_y
+         subvar($_K_z, str= '3.3e8 N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_z
+         subvar($_K_alpha, str= '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_alpha
+         subvar($_K_beta, str= '1.1e6 Nm/rad')                                                ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_beta
+         subvar($_K_gamma, str= '2.5e6 Nm/rad')                                               ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_gamma
+         subvar($_x_GB, str= '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB + $SVG_stage_03.$SVG_wheel.$_pin_width') ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_x_GB
+      subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
+   subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
+      subvar($_diameter, str= '333.0 mm')                                                     ! $SVG_stage_03.$SVG_shaft.$_diameter
+      subvar($_length, str= '1000.0 mm')                                                      ! $SVG_stage_03.$SVG_shaft.$_length
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
+subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
+
+subvargroup.begin (                 $SVG_bearing_damping          )                           ! $SVG_bearing_damping
+   subvar($_D_x, str= '453.0 N/(m/s)')                                                        ! $SVG_bearing_damping.$_D_x
+   subvar($_D_y, str= '4.2e4 N/(m/s)')                                                        ! $SVG_bearing_damping.$_D_y
+   subvar($_D_z, str= '3.06e4 N/(m/s)')                                                       ! $SVG_bearing_damping.$_D_z
+   subvar($_D_alpha, str= '0.0 Nm/(rad/s)')                                                   ! $SVG_bearing_damping.$_D_alpha
+   subvar($_D_beta, str= '34.3 Nm/(rad/s)')                                                   ! $SVG_bearing_damping.$_D_beta
+   subvar($_D_gamma, str= '47.8 Nm/(rad/s)')                                                  ! $SVG_bearing_damping.$_D_gamma
+subvargroup.end (                   $SVG_bearing_damping          )                           ! $SVG_bearing_damping
+
+                                                                                                                                                                                                                                                                                                                                                                                                         
