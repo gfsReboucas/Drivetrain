@@ -661,32 +661,86 @@ classdef Drivetrain
             K = @(Om)(K_b + K_m - K_Omega*Om^2);
         end
         
-        function SIMPACK_version(obj)
+        function SIMPACK_version(obj, varargin)
+            if(nargin == 1)
+                version = "2018";
+                task = "lsa";
+            elseif(nargin == 2)
+                version = "2018";
+                task = varargin{1};
+            elseif(nargin == 3)
+                version = varargin{1};
+                task = varargin{2};
+            else
+                error("too many arguments.");
+            end
+            
             % create SIMPACK COM solver interface:
-            solver = actxserver('Simpack.Slv.2018');
+            solver = actxserver(sprintf('Simpack.Slv.%s', version));
             
             % Open model:
             file = dir(sprintf("@%s\\*.spck", class(obj)));
             file_name = sprintf("%s\\%s", file.folder, file.name);
             model = solver.Spck.openModel(file_name);
             
-            % Linear System Analysis:
-            solver.Spck.Slv.lsa(model);
-            
-            % create SIMPACK COM result interface:
-            post = actxserver('Simpack.Post.2018');
-            
-            % add project:
-            project = post.Spck.addProject();
-            file = dir(sprintf("@%s\\*\\*.lsa.sbr", class(obj)));
-            file_name = sprintf("%s\\%s", file.folder, file.name);
-            
-            % add Linear System Response result file to project:
-            result = project.addResultFile(file_name);
-            
-            % Modal Analysis:
-            res = solver.Spck.Slv.eigen(model, false);
-            n = res.numEigenvalues; % number of eigenvalues
+            switch(task)
+                case "lsa"
+                    % Linear System Analysis:
+                    solver.Spck.Slv.lsa(model);
+                    
+                    % the following part seems useless:
+                    % create SIMPACK COM result interface:
+                    post = actxserver(sprintf("Simpack.Post.%s", version));
+
+                    % add project:
+                    project = post.Spck.addProject();
+                    file = dir(sprintf("@%s\\*\\*.lsa.sbr", class(obj)));
+                    file_name = sprintf("%s\\%s", file.folder, file.name);
+
+                    % add Linear System Response result file to project:
+                    result = project.addResultFile(file_name);
+
+                case "eigen"
+                    % Modal Analysis:
+                    result = solver.Spck.Slv.eigen(model, false);
+                    nx = result.numEigenvalues; % number of eigenvalues
+                    freq = zeros(nx, 1);
+
+                    for idx = 1:nx
+                        freq(idx) = result.freq(idx - 1);
+                    end
+
+                    idx = find(freq > 1.0e-5, 1, 'first');
+                    freq = freq(idx:end);
+                    
+                case "ssm"
+                    % State Space Matrix:
+                    result = solver.Spck.Slv.ssm(model, ...
+                                                 2, ... % 'new' MATLAB format
+                                                 false); % don't re-use an existing solver
+                    nx = result.stateDim;
+                    nu = result.inputDim;
+                    ny = result.outputDim;
+                    
+                    A = zeros(nx, nx);        B = zeros(nx, nu);
+                    C = zeros(ny, nx);        D = zeros(ny, nu);
+                    
+                    n = max([nx nu ny]);
+                    
+                    for row = 1:n
+                        for col = 1:n
+                            if((row <= nx) && (col <= nx))
+                                A(row, col) = result.A(row - 1, col - 1);
+                            elseif((row <= nx) && (col <= nu))
+                                B(row, col) = result.B(row - 1, col - 1);
+                            elseif((row <= ny) && (col <= nx))
+                                C(row, col) = result.C(row - 1, col - 1);
+                            elseif((row <= ny) && (col <= nu))
+                                D(row, col) = result.D(row - 1, col - 1);
+                            end
+                        end
+                    end
+            end
             
         end
         

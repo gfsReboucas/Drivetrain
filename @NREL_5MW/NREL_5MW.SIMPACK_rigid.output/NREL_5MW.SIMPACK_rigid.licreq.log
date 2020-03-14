@@ -2,22 +2,22 @@
 License Requirements for Model:
  NREL_5MW.SIMPACK_rigid
 *********************************************************
-gui:
+solver:
  - NREL_5MW.SIMPACK_rigid
 
-control_gui:
+control_slv:
  - $C_PI
 
-control_gui, autoplus_gui:
+control_slv, autoplus_slv:
  - $C_diff_speed
  - $C_ref_speed
 
-control_gui, autoplus_gui, wheelrail_gui:
+control_slv, autoplus_slv, wheelrail_slv:
  - $F_PI_generator
  - $F_const_generator
  - $C_output_speed
 
-gearwheel_gui:
+gearwheel_slv:
  - $FEG_stage_01.$F_ring_planet_01
  - $FEG_stage_01.$F_ring_planet_02
  - $FEG_stage_01.$F_ring_planet_03
@@ -51,97 +51,97 @@ Force requirements:
 ===================
    1. Type                 = 110
        Name                 = $F_PI_generator
-       Mandatory features   = control_gui
-       Alternative feature  =  autoplus_gui wheelrail_gui
+       Mandatory features   = control_slv
+       Alternative feature  =  autoplus_slv wheelrail_slv
    -------------------------------------------------------------
    2. Type                 = 110
        Name                 = $F_const_generator
-       Mandatory features   = control_gui
-       Alternative feature  =  autoplus_gui wheelrail_gui
+       Mandatory features   = control_slv
+       Alternative feature  =  autoplus_slv wheelrail_slv
    -------------------------------------------------------------
    3. Type                 = 129
        Name                 = $C_PI
-       Mandatory features   = control_gui
+       Mandatory features   = control_slv
        Alternative feature  = -
    -------------------------------------------------------------
    4. Type                 = 143
        Name                 = $C_diff_speed
-       Mandatory features   = control_gui
-       Alternative feature  =  autoplus_gui
+       Mandatory features   = control_slv
+       Alternative feature  =  autoplus_slv
    -------------------------------------------------------------
    5. Type                 = 170
        Name                 = $C_ref_speed
-       Mandatory features   = control_gui
-       Alternative feature  =  autoplus_gui
+       Mandatory features   = control_slv
+       Alternative feature  =  autoplus_slv
    -------------------------------------------------------------
    6. Type                 = 160
        Name                 = $C_output_speed
-       Mandatory features   = control_gui
-       Alternative feature  =  autoplus_gui wheelrail_gui
+       Mandatory features   = control_slv
+       Alternative feature  =  autoplus_slv wheelrail_slv
    -------------------------------------------------------------
    7. Type                 = 225
        Name                 = $FEG_stage_01.$F_ring_planet_01
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    8. Type                 = 225
        Name                 = $FEG_stage_01.$F_ring_planet_02
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    9. Type                 = 225
        Name                 = $FEG_stage_01.$F_ring_planet_03
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    10. Type                 = 225
        Name                 = $FEG_stage_01.$F_sun_planet_01
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    11. Type                 = 225
        Name                 = $FEG_stage_01.$F_sun_planet_02
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    12. Type                 = 225
        Name                 = $FEG_stage_01.$F_sun_planet_03
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    13. Type                 = 225
        Name                 = $FEG_stage_02.$F_ring_planet_01
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    14. Type                 = 225
        Name                 = $FEG_stage_02.$F_ring_planet_02
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    15. Type                 = 225
        Name                 = $FEG_stage_02.$F_ring_planet_03
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    16. Type                 = 225
        Name                 = $FEG_stage_02.$F_sun_planet_01
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    17. Type                 = 225
        Name                 = $FEG_stage_02.$F_sun_planet_02
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    18. Type                 = 225
        Name                 = $FEG_stage_02.$F_sun_planet_03
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
    19. Type                 = 225
        Name                 = $FEG_stage_03.$F_pinion_wheel
-       Mandatory features   = gearwheel_gui
+       Mandatory features   = gearwheel_slv
        Alternative feature  = -
    -------------------------------------------------------------
 
