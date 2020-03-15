@@ -222,12 +222,14 @@ slv.meas.result (                   $SLV_SolverSettings           ) = 1         
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
 slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
 slv.lsa.type (                      $SLV_SolverSettings           ) = 0                       ! Analysis type: 0 = Frequency Response; 1 = System Response; 2 = Power Response
-slv.lsa.freq.num (                  $SLV_SolverSettings           ) = 4000                    ! Number of frequencies
-slv.lsa.freq.distrib (              $SLV_SolverSettings           ) = 1                       ! Frequency distribution: 0 = linear; 1 = logarithmical
+slv.lsa.freq.num (                  $SLV_SolverSettings           ) = 2000                    ! Number of frequencies
+slv.lsa.freq.distrib (              $SLV_SolverSettings           ) = 0                       ! Frequency distribution: 0 = linear; 1 = logarithmical
 slv.lsa.plot.ampl.type (            $SLV_SolverSettings           ) = 1                       ! Amplitude axis type: 0 = linear; 1 = logarithmical
 slv.lsa.freq.min (                  $SLV_SolverSettings           ) = 1.0000000000000001E-01  ! Lower frequency bound
-slv.lsa.freq.max (                  $SLV_SolverSettings           ) = 2.0000000000000000E+03  ! Upper frequency bound
+slv.lsa.freq.max (                  $SLV_SolverSettings           ) = 1.0000000000000000E+03  ! Upper frequency bound
 slv.lsa.plot.freq.min (             $SLV_SolverSettings           ) = 1.0000000000000001E-01  ! Frequency min
 slv.lsa.plot.freq.max (             $SLV_SolverSettings           ) = 2.0000000000000000E+03  ! Frequency max
 slv.lsa.plot.phase.min (            $SLV_SolverSettings           ) = -2.0000000000000000E+02 ! Phase min
@@ -3611,6 +3613,7 @@ constr.from (                       $L_output_shaft               ) = $M_GB_fram
 constr.to (                         $L_output_shaft               ) = $BG_stage_03.$M_shaft_BRF ! To Marker
 constr.type (                       $L_output_shaft               ) = 25                      ! Type
 constr.f (                1 ,       $L_output_shaft               ) = 0.0000000000000000E+00  ! Forces
+constr.disabled (                   $L_output_shaft               ) = 0                       ! Disabled
 constr.par (              1 ,       $L_output_shaft               ) = 0.0000000000000000E+00  ! [-] Lock Rotation in alpha
 constr.par (              2 ,       $L_output_shaft               ) = 0.0000000000000000E+00  ! [-] Lock Rotation in beta
 constr.par (              3 ,       $L_output_shaft               ) = 0.0000000000000000E+00  ! [-] Lock Rotation in gamma
