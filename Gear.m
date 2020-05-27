@@ -69,7 +69,7 @@ classdef Gear < Rack
         d_w;     % [mm],     Working pitch diameter
         d_bore;  % [mm],     Bore diameter
         z_n;     % [-],      Virtual number of teeth
-        V;       % [mm^3],   Volume
+        V;       % [m^3],    Volume
         mass;    % [kg],     Mass
         J_x;     % [kg-m^2], Mass moment of inertia (rot. axis)
         J_y;     % [kg-m^2], Mass moment of inertia
@@ -438,7 +438,7 @@ classdef Gear < Rack
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = Material.rho*1.0e-9;
+            rho = Material.rho;
             val = rho.*obj.V;
         end
         

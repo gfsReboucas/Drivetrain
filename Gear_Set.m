@@ -410,6 +410,23 @@ classdef Gear_Set < Gear
     end
     
     methods(Static)
+        function ex01 = example01_ISO_6336()
+            ex01 = Gear_Set('parallel', ...   % configuration
+                            8.0, ...          % normal module
+                            20.0, ...         % pressure angle
+                            [17 103], ...     % number of teeth
+                            100.0, ...        % face width
+                            [0.145 0.0], ...  % profile shift coefficient
+                            0.0, ...          % helix angle
+                            [1 1]*0, ...      % k
+                            [1 1]*0.5, ...    % bore ratio
+                            1, ...            % number of planets
+                            500.0, ...        % center distance
+                            'D', ...          % rack type
+                            Bering(), ...     %
+                            Shaft());         %
+        end
+        
         function Z_NT = interp_ZNT(N, line)
             switch line
                 case 1
