@@ -40,8 +40,11 @@ classdef Gear_Set < Gear
         configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
         N_p           (1, 1)          {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
         bearing       (1, :) Bearing;                                                                        % [-], Bearing array
-        out_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
+    end
+    
+    properties
         a_w           (1, :)          {mustBeFinite,  mustBePositive}                          = 13;         % [mm], Center distance
+        out_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
     end
     
     properties(Dependent)

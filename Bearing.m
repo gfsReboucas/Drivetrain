@@ -55,7 +55,7 @@ classdef Bearing
         
         function tab = disp(obj)
             if(isempty(obj))
-                disp("\t0x0 empty Rack object")
+                disp("\t0x0 empty Bearing object")
             else
                 tab_set = {"Type",                             "-+-",     "-",       obj.type;
                     "Translational Stiffness",          "K_x",     "N/m",     obj.K_x;

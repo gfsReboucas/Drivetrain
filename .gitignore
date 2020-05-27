@@ -51,3 +51,13 @@ test.m
 @NREL_5MW/NREL_5MW.SIMPACK_rigid.output/NREL_5MW.SIMPACK_rigid.lsa.sbr
 @NREL_5MW/bearing_stiffness_damping.xlsx
 @NREL_5MW/NREL_5MW.SIMPACK_rigid.output/NREL_5MW.SIMPACK_rigid.m
+@NREL_5MW/input_functions/read_if2.m
+save_each_subplot.m
+scale_05k.m
+tabela.xlsx
+@NREL_5MW/input_functions/if2_read.m
+*.tikz
+*.tex
+*.if2
+*.if2
+*.if2

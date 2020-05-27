@@ -154,4 +154,32 @@ classdef scaling_factor
             end
         end
     end
+    
+    %% Static method:
+    methods(Static)
+        function gamma = generate_gamma(n, N)
+            %GENERATE_GAMMA generates an array of values from power(10, -n) to 1 with N
+            % elements.
+            %
+            
+            exp_array = -n:0;
+            specific = 10.^exp_array;
+            
+            p = ceil(N/n);
+            gm_lin = zeros(n, p);
+            gm_log = zeros(n, p);
+            
+            for idx = 1:n
+                gm_lin(idx, :) = linspace(specific(idx) , specific(idx + 1) , p);
+                gm_log(idx, :) = logspace(exp_array(idx), exp_array(idx + 1), p);
+            end
+            
+            gm_lin = reshape(gm_lin, 1, n*p);
+            gm_log = reshape(gm_log, 1, n*p);
+            
+            gm = sort([gm_lin, gm_log]);
+            gamma = unique(gm(1:2:end));
+        end
+    end
+    
 end

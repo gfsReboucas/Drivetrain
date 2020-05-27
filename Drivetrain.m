@@ -448,7 +448,7 @@ classdef Drivetrain
 %                     [M, K] = obj.E
             end
             
-            % Symmetric eigenvalue problem [1]:
+            % Cholesky decomposition:
             L = chol(M, "lower");
             K_tilde = L\K/(L');
             
@@ -1395,7 +1395,7 @@ classdef Drivetrain
             warning("on", id_3);
         end
         
-        function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set)
+        function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp, obj_array] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set)
             %SCALED_SWEEP performs a sweep on the rated power parameter of
             % the object. Returns the scaling factors gamma
             %
@@ -1490,9 +1490,12 @@ classdef Drivetrain
                 gamma_0 = ones(size(obj_ref.gamma));
             end
             
-
+            obj_array = cell(n_P + 1, 1);
+            obj_array{1} = obj_ref;
+               
             for idx = 1:n_P
                 [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), n_R_scale, normalize_freq, N_freq, aspect_set, gamma_0);
+                obj_array{idx + 1} = obj_sca;
                 
                 gamma(:, idx) = gamma_0;
                 res(idx).stage = res_idx.stage;
