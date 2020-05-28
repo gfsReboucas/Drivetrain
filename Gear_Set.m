@@ -40,6 +40,7 @@ classdef Gear_Set < Gear
         configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
         N_p           (1, 1)          {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
         bearing       (1, :) Bearing;                                                                        % [-], Bearing array
+        Q (1, 1); % [-], ISO accuracy grade
     end
     
     properties
@@ -63,7 +64,7 @@ classdef Gear_Set < Gear
     end
     
     methods
-        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, bear, sha)
+        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, bear, sha, Q)
             if(nargin == 0)
                 configuration = "parallel";
                 m_n = 1.0;
@@ -78,6 +79,7 @@ classdef Gear_Set < Gear
                 rack_type = "A";
                 bear = [Bearing, Bearing];
                 sha = Shaft;
+                Q = 6;
             end
             
             if(length(z) < 2)
@@ -116,6 +118,7 @@ classdef Gear_Set < Gear
             obj.a_w = a_w;
             obj.bearing = bear;
             obj.out_shaft = sha;
+            obj.Q = Q;
         end
         
         function tab = disp(obj)
