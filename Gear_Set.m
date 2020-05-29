@@ -40,7 +40,6 @@ classdef Gear_Set < Gear
         configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
         N_p           (1, 1)          {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
         bearing       (1, :) Bearing;                                                                        % [-], Bearing array
-        Q (1, 1); % [-], ISO accuracy grade
     end
     
     properties
@@ -61,6 +60,8 @@ classdef Gear_Set < Gear
         c_gamma_beta;  % [N/(mm-um)], Mean value of mesh stiffness per unit face witdh (used for K_Hbeta, K_Fbeta)
         k_mesh;        % [N/m],       Mean value of mesh stiffness
         carrier;       % [-],         Planet carrier
+        d_Nf;          % [mm],        Start of active profile diameter
+        d_Na;          % [mm],        Active tip diameter
     end
     
     methods
@@ -102,7 +103,7 @@ classdef Gear_Set < Gear
                 error("prog:input", "Face width b should be equal for all gears.");
             end
             
-            obj@Gear(m_n, alpha_n, rack_type, z, b, x, beta, k, bore_R);
+            obj@Gear(m_n, alpha_n, rack_type, z, b, x, beta, k, bore_R, Q);
             
             if(strcmp(configuration, "planetary"))
                 obj.configuration = configuration;
@@ -118,7 +119,6 @@ classdef Gear_Set < Gear
             obj.a_w = a_w;
             obj.bearing = bear;
             obj.out_shaft = sha;
-            obj.Q = Q;
         end
         
         function tab = disp(obj)
@@ -1246,42 +1246,41 @@ classdef Gear_Set < Gear
         end
         
         function val = get.eps_alpha(obj)
-            B = @(x)(obj.h_fP - x*obj.m_n + obj.rho_fP*(sind(obj.alpha_n) - 1.0));
-
-            d_soi1 = 2.0*sqrt((obj.d(1)/2.0 - B(obj.x(1)))^2 + (B(obj.x(1))/tand(obj.alpha_t))^2);
-            d_soi2 = 2.0*sqrt((obj.d(2)/2.0 - B(obj.x(2)))^2 + (B(obj.x(2))/tand(obj.alpha_t))^2);
-
-            % roll angles from the root form diameter to the working pitch point:
-            xi_fw1_1 = tand(obj.alpha_wt); % limited by the base diameters
-            xi_fw2_1 = tand(obj.alpha_wt);
+            xi_Nfw1 = zeros(3, 1);
+            xi_Nfw2 = zeros(3, 1);
             
-            xi_fw1_2 = tand(obj.alpha_wt) - tand(acosd(obj.d_b(1)/d_soi1)); % limited by the root form diameters
-            xi_fw2_2 = tand(obj.alpha_wt) - tand(acosd(obj.d_b(2)/d_soi2));
+            % roll angles from the root form diameter to the working pitch point, 
+            % limited by the:
+            % (1) base diameters: Eq. (33)
+            xi_Nfw1(1) = tand(obj.alpha_wt);
+            xi_Nfw2(1) = xi_Nfw1(1);
+            
+            % (2) root form diameters: Eq. (34-35)
+            xi_Nfw1(2) = xi_Nfw1(1) - tan(arccos(obj.d_b(1)/obj.d_Nf(1)));
+            xi_Nfw2(2) = xi_Nfw2(1) - tan(arccos(obj.d_b(2)/obj.d_Nf(2)));
+            
+            % (3) active tip diameters of the wheel/pinion: Eq. (36-37)
+            xi_Nfw1(3) = (tan(arccos(obj.d_b(2)/self.d_Na(2))) - xi_Nfw1(1))*obj.z(2)/obj.z(1);
+            xi_Nfw2(3) = (tan(arccos(obj.d_b(1)/self.d_Na(1))) - xi_Nfw2(1))*obj.z(1)/obj.z(2);
+            
+            xi_Nfw1(xi_Nfw1 < 0.0) = [];
+            xi_Nfw2(xi_Nfw2 < 0.0) = [];
 
-            xi_fw1_3 = (tand(acosd(obj.d_b(2)/obj.d_a(2))) - tand(obj.alpha_wt))*(obj.z(2)/obj.z(1)); % limited by the the tip diameters of the wheel/pinion
-            xi_fw2_3 = (tand(acosd(obj.d_b(1)/obj.d_a(1))) - tand(obj.alpha_wt))*(obj.z(1)/obj.z(2));
+            xi_Nfw1 = min(xi_Nfw1);
+            xi_Nfw2 = min(xi_Nfw2);
             
-            xi_fw1 = [xi_fw1_1, xi_fw1_2, xi_fw1_3];
-            xi_fw2 = [xi_fw2_1, xi_fw2_2, xi_fw2_3];
-            
-            xi_fw1(xi_fw1 < 0.0) = [];
-            xi_fw2(xi_fw2 < 0.0) = [];
-
-            xi_fw1 = min(xi_fw1);
-            xi_fw2 = min(xi_fw2);
-            
-            if(isempty(xi_fw1) || isempty(xi_fw2))
-                error("Auxiliary coefficients xi_fw are all lower than 0.");
+            if(isempty(xi_Nfw1) || isempty(xi_Nfw2))
+                error("Auxiliary coefficients xi_Nfw are all lower than 0.");
             end
 
-            % roll angle from the working pitch point to the tip diameter:
-            xi_aw1 = xi_fw2*obj.z(2)/obj.z(1);
+            % roll angle from the working pitch point to the active tip diameter: Eq. (38)
+            xi_Naw1 = xi_Nfw2*obj.z(2)/obj.z(1);
 
             % pinion angular pitch:
             tau_1 = 2.0*pi/obj.z(1);
 
-            % Transverse contact ratio:
-            val = (xi_fw1 + xi_aw1)/tau_1;
+            % Eq. (32)
+            val = (xi_Nfw1 + xi_Naw1)/tau_1;
         end
         
         function val = get.eps_beta(obj)
@@ -1334,6 +1333,47 @@ classdef Gear_Set < Gear
         
         function val = get.c_gamma_beta(obj)
             val = 0.85*obj.c_gamma_alpha;
+        end
+        
+        function dNf = get.d_Nf(obj)
+            % ISO 21771, Sec. 5.4.1, Eqs. (64-67)
+            
+            d_Fa = obj.d_a;
+            dNf(1) = sqrt((2.0*obj.a_w*sind(obj.alpha_wt) - sign(obj.z(2))*sqrt(d_Fa(2)^2 - obj.d_b(2)^2))^2 + obj.d_b(1)^2);
+            dNf(2) = sqrt((2.0*obj.a_w*sind(obj.alpha_wt) -                sqrt(d_Fa(1)^2 - obj.d_b(1)^2))^2 + obj.d_b(2)^2);
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                dNf(3) = nan;
+            end
+            
+            for idx = 1:length(obj.z)
+                if(obj.d_Ff(idx) > dNf(idx))
+                    dNf(idx) = obj.d_Ff(idx);
+                end
+            end
+        end
+        
+        function dNa = get.d_Na(obj)
+            % ISO 21771, Sec. 5.4.1, Eqs. (68-69)
+            
+            aw = 2.0*obj.a_w*sind(obj.alpha_wt);
+            if(obj.d_Nf(1) == obj.d_Ff(1))
+                dNa2 = sqrt((aw -                sqrt(obj.d_Ff(1)^2 - obj.d_b(1)^2))^2 + obj.d_b(2)^2);
+            else
+                dNa2 = self.d_a(2); % d_Fa
+            end
+            
+            if(obj.d_Nf(2) == obj.d_Ff(2))
+                dNa1 = sqrt((aw - sign(obj.z(2))*sqrt(obj.d_Ff(2)^2 - obj.d_b(2)^2))^2 + obj.d_b(1)^2);
+            else
+                dNa1 = obj.d_a(1); % d_Fa
+            end
+            
+            dNa = [dNa1, dNa2];
+            if(strcmp(obj.configuration, 'planetary'))
+                dNa(3) = nan;
+            end
+
         end
         
     end

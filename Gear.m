@@ -45,10 +45,17 @@ classdef Gear < Rack
         beta      (1, :) {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 0.0; % [deg.], Helix angle (at reference cylinder)
         k         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Tip alteration coefficient
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
+        Q         (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive}    = 6.0; % [-], ISO accuracy grade
     end
     
     properties(Access = public)
         b         (1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 13;  % [mm],   Face width
+    end
+    
+    properties(Access = private)
+        m_int;
+        d_int;
+        b_int;
     end
     
     properties(Dependent)
@@ -74,10 +81,19 @@ classdef Gear < Rack
         J_x;     % [kg-m^2], Mass moment of inertia (rot. axis)
         J_y;     % [kg-m^2], Mass moment of inertia
         J_z;     % [kg-m^2], Mass moment of inertia
+        f_pt;    % [],       Single pitch deviation according to Section 6.1 of ISO 1328-1 [2]
+        F_p;     % [],       Total cumulative pitch deviation according to Sec. 6.3 of ISO 1328-1 [2]
+        F_alpha; % [],       Total profile deviation according to Section 6.4 of ISO 1328-1 [2]
+        f_beta;  % [],       Total helix deviation according to Section 6.5 of ISO 1328-1 [2]
+        f_falpha;% [],       Profile form deviation according to App. B.2.1 of ISO 1328-1 [2]
+        f_Halpha;% [],       Profile slope deviation according to App. B.2.2 of ISO 1328-1 [2]
+        f_fbeta; % [],       Helix form deviation according to App. B.2.3 of ISO 1328-1 [2]
+        f_Hbeta; % [],       Helix slope deviation according to App. B.2.3 of ISO 1328-1 [2]
+        d_Ff;    % [mm],     Root form diameter
     end
     
     methods
-        function obj = Gear(m_n, alpha_n, type, z, b, x, beta, k, bore_R)
+        function obj = Gear(m_n, alpha_n, type, z, b, x, beta, k, bore_R, Q)
             if(nargin == 0)
                 type = "A";
                 m_n = 1.0;
@@ -89,6 +105,7 @@ classdef Gear < Rack
                 beta = 0.0;
                 k = 0.0;
                 bore_R = 0.5;
+                Q = 6.0;
             end
             
             obj@Rack(type, m_n, alpha_n);
@@ -99,6 +116,25 @@ classdef Gear < Rack
             obj.beta       = beta;
             obj.k          = k;
             obj.bore_ratio = bore_R;
+            obj.Q          = Q;
+            
+            range_b = [  0.0,   4.0, 10.0, 20.0, 40.0, 80.0, 160.0, 250.0, ...
+                       400.0, 650.0,  1.0e3];
+            range_d = [0.0,   5.0,  20.0,  50.0, 125.0,  280.0, 560.0, 1.0e3, ...
+                       1.6e3, 2.5e3, 4.0e3, 6.0e3, 8.0e3, 10.0e3];
+            range_m = [ 0.0,  0.5, 2.0, 3.5, 6.0, 10.0, 16.0, 25.0,  ...
+                       40.0, 70.0];
+
+            idx_b = find(range_b > obj.b, 1, "first");
+            obj.b_int = geomean(range_b(idx_b-1:idx_b));
+            idx_m = find(range_m > obj.m_n, 1, "first");
+            obj.m_int = geomean(range_m(idx_m-1:idx_m));
+            
+            for idx = 1:length(obj.d)
+                dd  = obj.d(idx);
+                jdx = find(range_d > dd, 1, "first");
+                obj.d_int(idx) = geomean(range_d(jdx-1:jdx));
+            end
         end
         
         function tab = disp(obj)
@@ -324,6 +360,37 @@ classdef Gear < Rack
             y = [y, C(2)];
             
         end
+        
+        function val = round_ISO(obj, x)
+            % Credits for the original version of this method go to:
+            % E. M. F. Donéstevez, “Python library for design of spur and 
+            % helical gears transmissions.” Zenodo, 09-Feb-2020, 
+            % doi: 10.5281/ZENODO.3660527.
+            %
+            % It was modified to account for the case where x is an array 
+            % and to remove the second argument.
+            %
+
+            x = x*power(2.0, (obj.Q - 5.0)/2.0);
+            val = zeros(size(x));
+            
+            for idx = 1:length(x)
+                xx = x(idx);
+                if(xx >= 10.0)
+                    val(idx) = round(xx);
+                elseif((5.0 <= xx) && (xx <= 10.0))
+                    y = mod(mod(xx ,1), 1);
+                    if((mod(xx, 1) <= 0.25) || ((0.5 <= y) && (y <= 0.75)))
+                        val(idx) = floor(2.0*xx)/2.0;
+                    else
+                        val(idx) = ceil(2.0*xx)/2.0;
+                    end
+                else
+                    val(idx) = round(xx, 1);
+                end
+            end
+            
+        end
     end
     
     %% Set methods:
@@ -469,6 +536,51 @@ classdef Gear < Rack
         function val = get.J_z(obj)
             % [kg-m^2], Mass moment of inertia
             val = obj.J_y;
+        end
+        
+        function val = get.f_pt(obj)
+            val = 0.3*(obj.m_int + 0.4*sqrt(obj.d_int)) + 4.0;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.F_p(obj)
+            val = 0.3*obj.m_int + 1.25*sqrt(obj.d_int) + 7.0;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.F_alpha(obj)
+            val = 3.2*sqrt(obj.m_int) + 0.22*sqrt(obj.d_int) + 0.7;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_beta(obj)
+            val = 0.1*sqrt(obj.d_int) + 0.63*sqrt(obj.b_int) + 4.2;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_falpha(obj)
+            val = 2.5*sqrt(obj.m_int) + 0.17*sqrt(obj.d_int) + 0.5;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_Halpha(obj)
+            val = 2.0*sqrt(obj.m_int) + 0.14*sqrt(obj.d_int) + 0.5;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_fbeta(obj)
+            val = (0.07*sqrt(obj.d_int) + 0.45*sqrt(obj.b_int) + 3.0);
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_Hbeta(obj)
+            val = obj.f_fbeta;
+        end
+        
+        function val = get.d_Ff(obj)
+            % ISO 21771, Sec. 7.6, Eq. (128)
+            B = (obj.h_fP - obj.x*obj.m_n + obj.rho_fP*(sind(obj.alpha_n) - 1.0));
+            val = sqrt((obj.d*sind(obj.alpha_t) - 2.0*B/sind(self.alpha_t))^2 + obj.d_b^2);
         end
         
     end
