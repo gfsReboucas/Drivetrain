@@ -46,26 +46,21 @@ classdef Rack
     end
     
     methods
-        function obj = Rack(type, m, alpha_P)
+        function obj = Rack(varargin)
             %RACK creates a Rack object with type, module and pressure
             % angle alpha_P.
+            default = {'type'   , 'A', ...
+                       'm'      , 1.0, ...
+                       'alpha_P', 20.0};
             
-            if(nargin == 0)
-                type = "A";
-                m = 1.0;
-                alpha_P = 20.0;
-            end
-            
-            if(~exist("alpha_P", "var"))
-                alpha_P = 20.0;
-            end
+            default = process_varargin(varargin, default);
             
             % fit the module to [2]:
-            m = Rack.module(m, "calc", "nearest");
+            m = Rack.module(default.m, "calc", "nearest");
             
-            obj.type = type;
-            obj.m = m;
-            obj.alpha_P  = alpha_P;
+            obj.type     = default.type;
+            obj.m        = m;
+            obj.alpha_P  = default.alpha_P;
             obj.U_FP     = 0.0;
             obj.alpha_FP = 0.0;
         end

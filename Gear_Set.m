@@ -65,7 +65,7 @@ classdef Gear_Set < Gear
     end
     
     methods
-        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, bear, sha, Q)
+        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, bear, sha, Q, Ra)
             if(nargin == 0)
                 configuration = "parallel";
                 m_n = 1.0;
@@ -81,6 +81,7 @@ classdef Gear_Set < Gear
                 bear = [Bearing, Bearing];
                 sha = Shaft;
                 Q = 6;
+                Ra = 1;
             end
             
             if(length(z) < 2)
@@ -103,7 +104,7 @@ classdef Gear_Set < Gear
                 error("prog:input", "Face width b should be equal for all gears.");
             end
             
-            obj@Gear(m_n, alpha_n, rack_type, z, b, x, beta, k, bore_R, Q);
+            obj@Gear(m_n, alpha_n, rack_type, z, b, x, beta, k, bore_R, Q, Ra);
             
             if(strcmp(configuration, "planetary"))
                 obj.configuration = configuration;
@@ -345,68 +346,60 @@ classdef Gear_Set < Gear
             hold off;
         end
         
-        function ks = toKISSsoft(obj)
-            ks = actxserver('KISSsoftCOM.KISSsoft');
-            ks.SetSilentMode(true);
-            
+        function ks = KISSsoft(obj)
             if(strcmp(obj.configuration, "parallel"))
-                ks.GetModule('Z012', false);
+                module = 'Z012';
                 std_file = 'CylGearPair 1 (spur gear).Z12';
                 geo_meth = false;
             elseif(strcmp(obj.configuration, "planetary"))
-                ks.GetModule('Z014', false);
+                module = 'Z014';
                 std_file = 'PlanetarySet 1 (ISO6336).Z14';
                 geo_meth = true;
             end
             
+            ks = KISSsoftCOM(module);
+            
             file_name = sprintf('C:\\Program Files (x86)\\KISSsoft 03-2017\\example\\%s', std_file);
             
             try
-                ks.LoadFile(file_name);
-            catch ks_err
-                ks.ReleaseModule();
-                disp(ks_err);
-                return;
+                ks.load_file(file_name);
+            catch err
+                delete(ks);
+                error(err.identifier, "%s", err.message);
             end
             
-            ks.SetVar('ZS.AnzahlZwi', num2str(        obj.N_p));              % number of planets
-            ks.SetVar('ZS.Geo.mn'   , num2str(        obj.m_n     , '%.6f')); % normal module
-            ks.SetVar('ZP[0].a'     , num2str(        obj.a_w     , '%.6f')); % center distance
-            ks.SetVar('ZS.Geo.alfn' , num2str(deg2rad(obj.alpha_n), '%.6f')); % normal pressure angle
-            ks.SetVar('ZS.Geo.beta' , num2str(deg2rad(obj.beta)   , '%.6f')); % helix angle
+            ks.set_var('ZS.AnzahlZwi',         obj.N_p);      % number of planets
+            ks.set_var('ZS.Geo.mn'   ,         obj.m_n);      % normal module
+            ks.set_var('ZP[0].a'     ,         obj.a_w     ); % center distance
+            ks.set_var('ZS.Geo.alfn' , deg2rad(obj.alpha_n)); % normal pressure angle
+            ks.set_var('ZS.Geo.beta' , deg2rad(obj.beta)   ); % helix angle
             
-            ks.SetVar('RechSt.GeometrieMeth', num2str(geo_meth));    % tooth geometry according to ISO 21771:2007
-            
-            Q      = 6;         % [-],  ISO accuracy grade
-            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
+            ks.set_var('RechSt.GeometrieMeth', geo_meth);    % tooth geometry according to ISO 21771:2007
             
             for idx = 1:numel(obj.z)
-                ks.SetVar(sprintf('ZR[%d].z'                   , idx - 1), num2str(obj.z(idx), '%d'));
-                ks.SetVar(sprintf('ZR[%d].x.nul'               , idx - 1), num2str(obj.x(idx), '%.6f'));
-                ks.SetVar(sprintf('ZR[%d].b'                   , idx - 1), num2str(obj.b     , '%.6f'));
-                ks.SetVar(sprintf('ZR[%d].Tool.type'           , idx - 1), num2str(2));
-                ks.SetVar(sprintf('ZR[%d].Tool.RefProfile.name', idx - 1), sprintf('1.25 / 0.38 / 1.0 ISO 53:1998 Profil %s', obj.type));
+                ks.set_var(sprintf('ZR[%d].z'                   , idx - 1), obj.z(idx), '%d');
+                ks.set_var(sprintf('ZR[%d].x.nul'               , idx - 1), obj.x(idx));
+                ks.set_var(sprintf('ZR[%d].b'                   , idx - 1), obj.b     );
+                ks.set_var(sprintf('ZR[%d].Tool.type'           , idx - 1), 2);
+                ks.set_var(sprintf('ZR[%d].Tool.RefProfile.name', idx - 1), sprintf('1.25 / 0.38 / 1.0 ISO 53:1998 Profil %s', obj.type));
                 
-                ks.SetVar(sprintf('ZR[%d].Vqual', idx - 1), num2str(    Q  , '%d'));
-                ks.SetVar(sprintf('ZR[%d].RAH'  , idx - 1), num2str(    R_a, '%.1f'));
-                ks.SetVar(sprintf('ZR[%d].RAF'  , idx - 1), num2str(6.0*R_a, '%.1f'));
+                ks.set_var(sprintf('ZR[%d].Vqual', idx - 1), obj.Q,   '%d');
+                ks.set_var(sprintf('ZR[%d].RAH'  , idx - 1), obj.R_a, '%.1f');
+                ks.set_var(sprintf('ZR[%d].RAF'  , idx - 1), obj.R_z, '%.1f');
                 
                 % material properties:
-                ks.SetVar(sprintf('ZR[%d].mat.bez'    , idx - 1), '18CrNiMo7-6');
-                ks.SetVar(sprintf('ZR[%d].WerkstArt'  , idx - 1), 'Case-carburized steel');
-                ks.SetVar(sprintf('ZR[%d].WerkstBh'   , idx - 1), 'case-hardened');
-                ks.SetVar(sprintf('ZR[%d].mat.comment', idx - 1), 'ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28');
+                ks.set_var(sprintf('ZR[%d].mat.bez'    , idx - 1), '18CrNiMo7-6');
+                ks.set_var(sprintf('ZR[%d].WerkstArt'  , idx - 1), 'Case-carburized steel');
+                ks.set_var(sprintf('ZR[%d].WerkstBh'   , idx - 1), 'case-hardened');
+                ks.set_var(sprintf('ZR[%d].mat.comment', idx - 1), 'ISO 6336-5 Figure 9/10 (MQ), Core hardness >=25HRC Jominy J=12mm<HRC28');
             end
             
-            ks.SetVar('ZS.Oil.SchmierTyp'  , 'Oil: ISO-VG 220');
-            
-            if(~ks.CalculateRetVal())
-                ks.ReleaseModule();
-                error("Error in KISSsoft calculation.");
+            if(~ks.calculate())
+                delete(ks);
             end
             
             if(nargout == 0)
-                ks.ReleaseModule();
+                delete(ks);
                 clear("ks");
             end
         end

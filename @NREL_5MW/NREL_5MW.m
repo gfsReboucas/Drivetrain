@@ -203,6 +203,7 @@ classdef NREL_5MW < Drivetrain
             alpha_n = 20.0;        % [deg.],   Pressure angle (at reference cylinder)
             rack_type = "A";       % [-],      Type of the basic rack from A to D
             Q = 6.0;
+            Ra = 0.8;
             
             switch(idx)
                 case 1
@@ -283,7 +284,9 @@ classdef NREL_5MW < Drivetrain
                     error("prog:input", "Option [%d] is NOT valid.", idx);
             end
             
-            g_set = Gear_Set(config, m_n, alpha_n, z, b, x, beta, k, bore_R, p, a_w, rack_type, NREL_5MW.bearing(idx), NREL_5MW.shaft(idx), Q);
+            g_set = Gear_Set(config, m_n, alpha_n, z, b, x, beta, k, ...
+                             bore_R, p, a_w, rack_type, NREL_5MW.bearing(idx), ...
+                             NREL_5MW.shaft(idx), Q, Ra);
         end
         
         function property_estimation()

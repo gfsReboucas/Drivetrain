@@ -917,7 +917,7 @@ classdef Drivetrain
                 end
                 
                 if(save_report)
-                    if(strcmp(class(obj), "Drivetrain"))
+                    if(strcmpi(class(obj), "Drivetrain"))
                         report_name = sprintf("%s\\stage_%02d.rtf" , pwd, idx);
                         file_name   = sprintf("%s\\stage_%02d.Z0%d", pwd, idx, template_code);
                     else

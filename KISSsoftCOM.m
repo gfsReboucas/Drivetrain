@@ -1,4 +1,10 @@
 classdef KISSsoftCOM
+    %KISSSOFTCOM Wrapper class to deal with KISSsoft's COM interface. Based
+    % on code provided by KISSsoft support team. More details about
+    % KISSsoft can be found on [1].
+    % [1] https://www.kisssoft.com/en
+    %
+    
     properties(Access = private)
         COM;
     end
@@ -25,7 +31,7 @@ classdef KISSsoftCOM
                 error('Variable [%s] does not exist.', upper(name));
             end
             
-            flag = obj.COM.SetVar(name, num2string(val, 10));
+            flag = obj.COM.SetVar(name, num2str(val, 10));
             if(flag == false)
                 error("Could not set variable [%s] to %.3f.", name, val);
             end
@@ -43,6 +49,10 @@ classdef KISSsoftCOM
             val = str2double(val);
         end
         
+        function val = get_version(obj)
+            val = obj.COM.GetKsoftVersion();
+        end
+        
         function val = calculate(obj)
             val = true;
             if(~obj.is_module_loaded())
@@ -51,7 +61,7 @@ classdef KISSsoftCOM
             end
             
             if(~obj.COM.CalculateRetVal())
-                error('Error(s) in the calculation');
+                error('Error(s) during calculation');
             else
                 val = true;
             end
@@ -88,6 +98,14 @@ classdef KISSsoftCOM
             end
             
             obj.COM.SaveFile(file_name);
+        end
+        
+        function write_report(obj, template, name, show_flag, format)
+            obj.COM.ReportWithParameters(template, name, show_flag, format);
+        end
+        
+        function report(obj, flag)
+            obj.COM.Report(flag);
         end
         
         function delete(obj)

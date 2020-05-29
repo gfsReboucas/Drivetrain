@@ -46,6 +46,7 @@ classdef Gear < Rack
         k         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Tip alteration coefficient
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
         Q         (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive}    = 6.0; % [-], ISO accuracy grade
+        R_a;           % [um], arithmetic mean roughness
     end
     
     properties(Access = public)
@@ -81,19 +82,20 @@ classdef Gear < Rack
         J_x;     % [kg-m^2], Mass moment of inertia (rot. axis)
         J_y;     % [kg-m^2], Mass moment of inertia
         J_z;     % [kg-m^2], Mass moment of inertia
-        f_pt;    % [],       Single pitch deviation according to Section 6.1 of ISO 1328-1 [2]
-        F_p;     % [],       Total cumulative pitch deviation according to Sec. 6.3 of ISO 1328-1 [2]
-        F_alpha; % [],       Total profile deviation according to Section 6.4 of ISO 1328-1 [2]
-        f_beta;  % [],       Total helix deviation according to Section 6.5 of ISO 1328-1 [2]
-        f_falpha;% [],       Profile form deviation according to App. B.2.1 of ISO 1328-1 [2]
-        f_Halpha;% [],       Profile slope deviation according to App. B.2.2 of ISO 1328-1 [2]
-        f_fbeta; % [],       Helix form deviation according to App. B.2.3 of ISO 1328-1 [2]
-        f_Hbeta; % [],       Helix slope deviation according to App. B.2.3 of ISO 1328-1 [2]
+        f_pt;    % [um],     Single pitch deviation according to Section 6.1 of ISO 1328-1 [2]
+        F_p;     % [um],     Total cumulative pitch deviation according to Sec. 6.3 of ISO 1328-1 [2]
+        F_alpha; % [um],     Total profile deviation according to Section 6.4 of ISO 1328-1 [2]
+        f_beta;  % [um],     Total helix deviation according to Section 6.5 of ISO 1328-1 [2]
+        f_falpha;% [um],     Profile form deviation according to App. B.2.1 of ISO 1328-1 [2]
+        f_Halpha;% [um],     Profile slope deviation according to App. B.2.2 of ISO 1328-1 [2]
+        f_fbeta; % [um],     Helix form deviation according to App. B.2.3 of ISO 1328-1 [2]
+        f_Hbeta; % [um],     Helix slope deviation according to App. B.2.3 of ISO 1328-1 [2]
         d_Ff;    % [mm],     Root form diameter
+        R_z;     % [um],     Mean peak-to-valley surface roughness
     end
     
     methods
-        function obj = Gear(m_n, alpha_n, type, z, b, x, beta, k, bore_R, Q)
+        function obj = Gear(m_n, alpha_n, type, z, b, x, beta, k, bore_R, Q, Ra)
             if(nargin == 0)
                 type = "A";
                 m_n = 1.0;
@@ -106,6 +108,7 @@ classdef Gear < Rack
                 k = 0.0;
                 bore_R = 0.5;
                 Q = 6.0;
+                Ra = 1.0;
             end
             
             obj@Rack(type, m_n, alpha_n);
@@ -117,6 +120,7 @@ classdef Gear < Rack
             obj.k          = k;
             obj.bore_ratio = bore_R;
             obj.Q          = Q;
+            obj.R_a        = Ra;
             
             range_b = [  0.0,   4.0, 10.0, 20.0, 40.0, 80.0, 160.0, 250.0, ...
                        400.0, 650.0,  1.0e3];
@@ -583,6 +587,9 @@ classdef Gear < Rack
             val = sqrt((obj.d*sind(obj.alpha_t) - 2.0*B/sind(self.alpha_t))^2 + obj.d_b^2);
         end
         
+        function val = get.R_z(obj)
+            val = 6.0*obj.R_a;
+        end
     end
     
 end
