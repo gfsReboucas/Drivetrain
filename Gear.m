@@ -95,32 +95,33 @@ classdef Gear < Rack
     end
     
     methods
-        function obj = Gear(m_n, alpha_n, type, z, b, x, beta, k, bore_R, Q, Ra)
-            if(nargin == 0)
-                type = "A";
-                m_n = 1.0;
-                alpha_n = 20.0;
-                
-                z = 13;
-                b = 13.0;
-                x = 0.0;
-                beta = 0.0;
-                k = 0.0;
-                bore_R = 0.5;
-                Q = 6.0;
-                Ra = 1.0;
-            end
+        function obj = Gear(varargin)
+            default = {'m_n'        , 1.0,  ...
+                       'alpha_n'    , 2.0,  ...
+                       'type'       , 'A',  ...
+                       'z'          , 13,   ...
+                       'b'          , 13.0, ...
+                       'x'          , 0.0,  ...
+                       'beta'       , 0.0,  ...
+                       'k'          , 0.0,  ...
+                       'bore_ratio' , 0.5,  ...
+                       'Q'          , 6.0,  ...
+                       'R_a'        , 0.8};
             
-            obj@Rack(type, m_n, alpha_n);
+            default = process_varargin(varargin, default);
+            
+            obj@Rack('type'   , default.type, ...
+                     'm'      , default.m_n, ...
+                     'alpha_P', default.alpha_n);
 
-            obj.z          = z;
-            obj.b          = b;
-            obj.x          = x;
-            obj.beta       = beta;
-            obj.k          = k;
-            obj.bore_ratio = bore_R;
-            obj.Q          = Q;
-            obj.R_a        = Ra;
+            obj.z          = default.z;
+            obj.b          = default.b;
+            obj.x          = default.x;
+            obj.beta       = default.beta;
+            obj.k          = default.k;
+            obj.bore_ratio = default.bore_ratio;
+            obj.Q          = default.Q;
+            obj.R_a        = default.R_a;
             
             range_b = [  0.0,   4.0, 10.0, 20.0, 40.0, 80.0, 160.0, 250.0, ...
                        400.0, 650.0,  1.0e3];
@@ -218,7 +219,7 @@ classdef Gear < Rack
             if(obj.z > 0)
                 [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d/2, obj.z);
                 X =  X_tmp + C(1);
-                Y =  Z_tmp*obj.b;
+                Y =  Z_tmp.*obj.b;
                 Z = -Y_tmp - C(2);
 
                 surf(X, Y, Z, plot_prop{:});
@@ -229,13 +230,13 @@ classdef Gear < Rack
                 % External cylinder
                 [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d_bore/2, abs(obj.z));
                 X =  X_tmp + C(1);
-                Y =  Z_tmp*obj.b;
+                Y =  Z_tmp.*obj.b;
                 Z = -Y_tmp - C(2);
 
                 % Internal cylinder
                 [X2_tmp, Y2_tmp, Z2_tmp] = cylinder(obj.d/2, abs(obj.z));
                 X2 =  X2_tmp + C(1);
-                Y2 =  Z2_tmp*obj.b;
+                Y2 =  Z2_tmp.*obj.b;
                 Z2 = -Y2_tmp - C(2);
 
                 [x1_tmp, y1_tmp, z1_tmp] = fill_ring(obj.d_bore/2, obj.d/2, abs(obj.z));
@@ -272,8 +273,8 @@ classdef Gear < Rack
                 error("prog:input", "Too many variables.");
             end
             
-            X = 0.5*obj.b*[1 -1 -1  1] + C(1);
-            Y = 0.5*obj.d*[1  1 -1 -1] + C(2);
+            X = 0.5.*obj.b.*[1 -1 -1  1] + C(1);
+            Y = 0.5.*obj.d.*[1  1 -1 -1] + C(2);
             h = fill(X, Y, plot_prop{:});
             
             axis equal;
@@ -375,7 +376,7 @@ classdef Gear < Rack
             % and to remove the second argument.
             %
 
-            x = x*power(2.0, (obj.Q - 5.0)/2.0);
+            x = x.*power(2.0, (obj.Q - 5.0)/2.0);
             val = zeros(size(x));
             
             for idx = 1:length(x)
@@ -385,9 +386,9 @@ classdef Gear < Rack
                 elseif((5.0 <= xx) && (xx <= 10.0))
                     y = mod(mod(xx ,1), 1);
                     if((mod(xx, 1) <= 0.25) || ((0.5 <= y) && (y <= 0.75)))
-                        val(idx) = floor(2.0*xx)/2.0;
+                        val(idx) = floor(2.0.*xx)/2.0;
                     else
-                        val(idx) = ceil(2.0*xx)/2.0;
+                        val(idx) = ceil(2.0.*xx)/2.0;
                     end
                 else
                     val(idx) = round(xx, 1);
@@ -487,7 +488,7 @@ classdef Gear < Rack
         
         function val = get.z_n(obj)
             % [-],      Virtual number of teeth
-            val = obj.z/(cosd(obj.beta).*cosd(obj.beta_b)^2);
+            val = obj.z/(cosd(obj.beta).*cosd(obj.beta_b).^2);
         end
         
         function val = get.V(obj)
@@ -583,12 +584,12 @@ classdef Gear < Rack
         
         function val = get.d_Ff(obj)
             % ISO 21771, Sec. 7.6, Eq. (128)
-            B = (obj.h_fP - obj.x*obj.m_n + obj.rho_fP*(sind(obj.alpha_n) - 1.0));
-            val = sqrt((obj.d*sind(obj.alpha_t) - 2.0*B/sind(self.alpha_t))^2 + obj.d_b^2);
+            B = (obj.h_fP - obj.x.*obj.m_n + obj.rho_fP.*(sind(obj.alpha_n) - 1.0));
+            val = sqrt((obj.d.*sind(obj.alpha_t) - 2.0.*B./sind(obj.alpha_t)).^2 + obj.d_b.^2);
         end
         
         function val = get.R_z(obj)
-            val = 6.0*obj.R_a;
+            val = 6.0.*obj.R_a;
         end
     end
     

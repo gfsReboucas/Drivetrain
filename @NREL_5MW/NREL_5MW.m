@@ -96,7 +96,15 @@ classdef NREL_5MW < Drivetrain
                 end
             end
             
-            obj@Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G);
+            obj@Drivetrain('N_stage',    N_st, ...
+                           'stage',      stage, ...
+                           'P_rated',    P_r, ...
+                           'n_rotor',    n_r, ...
+                           'main_shaft', inp_shaft, ...
+                           'm_Rotor',    m_R, ...
+                           'J_Rotor',    J_R, ...
+                           'm_Gen',      m_G, ...
+                           'J_Gen',      J_G);
             obj.dynamic_model =  "Kahraman_1994";
             
             obj.gamma = scaling_factor(par, gm_val);
@@ -200,8 +208,6 @@ classdef NREL_5MW < Drivetrain
             % the tip alteration coefficients were taken from KISSsoft.
             %
 
-            alpha_n = 20.0;        % [deg.],   Pressure angle (at reference cylinder)
-            rack_type = "A";       % [-],      Type of the basic rack from A to D
             Q = 6.0;
             Ra = 0.8;
             
@@ -229,7 +235,7 @@ classdef NREL_5MW < Drivetrain
                     z = [z_s z_p z_r];
                     x = [x_s x_p x_r];
                     k = [k_s k_p k_r];
-                    bore_R = [bore_Rs bore_Rp bore_Rr];
+                    bore_ratio = [bore_Rs bore_Rp bore_Rr];
                     config = "planetary";
                     
                 case 2
@@ -255,7 +261,7 @@ classdef NREL_5MW < Drivetrain
                     z = [z_s z_p z_r];
                     x = [x_s x_p x_r];
                     k = [k_s k_p k_r];
-                    bore_R = [bore_Rs bore_Rp bore_Rr];
+                    bore_ratio = [bore_Rs bore_Rp bore_Rr];
                     config = "planetary";
 
                 case 3
@@ -277,16 +283,25 @@ classdef NREL_5MW < Drivetrain
                     z = [z_1 z_2];
                     x = [x_1 x_2];
                     k = [k_1 k_2];
-                    bore_R = [bore_R1 bore_R2];
+                    bore_ratio = [bore_R1 bore_R2];
                     config = "parallel";
                     
                 otherwise
                     error("prog:input", "Option [%d] is NOT valid.", idx);
             end
             
-            g_set = Gear_Set(config, m_n, alpha_n, z, b, x, beta, k, ...
-                             bore_R, p, a_w, rack_type, NREL_5MW.bearing(idx), ...
-                             NREL_5MW.shaft(idx), Q, Ra);
+            g_set = Gear_Set('configuration', config, ...
+                             'm_n'          , m_n, ...
+                             'z'            , z, ...
+                             'b'            , b, ...
+                             'x'            , x, ...
+                             'beta'         , beta, ...
+                             'k'            , k, ...
+                             'bore_ratio'   , bore_ratio, ...
+                             'N_p'          , p, ...
+                             'a_w'          , a_w, ...
+                             'bearing'      , NREL_5MW.bearing(idx), ...
+                             'shaft'        , NREL_5MW.shaft(idx));
         end
         
         function property_estimation()

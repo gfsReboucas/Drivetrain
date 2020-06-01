@@ -65,61 +65,74 @@ classdef Gear_Set < Gear
     end
     
     methods
-        function obj = Gear_Set(configuration, m_n, alpha_n, z, b, x, beta, k, bore_R, N_p, a_w, rack_type, bear, sha, Q, Ra)
-            if(nargin == 0)
-                configuration = "parallel";
-                m_n = 1.0;
-                alpha_n = 20.0;
-                z = 13*[1 1];
-                b = 13.0;
-                x = 0.0*[1 1];
-                beta = 0.0;
-                k = 0.0*[1 1];
-                bore_R = 0.5*[1 1];
-                a_w = m_n*z(1);
-                rack_type = "A";
-                bear = [Bearing, Bearing];
-                sha = Shaft;
-                Q = 6;
-                Ra = 1;
-            end
+        function obj = Gear_Set(varargin)
+            default = {'configuration', 'parallel', ...
+                       'm_n'          , 1.0, ...
+                       'alpha_n'      , 20.0, ...
+                       'z'            , 13*[1 1], ...
+                       'b'            , 13.0, ...
+                       'x'            , 0.0*[1 1], ...
+                       'beta'         , 0.0, ...
+                       'k'            , 0.0, ...
+                       'bore_ratio'   , 0.5, ...
+                       'N_p'          , 1, ...
+                       'a_w'          , 13.0, ...
+                       'rack_type'    , 'A', ...
+                       'bearing'      , [Bearing, Bearing], ...
+                       'shaft'        , Shaft, ...
+                       'Q'            , 6.0, ...
+                       'R_a'          , 0.8};
             
-            if(length(z) < 2)
+            default = process_varargin(varargin, default);
+            
+            if(length(default.z) < 2)
                 error("prog:input", "There should be at least two gears.");
-            elseif(length(z) == 3)
-                z(3) = -abs(z(3)); % because the ring is an internal gear
+            elseif(length(default.z) == 3)
+                default.z(3) = -abs(default.z(3)); % because the ring is an internal gear
             end
             
-            if((length(z) ~= length(x)) && (length(x) ~= length(k)) && (length(k) ~= length(bore_R)))
+            if((length(default.z) ~= length(default.x)) && ...
+               (length(default.x) ~= length(default.k)) && ...
+               (length(default.k) ~= length(default.bore_ratio)))
                 error("prog:input", "The lengths of z, x, k and bore ratio should be the equal.");
             end
             
-            if(std(m_n) ~= 0.0)
+            if(std(default.m_n) ~= 0.0)
                 error("prog:input", "Normal modules m_n should be equal for all gears.");
-            elseif(std(alpha_n) ~= 0.0)
+            elseif(std(default.alpha_n) ~= 0.0)
                 error("prog:input", "Pressure angles alpha_n should be equal for all gears.");
-            elseif(std(beta) ~= 0.0)
+            elseif(std(default.beta) ~= 0.0)
                 error("prog:input", "Helix angles beta should be equal for all gears.");
-            elseif(std(b) ~= 0.0)
+            elseif(std(default.b) ~= 0.0)
                 error("prog:input", "Face width b should be equal for all gears.");
             end
             
-            obj@Gear(m_n, alpha_n, rack_type, z, b, x, beta, k, bore_R, Q, Ra);
+            obj@Gear('m_n'       , default.m_n, ...
+                     'alpha_n'   , default.alpha_n, ...
+                     'type'      , default.rack_type, ...
+                     'z'         , default.z, ...
+                     'b'         , default.b, ...
+                     'x'         , default.x, ...
+                     'beta'      , default.beta, ...
+                     'k'         , default.k, ...
+                     'bore_ratio', default.bore_ratio, ...
+                     'Q'         , default.Q, ...
+                     'R_a'       , default.R_a);
             
-            if(strcmp(configuration, "planetary"))
-                obj.configuration = configuration;
+            if(strcmp(default.configuration, "planetary"))
+                obj.configuration = default.configuration;
 %                 [sun, planet, ring]  =  [1, 2, 3]
-                obj.N_p    = N_p;
-            elseif(strcmp(configuration, "parallel"))
-                obj.configuration = configuration;
+                obj.N_p    = default.N_p;
+            elseif(strcmp(default.configuration, "parallel"))
+                obj.configuration = default.configuration;
                 obj.N_p    = 1;
             else
-                error("prog:input", "Configuration [%s] is NOT defined.", configuration)
+                error("prog:input", "Configuration [%s] is NOT defined.", default.configuration)
             end
             
-            obj.a_w = a_w;
-            obj.bearing = bear;
-            obj.out_shaft = sha;
+            obj.a_w = default.a_w;
+            obj.bearing = default.bearing;
+            obj.out_shaft = default.shaft;
         end
         
         function tab = disp(obj)
@@ -607,21 +620,36 @@ classdef Gear_Set < Gear
                 r_p = (obj.d(2)*1.0e-3)/2.0;
 
                 % Mesh stiffness:
-                sun_pla = Gear_Set("parallel",          obj.m_n, ...
-                                   obj.alpha_n,         obj.z(1:2), ...
-                                   obj.b,               obj.x(1:2), ...
-                                   obj.beta,            obj.k(1:2), ...
-                                   obj.bore_ratio(1:2), obj.N_p, ...
-                                   obj.a_w,             obj.type, ...
-                                   obj.bearing,         obj.out_shaft);
+                       
+                sun_pla = Gear_Set('configuration', 'parallel'         , ...
+                                   'm_n'          , obj.m_n            , ...
+                                   'alpha_n'      , obj.alpha_n        , ...
+                                   'z'            , obj.z(1:2)         , ...
+                                   'b'            , obj.b              , ...
+                                   'beta'         , obj.beta           , ...
+                                   'x'            , obj.x(1:2)         , ...
+                                   'k'            , obj.k(1:2)         , ...
+                                   'bore_ratio'   , obj.bore_ratio(1:2), ...
+                                   'N_p'          , 1                  , ...
+                                   'a_w'          , obj.a_w            , ...
+                                   'rack_type'    , obj.type           , ...
+                                   'bearing'      , obj.bearing        , ...
+                                   'shaft'        , obj.out_shaft);
 
-                pla_rng = Gear_Set("parallel",          obj.m_n, ...
-                                   obj.alpha_n,         obj.z(2:3), ...
-                                   obj.b,               obj.x(2:3), ...
-                                   obj.beta,            obj.k(2:3), ...
-                                   obj.bore_ratio(2:3), obj.N_p, ...
-                                   obj.a_w,             obj.type, ...
-                                   obj.bearing,         obj.out_shaft);
+                pla_rng = Gear_Set('configuration', 'parallel'         , ...
+                                   'm_n'          , obj.m_n            , ...
+                                   'alpha_n'      , obj.alpha_n        , ...
+                                   'z'            , obj.z(2:3)         , ...
+                                   'b'            , obj.b              , ...
+                                   'beta'         , obj.beta           , ...
+                                   'x'            , obj.x(2:3)         , ...
+                                   'k'            , obj.k(2:3)         , ...
+                                   'bore_ratio'   , obj.bore_ratio(2:3), ...
+                                   'N_p'          , 1                  , ...
+                                   'a_w'          , obj.a_w            , ...
+                                   'rack_type'    , obj.type           , ...
+                                   'bearing'      , obj.bearing        , ...
+                                   'shaft'        , obj.out_shaft);
 
                 k_sp = abs(sun_pla.k_mesh);
                 k_rp = abs(pla_rng.k_mesh); % got a negative k_mesh for DTU_10MW
@@ -844,326 +872,6 @@ classdef Gear_Set < Gear
             M = NaN; K = NaN;
         end
         
-        %% Pitting:
-        function SH = pitting_safety(obj_ref, P, n_1, gamma, aspect)
-            obj_sca = obj_ref.scale_aspect(gamma, aspect);
-
-            S_Hmin = 1.25;      % [-], Minimum required safety factor for surface durability according to 
-            L_h    = 20*365*24; % [h],  Required life
-            Q      = 6;         % [-],  ISO accuracy grade
-            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
-            K_A    = 1.25;      % [-], Application factor
-            
-            SH = obj_sca.Pitting_ISO(P, n_1, S_Hmin, L_h, Q, R_a, K_A);
-        end
-        
-%         function [S_H, sigma_H, K_Halpha, K_v, Z_B, Z_D, Z_H, Z_NT1, Z_NT2, Z_v, Z_eps] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
-        function [S_H, sigma_H] = Pitting_ISO(obj, P_inp, n_1, S_Hmin, L_h, Q, R_ah, K_A)
-            %PITTING_ISO calculates the safety factor against pitting S_H
-            % and the contact stress sigma_H on a gear set. The
-            % calculations are based on the ISO 6336-2:2006.
-            % Z_NT: dont bother
-            % Z_v: gamma_n = 1/gamma_m_n [?]
-            % Z_B/D:    function of a_w, b, m_n
-            % K_v:      function of n_c, P/(b*n_c*m_n)
-            % K_Halpha: function of b, m_n, P, n_c
-            % Z_eps:    function of m_n, b
-            % Z_H:      function of m_n, a_w
-            %
-
-            %% Constants:
-            E          = Material.E*1.0e-6;          % [N/mm^2],  Young's modulus
-            nu         = Material.nu;                % [-],       Poisson's ratio
-            sigma_Hlim = Material.sigma_Hlim*1.0e-6; % [N/mm^2],  Allowable contact stress number
-            rho        = Material.rho*1.0e-9;        % [kg/mm^3], Density
-            % ISO viscosity grade: VG 220
-            nu_40      = 220.0;   % [mm/s^2],  Nominal kinematic viscosity
-
-            R_zh = 6.0*R_ah; % [um], Mean peak-to-valley roughness
-
-            %% Preparatory calculations:
-            T_1 = (P_inp*1.0e3)/(n_1*pi/30.0);
-            
-            T_1 = abs(T_1);
-            n_1 = abs(n_1);
-            
-            u_tmp = abs(obj.z(2)/obj.z(1));
-            
-            % Single pitch tolerance, according to ISO 1328-1:1995:
-            f_pt = single_pitch_tol(obj, Q);
-            
-            % consider only (1:2) to discard the ring gear
-            f_pb = max(f_pt(1:2).*cosd(obj.alpha_t)); % [um], Transverse base pitch deviation
-            
-            if(f_pb >= 40.0) %[um]
-                y_alpha = 3.0; % [um]
-            else
-                y_alpha = f_pb*75.0e-3;
-            end
-            
-            f_falp_tmp = profile_form_tol(obj, Q);
-
-            % consider only (1:2) to discard the ring gear
-            f_falpha = max(f_falp_tmp(1:2));
-
-            % Estimated running allowance (pitch deviation):
-            y_p = y_alpha;
-
-            % Estimated running allowance (flank deviation):
-            y_f = f_falpha*75.0e-3;
-
-            f_pbeff = f_pb - y_p;
-
-            f_falphaeff = f_falpha - y_f; % 0.925*y_f
-            
-            v = obj.pitch_line_vel(n_1);
-
-            %% Pitting calculation:
-            % Mesh load factor according to [7]:
-            switch obj.N_p
-                case 3
-                    K_gamma = 1.1;
-                case 4
-                    K_gamma = 1.25;
-                case 5
-                    K_gamma = 1.35;
-                case 6
-                    K_gamma = 1.44;
-                case 7
-                    K_gamma = 1.47;
-                otherwise
-                    K_gamma = 1.0;
-            end
-            
-            % Contact ratio factor:
-            Z_eps = contact_ratio_factor(obj.beta, obj.eps_alpha, obj.eps_beta);
-
-            % [N], Nominal tangential load
-            F_t = 2.0e3*(T_1/obj.d(1))/obj.N_p; 
-
-            % Tip relief by running-in:
-            C_ay = (1.0/18.0)*(sigma_Hlim/97.0 - 18.45)^2 + 1.5;
-            
-            K_v = dynamic_factor(obj, n_1, v, rho, u_tmp, F_t*K_gamma*K_A/obj.b, C_ay, f_pbeff, f_falphaeff);
-            
-            [K_Hbeta,  ~] = obj.face_load_factor();
-            
-            % Determinant tangential load in a transverse plane:
-            F_tH = F_t*K_gamma*K_A*K_v*K_Hbeta;
-            
-            [K_Halpha, ~] = transv_load_factor(obj, F_tH, f_pb, y_alpha, Z_eps);
-            
-            % Zone factor: (sec. 6.1)
-            Z_H = obj.zone_factor();
-
-            % Single pair tooth contact factor (sec. 6.2)
-            [Z_B, Z_D]  = obj.tooth_contact_factor();
-            
-            % Elasticity factor: (sec. 7)
-            Z_E = sqrt(E/(2.0*pi*(1.0 - nu^2)));
-
-            % Helix angle factor: (sec. 9)
-            Z_beta = 1.0/sqrt(cosd(obj.beta));
-
-            % Contact stress:
-            % Nominal contact stress at pitch point:
-            num = F_t*(u_tmp + 1.0);
-            den = obj.d(1)*obj.b*u_tmp;
-            sigma_H0 = Z_H*Z_E*Z_eps*Z_beta*sqrt(num/den);
-            
-            % nominal contact stress at pitch point:
-            sigma_H1 = Z_B*sigma_H0*sqrt(K_gamma*K_A*K_v*K_Hbeta*K_Halpha); % pinion
-            sigma_H2 = Z_D*sigma_H0*sqrt(K_gamma*K_A*K_v*K_Hbeta*K_Halpha); % wheel
-            
-            [Z_L, Z_v] = lub_vel_factor(sigma_Hlim, nu_40, v);
-
-            % Roughness factor:
-            Z_R = obj.rough_factor(R_zh, sigma_Hlim);
-
-            % Work hardening factor:
-            Z_W = 1.0;
-
-            % Size factor:
-            Z_X = 1.0;
-
-            % Number of load cycles:
-            N_L1 = n_1*60.0*L_h; % [-], pinion
-            N_L2 = N_L1/u_tmp; % wheel
-            
-            % Life factor:
-            line = 4;
-            Z_NT1 = Gear_Set.interp_ZNT(N_L1, line);
-            Z_NT2 = Gear_Set.interp_ZNT(N_L2, line);
-            
-            % Permissible contact stress:
-            sigma_HP1 = sigma_Hlim*Z_NT1*Z_L*Z_v*Z_R*Z_W*Z_X/S_Hmin;
-            sigma_HP2 = sigma_Hlim*Z_NT2*Z_L*Z_v*Z_R*Z_W*Z_X/S_Hmin;
-
-            % Safety factor for surface durability (against pitting):
-            S_H1 = sigma_HP1*S_Hmin/sigma_H1; % pinion/planet
-            S_H2 = sigma_HP2*S_Hmin/sigma_H2; % wheel/sun
-            
-            S_H     = [S_H1 S_H2]';
-            sigma_H = [sigma_H1 sigma_H2]';
-        end
-        
-        function Z_R = rough_factor(obj, R_zh, sigma_Hlim)
-            rho_1 = 0.5*obj.d_b(1)*tand(obj.alpha_wt);
-            rho_2 = 0.5*obj.d_b(2)*tand(obj.alpha_wt);
-
-            rho_red = (rho_1*rho_2)/(rho_1 + rho_2);
-            rho_red = real(rho_red);
-
-            R_z10 = R_zh*nthroot(10.0/rho_red, 3.0);
-
-            if(sigma_Hlim  < 850.0) % [N/mm^2]
-                C_ZR = 0.15;
-            elseif((850.0 <= sigma_Hlim) && (sigma_Hlim  < 1200.0))
-                C_ZR = 0.32 - sigma_Hlim*2.0e-4;
-            else
-                C_ZR = 0.08;
-            end
-
-            Z_R = power(3.0/R_z10, C_ZR);
-        end
-        
-        function [Z_B, Z_D] = tooth_contact_factor(obj)
-            Z_B = NaN;      Z_D = NaN;
-            M_1 = tand(obj.alpha_wt)/sqrt((sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - 2.0*pi/obj.z(1))*(sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - (obj.eps_alpha - 1.0)*2.0*pi/obj.z(2)));
-            M_2 = tand(obj.alpha_wt)/sqrt((sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - 2.0*pi/obj.z(2))*(sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - (obj.eps_alpha - 1.0)*2.0*pi/obj.z(1)));
-
-            if((obj.eps_beta == 0.0) && (obj.eps_alpha > 1.0))
-                if(M_1 > 1.0)
-                    Z_B = M_1;
-                else
-                    Z_B = 1.0;
-                end
-
-                if(M_2 > 1.0)
-                    Z_D = M_2;
-                else
-                    Z_D = 1.0;
-                end
-            elseif((obj.eps_alpha > 1.0) && (obj.eps_beta >= 1.0))
-                Z_B = 1.0;
-                Z_D = 1.0;
-            elseif((obj.eps_alpha > 1.0) && (obj.eps_beta <  1.0))
-                Z_B = M_1 - obj.eps_beta*(M_1 - 1.0);
-                Z_D = M_2 - obj.eps_beta*(M_2 - 1.0);
-            end
-        end
-        
-        function Z_H = zone_factor(obj)
-            num = 2.0*cosd(obj.beta_b)*cosd(obj.alpha_wt);
-            den = sind(obj.alpha_wt)*cosd(obj.alpha_t)^2;
-            Z_H = sqrt(num/den);
-        end
-        
-        function [K_Halpha, K_Falpha] = transv_load_factor(obj, F_tH, f_pb, y_alpha, Z_eps)
-            if(obj.eps_gamma <= 2.0)
-                K_Falpha = (0.9 + 0.4*obj.c_gamma_alpha*(f_pb - y_alpha)/(F_tH/mean([obj.b])))*(obj.eps_gamma/2.0);
-            else
-                K_Falpha = 0.9 + 0.4*sqrt(2.0*(obj.eps_gamma - 1.0)/obj.eps_gamma)*obj.c_gamma_alpha*(f_pb - y_alpha)/(F_tH/mean([obj.b]));
-            end
-            
-            K_Halpha = K_Falpha;
-            
-            % Transverse load factor (contact stress):
-            K_Halpha_lim = obj.eps_gamma/(obj.eps_alpha*Z_eps^2);
-            if(K_Halpha > K_Halpha_lim)
-                K_Halpha = K_Halpha_lim;
-            elseif(K_Halpha < 1.0)
-                K_Halpha = 1.0;
-            end
-
-            % Transverse load factor (root stress):
-            K_Falpha_lim = obj.eps_gamma/(0.25*obj.eps_alpha + 0.75);
-            if(K_Falpha > K_Falpha_lim)
-                K_Falpha = K_Falpha_lim;
-            elseif(K_Falpha < 1.0)
-                K_Falpha = 1.0;
-            end
-
-        end
-        
-        function [K_Hbeta, K_Fbeta] = face_load_factor(obj)
-            % Face load factor (contact stress): very hard to calculate
-            K_Hbeta = 1.15; % according to [2], p. 36
-            % h_1 = h_aP + h_fP + k_1*m_n;
-            h_1 = abs(obj.d_a(1) - obj.d_f(1))/2.0;        bh1 = obj.b/h_1;
-            h_2 = abs(obj.d_a(2) - obj.d_f(2))/2.0;        bh2 = obj.b/h_2;
-
-            bh = min(bh1, bh2);
-
-            if(bh < 3.0)
-                bh = 3.0;
-            end
-
-            hb = 1.0/bh;
-
-            N_F = 1.0/(1.0 + hb + hb^2);
-
-            % Face load factor (root stress):
-            K_Fbeta = power(K_Hbeta, N_F);
-        end
-        
-        function v = pitch_line_vel(obj, n)
-            if(strcmp(obj.configuration, "parallel"))
-                v = pi*obj.d(1)*n/60.0e3;
-            elseif(strcmp(obj.configuration, "planetary"))
-                v = (pi*n/60.0e3)*abs(obj.a_w/obj.u - obj.d(1));
-            else
-                error("prog:input", "Configuration [%s] is NOT defined.", obj.configuration);
-            end
-        end
-        
-        function K_v = dynamic_factor(obj, n_1, v, rho, u, FtKAb, C_ay, f_pbeff, f_falphaeff)
-            
-            cond = (v*obj.z(1)/100.0)*sqrt((u^2)/(1.0 + u^2));
-            if(cond < 3.0) % [m/s]
-                warning("prog:input", "Calculating K_v using method B outside of its useful range. See the end of Sec. 6.3.2 of ISO 6336-1:2006.");
-            end
-            
-            if(strcmp(obj.configuration, "parallel"))
-                num = rho*pi*(u*obj.d_m(1)^2)^2;
-                den = 8.0*(u^2 + 1.0)*obj.d_b(1)^2;
-                m_red = num/den;
-
-                % Resonance running speed:
-                n_E1 = 3.0e4*sqrt(obj.c_gamma_alpha/m_red)/(pi*obj.z(1)); % [1/min]
-
-                % Resonance ratio:
-                N = n_1/n_E1;
-                
-                K_v = dyn_factor(FtKAb, N, obj.eps_gamma, obj.cprime, C_ay, f_pbeff, f_falphaeff);
-                
-            elseif(strcmp(obj.configuration, "planetary"))
-                m_sun = (pi/8.0)*rho*(obj.d_m(1)/obj.d_b(1))^4; % sun
-                m_pla = (pi/8.0)*rho*(obj.d_m(2)/obj.d_b(2))^4; % planet
-                m_red1 = (m_pla*m_sun)/(m_sun + m_pla*obj.N_p);
-                m_red2 =  m_pla;
-
-                % Resonance running speed:
-                n_E11 = 3.0e4*sqrt(obj.cprime/m_red1)*1.0/(pi*obj.z(1)); % [1/min]
-                n_E12 = 3.0e4*sqrt(obj.cprime/m_red2)*1.0/(pi*obj.z(2)); % [1/min]
-
-                % Resonance ratio:
-                N_1 =  n_1/n_E11;
-                N_2 = (n_1/u)/n_E12;
-
-                K_v1 = dyn_factor(FtKAb, N_1, obj.eps_gamma, obj.cprime, C_ay, f_pbeff, f_falphaeff);
-                K_v2 = dyn_factor(FtKAb, N_2, obj.eps_gamma, obj.cprime, C_ay, f_pbeff, f_falphaeff);
-                
-                K_v = max(K_v1, K_v2);
-            else
-                error("prog:input", "Configuration [%s] is NOT defined.", obj.configuration);
-            end
-            
-            if(K_v < 1.05) % according to [7], Sec. 7.2.3.2
-                K_v = 1.05;
-            end
-        end
-        
         %% Misc.:
         function m_tot = get_mass(obj)
             if(strcmp(obj.configuration, "parallel"))
@@ -1219,7 +927,17 @@ classdef Gear_Set < Gear
         end
         
         function g = gear(obj, idx)
-            g = Gear(obj.m_n, obj.alpha_n, obj.type, obj.z(idx), obj.b, obj.x(idx), obj.beta, obj.k(idx), obj.bore_ratio(idx));
+            g = Gear('m_n'        , obj.m_n,  ...
+                     'alpha_n'    , obj.alpha_n,  ...
+                     'type'       , obj.type,  ...
+                     'z'          , obj.z(idx),   ...
+                     'b'          , obj.b, ...
+                     'x'          , obj.x(idx),  ...
+                     'beta'       , obj.beta,  ...
+                     'k'          , obj.k(idx),  ...
+                     'bore_ratio' , obj.bore_ratio(idx),  ...
+                     'Q'          , obj.Q,  ...
+                     'R_a'        , obj.R_a);
         end
         
         function val = get.u(obj)
@@ -1249,12 +967,12 @@ classdef Gear_Set < Gear
             xi_Nfw2(1) = xi_Nfw1(1);
             
             % (2) root form diameters: Eq. (34-35)
-            xi_Nfw1(2) = xi_Nfw1(1) - tan(arccos(obj.d_b(1)/obj.d_Nf(1)));
-            xi_Nfw2(2) = xi_Nfw2(1) - tan(arccos(obj.d_b(2)/obj.d_Nf(2)));
+            xi_Nfw1(2) = xi_Nfw1(1) - tan(acos(obj.d_b(1)/obj.d_Nf(1)));
+            xi_Nfw2(2) = xi_Nfw2(1) - tan(acos(obj.d_b(2)/obj.d_Nf(2)));
             
             % (3) active tip diameters of the wheel/pinion: Eq. (36-37)
-            xi_Nfw1(3) = (tan(arccos(obj.d_b(2)/self.d_Na(2))) - xi_Nfw1(1))*obj.z(2)/obj.z(1);
-            xi_Nfw2(3) = (tan(arccos(obj.d_b(1)/self.d_Na(1))) - xi_Nfw2(1))*obj.z(1)/obj.z(2);
+            xi_Nfw1(3) = (tan(acos(obj.d_b(2)/obj.d_Na(2))) - xi_Nfw1(1))*obj.z(2)/obj.z(1);
+            xi_Nfw2(3) = (tan(acos(obj.d_b(1)/obj.d_Na(1))) - xi_Nfw2(1))*obj.z(1)/obj.z(2);
             
             xi_Nfw1(xi_Nfw1 < 0.0) = [];
             xi_Nfw2(xi_Nfw2 < 0.0) = [];
@@ -1353,7 +1071,7 @@ classdef Gear_Set < Gear
             if(obj.d_Nf(1) == obj.d_Ff(1))
                 dNa2 = sqrt((aw -                sqrt(obj.d_Ff(1)^2 - obj.d_b(1)^2))^2 + obj.d_b(2)^2);
             else
-                dNa2 = self.d_a(2); % d_Fa
+                dNa2 = obj.d_a(2); % d_Fa
             end
             
             if(obj.d_Nf(2) == obj.d_Ff(2))
@@ -1371,87 +1089,4 @@ classdef Gear_Set < Gear
         
     end
     
-end
-
-function Z_eps = contact_ratio_factor(beta, eps_alpha, eps_beta)
-
-    if(beta == 0.0)
-        Z_eps = sqrt((4.0 - eps_alpha)/3.0);
-    else
-        if(eps_beta < 1.0)
-            Z_eps = sqrt((1.0 - eps_beta)*(4.0 - eps_alpha)/3.0 + eps_beta/eps_alpha);
-        else
-            Z_eps = sqrt(1.0/eps_alpha);
-        end
-    end
-end
-
-function K_v = dyn_factor(FtKAb, N, eps_gamma, cp, C_a, f_pbeff, f_falphaeff)
-
-    if(FtKAb < 100) % [N/mm]
-        N_S = 0.5 + 0.35*sqrt(FtKAb/100.0);
-    else
-        N_S = 0.85;
-    end
-
-    C_v1 = 0.32;        C_v5 = 0.47;
-
-    if((1.0 < eps_gamma) && (eps_gamma <= 2.0))
-        C_v2 = 0.34;        C_v3 = 0.23;
-        C_v4 = 0.90;        C_v6 = 0.47;
-    elseif(eps_gamma > 2.0)
-        C_v2 =  0.57 /(eps_gamma - 0.3);
-        C_v3 =  0.096/(eps_gamma - 1.56);
-        C_v4 = (0.57 - 0.05*eps_gamma)/(eps_gamma - 1.44);
-        C_v6 =  0.12/(eps_gamma - 1.74);
-    else
-        C_v2 = NaN;     C_v3 = NaN;
-        C_v4 = NaN;     C_v6 = NaN;
-    end
-    
-    if((1.0 < eps_gamma) && (eps_gamma <= 1.5))
-        C_v7 = 0.75;
-    elseif((1.5 < eps_gamma) && (eps_gamma <= 2.5))
-        C_v7 = 0.125*sind(pi*(eps_gamma - 2.0)) + 0.875;
-    elseif(eps_gamma > 2.5)
-        C_v7 = 1.0;
-    end
-
-    B_p = cp*f_pbeff/FtKAb;
-    B_f = cp*f_falphaeff/FtKAb;
-    B_k = abs(1.0 - cp*C_a/FtKAb);
-
-    % Dynamic factor:
-    K_v = NaN;
-    if(N <= N_S)
-        K = C_v1*B_p + C_v2*B_f + C_v3*B_k; 
-        K_v = N*K + 1.0;
-    elseif((N_S < N) && (N <= 1.15))
-        K_v = C_v1*B_p + C_v2*B_f + C_v4*B_k + 1.0;
-    elseif((1.15 < N) && (N < 1.5))
-        K_vN115 = C_v1*B_p + C_v2*B_f + C_v4*B_k + 1.0;
-        K_vN15  = C_v5*B_p + C_v6*B_f + C_v7;
-        K_v = K_vN15 + (K_vN115 - K_vN15)*(1.5 - N)/0.35;
-    elseif(N >= 1.5)
-        K_v = C_v5*B_p + C_v6*B_f + C_v7;
-    end
-end
-
-function [Z_L, Z_v] = lub_vel_factor(sigma_Hlim, v_40, v)
-    
-    if(sigma_Hlim  < 850.0) % [N/mm^2]
-        C_ZL = 0.83;
-    elseif((850.0 <= sigma_Hlim) && (sigma_Hlim  < 1200.0))
-        C_ZL = sigma_Hlim/4375.0 + 0.6357;
-    else
-        C_ZL = 0.91;
-    end
-
-    % Lubricant factor:
-    Z_L = C_ZL + 4.0*(1.0 - C_ZL)/(1.2 + 134.0/v_40)^2;
-
-    % Velocity factor:
-    C_Zv = C_ZL + 0.02;
-    Z_v = C_Zv + 2.0*(1.0 - C_Zv)/sqrt(0.8 + 32.0/v);
-
 end
