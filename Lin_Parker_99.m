@@ -1,26 +1,34 @@
-classdef Kahraman_94 < Dynamic_Formulation
+classdef Lin_Parker_99 < Dynamic_Formulation
     %KAHRAMAN_94 Calculates the inertia and stiffness matrix of a
     % multi-stage Drivetrain object according to:
-    % [1] A. Kahraman, "Natural Modes of Planetary Gear Trains",
-    % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
-    % 1994. https://doi.org/10.1006/jsvi.1994.1222.
+    % [1] J. Lin and R. Parker, 'Analytical Characterization of the
+    % Unique Properties of Planetary Gear Free Vibration', Journal
+    % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
+    % 1999. https://doi.org/10.1115/1.2893982
     %
+    properties
+        K_bearing; % Bearing stiffness
+        K_mesh;    % Mesh stiffness
+        K_Omega;   % Centripetal stiffness
+        G;         % Gyroscopic matrix
+    end
     
     methods
-        function obj = Kahraman_94(DT)
+        function obj = Lin_Parker_99(DT)
             obj@Dynamic_Formulation(DT);
             
             obj.n_DOF = obj.calculate_DOF();
             obj.M = obj.inertia_matrix();
-            obj.K = obj.stiffness_matrix();
+            [obj.K, obj.K_bearing, ...
+             obj.K_mesh, obj.K_Omega] = obj.stiffness_matrix();
             
             obj.load      = zeros(obj.n_DOF(end), 1);
-            obj.load(1)   = 1.0;
+            obj.load(1:3) = 1.0;
             obj.load(end) = -obj.load(1);
         end
         
         %% Calculation:
-        function KK = stiffness_matrix(obj)
+        function [KK, K_b, K_m, K_Omega] = stiffness_matrix(obj)
             N = obj.n_DOF(end);
             KK = zeros(N, N);
             
@@ -171,7 +179,7 @@ classdef Kahraman_94 < Dynamic_Formulation
         end
         
         function nn = calculate_DOF(obj)
-            nn = ones(obj.N_stage + 1, 1)*2.0;
+            nn = ones(obj.N_stage + 1, 1)*6.0;
             
             for idx = 1:obj.N_stage
                 if(strcmp(obj.stage(idx).configuration, "parallel"))
@@ -180,9 +188,8 @@ classdef Kahraman_94 < Dynamic_Formulation
                     tmp = obj.stage(idx).N_p + 2;
                 end
                 
-                nn(idx + 1) = nn(idx) + tmp;
+                nn(idx + 1) = nn(idx) + tmp*3;
             end
         end
     end
 end
-

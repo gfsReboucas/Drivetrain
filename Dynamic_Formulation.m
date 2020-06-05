@@ -3,6 +3,7 @@ classdef Dynamic_Formulation < Drivetrain
         M; % Inertia matrix
         K; % Stiffness matrix
         n_DOF; % numbe of degrees of freedom
+        load; % load vector
     end
     
     methods
@@ -25,15 +26,27 @@ classdef Dynamic_Formulation < Drivetrain
             obj.n_DOF = 2;
             obj.M = obj.inertia_matrix();
             obj.K = obj.stiffness_matrix();
+            
+            obj.load      = ones(obj.n_DOF, 1);
+            obj.load(end) = - obj.load(1);
+            
         end
         
         function tab = disp(obj)
+            
         end
         
     end
     %% Calculation:
     methods
         function [f_n, mode_shape] = modal_analysis(obj)
+            %MODAL_ANALYSIS calculates the resonances and mode shapes of
+            % the Drivetrain via a symmetric eigenvalue problem [1].
+            %
+            % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
+            % Pearson, 2014, pp. 408-413.
+            %
+                        
             % Cholesky decomposition:
             L = chol(obj.M, "lower");
             K_tilde = L\obj.K/(L');
@@ -56,6 +69,8 @@ classdef Dynamic_Formulation < Drivetrain
             
             flag_im = any(imag(f_n) ~= 0.0);
             if(flag_im)
+                warning('Dynamic_Formulation:imag', 'Imaginary resonances.');
+                
                 idx = (imag(f_n) ~= 0.0);
                 f_n(idx) = 0.0;
                 
@@ -67,6 +82,7 @@ classdef Dynamic_Formulation < Drivetrain
             
             flag_RB = any(abs(f_n) < 1.0e-2);
             if(flag_RB)
+                warning('Dynamic_Formulation:RB', 'Rigid body behavior.');
                 idx = (abs(f_n) < 1.0e-2);
                 f_n(idx) = 0.0;
                 
@@ -80,6 +96,25 @@ classdef Dynamic_Formulation < Drivetrain
             for idx = 1:length(f_n)
                 [ms_max, n] = max(abs(mode_shape(:, idx)));
                 mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
+            end
+            
+        end
+        
+        function H = FRF(obj, freq, varargin)
+            default = {'beta', 0.05};
+            default = process_varargin(default, varargin);
+            
+            beta = default.beta;
+            Omega = 2.0*pi*freq;
+            i = sqrt(-1.0);
+            
+            n_Om = length(Omega);
+            H = zeros(n_Om, n);
+            
+            KK = @(x)(obj.K);
+            
+            for idx = 1:n_Om
+                H(idx, :) = (-obj.M.*Omega(idx).^2 + i.*Omega(idx).*beta.*KK(Omega(idx)) + KK(Omega(idx)))\obj.load;
             end
             
         end

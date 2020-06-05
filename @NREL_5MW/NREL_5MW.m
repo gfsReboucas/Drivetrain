@@ -89,12 +89,11 @@ classdef NREL_5MW < Drivetrain
                            'm_Gen',      m_G, ...
                            'J_Gen',      J_G, ...
                            'S_Hmin',     1.25, ...
-                           'S_Fmin',     1.56);
+                           'S_Fmin',     1.56, ...
+                           'dynamic_model', @Kahraman_94);
             
             [obj.S_H_val, obj.S_F_val, obj.S_shaft_val] = obj.safety_factors();
 
-            obj.dynamic_model =  "Kahraman_1994";
-            
             obj.gamma = scaling_factor(gamma.name, ones(length(gamma), 1));
         end
     end

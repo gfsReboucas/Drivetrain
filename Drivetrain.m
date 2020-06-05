@@ -41,9 +41,7 @@ classdef (Abstract) Drivetrain
         m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;             % [kg],     Generator mass according to [4]
         J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;            % [kg-m^2], Generator mass moment of inertia [4]
         N_stage       (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;                  % [-],      Number of stages
-        dynamic_model (1, :) string   {mustBeMember(dynamic_model, ["Thomson_ToV", ...
-                                                                    "Kahraman_1994", ...
-                                                                    "Lin_Parker_1999"])} = "Thomson_ToV"; % which dynamic model should be used to perform modal analysis on the Drivetrain.
+        dynamic_model (1, :)                                                        = @Dynamic_Formulation; % which dynamic model should be used to perform modal analysis on the Drivetrain.
         gamma                scaling_factor;                                                              % Scaling factors
         S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
         S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
@@ -77,17 +75,18 @@ classdef (Abstract) Drivetrain
                 stage(idx) = NREL_5MW.gear_stage(idx);
             end
             
-            default = {'N_stage',    3, ...
-                       'stage',      stage, ...
-                       'P_rated',    5.0e3, ...
-                       'n_rotor',    12.1, ...
-                       'main_shaft', Shaft(), ...
-                       'm_Rotor',    110.0e3, ...
-                       'J_Rotor',    57231535.0, ...
-                       'm_Gen',      1900.0, ...
-                       'J_Gen',      534.116, ...
-                       'S_Hmin',     1.25, ...
-                       'S_Fmin',     1.56};
+            default = {'N_stage'      ,        3, ...
+                       'stage'        , stage, ...
+                       'P_rated'      ,        5.0e3, ...
+                       'n_rotor'      ,       12.1, ...
+                       'main_shaft'   , Shaft(), ...
+                       'm_Rotor'      ,      110.0e3, ...
+                       'J_Rotor'      , 57231535.0, ...
+                       'm_Gen'        ,     1900.0, ...
+                       'J_Gen'        ,      534.116, ...
+                       'S_Hmin'       ,        1.25, ...
+                       'S_Fmin'       ,        1.56, ...
+                       'dynamic_model', @Dynamic_Formulation};
             
             default = process_varargin(default, varargin);
             
@@ -113,6 +112,8 @@ classdef (Abstract) Drivetrain
             
             obj.S_Hmin = default.S_Hmin;
             obj.S_Fmin = default.S_Fmin;
+            
+            obj.dynamic_model = default.dynamic_model;
         end
         
         function tab = disp(obj)
@@ -350,161 +351,14 @@ classdef (Abstract) Drivetrain
     methods
         %% Calculations:
         %% Dynamics:
-        function H = FRF(obj, freq, varargin)
-            
-            if(nargin == 2)
-                beta = 0.05;
-            else
-                beta = varargin{1};
-            end
-            
-            switch(obj.dynamic_model)
-                case "Thomson_ToV"
-                    [M, K_tmp] = obj.Thomson_ToV;
-                    
-                    K = @(x)(K_tmp);
-                    
-                    n = length(M);
-                    f = ones(n, 1);
-                case "Kahraman_1994"
-                    [M, K_tmp] = obj.Kahraman_1994;
-                    
-                    K = @(x)(K_tmp);
-                    
-                    n = length(M);
-                    f = zeros(n, 1);
-                    f(1)   = 1.0;
-                    f(end) = 1.0;
-                case "Lin_Parker_1999"
-%                   [M, K, K_b, K_m, K_Omega, G]
-                    [M, ~, K_b, K_m, K_Omega, ~] = obj.Lin_Parker_1999;
-                    K_tmp = K_b + K_m;
-                    
-                    K = @(x)(K_b + K_m - K_Omega.*x.^2);
-                    
-                    n = length(M);
-                    f = zeros(n, 1);
-                    f(1:3) = 1.0;
-                    f(end) = 1.0;
-                otherwise
-                    error("Option [%s] is NOT available or not implemented yet.", upper(obj.dynamic_model));
-                    
-%                 case "Eritenel_2011"
-%                     [M, K] = obj.E
-            end
-            
-            Omega = 2.0*pi*freq;
-            i = sqrt(-1.0);
-            
-            n_Om = length(Omega);
-            H = zeros(n_Om, n);
-            
-            for idx = 1:n_Om
-                H(idx, :) = (-M.*Omega(idx).^2 + i.*Omega(idx).*beta.*K(Omega(idx)) + K(Omega(idx)))\f;
-            end
-        end
-        
-        function [f, mode_shape] = nth_resonance(obj, n)
-            [f_n, mode_shape] = modal_analysis(obj);
-            
-            if((n < 1) || (n > numel(f_n)))
-                error("n = %d > or ~= 0.");
-            end
-            
-            f = f_n(n);
-            mode_shape = mode_shape(:, n);
-        end
-        
-        function [f_n, mode_shape] = modal_analysis(obj)
-            % MODAL_ANALYSIS calculates the resonances and mode shapes of
-            % the Drivetrain via a symmertic eigenvalue problem [1]. The
-            % dynamic matrices M and K can be obtained using different
-            % modelling approaches, e.g. [2-3].
-            %
-            % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
-            % Pearson, 2014, pp. 408-413.
-            % [2] A. Kahraman, "Natural Modes of Planetary Gear Trains",
-            % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
-            % 1994. https://doi.org/10.1006/jsvi.1994.1222.
-            % [3] J. Lin and R. Parker, "Analytical Characterization of the
-            % Unique Properties of Planetary Gear Free Vibration", Journal
-            % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
-            % 1999. https://doi.org/10.1115/1.2893982
-            %
-
-            switch(obj.dynamic_model)
-                case "Thomson_ToV"
-                    [M, K] = obj.Thomson_ToV;
-                    
-                case "Kahraman_1994"
-                    [M, K] = obj.Kahraman_1994;
-                    
-                case "Lin_Parker_1999"
-%                   [M, K, K_b, K_m, K_Omega, G]
-                    [M, ~, K_b, K_m,       ~, ~] = obj.Lin_Parker_1999;
-                    K = K_b + K_m;
-                    
-                otherwise
-                    error("Option [%s] is NOT available or not implemented yet.", upper(obj.dynamic_model));
-                    
-%                 case "Eritenel_2011"
-%                     [M, K] = obj.E
-            end
-            
-            % Cholesky decomposition:
-            L = chol(M, "lower");
-            K_tilde = L\K/(L');
-            
-            % correcting numeric erros and make the problem symmetric:
-            K_tilde = (K_tilde + K_tilde')/2.0;
-
-            [mode_shape, D] = eig(K_tilde);
-            D = diag(D);   % matrix to vector
-            
-            w_n = sqrt(D); % lambda to omega_n
-
-            f_n = w_n./(2.0*pi); % rad/s to Hz
-            
-            % sorting in ascending order:
-            [f_n, idx] = sort(f_n);
-            mode_shape = mode_shape(:, idx);
-            
-            flag_im = any(imag(f_n) ~= 0.0);
-            if(flag_im)
-                idx = (imag(f_n) ~= 0.0);
-                f_n(idx) = 0.0;
-                
-                f_n = [f_n(~idx);
-                       f_n(idx)];
-                   
-                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
-            end
-            
-            flag_RB = any(abs(f_n) < 1.0e-2);
-            if(flag_RB)
-                idx = (abs(f_n) < 1.0e-2);
-                f_n(idx) = 0.0;
-                
-                f_n = [f_n(~idx);
-                       f_n(idx)];
-                   
-                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
-            end
-            
-            % Normalizing the mode shapes so that the maximum is always +1:
-            for idx = 1:length(f_n)
-                [ms_max, n] = max(abs(mode_shape(:, idx)));
-                mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
-            end
-            
-        end
-        
         function [f_n, mode_shape] = resonances(obj, N, normalize)
             %RESONANCES returns the first N resonances and mode shapes of a
             % Drivetrain object. The resonances can be normalized or not.
             %
             
-            [f_n, mode_shape] = obj.modal_analysis;
+            calc = obj.dynamic_model(obj);
+            
+            [f_n, mode_shape] = calc.modal_analysis;
             
             N_fn = numel(f_n);
             
@@ -524,74 +378,15 @@ classdef (Abstract) Drivetrain
             
         end
         
-        function [M, K] = Thomson_ToV(obj)
-            %THOMSON_TOV Returns the inertia and stiffness matrices of the
-            % drivetrain according to:
-            % W. Thomson and M. Dahleh, Theory of vibration with
-            % applications, 5th ed. Prentice-Hall: New Jersey, 1998,
-            % pp. 380-381.
-            %
+        function [f, mode_shape] = nth_resonance(obj, n)
+            [f_n, mode_shape] = obj.resonances(n, false);
             
-            J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia
-            J_G = obj.J_Gen;   % [kg-m^2], Generator inertia
-            
-            U = obj.u;
-            
-            k_LSS = obj.main_shaft.stiffness("torsional");
-            k_HSS = obj.stage(end).out_shaft.stiffness("torsional");
-            
-            k = (k_LSS*k_HSS*U^2)/(k_LSS + k_HSS*U^2);
-            
-            M = diag([J_R J_G*U^2]);
-            K = k*[1.0 -1.0;
-                  -1.0  1.0];
-        end
-        
-        function [M, K] = Kahraman_1994(obj)
-            %KAHRAMAN_1994 Returns the inertia and stiffness matrices of
-            % the drivetrain according to:
-            % A. Kahraman, "Natural Modes of Planetary Gear Trains",
-            % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
-            % 1994. https://doi.org/10.1006/jsvi.1994.1222.
-
-            J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
-            J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
-            
-            N_DOF = ones(obj.N_stage + 1, 1)*2.0;
-            
-            for idx = 1:obj.N_stage
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    tmp = obj.stage(idx).N_p + 1;
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    tmp = obj.stage(idx).N_p + 2;
-                end
-                
-                N_DOF(idx + 1) = N_DOF(idx) + tmp;
+            if((n < 1) || (n > numel(f_n)))
+                error("n = %d > or ~= 0.");
             end
             
-            n = N_DOF(1:end - 1);
-            N_DOF = N_DOF(end);
-            
-            M = zeros(N_DOF, N_DOF);
-            K = zeros(N_DOF, N_DOF);
-            
-            M(1, 1) = J_R;              M(end, end) = J_G;
-            
-            M_tmp = obj.main_shaft.inertia_matrix("torsional");
-            K_tmp = obj.main_shaft.stiffness_matrix("torsional");
-            
-            M(1:2, 1:2) = M(1:2, 1:2) + M_tmp;        K(1:2, 1:2) = K(1:2, 1:2) + K_tmp;
-            
-            for idx = 1:obj.N_stage
-                [M_tmp, K_tmp] = obj.stage(idx).Kahraman_1994;
-                
-                jdx = n(idx);
-                kdx = jdx:(jdx + length(M_tmp) - 1);
-                
-                M(kdx, kdx) = M(kdx, kdx) + M_tmp;
-                K(kdx, kdx) = K(kdx, kdx) + K_tmp;
-            end
-            
+            f = f_n(n);
+            mode_shape = mode_shape(:, n);
         end
         
         function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
@@ -1053,7 +848,9 @@ classdef (Abstract) Drivetrain
                   "ISO_6336:SF", ...
                   "ISO_6336:KS", ...
                   "MATLAB:nearlySingularMatrix", ...
-                  "MATLAB:COM:InvalidProgid"];
+                  "MATLAB:COM:InvalidProgid", ...
+                  "Dynamic_Formulation:imag", ...
+                  "Dynamic_Formulation:RB"];
             
             for idx = 1:length(id)
                 warning("off", id(idx));
@@ -1335,7 +1132,7 @@ classdef (Abstract) Drivetrain
             fprintf("Reference %s drivetrain with rated power %.1f kW.\n", class(obj_ref), obj_ref.P_rated);
             
             n_P = numel(P_scale);
-            n_fn = numel(obj_ref.modal_analysis);
+            n_fn = numel(obj_ref.resonances);
             
             gamma = zeros(length(obj_ref.gamma), n_P);
             res = struct;
@@ -1347,7 +1144,7 @@ classdef (Abstract) Drivetrain
             
             gm_P = P_scale./obj_ref.P_rated;
             
-            [~, MS_ref] = obj_ref.modal_analysis;
+            [~, MS_ref] = obj_ref.resonances;
             
             SH_ref = obj_ref.S_H;
             SS = [SH_ref, zeros(size(SH_ref))];
@@ -1443,7 +1240,7 @@ classdef (Abstract) Drivetrain
                 
                 SH(:, idx) = obj_sca.S_H;
                 k_mesh(:, idx) = [obj_sca.stage.k_mesh]';
-                [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.modal_analysis;
+                [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.resonances;
 
                 subplot(2, 6, 7:9);
                 cla;
@@ -1508,7 +1305,7 @@ classdef (Abstract) Drivetrain
             
             obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
             
-            [f_n, mode_shape] = obj_sca.modal_analysis;
+            [f_n, mode_shape] = obj_sca.resonances;
             
         end
         
