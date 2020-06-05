@@ -37,7 +37,7 @@ classdef Gear_Set < Gear
     %
     
     properties(SetAccess = private)
-        configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = "parallel"; % [-], Configuration of the gear set (e.g. parallel, planetary)
+        configuration (1, :) string   {mustBeMember(configuration, ["parallel", "planetary"])} = 'parallel'; % [-], Configuration of the gear set (e.g. parallel, planetary)
         N_p           (1, 1)          {mustBeInteger, mustBePositive}                          = 1;          % [-], Number of planets
         bearing       (1, :) Bearing;                                                                        % [-], Bearing array
     end
@@ -67,26 +67,27 @@ classdef Gear_Set < Gear
     methods
         function obj = Gear_Set(varargin)
             default = {'configuration', 'parallel', ...
-                       'm_n'          , 1.0, ...
-                       'alpha_n'      , 20.0, ...
-                       'z'            , 13*[1 1], ...
-                       'b'            , 13.0, ...
-                       'x'            , 0.0*[1 1], ...
-                       'beta'         , 0.0, ...
-                       'k'            , 0.0, ...
-                       'bore_ratio'   , 0.5, ...
-                       'N_p'          , 1, ...
-                       'a_w'          , 13.0, ...
-                       'rack_type'    , 'A', ...
+                       'z'            , [17   103  ], ...
+                       'x'            , [ 0.145 0.0], ...
+                       'k'            , [ 1     1  ]*0, ...
+                       'bore_ratio'   , [ 1     1  ]*0.5, ...
+                       'N_p'          ,   1, ...
+                       'a_w'          , 500.0, ...
                        'bearing'      , [Bearing, Bearing], ...
                        'shaft'        , Shaft, ...
-                       'Q'            , 6.0, ...
-                       'R_a'          , 0.8};
+                       'm_n'          ,   8.0, ...
+                       'alpha_n'      ,  20.0, ...
+                       'b'            , 100.0, ...
+                       'beta'         ,  15.8, ...
+                       'rack_type'    ,  'D', ...
+                       'Q'            ,   5.0, ...
+                       'R_a'          ,   1.0};
+                   
             
-            default = process_varargin(varargin, default);
+            default = process_varargin(default, varargin);
             
             if(length(default.z) < 2)
-                error("prog:input", "There should be at least two gears.");
+                error('prog:input', 'There should be at least two gears.');
             elseif(length(default.z) == 3)
                 default.z(3) = -abs(default.z(3)); % because the ring is an internal gear
             end
@@ -94,17 +95,17 @@ classdef Gear_Set < Gear
             if((length(default.z) ~= length(default.x)) && ...
                (length(default.x) ~= length(default.k)) && ...
                (length(default.k) ~= length(default.bore_ratio)))
-                error("prog:input", "The lengths of z, x, k and bore ratio should be the equal.");
+                error('prog:input', 'The lengths of z, x, k and bore ratio should be the equal.');
             end
             
             if(std(default.m_n) ~= 0.0)
-                error("prog:input", "Normal modules m_n should be equal for all gears.");
+                error('prog:input', 'Normal modules m_n should be equal for all gears.');
             elseif(std(default.alpha_n) ~= 0.0)
-                error("prog:input", "Pressure angles alpha_n should be equal for all gears.");
+                error('prog:input', 'Pressure angles alpha_n should be equal for all gears.');
             elseif(std(default.beta) ~= 0.0)
-                error("prog:input", "Helix angles beta should be equal for all gears.");
+                error('prog:input', 'Helix angles beta should be equal for all gears.');
             elseif(std(default.b) ~= 0.0)
-                error("prog:input", "Face width b should be equal for all gears.");
+                error('prog:input', 'Face width b should be equal for all gears.');
             end
             
             obj@Gear('m_n'       , default.m_n, ...
@@ -119,15 +120,15 @@ classdef Gear_Set < Gear
                      'Q'         , default.Q, ...
                      'R_a'       , default.R_a);
             
-            if(strcmp(default.configuration, "planetary"))
+            if(strcmp(default.configuration, 'planetary'))
                 obj.configuration = default.configuration;
 %                 [sun, planet, ring]  =  [1, 2, 3]
                 obj.N_p    = default.N_p;
-            elseif(strcmp(default.configuration, "parallel"))
+            elseif(strcmp(default.configuration, 'parallel'))
                 obj.configuration = default.configuration;
                 obj.N_p    = 1;
             else
-                error("prog:input", "Configuration [%s] is NOT defined.", default.configuration)
+                error('prog:input', 'Configuration [%s] is NOT defined.', default.configuration)
             end
             
             obj.a_w = default.a_w;
@@ -140,24 +141,24 @@ classdef Gear_Set < Gear
 
             tmp_vec = NaN(size(obj.z));
             tmp_vec(2) = 1;
-            tab_set = {"Gear Ratio",                            "u",       "-",      obj.u  *tmp_vec;
-                       "Number of elements"                     "p",       "-",      obj.N_p*tmp_vec;
-                       "Normal module",                         "m_n",     "mm",     obj.m_n*tmp_vec;
-                       "Normal pressure angle",                 "alpha_n", "deg.",   obj.alpha_n*tmp_vec;
-                       "Helix angle",                           "beta",    "deg.",   obj.beta*tmp_vec;
-                       "Face width",                            "b",       "mm",     obj.b*tmp_vec;
-                       "Center distance",                       "a_w",     "mm",     obj.a_w*tmp_vec;
-                       "Number of teeth",                       "z",       "-",      obj.z;
-                       "Profile shift coefficient",             "x",       "-",      obj.x;
-                       "Reference diameter",                    "d",       "mm",     obj.d;
-                       "Tip diameter",                          "d_a",     "mm",     obj.d_a;
-                       "Root diameter",                         "d_f",     "mm",     obj.d_f;
-                       "Mass",                                  "m",       "kg",     obj.mass;
-                       "Mass moment of inertia (x axis, rot.)", "J_x",     "kg-m^2", obj.J_x;
-                       "Mass moment of inertia (y axis)",       "J_y",     "kg-m^2", obj.J_y;
-                       "Mass moment of inertia (z axis)",       "J_z",     "kg-m^2", obj.J_z;
-                       "Bearing Names"                          "-+-",     "-",      tmp_vec;
-                       "Bearing Types"                          "-+-",     "-",      tmp_vec;
+            tab_set = {'Gear Ratio',                            'u',       '-',      obj.u  *tmp_vec;
+                       'Number of elements'                     'p',       '-',      obj.N_p*tmp_vec;
+                       'Normal module',                         'm_n',     'mm',     obj.m_n*tmp_vec;
+                       'Normal pressure angle',                 'alpha_n', 'deg.',   obj.alpha_n*tmp_vec;
+                       'Helix angle',                           'beta',    'deg.',   obj.beta*tmp_vec;
+                       'Face width',                            'b',       'mm',     obj.b*tmp_vec;
+                       'Center distance',                       'a_w',     'mm',     obj.a_w*tmp_vec;
+                       'Number of teeth',                       'z',       '-',      obj.z;
+                       'Profile shift coefficient',             'x',       '-',      obj.x;
+                       'Reference diameter',                    'd',       'mm',     obj.d;
+                       'Tip diameter',                          'd_a',     'mm',     obj.d_a;
+                       'Root diameter',                         'd_f',     'mm',     obj.d_f;
+                       'Mass',                                  'm',       'kg',     obj.mass;
+                       'Mass moment of inertia (x axis, rot.)', 'J_x',     'kg-m^2', obj.J_x;
+                       'Mass moment of inertia (y axis)',       'J_y',     'kg-m^2', obj.J_y;
+                       'Mass moment of inertia (z axis)',       'J_z',     'kg-m^2', obj.J_z;
+                       'Bearing Names'                          '-+-',     '-',      tmp_vec;
+                       'Bearing Types'                          '-+-',     '-',      tmp_vec;
                        };
 
             Parameter = tab_set(:, 1);
@@ -168,66 +169,66 @@ classdef Gear_Set < Gear
             Value = cell2mat(Value);
             Value = num2cell(Value);
             
-            Value(cellfun(@isnan,Value)) = {"-+-"}; %#ok<STRSCALR>
+            Value(cellfun(@isnan,Value)) = {'-+-'}; %#ok<STRSCALR>
             
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 for idx = 1:length(obj.z)
                     jdx = 3*idx - 2;
-                    Value{end - 1, idx} = join([obj.bearing(jdx:jdx + 2).name], " / ");
-                    Value{end    , idx} = join([obj.bearing(jdx:jdx + 2).type], " / ");
+                    Value{end - 1, idx} = join([obj.bearing(jdx:jdx + 2).name], ' / ');
+                    Value{end    , idx} = join([obj.bearing(jdx:jdx + 2).type], ' / ');
                 end
 
                 v_pinion = Value(:, 1);
                 v_wheel  = Value(:, 2);
                 
                 tab = table(Parameter, Symbol, v_pinion, v_wheel, Unit, ...
-                            'variableNames', ["Parameter", "Symbol", "Pinion", "Wheel", "Unit"]);
-            elseif(strcmp(obj.configuration, "planetary"))
-                Value{end - 1, 2} = join([obj.bearing(1:2).name], " / ");
-                Value{end    , 2} = join([obj.bearing(1:2).type], " / ");
+                            'variableNames', ['Parameter', 'Symbol', 'Pinion', 'Wheel', 'Unit']);
+            elseif(strcmp(obj.configuration, 'planetary'))
+                Value{end - 1, 2} = join([obj.bearing(1:2).name], ' / ');
+                Value{end    , 2} = join([obj.bearing(1:2).type], ' / ');
                 
                 v_sun = Value(:, 1);
                 v_pla = Value(:, 2);
                 v_rng = Value(:, 3);
-                v_car = {"-+-"; "-+-"; "-+-"; ... 
-                         "-+-"; "-+-"; "-+-"; ...
-                         "-+-"; "-+-"; "-+-"; ...
-                         "-+-"; obj.carrier.d_a;
+                v_car = {'-+-'; '-+-'; '-+-'; ... 
+                         '-+-'; '-+-'; '-+-'; ...
+                         '-+-'; '-+-'; '-+-'; ...
+                         '-+-'; obj.carrier.d_a;
                                 obj.carrier.d_f;
                                 obj.carrier.mass;
                                 obj.carrier.J_x;
                                 obj.carrier.J_y;
                                 obj.carrier.J_z;
-                                join([obj.bearing(3:4).name], " / ");
-                                join([obj.bearing(3:4).type], " / ")};
+                                join([obj.bearing(3:4).name], ' / ');
+                                join([obj.bearing(3:4).type], ' / ')};
                             
                 tab = table(Parameter, Symbol, v_sun, v_pla, v_rng, v_car, Unit, ...
-                            'variableNames', ["Parameter", "Symbol", "Sun", "Planet", "Ring", "Carrier", "Unit"]);
+                            'variableNames', ['Parameter', 'Symbol', 'Sun', 'Planet', 'Ring', 'Carrier', 'Unit']);
 
             else
-                error("prog:input", "Configuration [%s] is NOT defined.", obj.configuration);
+                error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
             end
             
             if(nargout == 0)
-                fprintf("Gear set:\n");
+                fprintf('Gear set:\n');
                 disp(tab);
-                fprintf("Bearings:\n");
+                fprintf('Bearings:\n');
                 obj.bearing.disp;
-                fprintf("Output shaft:\n");
+                fprintf('Output shaft:\n');
                 obj.out_shaft.disp;
                 clear tab;
             end
         end
         
         function [tab, tab_str] = comparison(ref, sca)
-            tab_str = {"Normal module",                                "m_n",     "mm",     ref.m_n,         sca.m_n,         sca.m_n         / ref.m_n;         % 7
-                       "Face width",                                   "b",       "mm",     ref.b,           sca.b,           sca.b           / ref.b;           % 8
-                       "Center distance",                              "a_w",     "mm",     ref.a_w,         sca.a_w,         sca.a_w         / ref.a_w;         % 9
-                       "Reference diameter (Sun/Pinion)",              "d_1",     "mm",     ref.d(1),        sca.d(1),        sca.d(1)        / ref.d(1);        % 10
-                       "Mass (Sun/Pinion)",                            "m_1",     "kg",     ref.mass(1),     sca.mass(1),     sca.mass(1)     / ref.mass(1);     % 11
-                       "Mass moment of inertia (Sun/Pinion)",          "J_xx1",   "kg-m^2", ref.J_x(1),      sca.J_x(1),      sca.J_x(1)      / ref.J_x(1);      % 12
-                       "Diameter / Output shaft",                      "d",       "mm",     ref.out_shaft.d, sca.out_shaft.d, sca.out_shaft.d / ref.out_shaft.d; % 13
-                       "Length / Output shaft",                        "L",       "mm",     ref.out_shaft.L, sca.out_shaft.L, sca.out_shaft.L / ref.out_shaft.L; % 14
+            tab_str = {'Normal module',                                'm_n',     'mm',     ref.m_n,         sca.m_n,         sca.m_n         / ref.m_n;         % 7
+                       'Face width',                                   'b',       'mm',     ref.b,           sca.b,           sca.b           / ref.b;           % 8
+                       'Center distance',                              'a_w',     'mm',     ref.a_w,         sca.a_w,         sca.a_w         / ref.a_w;         % 9
+                       'Reference diameter (Sun/Pinion)',              'd_1',     'mm',     ref.d(1),        sca.d(1),        sca.d(1)        / ref.d(1);        % 10
+                       'Mass (Sun/Pinion)',                            'm_1',     'kg',     ref.mass(1),     sca.mass(1),     sca.mass(1)     / ref.mass(1);     % 11
+                       'Mass moment of inertia (Sun/Pinion)',          'J_xx1',   'kg-m^2', ref.J_x(1),      sca.J_x(1),      sca.J_x(1)      / ref.J_x(1);      % 12
+                       'Diameter / Output shaft',                      'd',       'mm',     ref.out_shaft.d, sca.out_shaft.d, sca.out_shaft.d / ref.out_shaft.d; % 13
+                       'Length / Output shaft',                        'L',       'mm',     ref.out_shaft.L, sca.out_shaft.L, sca.out_shaft.L / ref.out_shaft.L; % 14
                        };
                    
             Parameter = tab_str(:, 1);
@@ -259,30 +260,30 @@ classdef Gear_Set < Gear
             
             C_p = [obj.a_w, 0.0]';
 
-            if(strcmp(obj.configuration, "parallel"))
-                plot(obj.gear(1), C_p*0.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(1, :));
-                plot(obj.gear(2), C_p*1.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(2, :));
+            if(strcmp(obj.configuration, 'parallel'))
+                plot(obj.gear(1), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(1, :));
+                plot(obj.gear(2), C_p*1.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
                 
-                legend(["Pinion", "Wheel"], "location", "best", "fontName", "Times", "fontSize", 12.0);
+                legend(['Pinion', 'Wheel'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
-            elseif(strcmp(obj.configuration, "planetary"))
-                plot(obj.gear(1), C_p*0.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(1, :));
-                plot(obj.gear(2), C_p*1.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(2, :));
-                plot(obj.gear(3), C_p*0.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(3, :));
-                plot(obj.carrier, C_p*0.0, "lineStyle", "-" , "lineWidth", 2.0, "color", color(4, :));
+            elseif(strcmp(obj.configuration, 'planetary'))
+                plot(obj.gear(1), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(1, :));
+                plot(obj.gear(2), C_p*1.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
+                plot(obj.gear(3), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(3, :));
+                plot(obj.carrier, C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(4, :));
                 
                 RotXY = @(x)[cos(x), sin(x); sin(x), cos(x)];
                 
                 ang = 2.0*pi/obj.N_p;
                 for idx = 2:obj.N_p
-                    plot(obj.gear(2), RotXY(ang*(idx - 1))*C_p, "lineStyle", "-" , "lineWidth", 2.0, "color", color(2, :));
+                    plot(obj.gear(2), RotXY(ang*(idx - 1))*C_p, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
                 end
                 
-                legend(["Sun", "Planet", "Ring", "Carrier"], "location", "best", "fontName", "Times", "fontSize", 12.0);
+                legend(['Sun', 'Planet', 'Ring', 'Carrier'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
             end
             
-            xlabel("y");
-            ylabel("z");
+            xlabel('y');
+            ylabel('z');
             
         end
         
@@ -296,23 +297,23 @@ classdef Gear_Set < Gear
             
             C_p = [obj.a_w, 0.0]';
 
-            if(strcmp(obj.configuration, "parallel"))
-                plot3(obj.gear(1), C_p*0.0, "edgeColor", "none", "lineStyle", "-" , "faceColor", color(1, :));
-                plot3(obj.gear(2), C_p*1.0, "edgeColor", "none", "lineStyle", "-" , "faceColor", color(2, :));
+            if(strcmp(obj.configuration, 'parallel'))
+                plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
+                plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
                 
-            elseif(strcmp(obj.configuration, "planetary"))
-                plot3(obj.gear(1), C_p*0.0, "edgeColor", "none", "lineStyle", "-" , "faceColor", color(1, :));
-                plot3(obj.gear(2), C_p*1.0, "edgeColor", "none", "lineStyle", "-" , "faceColor", color(2, :));
-                plot3(obj.gear(3), C_p*0.0, "edgeColor", "none", "lineStyle", "-" , "faceColor", color(3, :));
+            elseif(strcmp(obj.configuration, 'planetary'))
+                plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
+                plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
+                plot3(obj.gear(3), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(3, :));
                 
                 RotXY = @(x)[cos(x), sin(x); sin(x), cos(x)];
                 
                 ang = 2.0*pi/obj.N_p;
                 for idx = 2:obj.N_p
-                    plot3(obj.gear(2), RotXY(ang*(idx - 1))*C_p, "edgeColor", "none", "lineStyle", "none" , "faceColor", color(2, :));
+                    plot3(obj.gear(2), RotXY(ang*(idx - 1))*C_p, 'edgeColor', 'none', 'lineStyle', 'none' , 'faceColor', color(2, :));
                 end
                 
-                legend(["Sun", "Planet", "Ring", "Carrier"], "location", "best", "fontName", "Times", "fontSize", 12.0);
+                legend(['Sun', 'Planet', 'Ring', 'Carrier'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
             end
             
         end
@@ -331,40 +332,40 @@ classdef Gear_Set < Gear
             color = linspecer(6, 'qualitative');
             
             hold on;
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 C_w =       [obj.b/2.0 0.0]' + C_0;
                 C_p =       [obj.b/2.0 obj.a_w]' + C_0;
                 C_s = C_p + [obj.b + obj.out_shaft.L 0.0]'./2.0;
                 
-                rectangle(obj.gear(1)  , C_p, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :));
-                rectangle(obj.gear(2)  , C_w, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :));
-                rectangle(obj.out_shaft, C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
+                rectangle(obj.gear(1)  , C_p, color(1, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(1, :));
+                rectangle(obj.gear(2)  , C_w, color(2, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(2, :));
+                rectangle(obj.out_shaft, C_s, color(5, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(5, :));
                 
-%                 legend([h_p h_w h_s], ["Pinion", "Wheel", "Shaft"], "location", "best", "fontName", "Times", "fontSize", 12.0);
+%                 legend([h_p h_w h_s], ['Pinion', 'Wheel', 'Shaft'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
-            elseif(strcmp(obj.configuration, "planetary"))
+            elseif(strcmp(obj.configuration, 'planetary'))
                 C_c = [obj.carrier.b/2.0, 0.0]' + C_0;
                 C_p = C_c + [0.0 obj.a_w]';
                 C_s = C_c + [obj.carrier.b + obj.out_shaft.L 0.0]'./2.0;
 
-                rectangle(obj.carrier  , C_c, color(4, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(4, :));
-                rectangle(obj.gear(3)  , C_c, color(3, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(3, :)); % ring
-                rectangle(obj.gear(1)  , C_c, color(1, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(1, :)); % sun
-                rectangle(obj.gear(2)  , C_p, color(2, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(2, :)); % planet
-                rectangle(obj.out_shaft, C_s, color(5, :), "edgeColor", "k", "lineStyle", "-" , "faceColor", color(5, :));
+                rectangle(obj.carrier  , C_c, color(4, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(4, :));
+                rectangle(obj.gear(3)  , C_c, color(3, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(3, :)); % ring
+                rectangle(obj.gear(1)  , C_c, color(1, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(1, :)); % sun
+                rectangle(obj.gear(2)  , C_p, color(2, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(2, :)); % planet
+                rectangle(obj.out_shaft, C_s, color(5, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(5, :));
                 
-%                 legend([h_g h_p h_r h_c h_s], ["Sun", "Planet", "Ring", "Carrier", "Shaft"], "location", "best", "fontName", "Times", "fontSize", 12.0);
+%                 legend([h_g h_p h_r h_c h_s], ['Sun', 'Planet', 'Ring', 'Carrier', 'Shaft'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
             end
             hold off;
         end
         
         function ks = KISSsoft(obj)
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 module = 'Z012';
                 std_file = 'CylGearPair 1 (spur gear).Z12';
                 geo_meth = false;
-            elseif(strcmp(obj.configuration, "planetary"))
+            elseif(strcmp(obj.configuration, 'planetary'))
                 module = 'Z014';
                 std_file = 'PlanetarySet 1 (ISO6336).Z14';
                 geo_meth = true;
@@ -378,7 +379,7 @@ classdef Gear_Set < Gear
                 ks.load_file(file_name);
             catch err
                 delete(ks);
-                error(err.identifier, "%s", err.message);
+                error(err.identifier, '%s', err.message);
             end
             
             ks.set_var('ZS.AnzahlZwi',         obj.N_p);      % number of planets
@@ -390,15 +391,15 @@ classdef Gear_Set < Gear
             ks.set_var('RechSt.GeometrieMeth', geo_meth);    % tooth geometry according to ISO 21771:2007
             
             for idx = 1:numel(obj.z)
-                ks.set_var(sprintf('ZR[%d].z'                   , idx - 1), obj.z(idx), '%d');
+                ks.set_var(sprintf('ZR[%d].z'                   , idx - 1), obj.z(idx));
                 ks.set_var(sprintf('ZR[%d].x.nul'               , idx - 1), obj.x(idx));
                 ks.set_var(sprintf('ZR[%d].b'                   , idx - 1), obj.b     );
                 ks.set_var(sprintf('ZR[%d].Tool.type'           , idx - 1), 2);
                 ks.set_var(sprintf('ZR[%d].Tool.RefProfile.name', idx - 1), sprintf('1.25 / 0.38 / 1.0 ISO 53:1998 Profil %s', obj.type));
                 
-                ks.set_var(sprintf('ZR[%d].Vqual', idx - 1), obj.Q,   '%d');
-                ks.set_var(sprintf('ZR[%d].RAH'  , idx - 1), obj.R_a, '%.1f');
-                ks.set_var(sprintf('ZR[%d].RAF'  , idx - 1), obj.R_z, '%.1f');
+                ks.set_var(sprintf('ZR[%d].Vqual', idx - 1), obj.Q);
+                ks.set_var(sprintf('ZR[%d].RAH'  , idx - 1), obj.R_a);
+                ks.set_var(sprintf('ZR[%d].RAF'  , idx - 1), obj.R_z);
                 
                 % material properties:
                 ks.set_var(sprintf('ZR[%d].mat.bez'    , idx - 1), '18CrNiMo7-6');
@@ -413,57 +414,7 @@ classdef Gear_Set < Gear
             
             if(nargout == 0)
                 delete(ks);
-                clear("ks");
-            end
-        end
-    end
-    
-    methods(Static)
-        function ex01 = example01_ISO_6336()
-            ex01 = Gear_Set('parallel', ...   % configuration
-                            8.0, ...          % normal module
-                            20.0, ...         % pressure angle
-                            [17 103], ...     % number of teeth
-                            100.0, ...        % face width
-                            [0.145 0.0], ...  % profile shift coefficient
-                            0.0, ...          % helix angle
-                            [1 1]*0, ...      % k
-                            [1 1]*0.5, ...    % bore ratio
-                            1, ...            % number of planets
-                            500.0, ...        % center distance
-                            'D', ...          % rack type
-                            Bering(), ...     %
-                            Shaft());         %
-        end
-        
-        function Z_NT = interp_ZNT(N, line)
-            switch line
-                case 1
-                    % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
-                    x = [6.0e5 1.0e7 1.0e9 1.0e10];
-                    y = [1.6   1.3   1.0   0.85];
-                case 2
-                    % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
-                    x = [1.0e5 5.0e7 1.0e9 1.0e10];
-                    y = [1.6   1.0   1.0   0.85];
-                case 3
-                    % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
-                    x = [1.0e5 2.0e6 1.0e10];
-                    y = [1.3   1.0   0.85];
-                case 4
-                    % NV (nitrocar.)
-                    x = [1.0e5 2.0e6 1.0e10];
-                    y = [1.1   1.0   0.85];
-                otherwise
-                    error("prog:input", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
-            end
-
-            if(N <= x(1))
-                Z_NT = y(1);
-            elseif(N > x(end))
-                Z_NT = y(end);
-            else
-                Z_NT = interp1(log(x), y, log(N));
+                clear('ks');
             end
         end
     end
@@ -471,81 +422,54 @@ classdef Gear_Set < Gear
     %% Calculation:
     methods
         %% Scaling:
-        function obj_sca = scale_Gear_Set(obj_ref, gamma)
-            
-            if((length(gamma) < 4) || (~isa(gamma, "containers.Map")))
-                error("gamma must be a container with 4 elements.");
+        function obj_sca = scale_by(obj_ref, gamma)
+            if(~isa(gamma, 'scaling_factor'))
+                error('gamma should be a [SCALING_FACTOR] object.');
             end
+                                                        % Scaling factors for:
+            gamma_one = scaling_factor({'m_n', 1.0, ... % normal module,         [mm]
+                                        'b'  , 1.0, ... % face width,            [mm]
+                                        'd'  , 1.0, ... % output shaft diameter, [mm]
+                                        'L'  , 1.0});   % output shaft length,   [mm]
+
+            gamma = gamma_one.update(gamma);
             
-            m_n_sca = Rack.module(obj_ref.m_n*gamma("m_n"), "calc", "nearest");
+            m_n_sca = Rack.module(obj_ref.m_n*gamma('m_n'), 'calc', 'nearest');
             
-            gamma_mn = m_n_sca/obj_ref.m_n;
+            gamma('m_n') = m_n_sca/obj_ref.m_n;
             
-            shaft_sca = Shaft(obj_ref.out_shaft.d*gamma("d"), ...
-                              obj_ref.out_shaft.L*gamma("L"));
-            
-            obj_sca = Gear_Set(obj_ref.configuration, ...
-                               m_n_sca, ...
-                               obj_ref.alpha_n, ...
-                               obj_ref.z, ...
-                               obj_ref.b*gamma("b"), ...
-                               obj_ref.x, ...
-                               obj_ref.beta, ...
-                               obj_ref.k, ...
-                               obj_ref.bore_ratio, ...
-                               obj_ref.N_p, ...
-                               obj_ref.a_w*gamma_mn, ...
-                               obj_ref.type, ...
-                               obj_ref.bearing, ...
-                               shaft_sca);
-        end
-        
-        function obj_sca = scale_aspect(obj_ref, gamma, aspect)
-            key_set = ["m_n", "b", "d", "L"]; %#ok<*CLARRSTR>
-            
-            gamma_full = containers.Map(key_set, ones(4, 1));
-            
-            switch(aspect)
-                case "Gear_Set"
-                    gamma_full = containers.Map(key_set, gamma);
-                    
-                case "stage"
-                    if(numel(gamma) ~= 1)
-                        error("gamma must have 1 element.");
-                    end
-                    
-                    sub_key ={"m_n", "b"};
-                    
-                    for idx = 1:2
-                        gamma_full(sub_key{idx}) = gamma;
-                    end
-                    
-                case "gear"
-                    if(numel(gamma) ~= 2)
-                        error("gamma must have 2 element.");
-                    end
-                    
-                    sub_key ={"m_n", "b"};
-                    
-                    for idx = 1:2
-                        gamma_full(sub_key{idx}) = gamma(idx, :);
-                    end
-            end
-            
-            obj_sca = obj_ref.scale_Gear_Set(gamma_full);
-            
+            ref_shaft = obj_ref.out_shaft;
+            shaft_sca = Shaft(ref_shaft.d*gamma('d'), ...
+                              ref_shaft.L*gamma('L'));
+                          
+            obj_sca = Gear_Set('configuration', obj_ref.configuration, ...
+                               'm_n'          , obj_ref.m_n*gamma('m_n'), ...
+                               'alpha_n'      , obj_ref.alpha_n, ...
+                               'z'            , obj_ref.z, ...
+                               'b'            , obj_ref.b*gamma('b'), ...
+                               'x'            , obj_ref.x, ...
+                               'beta'         , obj_ref.beta, ...
+                               'k'            , obj_ref.k, ...
+                               'bore_ratio'   , obj_ref.bore_ratio, ...
+                               'N_p'          , obj_ref.N_p, ...
+                               'a_w'          , obj_ref.a_w*gamma('m_n'), ...
+                               'rack_type'    , obj_ref.type, ...
+                               'bearing'      , obj_ref.bearing, ...
+                               'shaft'        , shaft_sca, ...
+                               'Q'            , obj_ref.Q, ...
+                               'R_a'          , obj_ref.R_a);
         end
         
         function [obj_sca, gamma, res] = scaled_version(obj_ref, P, n_1, SH_ref, aspect, varargin)
             
-            if(strcmp(aspect, "Gear_Set"))
+            if(strcmp(aspect, 'Gear_Set'))
                 n = 4;
-            elseif(strcmp(aspect, "stage"))
+            elseif(strcmp(aspect, 'stage'))
                 n = 1;
-            elseif(strcmp(aspect, "gear"))
+            elseif(strcmp(aspect, 'gear'))
                 n = 2;
             else
-                error("Aspect = %s is NOT defined.", upper(aspect));
+                error('Aspect = %s is NOT defined.', upper(aspect));
             end
             
             if(~isempty(varargin))
@@ -564,15 +488,15 @@ classdef Gear_Set < Gear
 
             constraint_fun = @(x)deal(fun_ineq(x), fun_asp(x)); % inequalities, equalities
             
-            opt_solver = optimoptions("fmincon", "display", "notify");
+            opt_solver = optimoptions('fmincon', 'display', 'notify');
             
-%             id_1 = "prog:input";
-%             id_2 = "MATLAB:nearlySingularMatrix";
-%             warning("off", id_1);
-%             warning("off", id_2);
+%             id_1 = 'prog:input';
+%             id_2 = 'MATLAB:nearlySingularMatrix';
+%             warning('off', id_1);
+%             warning('off', id_2);
             [gamma, res] = fmincon(fun_min, gamma_0, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-%             warning("on", id_2);
-%             warning("on", id_1);
+%             warning('on', id_2);
+%             warning('on', id_1);
             
             obj_sca = obj_ref.scale_aspect(gamma, aspect);
         end
@@ -581,7 +505,7 @@ classdef Gear_Set < Gear
         function [M, K] = Kahraman_1994(obj)
             %KAHRAMAN_1994 Returns the inertia and stiffness matrices of
             % the gear stage according to:
-            % A. Kahraman, "Natural Modes of Planetary Gear Trains",
+            % A. Kahraman, 'Natural Modes of Planetary Gear Trains',
             % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
             % 1994. https://doi.org/10.1006/jsvi.1994.1222.
 
@@ -589,7 +513,7 @@ classdef Gear_Set < Gear
             M = NaN;
             K = NaN;
 
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 n = 3;
                 M = zeros(n, n);                K = zeros(n, n);
                 
@@ -607,7 +531,7 @@ classdef Gear_Set < Gear
                 K(idx, idx) = [r_w ^ 2 * k_pw         r_p     * k_pw * r_w;
                                r_w     * k_pw * r_p   r_p ^ 2 * k_pw];
                 
-            elseif(strcmp(obj.configuration, "planetary"))
+            elseif(strcmp(obj.configuration, 'planetary'))
                 n = obj.N_p + 3;
                 M = zeros(n, n);                K = zeros(n, n);
                 
@@ -674,20 +598,20 @@ classdef Gear_Set < Gear
             
             idx = (n - 1):n;
             
-            M(idx, idx) = M(idx, idx) + obj.out_shaft.inertia_matrix("torsional");
-            K(idx, idx) = K(idx, idx) + obj.out_shaft.stiffness_matrix("torsional");
+            M(idx, idx) = M(idx, idx) + obj.out_shaft.inertia_matrix('torsional');
+            K(idx, idx) = K(idx, idx) + obj.out_shaft.stiffness_matrix('torsional');
         end
         
         function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
             %LIN_PARKER_1999 Returns the inertia and stiffness matrices of
             % the gear set according to:
-            % J. Lin and R. Parker, "Analytical Characterization of the
-            % Unique Properties of Planetary Gear Free Vibration", Journal
+            % J. Lin and R. Parker, 'Analytical Characterization of the
+            % Unique Properties of Planetary Gear Free Vibration', Journal
             % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
             % 1999. https://doi.org/10.1115/1.2893982
             %
             
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 n = 9;
                 M       = zeros(n, n);
                 K_b     = zeros(n, n);
@@ -737,7 +661,7 @@ classdef Gear_Set < Gear
                                0.0      0.0      0.0      2.0*m_p  0.0      0.0;
                                0.0      0.0      0.0      0.0      0.0      0.0];
 
-             elseif(strcmp(obj.configuration, "planetary"))
+             elseif(strcmp(obj.configuration, 'planetary'))
                 n = 18;
                 M       = zeros(n, n);
                 K_b     = zeros(n, n);
@@ -772,8 +696,8 @@ classdef Gear_Set < Gear
                 k_cx = b_c.K_y;     k_cy = b_c.K_z;     k_cu = b_c.K_alpha;
 
                 % Mesh stiffness:
-                sun_pla = Gear_Set("parallel", obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
-                pla_rng = Gear_Set("parallel", obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
+                sun_pla = Gear_Set('parallel', obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
+                pla_rng = Gear_Set('parallel', obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
                 
                 k_s = sun_pla.k_mesh;
                 k_r = pla_rng.k_mesh;
@@ -831,8 +755,8 @@ classdef Gear_Set < Gear
                 
             end
             
-            M_tmp = obj.out_shaft.inertia_matrix("full");
-            K_tmp = obj.out_shaft.stiffness_matrix("full");
+            M_tmp = obj.out_shaft.inertia_matrix('full');
+            K_tmp = obj.out_shaft.stiffness_matrix('full');
             
             % [ 1   2   3       4      5       6   7   8   9    10      11      12]
             % [x_1 y_1 z_1 alpha_1 beta_1 gamma_1 x_2 y_2 z_2 alpha_2 beta_2 gamma_2]
@@ -851,21 +775,21 @@ classdef Gear_Set < Gear
         function [M, K] = Eritenel_2011(obj)
             %ERITENEL_2011 Returns the inertia and stiffness matrices of
             % the drivetrain according to:
-            % [1] T. Eritenel, "Three-Dimensional Nonlinear Dynamics and
-            % Vibration Reduction of Gear Pairs and Planetary Gears",
+            % [1] T. Eritenel, 'Three-Dimensional Nonlinear Dynamics and
+            % Vibration Reduction of Gear Pairs and Planetary Gears',
             % Ph.D., Ohio State University, Mechanical Engineering, 2011.
             % http://rave.ohiolink.edu/etdc/view?acc_num=osu1298651902
-            % [2] T. Eritenel and R. Parker, "Modal properties of
-            % three-dimensional helical planetary gears", Journal of Sound
+            % [2] T. Eritenel and R. Parker, 'Modal properties of
+            % three-dimensional helical planetary gears', Journal of Sound
             % and Vibration, vol. 325, no. 1-2, pp. 397-420, 2009.
             % https://doi.org/10.1016/j.jsv.2009.03.002
-            % [3] T. Eritenel and R. Parker, "Three-dimensional nonlinear
-            % vibration of gear pairs", Journal of Sound and Vibration, 
+            % [3] T. Eritenel and R. Parker, 'Three-dimensional nonlinear
+            % vibration of gear pairs', Journal of Sound and Vibration, 
             % vol. 331, no. 15, pp. 3628-3648, 2012.
             % https://doi.org/10.1016/j.jsv.2012.03.019
-            % [4] T. Eritenel and R. Parker, "An investigation of tooth
+            % [4] T. Eritenel and R. Parker, 'An investigation of tooth
             % mesh nonlinearity and partial contact loss in gear pairs
-            % using a lumped-parameter model", Mechanism and Machine
+            % using a lumped-parameter model', Mechanism and Machine
             % Theory, vol. 56, pp. 28-51, 2012.
             % https://doi.org/10.1016/j.mechmachtheory.2012.05.002
             %
@@ -874,18 +798,18 @@ classdef Gear_Set < Gear
         
         %% Misc.:
         function m_tot = get_mass(obj)
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 m_tot = sum(obj.mass);
-            elseif(strcmp(obj.configuration, "planetary"))
+            elseif(strcmp(obj.configuration, 'planetary'))
                 m_tot = sum([1.0, obj.N_p, 1.0].*obj.mass) + obj.carrier.mass;
             end
         end
         
         function J_z = get_J_z(obj)
             % with respect to gear 1.
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 J_z = sum(obj.J_z) + obj.mass(2)*obj.a_w^2;
-            elseif(strcmp(obj.configuration, "planetary"))
+            elseif(strcmp(obj.configuration, 'planetary'))
                 J_z = sum(obj.J_z) + obj.N_p*obj.mass(2)*obj.a_w^2 + obj.carrier.J_z;
             end
         end
@@ -919,10 +843,10 @@ classdef Gear_Set < Gear
         end
         
         function val = get.carrier(obj)
-            if(strcmp(obj.configuration, "planetary"))
+            if(strcmp(obj.configuration, 'planetary'))
                 val = Carrier(obj.a_w, obj.b);
             else
-                error("prog:input", "Only Planetary gear sets have a planet carrier.");
+                error('prog:input', 'Only Planetary gear sets have a planet carrier.');
             end
         end
         
@@ -941,12 +865,12 @@ classdef Gear_Set < Gear
         end
         
         function val = get.u(obj)
-            if(strcmp(obj.configuration, "parallel"))
+            if(strcmp(obj.configuration, 'parallel'))
                 val = obj.z(2)/obj.z(1);
-            elseif(strcmp(obj.configuration, "planetary"))
+            elseif(strcmp(obj.configuration, 'planetary'))
                 val = 1.0 + abs(obj.z(3))/obj.z(1);
             else
-                error("prog:input", "Configuration [%s] is NOT defined.", obj.configuration);
+                error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
             end
         end
         
@@ -981,7 +905,7 @@ classdef Gear_Set < Gear
             xi_Nfw2 = min(xi_Nfw2);
             
             if(isempty(xi_Nfw1) || isempty(xi_Nfw2))
-                error("Auxiliary coefficients xi_Nfw are all lower than 0.");
+                error('Auxiliary coefficients xi_Nfw are all lower than 0.');
             end
 
             % roll angle from the working pitch point to the active tip diameter: Eq. (38)

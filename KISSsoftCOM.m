@@ -1,8 +1,12 @@
 classdef KISSsoftCOM
     %KISSSOFTCOM Wrapper class to deal with KISSsoft's COM interface. Based
     % on code provided by KISSsoft support team. More details about
-    % KISSsoft can be found on [1].
+    % KISSsoft can be found on [1]. Run KISSsoftCOM.view_COM_methods() to
+    % view all the methods provided by KISSsoft's COM interface. More info
+    % about it at [2].
+    %
     % [1] https://www.kisssoft.com/en
+    % [2] https://se.mathworks.com/help/matlab/ref/methodsview.html
     %
     
     properties(Access = private)
@@ -15,9 +19,11 @@ classdef KISSsoftCOM
     
     methods
         function obj = KISSsoftCOM(mod)
-            [flag, err] = KISSsoftCOM.is_installed();
-            if(~flag)
-                error(err.identifier, "%s", err.message);
+            [flag, msg] = KISSsoftCOM.is_installed();
+            if(flag)
+                obj.COM = actxserver('KISSsoftCOM.KISSsoft');
+            else
+                error(msg.identifier, "%s", msg.message);
             end
             
             obj.module = mod;
@@ -31,10 +37,7 @@ classdef KISSsoftCOM
                 error('Variable [%s] does not exist.', upper(name));
             end
             
-            flag = obj.COM.SetVar(name, num2str(val, 10));
-            if(flag == false)
-                error("Could not set variable [%s] to %.3f.", name, val);
-            end
+            obj.COM.SetVar(name, num2str(val, 10));
         end
         
         function val = get_var(obj, name)
@@ -80,16 +83,19 @@ classdef KISSsoftCOM
                 val = false;
             end
             
-            if(isnan(obj.COM.GetVar(name)))
+            try
+                obj.COM.GetVar(name);
+            catch err
                 val = false;
-            else
-                val = true;
+                err.message = [err.message, fprintf('Variable [%s] undefined.', upper(name))];
+                warning(err.identifier, "%s", err.message);
             end
+            
         end
         
         function val = is_module_loaded(obj)
             % checks if a module is loaded.
-            val = obj.COM.IsActive();
+            val = obj.COM.isActive();
         end
         
         function save_file(obj, file_name)
@@ -114,14 +120,24 @@ classdef KISSsoftCOM
     end
     
     methods(Static)
-        function [val, err] = is_installed()
+        function [val, msg] = is_installed()
             val = true;
-            err = [];
+            msg = [];
             try
                 actxserver('KISSsoftCOM.KISSsoft');
-            catch err
+            catch msg
                 val = false;
             end
         end
+        
+        function view_COM_methods()
+            [flag, msg] = KISSsoftCOM.is_installed();
+            if(flag)
+                methodsview(actxserver('KISSsoftCOM.KISSsoft'));
+            else
+                warning(msg.identifier, "%s", msg.message);
+            end
+        end
+        
     end
 end

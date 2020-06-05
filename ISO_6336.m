@@ -15,15 +15,15 @@ classdef ISO_6336 < Gear_Set
     %
     
     properties(Access = public)
-        P_rated;                  % [kW], Rated power
-        n_out;                    % [1/min.], Output speed
-        S_Hmin;                   % [-], Minimum required safety factor for surface durability (pitting)
-        S_Fmin;                   % [-], Minimum required safety factor for tooth bending strength
-        L_h;                      % [h], Required life
-        K_A;                      % [-], Application factor
-        calculation;              % [-], calculation method: by [KISSsoft] or [default]
-        S_H;                      % [-], Pitting safety factor
-        S_F;                      % [-], Tooth bending safety factor
+        P_rated;     % [kW], Rated power
+        n_out;       % [1/min.], Output speed
+        S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
+        S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
+        L_h;         % [h], Required life
+        K_A;         % [-], Application factor
+        calculation; % [-], calculation method: [KISSsoft] or [default]
+        S_H;         % [-], Pitting safety factor
+        S_F;         % [-], Tooth bending safety factor
     end
     
     properties(Dependent)
@@ -38,20 +38,24 @@ classdef ISO_6336 < Gear_Set
     methods
         function obj = ISO_6336(gset, varargin)
             if(~exist('gset', "var"))
-                gset = NREL_5MW.gear_stage(1);
+                gset = Gear_Set();
             elseif(~strcmp(class(gset), "Gear_Set"))
                 error('gset is not a Gear_Set object.');
             end
             
-            default = {'calculation', 'default', ...
-                       'P_rated'    , 5.0e3, ...
-                       'n_out'      , 48.0, ...
-                       'S_Hmin'     , 1.25, ...
-                       'S_Fmin'     , 1.56, ...
-                       'L_h'        , 20*365*24, ...
-                       'K_A'        , 1.25};
+            T_1 = 9.0e3;
+            n_1 = 360.0;
+            P_r = 1.0e-3*T_1*n_1*pi/30.0;
             
-            default = process_varargin(varargin, default);
+            default = {'calculation', 'default', ...
+                       'P_rated'    , P_r, ...
+                       'n_out'      , n_1, ...
+                       'S_Hmin'     , 1.0, ...
+                       'S_Fmin'     , 1.0, ...
+                       'L_h'        , 50.0e3, ...
+                       'K_A'        , 1.0};
+            
+            default = process_varargin(default, varargin);
             
             obj@Gear_Set('configuration', gset.configuration, ...
                          'm_n'          , gset.m_n, ...
@@ -76,7 +80,8 @@ classdef ISO_6336 < Gear_Set
                 obj.calculation = 'KISSsoft';
                 if(~KISSsoftCOM.is_installed())
                     obj.calculation = 'default';
-                    warning('KISSsoft COM interface not found. Using [default] calculation method.');
+                    warning('ISO_6336:KS', ['KISSsoft\x00a9 COM interface not found.', ...
+                                            'Using [DEFAULT] calculation method.']);
                 end
             elseif(strcmpi(default.calculation, 'default'))
                 obj.calculation = 'default';
@@ -89,6 +94,10 @@ classdef ISO_6336 < Gear_Set
             obj.L_h      = default.L_h;
             obj.K_A      = default.K_A;
         end
+        
+        function disp(obj)
+            % to be done...
+        end
     end
     %% Calculation methods:
     methods
@@ -96,9 +105,9 @@ classdef ISO_6336 < Gear_Set
             if(strcmpi(obj.calculation, 'KISSsoft'))
                 [SH, SF] = obj.KISSsoft_calculation(varargin{:});
             elseif(strcmpi(obj.calculation, 'default'))
-                warning('Calculation of the tooth bending safety factor not implemented yet.');
+                warning('ISO_6336:SF', 'Calculation of the tooth bending safety factor not implemented yet.');
                 SH = obj.Pitting(varargin{:});
-                SF = zeros(size(SH));
+                SF = nan(size(SH));
             end
         end
         
@@ -108,7 +117,7 @@ classdef ISO_6336 < Gear_Set
                        'save_report' ,  false, ...
                        'show_report' ,  false};
             
-            default = process_varargin(varargin, default);
+            default = process_varargin(default, varargin);
             
             ks = obj.KISSsoft();
             ks.set_var('ZS.P'       , obj.P_rated); % rated power
@@ -166,7 +175,7 @@ classdef ISO_6336 < Gear_Set
             flag_kv = false;
             if(kv < 1.05)
                 flag_kv = true;
-                for idx = 1:length(obj.z)
+                for idx = 1:2
                     ks.set_var(sprintf('ZP[%d].KV.KV', idx), 1.05);
                 end
                 
@@ -205,8 +214,11 @@ classdef ISO_6336 < Gear_Set
                 SF(idx) = ks.get_var(sprintf('ZPP[%d].Fuss.SF'  , idx - 1));
             end
             
-            SH(SH == 0) = [];
-            SF(SF == 0) = [];
+            SH(SH == 0.0) = [];
+            SF(SF == 0.0) = [];
+            
+            SH(isnan(SH)) = [];
+            SF(isnan(SF)) = [];
             
             if(isrow(SH))
                 SH = SH';
@@ -234,11 +246,9 @@ classdef ISO_6336 < Gear_Set
             else
                 ks.report(default.show_report);
             end
-            
-            delete(ks);
         end
         
-        function SH = Pitting(obj, varargin)
+        function [SH, out] = Pitting(obj, varargin)
             % [N/mm^2],  Allowable contact stress number:
             sigma_Hlim = Material().sigma_Hlim*1.0e-6;
             % Tip relief by running-in, Table 8, [1]:
@@ -248,7 +258,7 @@ classdef ISO_6336 < Gear_Set
                        'line' ,   4, ...
                        'C_a'  , C_ay};
             
-            default = process_varargin(varargin, default);
+            default = process_varargin(default, varargin);
             
             % [N/mm^2],  Young's modulus:
             E          = Material().E*1.0e-6;
@@ -256,88 +266,120 @@ classdef ISO_6336 < Gear_Set
             nu         = Material().nu;
             % [kg/mm^3], Density
             rho        = Material().rho*1.0e-9;
+            
+            out = struct();
 
             f_pb = max(obj.f_pt.*cosd(obj.alpha_t));
+            out.f_pb = f_pb;
+            
             if(f_pb >= 40.0) % [um]
                 y_alpha = 3.0; % [um]
             else
                 y_alpha = f_pb*75.0e-3;
             end
+            out.y_alpha = y_alpha;
             
             f_falpha = max(obj.f_falpha);
+            out.f_falpha = f_falpha;
             % Estimated running allowance (pitch deviation):
             y_p = y_alpha;
+            out.y_p = y_p;
             % Estimated running allowance (flank deviation):
             y_f = f_falpha*75.0e-3;
+            out.y_f = y_f;
+            
             f_pbeff = f_pb - y_p;
+            out.f_pbeff = f_pbeff;
+            
             f_falphaeff = f_falpha - y_f; % 0.925*y_f
+            out.f_falphaeff = f_falphaeff;
             
             % Pitch line velocity:
             v = obj.pitch_line_velocity();
+            out.v = v;
             
             Z_eps = obj.contact_ratio_factor();
+            out.Z_eps = Z_eps;
             
             % [N], Nominal tangential load:
             F_t = 2.0e3*(obj.T_1/obj.d(1))/obj.N_p;
             F_t = abs(F_t);
+            out.F_t = F_t;
             
             line_load = F_t*obj.K_A*obj.K_gamma/mean(obj.b);
             
             K_v = obj.dynamic_factor(v, rho, line_load, default.C_a, ...
             f_pbeff, f_falphaeff);
+            out.K_v = K_v;
             
             K_Hbeta = obj.face_load_factor();
+            out.K_Hbeta = K_Hbeta;
             
             % Determinant tangential load in a transverse plane:
             F_tH = F_t*obj.K_gamma*obj.K_A*K_v*K_Hbeta;
+            out.F_tH = F_tH;
             
             term = obj.c_gamma_alpha*(f_pb - y_alpha)/(F_tH/obj.b);
             K_Halpha = obj.transverse_load_factor(term, Z_eps);
+            out.K_Halpha = K_Halpha;
             
             % Zone factor: (sec. 6.1)
             Z_H = obj.zone_factor();
+            out.Z_H = Z_H;
             % Single pair tooth contact factor (sec. 6.2)
-            [Z_B, Z_D] = obj.tooth_contact_factor();
+            Z_BD = obj.tooth_contact_factor();
+            out.Z_BD = Z_BD;
             
             % Elasticity factor: (sec. 7)
             Z_E = sqrt(E/(2.0*pi*(1.0 - nu^2)));
+            out.Z_E = Z_E;
             
             % Helix angle factor: (sec. 9)
             Z_beta = 1.0/sqrt(cosd(obj.beta));
+            out.Z_beta = Z_beta;
             
             [Z_L, Z_v] = obj.lubrication_velocity_factor(sigma_Hlim, default.nu_40, v);
+            out.Z_L = Z_L;
+            out.Z_v = Z_v;
             
             % Roughness factor:
             Z_R = obj.roughness_factor(sigma_Hlim);
+            out.Z_R = Z_R;
             
             % Work hardening factor:
             Z_W = 1.0;
+            out.Z_W = Z_W;
             
             % Size factor:
             Z_X = 1.0;
+            out.Z_X = Z_X;
 
             % Number of load cycles:
             N_L1 = obj.n_out*60.0*obj.L_h; % pinion
             N_L2 = N_L1/obj.u;             % wheel
+            out.N_L = [N_L1 N_L2];
             
             % Life factor:
             % line = 2
             Z_NT1 = obj.life_factor(default.line, N_L1);
             Z_NT2 = obj.life_factor(default.line, N_L2);
+            Z_NT = [Z_NT1 Z_NT2];
+            out.Z_NT = Z_NT;
             
             % Contact stress:
             % Nominal contact stress at pitch point:
             num = F_t*(obj.u + 1.0);
             den = obj.d(1)*obj.b*obj.u;
             sigma_H0 = Z_H*Z_E*Z_eps*Z_beta*sqrt(num/den);
+            out.sigma_H0 = sigma_H0;
             
             % nominal contact stress at pitch point:
-            sigma_H(1) = Z_B*sigma_H0*sqrt(obj.K_gamma*obj.K_A*K_v*K_Hbeta*K_Halpha); % pinion
-            sigma_H(2) = Z_D*sigma_H0*sqrt(obj.K_gamma*obj.K_A*K_v*K_Hbeta*K_Halpha); % wheel
+            sigma_H = Z_BD*sigma_H0*sqrt(obj.K_gamma*obj.K_A*K_v*K_Hbeta*K_Halpha); % pinion/wheel
+            out.sigma_H = sigma_H;
             
             % Permissible contact stress:
-            sigma_HP(1) = sigma_Hlim*Z_NT1*Z_L*Z_v*Z_R*Z_W*Z_X/obj.S_Hmin;
-            sigma_HP(2) = sigma_Hlim*Z_NT2*Z_L*Z_v*Z_R*Z_W*Z_X/obj.S_Hmin;
+            sigma_HP = sigma_Hlim*Z_NT*Z_L*Z_v*Z_R*Z_W*Z_X/obj.S_Hmin;
+            out.sigma_HP = sigma_HP;
             
             % Safety factor for surface durability (against pitting):
             SH = obj.S_Hmin*sigma_HP./sigma_H; % pinion/planet
@@ -346,6 +388,46 @@ classdef ISO_6336 < Gear_Set
                 SH = SH';
             end
         end
+    end
+    
+    methods(Static)
+        function ex01 = example01()
+            
+            ex01 = Gear_Set('configuration', 'parallel', ...   % configuration
+                            'm_n'          , 8.0, ...          % normal module
+                            'alpha_n'      , 20.0, ...         % pressure angle
+                            'z'            , [17 103], ...     % number of teeth
+                            'b'            , 100.0, ...        % face width
+                            'x'            , [0.145 0.0], ...  % profile shift coefficient
+                            'beta'         , 15.8, ...         % helix angle
+                            'k'            , [1 1]*0, ...      % k
+                            'bore_ratio'   , [1 1]*0.5, ...    % bore ratio
+                            'N_p'          , 1, ...            % number of planets
+                            'a_w'          , 500.0, ...        % center distance
+                            'rack_type'    , 'D', ...          % rack type
+                            'bearing'      , Bearing(), ...    %
+                            'shaft'        , Shaft(), ...      %
+                            'Q'            , 5.0, ...          % ISO accuracy grade
+                            'R_a'          , 1.0);             % surface roughness flank
+            
+            T_1 = 9.0e3;
+            n_1 = 360.0;
+            P_r = 1.0e-3*T_1*n_1*pi/30.0;
+            
+            calc = ISO_6336(ex01, 'calculation', 'default', ...
+                                  'P_rated'    , P_r, ...
+                                  'n_out'      , n_1, ...
+                                  'S_Hmin'     , 1.0, ...
+                                  'S_Fmin'     , 1.0, ...
+                                  'L_h'        , 50.0e3, ...
+                                  'K_A'        , 1.0);
+
+            [SH, SF] = calc.safety_factors('C_a'  ,  70.0, ...
+                                           'nu_40', 320.0, ...
+                                           'line' ,   2);
+            
+        end
+        
     end
     
     methods(Access = private)
@@ -379,7 +461,8 @@ classdef ISO_6336 < Gear_Set
             uu = obj.u;
             cond = (v*z1/100.0)*sqrt((uu.^2)/(1.0 + uu.^2));
             if(cond < 3.0) % [m/s]
-                warning(['Calculating K_v using method B outside of its useful range. ', ...
+                warning('ISO_6336:KV', ['Calculating K_v using method B', ...
+                    ' outside of its useful range. ', ...
                 'More info at the end of Sec. 6.3.2 of ISO 6336-1.']);
             end
             
@@ -542,7 +625,7 @@ classdef ISO_6336 < Gear_Set
             Z_H = sqrt(num/den);
         end
         
-        function [Z_B, Z_D] = tooth_contact_factor(obj)
+        function Z_BD = tooth_contact_factor(obj)
             M_1 = tand(obj.alpha_wt)/sqrt((sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - ...
                 2.0*pi/obj.z(1))*(sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - ...
                 (obj.eps_alpha - 1.0)*2.0*pi/obj.z(2)));
@@ -550,28 +633,29 @@ classdef ISO_6336 < Gear_Set
                 2.0*pi/obj.z(2))*(sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - ...
                 (obj.eps_alpha - 1.0)*2.0*pi/obj.z(1)));
             
+            Z_BD = ones(1, 2)*nan;
             if((obj.eps_beta == 0.0) && (obj.eps_alpha > 1.0))
                 if(M_1 > 1.0)
-                    Z_B = M_1;
+                    Z_BD(1) = M_1;
                 else
-                    Z_B = 1.0;
+                    Z_BD(1) = 1.0;
                 end
                 
                 if(M_2 > 1.0)
-                    Z_D = M_2;
+                    Z_BD(2) = M_2;
                 else
-                    Z_D = 1.0;
+                    Z_BD(2) = 1.0;
                 end
             elseif((obj.eps_alpha > 1.0) && (obj.eps_beta >= 1.0))
-                Z_B = 1.0;
-                Z_D = 1.0;
+                Z_BD(1) = 1.0;
+                Z_BD(2) = 1.0;
             elseif((obj.eps_alpha > 1.0) && (obj.eps_beta <  1.0))
-                Z_B = M_1 - obj.eps_beta*(M_1 - 1.0);
-                Z_D = M_2 - obj.eps_beta*(M_2 - 1.0);
+                Z_BD(1) = M_1 - obj.eps_beta*(M_1 - 1.0);
+                Z_BD(2) = M_2 - obj.eps_beta*(M_2 - 1.0);
             end
         end
         
-        function [Z_L, Z_v] = lubrication_velocity_factor(obj, sigma_Hlim, nu_40, v)
+        function [Z_L, Z_v] = lubrication_velocity_factor(~, sigma_Hlim, nu_40, v)
             if(sigma_Hlim  < 850.0) % [N/mm^2]
                 C_ZL = 0.83;
             elseif((850.0 <= sigma_Hlim) && (sigma_Hlim  < 1200.0))
@@ -607,7 +691,7 @@ classdef ISO_6336 < Gear_Set
             Z_R = power(3.0/R_z10, C_ZR);
         end
         
-        function Z_NT = life_factor(obj, line, N)
+        function Z_NT = life_factor(~, line, N)
             switch line
                 case 1
                     % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
@@ -648,7 +732,7 @@ classdef ISO_6336 < Gear_Set
         end
         
         function val = get.K_gamma(obj)
-            Np = obj.gear_set.N_p;
+            Np = obj.N_p;
             if(Np == 3)
                 val = 1.1;
             elseif(Np == 4)

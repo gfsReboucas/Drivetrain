@@ -34,67 +34,50 @@ classdef NREL_5MW < Drivetrain
     
     methods
         function obj = NREL_5MW(varargin)
+            gamma = {'P'   , 1.0, ...
+                     'n'   , 1.0, ...
+                     'm_n1', 1.0, ...
+                     'b_1' , 1.0, ...
+                     'd_1' , 1.0, ...
+                     'L_1' , 1.0, ...
+                     'm_n2', 1.0, ...
+                     'b_2' , 1.0, ...
+                     'd_2' , 1.0, ...
+                     'L_2' , 1.0, ...
+                     'm_n3', 1.0, ...
+                     'b_3' , 1.0, ...
+                     'd_3' , 1.0, ...
+                     'L_3' , 1.0, ...
+                     'J_R' , 1.0, ...
+                     'J_G' , 1.0, ...
+                     'd_S' , 1.0, ...
+                     'L_S' , 1.0};
             
+            gamma = process_varargin(gamma, varargin{:});
+            gamma = scaling_factor(gamma);
+                        
             N_st = 3;
             stage = [Gear_Set Gear_Set Gear_Set];
-
-            %      Gear stage               , Output shaft
-            %      Normal module, Face width, Length, Diameter
-            par = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                   "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                   "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-                   "J_R",                                    ... % M. M. Inertia (rotor)
-                   "J_G",                                    ... % M. M. Inertia (generator)
-                                              "d_s" , "L_s"]'; % Main shaft
-
-            if(isempty(varargin))
-
-                for idx = 1:N_st
-                    stage(idx) =  NREL_5MW.gear_stage(idx);
-                end
-
-                P_r = 5.0e3; % [kW], Rated power
-                n_r = 12.1; % [1/min.], Input speed
-                inp_shaft = NREL_5MW.shaft(0);
-
-                m_R = 110.0e3; % [kg], according to [2], Table 1-1
-                J_R = 57231535.0; % [kg-m^2], according to [3], p. 45
-%                 J_R = 58.1164e6; % according to property_estimation
-                m_G = 0.02*m_R; % 1900.0; % [kg], but according to ???
-                J_G = 534.116; % [kg-m^2], according to [2], Table 5-1
-
-                gm_val = ones(size(par));
+            
+            for idx = 1:N_st
+                stg = NREL_5MW.gear_stage(idx);
                 
-            elseif(length(varargin) == 3)
-                if(isa(varargin{3}, "scaling_factor"))
-                    gm_P = varargin{1};
-                    gm_n = varargin{2};
-                    gm   = varargin{3};
-                    
-                    for idx = 1:N_st
-                        stg = NREL_5MW.gear_stage(idx);
-                        
-                        jdx = 4*idx + (-3:0);
-                        gm_stg = gm(jdx);
-                        stage(idx) = stg.scale_aspect(gm_stg, "Gear_Set");
-                    end
-                    
-                    P_r = gm_P*5.0e3; % [kW], Rated power
-                    n_r = gm_n*12.1; % [1/min.], Input speed
-                    
-                    LSS = NREL_5MW.shaft(0);
-                    
-                    inp_shaft = Shaft(LSS.d*gm("d_s"), ...
-                                      LSS.L*gm("L_s"));
-                                  
-                    m_R = 110.0e3;
-                    J_R = 57231535.0*gm("J_R"); % according to [1, 3]
-                    m_G = 0.02*m_R;
-                    J_G = 534.116*gm("J_G");
-                    
-                    gm_val = gm.value;
-                end
+                gamma_idx = gamma.ends_with(num2str(idx));
+                stage(idx) = stg.scale_by(gamma_idx);
             end
+            
+            P_r = gamma('P')* 5.0e3; % [kW], Rated power
+            n_r = gamma('n')*12.1;   % [1/min.], Input speed
+            
+            LSS = NREL_5MW.shaft(0);
+            
+            inp_shaft = Shaft(LSS.d*gamma("d_S"), ...
+                              LSS.L*gamma("L_S"));
+            
+            m_R = 110.0e3;
+            J_R = 57231535.0  *gamma("J_R"); % according to [1, 3]
+            m_G =     1900.0;
+            J_G =      534.116*gamma("J_G");
             
             obj@Drivetrain('N_stage',    N_st, ...
                            'stage',      stage, ...
@@ -105,11 +88,44 @@ classdef NREL_5MW < Drivetrain
                            'J_Rotor',    J_R, ...
                            'm_Gen',      m_G, ...
                            'J_Gen',      J_G);
+
             obj.dynamic_model =  "Kahraman_1994";
             
-            obj.gamma = scaling_factor(par, gm_val);
-            
+            obj.gamma = scaling_factor(gamma.name, ones(length(gamma), 1));
+            obj.S_Hmin = 1.25;
+            obj.S_Fmin = 1.56;
         end
+    end
+    
+    %% Calculation:
+    methods
+        function [SH, SF, SShaft] = safety_factor_stage(obj, idx)
+            L_h    = 20*365*24;
+            K_A    = 1.25;
+            
+            calc = ISO_6336(obj.stage(idx), 'calculation', 'KISSsoft', ...
+                                            'P_rated'    , obj.P_rated, ...
+                                            'n_out'      , obj.n_out(idx), ...
+                                            'S_Hmin'     , obj.S_Hmin, ...
+                                            'S_Fmin'     , obj.S_Fmin, ...
+                                            'L_h'        , L_h, ... % [h], Required life
+                                            'K_A'        , K_A);    % [-], Application factor
+            
+            [SH, SF] = calc.safety_factors('lubricant_ID', '11220', ...
+                                           'nu_40'       , 220.0, ...
+                                           'stage_idx'   ,   0, ...
+                                           'save_report' , false, ...
+                                           'show_report' , false, ...
+                                           'line'        ,   4);
+
+            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
+            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
+            K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
+            K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
+            
+            SShaft = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
+        end
+        
     end
     
     methods(Static)

@@ -53,7 +53,7 @@ classdef Rack
                        'm'      , 1.0, ...
                        'alpha_P', 20.0};
             
-            default = process_varargin(varargin, default);
+            default = process_varargin(default, varargin);
             
             % fit the module to [2]:
             m = Rack.module(default.m, "calc", "nearest");
