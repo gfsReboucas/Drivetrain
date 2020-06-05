@@ -59,7 +59,7 @@ classdef (Abstract) Drivetrain
         S_G;     % [-],      Full safety factor for gear stages
     end
     
-    properties(SetAccess = private)
+    properties(SetAccess = protected)
         % to store the values of some dependent variables:
 %         S_H_val     (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
 %         S_F_val     (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.56;   % [-],      Safety factor for bending strength
@@ -85,7 +85,9 @@ classdef (Abstract) Drivetrain
                        'm_Rotor',    110.0e3, ...
                        'J_Rotor',    57231535.0, ...
                        'm_Gen',      1900.0, ...
-                       'J_Gen',      534.116};
+                       'J_Gen',      534.116, ...
+                       'S_Hmin',     1.25, ...
+                       'S_Fmin',     1.56};
             
             default = process_varargin(default, varargin);
             
@@ -109,7 +111,8 @@ classdef (Abstract) Drivetrain
                 obj.stage = default.stage;
             end
             
-            [obj.S_H_val, obj.S_F_val, obj.S_shaft_val] = obj.safety_factors();
+            obj.S_Hmin = default.S_Hmin;
+            obj.S_Fmin = default.S_Fmin;
         end
         
         function tab = disp(obj)
