@@ -1,4 +1,4 @@
-classdef Drivetrain
+classdef (Abstract) Drivetrain
     %DRIVETRAIN This class implements SOME procedures for the dynamic
     % analysis and scaling of drivetrains. The safety factor for surface 
     % durability (pitting) is calculated according to ISO 6336 [1, 2]. The
@@ -32,84 +32,88 @@ classdef Drivetrain
     % see also NREL_5MW, DTU_10MW.
     
     properties(Access = public)
-        stage         (1, :) Gear_Set;                                                                  % [-],      gearbox stages
-        P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 5.0e3;            % [kW],     Rated power
-        n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 12.1;             % [1/min.], Rated rotor speed
-        main_shaft    (1, :) Shaft                                                  = Shaft;            % [-],      Input Shaft
-        m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 110.0e3;          % [kg],     Rotor mass according to [3]
-        J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0;       % [kg-m^2], Rotor mass moment of inertia according to [6]
-        m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;           % [kg],     Generator mass according to [4]
-        J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;          % [kg-m^2], Generator mass moment of inertia [4]
-        N_stg         (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;                % [-],      Number of stages
-        dynamic_model (1, :) string {mustBeMember(dynamic_model, ["Thomson_ToV", ...
-                                                                  "Kahraman_1994", ...
-                                                                  "Lin_Parker_1999"])} = "Thomson_ToV"; % which dynamic model should be used to perform modal analysis on the Drivetrain.
-        gamma                scaling_factor;                                                            % Scaling factors
+        stage         (1, :) Gear_Set;                                                                    % [-],      gearbox stages
+        P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 5.0e3;              % [kW],     Rated power
+        n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 12.1;               % [1/min.], Rated rotor speed
+        main_shaft    (1, :) Shaft                                                  = Shaft;              % [-],      Input Shaft
+        m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 110.0e3;            % [kg],     Rotor mass according to [3]
+        J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0;         % [kg-m^2], Rotor mass moment of inertia according to [6]
+        m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;             % [kg],     Generator mass according to [4]
+        J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;            % [kg-m^2], Generator mass moment of inertia [4]
+        N_stage       (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;                  % [-],      Number of stages
+        dynamic_model (1, :)                                                        = @Dynamic_Formulation; % which dynamic model should be used to perform modal analysis on the Drivetrain.
+        gamma                scaling_factor;                                                              % Scaling factors
+        S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
+        S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
     end
     
     properties(Dependent)
         T_out;   % [N-m],    Output torque for each stage
         n_out;   % [1/min.], Output speed  for each stage
         u;       % [-],      Cumulative gear ratio
-        S_H;     % [-],      Safety factor for surface durability (against pitting)
-        S_F;     % [-],      Safety factor for bending strength
-        S_shaft; % [-],      Safey factor for the shafts
+        S_H;     % [-],      Gear Safety factor for surface durability (against pitting)
+        S_F;     % [-],      Gear Safety factor for bending strength
+        S_shaft; % [-],      Shaft Safety factor against fatigue and yield
+        S_G;     % [-],      Full safety factor for gear stages
     end
     
-    properties(SetAccess = private)
+    properties(SetAccess = protected)
         % to store the values of some dependent variables:
-%         S_H_val     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-        S_H_val     (1, :)          {mustBeNumeric} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-        S_F_val     (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.56;   % [-],      Safety factor for bending strength
-        S_shaft_val (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
+%         S_H_val     (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
+%         S_F_val     (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.56;   % [-],      Safety factor for bending strength
+        S_H_val     (1, :) {mustBeNumeric} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
+        S_F_val     (1, :) {mustBeNumeric} = 1.56;   % [-],      Safety factor for surface durability (against pitting)
+        S_shaft_val (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
     end
     
     methods
-        function obj = Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G)
-            if(nargin == 0)
-                N_st = 3;
-                for idx = 1:N_st
-                    stage(idx) = NREL_5MW.gear_stage(idx);
+        function obj = Drivetrain(varargin)
+            
+            % for default parameter:
+            N_st = 3;
+            for idx = 1:N_st
+                stage(idx) = NREL_5MW.gear_stage(idx);
+            end
+            
+            default = {'N_stage'      ,        3, ...
+                       'stage'        , stage, ...
+                       'P_rated'      ,        5.0e3, ...
+                       'n_rotor'      ,       12.1, ...
+                       'main_shaft'   , Shaft(), ...
+                       'm_Rotor'      ,      110.0e3, ...
+                       'J_Rotor'      , 57231535.0, ...
+                       'm_Gen'        ,     1900.0, ...
+                       'J_Gen'        ,      534.116, ...
+                       'S_Hmin'       ,        1.25, ...
+                       'S_Fmin'       ,        1.56, ...
+                       'dynamic_model', @Dynamic_Formulation};
+            
+            default = process_varargin(default, varargin);
+            
+            obj.P_rated    = default.P_rated;
+            obj.n_rotor    = default.n_rotor;
+            obj.main_shaft = default.main_shaft;
+            
+            obj.m_Rotor = default.m_Rotor;
+            obj.J_Rotor = default.J_Rotor;
+            
+            obj.m_Gen = default.m_Gen;
+            obj.J_Gen = default.J_Gen;
+            
+            if(isempty(default.stage))
+                obj.N_stage = default.N_stage;
+                for idx = 1:obj.N_stage
+                    obj.stage(idx) = NREL_5MW.gear_stage(idx);
                 end
-                
-                P_r = 5.0e3; % [kW], Rated power
-                n_r = 12.1; % [1/min.], Input speed
-                inp_shaft = Shaft;
-                
-                m_R = 110.0e3;      J_R = 57231535.0;
-                m_G = 0.02*m_R;     J_G = 534.116;
-                
+            else
+                obj.N_stage = length(default.stage);
+                obj.stage = default.stage;
             end
             
-            obj.stage = stage;
-            obj.P_rated = P_r;
-            obj.n_rotor = n_r;
-            obj.main_shaft = inp_shaft;
+            obj.S_Hmin = default.S_Hmin;
+            obj.S_Fmin = default.S_Fmin;
             
-            obj.m_Rotor = m_R;          obj.J_Rotor = J_R;
-            obj.m_Gen = m_G;            obj.J_Gen = J_G;
-            
-            obj.N_stg = N_st;
-            
-            try
-                actxserver('KISSsoftCOM.KISSsoft');
-                [obj.S_H_val, obj.S_F_val]     = obj.safety_factors_KS;
-                [~          , obj.S_shaft_val] = obj.safety_factors;
-            catch err
-                warning(err.identifier, "%s", err.message)
-                [obj.S_H_val, obj.S_shaft_val] = obj.safety_factors;
-            end
-            
-            %      Gear stage               , Output shaft
-            %      Normal module, Face width, Length, Diameter
-            par = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                   "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                   "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-                   "J_R",                                    ... % M. M. Inertia (rotor)
-                   "J_G",                                    ... % M. M. Inertia (generator)
-                                                "d_s" , "L_s"]'; % Main shaft
-
-            obj.gamma = scaling_factor(par, ones(size(par)));
+            obj.dynamic_model = default.dynamic_model;
         end
         
         function tab = disp(obj)
@@ -119,89 +123,89 @@ classdef Drivetrain
                 disp("\t0x0 empty Drivetrain object")
             else
                 tab_str = ["Rated power",                                  "P",       "kW";
-                    "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.";
-                    "Output Torque (Sun/Pinion)",                   "T_out",   "N-m";
-                    "Minimum safety factor against pitting",        "S_Hmin",  "-";
-                    "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-";
-                    "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-";
-                    "Safety factor (Shaft)",                        "S",       "-";
-                    "Type",                                         "-",       "-";
-                    "Gear ratio",                                   "u",       "-";
-                    "Number of planets",                            "p",       "-";
-                    "Normal module",                                "m_n",     "mm";
-                    "Normal pressure angle",                        "alpha_n", "deg.";
-                    "Helix angle",                                  "beta",    "deg.";
-                    "Face width",                                   "b",       "mm";
-                    "Center distance",                              "a_w",     "mm";
-                    "Number of teeth (Sun/Pinion)",                 "z_1",     "-";
-                    "Number of teeth (Planet/Wheel)",               "z_2",     "-";
-                    "Number of teeth (Ring)",                       "z_3",     "-";
-                    "Profile shift coefficient (Sun/Pinion)",       "x_1",     "-";
-                    "Profile shift coefficient (Planet/Wheel)",     "x_2",     "-";
-                    "Profile shift coefficient (Ring)",             "x_3",     "-";
-                    "Reference diameter (Sun/Pinion)",              "d_1",     "mm";
-                    "Reference diameter (Planet/Wheel)",            "d_2",     "mm";
-                    "Reference diameter (Ring)",                    "d_3",     "mm";
-                    "Mass (Sun/Pinion)",                            "m_1",     "kg";
-                    "Mass (Planet/Wheel)",                          "m_2",     "kg";
-                    "Mass (Ring)",                                  "m_3",     "kg";
-                    "Mass mom. inertia (Sun/Pinion)",               "J_xx1",   "kg-m^2";
-                    "Mass mom. inertia (Planet/Wheel)",             "J_xx2",   "kg-m^2";
-                    "Mass mom. inertia (Ring)",                     "J_xx3",   "kg-m^2";
-                    "Mass mom. inertia (Sun/Pinion)",               "J_yy1",   "kg-m^2";
-                    "Mass mom. inertia (Planet/Wheel)",             "J_yy2",   "kg-m^2";
-                    "Mass mom. inertia (Ring)",                     "J_yy3",   "kg-m^2";
-                    "Mass mom. inertia (Sun/Pinion)",               "J_zz1",   "kg-m^2";
-                    "Mass mom. inertia (Planet/Wheel)",             "J_zz2",   "kg-m^2";
-                    "Mass mom. inertia (Ring)",                     "J_zz3",   "kg-m^2";
-                    ];
+                           "Output Speed (Sun/Pinion)",                    "n_out",   "1/min.";
+                           "Output Torque (Sun/Pinion)",                   "T_out",   "N-m";
+                           "Minimum safety factor against pitting",        "S_Hmin",  "-";
+                           "Safety factor against pitting (Sun/Pinion)",   "S_H1",    "-";
+                           "Safety factor against pitting (Planet/Wheel)", "S_H2",    "-";
+                           "Safety factor (Shaft)",                        "S",       "-";
+                           "Type",                                         "-",       "-";
+                           "Normal module",                                "m_n",     "mm";
+                           "Face width",                                   "b",       "mm";
+                           "Center distance",                              "a_w",     "mm";
+                           "Gear ratio",                                   "u",       "-";
+                           "Number of planets",                            "p",       "-";
+                           "Normal pressure angle",                        "alpha_n", "deg.";
+                           "Helix angle",                                  "beta",    "deg.";
+                           "Number of teeth (Sun/Pinion)",                 "z_1",     "-";
+                           "Number of teeth (Planet/Wheel)",               "z_2",     "-";
+                           "Number of teeth (Ring)",                       "z_3",     "-";
+                           "Profile shift coefficient (Sun/Pinion)",       "x_1",     "-";
+                           "Profile shift coefficient (Planet/Wheel)",     "x_2",     "-";
+                           "Profile shift coefficient (Ring)",             "x_3",     "-";
+                           "Reference diameter (Sun/Pinion)",              "d_1",     "mm";
+                           "Reference diameter (Planet/Wheel)",            "d_2",     "mm";
+                           "Reference diameter (Ring)",                    "d_3",     "mm";
+                           "Mass (Sun/Pinion)",                            "m_1",     "kg";
+                           "Mass (Planet/Wheel)",                          "m_2",     "kg";
+                           "Mass (Ring)",                                  "m_3",     "kg";
+                           "Mass mom. inertia (Sun/Pinion)",               "J_xx1",   "kg-m^2";
+                           "Mass mom. inertia (Planet/Wheel)",             "J_xx2",   "kg-m^2";
+                           "Mass mom. inertia (Ring)",                     "J_xx3",   "kg-m^2";
+                           "Mass mom. inertia (Sun/Pinion)",               "J_yy1",   "kg-m^2";
+                           "Mass mom. inertia (Planet/Wheel)",             "J_yy2",   "kg-m^2";
+                           "Mass mom. inertia (Ring)",                     "J_yy3",   "kg-m^2";
+                           "Mass mom. inertia (Sun/Pinion)",               "J_zz1",   "kg-m^2";
+                           "Mass mom. inertia (Planet/Wheel)",             "J_zz2",   "kg-m^2";
+                           "Mass mom. inertia (Ring)",                     "J_zz3",   "kg-m^2";
+                           ];
                 
                 Parameter = tab_str(:, 1);
                 Symbol    = tab_str(:, 2);
                 Unit      = tab_str(:, 3);
                 
-                tab_val = cell(obj.N_stg + 2, 1);
+                tab_val = cell(obj.N_stage + 2, 1);
                 
                 tab_val{1} = table(Parameter, Symbol);
                 
-                for idx = 1:obj.N_stg
+                for idx = 1:obj.N_stage
                     val_stg = {obj.P_rated;
-                        obj.n_out(idx);
-                        obj.T_out(idx);
-                        1.25;
-                        obj.S_H(2*idx - 1);
-                        obj.S_H(2*idx);
-                        obj.S_shaft(idx + 1);
-                        obj.stage(idx).configuration;
-                        obj.stage(idx).u;
-                        obj.stage(idx).N_p;
-                        obj.stage(idx).m_n;
-                        obj.stage(idx).alpha_n;
-                        obj.stage(idx).beta;
-                        obj.stage(idx).b;
-                        obj.stage(idx).a_w;
-                        obj.stage(idx).z(1);
-                        obj.stage(idx).z(2);
-                        "-*-";
-                        obj.stage(idx).x(1);
-                        obj.stage(idx).x(2);
-                        "-*-";
-                        obj.stage(idx).d(1);
-                        obj.stage(idx).d(2);
-                        "-*-";
-                        obj.stage(idx).mass(1);
-                        obj.stage(idx).mass(2);
-                        "-*-";
-                        obj.stage(idx).J_x(1);
-                        obj.stage(idx).J_x(2);
-                        "-*-";
-                        obj.stage(idx).J_y(1);
-                        obj.stage(idx).J_y(2);
-                        "-*-";
-                        obj.stage(idx).J_z(1);
-                        obj.stage(idx).J_z(2);
-                        "-*-";
-                        };
+                               obj.n_out(idx);
+                               obj.T_out(idx);
+                               obj.S_Hmin;
+                               obj.S_H(2*idx - 1);
+                               obj.S_H(2*idx);
+                               obj.S_shaft(idx + 1);
+                               obj.stage(idx).configuration;
+                               obj.stage(idx).m_n;
+                               obj.stage(idx).b;
+                               obj.stage(idx).a_w;
+                               obj.stage(idx).u;
+                               obj.stage(idx).N_p;
+                               obj.stage(idx).alpha_n;
+                               obj.stage(idx).beta;
+                               obj.stage(idx).z(1);
+                               obj.stage(idx).z(2);
+                               "-*-";
+                               obj.stage(idx).x(1);
+                               obj.stage(idx).x(2);
+                               "-*-";
+                               obj.stage(idx).d(1);
+                               obj.stage(idx).d(2);
+                               "-*-";
+                               obj.stage(idx).mass(1);
+                               obj.stage(idx).mass(2);
+                               "-*-";
+                               obj.stage(idx).J_x(1);
+                               obj.stage(idx).J_x(2);
+                               "-*-";
+                               obj.stage(idx).J_y(1);
+                               obj.stage(idx).J_y(2);
+                               "-*-";
+                               obj.stage(idx).J_z(1);
+                               obj.stage(idx).J_z(2);
+                               "-*-";
+                               };
                     
                     if(strcmp(obj.stage(idx).configuration, "planetary"))
                         val_stg{18} = obj.stage(idx).z(3);
@@ -231,9 +235,9 @@ classdef Drivetrain
         end
         
         function tab = comparison(ref, sca)
-            tab_stg = cell(ref.N_stg, 1);
+            tab_stg = cell(ref.N_stage, 1);
             
-            for idx = 1:(ref.N_stg)
+            for idx = 1:(ref.N_stage)
                 [~, tab_str] = stage_comparison(ref, sca, idx);
                 tab_tmp = table(tab_str(:, 4), tab_str(:, 5), tab_str(:, 6), 'variableNames', ["Reference", "Scale", "Ratio"]);
                 tab_stg{idx} = table(tab_tmp, 'variableNames', sprintf("Stage_%d", idx));
@@ -252,9 +256,9 @@ classdef Drivetrain
         end
         
         function [tab, tab_str] = stage_comparison(ref, sca, idx)
-            if(ref.N_stg ~= sca.N_stg)
+            if(ref.N_stage ~= sca.N_stage)
                 error("different number of gear stages.");
-            elseif(idx > ref.N_stg)
+            elseif(idx > ref.N_stage)
                 error("idx is bigger than the number of stages.");
             elseif(idx < 1)
                 error("idx is smaller than 1.");
@@ -291,8 +295,8 @@ classdef Drivetrain
             hold on;
             axis equal;
             box on;
-            for idx = 1:obj.N_stg
-                subplot(1, obj.N_stg, idx)
+            for idx = 1:obj.N_stage
+                subplot(1, obj.N_stage, idx)
                 obj.stage(idx).plot;
             end
         end
@@ -318,25 +322,25 @@ classdef Drivetrain
                    obj.stage(1).carrier.b + obj.stage(1).out_shaft.L;
                    obj.stage(2).carrier.b + obj.stage(2).out_shaft.L];
 
-            for idx = 1:obj.N_stg
+            for idx = 1:obj.N_stage
                 rectangle(obj.stage(idx), [sum(C_x(1:idx)) C_0(2)]');
             end
             hold off;
         end
         
         function plot_comp(DT1, DT2)
-            if(DT1.N_stg ~= DT2.N_stg)
+            if(DT1.N_stage ~= DT2.N_stage)
                 error("Both DT's should have the same number of stages.");
             end
             
             hold on;
             axis equal;
             box on;
-            for idx = 1:DT1.N_stg
-                subplot(2, DT1.N_stg, idx)
+            for idx = 1:DT1.N_stage
+                subplot(2, DT1.N_stage, idx)
                 DT1.stage(idx).plot;
                 title(sprintf("Stage %d", idx));
-                subplot(2, DT2.N_stg, idx + DT2.N_stg)
+                subplot(2, DT2.N_stage, idx + DT2.N_stage)
                 DT2.stage(idx).plot;
             end
 
@@ -347,161 +351,14 @@ classdef Drivetrain
     methods
         %% Calculations:
         %% Dynamics:
-        function H = FRF(obj, freq, varargin)
-            
-            if(nargin == 2)
-                beta = 0.05;
-            else
-                beta = varargin{1};
-            end
-            
-            switch(obj.dynamic_model)
-                case "Thomson_ToV"
-                    [M, K_tmp] = obj.Thomson_ToV;
-                    
-                    K = @(x)(K_tmp);
-                    
-                    n = length(M);
-                    f = ones(n, 1);
-                case "Kahraman_1994"
-                    [M, K_tmp] = obj.Kahraman_1994;
-                    
-                    K = @(x)(K_tmp);
-                    
-                    n = length(M);
-                    f = zeros(n, 1);
-                    f(1)   = 1.0;
-                    f(end) = 1.0;
-                case "Lin_Parker_1999"
-%                   [M, K, K_b, K_m, K_Omega, G]
-                    [M, ~, K_b, K_m, K_Omega, ~] = obj.Lin_Parker_1999;
-                    K_tmp = K_b + K_m;
-                    
-                    K = @(x)(K_b + K_m - K_Omega.*x.^2);
-                    
-                    n = length(M);
-                    f = zeros(n, 1);
-                    f(1:3) = 1.0;
-                    f(end) = 1.0;
-                otherwise
-                    error("Option [%s] is NOT available or not implemented yet.", upper(obj.dynamic_model));
-                    
-%                 case "Eritenel_2011"
-%                     [M, K] = obj.E
-            end
-            
-            Omega = 2.0*pi*freq;
-            i = sqrt(-1.0);
-            
-            n_Om = length(Omega);
-            H = zeros(n_Om, n);
-            
-            for idx = 1:n_Om
-                H(idx, :) = (-M.*Omega(idx).^2 + i.*Omega(idx).*beta.*K(Omega(idx)) + K(Omega(idx)))\f;
-            end
-        end
-        
-        function [f, mode_shape] = nth_resonance(obj, n)
-            [f_n, mode_shape] = modal_analysis(obj);
-            
-            if((n < 1) || (n > numel(f_n)))
-                error("n = %d > or ~= 0.");
-            end
-            
-            f = f_n(n);
-            mode_shape = mode_shape(:, n);
-        end
-        
-        function [f_n, mode_shape] = modal_analysis(obj)
-            % MODAL_ANALYSIS calculates the resonances and mode shapes of
-            % the Drivetrain via a symmertic eigenvalue problem [1]. The
-            % dynamic matrices M and K can be obtained using different
-            % modelling approaches, e.g. [2-3].
-            %
-            % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
-            % Pearson, 2014, pp. 408-413.
-            % [2] A. Kahraman, "Natural Modes of Planetary Gear Trains",
-            % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
-            % 1994. https://doi.org/10.1006/jsvi.1994.1222.
-            % [3] J. Lin and R. Parker, "Analytical Characterization of the
-            % Unique Properties of Planetary Gear Free Vibration", Journal
-            % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
-            % 1999. https://doi.org/10.1115/1.2893982
-            %
-
-            switch(obj.dynamic_model)
-                case "Thomson_ToV"
-                    [M, K] = obj.Thomson_ToV;
-                    
-                case "Kahraman_1994"
-                    [M, K] = obj.Kahraman_1994;
-                    
-                case "Lin_Parker_1999"
-%                   [M, K, K_b, K_m, K_Omega, G]
-                    [M, ~, K_b, K_m,       ~, ~] = obj.Lin_Parker_1999;
-                    K = K_b + K_m;
-                    
-                otherwise
-                    error("Option [%s] is NOT available or not implemented yet.", upper(obj.dynamic_model));
-                    
-%                 case "Eritenel_2011"
-%                     [M, K] = obj.E
-            end
-            
-            % Cholesky decomposition:
-            L = chol(M, "lower");
-            K_tilde = L\K/(L');
-            
-            % correcting numeric erros and make the problem symmetric:
-            K_tilde = (K_tilde + K_tilde')/2.0;
-
-            [mode_shape, D] = eig(K_tilde);
-            D = diag(D);   % matrix to vector
-            
-            w_n = sqrt(D); % lambda to omega_n
-
-            f_n = w_n./(2.0*pi); % rad/s to Hz
-            
-            % sorting in ascending order:
-            [f_n, idx] = sort(f_n);
-            mode_shape = mode_shape(:, idx);
-            
-            flag_im = any(imag(f_n) ~= 0.0);
-            if(flag_im)
-                idx = (imag(f_n) ~= 0.0);
-                f_n(idx) = 0.0;
-                
-                f_n = [f_n(~idx);
-                       f_n(idx)];
-                   
-                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
-            end
-            
-            flag_RB = any(abs(f_n) < 1.0e-2);
-            if(flag_RB)
-                idx = (abs(f_n) < 1.0e-2);
-                f_n(idx) = 0.0;
-                
-                f_n = [f_n(~idx);
-                       f_n(idx)];
-                   
-                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
-            end
-            
-            % Normalizing the mode shapes so that the maximum is always +1:
-            for idx = 1:length(f_n)
-                [ms_max, n] = max(abs(mode_shape(:, idx)));
-                mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
-            end
-            
-        end
-        
         function [f_n, mode_shape] = resonances(obj, N, normalize)
             %RESONANCES returns the first N resonances and mode shapes of a
             % Drivetrain object. The resonances can be normalized or not.
             %
             
-            [f_n, mode_shape] = obj.modal_analysis;
+            calc = obj.dynamic_model(obj);
+            
+            [f_n, mode_shape] = calc.modal_analysis;
             
             N_fn = numel(f_n);
             
@@ -521,144 +378,15 @@ classdef Drivetrain
             
         end
         
-        function [M, K] = Thomson_ToV(obj)
-            %THOMSON_TOV Returns the inertia and stiffness matrices of the
-            % drivetrain according to:
-            % W. Thomson and M. Dahleh, Theory of vibration with
-            % applications, 5th ed. Prentice-Hall: New Jersey, 1998,
-            % pp. 380-381.
-            %
+        function [f, mode_shape] = nth_resonance(obj, n)
+            [f_n, mode_shape] = obj.resonances(n, false);
             
-            J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia
-            J_G = obj.J_Gen;   % [kg-m^2], Generator inertia
-            
-            U = obj.u;
-            
-            k_LSS = obj.main_shaft.stiffness("torsional");
-            k_HSS = obj.stage(end).out_shaft.stiffness("torsional");
-            
-            k = (k_LSS*k_HSS*U^2)/(k_LSS + k_HSS*U^2);
-            
-            M = diag([J_R J_G*U^2]);
-            K = k*[1.0 -1.0;
-                  -1.0  1.0];
-        end
-        
-        function [M, K] = Kahraman_1994(obj)
-            %KAHRAMAN_1994 Returns the inertia and stiffness matrices of
-            % the drivetrain according to:
-            % A. Kahraman, "Natural Modes of Planetary Gear Trains",
-            % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
-            % 1994. https://doi.org/10.1006/jsvi.1994.1222.
-
-            J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
-            J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
-            
-            N_DOF = ones(obj.N_stg + 1, 1)*2.0;
-            
-            for idx = 1:obj.N_stg
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    tmp = obj.stage(idx).N_p + 1;
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    tmp = obj.stage(idx).N_p + 2;
-                end
-                
-                N_DOF(idx + 1) = N_DOF(idx) + tmp;
+            if((n < 1) || (n > numel(f_n)))
+                error("n = %d > or ~= 0.");
             end
             
-            n = N_DOF(1:end - 1);
-            N_DOF = N_DOF(end);
-            
-            M = zeros(N_DOF, N_DOF);
-            K = zeros(N_DOF, N_DOF);
-            
-            M(1, 1) = J_R;              M(end, end) = J_G;
-            
-            M_tmp = obj.main_shaft.inertia_matrix("torsional");
-            K_tmp = obj.main_shaft.stiffness_matrix("torsional");
-            
-            M(1:2, 1:2) = M(1:2, 1:2) + M_tmp;        K(1:2, 1:2) = K(1:2, 1:2) + K_tmp;
-            
-            for idx = 1:obj.N_stg
-                [M_tmp, K_tmp] = obj.stage(idx).Kahraman_1994;
-                
-                jdx = n(idx);
-                kdx = jdx:(jdx + length(M_tmp) - 1);
-                
-                M(kdx, kdx) = M(kdx, kdx) + M_tmp;
-                K(kdx, kdx) = K(kdx, kdx) + K_tmp;
-            end
-            
-        end
-        
-        function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
-            %LIN_PARKER_1999 Returns the inertia and stiffness matrices of
-            % the drivetrain according to:
-            % J. Lin and R. Parker, "Analytical Characterization of the
-            % Unique Properties of Planetary Gear Free Vibration", Journal
-            % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
-            % 1999. https://doi.org/10.1115/1.2893982
-            %
-
-            m_R = obj.m_Rotor; % [kg], Rotor mass
-            m_G = obj.m_Gen;   % [kg], Generator mass according to [?]
-            
-            J_R = obj.J_Rotor; % [kg-m^2], Rotor inertia according to [3]
-            J_G = obj.J_Gen;   % [kg-m^2], Generator inertia according to [4]
-            
-            N_DOF = 6;
-            
-            for idx = 1:obj.N_stg
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    tmp = obj.stage(idx).N_p + 1;
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    tmp = obj.stage(idx).N_p + 2;
-                end
-                
-                N_DOF = N_DOF + tmp*3;
-            end
-            
-            M       = zeros(N_DOF, N_DOF);
-            K_b     = zeros(N_DOF, N_DOF);
-            K_m     = zeros(N_DOF, N_DOF);
-            K_Omega = zeros(N_DOF, N_DOF);
-            G       = zeros(N_DOF, N_DOF);
-            
-            M(1, 1) = m_R;              M(end - 2, end - 2) = m_G;
-            M(2, 2) = m_R;              M(end - 1, end - 1) = m_G;
-            M(3, 3) = J_R;              M(end    , end    ) = J_G;
-            
-            M_tmp = obj.main_shaft.inertia_matrix("full");
-            K_tmp = obj.main_shaft.stiffness_matrix("full");
-            
-            idx = [1 5 6 7 11 12];
-            M_tmp(idx, :) = [];                 M_tmp(:, idx) = [];
-            K_tmp(idx, :) = [];                 K_tmp(:, idx) = [];
-            
-            M(  1:6, 1:6) = M(  1:6, 1:6) + M_tmp;
-            K_b(1:6, 1:6) = K_b(1:6, 1:6) + K_tmp;
-            
-            for idx = 1:obj.N_stg
-                [M_tmp, ~, K_b_tmp, K_m_tmp, K_Omega_tmp, G_tmp] = obj.stage(idx).Lin_Parker_1999;
-                
-                jdx = 15*idx - 11;
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    kdx = jdx:(jdx + 8);
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    kdx = jdx:(jdx + 17);
-                end
-                
-                M(kdx, kdx) = M(kdx, kdx) + M_tmp;
-                
-                K_b(    kdx, kdx) = K_b(    kdx, kdx) + K_b_tmp;
-                K_m(    kdx, kdx) = K_m(    kdx, kdx) + K_m_tmp;
-                K_Omega(kdx, kdx) = K_Omega(kdx, kdx) + K_Omega_tmp;
-                
-                G(kdx, kdx) = G(kdx, kdx) + G_tmp;
-                
-            end
-            
-            K = @(Om)(K_b + K_m - K_Omega*Om^2);
+            f = f_n(n);
+            mode_shape = mode_shape(:, n);
         end
         
         function SIMPACK_version(obj, varargin)
@@ -745,17 +473,16 @@ classdef Drivetrain
         end
         
         %% Pitting:
-        function [SH_vec, SShaft_vec] = safety_factors(obj)
-            %SAFETY_FACTORS returns the safety factors for a Drivetrain
-            % object. It calculates the safety factor against pitting
-            % for the Gear objects according to ISO 6336-2 and the safety
-            % against fatigue and yield according to Shigley's book.
-            
-            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
-            L_h    = 20*365*24; % [h],  Required life
-            Q      = 6;         % [-],  ISO accuracy grade
-            R_a    = 0.8;       % [um], Maximum arithmetic mean roughness for external gears according to [7], Sec. 7.2.7.2.
-            K_A    = 1.25;      % [-],  Application factor
+        [SH, SF, SShaft] = safety_factor_stage(obj, idx)
+        
+        function [SH_vec, SF_vec, SShaft_vec] = safety_factors(obj)
+            %SAFETY_FACTORS returns the safety factors of the shafts and
+            % gear stages from a Drivetrain object. The shafts' safety
+            % factor is calculated against fatigue and yield according to
+            % Shigley's book and the gears safety factor is calculated
+            % against pitting and teeth root failure according to 
+            % ISO 6336.
+            %
             
             S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
             S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
@@ -764,192 +491,97 @@ classdef Drivetrain
             
             T_m  = obj.T_out(1)*obj.stage(1).u;
 
-            SH_vec     = zeros(6, 1);
-            SShaft_vec = zeros(4, 1);
-            
-            SShaft_vec(1) = obj.main_shaft.safety_factors(S_ut, S_y, K_f, K_fs, T_m);
-            
-            for idx = 1:obj.N_stg
-                SShaft_vec(idx + 1) = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
-                
-                [SH, ~] = obj.stage(idx).Pitting_ISO(obj.P_rated, obj.n_out(idx), S_Hmin, L_h, Q, R_a, K_A);
-                
-                jdx = 2*idx - 1;
-                kdx = jdx:(jdx + 1);
-                
-                SH_vec(kdx)     = SH;
-            end
-            
-        end
-        
-        function [SH_vec, SF_vec] = safety_factors_KS(obj, varargin)
-            
-            if(nargin == 1)
-                save_report = false;
-                show_report = false;
-            else
-                save_report = varargin{1}; % true
-                show_report = varargin{2}; % true
-            end            
-            
-            S_Hmin = 1.25;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
-            S_Fmin = 1.56;      % [-],  Minimum required safety factor for surface durability according to IEC 61400-4.
-            L_h    = 20*365*24; % [h],  Required life
-            K_A    = 1.25;      % [-],  Application factor
-            
             max_Np = max([obj.stage.N_p]) + 1;
             
-            SH_vec = zeros(obj.N_stg, max_Np);
-            SF_vec = zeros(obj.N_stg, max_Np);
+            SH_vec     = zeros(obj.N_stage    , max_Np);
+            SF_vec     = zeros(obj.N_stage    , max_Np);
+            SShaft_vec = zeros(obj.N_stage + 1, 1);
             
-            speed = [obj.n_rotor; obj.n_out];
+            SShaft_vec(1) = obj.main_shaft.safety_factors(S_ut, S_y, ...
+                                                          K_f, K_fs, T_m);
             
-            for idx = 1:obj.N_stg
-                ks = obj.stage(idx).toKISSsoft();
-                
-                ks.SetVar('ZS.P'       , num2str(obj.P_rated, '%.6f'));    % rated power
-                ks.SetVar('ZS.Pnominal', num2str(obj.P_rated, '%.6f'));    % rated power
-                
-                flag_impul = true;
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    flag_impul = true;
-                    template_code = 12;
-                elseif(strcmp(obj.stage(idx).configuration, 'planetary'))
-                    n_c = speed(idx);
-                    T_c =obj.P_rated/(n_c*pi/30.0);
-                    n_planet = n_c*(1.0 - obj.stage(idx).z(3)./obj.stage(idx).z(2));
-                    ks.SetVar('ZR[1].n'               , num2str(abs(n_planet), '%.6f')); % speed at gear 2: planet
-                    ks.SetVar('ZR[2].n'               , num2str(0.0          , '%.6f')); % speed at gear 3: ring
-                    ks.SetVar('ZS.Planet.nStegnominal', num2str(n_c          , '%.6f')); % speed at planet carrier
-                    ks.SetVar('ZS.Planet.nSteg'       , num2str(n_c          , '%.6f')); % speed at planet carrier
-                    
-                    ks.SetVar('ZR[1].T'               , num2str(abs(n_planet), '%.6f')); % speed at gear 2: planet
-                    ks.SetVar('ZS.Planet.TStegnominal', num2str(T_c          , '%.6f')); % torque at planet carrier
-                    ks.SetVar('ZS.Planet.nSteg'       , num2str(T_c          , '%.6f')); % torque at planet carrier
-                    
-                    flag_impul = false;
-                    template_code = 14;
-                end
-                
-                n_1 = obj.n_out(idx);
-                T_1 = obj.P_rated/(n_1*pi/30.0);
-                ks.SetVar('ZR[0].Tnominal', num2str(T_1, '%.6f')); % torque at gear 1
-                ks.SetVar('ZR[0].n'       , num2str(n_1, '%.6f')); % speed at gear 1
-                ks.SetVar('ZP[0].Impuls'  , num2str(flag_impul));  % sense of rotation, gear 1
-                
-                ks.SetVar('ZS.SSi.Flanke'      , num2str(S_Hmin, '%.6f'));
-                ks.SetVar('ZS.SSi_0to05.Flanke', num2str(S_Hmin, '%.6f'));
-                ks.SetVar('ZS.SSi_at1.Flanke'  , num2str(S_Hmin, '%.6f'));
-                ks.SetVar('ZS.SSi_2to20.Flanke', num2str(S_Hmin, '%.6f'));
-                ks.SetVar('ZS.SSi_fix.Flanke'  , num2str(S_Hmin, '%.6f'));
-                
-                ks.SetVar('ZS.SSi.Fuss'      , num2str(S_Fmin, '%.6f'));
-                ks.SetVar('ZS.SSi_0to05.Fuss', num2str(S_Fmin, '%.6f'));
-                ks.SetVar('ZS.SSi_at1.Fuss'  , num2str(S_Fmin, '%.6f'));
-                ks.SetVar('ZS.SSi_2to20.Fuss', num2str(S_Fmin, '%.6f'));
-                ks.SetVar('ZS.SSi_fix.Fuss'  , num2str(S_Fmin, '%.6f'));
-                
-                ks.SetVar('ZS.H'         , num2str(L_h, '%.6f'));
-                ks.SetVar('ZS.KA'        , num2str(K_A, '%.6f'));
-                
-                n_gear = numel(obj.stage(idx).z);
-                
-                % [5], Table 3, p. 35:
-                switch(obj.stage(idx).N_p)
-                    case 3
-                        K_gam = 1.1;
-                    case 4
-                        K_gam = 1.25;
-                    case 5
-                        K_gam = 1.35;
-                    case 6
-                        K_gam = 1.44;
-                    case 7
-                        K_gam = 1.47;
-                    otherwise
-                        K_gam = 1.0;
-                end
-                
-                ks.SetVar('ZS.Kgam', num2str(K_gam, '%.6f'));
-                
-                if(~ks.CalculateRetVal())
-                    ks.ReleaseModule();
-                    error("Error in KISSsoft calculation.");
-                end
-                
-                kv = str2double(ks.GetVar('ZS.KVcalc'));
-                flag_kv = false;
-                if(kv < 1.05)
-                    flag_kv = true;
-                    for jdx = 1:n_gear
-                        ks.SetVar(sprintf('ZP[%d].KV.KV', jdx), num2str(1.05, '%.6f'));
-                    end
-                    
-                    ks.SetVar('Zst.KVFlag', num2str(flag_kv));
-                end
-                
-                flag_khb = false;
-                for jdx = 1:2
-                    khb = str2double(ks.GetVar(sprintf('ZP[%d].KHb', jdx - 1)));
-                    
-                    if(khb < 1.15)
-                        flag_khb = true;
-                        ks.SetVar(sprintf('ZP[%d].KHb', jdx - 1), num2str(1.15, '%.6f'));
-                    end
-                end
-                
-                if(flag_khb)
-                    ks.SetVar('Zst.KHbVariant', num2str(true));
-                end
-                
-                if(~ks.CalculateRetVal())
-                    ks.ReleaseModule();
-                    error("Error in KISSsoft calculation.");
-                end
-                
-                if(flag_kv || flag_khb)
-                    ks.Calculate();
-                end
+            jdx = 0;
+            for idx = 1:obj.N_stage
+                [SH, SF, SShaft_vec(idx + 1)] = obj.safety_factor_stage(idx);
 
-                for jdx = 1:n_gear
-                    SH_vec(jdx, idx) = str2double(ks.GetVar(sprintf('ZPP[%d].Flanke.SH', jdx - 1)));
-                    SF_vec(jdx, idx) = str2double(ks.GetVar(sprintf('ZPP[%d].Fuss.SF'  , jdx - 1)));
-                end
+                kdx = jdx + (1:length(SH));
+                jdx = kdx(end);
                 
-                if(save_report)
-                    if(strcmp(class(obj), "Drivetrain"))
-                        report_name = sprintf("%s\\stage_%02d.rtf" , pwd, idx);
-                        file_name   = sprintf("%s\\stage_%02d.Z0%d", pwd, idx, template_code);
-                    else
-                        report_name = sprintf("%s\\@%s\\stage_%02d.rtf" , pwd, class(obj), idx);
-                        file_name   = sprintf("%s\\@%s\\stage_%02d.Z0%d", pwd, class(obj), idx, template_code);
-                    end
-                    
-                    ks.SaveFile(file_name);
-
-                    ks.ReportWithParameters(sprintf("C:\\Program Files (x86)\\KISSsoft 03-2017\\rpt\\Z0%dLe0.RPT", template_code), ... % template file
-                                            report_name, show_report, 0); % output format
-                else
-                    ks.Report(show_report);
-                end
-                                    
-                ks.ReleaseModule();
-                clear("ks");
+                SH_vec(kdx)     = SH;
+                SF_vec(kdx)     = SF;
             end
             
             SH_vec(SH_vec == 0) = [];
             SF_vec(SF_vec == 0) = [];
-            
-            if(isrow(SH_vec))
-                SH_vec = SH_vec';
-            end
-            
-            if(isrow(SF_vec))
-                SF_vec = SF_vec';
-            end
         end
         
         %% Scaling:
+        function [gamma_opt, res, stage_sca] = scaled_version_stage(obj, idx, gamma_idx, aspect, gamma_P, gamma_n)
+            [SHref, SFref] = obj.safety_factor_stage(idx);
+            SGref = [SHref; SFref];
+            SGref(SGref == 0) = [];
+            SGref(isnan(SGref)) = [];
+            
+            Smin = [~isnan(SHref)*obj.S_Hmin; ~isnan(SFref)*obj.S_Fmin];
+            Smin = Smin(Smin ~= 0.0);
+            obj_tmp = obj;
+            obj_tmp.P_rated = gamma_P*obj.P_rated;
+            obj_tmp.n_rotor = gamma_n*obj.n_rotor;
+            
+            if(strcmp(aspect, 'integrity'))
+                gamma_0 = mean(gamma_idx(["m_n", "b"]));
+            elseif(strcmp(aspect, 'integrity_refine'))
+                gamma_0 = gamma_idx(["m_n", "b"]);
+            end
+            
+            gamma_Max = ones(size(gamma_0));
+            gamma_min = gamma_Max*1.0e-6;
+            
+            fun_asp = @(x)obj_tmp.scaled_safety_factor_stage(x, idx, SGref);
+            fun_min = @(x)(norm(fun_asp(x))^2);
+            
+            fun_ineq = @(x)(Smin - obj_tmp.scaled_safety_factor_stage(x, idx, SGref*0));
+            
+            constraint_fun = @(x)deal(fun_ineq(x), fun_asp(x)); % inequalities, equalities
+            
+            opt_solver = optimoptions("fmincon", "display", "notify");
+            
+            [gamma_opt, res] = fmincon(fun_min, gamma_0, [], [], [], [], ...
+                gamma_min, gamma_Max, constraint_fun, opt_solver);
+            
+            if(strcmp(aspect, 'integrity'))
+                gm = scaling_factor({'m_n', gamma_opt, ...
+                                     'b'  , gamma_opt});
+            elseif(strcmp(aspect, 'integrity_refine'))
+                gm = scaling_factor({'m_n', gamma_opt(1), ...
+                                     'b'  , gamma_opt(2)});
+            end
+            
+            stage_sca = obj.stage(idx).scale_by(gm);
+        end
+        
+        function S_diff = scaled_safety_factor_stage(obj, gamma_val, idx, SGref)
+            gm = scaling_factor({'m_n', 1.0, ...
+                                 'b'  , 1.0});
+            
+            if(length(gamma_val) == 1)
+                gm('m_n') = gamma_val;
+                gm('b')   = gamma_val;
+            elseif(length(gamma_val) == 2)
+                gm('m_n') = gamma_val(1);
+                gm('b')   = gamma_val(2);
+            end
+                
+            obj.stage(idx) = obj.stage(idx).scale_by(gm);
+            
+            [SH, SF] = obj.safety_factor_stage(idx);
+            SG = [SH; SF];
+            SG(SG == 0) = [];
+            SG(isnan(SG)) = [];
+            
+            S_diff = SG - SGref;
+        end
+        
         function obj_sca = scale_all(obj_ref, gamma_P, gamma_n, gamma)
             %SCALE_ALL returns an object scaled by the factors gamma_P and 
             % gamma_n for its rated power and rotor speed and gamma for 
@@ -991,7 +623,7 @@ classdef Drivetrain
             
             stage_sca = [Gear_Set, Gear_Set, Gear_Set];
             
-            for idx = 1:obj_ref.N_stg
+            for idx = 1:obj_ref.N_stage
                 jdx = 4*idx + (-3:0);
                 gamma_stage = gamma(key_set(jdx));
                 
@@ -1003,7 +635,7 @@ classdef Drivetrain
             main_shaft_sca = Shaft(obj_ref.main_shaft.d*gamma_dd(idx), ...
                                    obj_ref.main_shaft.L*gamma_LL(idx));
             
-            obj_sca = Drivetrain(obj_ref.N_stg, ...
+            obj_sca = Drivetrain(obj_ref.N_stage, ...
                                  stage_sca, ...
                                  obj_ref.P_rated *gamma_P, ...
                                  obj_ref.n_rotor *gamma_n, ...
@@ -1016,7 +648,7 @@ classdef Drivetrain
             obj_sca.dynamic_model = obj_ref.dynamic_model;
         end
         
-        function obj_sca = scale_aspect(obj_ref, gamma_P, gamma_n, gm_val, aspect)
+        function obj_sca = scale_aspect(obj_ref, gm_val, gamma_T, aspect)
             %SCALE_ASPECT returns an object scaled by the factors gamma_P 
             % and gamma_n for its rated power and rotor speed. The
             % argument gamma can be used to scale the Drivetrain object
@@ -1051,7 +683,6 @@ classdef Drivetrain
             end
             
             % Scaling the shaft's diameter:
-            gamma_T = gamma_P/gamma_n; % Applied torque scaling factor
             gamma_ds = nthroot(gamma_T, 3.0);
 
             idx_D = contains(key_set, "d");
@@ -1099,102 +730,121 @@ classdef Drivetrain
 
         end
         
-        function [obj_sca, gamma_val, res, gamma_sep] = scaled_version(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set, varargin)
+        function [obj_sca, gamma_opt, res, gamma_sep] = scaled_version(obj_ref, P_scale, varargin)
             %SCALED_VERSION returns an scaled object together with the 
             % scaling factor for its parameters and residual error from the
             % scaling optimization process. Different scaling can be
             % obtained by using:
             % - aspect_set: Different model approaches;
             % - normalize_freq: Normalizing or not the target resonances;
-            % - N_freq: choosing how many resonances should be considered
+            % - N_freq: choosing how many resonances should be considered;
+            % - gamma_0: initial value of gamma;
             % during the scaling optimization process;
             % Additionaly, one can define an initial value for gamma to be
             % used on the optimization process
             
-            if(~isempty(varargin))
-                gamma_prev_val = varargin{1};
-            else
-                gamma_prev_val = ones(size(obj_ref.gamma.name))*0.5;
-            end
+            gm0 = scaling_factor(obj_ref.gamma.name, ones(length(obj_ref.gamma), 1));
             
-            gamma_prev = scaling_factor(obj_ref.gamma.name, gamma_prev_val);
+            constraint = ["L_1", "L_2";
+                          "L_3", "L_S";
+                          "J_R", "J_G"];
+            
+            default = {'n_scale'       , obj_ref.n_rotor, ...
+                       'normalize_freq', true, ...
+                       'N_freq'        , 10, ...
+                       'aspect_set'    , 'DA', ...
+                       'gamma_0'       , gm0, ...
+                       'constraint'    , constraint};
+            
+            default = process_varargin(default, varargin);
+            
+            constraint = default.constraint;
+            
+            gamma_0 = default.gamma_0;
             
             % Input scaling factors:
-            gm_P = P_scale/obj_ref.P_rated;
-            gm_n = n_R_scale/obj_ref.n_rotor;
-            gm_T = gm_P/gm_n;
+            gamma_0('P') =         P_scale/obj_ref.P_rated;
+            gamma_0('n') = default.n_scale/obj_ref.n_rotor;
+            gamma_T = gamma_0('P')/gamma_0('n');
             
             % Scaling factors from dimensional analysis:
-            gamma_length = nthroot(gm_T,     3.0);
-            gamma_MMI    = power(  gm_P, 5.0/3.0);
+            gamma_length = nthroot(gamma_T,     3.0);
             
-            S_H_ref = obj_ref.S_H;
-            f_n_ref = obj_ref.resonances(N_freq, normalize_freq);
+            gamma_MMI    = power(gamma_0('P'), 5.0/3.0);
             
-            if(strcmp(class(obj_ref), "Drivetrain"))
-                fprintf("Scaling drivetrain to rated power %.1f kW, which is %.2f %% of its reference.\n", gm_P*[obj_ref.P_rated 100.0]);
-            else
-                fprintf("Scaling %s drivetrain to rated power %.1f kW, which is %.2f %% of its reference.\n", class(obj_ref), gm_P*[obj_ref.P_rated 100.0]);
+            fprintf("Scaling the %s drivetrain to %.2f %% of its reference rated power (= %.1f kW).\n", class(obj_ref), gamma_0('P')*[100.0, obj_ref.P_rated]);
+            
+            id = ["ISO_6336:KV", ...
+                  "ISO_6336:SF", ...
+                  "ISO_6336:KS", ...
+                  "MATLAB:nearlySingularMatrix", ...
+                  "MATLAB:COM:InvalidProgid", ...
+                  "Dynamic_Formulation:imag", ...
+                  "Dynamic_Formulation:RB"];
+            
+            for idx = 1:length(id)
+                warning("off", id(idx));
             end
-            
-            id_1 = "prog:input";
-            id_2 = "MATLAB:nearlySingularMatrix";
-            id_3 = "MATLAB:COM:InvalidProgid";
-            warning("off", id_1);
-            warning("off", id_2);
-            warning("off", id_3);
+            opt_wrt = "Optimizing w. r. t. [%s]...\n";
             
             %% 1. Stage scaling:
-            aspect_1 = "stage";
+            aspect_set = default.aspect_set;
+            aspect_1 = "integrity";
             
-            if(any(fields(aspect_set) == aspect_1))
-                fprintf("Optimizing w.r.t. [%s]...\n", upper(aspect_1));
+            if(any(aspect_set == aspect_1))
+                fprintf(opt_wrt, upper(aspect_1));
                 
-                gm_01 = mean(gamma_prev(["m_n1" "b_1" "m_n2" "b_2" "m_n3" "b_3"]));
-                gm_val_1  = zeros(obj_ref.N_stg, 1);
-                res_1 = zeros(obj_ref.N_stg, 1);
+                gm_val_1 = zeros(obj_ref.N_stage, 1);
+                res_1    = zeros(obj_ref.N_stage, 1);
+                
+                for idx = 1:obj_ref.N_stage
+                    gamma_idx = gamma_0.ends_with(num2str(idx));
 
-                for idx = 1:obj_ref.N_stg
-                    jdx = 2*idx + (-1:0);
-                    n_stage = obj_ref.n_out(idx)*gm_n;
-
-                    [~, gm_val_1(idx, :), res_1(idx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_1, gm_01);
-                    gm_01 = gm_val_1(idx, :);
+                    [gm_val_1(idx, :), res_1(idx, :)] = ...
+                        obj_ref.scaled_version_stage(idx, gamma_idx, aspect_1, gamma_0('P'), ...
+                                                                               gamma_0('n'));
                 end
-            elseif(any(fields(aspect_set) == "DA"))
+                
+            elseif(any(aspect_set == "DA"))
                 m_n_tmp =[obj_ref.stage.m_n]';
                 gm_val_1 = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
                 
                 res_1 = Inf(3, 1);
             else
-                gm_val_1 = [mean(gamma_prev(["m_n1" "b_1"]));
-                            mean(gamma_prev(["m_n2" "b_2"]));
-                            mean(gamma_prev(["m_n3" "b_3"]))];
+                gm_val_1 = [mean(gamma_0(["m_n1" "b_1"]));
+                            mean(gamma_0(["m_n2" "b_2"]));
+                            mean(gamma_0(["m_n3" "b_3"]))];
                        
                 res_1 = Inf(3, 1);
             end
             
-            gm_val_1  =  gm_val_1([1 1 2 2 3 3]);
-            res_1     = res_1([1 1 2 2 3 3]);
+            for idx = 1:obj_ref.N_stage
+                gamma_0(sprintf('m_n%d', idx)) = gm_val_1(idx);
+                gamma_0(sprintf('b_%d' , idx)) = gm_val_1(idx);
+            end
+            
+            gm_val_1  = reshape(repmat(gm_val_1, 1, 2)', 2*length(gm_val_1), 1);
+            res_1     = reshape(repmat(res_1   , 1, 2)', 2*length(res_1)   , 1);
             
             %% 2. Gears:
-            aspect_2 = "gear";
+            aspect_2 = "integrity_refine";
             
-            if(any(fields(aspect_set) == aspect_2))
-                fprintf("Optimizing w.r.t. [%s]...\n", upper(aspect_2));
+            if(any(aspect_set == aspect_2))
+                fprintf(opt_wrt, upper(aspect_2));
                 
-                gm_02     = gm_val_1([1 1]);
-                gm_val_2  = zeros(2*obj_ref.N_stg, 1);
-                res_2     = zeros(2*obj_ref.N_stg, 1);
-
-                for idx = 1:obj_ref.N_stg
+                gm_val_2 = zeros(2*obj_ref.N_stage, 1);
+                res_2    = zeros(2*obj_ref.N_stage, 1);
+                
+                for idx = 1:obj_ref.N_stage
+                    gamma_idx = gamma_0.ends_with(num2str(idx));
+                    
                     jdx = 2*idx + (-1:0);
-                    n_stage = obj_ref.n_out(idx)*gm_n;
-
-                    [~, gm_val_2(jdx, :), res_2(jdx, :)] = obj_ref.stage(idx).scaled_version(P_scale, n_stage, S_H_ref(jdx), aspect_2, gm_02);
-                    gm_02 = gm_val_2(jdx, :);
+                    [gm_val_2(jdx, :), res_2(jdx, :)] = ...
+                        obj_ref.scaled_version_stage(idx, gamma_idx, aspect_2, gamma_0('P'), ...
+                                                                               gamma_0('n'));
                 end
-            elseif(any(fields(aspect_set) == "DA"))
+
+            elseif(any(aspect_set == "DA"))
                 m_n_tmp = [obj_ref.stage.m_n]';
                 gamma_mn = Rack.module(m_n_tmp*gamma_length, "calc", "nearest")./m_n_tmp;
                 
@@ -1203,7 +853,7 @@ classdef Drivetrain
                 
                 res_2 = Inf(6, 1);
             else
-                gm_val_2 = gamma_prev(["m_n1" "b_1" "m_n2" "b_2" "m_n3" "b_3"]);
+                gm_val_2 = gamma_0(["m_n1" "b_1" "m_n2" "b_2" "m_n3" "b_3"]);
                 res_2 = Inf(size(gm_val_2));
             end
             
@@ -1217,93 +867,106 @@ classdef Drivetrain
                 res_12   = diag(idx_min)*res_1   + diag(~idx_min)*res_2;
             end
             
-            gamma_sca = obj_ref.gamma;
-            
-            gamma_sca(["m_n1" "b_1" ...
-                       "m_n2" "b_2" ...
-                       "m_n3" "b_3"]) = gm_val_12;
-                 
-            if(strcmp(class(obj_ref), "Drivetrain"))
-                obj_12 = scale_all(gm_P, gm_n, gamma_sca);
-            else
-                scale_func = str2func(class(obj_ref));
-                obj_12 = scale_func(gm_P, gm_n, gamma_sca);
+            for idx = 1:obj_ref.N_stage
+                jdx = 2*idx + (-1:0);
+                q = jdx(1);
+                w = jdx(end);
+                gamma_0(sprintf('m_n%d', idx)) = gm_val_12(q);
+                gamma_0(sprintf('b_%d' , idx)) = gm_val_12(w);
             end
             
+            par_d = gamma_0.name_contains("d_");
+            
+            gamma_0(par_d) = gamma_length;
+            
+            scale_func = str2func(class(obj_ref));
+            obj_12 = scale_func(gamma_0.to_cell());
+            
             %% 3. Shaft stiffness and Mass moment of inertia of rotor and generator:
-            aspect_3 = "K_MMI";
+            f_n_ref = obj_ref.resonances(default.N_freq, default.normalize_freq);
+            
+            aspect_3 = "resonances";
             
             opt_solver = optimoptions("fmincon", "display", "notify");
 
-            if(any(fields(aspect_set) == aspect_3))
-                fprintf("Optimizing w.r.t. [%s]...\n", upper(aspect_3));
+            par_L = obj_12.gamma.name_contains("L_")';
+            par_J = obj_12.gamma.name_contains("J_")';
+            
+            if(any(aspect_set == aspect_3))
+                fprintf(opt_wrt, upper(aspect_3));
                 
-                asp_set = aspect_set.(aspect_3);
-                n = size(asp_set, 1);
-                
-                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, gm_P, gm_n, x, asp_set)./f_n_ref);
+                param_constraint = [par_L;
+                                    par_J, repmat("*", 1, abs(length(par_L) - length(par_J)))];
+                                
+                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(x, gamma_0, ...
+                                                                 default.N_freq, ...
+                                                                 default.normalize_freq, ...
+                                                                 param_constraint)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
-
-                gamma_min = ones(n, 1)*1.0e-6;
-                gamma_Max = ones(n, 1);
                 
-                idx_L = contains(obj_ref.gamma.name, "L");
-                idx_J = contains(obj_ref.gamma.name, "J");
-
-                gm_03 = [mean(gamma_prev(idx_L)); ... % length
-                         mean(gamma_prev(idx_J))]; % mass mom. inertia
-
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
-                [gm_val_3, res_3, ~] = fmincon(fun_min, gm_03, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
+                gm_03 = [mean(gamma_0(par_L)); ... % length
+                         mean(gamma_0(par_J))]; % mass mom. inertia
+
+                gamma_Max = ones(size(gm_03));
+                gamma_min = gamma_Max*1.0e-6;
+
+                [gm_val_3, res_3, ~] = fmincon(fun_min, gm_03, [], [], [], [], ...
+                                               gamma_min, gamma_Max, ...
+                                               constraint_fun, opt_solver);
             elseif(any(aspect_set == "DA"))
                 gm_val_3 = [gamma_length;
                             gamma_MMI];
                 res_3 = Inf;
             else
-                gm_val_3 = [mean(gamma_prev(["L_1" "L_2" "L_3" "L_s"]));
-                            mean(gamma_prev(["J_R" "J_G"]))];
+                gm_val_3 = [mean(gamma_0(["L_1" "L_2" "L_3" "L_s"]));
+                            mean(gamma_0(["J_R" "J_G"]))];
                        
                 res_3 = Inf;
             end
             
-            gamma_sca(["L_1" "L_2" "L_3" "L_s"]) = gm_val_3(1)*ones(4, 1);
-            gamma_sca(["J_R" "J_G"])             = gm_val_3(2)*ones(2, 1);
+            gamma_0(par_L) = gm_val_3(1)*ones(length(par_L), 1);
+            gamma_0(par_J) = gm_val_3(2)*ones(length(par_J), 1);
 
             %% 4. Detailed version of 3:
-            aspect_4 = "K_MMI_det";
+            aspect_4 = "resonances_refine";
             
-            if(any(fields(aspect_set) == aspect_4))
-                fprintf("Optimizing w.r.t. [%s]...\n", upper(aspect_4));
-                
-                asp_set = aspect_set.(aspect_4);
-                n = size(asp_set, 1);
+            if(any(aspect_set == aspect_4))
+                fprintf(opt_wrt, upper(aspect_4));
                 
                 % function for aspect_4: gamma_P and gamma_n are set to 1.0
                 % because the drivetrain is already scaled for these
                 % parameters.
-                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(N_freq, normalize_freq, gm_P, gm_n, x, asp_set)./f_n_ref);
+                fun_asp  = @(x)(1.0 - obj_12.scale_resonances(x, gamma_0, ...
+                                                                 default.N_freq, ...
+                                                                 default.normalize_freq, ...
+                                                                 constraint)./f_n_ref);
                 fun_min = @(x)(norm(fun_asp(x))^2);
-
-                gamma_min = ones(n, 1)*1.0e-6;
-                gamma_Max = ones(n, 1);
-
-                gm_04 = ones(n, 1);
-                
-                for idx = 1:n
-                    gm_04(idx) = mean(gamma_sca(asp_set(idx, :)));
-                end
 
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
-                [gm_val_4, res_4, ~] = fmincon(fun_min, gm_04, [], [], [], [], gamma_min, gamma_Max, constraint_fun, opt_solver);
-            elseif(any(fields(aspect_set) == "DA"))
+                n = size(constraint, 1);
+                
+                gm_04 = zeros(n, 1);
+                
+                for idx = 1:n
+                    gm_04(idx) = mean(gamma_0(constraint(idx,:)));
+                end
+                
+                gamma_Max = ones(n, 1);
+                gamma_min = gamma_Max*1.0e-6;
+
+                [gm_val_4, res_4, ~] = fmincon(fun_min, gm_04, [], [], [], [], ...
+                                               gamma_min, gamma_Max, ...
+                                               constraint_fun, opt_solver);
+            elseif(any(aspect_set == "DA"))
                 gm_val_4      = gamma_length*ones(6, 1);
                 gm_val_4(4:5) = gamma_MMI; 
                 
                 res_4 = Inf;
             else
-                gm_val_4 = gamma_prev(["L_1" "L_2" "L_3" "L_s" "J_R" "J_G"]);
+                gm_val_4 = gamma_0(["L_1" "L_2" "L_3" "L_s" "J_R" "J_G"]);
                 res_4    = Inf;
             end
             
@@ -1311,30 +974,28 @@ classdef Drivetrain
                 gm_val_34 = gm_val_3;
                 res_34 = res_3;
                 
-                gamma_sca(["L_1" "L_2" "L_3" "L_s"]) = gm_val_34(1)*ones(4, 1);
-                gamma_sca(["J_R" "J_G"            ]) = gm_val_34(2)*ones(2, 1);
+                gamma_0(par_L) = gm_val_34(1)*ones(length(par_L), 1);
+                gamma_0(par_J) = gm_val_34(2)*ones(length(par_J), 1);
             else
                 gm_val_34 = gm_val_4;
                 res_34 = res_4;
                 
                 for idx = 1:n
-                    asp_tmp = asp_set(idx, :);
+                    asp_tmp = constraint(idx, :);
                     asp_tmp(asp_tmp == "*") = [];
                     
                     m = size(asp_tmp);
-                    gamma_sca(asp_set(idx, :)) = gm_val_34(idx)*ones(m);
+                    gamma_0(asp_tmp) = gm_val_34(idx)*ones(m);
                 end
             end
             
             %% 5. Drivetrain scaling:
             aspect_5 = "Drivetrain";
             
-            if(any(fields(aspect_set) == aspect_5))
-                fprintf("Optimizing w.r.t. [%s]...\n", upper(aspect_5));
+            if(any(aspect_set == aspect_5))
+                fprintf(opt_wrt, upper(aspect_5));
                 
                 fprintf("\n\tto be done later...\n\n");
-            else
-                
             end
             
             %% Post processing:
@@ -1343,14 +1004,13 @@ classdef Drivetrain
             idx = ~isinf(res_pp);
             res_pp = res_pp(idx);
             
-            asp_name = fields(aspect_set);
-            
-            if(numel(asp_name) ~= sum(idx))
+            asp_name = aspect_set;
+            if(numel(aspect_set) ~= sum(idx))
                 asp_name = asp_name(idx);
             end
             
-            fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", gm_P*[obj_ref.P_rated, ...
-                                                                100.0]);
+            fprintf("Scale: %.1f kW = %.2f %% of Ref.\n", gamma_0('P')*[obj_ref.P_rated, ...
+                                                                        100.0]);
 
             if(isempty(res_pp))
                 fprintf("\tScaled version obtained by dimensional analysis scaling rules.\n");
@@ -1364,10 +1024,7 @@ classdef Drivetrain
                 end
             end
             
-            gm_d = nthroot(gm_P/gm_n, 3.0);
-            
-            gamma_sca(["d_1" "d_2" "d_3" "d_s"]) = gm_d*ones(4, 1);
-            gamma_val = gamma_sca.value;
+            gamma_opt = gamma_0;
             
             res.stage = res_1;
             res.gear  = res_2;
@@ -1383,33 +1040,29 @@ classdef Drivetrain
             gamma_sep.SG    = gm_val_12;
             gamma_sep.KJg   = gm_val_34;
             
-            if(strcmp(class(obj_ref), "Drivetrain"))
-                obj_sca = scale_all(gm_P, gm_n, gamma_sca);
-            else
-                scale_func = str2func(class(obj_ref));
-                obj_sca = scale_func(gm_P, gm_n, gamma_sca);
-            end
+            obj_sca = scale_func(gamma_0.to_cell());
             
-            warning("on", id_1);
-            warning("on", id_2);
-            warning("on", id_3);
+            for idx = 1:length(id)
+                warning("on", id(idx));
+            end
         end
         
-        function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp, obj_array] = scaled_sweep(obj_ref, P_scale, n_R_scale, normalize_freq, N_freq, aspect_set)
+        function [gamma, res, SH, f_n, mode_shape, k_mesh, gamma_asp, obj_array] = scaled_sweep(obj_ref, P_scale, varargin)
             %SCALED_SWEEP performs a sweep on the rated power parameter of
             % the object. Returns the scaling factors gamma
             %
             % see also SCALED_VERSION
             %
             
-            if(strcmp(class(obj_ref), "Drivetrain"))
-                fprintf("Reference Drivetrain with rated power %.1f kW.\n", obj_ref.P_rated);
-            else
-                fprintf("Reference %s drivetrain with rated power %.1f kW.\n", class(obj_ref), obj_ref.P_rated);
-            end
+            default = {'aspect_set', 'DA', ...
+                       'n_scale', obj_ref.n_rotor};
+            
+            default = process_varargin(default, varargin);
+            
+            fprintf("Reference %s drivetrain with rated power %.1f kW.\n", class(obj_ref), obj_ref.P_rated);
             
             n_P = numel(P_scale);
-            n_fn = numel(obj_ref.modal_analysis);
+            n_fn = numel(obj_ref.resonances);
             
             gamma = zeros(length(obj_ref.gamma), n_P);
             res = struct;
@@ -1421,10 +1074,10 @@ classdef Drivetrain
             
             gm_P = P_scale./obj_ref.P_rated;
             
-            [~, MS_ref] = obj_ref.modal_analysis;
+            [~, MS_ref] = obj_ref.resonances;
             
             SH_ref = obj_ref.S_H;
-            SS = [SH_ref, SH_ref];
+            SS = [SH_ref, zeros(size(SH_ref))];
             
             plot_prop1 = {'lineStyle', '-' , 'lineWidth', 2.0, 'color', [346.6667e-3   536.0000e-3   690.6667e-3]};
             plot_prop2 = {'lineStyle', '--', 'lineWidth', 2.0, 'color', [915.2941e-3   281.5686e-3   287.8431e-3]};
@@ -1450,7 +1103,11 @@ classdef Drivetrain
                     plot(1:14, MS_ref(:, idx + 3)*90.0, plot_prop1{:})
                 else
                     subplot(2, 6, 12)
-%                     bar(SS);
+                    b = bar(SS);
+                    ylim([1.0 2.0]);
+                    yticks(1.0:0.25:2.0);
+                    b(1).FaceColor = plot_prop1{end};
+                    b(2).FaceColor = plot_prop2{end};
                 end
             end
             
@@ -1485,19 +1142,22 @@ classdef Drivetrain
             k_P = mean(diff(P_scale));
             
             if(k_P > 0.0)
-                gamma_0 = ones(size(obj_ref.gamma))*1.0e-3;
+                gamma_0 = scaling_factor(obj_ref.gamma.name, obj_ref.gamma.value*1.0e-3);
             else
-                gamma_0 = ones(size(obj_ref.gamma));
+                gamma_0 = scaling_factor(obj_ref.gamma.name, obj_ref.gamma.value);
             end
             
             obj_array = cell(n_P + 1, 1);
             obj_array{1} = obj_ref;
                
             for idx = 1:n_P
-                [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), n_R_scale, normalize_freq, N_freq, aspect_set, gamma_0);
+                [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), ...
+                                                                                'gamma_0', gamma_0, ...
+                                                                                'n_scale', default.n_scale, ...
+                                                                                'aspect_set', default.aspect_set);
                 obj_array{idx + 1} = obj_sca;
                 
-                gamma(:, idx) = gamma_0;
+                gamma(:, idx) = gamma_0.value;
                 res(idx).stage = res_idx.stage;
                 res(idx).gear  = res_idx.gear;
                 res(idx).KJ    = res_idx.KJ;
@@ -1510,14 +1170,14 @@ classdef Drivetrain
                 
                 SH(:, idx) = obj_sca.S_H;
                 k_mesh(:, idx) = [obj_sca.stage.k_mesh]';
-                [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.modal_analysis;
+                [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.resonances;
 
                 subplot(2, 6, 7:9);
                 cla;
                 rectangle(obj_sca);
                 xlim([0 6000]);
                 ylim([-1 1]*1500);
-                title(sprintf("Scale: %.1f kW = %.2f %% of Ref.", obj_sca.P_rated, gm_P(idx)*100.0));
+                title(sprintf("Scale: %.1f kW = %.3f %% of Ref.", obj_sca.P_rated, gm_P(idx)*100.0));
                 SS(:, 2) = SH(:, idx);
                 
                 for jdx = 1:3
@@ -1575,17 +1235,30 @@ classdef Drivetrain
             
             obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
             
-            [f_n, mode_shape] = obj_sca.modal_analysis;
+            [f_n, mode_shape] = obj_sca.resonances;
             
         end
         
-        function [f_n, mode_shape] = scale_resonances(obj, N, normalize, gamma_P, gamma_n, gamma, aspect)
+        function [f_n, mode_shape] = scale_resonances(obj, gamma_val, gamma, N, normalize, aspect)
             %SCALED_RESONANCES returns the N first resonances and mode
             % shapes of a scaled Drivetrain object. The resonances can be
             % normalized or not.
             %
             
-            obj_sca = scale_aspect(obj, gamma_P, gamma_n, gamma, aspect);
+            lin = size(aspect, 1);
+            
+            for idx = 1:lin
+                asp_tmp = aspect(idx, :);
+                asp_tmp = asp_tmp(asp_tmp ~= "*");
+                col = numel(asp_tmp);
+                
+                for jdx = 1:col
+                    gamma(asp_tmp(jdx)) = gamma_val(idx, :);
+                end
+            end
+            
+            scale_func = str2func(class(obj));
+            obj_sca = scale_func(gamma.to_cell());
             
             [f_n, mode_shape] = obj_sca.resonances(N, normalize);
             
@@ -1618,9 +1291,9 @@ classdef Drivetrain
     %% Get methods:
     methods
         function val = get.n_out(obj)
-            val = zeros(obj.N_stg, 1);
+            val = zeros(obj.N_stage, 1);
             
-            for idx = 1:obj.N_stg
+            for idx = 1:obj.N_stage
                 val(idx) = obj.n_rotor*prod([obj.stage(1:idx).u]);
             end
         end
@@ -1641,9 +1314,24 @@ classdef Drivetrain
             end
         end
         
+        function val = get.S_F(obj)
+            val = obj.S_F_val;
+            
+            if(isrow(val))
+                val = val';
+            end
+        end
+        
         function val = get.S_shaft(obj)
             val = obj.S_shaft_val;
         end
+        
+            function val = get.S_G(obj)
+                val = [obj.S_H;
+                       obj.S_F];
+                val(isnan(val)) = [];
+            end
+            
     end
     
 end

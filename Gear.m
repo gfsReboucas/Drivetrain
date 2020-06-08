@@ -45,10 +45,18 @@ classdef Gear < Rack
         beta      (1, :) {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 0.0; % [deg.], Helix angle (at reference cylinder)
         k         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Tip alteration coefficient
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
+        Q         (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive}    = 6.0; % [-], ISO accuracy grade
+        R_a;           % [um], arithmetic mean roughness
     end
     
     properties(Access = public)
         b         (1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 13;  % [mm],   Face width
+    end
+    
+    properties(Access = private)
+        m_int;
+        d_int;
+        b_int;
     end
     
     properties(Dependent)
@@ -69,36 +77,69 @@ classdef Gear < Rack
         d_w;     % [mm],     Working pitch diameter
         d_bore;  % [mm],     Bore diameter
         z_n;     % [-],      Virtual number of teeth
-        V;       % [mm^3],   Volume
+        V;       % [m^3],    Volume
         mass;    % [kg],     Mass
         J_x;     % [kg-m^2], Mass moment of inertia (rot. axis)
         J_y;     % [kg-m^2], Mass moment of inertia
         J_z;     % [kg-m^2], Mass moment of inertia
+        f_pt;    % [um],     Single pitch deviation according to Section 6.1 of ISO 1328-1 [2]
+        F_p;     % [um],     Total cumulative pitch deviation according to Sec. 6.3 of ISO 1328-1 [2]
+        F_alpha; % [um],     Total profile deviation according to Section 6.4 of ISO 1328-1 [2]
+        f_beta;  % [um],     Total helix deviation according to Section 6.5 of ISO 1328-1 [2]
+        f_falpha;% [um],     Profile form deviation according to App. B.2.1 of ISO 1328-1 [2]
+        f_Halpha;% [um],     Profile slope deviation according to App. B.2.2 of ISO 1328-1 [2]
+        f_fbeta; % [um],     Helix form deviation according to App. B.2.3 of ISO 1328-1 [2]
+        f_Hbeta; % [um],     Helix slope deviation according to App. B.2.3 of ISO 1328-1 [2]
+        d_Ff;    % [mm],     Root form diameter
+        R_z;     % [um],     Mean peak-to-valley surface roughness
     end
     
     methods
-        function obj = Gear(m_n, alpha_n, type, z, b, x, beta, k, bore_R)
-            if(nargin == 0)
-                type = "A";
-                m_n = 1.0;
-                alpha_n = 20.0;
-                
-                z = 13;
-                b = 13.0;
-                x = 0.0;
-                beta = 0.0;
-                k = 0.0;
-                bore_R = 0.5;
-            end
+        function obj = Gear(varargin)
+            default = {'m_n'        ,  8.0,  ...
+                       'alpha_n'    ,  20.0,  ...
+                       'type'       , 'D',  ...
+                       'z'          ,  17,   ...
+                       'b'          , 100.0, ...
+                       'x'          ,   0.145,  ...
+                       'beta'       ,  15.8,  ...
+                       'k'          ,   0.0,  ...
+                       'bore_ratio' ,   0.5,  ...
+                       'Q'          ,   5.0,  ...
+                       'R_a'        ,   1.0};
             
-            obj@Rack(type, m_n, alpha_n);
+            default = process_varargin(default, varargin);
+            
+            obj@Rack('type'   , default.type, ...
+                     'm'      , default.m_n, ...
+                     'alpha_P', default.alpha_n);
 
-            obj.z          = z;
-            obj.b          = b;
-            obj.x          = x;
-            obj.beta       = beta;
-            obj.k          = k;
-            obj.bore_ratio = bore_R;
+            obj.z          = default.z;
+            obj.b          = default.b;
+            obj.x          = default.x;
+            obj.beta       = default.beta;
+            obj.k          = default.k;
+            obj.bore_ratio = default.bore_ratio;
+            obj.Q          = default.Q;
+            obj.R_a        = default.R_a;
+            
+            range_b = [  0.0,   4.0, 10.0, 20.0, 40.0, 80.0, 160.0, 250.0, ...
+                       400.0, 650.0,  1.0e3];
+            range_d = [0.0,   5.0,  20.0,  50.0, 125.0,  280.0, 560.0, 1.0e3, ...
+                       1.6e3, 2.5e3, 4.0e3, 6.0e3, 8.0e3, 10.0e3];
+            range_m = [ 0.0,  0.5, 2.0, 3.5, 6.0, 10.0, 16.0, 25.0,  ...
+                       40.0, 70.0];
+
+            idx_b = find(range_b > obj.b, 1, "first");
+            obj.b_int = geomean(range_b(idx_b-1:idx_b));
+            idx_m = find(range_m > obj.m_n, 1, "first");
+            obj.m_int = geomean(range_m(idx_m-1:idx_m));
+            
+            for idx = 1:length(obj.d)
+                dd  = obj.d(idx);
+                jdx = find(range_d > dd, 1, "first");
+                obj.d_int(idx) = geomean(range_d(jdx-1:jdx));
+            end
         end
         
         function tab = disp(obj)
@@ -178,7 +219,7 @@ classdef Gear < Rack
             if(obj.z > 0)
                 [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d/2, obj.z);
                 X =  X_tmp + C(1);
-                Y =  Z_tmp*obj.b;
+                Y =  Z_tmp.*obj.b;
                 Z = -Y_tmp - C(2);
 
                 surf(X, Y, Z, plot_prop{:});
@@ -189,13 +230,13 @@ classdef Gear < Rack
                 % External cylinder
                 [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d_bore/2, abs(obj.z));
                 X =  X_tmp + C(1);
-                Y =  Z_tmp*obj.b;
+                Y =  Z_tmp.*obj.b;
                 Z = -Y_tmp - C(2);
 
                 % Internal cylinder
                 [X2_tmp, Y2_tmp, Z2_tmp] = cylinder(obj.d/2, abs(obj.z));
                 X2 =  X2_tmp + C(1);
-                Y2 =  Z2_tmp*obj.b;
+                Y2 =  Z2_tmp.*obj.b;
                 Z2 = -Y2_tmp - C(2);
 
                 [x1_tmp, y1_tmp, z1_tmp] = fill_ring(obj.d_bore/2, obj.d/2, abs(obj.z));
@@ -232,8 +273,8 @@ classdef Gear < Rack
                 error("prog:input", "Too many variables.");
             end
             
-            X = 0.5*obj.b*[1 -1 -1  1] + C(1);
-            Y = 0.5*obj.d*[1  1 -1 -1] + C(2);
+            X = 0.5.*obj.b.*[1 -1 -1  1] + C(1);
+            Y = 0.5.*obj.d.*[1  1 -1 -1] + C(2);
             h = fill(X, Y, plot_prop{:});
             
             axis equal;
@@ -322,6 +363,37 @@ classdef Gear < Rack
 
             x = [x, C(1)];
             y = [y, C(2)];
+            
+        end
+        
+        function val = round_ISO(obj, x)
+            % Credits for the original version of this method go to:
+            % E. M. F. Donéstevez, “Python library for design of spur and 
+            % helical gears transmissions.” Zenodo, 09-Feb-2020, 
+            % doi: 10.5281/ZENODO.3660527.
+            %
+            % It was modified to account for the case where x is an array 
+            % and to remove the second argument.
+            %
+
+            x = x.*power(2.0, (obj.Q - 5.0)/2.0);
+            val = zeros(size(x));
+            
+            for idx = 1:length(x)
+                xx = x(idx);
+                if(xx >= 10.0)
+                    val(idx) = round(xx);
+                elseif((5.0 <= xx) && (xx <= 10.0))
+                    y = mod(mod(xx ,1), 1);
+                    if((mod(xx, 1) <= 0.25) || ((0.5 <= y) && (y <= 0.75)))
+                        val(idx) = floor(2.0.*xx)/2.0;
+                    else
+                        val(idx) = ceil(2.0.*xx)/2.0;
+                    end
+                else
+                    val(idx) = round(xx, 1);
+                end
+            end
             
         end
     end
@@ -416,7 +488,7 @@ classdef Gear < Rack
         
         function val = get.z_n(obj)
             % [-],      Virtual number of teeth
-            val = obj.z/(cosd(obj.beta).*cosd(obj.beta_b)^2);
+            val = obj.z/(cosd(obj.beta).*cosd(obj.beta_b).^2);
         end
         
         function val = get.V(obj)
@@ -434,11 +506,12 @@ classdef Gear < Rack
 
                 val(idx) = obj.b.*pi.*(r_out.^2 - r_in.^2);
             end
+            val = val*1.0e-9;
         end
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = Material.rho*1.0e-9;
+            rho = Material.rho;
             val = rho.*obj.V;
         end
         
@@ -471,6 +544,54 @@ classdef Gear < Rack
             val = obj.J_y;
         end
         
+        function val = get.f_pt(obj)
+            val = 0.3*(obj.m_int + 0.4*sqrt(obj.d_int)) + 4.0;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.F_p(obj)
+            val = 0.3*obj.m_int + 1.25*sqrt(obj.d_int) + 7.0;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.F_alpha(obj)
+            val = 3.2*sqrt(obj.m_int) + 0.22*sqrt(obj.d_int) + 0.7;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_beta(obj)
+            val = 0.1*sqrt(obj.d_int) + 0.63*sqrt(obj.b_int) + 4.2;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_falpha(obj)
+            val = 2.5*sqrt(obj.m_int) + 0.17*sqrt(obj.d_int) + 0.5;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_Halpha(obj)
+            val = 2.0*sqrt(obj.m_int) + 0.14*sqrt(obj.d_int) + 0.5;
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_fbeta(obj)
+            val = (0.07*sqrt(obj.d_int) + 0.45*sqrt(obj.b_int) + 3.0);
+            val = obj.round_ISO(val);
+        end
+        
+        function val = get.f_Hbeta(obj)
+            val = obj.f_fbeta;
+        end
+        
+        function val = get.d_Ff(obj)
+            % ISO 21771, Sec. 7.6, Eq. (128)
+            B = (obj.h_fP - obj.x.*obj.m_n + obj.rho_fP.*(sind(obj.alpha_n) - 1.0));
+            val = sqrt((obj.d.*sind(obj.alpha_t) - 2.0.*B./sind(obj.alpha_t)).^2 + obj.d_b.^2);
+        end
+        
+        function val = get.R_z(obj)
+            val = 6.0.*obj.R_a;
+        end
     end
     
 end

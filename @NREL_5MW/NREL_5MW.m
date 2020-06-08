@@ -34,74 +34,99 @@ classdef NREL_5MW < Drivetrain
     
     methods
         function obj = NREL_5MW(varargin)
+            gamma = {'P'   , 1.0, ...
+                     'n'   , 1.0, ...
+                     'm_n1', 1.0, ...
+                     'b_1' , 1.0, ...
+                     'd_1' , 1.0, ...
+                     'L_1' , 1.0, ...
+                     'm_n2', 1.0, ...
+                     'b_2' , 1.0, ...
+                     'd_2' , 1.0, ...
+                     'L_2' , 1.0, ...
+                     'm_n3', 1.0, ...
+                     'b_3' , 1.0, ...
+                     'd_3' , 1.0, ...
+                     'L_3' , 1.0, ...
+                     'J_R' , 1.0, ...
+                     'J_G' , 1.0, ...
+                     'd_S' , 1.0, ...
+                     'L_S' , 1.0};
             
+            gamma = process_varargin(gamma, varargin{:});
+            gamma = scaling_factor(gamma);
+                        
             N_st = 3;
             stage = [Gear_Set Gear_Set Gear_Set];
-
-            %      Gear stage               , Output shaft
-            %      Normal module, Face width, Length, Diameter
-            par = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                   "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                   "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-                   "J_R",                                    ... % M. M. Inertia (rotor)
-                   "J_G",                                    ... % M. M. Inertia (generator)
-                                              "d_s" , "L_s"]'; % Main shaft
-
-            if(isempty(varargin))
-
-                for idx = 1:N_st
-                    stage(idx) =  NREL_5MW.gear_stage(idx);
-                end
-
-                P_r = 5.0e3; % [kW], Rated power
-                n_r = 12.1; % [1/min.], Input speed
-                inp_shaft = NREL_5MW.shaft(0);
-
-                m_R = 110.0e3; % [kg], according to [2], Table 1-1
-                J_R = 57231535.0; % [kg-m^2], according to [3], p. 45
-%                 J_R = 58.1164e6; % according to property_estimation
-                m_G = 0.02*m_R; % 1900.0; % [kg], but according to ???
-                J_G = 534.116; % [kg-m^2], according to [2], Table 5-1
-
-                gm_val = ones(size(par));
+            
+            for idx = 1:N_st
+                stg = NREL_5MW.gear_stage(idx);
                 
-            elseif(length(varargin) == 3)
-                if(isa(varargin{3}, "scaling_factor"))
-                    gm_P = varargin{1};
-                    gm_n = varargin{2};
-                    gm   = varargin{3};
-                    
-                    for idx = 1:N_st
-                        stg = NREL_5MW.gear_stage(idx);
-                        
-                        jdx = 4*idx + (-3:0);
-                        gm_stg = gm(jdx);
-                        stage(idx) = stg.scale_aspect(gm_stg, "Gear_Set");
-                    end
-                    
-                    P_r = gm_P*5.0e3; % [kW], Rated power
-                    n_r = gm_n*12.1; % [1/min.], Input speed
-                    
-                    LSS = NREL_5MW.shaft(0);
-                    
-                    inp_shaft = Shaft(LSS.d*gm("d_s"), ...
-                                      LSS.L*gm("L_s"));
-                                  
-                    m_R = 110.0e3;
-                    J_R = 57231535.0*gm("J_R"); % according to [1, 3]
-                    m_G = 0.02*m_R;
-                    J_G = 534.116*gm("J_G");
-                    
-                    gm_val = gm.value;
-                end
+                gamma_idx = gamma.ends_with(num2str(idx));
+                stage(idx) = stg.scale_by(gamma_idx);
             end
             
-            obj@Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G);
-            obj.dynamic_model =  "Kahraman_1994";
+            P_r = gamma('P')* 5.0e3; % [kW], Rated power
+            n_r = gamma('n')*12.1;   % [1/min.], Input speed
             
-            obj.gamma = scaling_factor(par, gm_val);
+            LSS = NREL_5MW.shaft(0);
             
+            inp_shaft = Shaft(LSS.d*gamma("d_S"), ...
+                              LSS.L*gamma("L_S"));
+            
+            m_R = 110.0e3;
+            J_R = 57231535.0  *gamma("J_R"); % according to [1, 3]
+            m_G =     1900.0;
+            J_G =      534.116*gamma("J_G");
+            
+            obj@Drivetrain('N_stage',    N_st, ...
+                           'stage',      stage, ...
+                           'P_rated',    P_r, ...
+                           'n_rotor',    n_r, ...
+                           'main_shaft', inp_shaft, ...
+                           'm_Rotor',    m_R, ...
+                           'J_Rotor',    J_R, ...
+                           'm_Gen',      m_G, ...
+                           'J_Gen',      J_G, ...
+                           'S_Hmin',     1.25, ...
+                           'S_Fmin',     1.56, ...
+                           'dynamic_model', @Kahraman_94);
+            
+            [obj.S_H_val, obj.S_F_val, obj.S_shaft_val] = obj.safety_factors();
+
+            obj.gamma = scaling_factor(gamma.name, ones(length(gamma), 1));
         end
+    end
+    
+    %% Calculation:
+    methods
+        function [SH, SF, SShaft] = safety_factor_stage(obj, idx)
+            L_h    = 20*365*24;
+            K_A    = 1.25;
+            
+            calc = ISO_6336(obj.stage(idx), 'calculation', 'KISSsoft', ...
+                                            'P_rated'    , obj.P_rated, ...
+                                            'n_out'      , obj.n_out(idx), ...
+                                            'S_Hmin'     , obj.S_Hmin, ...
+                                            'S_Fmin'     , obj.S_Fmin, ...
+                                            'L_h'        , L_h, ... % [h], Required life
+                                            'K_A'        , K_A);    % [-], Application factor
+            
+            [SH, SF] = calc.safety_factors('lubricant_ID', '11220', ...
+                                           'nu_40'       , 220.0, ...
+                                           'stage_idx'   ,   0, ...
+                                           'save_report' , false, ...
+                                           'show_report' , false, ...
+                                           'line'        ,   4);
+
+            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
+            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
+            K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
+            K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
+            
+            SShaft = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
+        end
+        
     end
     
     methods(Static)
@@ -166,38 +191,32 @@ classdef NREL_5MW < Drivetrain
                 case 0 % LSS
 %                     d_0 = 1000.0;
 %                     L_0 = 3000.0;
-                    d_0 = 700.0;
-                    L_0 = 2000.0;
+                    d = 700.0;
+                    L = 2000.0;
 
-                    sft = Shaft(d_0, L_0);
-                    
                 case 1 % ISS
 %                     d_1 = 800.0;
 %                     L_1 = 750.0;
-                    d_1 = 533.0;
-                    L_1 = 500.0;
+                    d = 533.0;
+                    L = 500.0;
 
-                    sft = Shaft(d_1, L_1);
-                    
                 case 2 % HS-IS
 %                     d_2 = 500.0;
 %                     L_2 = 1000.0;
-                    d_2 = 333.0;
-                    L_2 = 666.0;
+                    d = 333.0;
+                    L = 666.0;
 
-                    sft = Shaft(d_2, L_2);
-                    
                 case 3 % HSS
 %                     d_3 = 500.0;
 %                     L_3 = 1500.0;
-                    d_3 = 333.0;
-                    L_3 = 1000.0;
+                    d = 333.0;
+                    L = 1000.0;
 
-                    sft = Shaft(d_3, L_3);
-                    
                 otherwise
                     error("prog:input", "Option [%d] is NOT valid.", idx);
             end
+            
+            sft = Shaft(d, L);
         end
         
         function g_set = gear_stage(idx)
@@ -206,99 +225,100 @@ classdef NREL_5MW < Drivetrain
             % the tip alteration coefficients were taken from KISSsoft.
             %
 
-            alpha_n = 20.0;        % [deg.],   Pressure angle (at reference cylinder)
-            rack_type = "A";       % [-],      Type of the basic rack from A to D
-
+            Q = 6.0;
+            Ra = 0.8;
+            
             switch(idx)
                 case 1
-                    p_1    = 3;            % [-],    Number of planet gears
-                    m_n1   = 45.0;         % [mm],   Normal module
-                    beta_1 = 0.0;          % [deg.], Helix angle (at reference cylinder)
-                    b_1    = 491.0;        % [mm],   Face width
-                    a_w1   = 863.0;        % [mm],   Center distance
-                    z_s1   =  19;          % [-],    Number of teeth (sun)    [WHEEL]
-                    z_p1   =  17;          % [-],    Number of teeth (planet) [PINION]
-                    z_r1   =  56;          % [-],    Number of teeth (ring)
-                    x_s1   =  0.617;       % [-],    Profile shift coefficient (sun)
-                    x_p1   =  0.802;       % [-],    Profile shift coefficient (planet)
-                    x_r1   = -0.501;       % [-],    Profile shift coefficient (ring)
-                    k_s1   = -10.861/m_n1; % [-],    Tip alteration coefficient (sun)
-                    k_p1   = -10.861/m_n1; % [-],    Tip alteration coefficient (planet)
-                    k_r1   =   0.0;        % [-],    Tip alteration coefficient (ring)
+                    p    =   3;         % [-],    Number of planet gears
+                    m_n  =  45.0;       % [mm],   Normal module
+                    beta =   0.0;       % [deg.], Helix angle (at reference cylinder)
+                    b    = 491.0;       % [mm],   Face width
+                    a_w  = 863.0;       % [mm],   Center distance
+                    z_s  =  19;         % [-],    Number of teeth (sun)    [WHEEL]
+                    z_p  =  17;         % [-],    Number of teeth (planet) [PINION]
+                    z_r  =  56;         % [-],    Number of teeth (ring)
+                    x_s  =   0.617;     % [-],    Profile shift coefficient (sun)
+                    x_p  =   0.802;     % [-],    Profile shift coefficient (planet)
+                    x_r  =  -0.501;     % [-],    Profile shift coefficient (ring)
+                    k_s  = -10.861/m_n; % [-],    Tip alteration coefficient (sun)
+                    k_p  = -10.861/m_n; % [-],    Tip alteration coefficient (planet)
+                    k_r  =   0.0;       % [-],    Tip alteration coefficient (ring)
                     
-                    bore_Rs1 = 80.0/171.0;
-                    bore_Rp1 = 80.0/153.0;
-                    bore_Rr1 = 1.2;
+                    bore_Rs = 80.0/171.0;
+                    bore_Rp = 80.0/153.0;
+                    bore_Rr =  1.2;
                     
-                    z_1 = [z_s1 z_p1 z_r1];
-                    x_1 = [x_s1 x_p1 x_r1];
-                    k_1 = [k_s1 k_p1 k_r1];
-                    bore_R1 = [bore_Rs1 bore_Rp1 bore_Rr1];
-%                                 Sun,   Planet,   Ring,   Carrier
-                    bearing_1 = NREL_5MW.bearing(1);
-                    shaft_1 = NREL_5MW.shaft(1);
+                    z = [z_s z_p z_r];
+                    x = [x_s x_p x_r];
+                    k = [k_s k_p k_r];
+                    bore_ratio = [bore_Rs bore_Rp bore_Rr];
+                    config = "planetary";
                     
-                    g_set = Gear_Set("planetary", m_n1, alpha_n, z_1, b_1, x_1, beta_1, k_1, bore_R1, p_1, a_w1, rack_type, bearing_1, shaft_1);
-
                 case 2
-                    p_2    = 3;          % [-],    Number of planet gears
-                    m_n2   = 21.0;       % [mm],   Normal module
-                    beta_2 = 0.0;        % [deg.], Helix angle (at reference cylinder)
-                    b_2    = 550.0;      % [mm],   Face width
-                    a_w2   = 584.0;      % [mm],   Center distance
-                    z_s2   =  18;        % [-],    Number of teeth (sun)    [PINION]
-                    z_p2   =  36;        % [-],    Number of teeth (planet) [WHEEL]
-                    z_r2   =  93;        % [-],    Number of teeth (ring)
-                    x_s2   = 0.389;      % [-],    Profile shift coefficient (sun)
-                    x_p2   = 0.504;      % [-],    Profile shift coefficient (planet)
-                    x_r2   = 0.117;      % [-],    Profile shift coefficient (ring)
-                    k_s2   = -1.75/m_n2; % [-],    Tip alteration coefficient (sun)
-                    k_p2   = -1.75/m_n2; % [-],    Tip alteration coefficient (planet)
-                    k_r2   =   0.0;      % [-],    Tip alteration coefficient (ring)
+                    p    =   3;        % [-],    Number of planet gears
+                    m_n  =  21.0;      % [mm],   Normal module
+                    beta =   0.0;      % [deg.], Helix angle (at reference cylinder)
+                    b    = 550.0;      % [mm],   Face width
+                    a_w  = 584.0;      % [mm],   Center distance
+                    z_s  =  18;        % [-],    Number of teeth (sun)    [PINION]
+                    z_p  =  36;        % [-],    Number of teeth (planet) [WHEEL]
+                    z_r  =  93;        % [-],    Number of teeth (ring)
+                    x_s  =   0.389;    % [-],    Profile shift coefficient (sun)
+                    x_p  =   0.504;    % [-],    Profile shift coefficient (planet)
+                    x_r  =   0.117;    % [-],    Profile shift coefficient (ring)
+                    k_s  =  -1.75/m_n; % [-],    Tip alteration coefficient (sun)
+                    k_p  =  -1.75/m_n; % [-],    Tip alteration coefficient (planet)
+                    k_r  =   0.0;      % [-],    Tip alteration coefficient (ring)
                     
-                    bore_Rs2 = 100.0/189.0;
-                    bore_Rp2 = 95.0/189.0;
-                    bore_Rr2 = 1.2;
+                    bore_Rs = 100.0/189.0;
+                    bore_Rp =  95.0/189.0;
+                    bore_Rr =   1.2;
 
-                    z_2 = [z_s2 z_p2 z_r2];
-                    x_2 = [x_s2 x_p2 x_r2];
-                    k_2 = [k_s2 k_p2 k_r2];
-                    bore_R2 = [bore_Rs2 bore_Rp2 bore_Rr2];
-%                                 Sun,   Planet,   Ring,   Carrier
-                    bearing_2 = NREL_5MW.bearing(2);
-                    shaft_2 = NREL_5MW.shaft(2);
-                    
-                    g_set = Gear_Set("planetary", m_n2, alpha_n, z_2, b_2, x_2, beta_2, k_2, bore_R2, p_2, a_w2, rack_type, bearing_2, shaft_2);
+                    z = [z_s z_p z_r];
+                    x = [x_s x_p x_r];
+                    k = [k_s k_p k_r];
+                    bore_ratio = [bore_Rs bore_Rp bore_Rr];
+                    config = "planetary";
 
                 case 3
-                    p_3    = 1;            % [-],    Number of planet gears
-                    m_n3   = 14.0;         % [mm],   Normal module
-                    beta_3 = 10.0;         % [deg.], Helix angle (at reference cylinder)
-                    b_3    = 360.0;        % [mm],   Face width
-                    a_w3   = 861.0;        % [mm],   Center distance
-                    z_13   =  24;          % [-],    Number of teeth (pinion)
-                    z_23   =  95;          % [-],    Number of teeth (wheel)
-                    x_13   =  0.480;       % [-],    Profile shift coefficient (pinion)
-                    x_23   =  0.669;       % [-],    Profile shift coefficient (wheel)
-                    k_13   =  -0.938/14.0; % [-],    Tip alteration coefficient (pinion)
-                    k_23   =  -0.938/14.0; % [-],    Tip alteration coefficient (wheel)
+                    p    =   1;         % [-],    Number of planet gears
+                    m_n  =  14.0;       % [mm],   Normal module
+                    beta =  10.0;       % [deg.], Helix angle (at reference cylinder)
+                    b    = 360.0;       % [mm],   Face width
+                    a_w  = 861.0;       % [mm],   Center distance
+                    z_1  =  24;         % [-],    Number of teeth (pinion)
+                    z_2  =  95;         % [-],    Number of teeth (wheel)
+                    x_1  =   0.480;     % [-],    Profile shift coefficient (pinion)
+                    x_2  =   0.669;     % [-],    Profile shift coefficient (wheel)
+                    k_1  =  -0.938/m_n; % [-],    Tip alteration coefficient (pinion)
+                    k_2  =  -0.938/m_n; % [-],    Tip alteration coefficient (wheel)
                     
-                    bore_R13 = 1809.0/3086.0;
-                    bore_R23 = 3385.0/9143.0;
+                    bore_R1 = 1809.0/3086.0;
+                    bore_R2 = 3385.0/9143.0;
 
-                    z_3 = [z_13 z_23];
-                    x_3 = [x_13 x_23];
-                    k_3 = [k_13 k_23];
-                    bore_R3 = [bore_R13 bore_R23];
-%                                 Pinion, Wheel
-                    bearing_3 = NREL_5MW.bearing(3);
-                    shaft_3 = NREL_5MW.shaft(3);
-                    
-                    g_set = Gear_Set("parallel", m_n3, alpha_n, z_3, b_3, x_3, beta_3, k_3, bore_R3, p_3, a_w3, rack_type, bearing_3, shaft_3);
+                    z = [z_1 z_2];
+                    x = [x_1 x_2];
+                    k = [k_1 k_2];
+                    bore_ratio = [bore_R1 bore_R2];
+                    config = "parallel";
                     
                 otherwise
                     error("prog:input", "Option [%d] is NOT valid.", idx);
             end
+            
+            g_set = Gear_Set('configuration', config, ...
+                             'm_n'          , m_n, ...
+                             'z'            , z, ...
+                             'b'            , b, ...
+                             'x'            , x, ...
+                             'beta'         , beta, ...
+                             'k'            , k, ...
+                             'bore_ratio'   , bore_ratio, ...
+                             'N_p'          , p, ...
+                             'a_w'          , a_w, ...
+                             'bearing'      , NREL_5MW.bearing(idx), ...
+                             'shaft'        , NREL_5MW.shaft(idx));
         end
         
         function property_estimation()

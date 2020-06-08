@@ -277,30 +277,27 @@ classdef Shaft
                     M_t = obj.inertia_matrix("torsional");
                     M_b = obj.inertia_matrix("bending");
                     
-                    M = zeros(12);
-                    M(1:2,  1:2)  = M_a; % [1: x_1      2: x_2]
-                    M(3:4,  3:4)  = M_t; % [3: alpha_1  4: alpha_2]
-                    M(5:8,  5:8)  = M_b; % [5: y_1      6: gamma_1  7: y_2  8: gamma_2]
-                    M(9:12, 9:12) = M_b; % [9: z_1     10: beta_1  11: z_2 12: beta_2]
+                    M = blkdiag(M_a, ... % [1: x_1      2: x_2]
+                                M_t, ... % [3: alpha_1  4: alpha_2]
+                                M_b, ... % [5: y_1      6: gamma_1   7: y_2  8: gamma_2]
+                                M_b);    % [9: z_1     10: beta_1   11: z_2 12: beta_2]
                     
-                    vec = [1  5  9 ... % [x_1     y_1    z_1
-                           3 10  6 ... %  alpha_1 beta_1 gamma_1
-                           2  7 11 ... %  x_2     y_2    z_2
-                           4 12  8];   %  alpha_2 beta_2 gamma_2]
+                    R = zeros(12);
+                    R( 1,  1) =  1;     R( 2,  7) =  1;     R( 3,  4) =  1;
+                    R( 4, 10) =  1;     R( 9,  3) =  1;     R(10,  5) =  1;
+                    R(11,  9) =  1;     R(12, 11) =  1;     R( 5,  2) =  1;
+                    R( 6,  6) = 1;     R( 7,  8) =  1;     R( 8, 12) = 1;
+                    
+                    M = R' * M * R;
 
-                    M = M(vec, :);
-                    M = M(:, vec);
+                case 'Lin_Parker_99'
+                    M = obj.inertia_matrix('full');
                     
-                    % those steps are necessary in order to obtain a
-                    % stiffness matrix like Eq. 4.72 in [2]:
-                    M(3, 5)  = -M(3, 5);
-                    M(3, 11) = -M(3, 11);
-                    M(5, 3)  = -M(5, 3);
-                    M(5, 9)  = -M(5, 9);
-                    M(9, 5)  = -M(9, 5);
-                    M(9, 11) = -M(9, 11);
-                    M(11, 3) = -M(11, 3);
-                    M(11, 9) = -M(11, 9);
+                    R = zeros(12, 6);
+                    R(2, 1) = 1;    R(3, 2) = 1;    R( 4, 3) = 1;
+                    R(8, 4) = 1;    R(9, 5) = 1;    R(10, 6) = 1;
+                    
+                    M = R' * M * R;
                     
                 otherwise
                     error("prog:input", "Option [%s] is NOT valid.", option);
@@ -348,28 +345,27 @@ classdef Shaft
                     K_t = obj.stiffness_matrix("torsional"); % [alpha_1 alpha_2]
                     K_b = obj.stiffness_matrix("bending");   % [y_1 beta_1 y_2 beta_2]
                     
-                    K = zeros(12);
-                    K(1:2,  1:2)  = K_a; % [1: x_1      2: x_2]
-                    K(3:4,  3:4)  = K_t; % [3: alpha_1  4: alpha_2]
-                    K(5:8,  5:8)  = K_b; % [5: y_1      6: gamma_1  7: y_2  8: gamma_2]
-                    K(9:12, 9:12) = K_b; % [9: z_1     10: beta_1  11: z_2 12: beta_2]
+                    K = blkdiag(K_a, ... % [1: x_1      2: x_2]
+                                K_t, ... % [3: alpha_1  4: alpha_2]
+                                K_b, ... % [5: y_1      6: gamma_1   7: y_2  8: gamma_2]
+                                K_b);    % [9: z_1     10: beta_1   11: z_2 12: beta_2]
                     
-                    vec = [1  5  9 ... % [x_1     y_1    z_1
-                           3 10  6 ... %  alpha_1 beta_1 gamma_1
-                           2  7 11 ... %  x_2     y_2    z_2
-                           4 12  8];   %  alpha_2 beta_2 gamma_2]
+                    R = zeros(12);
+                    R( 1,  1) =  1;     R( 2,  7) =  1;     R( 3,  4) =  1;
+                    R( 4, 10) =  1;     R( 9,  3) =  1;     R(10,  5) =  1;
+                    R(11,  9) =  1;     R(12, 11) =  1;     R( 5,  2) =  1;
+                    R( 6,  6) = 1;     R( 7,  8) =  1;     R( 8, 12) = 1;
+                    
+                    K = R' * K * R;
 
-                    K = K(vec, :);
-                    K = K(:, vec);
+                case 'Lin_Parker_99'
+                    K = obj.stiffness_matrix('full');
                     
-                    % those steps are necessary in order to obtain a
-                    % stiffness matrix like Eq. 4.71 in [2]:
-                    K(3, 5)  = -K(3, 5);
-                    K(3, 11) = -K(3, 11);
-                    K(5, 3)  = -K(5, 3);
-                    K(9, 11) = -K(9, 11);
-                    K(11, 3) = -K(11, 3);
-                    K(11, 9) = -K(11, 9);
+                    R = zeros(12, 6);
+                    R(2, 1) = 1;    R(3, 2) = 1;    R( 4, 3) = 1;
+                    R(8, 4) = 1;    R(9, 5) = 1;    R(10, 6) = 1;
+                    
+                    K = R' * K * R;
                     
                 otherwise
                     error("prog:input", "Option [%s] is NOT valid.", option);
