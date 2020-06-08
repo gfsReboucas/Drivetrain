@@ -44,7 +44,7 @@ classdef Gear_Set < Gear
     
     properties
         a_w           (1, :)          {mustBeFinite,  mustBePositive}                          = 13;         % [mm], Center distance
-        out_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
+        output_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
     end
     
     properties(Dependent)
@@ -133,7 +133,7 @@ classdef Gear_Set < Gear
             
             obj.a_w = default.a_w;
             obj.bearing = default.bearing;
-            obj.out_shaft = default.shaft;
+            obj.output_shaft = default.shaft;
         end
         
         function tab = disp(obj)
@@ -215,7 +215,7 @@ classdef Gear_Set < Gear
                 fprintf('Bearings:\n');
                 obj.bearing.disp;
                 fprintf('Output shaft:\n');
-                obj.out_shaft.disp;
+                obj.output_shaft.disp;
                 clear tab;
             end
         end
@@ -227,8 +227,8 @@ classdef Gear_Set < Gear
                        'Reference diameter (Sun/Pinion)',              'd_1',     'mm',     ref.d(1),        sca.d(1),        sca.d(1)        / ref.d(1);        % 10
                        'Mass (Sun/Pinion)',                            'm_1',     'kg',     ref.mass(1),     sca.mass(1),     sca.mass(1)     / ref.mass(1);     % 11
                        'Mass moment of inertia (Sun/Pinion)',          'J_xx1',   'kg-m^2', ref.J_x(1),      sca.J_x(1),      sca.J_x(1)      / ref.J_x(1);      % 12
-                       'Diameter / Output shaft',                      'd',       'mm',     ref.out_shaft.d, sca.out_shaft.d, sca.out_shaft.d / ref.out_shaft.d; % 13
-                       'Length / Output shaft',                        'L',       'mm',     ref.out_shaft.L, sca.out_shaft.L, sca.out_shaft.L / ref.out_shaft.L; % 14
+                       'Diameter / Output shaft',                      'd',       'mm',     ref.output_shaft.d, sca.output_shaft.d, sca.output_shaft.d / ref.output_shaft.d; % 13
+                       'Length / Output shaft',                        'L',       'mm',     ref.output_shaft.L, sca.output_shaft.L, sca.output_shaft.L / ref.output_shaft.L; % 14
                        };
                    
             Parameter = tab_str(:, 1);
@@ -335,24 +335,24 @@ classdef Gear_Set < Gear
             if(strcmp(obj.configuration, 'parallel'))
                 C_w =       [obj.b/2.0 0.0]' + C_0;
                 C_p =       [obj.b/2.0 obj.a_w]' + C_0;
-                C_s = C_p + [obj.b + obj.out_shaft.L 0.0]'./2.0;
+                C_s = C_p + [obj.b + obj.output_shaft.L 0.0]'./2.0;
                 
                 rectangle(obj.gear(1)  , C_p, color(1, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(1, :));
                 rectangle(obj.gear(2)  , C_w, color(2, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(2, :));
-                rectangle(obj.out_shaft, C_s, color(5, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(5, :));
+                rectangle(obj.output_shaft, C_s, color(5, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(5, :));
                 
 %                 legend([h_p h_w h_s], ['Pinion', 'Wheel', 'Shaft'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
             elseif(strcmp(obj.configuration, 'planetary'))
                 C_c = [obj.carrier.b/2.0, 0.0]' + C_0;
                 C_p = C_c + [0.0 obj.a_w]';
-                C_s = C_c + [obj.carrier.b + obj.out_shaft.L 0.0]'./2.0;
+                C_s = C_c + [obj.carrier.b + obj.output_shaft.L 0.0]'./2.0;
 
                 rectangle(obj.carrier  , C_c, color(4, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(4, :));
                 rectangle(obj.gear(3)  , C_c, color(3, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(3, :)); % ring
                 rectangle(obj.gear(1)  , C_c, color(1, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(1, :)); % sun
                 rectangle(obj.gear(2)  , C_p, color(2, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(2, :)); % planet
-                rectangle(obj.out_shaft, C_s, color(5, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(5, :));
+                rectangle(obj.output_shaft, C_s, color(5, :), 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', color(5, :));
                 
 %                 legend([h_g h_p h_r h_c h_s], ['Sun', 'Planet', 'Ring', 'Carrier', 'Shaft'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
@@ -438,7 +438,7 @@ classdef Gear_Set < Gear
             
             gamma('m_n') = m_n_sca/obj_ref.m_n;
             
-            ref_shaft = obj_ref.out_shaft;
+            ref_shaft = obj_ref.output_shaft;
             shaft_sca = Shaft(ref_shaft.d*gamma('d'), ...
                               ref_shaft.L*gamma('L'));
                           
@@ -502,176 +502,6 @@ classdef Gear_Set < Gear
         end
         
         %% Dynamics:
-        function [M, K, K_b, K_m, K_Omega, G] = Lin_Parker_1999(obj)
-            %LIN_PARKER_1999 Returns the inertia and stiffness matrices of
-            % the gear set according to:
-            % J. Lin and R. Parker, 'Analytical Characterization of the
-            % Unique Properties of Planetary Gear Free Vibration', Journal
-            % of Vibration and Acoustics, vol. 121, no. 3, pp. 316-321,
-            % 1999. https://doi.org/10.1115/1.2893982
-            %
-            
-            if(strcmp(obj.configuration, 'parallel'))
-                n = 9;
-                M       = zeros(n, n);
-                K_b     = zeros(n, n);
-                K_m     = zeros(n, n);
-                K_Omega = zeros(n, n);
-                G       = zeros(n, n);
-                
-                J_p =  obj.J_x(1);              J_w =  obj.J_x(2);
-                m_p =  obj.mass(1);             m_w =  obj.mass(2);
-                r_p = (obj.d(1)*1.0e-3)/2.0;    r_w = (obj.d(2)*1.0e-3)/2.0;
-                
-                alpha_nn = obj.alpha_n;
-                
-                bear = obj.bearing;
-                b_p = parallel_association(bear(4:6));
-                b_w = parallel_association(bear(1:3));
-
-                % [x, y, theta] = [y, z, alpha]
-                k_px = b_p.K_y;     k_py = b_p.K_z;     k_pu = b_p.K_alpha;
-                k_wx = b_w.K_y;     k_wy = b_w.K_z;     k_wu = b_w.K_alpha;
-                
-                k_p = obj.k_mesh;
-                
-                idx = 1:(n - 3);
-                
-                % Mass matrix
-                M(idx, idx)   = diag([m_w m_w J_w ...
-                                      m_p m_p J_p]);
-
-                % Bearing stiffness:
-                K_b(idx, idx) = diag([zeros(1,3), k_px, k_py, k_pu*r_p^2]);
-                
-                K_m(idx, idx) = [-k_p*cosd(alpha_nn)^2 + k_p + k_wx,  k_p*cosd(alpha_nn)*sind(alpha_nn), -r_w*k_p*sind(alpha_nn),              -k_p*sind(alpha_nn)^2, -k_p*cosd(alpha_nn)*sind(alpha_nn), -r_p*k_p*sind(alpha_nn);
-                                  k_p*cosd(alpha_nn)*sind(alpha_nn),        k_wy + k_p*cosd(alpha_nn)^2, -r_w*k_p*cosd(alpha_nn), -k_p*cosd(alpha_nn)*sind(alpha_nn),              -k_p*cosd(alpha_nn)^2, -r_p*k_p*cosd(alpha_nn);
-                                            -r_w*k_p*sind(alpha_nn),            -r_w*k_p*cosd(alpha_nn),      r_w^2*(k_wu + k_p),             r_w*k_p*sind(alpha_nn),             r_w*k_p*cosd(alpha_nn),             r_w*k_p*r_p;
-                                              -k_p*sind(alpha_nn)^2, -k_p*cosd(alpha_nn)*sind(alpha_nn),  r_w*k_p*sind(alpha_nn),               k_p*sind(alpha_nn)^2,  k_p*cosd(alpha_nn)*sind(alpha_nn),  r_p*k_p*sind(alpha_nn);
-                                 -k_p*cosd(alpha_nn)*sind(alpha_nn),              -k_p*cosd(alpha_nn)^2,  r_w*k_p*cosd(alpha_nn),  k_p*cosd(alpha_nn)*sind(alpha_nn),               k_p*cosd(alpha_nn)^2,  r_p*k_p*cosd(alpha_nn);
-                                            -r_p*k_p*sind(alpha_nn),            -r_p*k_p*cosd(alpha_nn),             r_w*k_p*r_p,             r_p*k_p*sind(alpha_nn),             r_p*k_p*cosd(alpha_nn),              r_p^2*k_p];
-                K_Omega(idx, idx) = diag([m_w m_w 0.0 ...
-                                          m_p m_p 0.0]);
-                
-                % Gyroscopic matrix:
-                G(idx, idx) = [0.0     -2.0*m_w  0.0      0.0      0.0      0.0;
-                               2.0*m_w  0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0     -2.0*m_p  0.0;
-                               0.0      0.0      0.0      2.0*m_p  0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0];
-
-             elseif(strcmp(obj.configuration, 'planetary'))
-                n = 18;
-                M       = zeros(n, n);
-                K_b     = zeros(n, n);
-                K_m     = zeros(n, n);
-                K_Omega = zeros(n, n);
-                G       = zeros(n, n);
-
-                J_s = obj.J_x(1);
-                J_p = obj.J_x(2);
-                J_c = obj.carrier.J_x;
-                
-                m_s = obj.mass(1);
-                m_p = obj.mass(2);
-                m_c = obj.carrier.mass;
-                
-                r_s = (obj.d(1)*1.0e-3)/2.0;
-                r_p = (obj.d(2)*1.0e-3)/2.0;
-                r_c =  obj.a_w*1.0e-3;
-                
-                alpha_nn = obj.alpha_n;
-                
-                psi = 360.0*((1:3) - 1)/obj.N_p;
-                
-                bear = obj.bearing;
-                b_s = Bearing;
-                b_p = parallel_association(bear(1:2));
-                b_c = parallel_association(bear(3:4));
-                
-                % [x, y, theta] = [y, z, alpha]
-                k_sx = b_s.K_y;     k_sy = b_s.K_z;     k_su = b_s.K_alpha;
-                k_px = b_p.K_y;     k_py = b_p.K_z;     k_pu = b_p.K_alpha;
-                k_cx = b_c.K_y;     k_cy = b_c.K_z;     k_cu = b_c.K_alpha;
-
-                % Mesh stiffness:
-                sun_pla = Gear_Set('parallel', obj.m_n, obj.alpha_n,     obj.z(1:2) , obj.b, obj.x(1:2), obj.beta, obj.k(1:2), obj.bore_ratio(1:2), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
-                pla_rng = Gear_Set('parallel', obj.m_n, obj.alpha_n, abs(obj.z(2:3)), obj.b, obj.x(2:3), obj.beta, obj.k(2:3), obj.bore_ratio(2:3), 0, obj.a_w, obj.type, obj.bearing, obj.out_shaft);
-                
-                k_s = sun_pla.k_mesh;
-                k_r = pla_rng.k_mesh;
-                
-                idx = 1:(n - 3);
-                
-                % Mass matrix
-                M(idx, idx) = diag([m_c m_c J_c ...
-                                   [m_p m_p J_p]*repmat(eye(3), 1, obj.N_p) ...
-                                    m_s m_s J_s]);
-
-                % Bearing stiffness:
-                K_b(idx, idx) = diag([k_cx k_cy k_cu*r_c^2 ...
-                                      zeros(1, 9) ...
-                                      k_sx k_sy k_su*r_s^2]);
-
-                % Mesh stiffnes matrix:
-                K_m(idx, idx) = [                                              3.0*k_px,                                                   0.0, -r_c*k_pu*(sind(psi(3)) + sind(psi(2)) + sind(psi(1))),                                                     -cosd(psi(1))*k_px,                                                      sind(psi(1))*k_py,                                            0.0,                                                     -cosd(psi(2))*k_px,                                                      sind(psi(2))*k_py,                                            0.0,                                                     -cosd(psi(3))*k_px,                                                      sind(psi(3))*k_py,                                            0.0,                                                                                                                                                             0.0,                                                                                                                                                             0.0,                                                                                        0;
-                                                                                    0.0,                                              3.0*k_py,  r_c*k_pu*(cosd(psi(3)) + cosd(psi(2)) + cosd(psi(1))),                                                     -sind(psi(1))*k_px,                                                     -cosd(psi(1))*k_py,                                            0.0,                                                     -sind(psi(2))*k_px,                                                     -cosd(psi(2))*k_py,                                            0.0,                                                     -sind(psi(3))*k_px,                                                     -cosd(psi(3))*k_py,                                            0.0,                                                                                                                                                             0.0,                                                                                                                                                             0.0,                                                                                        0;
-                                 -r_c*k_px*(sind(psi(3)) + sind(psi(2)) + sind(psi(1))), r_c*k_py*(cosd(psi(3)) + cosd(psi(2)) + cosd(psi(1))),                                         3.0*r_c^2*k_pu,                                                                    0.0,                                                              -r_c*k_py,                                            0.0,                                                                    0.0,                                                              -r_c*k_py,                                            0.0,                                                                    0.0,                                                              -r_c*k_py,                                            0.0,                                                                                                                                                             0.0,                                                                                                                                                             0.0,                                                                                        0;
-                                                                     -cosd(psi(1))*k_px,                                    -sind(psi(1))*k_px,                                                    0.0,        -k_r*cosd(alpha_nn)^2 - k_s*cosd(alpha_nn)^2 + k_r + k_s + k_px, -k_r*cosd(alpha_nn)*sind(alpha_nn) + k_s*cosd(alpha_nn)*sind(alpha_nn), r_p*(-k_r*sind(alpha_nn) - k_s*sind(alpha_nn)),                                                                    0.0,                                                                    0.0,                                            0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                                                                                                                    -k_s*sind(-psi(1) + alpha_nn)*sind(alpha_nn),                                                                                                                    -k_s*cosd(-psi(1) + alpha_nn)*sind(alpha_nn),                                                                  -r_s*k_s*sind(alpha_nn);
-                                                                      sind(psi(1))*k_py,                                    -cosd(psi(1))*k_py,                                              -r_c*k_py, -k_r*cosd(alpha_nn)*sind(alpha_nn) + k_s*cosd(alpha_nn)*sind(alpha_nn),                     k_py + k_r*cosd(alpha_nn)^2 + k_s*cosd(alpha_nn)^2,  r_p*(k_r*cosd(alpha_nn) - k_s*cosd(alpha_nn)),                                                                    0.0,                                                                    0.0,                                            0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                                                                                                                    -k_s*sind(-psi(1) + alpha_nn)*cosd(alpha_nn),                                                                                                                    -k_s*cosd(-psi(1) + alpha_nn)*cosd(alpha_nn),                                                                  -r_s*k_s*cosd(alpha_nn);
-                                                                                    0.0,                                                   0.0,                                                    0.0,                         r_p*(-k_r*sind(alpha_nn) - k_s*sind(alpha_nn)),                          r_p*(k_r*cosd(alpha_nn) - k_s*cosd(alpha_nn)),                       r_p^2*(k_pu + k_r + k_s),                                                                    0.0,                                                                    0.0,                                            0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                                                                                                                                r_p*k_s*sind(-psi(1) + alpha_nn),                                                                                                                                r_p*k_s*cosd(-psi(1) + alpha_nn),                                                                              r_p*k_s*r_s;
-                                                                     -cosd(psi(2))*k_px,                                    -sind(psi(2))*k_px,                                                    0.0,                                                                    0.0,                                                                    0.0,                                            0.0,        -k_r*cosd(alpha_nn)^2 - k_s*cosd(alpha_nn)^2 + k_r + k_s + k_px, -k_r*cosd(alpha_nn)*sind(alpha_nn) + k_s*cosd(alpha_nn)*sind(alpha_nn), r_p*(-k_r*sind(alpha_nn) - k_s*sind(alpha_nn)),                                                                    0.0,                                                                    0.0,                                            0.0,                                                                                                                    -k_s*sind(-psi(2) + alpha_nn)*sind(alpha_nn),                                                                                                                    -k_s*cosd(-psi(2) + alpha_nn)*sind(alpha_nn),                                                                  -r_s*k_s*sind(alpha_nn);
-                                                                      sind(psi(2))*k_py,                                    -cosd(psi(2))*k_py,                                              -r_c*k_py,                                                                    0.0,                                                                    0.0,                                            0.0, -k_r*cosd(alpha_nn)*sind(alpha_nn) + k_s*cosd(alpha_nn)*sind(alpha_nn),                     k_py + k_r*cosd(alpha_nn)^2 + k_s*cosd(alpha_nn)^2,  r_p*(k_r*cosd(alpha_nn) - k_s*cosd(alpha_nn)),                                                                    0.0,                                                                    0.0,                                            0.0,                                                                                                                    -k_s*sind(-psi(2) + alpha_nn)*cosd(alpha_nn),                                                                                                                    -k_s*cosd(-psi(2) + alpha_nn)*cosd(alpha_nn),                                                                  -r_s*k_s*cosd(alpha_nn);
-                                                                                    0.0,                                                   0.0,                                                    0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                         r_p*(-k_r*sind(alpha_nn) - k_s*sind(alpha_nn)),                          r_p*(k_r*cosd(alpha_nn) - k_s*cosd(alpha_nn)),                       r_p^2*(k_pu + k_r + k_s),                                                                    0.0,                                                                    0.0,                                            0.0,                                                                                                                                r_p*k_s*sind(-psi(2) + alpha_nn),                                                                                                                                r_p*k_s*cosd(-psi(2) + alpha_nn),                                                                              r_p*k_s*r_s;
-                                                                     -cosd(psi(3))*k_px,                                    -sind(psi(3))*k_px,                                                    0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                                                                    0.0,                                                                    0.0,                                            0.0,        -k_r*cosd(alpha_nn)^2 - k_s*cosd(alpha_nn)^2 + k_r + k_s + k_px, -k_r*cosd(alpha_nn)*sind(alpha_nn) + k_s*cosd(alpha_nn)*sind(alpha_nn), r_p*(-k_r*sind(alpha_nn) - k_s*sind(alpha_nn)),                                                                                                                    -k_s*sind(-psi(3) + alpha_nn)*sind(alpha_nn),                                                                                                                    -k_s*cosd(-psi(3) + alpha_nn)*sind(alpha_nn),                                                                  -r_s*k_s*sind(alpha_nn);
-                                                                      sind(psi(3))*k_py,                                    -cosd(psi(3))*k_py,                                              -r_c*k_py,                                                                    0.0,                                                                    0.0,                                            0.0,                                                                    0.0,                                                                    0.0,                                            0.0, -k_r*cosd(alpha_nn)*sind(alpha_nn) + k_s*cosd(alpha_nn)*sind(alpha_nn),                     k_py + k_r*cosd(alpha_nn)^2 + k_s*cosd(alpha_nn)^2,  r_p*(k_r*cosd(alpha_nn) - k_s*cosd(alpha_nn)),                                                                                                                    -k_s*sind(-psi(3) + alpha_nn)*cosd(alpha_nn),                                                                                                                    -k_s*cosd(-psi(3) + alpha_nn)*cosd(alpha_nn),                                                                  -r_s*k_s*cosd(alpha_nn);
-                                                                                    0.0,                                                   0.0,                                                    0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                                                                    0.0,                                                                    0.0,                                            0.0,                         r_p*(-k_r*sind(alpha_nn) - k_s*sind(alpha_nn)),                          r_p*(k_r*cosd(alpha_nn) - k_s*cosd(alpha_nn)),                       r_p^2*(k_pu + k_r + k_s),                                                                                                                                r_p*k_s*sind(-psi(3) + alpha_nn),                                                                                                                                r_p*k_s*cosd(-psi(3) + alpha_nn),                                                                              r_p*k_s*r_s;
-                                                                                    0.0,                                                   0.0,                                                    0.0,                           -k_s*sind(-psi(1) + alpha_nn)*sind(alpha_nn),                           -k_s*sind(-psi(1) + alpha_nn)*cosd(alpha_nn),               r_p*k_s*sind(-psi(1) + alpha_nn),                           -k_s*sind(-psi(2) + alpha_nn)*sind(alpha_nn),                           -k_s*sind(-psi(2) + alpha_nn)*cosd(alpha_nn),               r_p*k_s*sind(-psi(2) + alpha_nn),                           -k_s*sind(-psi(3) + alpha_nn)*sind(alpha_nn),                           -k_s*sind(-psi(3) + alpha_nn)*cosd(alpha_nn),               r_p*k_s*sind(-psi(3) + alpha_nn),                                                              k_s*(  3.0 - cosd(-psi(1) + alpha_nn)^2 - cosd(-psi(2) + alpha_nn)^2 - cosd(-psi(3) + alpha_nn)^2), k_s*(sind(-psi(1) + alpha_nn)*cosd(-psi(1) + alpha_nn) + sind(-psi(2) + alpha_nn)*cosd(-psi(2) + alpha_nn) + sind(-psi(3) + alpha_nn)*cosd(-psi(3) + alpha_nn)), r_s*k_s*(sind(-psi(1) + alpha_nn) + sind(-psi(2) + alpha_nn) + sind(-psi(3) + alpha_nn));
-                                                                                    0.0,                                                   0.0,                                                    0.0,                           -k_s*cosd(-psi(1) + alpha_nn)*sind(alpha_nn),                           -k_s*cosd(-psi(1) + alpha_nn)*cosd(alpha_nn),               r_p*k_s*cosd(-psi(1) + alpha_nn),                           -k_s*cosd(-psi(2) + alpha_nn)*sind(alpha_nn),                           -k_s*cosd(-psi(2) + alpha_nn)*cosd(alpha_nn),               r_p*k_s*cosd(-psi(2) + alpha_nn),                           -k_s*cosd(-psi(3) + alpha_nn)*sind(alpha_nn),                           -k_s*cosd(-psi(3) + alpha_nn)*cosd(alpha_nn),               r_p*k_s*cosd(-psi(3) + alpha_nn), k_s*(sind(-psi(1) + alpha_nn)*cosd(-psi(1) + alpha_nn) + sind(-psi(2) + alpha_nn)*cosd(-psi(2) + alpha_nn) + sind(-psi(3) + alpha_nn)*cosd(-psi(3) + alpha_nn)),                                                                      k_s*(cosd(-psi(1) + alpha_nn)^2 + cosd(-psi(2) + alpha_nn)^2 + cosd(-psi(3) + alpha_nn)^2), r_s*k_s*(cosd(-psi(1) + alpha_nn) + cosd(-psi(2) + alpha_nn) + cosd(-psi(3) + alpha_nn));
-                                                                                    0.0,                                                   0.0,                                                    0.0,                                                -r_s*k_s*sind(alpha_nn),                                                -r_s*k_s*cosd(alpha_nn),                                    r_p*k_s*r_s,                                                -r_s*k_s*sind(alpha_nn),                                                -r_s*k_s*cosd(alpha_nn),                                    r_p*k_s*r_s,                                                -r_s*k_s*sind(alpha_nn),                                                -r_s*k_s*cosd(alpha_nn),                                    r_p*k_s*r_s,                                                                        r_s*k_s*(sind(-psi(1) + alpha_nn) + sind(-psi(2) + alpha_nn) + sind(-psi(3) + alpha_nn)),                                                                        r_s*k_s*(cosd(-psi(1) + alpha_nn) + cosd(-psi(2) + alpha_nn) + cosd(-psi(3) + alpha_nn)),                                                                           3.0*r_s^2*k_s];
-
-                % Centripetal stiffness matrix:
-                K_Omega(idx, idx) = diag([m_c m_c 0.0 ...
-                                         [m_p m_p 0.0]*repmat(eye(3), 1, obj.N_p) ...
-                                          m_s m_s 0.0]);
-                                  
-                % Gyroscopic matrix:
-                G(idx, idx) = [0.0     -2.0*m_c  0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               2.0*m_c  0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0     -2.0*m_p  0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      2.0*m_p  0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0     -2.0*m_p  0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      2.0*m_p  0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     -2.0*m_p  0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      2.0*m_p  0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     -2.0*m_s  0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      2.0*m_s  0.0      0.0;
-                               0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0];
-                
-            end
-            
-            M_tmp = obj.out_shaft.inertia_matrix('full');
-            K_tmp = obj.out_shaft.stiffness_matrix('full');
-            
-            % [ 1   2   3       4      5       6   7   8   9    10      11      12]
-            % [x_1 y_1 z_1 alpha_1 beta_1 gamma_1 x_2 y_2 z_2 alpha_2 beta_2 gamma_2]
-            idx = [1 5 6 7 11 12];
-            M_tmp(idx, :) = [];            M_tmp(:, idx) = [];
-            K_tmp(idx, :) = [];            K_tmp(:, idx) = [];
-            
-            idx = (n - 5):n;
-            
-            M(  idx, idx) = M(  idx, idx) + M_tmp;
-            K_b(idx, idx) = K_b(idx, idx) + K_tmp;
-            
-            K = @(Om)(K_b + K_m - K_Omega*Om^2);
-        end
-        
         function [M, K] = Eritenel_2011(obj)
             %ERITENEL_2011 Returns the inertia and stiffness matrices of
             % the drivetrain according to:
@@ -730,8 +560,8 @@ classdef Gear_Set < Gear
             obj.cprime = val;
         end
         
-        function obj = set.out_shaft(obj, val)
-            obj.out_shaft = val;
+        function obj = set.output_shaft(obj, val)
+            obj.output_shaft = val;
         end
         
     end
@@ -809,7 +639,8 @@ classdef Gear_Set < Gear
             end
 
             % roll angle from the working pitch point to the active tip diameter: Eq. (38)
-            xi_Naw1 = xi_Nfw2*obj.z(2)/obj.z(1);
+            z21 = abs(obj.z(2))/obj.z(1); % to account for the sign of z in ring gears.
+            xi_Naw1 = xi_Nfw2*z21;
 
             % pinion angular pitch:
             tau_1 = 2.0*pi/obj.z(1);

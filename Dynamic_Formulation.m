@@ -128,7 +128,7 @@ classdef Dynamic_Formulation < Drivetrain
         
         function KK = stiffness_matrix(obj)
             k_LSS = obj.main_shaft.stiffness('torsional');
-            k_HSS = obj.stage(end).out_shaft.stiffness('torsional');
+            k_HSS = obj.stage(end).output_shaft.stiffness('torsional');
             
             uu = obj.u;
             

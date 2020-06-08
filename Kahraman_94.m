@@ -48,8 +48,8 @@ classdef Kahraman_94 < Dynamic_Formulation
                 
                 k_pw = stage_idx.k_mesh;
                 
-                jdx = 1:2;
-                KK(jdx, jdx) = [r_w ^ 2 * k_pw         r_p     * k_pw * r_w;
+                range = 1:2;
+                KK(range, range) = [r_w ^ 2 * k_pw         r_p     * k_pw * r_w;
                                 r_w     * k_pw * r_p   r_p ^ 2 * k_pw];
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 n = stage_idx.N_p + 3;
@@ -69,7 +69,7 @@ classdef Kahraman_94 < Dynamic_Formulation
                                    'a_w'          , stage_idx.a_w            , ...
                                    'rack_type'    , stage_idx.type           , ...
                                    'bearing'      , stage_idx.bearing        , ...
-                                   'shaft'        , stage_idx.out_shaft);
+                                   'shaft'        , stage_idx.output_shaft);
 
                 pla_rng = Gear_Set('configuration', 'parallel'               , ...
                                    'm_n'          , stage_idx.m_n            , ...
@@ -84,7 +84,7 @@ classdef Kahraman_94 < Dynamic_Formulation
                                    'a_w'          , stage_idx.a_w            , ...
                                    'rack_type'    , stage_idx.type           , ...
                                    'bearing'      , stage_idx.bearing        , ...
-                                   'shaft'        , stage_idx.out_shaft);
+                                   'shaft'        , stage_idx.output_shaft);
 
                 k_sp = abs(sun_pla.k_mesh);
                 k_rp = abs(pla_rng.k_mesh); % got a negative k_mesh for DTU_10MW
@@ -109,7 +109,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             range = (n - 1):n;
             
             KK(range, range) = KK(range, range) + ...
-                stage_idx.out_shaft.stiffness_matrix('torsional');
+                stage_idx.output_shaft.stiffness_matrix('torsional');
             
         end
         
@@ -167,7 +167,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             range = (n - 1):n;
             
             MM(range, range) = MM(range, range) + ...
-                stage_idx.out_shaft.inertia_matrix('torsional');
+                stage_idx.output_shaft.inertia_matrix('torsional');
         end
         
         function nn = calculate_DOF(obj)
