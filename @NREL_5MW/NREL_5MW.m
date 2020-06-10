@@ -124,7 +124,7 @@ classdef NREL_5MW < Drivetrain
             K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
             K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
             
-            SShaft = obj.stage(idx).out_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
+            SShaft = obj.stage(idx).output_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
         end
         
     end
