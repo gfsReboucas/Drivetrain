@@ -1,9 +1,9 @@
 classdef Dynamic_Formulation < Drivetrain
     properties
-        M; % Inertia matrix
-        K; % Stiffness matrix
-        n_DOF; % numbe of degrees of freedom
-        load; % load vector
+        M;     % Inertia matrix
+        K;     % Stiffness matrix
+        n_DOF; % number of degrees of freedom
+        load;  % load vector
     end
     
     methods
@@ -37,6 +37,7 @@ classdef Dynamic_Formulation < Drivetrain
         end
         
     end
+    
     %% Calculation:
     methods
         function [f_n, mode_shape] = modal_analysis(obj)

@@ -117,24 +117,24 @@ classdef Carrier
             r_out = obj.d_a/2.0;
             r_in  = obj.d_f/2.0;
             area = pi*(r_out^2 - r_in^2);
-            val = area*obj.b;
+            val = area*obj.b*1.0e-9;
         end
         
         function val = get.mass(obj)
-            rho = Material.rho*1.0e-9;
+            rho = Material.rho;
             val = rho*obj.V;
         end
         
         function val = get.J_x(obj)
             r_out = obj.d_a/2.0;
             r_in  = obj.d_f/2.0;
-            val = (1.0e-6)*(obj.mass/2.0)*(r_out^2 + r_in^2);
+            val = (obj.mass/2.0)*(r_out^2 + r_in^2)*1.0e-6;
         end
         
         function val = get.J_y(obj)
             r_out = obj.d_a/2.0;
             r_in  = obj.d_f/2.0;
-            val = (1.0e-6)*(obj.mass/2.0)*(3.0*(r_out^2 + r_in^2) + obj.b^2);
+            val = (obj.mass/2.0)*(3.0*(r_out^2 + r_in^2) + obj.b^2)*1.0e-6;
         end
         
         function val = get.J_z(obj)
