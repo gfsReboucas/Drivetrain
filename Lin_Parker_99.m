@@ -52,15 +52,27 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             Kb(range, range) = Kb(range, range) + K_tmp;
 
             N = obj.n_DOF;
-            
+            Z3 = zeros(3);
             for idx = 1:obj.N_stage
-                [Kbt, Kmt, KOt] = Lin_Parker_99.stage_stiffness_matrix(obj.stage(idx));
+                R = Lin_Parker_99.stage_coordinate_change(obj.stage(idx));
+                [Kb_idx, Km_idx, KO_idx] = Lin_Parker_99.stage_stiffness_matrix(obj.stage(idx));
+                Kb_idx = R' * Kb_idx * R;
+                Km_idx = R' * Km_idx * R;
+                KO_idx = R' * KO_idx * R;
                 
                 range = (N(idx) - 2):(N(idx + 1));
 
-                Kb(range, range) = Kb(range, range) + Kbt;
-                Km(range, range) = Km(range, range) + Kmt;
-                KO(range, range) = KO(range, range) + KOt;
+                % adding shaft stiffness:
+                n_idx = length(range);
+                rng = (-5:0) + n_idx;
+                
+                Kb_tmp = blkdiag(Kb_idx, Z3);
+                Kb_tmp(rng, rng) = Kb_tmp(rng, rng) + ...
+                    obj.stage(idx).output_shaft.stiffness_matrix('Lin_Parker_99');
+
+                Kb(range, range) = Kb(range, range) + Kb_tmp;
+                Km(range, range) = Km(range, range) + blkdiag(Km_idx, Z3);
+                KO(range, range) = KO(range, range) + blkdiag(KO_idx, Z3);
             end
         end
         
@@ -73,10 +85,10 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             J_r = obj.J_Rotor;            J_g = obj.J_Gen;
             
             range = 1:3;
-            MM(range, range) = diag([m_r, m_r, J_r]);
+            MM(range, range) = MM(range, range) + diag([m_r, m_r, J_r]);
             
             range = (N-2):N;
-            MM(range, range) = diag([m_g, m_g, J_g]);
+            MM(range, range) = MM(range, range) + diag([m_g, m_g, J_g]);
             
             M_tmp = obj.main_shaft.inertia_matrix('Lin_Parker_99');
             
@@ -84,14 +96,25 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             MM(range, range) = MM(range, range) + M_tmp;
             
             N = obj.n_DOF;
-            
+            Z3 = zeros(3);
             for idx = 1:obj.N_stage
-                [M_tmp, G_tmp] = Lin_Parker_99.stage_inertia_matrix(obj.stage(idx));
+                R = Lin_Parker_99.stage_coordinate_change(obj.stage(idx));
+                [M_idx, G_idx] = Lin_Parker_99.stage_inertia_matrix(obj.stage(idx));
+                M_idx = R' * M_idx * R;
+                G_idx = R' * G_idx * R;
                 
                 range = (N(idx) - 2):(N(idx + 1));
                 
+                % adding shaft inertia:
+                n_idx = length(range);
+                rng = (-5:0) + n_idx;
+                
+                M_tmp = blkdiag(M_idx, Z3);
+                M_tmp(rng, rng) = M_tmp(rng, rng) + ...
+                    obj.stage(idx).output_shaft.inertia_matrix('Lin_Parker_99');
+                
                 MM(range, range) = MM(range, range) + M_tmp;
-                GG(range, range) = GG(range, range) + G_tmp;
+                GG(range, range) = GG(range, range) + blkdiag(G_idx, Z3);
             end
         end
         
@@ -166,24 +189,29 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 KO = diag([m_1, m_1, 0, ... % pinion
                            m_2, m_2, 0]);   % wheel
                 
+                r_p = (stage_idx.d_b(1)*1.0e-3)/2.0; % [m]
+                r_w = (stage_idx.d_b(2)*1.0e-3)/2.0;
+                
                 % Bearing component:
-                b_w  = stage_idx.bearing(2);
-                k_wx = b_w.K_x;
-                k_wy = b_w.K_y;
-                k_wu = b_w.K_gamma;
+                brg_w  = stage_idx.bearing(4:6);
+                brg_w = brg_w.parallel_association();
+                k_wx = brg_w.K_y;
+                k_wy = brg_w.K_z;
+                k_wu = brg_w.K_alpha/(r_w^2);
                 
                 Kb = diag([zeros(1, 3) k_wx k_wy k_wu]);
                 
-                b_p  = stage_idx.bearing(1);
-                k_px = b_p.K_x;
-                k_py = b_p.K_y;
-                k_pu = b_p.K_gamma;
+                brg_p  = stage_idx.bearing(1:3);
+                brg_p = brg_p.parallel_association();
+                k_px = brg_p.K_y;
+                k_py = brg_p.K_z;
+                k_pu = brg_p.K_alpha/(r_p^2);
                 
                 % Mesh component:
                 k = stage_idx.k_mesh;
                 K_c31 =  diag([k_px, k_py, k_pu]);
-                Km(range, range) = [k*K_s3 + K_c31, k*K_s2(1) ;
-                                    k*K_s2(1)     , k*K_s1(1)];
+                Km = [k*K_s3 + K_c31, k*K_s2(1) ;
+                      k*K_s2(1)     , k*K_s1(1)];
 
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 np = 3*stage_idx.N_p;
@@ -199,31 +227,38 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                            m_s m_s 0.0, ... % sun
                           [m_p m_p 0.0]*repmat(eye(3), 1, stage_idx.N_p)]);
                 
-                % Bearing component:
-                brg_s = stage_idx.bearing(1);
-                k_sx = brg_s.K_x;
-                k_sy = brg_s.K_y;
-                k_su = brg_s.K_gamma;
-
-                brg_r = stage_idx.bearing(3);
-                k_rx = brg_r.K_x;
-                k_ry = brg_r.K_y;
-                k_ru = brg_r.K_gamma;
+                r_c =  stage_idx.a_w   *1.0e-3; % [m]
+                r_r = (stage_idx.d_b(3)*1.0e-3)/2.0;
+                r_s = (stage_idx.d_b(1)*1.0e-3)/2.0;
+                r_p = (stage_idx.d_b(2)*1.0e-3)/2.0;
                 
-                brg_c = stage_idx.bearing(4);
-                k_cx = brg_c.K_x;
-                k_cy = brg_c.K_y;
-                k_cu = brg_c.K_gamma;
+                % Bearing component:
+                brg_s = stage_idx.bearing(5);
+                k_sx = brg_s.K_y;
+                k_sy = brg_s.K_z;
+                k_su = brg_s.K_alpha/(r_s^2);
+
+                brg_r = stage_idx.bearing(6);
+                k_rx = brg_r.K_y;
+                k_ry = brg_r.K_z;
+                k_ru = brg_r.K_alpha/(r_r^2);
+                
+                brg_c = stage_idx.bearing(3:4);
+                brg_c = brg_c.parallel_association();
+                k_cx = brg_c.K_y;
+                k_cy = brg_c.K_z;
+                k_cu = brg_c.K_alpha/(r_c^2);
                 
                 Kb = diag([k_cx, k_cy, k_cu, ... % carrier
                            k_rx, k_ry, k_ru, ... % ring
                            k_sx, k_sy, k_su, ... % sun
                            zeros(1, np)]);       % planets
                 
-                brg_p = stage_idx.bearing(2);
-                k_px = brg_p.K_x;
-                k_py = brg_p.K_y;
-                k_pu = brg_p.K_gamma;
+                brg_p = stage_idx.bearing(1:2);
+                brg_p = brg_p.parallel_association();
+                k_px = brg_p.K_y;
+                k_py = brg_p.K_z;
+                k_pu = brg_p.K_alpha/(r_p^2);
 
                 % Mesh component:
                 sun_pla = stage_idx.sub_set('sun_planet');
@@ -307,7 +342,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 m_s = stage_idx.mass(1);
                 m_p = stage_idx.mass(2);
                 
-                r_c =  stage_idx.a_w *1.0e-3;
+                r_c =  stage_idx.a_w   *1.0e-3;
                 r_r = (stage_idx.d_b(3)*1.0e-3)/2.0;
                 r_s = (stage_idx.d_b(1)*1.0e-3)/2.0;
                 r_p = (stage_idx.d_b(2)*1.0e-3)/2.0;
@@ -334,6 +369,62 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             end
             
             MM = diag(diag_inertia);
+        end
+        
+        function [WVR, R, V, W] = stage_coordinate_change(stage_idx)
+            %STAGE_COORDINATE_CHANGE performs the following coordinate
+            %transformations:
+            % R: to go from translational (x, y, u) to rotational
+            % coordinates (x, y, theta), with u = r * theta.
+            % V: to change element order, from:
+            % - (Carrier, Sun, Planet) to (Carrier, Planet, Sun), or;
+            % - (Pinion, Wheel) to (Wheel, Pinion)
+            % W: to eliminate the ring gear DOFs.
+            %
+            
+            Z3 = zeros(3);
+            I3 = eye(3);
+            
+            if(strcmp(stage_idx.configuration, 'parallel'))
+                r_p = (stage_idx.d_b(1)*1.0e-3)/2.0; % [m]
+                r_w = (stage_idx.d_b(2)*1.0e-3)/2.0;
+                
+                diag_R = [1.0, 1.0, r_p, ...
+                          1.0, 1.0, r_w];
+
+                V = [Z3, I3;
+                     I3, Z3];
+
+                W = eye(6);
+            elseif(strcmp(stage_idx.configuration, 'planetary'))
+                np = 3*stage_idx.N_p;
+                
+                r_c =  stage_idx.a_w   *1.0e-3;      % [m]
+                r_s = (stage_idx.d_b(1)*1.0e-3)/2.0;
+                r_p = (stage_idx.d_b(2)*1.0e-3)/2.0;
+                
+                diag_R = [1.0, 1.0, r_c, ... % carrier
+                         [1.0, 1.0, r_p]*repmat(eye(3), 1, stage_idx.N_p), ... % planet
+                          1.0, 1.0, r_s]; % sun
+                
+                n = length(diag_R);
+                W = eye(n);
+                W = [W(1:3, :);
+                     zeros(3, n);
+                     W(4:end, :)];
+                
+                V = zeros(n);
+                V(1:3, 1:3) = I3;
+                
+                col = np + 4;
+                V(4:6, col:end) = I3;
+                
+                col = np + 3;
+                V(7:end, 4:col) = eye(np);
+            end
+            
+            R = diag(diag_R);
+            WVR = W*V*R;
         end
         
         function flag = test_01(num_planet)
@@ -394,14 +485,26 @@ classdef Lin_Parker_99 < Dynamic_Formulation
 
             m_s =  0.4;    m_r =   2.35;   m_c =   5.43;    m_p =   0.66; % [kg]
             d_s = 77.4;    d_r = 275.0;    d_c = 176.8;     d_p = 100.3;  % [mm]
-            J_s = 0.39*(d_s*1.0e-3/2)^2; % [kg-m^2]
-            J_r = 3.0 *(d_r*1.0e-3/2)^2;
-            J_c = 6.29*(d_c*1.0e-3/2)^2;
-            J_p = 0.61*(d_p*1.0e-3/2)^2;
+            
+            r_s = d_s*1.0e-3/2; % [m]
+            r_r = d_r*1.0e-3/2;
+            r_c = d_c*1.0e-3/2;
+            r_p = d_p*1.0e-3/2;
+            
+            J_s = 0.39*r_s^2; % [kg-m^2]
+            J_r = 3.0 *r_r^2;
+            J_c = 6.29*r_c^2;
+            J_p = 0.61*r_p^2;
             
             k_sp = 5.0e8;    % k_rp = k_sp; % [N/m]
-            k_s  = 1.0e8;   k_r  = k_s;     k_c  = k_s;     k_p  = k_s;
-            k_su = 0.0;     k_ru = 1.0e9;   k_cu = k_su;    k_pu = k_su;
+            k_s  = 1.0e8;   k_r  = k_s;     k_c  = k_s;     k_p  = k_s;  % [N/m]
+            k_su = 0.0;     k_ru = 1.0e9;   k_cu = k_su;    k_pu = k_su; % [N/m]
+            
+            k_st = k_su*r_s^2; % [N-m/rad]
+            k_rt = k_ru*r_r^2;
+            k_ct = k_cu*r_c^2;
+            k_pt = k_pu*r_p^2;
+            
             alpha_s = 24.6;     alpha_r = alpha_s;
             
             switch(num_planet)
@@ -447,12 +550,15 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             d    = [d_s d_p d_r];
             J_x  = [J_s J_p J_r];
 
-            brg_s = Bearing('K_x', k_s, 'K_y', k_s, 'K_gamma', k_su, 'name', 'sun'    );
-            brg_r = Bearing('K_x', k_r, 'K_y', k_r, 'K_gamma', k_ru, 'name', 'ring'   );
-            brg_c = Bearing('K_x', k_c, 'K_y', k_c, 'K_gamma', k_cu, 'name', 'carrier');
-            brg_p = Bearing('K_x', k_p, 'K_y', k_p, 'K_gamma', k_pu, 'name', 'planet' );
+            brg_s = Bearing('K_y',     k_s, 'K_z',     k_s, 'K_alpha',     k_st, 'name', 'sun'    );
+            brg_r = Bearing('K_y',     k_r, 'K_z',     k_r, 'K_alpha',     k_rt, 'name', 'ring'   );
+            brg_c = Bearing('K_y', 0.5*k_c, 'K_z', 0.5*k_c, 'K_alpha', 0.5*k_ct, 'name', 'carrier');
+            brg_p = Bearing('K_y', 0.5*k_p, 'K_z', 0.5*k_p, 'K_alpha', 0.5*k_pt, 'name', 'planet' );
 
-            brg = [brg_s, brg_p, brg_r, brg_c];
+            brg = [brg_p, brg_p, ...
+                   brg_c, brg_c, ...
+                   brg_s, ...
+                   brg_r];
             
             tmp.k_mesh = k_sp;
             
@@ -582,14 +688,25 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             
             m_s =  3.0;      m_r =   7.64;    m_c =  12.0;    m_p =  1.86; % [kg]
             d_s = 55.75;     d_r = 109.7;     d_c =  88.6;    d_p = 27.0;  % [mm]
-            J_s = 1.75*(d_s*1.0e-3/2)^2; % [kg-m^2]
-            J_r = 8.09*(d_r*1.0e-3/2)^2;
-            J_c = 6.80*(d_c*1.0e-3/2)^2;
-            J_p = 1.25*(d_p*1.0e-3/2)^2;
+            
+            r_s = d_s*1.0e-3/2; % [m]
+            r_r = d_r*1.0e-3/2;
+            r_c = d_c*1.0e-3/2;
+            r_p = d_p*1.0e-3/2;
+            
+            J_s = 1.75*r_s^2; % [kg-m^2]
+            J_r = 8.09*r_r^2;
+            J_c = 6.80*r_c^2;
+            J_p = 1.25*r_p^2;
             
             k_sp = 100.0e6;    % k_rp = k_sp; % [N/m]
             k_s  = 20.0e6;  k_r  = 100.0e6;	k_c  = 50.0e6;	k_p  = 10.0e6;
             k_su = 20.0e6;  k_ru = 100.0e6; k_cu = k_ru;    k_pu = 0.0;
+            
+            k_st = k_su*r_s^2; % [N-m/rad]
+            k_rt = k_ru*r_r^2;
+            k_ct = k_cu*r_c^2;
+            k_pt = k_pu*r_p^2;
             
             omega = sqrt(k_p/m_p)/(2.0*pi);
             fn_ref = fn_ref'*omega;
@@ -623,12 +740,15 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             d    = [d_s d_p d_r];
             J_x  = [J_s J_p J_r];
             
-            brg_s = Bearing('K_x', k_s, 'K_y', k_s, 'K_gamma', k_su, 'name', 'sun'    );
-            brg_r = Bearing('K_x', k_r, 'K_y', k_r, 'K_gamma', k_ru, 'name', 'ring'   );
-            brg_c = Bearing('K_x', k_c, 'K_y', k_c, 'K_gamma', k_cu, 'name', 'carrier');
-            brg_p = Bearing('K_x', k_p, 'K_y', k_p, 'K_gamma', k_pu, 'name', 'planet' );
-                        
-            brg = [brg_s, brg_p, brg_r, brg_c];
+            brg_s = Bearing('K_y',     k_s, 'K_z',     k_s, 'K_alpha',     k_st, 'name', 'sun'    );
+            brg_r = Bearing('K_y',     k_r, 'K_z',     k_r, 'K_alpha',     k_rt, 'name', 'ring'   );
+            brg_c = Bearing('K_y', 0.5*k_c, 'K_z', 0.5*k_c, 'K_alpha', 0.5*k_ct, 'name', 'carrier');
+            brg_p = Bearing('K_y', 0.5*k_p, 'K_z', 0.5*k_p, 'K_alpha', 0.5*k_pt, 'name', 'planet' );
+
+            brg = [brg_p, brg_p, ...
+                   brg_c, brg_c, ...
+                   brg_s, ...
+                   brg_r];
             
             mesh_stiff.k_mesh = k_sp;
             

@@ -90,8 +90,9 @@ classdef NREL_5MW < Drivetrain
                            'J_Gen',      J_G, ...
                            'S_Hmin',     1.25, ...
                            'S_Fmin',     1.56, ...
-                           'dynamic_model', @Kahraman_94);
-            
+... %                            'dynamic_model', @Kahraman_94);
+                           'dynamic_model', @Lin_Parker_99);
+                           
             [obj.S_H_val, obj.S_F_val, obj.S_shaft_val] = obj.safety_factors();
 
             obj.gamma = scaling_factor(gamma.name, ones(length(gamma), 1));
@@ -162,9 +163,11 @@ classdef NREL_5MW < Drivetrain
                                                          'K_beta',  5.6e5, 'K_gamma', 1.3e5, ...
                                         'OD' ,   1220.0, 'ID'    , 1000.0, 'B'      , 128.0);
                     
-                    brg = [PL_A,  PL_B, ... % Planet
-                           PLC_A, PLC_B];   % Carrier
-                    
+                    brg = [PL_A,  PL_B,            ... % Planet
+                           PLC_A, PLC_B,           ... % Carrier
+                           Bearing('name', 'sun'), ... % Sun
+                           Bearing('name', 'ring')];   % Ring
+                           
                 case 2
                     IMS_PL_A  = Bearing('name',  "IMS_PL_A", 'type'  , "CRB" , ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
@@ -183,8 +186,10 @@ classdef NREL_5MW < Drivetrain
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'OD'  ,       870.0, 'ID'    ,  600.0, 'B'      , 155.0);
                     
-                    brg = [IMS_PL_A,  IMS_PL_B, ... % Planet
-                           IMS_PLC_A, IMS_PLC_B];   % Carrier
+                    brg = [IMS_PL_A,  IMS_PL_B,    ... % Planet
+                           IMS_PLC_A, IMS_PLC_B,   ... % Carrier
+                           Bearing('name', 'sun'), ... % Sun
+                           Bearing('name', 'ring')];   % Ring
                     
                 case 3
                     IMS_A     = Bearing('name', "IMS_A", 'type'  , "CRB", ...

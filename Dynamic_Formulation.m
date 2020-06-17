@@ -68,7 +68,7 @@ classdef Dynamic_Formulation < Drivetrain
             [f_n, idx] = sort(f_n);
             mode_shape = mode_shape(:, idx);
             
-            flag_im = any(imag(f_n) ~= 0.0);
+            flag_im = any(abs(imag(f_n)) > 1.0e-4);
             if(flag_im)
                 warning('Dynamic_Formulation:imag', 'Imaginary resonances.');
                 

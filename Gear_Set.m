@@ -169,7 +169,7 @@ classdef Gear_Set < Gear
             Value = cell2mat(Value);
             Value = num2cell(Value);
             
-            Value(cellfun(@isnan,Value)) = {'-+-'}; %#ok<STRSCALR>
+            Value(cellfun(@isnan,Value)) = {'-+-'}; 
             
             if(strcmp(obj.configuration, 'parallel'))
                 for idx = 1:length(obj.z)
