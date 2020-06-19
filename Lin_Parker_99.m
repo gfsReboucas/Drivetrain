@@ -211,7 +211,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 k = stage_idx.k_mesh;
                 K_c31 =  diag([k_px, k_py, k_pu]);
                 Km = [k*K_s3 + K_c31, k*K_s2(1) ;
-                      k*K_s2(1)     , k*K_s1(1)];
+                      k*K_s2(1)'    , k*K_s1(1)];
 
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 np = 3*stage_idx.N_p;
