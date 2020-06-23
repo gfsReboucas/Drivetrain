@@ -1,10 +1,10 @@
-!file.version=2.5! Removing this line will make the file unreadable
+!file.version=3.4! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! SubVars
 !**********************************************************************
 subvar($_rated_speed, str= '12.1 rpm')                                                        ! $_rated_speed
-subvar($_damping_coeff, str= '0.05 s')                                                        ! $_damping_coeff
+subvar($_damping_coeff, str= '10e-6 m')                                                       ! $_damping_coeff
 subvar($_addendum_coeff, str= '1.0')                                                          ! $_addendum_coeff
 subvar($_dedendum_coeff, str= '1.25')                                                         ! $_dedendum_coeff
 subvar($_regularization_vel, str= '1.0e-3')                                                   ! $_regularization_vel
