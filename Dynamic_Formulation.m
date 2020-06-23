@@ -1,9 +1,9 @@
 classdef Dynamic_Formulation < Drivetrain
     properties
-        M; % Inertia matrix
-        K; % Stiffness matrix
-        n_DOF; % numbe of degrees of freedom
-        load; % load vector
+        M;     % Inertia matrix
+        K;     % Stiffness matrix
+        n_DOF; % number of degrees of freedom
+        load;  % load vector
     end
     
     methods
@@ -37,6 +37,7 @@ classdef Dynamic_Formulation < Drivetrain
         end
         
     end
+    
     %% Calculation:
     methods
         function [f_n, mode_shape] = modal_analysis(obj)
@@ -46,28 +47,29 @@ classdef Dynamic_Formulation < Drivetrain
             % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
             % Pearson, 2014, pp. 408-413.
             %
-                        
-            % Cholesky decomposition:
+
+            % Cholesky decomposition (coordinate change):
             L = chol(obj.M, "lower");
             K_tilde = L\obj.K/(L');
             
             % correcting numeric erros and make the problem symmetric:
-            if(issymmetric(obj.M) && issymmetric(obj.K))
+            if(~issymmetric(K_tilde) && (issymmetric(obj.M) && issymmetric(obj.K)))
                 K_tilde = (K_tilde + K_tilde')/2.0;
             end
             
             [mode_shape, D] = eig(K_tilde);
             D = diag(D);   % matrix to vector
-            
             w_n = sqrt(D); % lambda to omega_n
-
             f_n = w_n./(2.0*pi); % rad/s to Hz
+            
+            % back to original coordinates:
+            mode_shape = (L')\mode_shape;
             
             % sorting in ascending order:
             [f_n, idx] = sort(f_n);
             mode_shape = mode_shape(:, idx);
             
-            flag_im = any(imag(f_n) ~= 0.0);
+            flag_im = any(abs(imag(f_n)) > 1.0e-4);
             if(flag_im)
                 warning('Dynamic_Formulation:imag', 'Imaginary resonances.');
                 

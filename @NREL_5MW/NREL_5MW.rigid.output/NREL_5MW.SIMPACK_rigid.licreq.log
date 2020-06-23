@@ -2,22 +2,22 @@
 License Requirements for Model:
  NREL_5MW.SIMPACK_rigid
 *********************************************************
-gui:
+KSO(solver):
  - NREL_5MW.SIMPACK_rigid
 
-control_gui:
+VCO(control_slv):
  - $C_PI
 
-control_gui, autoplus_gui:
+VCO(control_slv) OR VAU(autoplus_slv):
  - $C_diff_speed
  - $C_ref_speed
 
-control_gui, autoplus_gui, wheelrail_gui:
+VCO(control_slv) OR VAU(autoplus_slv) OR VRL(wheelrail_slv):
  - $F_PI_generator
  - $F_const_generator
  - $C_output_speed
 
-gearwheel_gui:
+VGR(gearwheel_slv):
  - $FEG_stage_01.$F_ring_planet_01
  - $FEG_stage_01.$F_ring_planet_02
  - $FEG_stage_01.$F_ring_planet_03

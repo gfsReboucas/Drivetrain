@@ -1,5 +1,5 @@
 classdef Kahraman_94 < Dynamic_Formulation
-    %KAHRAMAN_94 Calculates the inertia and stiffness matrix of a
+    %KAHRAMAN_94 Calculates the inertia and stiffness matrices of a
     % multi-stage Drivetrain object according to:
     % [1] A. Kahraman, "Natural Modes of Planetary Gear Trains",
     % Journal of Sound and Vibration, vol. 173, no. 1, pp. 125-130,
@@ -28,7 +28,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             KK(1:2, 1:2) = KK(1:2, 1:2) + K_tmp;
             
             for idx = 1:obj.N_stage
-                K_tmp = obj.stage_stiffness_matrix(idx);
+                K_tmp = Kahraman_94.stage_stiffness_matrix(obj.stage(idx));
                 jdx = obj.n_DOF(idx);
                 kdx = jdx:(jdx + length(K_tmp) - 1);
                 
@@ -36,9 +36,42 @@ classdef Kahraman_94 < Dynamic_Formulation
             end
         end
         
-        function KK = stage_stiffness_matrix(obj, idx)
-            stage_idx = obj.stage(idx);
+        function MM = inertia_matrix(obj)
+            N = obj.n_DOF(end);
+            MM = zeros(N, N);
             
+            MM(1, 1) = obj.J_Rotor;     MM(end, end) = obj.J_Gen;
+            
+            M_tmp = obj.main_shaft.inertia_matrix("torsional");
+            MM(1:2, 1:2) = MM(1:2, 1:2) + M_tmp;
+            
+            for idx = 1:obj.N_stage
+                M_tmp = Kahraman_94.stage_inertia_matrix(obj.stage(idx));
+                jdx = obj.n_DOF(idx);
+                kdx = jdx:(jdx + length(M_tmp) - 1);
+                
+                MM(kdx, kdx) = MM(kdx, kdx) + M_tmp;
+            end
+        end
+        
+        function nn = calculate_DOF(obj)
+            nn = ones(obj.N_stage + 1, 1)*2.0;
+            
+            for idx = 1:obj.N_stage
+                if(strcmp(obj.stage(idx).configuration, "parallel"))
+                    tmp = obj.stage(idx).N_p + 1;
+                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
+                    tmp = obj.stage(idx).N_p + 2;
+                end
+                
+                nn(idx + 1) = nn(idx) + tmp;
+            end
+        end
+    end
+    
+    methods(Static)
+        function KK = stage_stiffness_matrix(stage_idx)
+
             if(strcmp(stage_idx.configuration, 'parallel'))
                 n = 3;
                 KK = zeros(n, n);
@@ -113,26 +146,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             
         end
         
-        function MM = inertia_matrix(obj)
-            N = obj.n_DOF(end);
-            MM = zeros(N, N);
-            
-            MM(1, 1) = obj.J_Rotor;     MM(end, end) = obj.J_Gen;
-            
-            M_tmp = obj.main_shaft.inertia_matrix("torsional");
-            MM(1:2, 1:2) = MM(1:2, 1:2) + M_tmp;
-            
-            for idx = 1:obj.N_stage
-                M_tmp = obj.stage_inertia_matrix(idx);
-                jdx = obj.n_DOF(idx);
-                kdx = jdx:(jdx + length(M_tmp) - 1);
-                
-                MM(kdx, kdx) = MM(kdx, kdx) + M_tmp;
-            end
-        end
-        
-        function MM = stage_inertia_matrix(obj, idx)
-            stage_idx = obj.stage(idx);
+        function MM = stage_inertia_matrix(stage_idx)
             
             if(strcmp(stage_idx.configuration, 'parallel'))
                 n = 3;
@@ -170,19 +184,6 @@ classdef Kahraman_94 < Dynamic_Formulation
                 stage_idx.output_shaft.inertia_matrix('torsional');
         end
         
-        function nn = calculate_DOF(obj)
-            nn = ones(obj.N_stage + 1, 1)*2.0;
-            
-            for idx = 1:obj.N_stage
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    tmp = obj.stage(idx).N_p + 1;
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    tmp = obj.stage(idx).N_p + 2;
-                end
-                
-                nn(idx + 1) = nn(idx) + tmp;
-            end
-        end
     end
 end
 

@@ -31,44 +31,84 @@ classdef Bearing
         K_beta;  % [N-m/rad], Torsional stiffness, y axis
         K_gamma; % [N-m/rad], Torsional stiffness, z axis
 
+        C_x;     % [N-s/m],     Translational damping, x axis
+        C_y;     % [N-s/m],     Translational damping, y axis
+        C_z;     % [N-s/m],     Translational damping, z axis
+        C_alpha; % [N-m-s/rad], Torsional damping, x axis (rot.)
+        C_beta;  % [N-m-s/rad], Torsional damping, y axis
+        C_gamma; % [N-m-s/rad], Torsional damping, z axis
+
         OD;      % [mm],      Outer diameter
         ID;      % [mm],      Inner diameter
         B;       % [mm],      Thickness
     end
     
     methods
-        function obj = Bearing(nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
-            if(nargin == 0)
-                nam = "-*-";      typ = "none";
-                od  = 0.0;   id  = 0.0;     b  = 0.0;
-                kx  = 0.0;   ky  = 0.0;     kz = 0.0;
-                ka  = 0.0;   kb  = 0.0;     kg = 0.0;
-            elseif(nargin < 11)
-                error("Not enough input arguments.");
-            end
+%         function obj = Bearing(nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
+        function obj = Bearing(varargin)%nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
+            default = {'name'  , '-*-', ...
+                      'type'   , 'none', ...
+                      'OD'     , 0.0, ...
+                      'ID'     , 0.0, ...
+                      'B'      , 0.0, ...
+                      'K_x'    , 0.0, ...
+                      'K_y'    , 0.0, ...
+                      'K_z'    , 0.0, ...
+                      'K_alpha', 0.0, ...
+                      'K_beta' , 0.0, ...
+                      'K_gamma', 0.0, ...
+                      'C_x'    , 0.0, ...
+                      'C_y'    , 0.0, ...
+                      'C_z'    , 0.0, ...
+                      'C_alpha', 0.0, ...
+                      'C_beta' , 0.0, ...
+                      'C_gamma', 0.0};
+                  
+            default = process_varargin(default, varargin);
             
-            obj.name    = nam;  obj.type    = typ;  
-            obj.OD      = od;   obj.ID      = id;   obj.B       = b;
-            obj.K_x     = kx;   obj.K_y     = ky;   obj.K_z     = kz;
-            obj.K_alpha = ka;   obj.K_beta  = kb;   obj.K_gamma = kg;
+            obj.name    = default.name;
+            obj.type    = default.type;
+            obj.OD      = default.OD;
+            obj.ID      = default.ID;
+            obj.B       = default.B;
+            
+            obj.K_x     = default.K_x;
+            obj.K_y     = default.K_y;
+            obj.K_z     = default.K_z;
+            obj.K_alpha = default.K_alpha;
+            obj.K_beta  = default.K_beta;
+            obj.K_gamma = default.K_gamma;
+            
+            obj.C_x     = default.C_x;
+            obj.C_y     = default.C_y;
+            obj.C_z     = default.C_z;
+            obj.C_alpha = default.C_alpha;
+            obj.C_beta  = default.C_beta;
+            obj.C_gamma = default.C_gamma;
         end
         
         function tab = disp(obj)
             if(isempty(obj))
                 disp("\t0x0 empty Bearing object")
             else
-                tab_set = {"Type",                             "-+-",     "-",       obj.type;
-                    "Translational Stiffness",          "K_x",     "N/m",     obj.K_x;
-                    "Translational Stiffness",          "K_y",     "N/m",     obj.K_y;
-                    "Translational Stiffness",          "K_z",     "N/m",     obj.K_z;
-                    "Rotational Stiffness (rot. axis)", "K_alpha", "N-m/rad", obj.K_alpha;
-                    "Rotational Stiffness",             "K_beta",  "N-m/rad", obj.K_beta;
-                    "Rotational Stiffness",             "K_gamma", "N-m/rad", obj.K_gamma;
-                    "Outer diameter",                   "OD",      "mm",      obj.OD;
-                    "Inner diameter",                   "ID",      "mm",      obj.ID;
-                    "Width",                            "B",       "mm",      obj.B;
-                    };
-                
+                tab_set = {"Type",                             "-+-",     "-",         obj.type;
+                           "Translational Stiffness",          "K_x",     "N/m",       obj.K_x;
+                           "Translational Stiffness",          "K_y",     "N/m",       obj.K_y;
+                           "Translational Stiffness",          "K_z",     "N/m",       obj.K_z;
+                           "Rotational Stiffness (rot. axis)", "K_alpha", "N-m/rad",   obj.K_alpha;
+                           "Rotational Stiffness",             "K_beta",  "N-m/rad",   obj.K_beta;
+                           "Rotational Stiffness",             "K_gamma", "N-m/rad",   obj.K_gamma;
+                           "Translational Damping",            "C_x",     "N-s/m",     obj.C_x;
+                           "Translational Damping",            "C_y",     "N-s/m",     obj.C_y;
+                           "Translational Damping",            "C_z",     "N-s/m",     obj.C_z;
+                           "Rotational Damping (rot. axis)",   "C_alpha", "N-m-s/rad", obj.C_alpha;
+                           "Rotational Damping",               "C_beta",  "N-m-s/rad", obj.C_beta;
+                           "Rotational Damping",               "C_gamma", "N-m-s/rad", obj.C_gamma;
+                           "Outer diameter",                   "OD",      "mm",        obj.OD;
+                           "Inner diameter",                   "ID",      "mm",        obj.ID;
+                           "Width",                            "B",       "mm",        obj.B;
+                           };
+
                 Parameter = tab_set(:, 1);
                 Symbol    = tab_set(:, 2);
                 Unit      = tab_set(:, 3);
@@ -108,6 +148,10 @@ classdef Bearing
                 
                 kx = 0.0;   ky = 0.0;   kz = 0.0;
                 ka = 0.0;   kb = 0.0;   kg = 0.0;
+
+                cx = 0.0;   cy = 0.0;   cz = 0.0;
+                ca = 0.0;   cb = 0.0;   cg = 0.0;
+
                 for idx = 1:nargin
                     nam = join([nam obj(idx).name], " / ");
 
@@ -117,15 +161,27 @@ classdef Bearing
                     ka = ka + 1.0/obj(idx).K_alpha;
                     kb = kb + 1.0/obj(idx).K_beta;
                     kg = kg + 1.0/obj(idx).K_gamma;
+                    
+                    cx = cx + 1.0/obj(idx).C_x;
+                    cy = cy + 1.0/obj(idx).C_y;
+                    cz = cz + 1.0/obj(idx).C_z;
+                    ca = ca + 1.0/obj(idx).C_alpha;
+                    cb = cb + 1.0/obj(idx).C_beta;
+                    cg = cg + 1.0/obj(idx).C_gamma;
                 end
                 
                 kx = 1.0/kx;    ky = 1.0/ky;    kz = 1.0/kz;
                 ka = 1.0/ka;    kb = 1.0/kb;    kg = 1.0/kg;
                 
-                val = Bearing(nam, obj(1).type, kx, ky, kz, ka, kb, kg, ...
-                                   obj(1).OD, ...
-                                   obj(1).ID, ...
-                                   obj(1).B);
+                cx = 1.0/cx;    cy = 1.0/cy;    cz = 1.0/cz;
+                ca = 1.0/ca;    cb = 1.0/cb;    cg = 1.0/cg;
+                
+                val = Bearing('name'   , nam      , 'type'  , obj(1).type, ...
+                              'K_x'    , kx       , 'K_y'   , ky         , 'K_z'    , kz,...
+                              'K_alpha', ka       , 'K_beta', kb         , 'K_gamma', kg, ...
+                              'C_x'    , cx       , 'C_y'   , cy         , 'C_z'    , cz,...
+                              'C_alpha', ca       , 'C_beta', cb         , 'C_gamma', cg, ...
+                              'OD'     , obj(1).OD, 'ID'    , obj(1).ID  , 'B'      , obj(1).B);
             end
         end
         
@@ -139,7 +195,10 @@ classdef Bearing
 
                 kx = 0.0;   ky = 0.0;   kz = 0.0;
                 ka = 0.0;   kb = 0.0;   kg = 0.0;
-                
+
+                cx = 0.0;   cy = 0.0;   cz = 0.0;
+                ca = 0.0;   cb = 0.0;   cg = 0.0;
+
                 for idx = 1:n
                     nam = join([nam obj(idx).name], " / ");
 
@@ -149,12 +208,21 @@ classdef Bearing
                     ka = ka + obj(idx).K_alpha;
                     kb = kb + obj(idx).K_beta;
                     kg = kg + obj(idx).K_gamma;
+                    
+                    cx = cx + obj(idx).C_x;
+                    cy = cy + obj(idx).C_y;
+                    cz = cz + obj(idx).C_z;
+                    ca = ca + obj(idx).C_alpha;
+                    cb = cb + obj(idx).C_beta;
+                    cg = cg + obj(idx).C_gamma;
                 end
                 
-                val = Bearing(nam, obj(1).type, kx, ky, kz, ka, kb, kg, ...
-                                   obj(1).OD, ...
-                                   obj(1).ID, ...
-                                   obj(1).B);
+                val = Bearing('name'   , nam      , 'type'  , obj(1).type, ...
+                              'K_x'    , kx       , 'K_y'   , ky         , 'K_z'    , kz,...
+                              'K_alpha', ka       , 'K_beta', kb         , 'K_gamma', kg, ...
+                              'C_x'    , cx       , 'C_y'   , cy         , 'C_z'    , cz,...
+                              'C_alpha', ca       , 'C_beta', cb         , 'C_gamma', cg, ...
+                              'OD'     , obj(1).OD, 'ID'    , obj(1).ID  , 'B'      , obj(1).B);
             end
         end
         

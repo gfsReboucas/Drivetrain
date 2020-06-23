@@ -348,8 +348,8 @@ classdef (Abstract) Drivetrain
         
     end
     
+    %% Calculations:
     methods
-        %% Calculations:
         %% Dynamics:
         function [f_n, mode_shape] = resonances(obj, N, normalize)
             %RESONANCES returns the first N resonances and mode shapes of a
@@ -1152,8 +1152,8 @@ classdef (Abstract) Drivetrain
                
             for idx = 1:n_P
                 [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), ...
-                                                                                'gamma_0', gamma_0, ...
-                                                                                'n_scale', default.n_scale, ...
+                                                                                'gamma_0'   , gamma_0, ...
+                                                                                'n_scale'   , default.n_scale, ...
                                                                                 'aspect_set', default.aspect_set);
                 obj_array{idx + 1} = obj_sca;
                 
@@ -1326,12 +1326,26 @@ classdef (Abstract) Drivetrain
             val = obj.S_shaft_val;
         end
         
-            function val = get.S_G(obj)
-                val = [obj.S_H;
-                       obj.S_F];
-                val(isnan(val)) = [];
-            end
+        function val = get.S_G(obj)
+            val = [obj.S_H;
+                obj.S_F];
+            val(isnan(val)) = [];
+        end
             
     end
     
+    %% Misc
+    methods(Static)
+        function rewrite_subvar(old_file)
+            old_ID = fopen(old_file, 'r');
+            new_ID = fopen('new.subvar', 'w');
+
+            while ~feof(old_ID)
+                old_line = fgetl(old_ID);
+                fprintf(new_ID, "fprintf(new_ID, ""%s\\n"");\n", old_line);
+            end
+            fclose(old_ID);
+            fclose(new_ID);
+        end
+    end
 end

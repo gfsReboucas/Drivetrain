@@ -38,6 +38,7 @@ classdef Shaft
         J_x;              % [kg-m^2], Mass moment of inertia (rot. axis)
         J_y;              % [kg-m^2], Mass moment of inertia
         J_z;              % [kg-m^2], Mass moment of inertia
+        r_g;              % [m], Radius of gyration
     end
     
     methods
@@ -161,7 +162,7 @@ classdef Shaft
             E          = 206.0e9; % [N/m^2],  Young's modulus
             LL = obj.L*1.0e-3;
             
-            omega_1 = sqrt(E*obj.I_y/(obj.m/LL))*(pi/LL)^2;
+            omega_1 = sqrt(E*obj.I_y/(obj.mass/LL))*(pi/LL)^2;
             f_1 = omega_1/(2.0*pi);
         end
         
@@ -273,6 +274,28 @@ classdef Shaft
                     M = M*(obj.mass/420.0);
                     
                 case "full"
+                    % +----------+-----------------------------------------------------------------------+
+                    % |          |                             Full beam (3D)                            |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % | DOF name | x_1 | y_1 | z_1 | a_1 | b_1 | g_1 | x_2 | y_2 | z_2 | a_2 | b_2 | g_2 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % |    v_j   |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |  11 |  12 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % |          |                                Initial                                |
+                    % +----------+-----------+-----------+-----------------------+-----------------------+
+                    % |   Load   |   Axial   | Torsional |       Bending xy      |       Bending xz      |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % | DOF name | x_1 | x_2 | a_1 | a_2 | y_1 | g_1 | y_2 | g_2 | z_1 | b_1 | z_2 | b_2 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % |    u_i   |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |  11 |  12 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % |  will be |  1  |  7  |  4  |  10 |  2  |  6  |  8  |  12 |  3  |  5  |  9  |  11 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    %
+                    % Initial: M u'' + K u = f
+                    % Coordinate transformation: u = R v
+                    % Full beam (3D): (R^T M R) v'' + (R^T K R) v = R^T f
+                    %
                     M_a = obj.inertia_matrix("axial");
                     M_t = obj.inertia_matrix("torsional");
                     M_b = obj.inertia_matrix("bending");
@@ -283,14 +306,35 @@ classdef Shaft
                                 M_b);    % [9: z_1     10: beta_1   11: z_2 12: beta_2]
                     
                     R = zeros(12);
-                    R( 1,  1) =  1;     R( 2,  7) =  1;     R( 3,  4) =  1;
-                    R( 4, 10) =  1;     R( 9,  3) =  1;     R(10,  5) =  1;
-                    R(11,  9) =  1;     R(12, 11) =  1;     R( 5,  2) =  1;
-                    R( 6,  6) = 1;     R( 7,  8) =  1;     R( 8, 12) = 1;
+                    R( 1,  1) =  1;     R( 2,  7) = 1;     R( 3,  4) =  1;
+                    R( 4, 10) =  1;     R( 5,  2) = 1;     R( 6,  6) =  1;
+                    R( 7,  8) =  1;     R( 8, 12) = 1;     R( 9,  3) =  1;
+                    R(10,  5) = -1;     R(11,  9) = 1;     R(12, 11) = -1;
                     
                     M = R' * M * R;
 
                 case 'Lin_Parker_99'
+                    % +----------+-----------------------------------------------------------------------+
+                    % |          |                             Lin_Parker_99                             |
+                    % +----------+-----------+-----------+-----------+-----------+-----------+-----------+
+                    % | DOF name |    y_1    |    z_1    |    a_1    |    y_2    |    z_2    |    a_2    |
+                    % +----------+-----------+-----------+-----------+-----------+-----------+-----------+
+                    % |    v_j   |     1     |     2     |     3     |     4     |     5     |     6     |
+                    % +----------+-----------+-----------+-----------+-----------+-----------+-----------+
+                    % |          |                             Full beam (3D)                            |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % | DOF name | x_1 | y_1 | z_1 | a_1 | b_1 | g_1 | x_2 | y_2 | z_2 | a_2 | b_2 | g_2 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % |    u_j   |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |  11 |  12 |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % |  will be |  -  |  1  |  2  |  3  |  -  |  -  |  -  |  4  |  5  |  6  |  -  |  -  |
+                    % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    %
+                    % Initial: M u'' + K u = f
+                    % Coordinate transformation: u = R v
+                    % Lin_Parker_99: (R^T M R) v'' + (R^T K R) v = R^T f
+                    %
+                    
                     M = obj.inertia_matrix('full');
                     
                     R = zeros(12, 6);
@@ -338,8 +382,6 @@ classdef Shaft
                     K = K*(E*obj.I_y/LL^3);
                     
                 case "full"
-                    % [ 1   2   3       4      5       6   7   8   9    10      11      12]
-                    % [x_1 y_1 z_1 alpha_1 beta_1 gamma_1 x_2 y_2 z_2 alpha_2 beta_2 gamma_2]
                     
                     K_a = obj.stiffness_matrix("axial");     % [x_1 x_2]
                     K_t = obj.stiffness_matrix("torsional"); % [alpha_1 alpha_2]
@@ -351,14 +393,15 @@ classdef Shaft
                                 K_b);    % [9: z_1     10: beta_1   11: z_2 12: beta_2]
                     
                     R = zeros(12);
-                    R( 1,  1) =  1;     R( 2,  7) =  1;     R( 3,  4) =  1;
-                    R( 4, 10) =  1;     R( 9,  3) =  1;     R(10,  5) =  1;
-                    R(11,  9) =  1;     R(12, 11) =  1;     R( 5,  2) =  1;
-                    R( 6,  6) = 1;     R( 7,  8) =  1;     R( 8, 12) = 1;
+                    R( 1,  1) =  1;     R( 2,  7) = 1;     R( 3,  4) =  1;
+                    R( 4, 10) =  1;     R( 5,  2) = 1;     R( 6,  6) =  1;
+                    R( 7,  8) =  1;     R( 8, 12) = 1;     R( 9,  3) =  1;
+                    R(10,  5) = -1;     R(11,  9) = 1;     R(12, 11) = -1;
                     
                     K = R' * K * R;
 
                 case 'Lin_Parker_99'
+                    
                     K = obj.stiffness_matrix('full');
                     
                     R = zeros(12, 6);
@@ -370,6 +413,99 @@ classdef Shaft
                 otherwise
                     error("prog:input", "Option [%s] is NOT valid.", option);
             end
+        end
+    end
+    
+    methods(Static)
+        function flag = test()
+            %TEST
+            % For a shaft with d = 50 mm and L = 1000 mm:
+            %     Reference    Calculated     Rel_Diff      has_Problem
+            %     _________    __________    ___________    ___________
+            %
+            %           0             0              NaN       "no"
+            %           0             0              NaN       "no"
+            %           0             0              NaN       "no"
+            %           0             0              NaN       "no"
+            %           0             0              NaN       "no"
+            %           0             0              NaN       "no"
+            %      273.81        273.81      -1.4532e-13       "no"
+            %      273.81        273.81        2.076e-13       "no"
+            %      935.24        935.24      -1.2156e-14       "no"
+            %      935.24        935.24                0       "no"
+            %      1753.8        1753.8                0       "no"
+            %      2827.9        2827.9      -1.6081e-14       "no"
+            %
+            
+            dd = 50.0;
+            LL = 1.0e3;
+            shaft = Shaft(dd, LL);
+            
+            LL = LL*1.0e-3;
+            E = Material.E;
+            G = Material.G;
+            rho = Material.rho;
+            
+            c_o = sqrt(E/rho);
+            c_ot = sqrt(G/rho);
+            
+            w_na = pi*c_o/LL;
+            w_nt = pi*c_ot/LL;
+            
+            w_nb = c_o*shaft.r_g*([4.73 7.8532]/LL).^2;
+            
+            fn_ana = sort([w_na; w_nt; w_nb'])/(2*pi);
+            
+            K_f = shaft.stiffness_matrix("full");
+            M_f = shaft.inertia_matrix("full");
+            
+            K_LP = shaft.stiffness_matrix("Lin_Parker_99");
+            M_LP = shaft.inertia_matrix("Lin_Parker_99");
+            
+            import matlab.mock.TestCase;
+            dyn_for_TC = TestCase.forInteractiveUse;
+
+            id = ["ISO_6336:KV", ...
+                  "ISO_6336:SF", ...
+                  "ISO_6336:KS", ...
+                  "Dynamic_Formulation:imag", ...
+                  "Dynamic_Formulation:RB"];
+            
+            for idx = 1:length(id)
+                warning("off", id(idx));
+            end
+            
+            [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, 'ConstructorInputs', {NREL_5MW()});
+            dyn_for_mock.K = K_f;
+            dyn_for_mock.M = M_f;
+            fn_ref = dyn_for_mock.modal_analysis();
+            fn_ref = sort(fn_ref);
+            
+            name = ["axial", "torsional", "bending", "bending"];
+            fn_test = [];
+            for idx = 1:length(name)
+                dyn_for_mock.K = shaft.stiffness_matrix(name{idx});
+                dyn_for_mock.M = shaft.inertia_matrix(name{idx});
+                fn_test = [fn_test;
+                           dyn_for_mock.modal_analysis()];
+            end
+            fn_test = sort(fn_test);
+            
+            for idx = 1:length(id)
+                warning("on", id(idx));
+            end
+            
+            diff_fn = 100*(fn_ref - fn_test)./fn_ref;
+            has_problem = repmat("no", length(fn_ref), 1);
+
+            idx = abs(diff_fn) > 1.0;
+            has_problem(idx) = "[YES]";
+            
+            table(fn_ref, fn_test, diff_fn, has_problem, 'variableNames', ...
+                  {'Reference', 'Calculated', 'Rel_Diff', 'has_Problem'})
+
+            flag = any(idx);
+            
         end
     end
     
@@ -427,5 +563,8 @@ classdef Shaft
             val = obj.J_y;
         end
         
+        function val = get.r_g(obj)
+            val = sqrt(obj.I_y/obj.A);
+        end
     end
 end
