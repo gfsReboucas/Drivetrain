@@ -1337,6 +1337,11 @@ classdef (Abstract) Drivetrain
     %% Misc
     methods(Static)
         function rewrite_subvar(old_file)
+            %REWRITE_SUBVAR processes a .subvar file making it easier to
+            % modify later on using the method update_subvar that should be 
+            % implemented by the sub-classes.
+            %
+            
             old_ID = fopen(old_file, 'r');
             new_ID = fopen('new.subvar', 'w');
 
