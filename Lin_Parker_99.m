@@ -19,6 +19,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
         K_mesh;    % Mesh stiffness
         K_Omega;   % Centripetal stiffness
         G;         % Gyroscopic matrix
+        D_bearing; % Bearing damping
     end
     
     properties(Dependent)

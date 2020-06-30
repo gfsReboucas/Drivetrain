@@ -1336,6 +1336,43 @@ classdef (Abstract) Drivetrain
     
     %% Misc
     methods(Static)
+		function val = read_if2(file_name)
+			%READ_IF2 converts .if2 files to .mat files.
+				
+			fid = fopen(file_name, "r");
+
+			file_type_descriptor = fscanf(fid, "%s", 1);
+			if(file_type_descriptor ~= "$SIMPACK_Input_Function_Set$")
+				error('file type wrong.')
+			end
+
+			release = fscanf(fid, "%f ! Release \n", 1);
+			file_format = fscanf(fid, "%f ! Format: 0/1/2 = ASCII/real/double \n", 1);
+
+			name = fscanf(fid, "%s ! \n", 1);
+			interp_method = fscanf(fid, "%f !            Interpolation Method: 2 = Linear \n", 1);
+			extrapol_param = fscanf(fid, "%f\t%f !            Extrapolation: 0/1 = Spline/Linear ; Transition Rang \n",[1 2]);
+			scaling_factor = fscanf(fid, "%f\t%f !            Unit Factors UNIT/SI = ", [1 2]);
+			unit_fac1 = fscanf(fid, "%s", 1);
+			unit_fac2 = fscanf(fid, "]  | [%s] \n", 1);
+			unit_typ1 = fscanf(fid, "%s !            Unit Types \n", 1);
+			unit_typ2 = fscanf(fid, "%s !            Unit Types \n", 1);
+
+			data = fscanf(fid, "%f", [2, Inf])';
+
+			fclose(fid);
+			
+			val.release = release;
+			val.file_format = file_format;
+			val.name = name;
+			val.interp_method = interp_method;
+			val.extrapol_param = extrapol_param;
+			val.scaling_factor = scaling_factor;
+			val.unit_type = [string(unit_typ1), string(unit_typ2)];
+			val.time = data(:,1);
+			val.data = data(:,2);
+
+		end
         function rewrite_subvar(old_file)
             %REWRITE_SUBVAR processes a .subvar file making it easier to
             % modify later on using the method update_subvar that should be 

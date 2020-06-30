@@ -10,7 +10,7 @@ version.build  = 82
 !**********************************************************************
 !  Global parameters
 !**********************************************************************
-searchpath (              1                                       ) = '//home.ansatt.ntnu.no/geraldod/Documents/coding/Drivetrain/@NREL_5MW'
+searchpath (              1                                       ) = '.'
 gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
 gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
 gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
@@ -40,6 +40,8 @@ rw.linear                                                           = 0         
 time                                                                = 0.00000000000000000E+00 ! Time
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
+subvarset.file (          1                                       ) = './NREL_5MW.rigid.subvar' ! subvarset filename
+subvarset.role (          1                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
@@ -204,7 +206,7 @@ slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000
 slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
 slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
 slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
-slv.integ.tend.time (               $SLV_SolverSettings           ) = { 2 s }                 ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 100 s }               ! TIME_INTEG_TIMEPAR_END_TIME
 slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
 slv.integ.atol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
 slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
@@ -240,6 +242,7 @@ slv.assmbl.task (                   $SLV_SolverSettings           ) = 3         
 slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
 slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
 slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
 slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
 slv.equi.fallback.enable (          $SLV_SolverSettings           ) = 0                       ! Enable fallbacks
@@ -3768,12 +3771,12 @@ force.from (                        $F_PI_generator               ) = $M_bed_pla
 force.to (                          $F_PI_generator               ) = $BG_stage_03.$M_shaft_generator ! To Marker
 force.par (               1 ,       $F_PI_generator               ) = $C_PI                   ! [-] Input Control Element 1
 force.par (               2 ,       $F_PI_generator               ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
-force.par (               3 ,       $F_PI_generator               ) = null                    ! [-] Input Control Element 2
-force.par (               4 ,       $F_PI_generator               ) = null                    ! [-] -> Output Value u2
+force.par (               3 ,       $F_PI_generator               ) = $C_PI                   ! [-] Input Control Element 2
+force.par (               4 ,       $F_PI_generator               ) = 1.00000000000000000E+00 ! [-] -> Output Value u2
 force.par (               5 ,       $F_PI_generator               ) = 2.00000000000000000E+00 ! [-] Output type
 force.par (               6 ,       $F_PI_generator               ) = 1.00000000000000000E+00 ! [-] Axis of force
 force.par (               7 ,       $F_PI_generator               ) = 1.00000000000000000E+00 ! [-] Axis of torque
-force.par (               8 ,       $F_PI_generator               ) = -1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
+force.par (               8 ,       $F_PI_generator               ) = { -1/2 }                ! [Nm] K: Drive constant L=K*(u1+u2)
 force.par (               9 ,       $F_PI_generator               ) = 1.00000000000000000E+00 ! [m⁻¹] P: Drive constant F=P*L
 
 force.type (                        $F_const_generator            ) = 110                     ! Type
@@ -5535,7 +5538,7 @@ control.par (            15 ,       $C_output_speed               ) = 0.00000000
 ! Input Functions
 !**********************************************************************
 ifctngroup.begin (                  $IFG_bed_plate                )                           ! $IFG_bed_plate
-   ifctn.file (                     $I_x                          ) = 'EC4_s01_X.if2'         ! File or URI
+   ifctn.file (                     $I_x                          ) = './input_functions/EC4_s01_X.if2' ! File or URI
    ifctn.range.handling (           $I_x                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_x                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_x                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5549,7 +5552,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_x                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_x                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_y                          ) = 'EC4_s01_Y.if2'         ! File or URI
+   ifctn.file (                     $I_y                          ) = './input_functions/EC4_s01_Y.if2' ! File or URI
    ifctn.range.handling (           $I_y                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_y                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_y                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5563,7 +5566,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_y                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_y                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_z                          ) = 'EC4_s01_Z.if2'         ! File or URI
+   ifctn.file (                     $I_z                          ) = './input_functions/EC4_s01_Z.if2' ! File or URI
    ifctn.range.handling (           $I_z                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_z                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_z                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5577,7 +5580,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_z                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_z                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_alpha                      ) = 'EC4_s01_X_rot.if2'     ! File or URI
+   ifctn.file (                     $I_alpha                      ) = './input_functions/EC4_s01_X_rot.if2' ! File or URI
    ifctn.range.handling (           $I_alpha                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_alpha                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_alpha                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5591,7 +5594,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_alpha                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_alpha                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_beta                       ) = 'EC4_s01_Y_rot.if2'     ! File or URI
+   ifctn.file (                     $I_beta                       ) = './input_functions/EC4_s01_Y_rot.if2' ! File or URI
    ifctn.range.handling (           $I_beta                       ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_beta                       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_beta                       ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5605,7 +5608,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_beta                 ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_beta                 ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_gamma                      ) = 'EC4_s01_Z_rot.if2'     ! File or URI
+   ifctn.file (                     $I_gamma                      ) = './input_functions/EC4_s01_Z_rot.if2' ! File or URI
    ifctn.range.handling (           $I_gamma                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_gamma                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_gamma                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5619,7 +5622,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_gamma                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_gamma                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_x_dot                      ) = 'EC4_s01_XD.if2'        ! File or URI
+   ifctn.file (                     $I_x_dot                      ) = './input_functions/EC4_s01_XD.if2' ! File or URI
    ifctn.range.handling (           $I_x_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_x_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_x_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5633,7 +5636,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_x_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_x_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_y_dot                      ) = 'EC4_s01_YD.if2'        ! File or URI
+   ifctn.file (                     $I_y_dot                      ) = './input_functions/EC4_s01_YD.if2' ! File or URI
    ifctn.range.handling (           $I_y_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_y_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_y_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5647,7 +5650,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_y_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_y_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_z_dot                      ) = 'EC4_s01_ZD.if2'        ! File or URI
+   ifctn.file (                     $I_z_dot                      ) = './input_functions/EC4_s01_ZD.if2' ! File or URI
    ifctn.range.handling (           $I_z_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_z_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_z_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5661,7 +5664,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_z_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_z_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_alpha_dot                  ) = 'EC4_s01_X_rotD.if2'    ! File or URI
+   ifctn.file (                     $I_alpha_dot                  ) = './input_functions/EC4_s01_X_rotD.if2' ! File or URI
    ifctn.range.handling (           $I_alpha_dot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_alpha_dot                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_alpha_dot                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5675,7 +5678,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_alpha_dot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_alpha_dot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_beta_dot                   ) = 'EC4_s01_Y_rotD.if2'    ! File or URI
+   ifctn.file (                     $I_beta_dot                   ) = './input_functions/EC4_s01_Y_rotD.if2' ! File or URI
    ifctn.range.handling (           $I_beta_dot                   ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_beta_dot                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_beta_dot                   ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5689,7 +5692,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_beta_dot             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_beta_dot             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_gamma_dot                  ) = 'EC4_s01_Z_rotD.if2'    ! File or URI
+   ifctn.file (                     $I_gamma_dot                  ) = './input_functions/EC4_s01_Z_rotD.if2' ! File or URI
    ifctn.range.handling (           $I_gamma_dot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_gamma_dot                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_gamma_dot                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5703,7 +5706,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_gamma_dot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_gamma_dot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_x_ddot                     ) = 'EC4_s01_XDD.if2'       ! File or URI
+   ifctn.file (                     $I_x_ddot                     ) = './input_functions/EC4_s01_XDD.if2' ! File or URI
    ifctn.range.handling (           $I_x_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_x_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_x_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5717,7 +5720,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_x_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_x_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_y_ddot                     ) = 'EC4_s01_YDD.if2'       ! File or URI
+   ifctn.file (                     $I_y_ddot                     ) = './input_functions/EC4_s01_YDD.if2' ! File or URI
    ifctn.range.handling (           $I_y_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_y_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_y_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5731,7 +5734,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_y_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_y_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_z_ddot                     ) = 'EC4_s01_ZDD.if2'       ! File or URI
+   ifctn.file (                     $I_z_ddot                     ) = './input_functions/EC4_s01_ZDD.if2' ! File or URI
    ifctn.range.handling (           $I_z_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_z_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_z_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5745,7 +5748,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_z_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_z_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_alpha_ddot                 ) = 'EC4_s01_X_rotDD.if2'   ! File or URI
+   ifctn.file (                     $I_alpha_ddot                 ) = './input_functions/EC4_s01_X_rotDD.if2' ! File or URI
    ifctn.range.handling (           $I_alpha_ddot                 ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_alpha_ddot                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_alpha_ddot                 ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5759,7 +5762,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_alpha_ddot           ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_alpha_ddot           ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_beta_ddot                  ) = 'EC4_s01_Y_rotDD.if2'   ! File or URI
+   ifctn.file (                     $I_beta_ddot                  ) = './input_functions/EC4_s01_Y_rotDD.if2' ! File or URI
    ifctn.range.handling (           $I_beta_ddot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_beta_ddot                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_beta_ddot                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5773,7 +5776,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_beta_ddot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_beta_ddot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_gamma_ddot                 ) = 'EC4_s01_Z_rotDD.if2'   ! File or URI
+   ifctn.file (                     $I_gamma_ddot                 ) = './input_functions/EC4_s01_Z_rotDD.if2' ! File or URI
    ifctn.range.handling (           $I_gamma_ddot                 ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_gamma_ddot                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_gamma_ddot                 ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5790,7 +5793,7 @@ ifctngroup.begin (                  $IFG_bed_plate                )             
 ifctngroup.end (                    $IFG_bed_plate                )                           ! $IFG_bed_plate
 
 ifctngroup.begin (                  $IFG_rotor                    )                           ! $IFG_rotor
-   ifctn.file (                     $I_F_x                        ) = 'Fx.if2'                ! File or URI
+   ifctn.file (                     $I_F_x                        ) = './input_functions/Fx.if2' ! File or URI
    ifctn.range.handling (           $I_F_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_F_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_F_x                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5804,7 +5807,7 @@ ifctngroup.begin (                  $IFG_rotor                    )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_F_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_F_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_F_y                        ) = 'Fy.if2'                ! File or URI
+   ifctn.file (                     $I_F_y                        ) = './input_functions/Fy.if2' ! File or URI
    ifctn.range.handling (           $I_F_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_F_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_F_y                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5818,7 +5821,7 @@ ifctngroup.begin (                  $IFG_rotor                    )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_F_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_F_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_F_z                        ) = 'Fz.if2'                ! File or URI
+   ifctn.file (                     $I_F_z                        ) = './input_functions/Fz.if2' ! File or URI
    ifctn.range.handling (           $I_F_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_F_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_F_z                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5832,7 +5835,7 @@ ifctngroup.begin (                  $IFG_rotor                    )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_F_z                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_F_z                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_M_x                        ) = 'Mx.if2'                ! File or URI
+   ifctn.file (                     $I_M_x                        ) = './input_functions/Mx.if2' ! File or URI
    ifctn.range.handling (           $I_M_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_M_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_M_x                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5846,7 +5849,7 @@ ifctngroup.begin (                  $IFG_rotor                    )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_M_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_M_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_M_y                        ) = 'My.if2'                ! File or URI
+   ifctn.file (                     $I_M_y                        ) = './input_functions/My.if2' ! File or URI
    ifctn.range.handling (           $I_M_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_M_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_M_y                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5860,7 +5863,7 @@ ifctngroup.begin (                  $IFG_rotor                    )             
    ifctn.plot.par (       1 ,   9 ,   1 , $I_M_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,  10 ,   1 , $I_M_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-   ifctn.file (                     $I_M_z                        ) = 'Mz.if2'                ! File or URI
+   ifctn.file (                     $I_M_z                        ) = './input_functions/Mz.if2' ! File or URI
    ifctn.range.handling (           $I_M_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_M_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_M_z                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter

@@ -82,7 +82,7 @@ classdef Gear < Rack
         J_x;     % [kg-m^2], Mass moment of inertia (rot. axis)
         J_y;     % [kg-m^2], Mass moment of inertia
         J_z;     % [kg-m^2], Mass moment of inertia
-        f_pt;    % [um],     Single pitch deviation according to Section 6.1 of ISO 1328-1 [2]
+        f_pt;    % [um],     Single pitch deviation according to Sec. 6.1 of ISO 1328-1 [2]
         F_p;     % [um],     Total cumulative pitch deviation according to Sec. 6.3 of ISO 1328-1 [2]
         F_alpha; % [um],     Total profile deviation according to Section 6.4 of ISO 1328-1 [2]
         f_beta;  % [um],     Total helix deviation according to Section 6.5 of ISO 1328-1 [2]

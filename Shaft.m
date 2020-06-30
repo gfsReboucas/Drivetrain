@@ -23,8 +23,9 @@ classdef Shaft
     %
     
     properties
-        d(1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;   % [mm], diameter
-        L(1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 100.0; % [mm], length
+        d       (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;   % [mm], Diameter
+        L       (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 100.0; % [mm], Length
+        bearing (1, :) Bearing;                                               % [-], Bearing array
     end
     
     properties(Dependent)
@@ -42,14 +43,16 @@ classdef Shaft
     end
     
     methods
-        function obj = Shaft(dd, LL)
+        function obj = Shaft(dd, LL, brg)
             if(nargin == 0) % LSS
                 dd = 700.0;
                 LL = 2.0e3;
+                brg = Bearing();
             end
             
             obj.d = dd;
             obj.L = LL;
+            obj.bearing = brg;
 %             obj.F = FF;
 %             obj.M = MM;
         end
