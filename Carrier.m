@@ -43,7 +43,7 @@ classdef Carrier
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error("prog:input", "Too many variables.");
+                error("Carrier:too_many_vars", "Too many variables.");
             end
             
             [x, y] = obj.reference_circle(C);
@@ -64,7 +64,7 @@ classdef Carrier
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error("prog:input", "Too many variables.");
+                error("Carrier:too_many_vars", "Too many variables.");
             end
             
             X = 0.5*obj.b  *[1 -1 -1  1] + C(1);
@@ -85,7 +85,7 @@ classdef Carrier
             elseif(nargin == 2)
                 C = varargin{1};
             else
-                error("prog:input", "Too many variables.");
+                error("Carrier:too_many_vars", "Too many variables.");
             end
     
             x = R*cos(t) + C(1);

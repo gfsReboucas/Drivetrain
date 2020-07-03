@@ -6,7 +6,7 @@ classdef KISSsoftCOM
     % about it at [2].
     %
     % [1] https://www.kisssoft.com/en
-    % [2] https://se.mathworks.com/help/matlab/ref/methodsview.html
+    % [2] https://mathworks.com/help/matlab/ref/methodsview.html
     %
     
     properties(Access = private)

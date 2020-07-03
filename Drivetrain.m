@@ -257,11 +257,11 @@ classdef (Abstract) Drivetrain
         
         function [tab, tab_str] = stage_comparison(ref, sca, idx)
             if(ref.N_stage ~= sca.N_stage)
-                error("different number of gear stages.");
+                error("Drivetrain:different_stages", "different number of gear stages.");
             elseif(idx > ref.N_stage)
-                error("idx is bigger than the number of stages.");
+                error("Drivetrain:big_idx", "idx is bigger than the number of stages.");
             elseif(idx < 1)
-                error("idx is smaller than 1.");
+                error("Drivetrain:negative_idx", "idx is smaller than 1.");
             end
             
             tab_str = {"Rated power",                                  "P",       "kW",     ref.P_rated,                sca.P_rated,                sca.P_rated               /ref.P_rated;                % 1
@@ -330,7 +330,7 @@ classdef (Abstract) Drivetrain
         
         function plot_comp(DT1, DT2)
             if(DT1.N_stage ~= DT2.N_stage)
-                error("Both DT's should have the same number of stages.");
+                error("Drivetrain:different_stage_number", "Both DT's should have the same number of stages.");
             end
             
             hold on;
@@ -387,6 +387,15 @@ classdef (Abstract) Drivetrain
             
             f = f_n(n);
             mode_shape = mode_shape(:, n);
+        end
+        
+        function Simpack_time_integration(obj)
+            sim = SimpackCOM();
+            
+            file = dir(sprintf("@%s\\*.spck", class(obj)));
+            file_name = sprintf("%s\\%s", file.folder, file.name);
+            model = sim.open_model(file_name);
+            sim.time_integration();
         end
         
         function SIMPACK_version(obj, varargin)
@@ -1372,11 +1381,14 @@ classdef (Abstract) Drivetrain
 			val.time = data(:,1);
 			val.data = data(:,2);
 
-		end
+        end
+        
         function rewrite_subvar(old_file)
             %REWRITE_SUBVAR processes a .subvar file making it easier to
-            % modify later on using the method update_subvar that should be 
-            % implemented by the sub-classes.
+            % modify later on using the method update_subvar() that should 
+            % be implemented by the sub-classes.
+            %
+            % see also update_subvar
             %
             
             old_ID = fopen(old_file, 'r');

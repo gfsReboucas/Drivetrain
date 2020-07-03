@@ -80,7 +80,7 @@ classdef ISO_6336 < Gear_Set
                 obj.calculation = 'KISSsoft';
                 if(~KISSsoftCOM.is_installed())
                     obj.calculation = 'default';
-                    warning('ISO_6336:KS', ['KISSsoft\x00a9 COM interface not found.', ...
+                    warning('ISO_6336:KS', ['KISSsoft\x00a9 COM interface not found. ', ...
                                             'Using [DEFAULT] calculation method.']);
                 end
             elseif(strcmpi(default.calculation, 'default'))

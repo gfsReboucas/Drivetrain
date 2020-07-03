@@ -28,8 +28,8 @@ classdef NREL_5MW < Drivetrain
     % see also DRIVETRAIN, DTU_10MW.
     
     properties
-        gamma_P (1, 1)                {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % Scaling factor for the rated power
-        gamma_n (1, 1)                {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % Scaling factor for the rotor speed
+        gamma_P (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0; % Scaling factor for the rated power
+        gamma_n (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0; % Scaling factor for the rotor speed
     end
     
     methods
@@ -80,23 +80,23 @@ classdef NREL_5MW < Drivetrain
             m_G =     1900.0;
             J_G =      534.116*gamma("J_G");
             
-            obj@Drivetrain('N_stage',    N_st, ...
-                           'stage',      stage, ...
-                           'P_rated',    P_r, ...
-                           'n_rotor',    n_r, ...
-                           'main_shaft', inp_shaft, ...
-                           'm_Rotor',    m_R, ...
-                           'J_Rotor',    J_R, ...
-                           'm_Gen',      m_G, ...
-                           'J_Gen',      J_G, ...
-                           'S_Hmin',     1.25, ...
-                           'S_Fmin',     1.56, ...
-... %                            'dynamic_model', @Kahraman_94);
-                           'dynamic_model', @Lin_Parker_99);
+            obj@Drivetrain('N_stage'      , N_st, ...
+                           'stage'        , stage, ...
+                           'P_rated'      , P_r, ...
+                           'n_rotor'      , n_r, ...
+                           'main_shaft'   , inp_shaft, ...
+                           'm_Rotor'      , m_R, ...
+                           'J_Rotor'      , J_R, ...
+                           'm_Gen'        , m_G, ...
+                           'J_Gen'        , J_G, ...
+                           'S_Hmin'       , 1.25, ...
+                           'S_Fmin'       , 1.56, ...
+                           'dynamic_model', @Kahraman_94);
+%                            'dynamic_model', @Lin_Parker_99);
                            
             [obj.S_H_val, obj.S_F_val, obj.S_shaft_val] = obj.safety_factors();
 
-            obj.gamma = scaling_factor(gamma.name, ones(length(gamma), 1));
+            obj.gamma = scaling_factor(gamma.name, gamma.value);
         end
     end
     
@@ -518,8 +518,71 @@ classdef NREL_5MW < Drivetrain
     end
     
     methods
-        function update_subvar(obj)
-            new_ID = fopen('@NREL_5MW\NREL_5MW.rigid.subvar', 'w');
+        function update_subvar(obj, varargin)
+            %UPDATE_SUBVAR update some values of the .SubVar file from the
+            %SIMPACK model of the NREL_5MW Drivetrain.
+            %
+            % Kinematic Tree:
+            % ================================================================================
+            %     $R_Isys
+            %      ---->$B_bed_plate................................................... [0 dof]  Joint $J_bed_plate of type 35
+            %           ---->$B_main_shaft............................................. [6 dof]  Joint $J_main_shaft of type 20
+            %                ---->$BG_stage_01.$B_carrier.............................. [0 dof]  Joint $BG_stage_01.$J_carrier of type 0
+            %                     ---->$BG_stage_01.$BG_planet_01.$B_pin............... [6 dof]  Joint $BG_stage_01.$BG_planet_01.$J_pin of type 20
+            %                          ---->$BG_stage_01.$BG_planet_01.$B_gear......... [0 dof]  Joint $BG_stage_01.$BG_planet_01.$J_gear of type 0
+            %
+            %                     ---->$BG_stage_01.$BG_planet_02.$B_pin............... [6 dof]  Joint $BG_stage_01.$BG_planet_02.$J_pin of type 20
+            %                          ---->$BG_stage_01.$BG_planet_02.$B_gear......... [0 dof]  Joint $BG_stage_01.$BG_planet_02.$J_gear of type 0
+            %
+            %                     ---->$BG_stage_01.$BG_planet_03.$B_pin............... [6 dof]  Joint $BG_stage_01.$BG_planet_03.$J_pin of type 20
+            %                          ---->$BG_stage_01.$BG_planet_03.$B_gear......... [0 dof]  Joint $BG_stage_01.$BG_planet_03.$J_gear of type 0
+            %
+            % --        ---->$B_GB_frame............................................... [0 dof]  Joint $J_GB_frame of type 0
+            % |              ---->$BG_stage_01.$B_ring................................. [0 dof]  Joint $BG_stage_01.$J_ring of type 0
+            % |              ---->$BG_stage_01.$B_shaft................................ [6 dof]  Joint $BG_stage_01.$J_shaft of type 20
+            % |                   ---->$BG_stage_01.$B_sun............................. [0 dof]  Joint $BG_stage_01.$J_sun of type 0
+            % |                   ---->$BG_stage_02.$B_carrier......................... [0 dof]  Joint $BG_stage_02.$J_carrier of type 0
+            % |                        ---->$BG_stage_02.$BG_planet_01.$B_pin.......... [6 dof]  Joint $BG_stage_02.$BG_planet_01.$J_pin of type 20
+            % |                             ---->$BG_stage_02.$BG_planet_01.$B_gear.... [0 dof]  Joint $BG_stage_02.$BG_planet_01.$J_gear of type 0
+            % |
+            % |                        ---->$BG_stage_02.$BG_planet_02.$B_pin.......... [6 dof]  Joint $BG_stage_02.$BG_planet_02.$J_pin of type 20
+            % |                             ---->$BG_stage_02.$BG_planet_02.$B_gear.... [0 dof]  Joint $BG_stage_02.$BG_planet_02.$J_gear of type 0
+            % |
+            % |                        ---->$BG_stage_02.$BG_planet_03.$B_pin.......... [6 dof]  Joint $BG_stage_02.$BG_planet_03.$J_pin of type 20
+            % |                             ---->$BG_stage_02.$BG_planet_03.$B_gear.... [0 dof]  Joint $BG_stage_02.$BG_planet_03.$J_gear of type 0
+            % |
+            % |              ---->$BG_stage_02.$B_ring................................. [0 dof]  Joint $BG_stage_02.$J_ring of type 0
+            % |              ---->$BG_stage_02.$B_shaft................................ [6 dof]  Joint $BG_stage_02.$J_shaft of type 20
+            % |                   ---->$BG_stage_02.$B_sun............................. [0 dof]  Joint $BG_stage_02.$J_sun of type 0
+            % |                   ---->$BG_stage_03.$BG_wheel.$B_pin................... [0 dof]  Joint $BG_stage_03.$BG_wheel.$J_pin of type 0
+            % |                        ---->$BG_stage_03.$BG_wheel.$B_gear............. [0 dof]  Joint $BG_stage_03.$BG_wheel.$J_gear of type 0
+            % |
+            % --             ---->$BG_stage_03.$B_shaft................................ [6 dof]  Joint $BG_stage_03.$J_shaft of type 20
+            % .
+            % $L_output_shaft.......................................................... [1 cft]  Constraint of type 25
+            %                     ---->$BG_stage_03.$BG_pinion.$B_pin.................. [0 dof]  Joint $BG_stage_03.$BG_pinion.$J_pin of type 0
+            %                          ---->$BG_stage_03.$BG_pinion.$B_gear............ [0 dof]  Joint $BG_stage_03.$BG_pinion.$J_gear of type 0
+            %
+            
+            if(isempty(varargin{:}))
+                mesh_flag = false;
+            else
+                mesh_flag = varargin{1};
+            end
+            
+            gamma_x = max([obj.gamma("m_n1") obj.gamma("m_n2") obj.gamma("m_n3")]);
+            gamma_load = gamma_x^2;
+            
+            k_sp = zeros(2, 1);
+            k_rp = k_sp;
+            for idx = 1:2
+                k_sp(idx) = obj.stage(idx).sub_set('sun_planet').k_mesh;
+                k_rp(idx) = obj.stage(idx).sub_set('planet_ring').k_mesh;
+            end
+            
+            k_3 = obj.stage(idx + 1).k_mesh;
+            
+            new_ID = fopen("@NREL_5MW\NREL_5MW.rigid.subvar", "w");
             
             fprintf(new_ID, "!file.version=3.4! Removing this line will make the file unreadable\n");
             fprintf(new_ID, "\n");
@@ -533,17 +596,19 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "subvar($_regularization_vel, str= '1.0e-3')                                                   ! $_regularization_vel\n");
             fprintf(new_ID, "subvar($_tooth_damping, str= '5.0e8 N/(m/s)')                                                 ! $_tooth_damping\n");
             fprintf(new_ID, "subvar($_tooth_stiff_ratio, str= '0.8')                                                       ! $_tooth_stiff_ratio\n");
-            fprintf(new_ID, "subvar($_height, str= '1.75 m')                                                               ! $_height\n");
+            fprintf(new_ID, "subvar($_height, str= '1.75 * %e m')                                                               ! $_height\n", gamma_x);
+            fprintf(new_ID, "subvar($_gamma_load, str= '%e')                                                                ! $_gamma_load\n", gamma_load);
+            fprintf(new_ID, "subvar($_gamma_x, str= '%e')                                                                   ! $_gamma_x\n", gamma_x);
             fprintf(new_ID, "subvargroup.begin (                 $SVG_material                 )                           ! $SVG_material\n");
-            fprintf(new_ID, "   subvar($_E, str= '%e Pa', desc (   1) = 'Young\'s modulus')                           ! $SVG_material.$_E\n", Material.E);
-            fprintf(new_ID, "   subvar($_nu, str= '%e', desc (   1) = 'Poisson\'s ratio')                                 ! $SVG_material.$_nu\n", Material.nu);
-            fprintf(new_ID, "   subvar($_rho, str= '%e kg/m^3', desc (   1) = 'Density')                               ! $SVG_material.$_rho\n", Material.rho);
+            fprintf(new_ID, "   subvar($_E, str= '206.0e9 Pa', desc (   1) = 'Young\\'s modulus')                          ! $SVG_material.$_E\n");
+            fprintf(new_ID, "   subvar($_nu, str= '0.3', desc (   1) = 'Poisson\\'s ratio')                                ! $SVG_material.$_nu\n");
+            fprintf(new_ID, "   subvar($_rho, str= '7.83e3 kg/m^3', desc (   1) = 'Density')                               ! $SVG_material.$_rho\n");
             fprintf(new_ID, "subvargroup.end (                   $SVG_material                 )                           ! $SVG_material\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate\n");
             fprintf(new_ID, "   subvar($_length, str= 'anint($SVG_bed_plate.$_x_gen) m')                                   ! $SVG_bed_plate.$_length\n");
             fprintf(new_ID, "   subvar($_width, str= '$SVG_bed_plate.$_length')                                            ! $SVG_bed_plate.$_width\n");
-            fprintf(new_ID, "   subvar($_thickness, str= '0.5 m')                                                          ! $SVG_bed_plate.$_thickness\n");
+            fprintf(new_ID, "   subvar($_thickness, str= '0.5 * %e m')                                                          ! $SVG_bed_plate.$_thickness\n", gamma_x);
             fprintf(new_ID, "   subvar($_x_gen, str= '$SVG_stage_03.$SVG_wheel.$SVG_C.$_x_GB + $SVG_stage_03.$SVG_shaft.$_length') ! $SVG_bed_plate.$_x_gen\n");
             fprintf(new_ID, "subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate\n");
             fprintf(new_ID, "\n");
@@ -553,7 +618,7 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin (                 $SVG_GB_frame                 )                           ! $SVG_GB_frame\n");
-            fprintf(new_ID, "   subvar($_length, str= '3.5 m')                                                             ! $SVG_GB_frame.$_length\n");
+            fprintf(new_ID, "   subvar($_length, str= '3.5 * %e m')                                                             ! $SVG_GB_frame.$_length\n", gamma_x);
             fprintf(new_ID, "   subvar($_width, str= '2.0*$_height')                                                       ! $SVG_GB_frame.$_width\n");
             fprintf(new_ID, "   subvar($_x, str= '($SVG_main_shaft.$_length*7/4 - $SVG_bed_plate.$_length + $SVG_GB_frame.$_length)/2.0') ! $SVG_GB_frame.$_x\n");
             fprintf(new_ID, "subvargroup.end (                   $SVG_GB_frame                 )                           ! $SVG_GB_frame\n");
@@ -580,6 +645,8 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "subvargroup.end (                   $SVG_INP_B                    )                           ! $SVG_INP_B\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01\n");
+            fprintf(new_ID, "   subvar($_ring_planet_stiffness, str= '%e N/m')                                          ! $SVG_stage_01.$_ring_planet_stiffness\n", k_rp(1));
+            fprintf(new_ID, "   subvar($_sun_planet_stiffness, str= '%e N/m')                                           ! $SVG_stage_01.$_sun_planet_stiffness\n", k_sp(1));
             fprintf(new_ID, "   subvar($_normal_module, str= '%e mm')                                                    ! $SVG_stage_01.$_normal_module\n", obj.stage(1).m_n);
             fprintf(new_ID, "   subvar($_face_width, str= '%e mm')                                                      ! $SVG_stage_01.$_face_width\n", obj.stage(1).b);
             fprintf(new_ID, "   subvar($_center_distance, str= '%e mm')                                                 ! $SVG_stage_01.$_center_distance\n", obj.stage(1).a_w);
@@ -651,8 +718,10 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02\n");
+            fprintf(new_ID, "   subvar($_ring_planet_stiffness, str= '%e N/m')                                          ! $SVG_stage_01.$_ring_planet_stiffness\n", k_rp(2));
+            fprintf(new_ID, "   subvar($_sun_planet_stiffness, str= '%e N/m')                                           ! $SVG_stage_01.$_sun_planet_stiffness\n", k_sp(2));
             fprintf(new_ID, "   subvar($_normal_module, str= '%e mm')                                                    ! $SVG_stage_02.$_normal_module\n", obj.stage(2).m_n);
-            fprintf(new_ID, "   subvar($_face_width, str= '%e mm')                                                      ! $SVG_stage_02.$_face_width\n", obj.stage(2).m_n);
+            fprintf(new_ID, "   subvar($_face_width, str= '%e mm')                                                      ! $SVG_stage_02.$_face_width\n", obj.stage(2).b);
             fprintf(new_ID, "   subvar($_center_distance, str= '%e mm')                                                 ! $SVG_stage_02.$_center_distance\n", obj.stage(2).a_w);
             fprintf(new_ID, "   subvar($_pressure_angle, str= '20.0 deg')                                                  ! $SVG_stage_02.$_pressure_angle\n");
             fprintf(new_ID, "   subvar($_helix_angle, str= '0.0 deg')                                                      ! $SVG_stage_02.$_helix_angle\n");
@@ -718,6 +787,7 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03\n");
+            fprintf(new_ID, "   subvar($_mesh_stiffness, str= '%e N/m')                                                 ! $SVG_stage_03.$_mesh_stiffness\n", k_3);
             fprintf(new_ID, "   subvar($_normal_module, str= '%e mm')                                                    ! $SVG_stage_03.$_normal_module\n", obj.stage(3).m_n);
             fprintf(new_ID, "   subvar($_face_width, str= '%e mm')                                                      ! $SVG_stage_03.$_face_width\n", obj.stage(3).b);
             fprintf(new_ID, "   subvar($_center_distance, str= '%e mm')                                                 ! $SVG_stage_03.$_center_distance\n", obj.stage(3).a_w);
@@ -811,6 +881,12 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_D_beta, str= '%e Nm/(rad/s)')                                                   ! $SVG_bearing_damping.$_D_beta\n", obj.stage(1).bearing(1).C_beta);
             fprintf(new_ID, "   subvar($_D_gamma, str= '%e Nm/(rad/s)')                                                  ! $SVG_bearing_damping.$_D_gamma\n", obj.stage(1).bearing(1).C_gamma);
             fprintf(new_ID, "subvargroup.end (                   $SVG_bearing_damping          )                           ! $SVG_bearing_damping\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_mesh_stiffness           )                           ! $SVG_mesh_stiffness\n");
+            fprintf(new_ID, "   subvar($_flag, str= '%i', discr.desc (   1) = 'Basic Gear Pair (FE204)', discr.desc (   2) = 'Gear Pair (FE225)', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_mesh_stiffness.$_flag\n", mesh_flag);
+            fprintf(new_ID, "   subvar($_linear, str= 'SWITCH($SVG_mesh_stiffness.$_flag)\n{\n   CASE 1: 0;\n   CASE 0: 1;\n   DEFAULT: 0;\n}') ! $SVG_mesh_stiffness.$_linear\n");
+            fprintf(new_ID, "   subvar($_advanced, str= 'SWITCH($SVG_mesh_stiffness.$_flag)\n{\n   CASE 1: 1;\n   CASE 0: 0;\n   DEFAULT: 1;\n}') ! $SVG_mesh_stiffness.$_advanced\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_mesh_stiffness           )                           ! $SVG_mesh_stiffness\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "\n");
             

@@ -128,7 +128,7 @@ classdef Gear_Set < Gear
                 obj.configuration = default.configuration;
                 obj.N_p    = 1;
             else
-                error('prog:input', 'Configuration [%s] is NOT defined.', default.configuration)
+                error('Gear_Set:configuration_undefined', 'Configuration [%s] is NOT defined.', default.configuration)
             end
             
             obj.a_w = default.a_w;
@@ -527,31 +527,6 @@ classdef Gear_Set < Gear
 %             warning('on', id_1);
             
             obj_sca = obj_ref.scale_aspect(gamma, aspect);
-        end
-        
-        %% Dynamics:
-        function [M, K] = Eritenel_2011(obj)
-            %ERITENEL_2011 Returns the inertia and stiffness matrices of
-            % the drivetrain according to:
-            % [1] T. Eritenel, 'Three-Dimensional Nonlinear Dynamics and
-            % Vibration Reduction of Gear Pairs and Planetary Gears',
-            % Ph.D., Ohio State University, Mechanical Engineering, 2011.
-            % http://rave.ohiolink.edu/etdc/view?acc_num=osu1298651902
-            % [2] T. Eritenel and R. Parker, 'Modal properties of
-            % three-dimensional helical planetary gears', Journal of Sound
-            % and Vibration, vol. 325, no. 1-2, pp. 397-420, 2009.
-            % https://doi.org/10.1016/j.jsv.2009.03.002
-            % [3] T. Eritenel and R. Parker, 'Three-dimensional nonlinear
-            % vibration of gear pairs', Journal of Sound and Vibration, 
-            % vol. 331, no. 15, pp. 3628-3648, 2012.
-            % https://doi.org/10.1016/j.jsv.2012.03.019
-            % [4] T. Eritenel and R. Parker, 'An investigation of tooth
-            % mesh nonlinearity and partial contact loss in gear pairs
-            % using a lumped-parameter model', Mechanism and Machine
-            % Theory, vol. 56, pp. 28-51, 2012.
-            % https://doi.org/10.1016/j.mechmachtheory.2012.05.002
-            %
-            M = NaN; K = NaN;
         end
         
         %% Misc.:

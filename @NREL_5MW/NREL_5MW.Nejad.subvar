@@ -1,0 +1,254 @@
+!file.version=2.5! Removing this line will make the file unreadable
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvargroup.begin (                 $G_LS                         )                           ! $G_LS
+   subvar($_alpha, str= '20 deg')                                                             ! $G_LS.$_alpha
+   subvar($_mn, str= '45 mm')                                                                 ! $G_LS.$_mn
+   subvar($_x_sun, str= '0.617')                                                              ! $G_LS.$_x_sun
+   subvar($_x_planet, str= '0.802')                                                           ! $G_LS.$_x_planet
+   subvar($_x_ring, str= '-0.501')                                                            ! $G_LS.$_x_ring
+   subvar($_z_sun, str= '19')                                                                 ! $G_LS.$_z_sun
+   subvar($_z_planet, str= '17')                                                              ! $G_LS.$_z_planet
+   subvar($_z_ring, str= '56')                                                                ! $G_LS.$_z_ring
+   subvar($_b, str= '491 mm')                                                                 ! $G_LS.$_b
+   subvar($_Norm_Backlash, str= '0.40 mm')                                                    ! $G_LS.$_Norm_Backlash
+   subvar($_Tooth_Damping, str= '500000000')                                                  ! $G_LS.$_Tooth_Damping
+   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $G_LS.$_Tooth_Stiff_ratio
+   subvar($_PL_c_x, str= '91016')                                                             ! $G_LS.$_PL_c_x
+   subvar($_PL_c_y, str= '9.37E+9')                                                           ! $G_LS.$_PL_c_y
+   subvar($_PL_c_z, str= '3.20E+9')                                                           ! $G_LS.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_LS.$_PL_c_al
+   subvar($_PL_c_be, str= '1.39E+6')                                                          ! $G_LS.$_PL_c_be
+   subvar($_PL_c_ga, str= '4.45E+6')                                                          ! $G_LS.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_LS.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_LS.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_LS.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_LS.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_LS.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_LS.$_PL_d_ga
+subvargroup.end (                   $G_LS                         )                           ! $G_LS
+
+subvargroup.begin (                 $G_IMS                        )                           ! $G_IMS
+   subvar($_alpha, str= '20 deg')                                                             ! $G_IMS.$_alpha
+   subvar($_mn, str= '21 mm')                                                                 ! $G_IMS.$_mn
+   subvar($_x_sun, str= '0.389')                                                              ! $G_IMS.$_x_sun
+   subvar($_x_planet, str= '0.504')                                                           ! $G_IMS.$_x_planet
+   subvar($_x_ring, str= '0.117')                                                             ! $G_IMS.$_x_ring
+   subvar($_z_sun, str= '18')                                                                 ! $G_IMS.$_z_sun
+   subvar($_z_planet, str= '36')                                                              ! $G_IMS.$_z_planet
+   subvar($_z_ring, str= '93')                                                                ! $G_IMS.$_z_ring
+   subvar($_b, str= '550 mm')                                                                 ! $G_IMS.$_b
+   subvar($_Norm_Backlash, str= '0.40 mm')                                                    ! $G_IMS.$_Norm_Backlash
+   subvar($_Tooth_Damping, str= '50000000')                                                   ! $G_IMS.$_Tooth_Damping
+   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $G_IMS.$_Tooth_Stiff_ratio
+   subvar($_PL_c_x, str= '91016')                                                             ! $G_IMS.$_PL_c_x
+   subvar($_PL_c_y, str= '6.12E+7')                                                           ! $G_IMS.$_PL_c_y
+   subvar($_PL_c_z, str= '1.16E+9')                                                           ! $G_IMS.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_IMS.$_PL_c_al
+   subvar($_PL_c_be, str= '7.5e+4')                                                           ! $G_IMS.$_PL_c_be
+   subvar($_PL_c_ga, str= '7.5e+4')                                                           ! $G_IMS.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_IMS.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_IMS.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_IMS.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_IMS.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_IMS.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_IMS.$_PL_d_ga
+subvargroup.end (                   $G_IMS                        )                           ! $G_IMS
+
+subvargroup.begin (                 $G_HS                         )                           ! $G_HS
+   subvar($_alpha, str= '20 deg')                                                             ! $G_HS.$_alpha
+   subvar($_mn, str= '14 mm')                                                                 ! $G_HS.$_mn
+   subvar($_helix, str= '10 deg')                                                             ! $G_HS.$_helix
+   subvar($_x_pinion, str= '0.480')                                                           ! $G_HS.$_x_pinion
+   subvar($_x_gear, str= '0.669')                                                             ! $G_HS.$_x_gear
+   subvar($_z_pinion, str= '24')                                                              ! $G_HS.$_z_pinion
+   subvar($_z_gear, str= '95')                                                                ! $G_HS.$_z_gear
+   subvar($_b, str= '360 mm')                                                                 ! $G_HS.$_b
+   subvar($_Norm_Backlash, str= '0.40 mm')                                                    ! $G_HS.$_Norm_Backlash
+   subvar($_Tooth_Damping, str= '5000000')                                                    ! $G_HS.$_Tooth_Damping
+   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $G_HS.$_Tooth_Stiff_ratio
+subvargroup.end (                   $G_HS                         )                           ! $G_HS
+
+subvargroup.begin (                 $G_Bearing_IMS_A              )                           ! $G_Bearing_IMS_A
+   subvar($_PL_c_x, str= '0')                                                                 ! $G_Bearing_IMS_A.$_PL_c_x
+   subvar($_PL_c_y, str= '6.12E+7')                                                           ! $G_Bearing_IMS_A.$_PL_c_y
+   subvar($_PL_c_z, str= '1.16E+9')                                                           ! $G_Bearing_IMS_A.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_Bearing_IMS_A.$_PL_c_al
+   subvar($_PL_c_be, str= '74428')                                                            ! $G_Bearing_IMS_A.$_PL_c_be
+   subvar($_PL_c_ga, str= '3239.8')                                                           ! $G_Bearing_IMS_A.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_Bearing_IMS_A.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_Bearing_IMS_A.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_Bearing_IMS_A.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_Bearing_IMS_A.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_Bearing_IMS_A.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_Bearing_IMS_A.$_PL_d_ga
+subvargroup.end (                   $G_Bearing_IMS_A              )                           ! $G_Bearing_IMS_A
+
+subvargroup.begin (                 $G_Bearing_IMS_B              )                           ! $G_Bearing_IMS_B
+   subvar($_PL_c_x, str= '7.41e+7')                                                           ! $G_Bearing_IMS_B.$_PL_c_x
+   subvar($_PL_c_y, str= '5.17E+8')                                                           ! $G_Bearing_IMS_B.$_PL_c_y
+   subvar($_PL_c_z, str= '484000000')                                                         ! $G_Bearing_IMS_B.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_Bearing_IMS_B.$_PL_c_al
+   subvar($_PL_c_be, str= '1.67e+6')                                                          ! $G_Bearing_IMS_B.$_PL_c_be
+   subvar($_PL_c_ga, str= '1.78e+6')                                                          ! $G_Bearing_IMS_B.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_Bearing_IMS_B.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_Bearing_IMS_B.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_Bearing_IMS_B.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_Bearing_IMS_B.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_Bearing_IMS_B.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_Bearing_IMS_B.$_PL_d_ga
+subvargroup.end (                   $G_Bearing_IMS_B              )                           ! $G_Bearing_IMS_B
+
+subvargroup.begin (                 $G_Bearing_IMS_C              )                           ! $G_Bearing_IMS_C
+   subvar($_PL_c_x, str= '78723000')                                                          ! $G_Bearing_IMS_C.$_PL_c_x
+   subvar($_PL_c_y, str= '7.3708E+8')                                                         ! $G_Bearing_IMS_C.$_PL_c_y
+   subvar($_PL_c_z, str= '3.2612e+8')                                                         ! $G_Bearing_IMS_C.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_Bearing_IMS_C.$_PL_c_al
+   subvar($_PL_c_be, str= '1123400')                                                          ! $G_Bearing_IMS_C.$_PL_c_be
+   subvar($_PL_c_ga, str= '2539000')                                                          ! $G_Bearing_IMS_C.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_Bearing_IMS_C.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_Bearing_IMS_C.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_Bearing_IMS_C.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_Bearing_IMS_C.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_Bearing_IMS_C.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_Bearing_IMS_C.$_PL_d_ga
+subvargroup.end (                   $G_Bearing_IMS_C              )                           ! $G_Bearing_IMS_C
+
+subvargroup.begin (                 $G_Bearing_HS_A               )                           ! $G_Bearing_HS_A
+   subvar($_PL_c_x, str= '1.26e+8')                                                           ! $G_Bearing_HS_A.$_PL_c_x
+   subvar($_PL_c_y, str= '8.21e+8')                                                           ! $G_Bearing_HS_A.$_PL_c_y
+   subvar($_PL_c_z, str= '821000000')                                                         ! $G_Bearing_HS_A.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_Bearing_HS_A.$_PL_c_al
+   subvar($_PL_c_be, str= '1123400')                                                          ! $G_Bearing_HS_A.$_PL_c_be
+   subvar($_PL_c_ga, str= '2539000')                                                          ! $G_Bearing_HS_A.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_Bearing_HS_A.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_Bearing_HS_A.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_Bearing_HS_A.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_Bearing_HS_A.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_Bearing_HS_A.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_Bearing_HS_A.$_PL_d_ga
+subvargroup.end (                   $G_Bearing_HS_A               )                           ! $G_Bearing_HS_A
+
+subvargroup.begin (                 $G_Bearing_HS_B               )                           ! $G_Bearing_HS_B
+   subvar($_PL_c_x, str= '6.7e+7')                                                            ! $G_Bearing_HS_B.$_PL_c_x
+   subvar($_PL_c_y, str= '8.09e+8')                                                           ! $G_Bearing_HS_B.$_PL_c_y
+   subvar($_PL_c_z, str= '1.33e+8')                                                           ! $G_Bearing_HS_B.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_Bearing_HS_B.$_PL_c_al
+   subvar($_PL_c_be, str= '1.71e+5')                                                          ! $G_Bearing_HS_B.$_PL_c_be
+   subvar($_PL_c_ga, str= '1.04e+6')                                                          ! $G_Bearing_HS_B.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_Bearing_HS_B.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_Bearing_HS_B.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_Bearing_HS_B.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_Bearing_HS_B.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_Bearing_HS_B.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_Bearing_HS_B.$_PL_d_ga
+subvargroup.end (                   $G_Bearing_HS_B               )                           ! $G_Bearing_HS_B
+
+subvargroup.begin (                 $G_Bearing_HS_C               )                           ! $G_Bearing_HS_C
+   subvar($_PL_c_x, str= '7.93e+7')                                                           ! $G_Bearing_HS_C.$_PL_c_x
+   subvar($_PL_c_y, str= '1.04e+9')                                                           ! $G_Bearing_HS_C.$_PL_c_y
+   subvar($_PL_c_z, str= '7.29e+7')                                                           ! $G_Bearing_HS_C.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_Bearing_HS_C.$_PL_c_al
+   subvar($_PL_c_be, str= '97637.5')                                                          ! $G_Bearing_HS_C.$_PL_c_be
+   subvar($_PL_c_ga, str= '1.39e+6')                                                          ! $G_Bearing_HS_C.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_Bearing_HS_C.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_Bearing_HS_C.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_Bearing_HS_C.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_Bearing_HS_C.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_Bearing_HS_C.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_Bearing_HS_C.$_PL_d_ga
+subvargroup.end (                   $G_Bearing_HS_C               )                           ! $G_Bearing_HS_C
+
+subvargroup.begin (                 $G_INP_A                      )                           ! $G_INP_A
+   subvar($_PL_c_x, str= '0')                                                                 ! $G_INP_A.$_PL_c_x
+   subvar($_PL_c_y, str= '1.54e+10')                                                          ! $G_INP_A.$_PL_c_y
+   subvar($_PL_c_z, str= '15400000000')                                                       ! $G_INP_A.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_INP_A.$_PL_c_al
+   subvar($_PL_c_be, str= '5e+6')                                                             ! $G_INP_A.$_PL_c_be
+   subvar($_PL_c_ga, str= '5e+6')                                                             ! $G_INP_A.$_PL_c_ga
+   subvar($_PL_d_x, str= '0')                                                                 ! $G_INP_A.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_INP_A.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_INP_A.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_INP_A.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_INP_A.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_INP_A.$_PL_d_ga
+subvargroup.end (                   $G_INP_A                      )                           ! $G_INP_A
+
+subvargroup.begin (                 $G_INP_B                      )                           ! $G_INP_B
+   subvar($_PL_c_x, str= '4.06e+8')                                                           ! $G_INP_B.$_PL_c_x
+   subvar($_PL_c_y, str= '1.54e+10')                                                          ! $G_INP_B.$_PL_c_y
+   subvar($_PL_c_z, str= '15400000000')                                                       ! $G_INP_B.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_INP_B.$_PL_c_al
+   subvar($_PL_c_be, str= '97637.5')                                                          ! $G_INP_B.$_PL_c_be
+   subvar($_PL_c_ga, str= '97637.5')                                                          ! $G_INP_B.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_INP_B.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_INP_B.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_INP_B.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_INP_B.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_INP_B.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_INP_B.$_PL_d_ga
+subvargroup.end (                   $G_INP_B                      )                           ! $G_INP_B
+
+subvargroup.begin (                 $G_PLC_A                      )                           ! $G_PLC_A
+   subvar($_PL_c_x, str= '6.6e+4')                                                            ! $G_PLC_A.$_PL_c_x
+   subvar($_PL_c_y, str= '1770000000')                                                        ! $G_PLC_A.$_PL_c_y
+   subvar($_PL_c_z, str= '1770000000')                                                        ! $G_PLC_A.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_PLC_A.$_PL_c_al
+   subvar($_PL_c_be, str= '1390000')                                                          ! $G_PLC_A.$_PL_c_be
+   subvar($_PL_c_ga, str= '1.39e+6')                                                          ! $G_PLC_A.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_PLC_A.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_PLC_A.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_PLC_A.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_PLC_A.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_PLC_A.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_PLC_A.$_PL_d_ga
+subvargroup.end (                   $G_PLC_A                      )                           ! $G_PLC_A
+
+subvargroup.begin (                 $G_PLC_B                      )                           ! $G_PLC_B
+   subvar($_PL_c_x, str= '6.6e+7')                                                            ! $G_PLC_B.$_PL_c_x
+   subvar($_PL_c_y, str= '1770000000')                                                        ! $G_PLC_B.$_PL_c_y
+   subvar($_PL_c_z, str= '1770000000')                                                        ! $G_PLC_B.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_PLC_B.$_PL_c_al
+   subvar($_PL_c_be, str= '1390000')                                                          ! $G_PLC_B.$_PL_c_be
+   subvar($_PL_c_ga, str= '1.39e+6')                                                          ! $G_PLC_B.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_PLC_B.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_PLC_B.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_PLC_B.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_PLC_B.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_PLC_B.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_PLC_B.$_PL_d_ga
+subvargroup.end (                   $G_PLC_B                      )                           ! $G_PLC_B
+
+subvargroup.begin (                 $G_IMS_PLC_A                  )                           ! $G_IMS_PLC_A
+   subvar($_PL_c_x, str= '9.1e+4')                                                            ! $G_IMS_PLC_A.$_PL_c_x
+   subvar($_PL_c_y, str= '6.12e+7')                                                           ! $G_IMS_PLC_A.$_PL_c_y
+   subvar($_PL_c_z, str= '1.16e+9')                                                           ! $G_IMS_PLC_A.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_IMS_PLC_A.$_PL_c_al
+   subvar($_PL_c_be, str= '74428')                                                            ! $G_IMS_PLC_A.$_PL_c_be
+   subvar($_PL_c_ga, str= '3239.8')                                                           ! $G_IMS_PLC_A.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_IMS_PLC_A.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_IMS_PLC_A.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_IMS_PLC_A.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_IMS_PLC_A.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_IMS_PLC_A.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_IMS_PLC_A.$_PL_d_ga
+subvargroup.end (                   $G_IMS_PLC_A                  )                           ! $G_IMS_PLC_A
+
+subvargroup.begin (                 $G_IMS_PLC_B                  )                           ! $G_IMS_PLC_B
+   subvar($_PL_c_x, str= '9.1e+7')                                                            ! $G_IMS_PLC_B.$_PL_c_x
+   subvar($_PL_c_y, str= '6.12e+7')                                                           ! $G_IMS_PLC_B.$_PL_c_y
+   subvar($_PL_c_z, str= '1.16e+9')                                                           ! $G_IMS_PLC_B.$_PL_c_z
+   subvar($_PL_c_al, str= '0')                                                                ! $G_IMS_PLC_B.$_PL_c_al
+   subvar($_PL_c_be, str= '74428')                                                            ! $G_IMS_PLC_B.$_PL_c_be
+   subvar($_PL_c_ga, str= '3239.8')                                                           ! $G_IMS_PLC_B.$_PL_c_ga
+   subvar($_PL_d_x, str= '4.53e+002')                                                         ! $G_IMS_PLC_B.$_PL_d_x
+   subvar($_PL_d_y, str= '4.20e+004')                                                         ! $G_IMS_PLC_B.$_PL_d_y
+   subvar($_PL_d_z, str= '3.06e+004')                                                         ! $G_IMS_PLC_B.$_PL_d_z
+   subvar($_PL_d_al, str= '0')                                                                ! $G_IMS_PLC_B.$_PL_d_al
+   subvar($_PL_d_be, str= '3.43e+001')                                                        ! $G_IMS_PLC_B.$_PL_d_be
+   subvar($_PL_d_ga, str= '4.78e+001')                                                        ! $G_IMS_PLC_B.$_PL_d_ga
+subvargroup.end (                   $G_IMS_PLC_B                  )                           ! $G_IMS_PLC_B
+
+                                                                                                                                                                                                                                                                                           

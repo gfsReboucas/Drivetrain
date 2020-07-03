@@ -188,7 +188,7 @@ classdef Bearing
         function val = parallel_association(obj)
             n = numel(obj);
             if(n < 2)
-                warninig("Only one bearing.");
+                warning("Bearing:parallel_assoc", "Only one bearing.");
                 val = obj;
             else
                 nam = "parallel";

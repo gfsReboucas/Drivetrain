@@ -1,30 +1,69 @@
 classdef SimpackCOM
-    %SIMPACKCOM wrapper
+    %SIMPACKCOM Wrapper class to deal with Simpack's COM interface. More
+    % details about Simpack can be found on [1]. Run SimpackCOM.view_COM_methods() to
+    % view all the methods provided by Simpack's COM interface. More info
+    % about it at [2].
+    %
+    % [1] https://www.3ds.com/products-services/simulia/products/simpack/
+    % [2] https://mathworks.com/help/matlab/ref/methodsview.html
+    %
+    
     properties(Access = private)
         COM;
+        post;
     end
     
     properties
-        mode; % GUI, SoLVer, Post
+        model;
+        project;
+    end
+    
+    properties(Dependent)
+        current_model;
     end
     
     methods
         function obj = SimpackCOM(varargin)
-            default = {'mode', 'SLV', ...
-                       'version', ''};
+            default = {'mode', 'SoLVer', ...
+                       'version', '', ...
+                       'model_name', 'NREL_5MW'};
+                   
             [flag, msg] = SimpackCOM.is_installed();
             default = process_varargin(default, varargin);
             
             if(flag)
-                obj.COM = actxserver(sprintf('Simpack.%s%s', default.mode, ...
-                                                      default.version));
+                obj.post   = actxserver(sprintf('Simpack.Post%s', default.version));
             else
                 error(msg.identifier, "%s", msg.message);
             end
             
-            obj.mode = default.mode;
+            if(strcmpi(default.mode, 'solver'))
+                obj.COM = actxserver(sprintf('Simpack.SLV%s' , default.version));
+            elseif(strcmpi(default.mode, 'GUI'))
+                obj.COM = actxserver(sprintf('Simpack.GUI%s' , default.version));
+            else
+                error('SimpackCOM:mode', 'Valid modes are [SoLVer] and [GUI].');
+            end
+            
+            file = dir(sprintf("@%s\\*.spck", default.model_name));
+            file_name = sprintf("%s\\%s", file.folder, file.name);
+            obj.model = obj.open_model(file_name);
+            
+            obj.project = obj.post.Spck.addProject();
             
         end
+        
+        function mdl = open_model(obj, file)
+            mdl = obj.COM.Spck.openModel(file);
+        end
+        
+        function time_integration(obj)
+            % Sets model time as 0
+            obj.COM.Spck.currentModel.Time.src = 0.0;
+            % time integration with measurements
+            result = obj.COM.Spck.Slv.integMeas(obj.current_model);
+        end
+        
     end
     
     methods(Static)
@@ -39,7 +78,7 @@ classdef SimpackCOM
         end
         
         function view_COM_methods()
-            [flag, msg] = KISSsoftCOM.is_installed();
+            [flag, msg] = SimpackCOM.is_installed();
             if(flag)
                 methodsview(actxserver('Simpack.Gui'));
                 methodsview(actxserver('Simpack.Slv'));
@@ -49,6 +88,12 @@ classdef SimpackCOM
             end
         end
         
+    end
+    
+    methods
+        function val = get.current_model(obj)
+            val = obj.COM.Spck.currentModel;
+        end
     end
     
 end
