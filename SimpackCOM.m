@@ -73,6 +73,9 @@ classdef SimpackCOM
         end
         
         function delete(obj)
+            obj.model.close();
+            obj.post.Spck.closeProject(obj.project);
+            obj.post.Spck.quit;
             obj.COM.Spck.Quit;
         end
         

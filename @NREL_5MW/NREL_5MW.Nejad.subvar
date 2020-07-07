@@ -3,8 +3,11 @@
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar($_gamma_load, str= '1.000000e+00')                                                     ! $_gamma_load
 subvar($_gamma_Nm, str= '1')                                                                  ! $_gamma_Nm
+subvar($_gamma_load, str= '1.000000e+00')                                                     ! $_gamma_load
+subvar($_rated_power, str= '5.0e3 kW')                                                        ! $_rated_power
+subvar($_rotor_speed, str= '12.1 rpm')                                                        ! $_rotor_speed
+subvar($_GB_ratio, str= '97')                                                                 ! $_GB_ratio
 subvargroup.begin (                 $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS
    subvar($_gamma_d, str= '1.000000e+00')                                                     ! $SVG_main_shaft_LSS.$_gamma_d
    subvar($_gamma_L, str= '1.000000e+00')                                                     ! $SVG_main_shaft_LSS.$_gamma_L
@@ -281,5 +284,11 @@ subvargroup.begin (                 $SVG_mesh                     )             
    subvar($_use_detailed, str= 'SWITCH($SVG_mesh.$_flag){	CASE 0:		0;	CASE 1:		1;	DEFAULT:		0;}') ! $SVG_mesh.$_use_detailed
    subvar($_use_linear, str= 'SWITCH($SVG_mesh.$_flag){	CASE 0:		1;	CASE 1:		0;	DEFAULT:		1;}') ! $SVG_mesh.$_use_linear
 subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh
+
+subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
+   subvar($_flag, str= '1', discr.desc (   1) = 'torque (T=P/omega)', discr.desc (   2) = 'PI control (CE129)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_generator.$_flag
+   subvar($_use_torque, str= 'SWITCH($SVG_generator.$_flag){	CASE 0:		0;	CASE 1:		1;	DEFAULT:		0;}') ! $SVG_generator.$_use_torque
+   subvar($_use_control, str= 'SWITCH($SVG_generator.$_flag){	CASE 0:		1;	CASE 1:		0;	DEFAULT:		1;}') ! $SVG_generator.$_use_control
+subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
 
                                                                                                                                                                                                                                                                                                                                                                                                                    

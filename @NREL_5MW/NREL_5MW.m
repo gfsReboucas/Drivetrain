@@ -937,11 +937,10 @@ classdef NREL_5MW < Drivetrain
             %                        ---->$G_Body_LS.$B_PL3.......... [0 dof]  Joint $G_Body_LS.$J_PL3 of type 0
             %
             
-            if(isempty(varargin))
-                mesh_flag = false;
-            else
-                mesh_flag = varargin{1};
-            end
+            default = {'linear_mesh', false, ...
+                       'PI_gen', false};
+            
+            default = process_varargin(default, varargin);
             
             gamma_x = mean([obj.gamma("m_n1") obj.gamma("m_n2") obj.gamma("m_n3")]);
             gamma_load = power(gamma_x, 2.0);
@@ -963,8 +962,11 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "!**********************************************************************\n");
             fprintf(new_ID, "! SubVars\n");
             fprintf(new_ID, "!**********************************************************************\n");
-            fprintf(new_ID, "subvar($_gamma_load, str= '%e')                                                                ! $_gamma_load\n", gamma_load);
             fprintf(new_ID, "subvar($_gamma_Nm, str= '%e')                                                                  ! $_gamma_Nm\n", gamma_Nm);
+            fprintf(new_ID, "subvar($_gamma_load, str= '%e')                                                                ! $_gamma_load\n", gamma_load);
+            fprintf(new_ID, "subvar($_rated_power, str= '%e kW')                                                        ! $_rated_power\n", obj.P_rated);
+            fprintf(new_ID, "subvar($_rotor_speed, str= '%e rpm')                                                        ! $_rotor_speed\n", obj.n_rotor);
+            fprintf(new_ID, "subvar($_GB_ratio, str= '%e')                                                                 ! $_GB_ratio\n", obj.u);
             fprintf(new_ID, "subvargroup.begin (                 $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS\n");
             fprintf(new_ID, "   subvar($_gamma_d, str= '%e')                                                                ! $SVG_main_shaft_LSS.$_gamma_d\n", obj.gamma('d_S'));
             fprintf(new_ID, "   subvar($_gamma_L, str= '%e')                                                                ! $SVG_main_shaft_LSS.$_gamma_L\n", obj.gamma('L_S'));
@@ -1237,10 +1239,16 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh\n");
-            fprintf(new_ID, "   subvar($_flag, str= '%i', discr.desc (   1) = 'detailed (FE225)', discr.desc (   2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag\n", mesh_flag);
+            fprintf(new_ID, "   subvar($_flag, str= '%i', discr.desc (   1) = 'detailed (FE225)', discr.desc (   2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag\n", default.linear_mesh);
             fprintf(new_ID, "   subvar($_use_detailed, str= 'SWITCH($SVG_mesh.$_flag)\n{\n	CASE 0:		0;\n	CASE 1:		1;\n	DEFAULT:		0;\n}') ! $SVG_mesh.$_use_detailed\n");
             fprintf(new_ID, "   subvar($_use_linear, str= 'SWITCH($SVG_mesh.$_flag)\n{\n	CASE 0:		1;\n	CASE 1:		0;\n	DEFAULT:		1;\n}') ! $SVG_mesh.$_use_linear\n");
             fprintf(new_ID, "subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator\n");
+            fprintf(new_ID, "   subvar($_flag, str= '%i', discr.desc (   1) = 'torque (T=P/omega)', discr.desc (   2) = 'PI control (CE129)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_generator.$_flag\n", default.PI_gen);
+            fprintf(new_ID, "   subvar($_use_torque, str= 'SWITCH($SVG_generator.$_flag){	CASE 0:		0;	CASE 1:		1;	DEFAULT:		0;}') ! $SVG_generator.$_use_torque\n");
+            fprintf(new_ID, "   subvar($_use_control, str= 'SWITCH($SVG_generator.$_flag){	CASE 0:		1;	CASE 1:		0;	DEFAULT:		1;}') ! $SVG_generator.$_use_control\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "\n");
             

@@ -62,9 +62,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 3.3130247592926025E+00  ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -6.1842756271362305E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 1.9624805450439453E+00  ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 3.3129386901855469E+00  ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -6.1841502189636230E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.9624333381652832E+00  ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.6952011585235596E-01  ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 1.6605354845523834E-01  ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 2.5161442160606384E-01  ! Orientation
@@ -72,8 +72,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 7.64698207
 view.angle (                        $V_WorkingView                ) = 7.8539818525314331E-01  ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.4756739139556885E-02  ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.4756738662719727E+01  ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.4756579883396626E-02  ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.4756579399108887E+01  ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -208,7 +208,11 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar.str (                        $_gamma_Nm                    ) = '1'                     ! Definition
+subvar.str (                        $_rated_power                 ) = '5.0e3 kW'              ! Definition
+
+subvar.str (                        $_rotor_speed                 ) = '12.1 rpm'              ! Definition
+
+subvar.str (                        $_GB_ratio                    ) = '97'                    ! Definition
 
 subvargroup.begin (                 $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS
    subvargroup.begin (              $SVG_INP_A                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_A
@@ -252,6 +256,19 @@ subvargroup.end (                   $SVG_stage_03                 )             
 
 subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh
 subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh
+
+subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
+   subvar.str (                     $_flag                        ) = '1'                     ! $SVG_generator.$_flag, Definition
+   subvar.discr.desc (    1 ,       $_flag                        ) = 'torque (T=P/omega)'    ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_flag                        ) = 'PI control (CE129)'    ! Description of discrete values
+   subvar.discr.str (     1 ,       $_flag                        ) = '0'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_flag                        ) = '1'                     ! Discrete values
+
+   subvar.str (                     $_use_torque                  ) = 'SWITCH($SVG_generator.$_flag){	CASE 0:		0;	CASE 1:		1;	DEFAULT:		0;}' ! $SVG_generator.$_use_torque, Definition
+
+   subvar.str (                     $_use_control                 ) = 'SWITCH($SVG_generator.$_flag){	CASE 0:		1;	CASE 1:		0;	DEFAULT:		1;}' ! $SVG_generator.$_use_control, Definition
+
+subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
 
 !**********************************************************************
 ! Reference systems
@@ -431,24 +448,24 @@ marker.pos (              1 ,       $M_Bed_Plate_Input_Loading    ) = { -3*$SVG_
 joint.from (                        $J_Bed_Plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_Bed_Plate                  ) = $M_Bed_Plate_BRF        ! To Marker
 joint.type (                        $J_Bed_Plate                  ) = 35                      ! Type
-joint.par (               1 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_X ! [-] IFctn for x
-joint.par (               2 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Y ! [-] IFctn for y
-joint.par (               3 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Z ! [-] IFctn for z
-joint.par (               4 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_X_Rot ! [-] IFctn for al
-joint.par (               5 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Y_Rot ! [-] IFctn for be
-joint.par (               6 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Z_Rot ! [-] IFctn for ga
-joint.par (               7 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_XD ! [-] IFctn for v_x
-joint.par (               8 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_YD ! [-] IFctn for v_y
-joint.par (               9 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_ZD ! [-] IFctn for v_z
-joint.par (              10 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_X_Rot_D ! [-] IFctn for w_x
-joint.par (              11 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Y_Rot_D ! [-] IFctn for w_y
-joint.par (              12 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Z_Rot_D ! [-] IFctn for w_z
-joint.par (              13 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_XDD ! [-] IFctn for a_x
-joint.par (              14 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_YDD ! [-] IFctn for a_y
-joint.par (              15 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_ZDD ! [-] IFctn for a_z
-joint.par (              16 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_X_Rot_DD ! [-] IFctn for wd_x
-joint.par (              17 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Y_Rot_DD ! [-] IFctn for wd_y
-joint.par (              18 ,       $J_Bed_Plate                  ) = $IFG_Bed_Plate_Motions.$I_Z_Rot_DD ! [-] IFctn for wd_z
+joint.par (               1 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_X ! [-] IFctn for x
+joint.par (               2 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y ! [-] IFctn for y
+joint.par (               3 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z ! [-] IFctn for z
+joint.par (               4 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_X_Rot ! [-] IFctn for al
+joint.par (               5 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot ! [-] IFctn for be
+joint.par (               6 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot ! [-] IFctn for ga
+joint.par (               7 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_XD ! [-] IFctn for v_x
+joint.par (               8 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_YD ! [-] IFctn for v_y
+joint.par (               9 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_ZD ! [-] IFctn for v_z
+joint.par (              10 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_X_Rot_D ! [-] IFctn for w_x
+joint.par (              11 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot_D ! [-] IFctn for w_y
+joint.par (              12 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot_D ! [-] IFctn for w_z
+joint.par (              13 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_XDD ! [-] IFctn for a_x
+joint.par (              14 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_YDD ! [-] IFctn for a_y
+joint.par (              15 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_ZDD ! [-] IFctn for a_z
+joint.par (              16 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_X_Rot_DD ! [-] IFctn for wd_x
+joint.par (              17 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot_DD ! [-] IFctn for wd_y
+joint.par (              18 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot_DD ! [-] IFctn for wd_z
 joint.par (              19 ,       $J_Bed_Plate                  ) = 1.0000000000000000E+00  ! [-] Rotation sequence
 joint.attr.2d.pos.x (     1 ,       $J_Bed_Plate                  ) = 320
 joint.attr.2d.pos.y (     1 ,       $J_Bed_Plate                  ) = -20
@@ -3057,152 +3074,166 @@ bodygroup.end (                     $BG_stage_03                  )             
 !**********************************************************************
 ! Force Elements
 !**********************************************************************
-force.type (                        $F_Input_Load                 ) = 93                      ! Type
-force.from (                        $F_Input_Load                 ) = $M_Bed_Plate_Input_Loading ! From Marker
-force.to (                          $F_Input_Load                 ) = $M_main_shaft_LSS_Input_Loading ! To Marker
-force.par (               1 ,       $F_Input_Load                 ) = $UE_Fx                  ! [-] u-Vector Element force x
-force.par (               2 ,       $F_Input_Load                 ) = $UE_Fy                  ! [-] u-Vector Element force y
-force.par (               3 ,       $F_Input_Load                 ) = $UE_Fz                  ! [-] u-Vector Element force z
-force.par (               4 ,       $F_Input_Load                 ) = $UE_Mx                  ! [-] u-Vector Element torque x
-force.par (               5 ,       $F_Input_Load                 ) = $UE_My                  ! [-] u-Vector Element torque y
-force.par (               6 ,       $F_Input_Load                 ) = $UE_Mz                  ! [-] u-Vector Element torque z
-force.attr.2d.pos.x (     1 ,       $F_Input_Load                 ) = -20
-force.attr.2d.pos.y (     1 ,       $F_Input_Load                 ) = -20
-force.attr.2d.ori (       1 ,       $F_Input_Load                 ) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_Input_Load      ) = 390, 390, 364.125, 364.125, 354.125, 318.25, 103, 103, 103, 93, 83, 73, 63, 53, 43, 33, 33, 33, 23, 13, 3, -7, -17, -27, -37, -37, -47, -47, -37
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_Input_Load      ) = 10, 16.25, 16.25, 5, 5, 5, 5, -10, -20, -20, -20, -20, -20, -20, -20, -20, -30, -40, -40, -40, -40, -40, -40, -40, -40, -30, -30, -20, -20
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_Input_Load        ) = -130, -55.625, -55.625, 28.75, 28.75, 28.75, -3
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_Input_Load        ) = -30, -30, -40, -40, -30, -20, -20
+force.type (                        $F_rotor_load                 ) = 93                      ! Type
+force.from (                        $F_rotor_load                 ) = $M_Bed_Plate_Input_Loading ! From Marker
+force.to (                          $F_rotor_load                 ) = $M_main_shaft_LSS_Input_Loading ! To Marker
+force.par (               1 ,       $F_rotor_load                 ) = $UE_Fx                  ! [-] u-Vector Element force x
+force.par (               2 ,       $F_rotor_load                 ) = $UE_Fy                  ! [-] u-Vector Element force y
+force.par (               3 ,       $F_rotor_load                 ) = $UE_Fz                  ! [-] u-Vector Element force z
+force.par (               4 ,       $F_rotor_load                 ) = $UE_Mx                  ! [-] u-Vector Element torque x
+force.par (               5 ,       $F_rotor_load                 ) = $UE_My                  ! [-] u-Vector Element torque y
+force.par (               6 ,       $F_rotor_load                 ) = $UE_Mz                  ! [-] u-Vector Element torque z
+force.attr.2d.pos.x (     1 ,       $F_rotor_load                 ) = -20
+force.attr.2d.pos.y (     1 ,       $F_rotor_load                 ) = -20
+force.attr.2d.ori (       1 ,       $F_rotor_load                 ) = 0
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_rotor_load      ) = 390, 390, 364.125, 364.125, 354.125, 318.25, 103, 103, 103, 93, 83, 73, 63, 53, 43, 33, 33, 33, 23, 13, 3, -7, -17, -27, -37, -37, -47, -47, -37
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_rotor_load      ) = 10, 16.25, 16.25, 5, 5, 5, 5, -10, -20, -20, -20, -20, -20, -20, -20, -20, -30, -40, -40, -40, -40, -40, -40, -40, -40, -30, -30, -20, -20
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_rotor_load        ) = -130, -55.625, -55.625, 28.75, 28.75, 28.75, -3
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_rotor_load        ) = -30, -30, -40, -40, -30, -20, -20
 
-force.type (                        $F_gen_torque                 ) = 50                      ! Type
-force.from (                        $F_gen_torque                 ) = $M_HSShaft_BRF          ! From Marker
-force.to (                          $F_gen_torque                 ) = $M_Gearbox_Frame_Shaft_Gen ! To Marker
-force.par (               1 ,       $F_gen_torque                 ) = $M_HSShaft_BRF          ! [-] Reference Marker for calc.
-force.par (               3 ,       $F_gen_torque                 ) = null                    ! [-] Expression for Fx
-force.par (               4 ,       $F_gen_torque                 ) = null                    ! [-] Expression for Fy
-force.par (               5 ,       $F_gen_torque                 ) = null                    ! [-] Expression for Fz
-force.par (               6 ,       $F_gen_torque                 ) = $X_gen_torq             ! [-] Expression for Lx
-force.par (               7 ,       $F_gen_torque                 ) = null                    ! [-] Expression for Ly
-force.par (               8 ,       $F_gen_torque                 ) = null                    ! [-] Expression for Lz
-force.attr.2d.pos.x (     1 ,       $F_gen_torque                 ) = 370
-force.attr.2d.pos.y (     1 ,       $F_gen_torque                 ) = -160
-force.attr.2d.ori (       1 ,       $F_gen_torque                 ) = 180
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_gen_torque      ) = 560, 560, 462.6875, 462.6875, 430.25, 387
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_gen_torque      ) = -200, -137.5, -137.5, -160, -160, -160
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_gen_torque        ) = 50, 50, 74.65625, 74.65625, 74.65625, 74.65625, 74.65625, 74.65625, 99.3125, 148.625, 247.25, 313, 313, 323, 333, 343, 353
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_gen_torque        ) = 30, 20, 20, 1.015625, -17.96875, -55.9375, -81.25, -115, -115, -115, -115, -115, -160, -160, -160, -160, -160
+force.type (                        $F_generator_torque           ) = 50                      ! Type
+force.from (                        $F_generator_torque           ) = $M_HSShaft_BRF          ! From Marker
+force.to (                          $F_generator_torque           ) = $M_Gearbox_Frame_Shaft_Gen ! To Marker
+force.disabled (                    $F_generator_torque           ) = $SVG_generator.$_use_torque ! Disabled
+force.par (               1 ,       $F_generator_torque           ) = $M_HSShaft_BRF          ! [-] Reference Marker for calc.
+force.par (               3 ,       $F_generator_torque           ) = null                    ! [-] Expression for Fx
+force.par (               4 ,       $F_generator_torque           ) = null                    ! [-] Expression for Fy
+force.par (               5 ,       $F_generator_torque           ) = null                    ! [-] Expression for Fz
+force.par (               6 ,       $F_generator_torque           ) = $X_gen_torq             ! [-] Expression for Lx
+force.par (               7 ,       $F_generator_torque           ) = null                    ! [-] Expression for Ly
+force.par (               8 ,       $F_generator_torque           ) = null                    ! [-] Expression for Lz
+force.attr.2d.pos.x (     1 ,       $F_generator_torque           ) = 370
+force.attr.2d.pos.y (     1 ,       $F_generator_torque           ) = -160
+force.attr.2d.ori (       1 ,       $F_generator_torque           ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_generator_torque) = 560, 560, 462.6875, 462.6875, 430.25, 387
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_generator_torque) = -200, -137.5, -137.5, -160, -160, -160
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_generator_torque  ) = 50, 50, 74.65625, 74.65625, 74.65625, 74.65625, 74.65625, 74.65625, 99.3125, 148.625, 247.25, 313, 313, 323, 333, 343, 353
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_generator_torque  ) = 30, 20, 20, 1.015625, -17.96875, -55.9375, -81.25, -115, -115, -115, -115, -115, -160, -160, -160, -160, -160
 
-force.type (                        $F_Bearing_INP_A              ) = 43                      ! Type
-force.from (                        $F_Bearing_INP_A              ) = $M_main_shaft_LSS_INP_A ! From Marker
-force.to (                          $F_Bearing_INP_A              ) = $M_Bed_Plate_Bearing_INP_A ! To Marker
-force.par (               1 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [N] Nominal force in x
-force.par (               2 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [N] Nominal force in y
-force.par (               3 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [N] Nominal force in z
-force.par (               4 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
-force.par (               5 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
-force.par (               6 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
-force.par (               7 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x ! [N/m] Transl. stiffness in x
-force.par (               8 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y ! [N/m] Transl. stiffness in y
-force.par (               9 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_z ! [N/m] Transl. stiffness in z
-force.par (              10 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_al ! [Nm/rad] Rotat. stiffness in al
-force.par (              11 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_be ! [Nm/rad] Rotat. stiffness in be
-force.par (              12 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_ga ! [Nm/rad] Rotat. stiffness in ga
-force.par (              13 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_x ! [Ns/m] Transl. damping in x
-force.par (              14 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_y ! [Ns/m] Transl. damping in y
-force.par (              15 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_z ! [Ns/m] Transl. damping in z
-force.par (              16 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_al ! [Nms/rad] Rotat. damping in al
-force.par (              17 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_be ! [Nms/rad] Rotat. damping in be
-force.par (              18 ,       $F_Bearing_INP_A              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_ga ! [Nms/rad] Rotat. damping in ga
-force.par (              19 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function F_c(x)
-force.par (              20 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function F_c(y)
-force.par (              21 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function F_c(z)
-force.par (              22 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function T_c(al)
-force.par (              23 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function T_c(be)
-force.par (              24 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function T_c(ga)
-force.par (              25 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function F_d(xd)
-force.par (              26 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function F_d(yd)
-force.par (              27 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function F_d(zd)
-force.par (              28 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function T_d(ald)
-force.par (              29 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function T_d(bed)
-force.par (              30 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function T_d(gad)
-force.par (              31 ,       $F_Bearing_INP_A              ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
-force.par (              33 ,       $F_Bearing_INP_A              ) = null                    ! [-] Expression for force in x
-force.par (              34 ,       $F_Bearing_INP_A              ) = null                    ! [-] Expression for force in y
-force.par (              35 ,       $F_Bearing_INP_A              ) = null                    ! [-] Expression for force in z
-force.par (              36 ,       $F_Bearing_INP_A              ) = null                    ! [-] Expression for torque in al
-force.par (              37 ,       $F_Bearing_INP_A              ) = null                    ! [-] Expression for torque in be
-force.par (              38 ,       $F_Bearing_INP_A              ) = null                    ! [-] Expression for torque in ga
-force.par (              39 ,       $F_Bearing_INP_A              ) = null                    ! [-] Input Function Set
-force.par (              40 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
-force.par (              41 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
-force.par (              42 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
-force.par (              43 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
-force.par (              44 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
-force.par (              45 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
-force.par (              46 ,       $F_Bearing_INP_A              ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
-force.attr.2d.pos.x (     1 ,       $F_Bearing_INP_A              ) = -20
-force.attr.2d.pos.y (     1 ,       $F_Bearing_INP_A              ) = -20
-force.attr.2d.ori (       1 ,       $F_Bearing_INP_A              ) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_Bearing_INP_A   ) = -130, -37
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_Bearing_INP_A   ) = -20, -20
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_Bearing_INP_A     ) = 380, 380, 362.671875, 362.671875, 362.671875, 310.6875, 102.75, 102.75, 102.75, 92.75, -3
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_Bearing_INP_A     ) = -20, -26.25, -26.25, -15, 0, 0, 0, -10, -20, -20, -20
+force.type (                        $F_generator_torque_PI        ) = 110                     ! Type
+force.from (                        $F_generator_torque_PI        ) = $M_HSShaft_BRF          ! From Marker
+force.to (                          $F_generator_torque_PI        ) = $M_Gearbox_Frame_Shaft_Gen ! To Marker
+force.disabled (                    $F_generator_torque_PI        ) = $SVG_generator.$_use_control ! Disabled
+force.par (               1 ,       $F_generator_torque_PI        ) = $C_PI_generator         ! [-] Input Control Element 1
+force.par (               2 ,       $F_generator_torque_PI        ) = 1.7000000000000000E+01  ! [-] -> Output Value u1
+force.par (               3 ,       $F_generator_torque_PI        ) = null                    ! [-] Input Control Element 2
+force.par (               5 ,       $F_generator_torque_PI        ) = 2.0000000000000000E+00  ! [-] Output type
+force.par (               6 ,       $F_generator_torque_PI        ) = 1.0000000000000000E+00  ! [-] Axis of force
+force.par (               7 ,       $F_generator_torque_PI        ) = 1.0000000000000000E+00  ! [-] Axis of torque
+force.par (               8 ,       $F_generator_torque_PI        ) = 1.0000000000000000E+00  ! [Nm] K: Drive constant L=K*(u1+u2)
+force.par (               9 ,       $F_generator_torque_PI        ) = 1.0000000000000000E+00  ! [m⁻¹] P: Drive constant F=P*L
 
-force.type (                        $F_Bearing_INP_B              ) = 43                      ! Type
-force.from (                        $F_Bearing_INP_B              ) = $M_main_shaft_LSS_INP_B ! From Marker
-force.to (                          $F_Bearing_INP_B              ) = $M_Bed_Plate_Bearing_INP_B ! To Marker
-force.par (               1 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [N] Nominal force in x
-force.par (               2 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [N] Nominal force in y
-force.par (               3 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [N] Nominal force in z
-force.par (               4 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
-force.par (               5 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
-force.par (               6 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
-force.par (               7 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_x ! [N/m] Transl. stiffness in x
-force.par (               8 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_y ! [N/m] Transl. stiffness in y
-force.par (               9 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_z ! [N/m] Transl. stiffness in z
-force.par (              10 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_al ! [Nm/rad] Rotat. stiffness in al
-force.par (              11 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_be ! [Nm/rad] Rotat. stiffness in be
-force.par (              12 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_ga ! [Nm/rad] Rotat. stiffness in ga
-force.par (              13 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_x ! [Ns/m] Transl. damping in x
-force.par (              14 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_y ! [Ns/m] Transl. damping in y
-force.par (              15 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_z ! [Ns/m] Transl. damping in z
-force.par (              16 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_al ! [Nms/rad] Rotat. damping in al
-force.par (              17 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_be ! [Nms/rad] Rotat. damping in be
-force.par (              18 ,       $F_Bearing_INP_B              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_ga ! [Nms/rad] Rotat. damping in ga
-force.par (              19 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function F_c(x)
-force.par (              20 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function F_c(y)
-force.par (              21 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function F_c(z)
-force.par (              22 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function T_c(al)
-force.par (              23 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function T_c(be)
-force.par (              24 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function T_c(ga)
-force.par (              25 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function F_d(xd)
-force.par (              26 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function F_d(yd)
-force.par (              27 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function F_d(zd)
-force.par (              28 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function T_d(ald)
-force.par (              29 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function T_d(bed)
-force.par (              30 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function T_d(gad)
-force.par (              31 ,       $F_Bearing_INP_B              ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
-force.par (              33 ,       $F_Bearing_INP_B              ) = null                    ! [-] Expression for force in x
-force.par (              34 ,       $F_Bearing_INP_B              ) = null                    ! [-] Expression for force in y
-force.par (              35 ,       $F_Bearing_INP_B              ) = null                    ! [-] Expression for force in z
-force.par (              36 ,       $F_Bearing_INP_B              ) = null                    ! [-] Expression for torque in al
-force.par (              37 ,       $F_Bearing_INP_B              ) = null                    ! [-] Expression for torque in be
-force.par (              38 ,       $F_Bearing_INP_B              ) = null                    ! [-] Expression for torque in ga
-force.par (              39 ,       $F_Bearing_INP_B              ) = null                    ! [-] Input Function Set
-force.par (              40 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
-force.par (              41 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
-force.par (              42 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
-force.par (              43 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
-force.par (              44 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
-force.par (              45 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
-force.par (              46 ,       $F_Bearing_INP_B              ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
-force.attr.2d.pos.x (     1 ,       $F_Bearing_INP_B              ) = -80
-force.attr.2d.pos.y (     1 ,       $F_Bearing_INP_B              ) = -50
-force.attr.2d.ori (       1 ,       $F_Bearing_INP_B              ) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_Bearing_INP_B   ) = -140, -140, -97
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_Bearing_INP_B   ) = -40, -50, -50
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_Bearing_INP_B     ) = 400, 400, 27, 27, 27, 27, 27, 27, 17, 7, -3, -13, -23, -33, -43, -53, -63
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_Bearing_INP_B     ) = 10, 15, 15, 0, -10, -20, -30, -50, -50, -50, -50, -50, -50, -50, -50, -50, -50
+force.type (                        $F_INP_A_bearing              ) = 43                      ! Type
+force.from (                        $F_INP_A_bearing              ) = $M_main_shaft_LSS_INP_A ! From Marker
+force.to (                          $F_INP_A_bearing              ) = $M_Bed_Plate_Bearing_INP_A ! To Marker
+force.par (               1 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_al ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_be ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_ga ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_x ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_y ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_z ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_al ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_be ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_INP_A_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_ga ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_INP_A_bearing              ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_INP_A_bearing              ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_INP_A_bearing              ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_INP_A_bearing              ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_INP_A_bearing              ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_INP_A_bearing              ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_INP_A_bearing              ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_INP_A_bearing              ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_INP_A_bearing              ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+force.attr.2d.pos.x (     1 ,       $F_INP_A_bearing              ) = -20
+force.attr.2d.pos.y (     1 ,       $F_INP_A_bearing              ) = -20
+force.attr.2d.ori (       1 ,       $F_INP_A_bearing              ) = 0
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_INP_A_bearing   ) = -130, -37
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_INP_A_bearing   ) = -20, -20
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_INP_A_bearing     ) = 380, 380, 362.671875, 362.671875, 362.671875, 310.6875, 102.75, 102.75, 102.75, 92.75, -3
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_INP_A_bearing     ) = -20, -26.25, -26.25, -15, 0, 0, 0, -10, -20, -20, -20
+
+force.type (                        $F_INP_B_bearing              ) = 43                      ! Type
+force.from (                        $F_INP_B_bearing              ) = $M_main_shaft_LSS_INP_B ! From Marker
+force.to (                          $F_INP_B_bearing              ) = $M_Bed_Plate_Bearing_INP_B ! To Marker
+force.par (               1 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [N] Nominal force in x
+force.par (               2 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [N] Nominal force in y
+force.par (               3 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [N] Nominal force in z
+force.par (               4 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_x ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_y ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_z ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_al ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_be ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_ga ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_x ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_y ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_z ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_al ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_be ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_INP_B_bearing              ) = $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_ga ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_INP_B_bearing              ) = 2.0000000000000000E+00  ! [-] Mode of angle calculation
+force.par (              33 ,       $F_INP_B_bearing              ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_INP_B_bearing              ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_INP_B_bearing              ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_INP_B_bearing              ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_INP_B_bearing              ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_INP_B_bearing              ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_INP_B_bearing              ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in x
+force.par (              41 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in y
+force.par (              42 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [m] Nominal displacement in z
+force.par (              43 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in al
+force.par (              44 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in be
+force.par (              45 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_INP_B_bearing              ) = 0.0000000000000000E+00  ! [-] Output force in To Marker
+force.attr.2d.pos.x (     1 ,       $F_INP_B_bearing              ) = -80
+force.attr.2d.pos.y (     1 ,       $F_INP_B_bearing              ) = -50
+force.attr.2d.ori (       1 ,       $F_INP_B_bearing              ) = 0
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 , $F_INP_B_bearing   ) = -140, -140, -97
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 , $F_INP_B_bearing   ) = -40, -50, -50
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 , $F_INP_B_bearing     ) = 400, 400, 27, 27, 27, 27, 27, 27, 17, 7, -3, -13, -23, -33, -43, -53, -63
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 , $F_INP_B_bearing     ) = 10, 15, 15, 0, -10, -20, -30, -50, -50, -50, -50, -50, -50, -50, -50, -50, -50
 
 forcegroup.begin (                  $FEG_stage_01                 )                           ! $FEG_stage_01
    force.type (                     $F_PL1_A                      ) = 43                      ! Type
@@ -5057,14 +5088,58 @@ forcegroup.begin (                  $FEG_stage_03                 )             
 forcegroup.end (                    $FEG_stage_03                 )                           ! $FEG_stage_03
 
 !**********************************************************************
+! Control Elements
+!**********************************************************************
+control.type (                      $C_PI_generator               ) = 129                     ! Type
+control.st.dyn (          1 ,       $C_PI_generator               ) = 0.0000000000000000E+00  ! Dynamic States
+control.st.equi (         1 ,       $C_PI_generator               ) = 0                       ! Equilibrium
+control.disabled (                  $C_PI_generator               ) = $SVG_generator.$_use_control ! Disabled
+control.par (             7 ,       $C_PI_generator               ) = 1.0000000000000000E+00  ! [-] Number of input channels
+control.par (             8 ,       $C_PI_generator               ) = $C_speed_difference     ! [-] Input Element ch. 1
+control.par (             9 ,       $C_PI_generator               ) = 1.0000000000000000E+00  ! [-] Output Value ch. 1
+control.par (            14 ,       $C_PI_generator               ) = 2.0000000000000000E+00  ! [-] Controller type
+control.par (            15 ,       $C_PI_generator               ) = 2.2000000000000000E+03  ! [-] Proportional gain factor
+control.par (            16 ,       $C_PI_generator               ) = 1.0000000000000001E-01  ! [s] Integral time constant
+control.par (            22 ,       $C_PI_generator               ) = 0.0000000000000000E+00  ! [-] Print converted coefficients
+
+control.type (                      $C_measured_speed             ) = 160                     ! Type
+control.disabled (                  $C_measured_speed             ) = $SVG_generator.$_use_control ! Disabled
+control.par (             1 ,       $C_measured_speed             ) = 1.0000000000000000E+00  ! [-] Number of Joint states
+control.par (            10 ,       $C_measured_speed             ) = 1.0000000000000000E+00  ! [-]  Ch 1: State type
+control.par (            11 ,       $C_measured_speed             ) = $J_HSShaft              ! [-]  Ch 1: Joint
+control.par (            12 ,       $C_measured_speed             ) = 1.0000000000000000E+00  ! [-]  Ch 1: -> Joint state
+control.par (            13 ,       $C_measured_speed             ) = 1.0000000000000000E+00  ! [-]  Ch 1: Gain factor C
+control.par (            14 ,       $C_measured_speed             ) = null                    ! [-]  Ch 1: Disturb. Ctrl. Element
+control.par (            15 ,       $C_measured_speed             ) = 0.0000000000000000E+00  ! [-]  Ch 1: -> Output Value u
+
+control.type (                      $C_reference_speed            ) = 163                     ! Type
+control.disabled (                  $C_reference_speed            ) = $SVG_generator.$_use_control ! Disabled
+control.par (             1 ,       $C_reference_speed            ) = 1.0000000000000000E+00  ! [-] Number of u-Vector Elements
+control.par (            10 ,       $C_reference_speed            ) = $UE_reference_speed     ! [-]  Ch 1: u-Vector Element
+
+control.type (                      $C_speed_difference           ) = 143                     ! Type
+control.disabled (                  $C_speed_difference           ) = $SVG_generator.$_use_control ! Disabled
+control.txt (                       $C_speed_difference           ) = 'input in rad/s[br]output in rpm' ! Comment
+control.par (             1 ,       $C_speed_difference           ) = $C_measured_speed       ! [-] Input Element ch. 1
+control.par (             2 ,       $C_speed_difference           ) = 1.0000000000000000E+00  ! [-] Output Value ch. 1
+control.par (             3 ,       $C_speed_difference           ) = -1.0000000000000000E+00 ! [-] Gain factor C1 for ch. 1
+control.par (             4 ,       $C_speed_difference           ) = $C_reference_speed      ! [-] Input Element ch. 2
+control.par (             5 ,       $C_speed_difference           ) = 1.0000000000000000E+00  ! [-] Output Value ch. 2
+control.par (             6 ,       $C_speed_difference           ) = 1.0000000000000000E+00  ! [-] Gain factor C2 for ch. 2
+control.par (             7 ,       $C_speed_difference           ) = 1.0000000000000000E+00  ! [-] Connection type
+control.par (             8 ,       $C_speed_difference           ) = { 30.0/PI }             ! [-] Function parameter P
+control.par (             9 ,       $C_speed_difference           ) = 0.0000000000000000E+00  ! [-] Function type
+control.par (            13 ,       $C_speed_difference           ) = 0.0000000000000000E+00  ! [-] Constant zero deviation K
+
+!**********************************************************************
 ! Input Functions
 !**********************************************************************
-ifctn.file (                        $I_Gen_Spd                    ) = 'GEN_SPD.if2'           ! File
-ifctn.scal.x (                      $I_Gen_Spd                    ) = 1.0000000000000000E+00  ! Scaling factor
-ifctn.scal.z (                      $I_Gen_Spd                    ) = 1.0000000000000000E+00  ! Scaling factor
-ifctn.settings.fromfile (           $I_Gen_Spd                    ) = 1                       ! Inter- and extrapolation settings from file
-ifctn.intpol.type (                 $I_Gen_Spd                    ) = 2                       ! Interpolation type
-ifctn.range.handling (              $I_Gen_Spd                    ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.file (                        $I_generator_speed            ) = 'GEN_SPD.if2'           ! File
+ifctn.scal.x (                      $I_generator_speed            ) = 1.0000000000000000E+00  ! Scaling factor
+ifctn.scal.z (                      $I_generator_speed            ) = 1.0000000000000000E+00  ! Scaling factor
+ifctn.settings.fromfile (           $I_generator_speed            ) = 1                       ! Inter- and extrapolation settings from file
+ifctn.intpol.type (                 $I_generator_speed            ) = 2                       ! Interpolation type
+ifctn.range.handling (              $I_generator_speed            ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 
 ifctn.file (                        $I_Fx                         ) = 'Fx.if2'                ! File
 ifctn.scal.z (                      $I_Fx                         ) = $_gamma_load            ! Scaling factor
@@ -5158,7 +5233,7 @@ ifctn.plot.par (          1 ,   8 ,   1 , $I_Mz                   ) = 1.00000000
 ifctn.plot.par (          1 ,   9 ,   1 , $I_Mz                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,  10 ,   1 , $I_Mz                   ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
 
-ifctngroup.begin (                  $IFG_Bed_Plate_Motions        )                           ! $IFG_Bed_Plate_Motions
+ifctngroup.begin (                  $IFG_bed_plate_motion         )                           ! $IFG_bed_plate_motion
    ifctn.file (                     $I_X                          ) = 'EC4_s01_X.if2'         ! File
    ifctn.range.handling (           $I_X                          ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 
@@ -5213,14 +5288,14 @@ ifctngroup.begin (                  $IFG_Bed_Plate_Motions        )             
    ifctn.file (                     $I_Z_Rot_DD                   ) = 'EC4_s01_Z_rotDD.if2'   ! File
    ifctn.range.handling (           $I_Z_Rot_DD                   ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 
-ifctngroup.end (                    $IFG_Bed_Plate_Motions        )                           ! $IFG_Bed_Plate_Motions
+ifctngroup.end (                    $IFG_bed_plate_motion         )                           ! $IFG_bed_plate_motion
 
 !**********************************************************************
 ! Expressions
 !**********************************************************************
 express.str (                       $X_omeg_read                  ) = 'WX($M_HSShaft_BRF,0,0)' ! Definition
 
-express.str (                       $X_omeg_input                 ) = 'IFCTNX(0,$I_Gen_Spd,0,-1)' ! Definition
+express.str (                       $X_omeg_input                 ) = 'IFCTNX(0,$I_generator_speed,0,-1)' ! Definition
 
 express.str (                       $X_delta_t                    ) = '0.005'                 ! Definition
 
@@ -5230,7 +5305,7 @@ express.str (                       $X_last_int_omg_error         ) = 'if (TIME=
 
 express.str (                       $X_int_omg_error              ) = '$X_last_int_omg_error+$X_omg_error*$X_delta_t' ! Definition
 
-express.str (                       $X_gen_torq                   ) = '2200*$X_omg_error+220*$X_last_int_omg_error' ! Definition
+express.str (                       $X_gen_torq                   ) = '$_rated_power/IFCTNX(TIME,$I_generator_speed, 0, -1)' ! Definition
 
 !**********************************************************************
 ! Excitations
@@ -5295,6 +5370,20 @@ excit.par (               6 ,       $E_Mz                         ) = 0.00000000
 excit.par (               7 ,       $E_Mz                         ) = 1.0000000000000000E+00  ! [-] Time scaling factor a
 excit.par (               8 ,       $E_Mz                         ) = 1.0000000000000000E+00  ! [-] Scaling factor c
 
+excit.type (                        $E_reference_speed            ) = 14                      ! Type
+excit.disabled (                    $E_reference_speed            ) = $SVG_generator.$_use_control ! Disabled
+excit.par (               1 ,       $E_reference_speed            ) = { dimless($_rotor_speed)*$_GB_ratio*PI/30.0 } ! [-] Constant value
+excit.par (               2 ,       $E_reference_speed            ) = 0.0000000000000000E+00  ! [-] Constant value for
+excit.plot.par (          1 ,       $E_reference_speed            ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_reference_speed            ) = 1.0240000000000000E+03  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_reference_speed            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_reference_speed            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_reference_speed            ) = 0.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_reference_speed            ) = 1.0000000000000000E+01  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_reference_speed      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_reference_speed      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_reference_speed      ) = 1.0000000000000000E+00  ! [-] Unknown plot parameter
+
 !**********************************************************************
 ! u-Vector
 !**********************************************************************
@@ -5321,6 +5410,9 @@ uele.index (                        $UE_My                        ) = 0         
 uele.type (                         $UE_Mz                        ) = 1                       ! Type
 uele.excit (                        $UE_Mz                        ) = $E_Mz                   ! Referenced Excitation
 uele.index (                        $UE_Mz                        ) = 0                       ! Index
+
+uele.type (                         $UE_reference_speed           ) = 1                       ! Type
+uele.excit (                        $UE_reference_speed           ) = $E_reference_speed      ! Referenced Excitation
 
 !**********************************************************************
 ! Materials
