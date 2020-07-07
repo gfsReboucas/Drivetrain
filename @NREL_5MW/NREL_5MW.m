@@ -106,7 +106,7 @@ classdef NREL_5MW < Drivetrain
             L_h    = 20*365*24;
             K_A    = 1.25;
             
-            calc = ISO_6336(obj.stage(idx), 'calculation', 'KISSsoft', ...
+            calc = ISO_6336(obj.stage(idx), 'calculation', 'default', ...
                                             'P_rated'    , obj.P_rated, ...
                                             'n_out'      , obj.n_out(idx), ...
                                             'S_Hmin'     , obj.S_Hmin, ...
@@ -518,9 +518,9 @@ classdef NREL_5MW < Drivetrain
     end
     
     methods
-        function update_subvar(obj, varargin)
-            %UPDATE_SUBVAR update some values of the .SubVar file from the
-            %SIMPACK model of the NREL_5MW Drivetrain.
+        function update_subvar_rigid(obj, varargin)
+            %UPDATE_SUBVAR update some values of the .Rigid.SubVar file 
+            % from the SIMPACK model of the NREL_5MW Drivetrain.
             %
             % Kinematic Tree:
             % ================================================================================
@@ -893,6 +893,361 @@ classdef NREL_5MW < Drivetrain
             fclose(new_ID);
             
         end
+        
+        function update_subvar_Nejad(obj, varargin)
+            %UPDATE_SUBVAR update some values of the .Nejad.SubVar file 
+            % from the SIMPACK model of the NREL_5MW Drivetrain.
+            %
+            % Kinematic Tree:
+            % ================================================================================
+            %   $R_Isys
+            %    ---->$B_Bed_Plate................................... [0 dof]  Joint $J_Bed_Plate of type 35
+            %         ---->$Gearbox_Frame............................ [0 dof]  Joint $J_Gearbox_Frame of type 0
+            %              ---->$B_SHAFT_LS_IMS...................... [6 dof]  Joint $J_SHAFT_LS_IMS of type 20
+            %                   ---->$G_Body_LS.$B_Sun............... [0 dof]  Joint $G_Body_LS.$J_Sun of type 0
+            %                   ---->$G_Body_IMS.$B_PLC.............. [0 dof]  Joint $G_Body_IMS.$J_PLC of type 0
+            %                        ---->$G_Body_IMS.$B_Pin1........ [6 dof]  Joint $G_Body_IMS.$J_Pin1 of type 20
+            %                             ---->$G_Body_IMS.$B_PL1.... [0 dof]  Joint $G_Body_IMS.$J_PL1 of type 0
+            %
+            %                        ---->$G_Body_IMS.$B_Pin2........ [6 dof]  Joint $G_Body_IMS.$J_Pin2 of type 20
+            %                             ---->$G_Body_IMS.$B_PL2.... [0 dof]  Joint $G_Body_IMS.$J_PL2 of type 0
+            %
+            %                        ---->$G_Body_IMS.$B_Pin3........ [6 dof]  Joint $G_Body_IMS.$J_Pin3 of type 20
+            %                             ---->$G_Body_IMS.$B_PL3.... [0 dof]  Joint $G_Body_IMS.$J_PL3 of type 0
+            %
+            %              ---->$B_SHAFT_IMS_HS...................... [6 dof]  Joint $J_SHAFT_IMS_HS of type 20
+            %                   ---->$G_Body_IMS.$B_Sun.............. [0 dof]  Joint $G_Body_IMS.$J_Sun of type 0
+            %                   ---->$G_Body_HS.$B_Gear.............. [0 dof]  Joint $G_Body_HS.$J_Gear of type 0
+            %
+            %              ---->$B_SHAFT_Gen......................... [6 dof]  Joint $J_SHAFT_Gen of type 20
+            %                   ---->$G_Body_HS.$B_Pinion............ [0 dof]  Joint $G_Body_HS.$J_Pinion of type 0
+            %
+            %              ---->$G_Body_LS.$B_Ring................... [0 dof]  Joint $G_Body_LS.$J_Ring of type 0
+            %              ---->$G_Body_IMS.$B_Ring.................. [0 dof]  Joint $G_Body_IMS.$J_Ring of type 0
+            %
+            %         ---->$B_Main_Shaft............................. [6 dof]  Joint $J_Main_Shaft of type 20
+            %              ---->$G_Body_LS.$B_PLC.................... [0 dof]  Joint $G_Body_LS.$J_PLC of type 0
+            %                   ---->$G_Body_LS.$B_Pin1.............. [6 dof]  Joint $G_Body_LS.$J_Pin1 of type 20
+            %                        ---->$G_Body_LS.$B_PL1.......... [0 dof]  Joint $G_Body_LS.$J_PL1 of type 0
+            %
+            %                   ---->$G_Body_LS.$B_Pin2.............. [6 dof]  Joint $G_Body_LS.$J_Pin2 of type 20
+            %                        ---->$G_Body_LS.$B_PL2.......... [0 dof]  Joint $G_Body_LS.$J_PL2 of type 0
+            %
+            %                   ---->$G_Body_LS.$B_Pin3.............. [6 dof]  Joint $G_Body_LS.$J_Pin3 of type 20
+            %                        ---->$G_Body_LS.$B_PL3.......... [0 dof]  Joint $G_Body_LS.$J_PL3 of type 0
+            %
+            
+            if(isempty(varargin))
+                mesh_flag = false;
+            else
+                mesh_flag = varargin{1};
+            end
+            
+            gamma_x = mean([obj.gamma("m_n1") obj.gamma("m_n2") obj.gamma("m_n3")]);
+            gamma_load = power(gamma_x, 2.0);
+            gamma_Nm = power(gamma_x, 3.0);
+            
+            k_sp = zeros(2, 1);
+            k_rp = k_sp;
+            for idx = 1:2
+                k_sp(idx) = obj.stage(idx).sub_set('sun_planet').k_mesh;
+                k_rp(idx) = obj.stage(idx).sub_set('planet_ring').k_mesh;
+            end
+            
+            k_3 = obj.stage(idx + 1).k_mesh;
+            
+            new_ID = fopen("@NREL_5MW\NREL_5MW.Nejad.subvar", "w");
+            
+            fprintf(new_ID, "!file.version=2.5! Removing this line will make the file unreadable\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "!**********************************************************************\n");
+            fprintf(new_ID, "! SubVars\n");
+            fprintf(new_ID, "!**********************************************************************\n");
+            fprintf(new_ID, "subvar($_gamma_load, str= '%e')                                                                ! $_gamma_load\n", gamma_load);
+            fprintf(new_ID, "subvar($_gamma_Nm, str= '%e')                                                                  ! $_gamma_Nm\n", gamma_Nm);
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS\n");
+            fprintf(new_ID, "   subvar($_gamma_d, str= '%e')                                                                ! $SVG_main_shaft_LSS.$_gamma_d\n", obj.gamma('d_S'));
+            fprintf(new_ID, "   subvar($_gamma_L, str= '%e')                                                                ! $SVG_main_shaft_LSS.$_gamma_L\n", obj.gamma('L_S'));
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_INP_A                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_A\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '0')                                                              ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '1.54e+10')                                                       ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '15400000000')                                                    ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '5e+6')                                                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '5e+6')                                                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '0')                                                              ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_INP_A                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_A\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_INP_B                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_B\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '4.06e+8')                                                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '1.54e+10')                                                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '15400000000')                                                    ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '97637.5')                                                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '97637.5')                                                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_INP_B                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_B\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01\n");
+            fprintf(new_ID, "   subvar($_gamma_m_n, str= '%e')                                                              ! $SVG_stage_01.$_gamma_m_n\n", obj.gamma('m_n1'));
+            fprintf(new_ID, "   subvar($_gamma_b, str= '%e')                                                                ! $SVG_stage_01.$_gamma_b\n", obj.gamma('b_1'));
+            fprintf(new_ID, "   subvar($_gamma_d, str= '%e')                                                                ! $SVG_stage_01.$_gamma_d\n", obj.gamma('d_1'));
+            fprintf(new_ID, "   subvar($_gamma_L, str= '%e')                                                                ! $SVG_stage_01.$_gamma_L\n", obj.gamma('L_1'));
+            fprintf(new_ID, "   subvar($_m_n, str= '%e mm')                                                                ! $SVG_stage_01.$_m_n\n", obj.stage(1).m_n);
+            fprintf(new_ID, "   subvar($_b, str= '%e mm')                                                                 ! $SVG_stage_01.$_b\n", obj.stage(1).b);
+            fprintf(new_ID, "   subvar($_a_w, str= '%e mm')                                                               ! $SVG_stage_01.$_a_w\n", obj.stage(1).a_w);
+            fprintf(new_ID, "   subvar($_alpha, str= '20 deg')                                                             ! $SVG_stage_01.$_alpha\n");
+            fprintf(new_ID, "   subvar($_x_sun, str= '0.617')                                                              ! $SVG_stage_01.$_x_sun\n");
+            fprintf(new_ID, "   subvar($_x_planet, str= '0.802')                                                           ! $SVG_stage_01.$_x_planet\n");
+            fprintf(new_ID, "   subvar($_x_ring, str= '-0.501')                                                            ! $SVG_stage_01.$_x_ring\n");
+            fprintf(new_ID, "   subvar($_z_sun, str= '19')                                                                 ! $SVG_stage_01.$_z_sun\n");
+            fprintf(new_ID, "   subvar($_z_planet, str= '17')                                                              ! $SVG_stage_01.$_z_planet\n");
+            fprintf(new_ID, "   subvar($_z_ring, str= '56')                                                                ! $SVG_stage_01.$_z_ring\n");
+            fprintf(new_ID, "   subvar($_Norm_Backlash, str= '0.40*$SVG_stage_01.$_gamma_m_n mm')                          ! $SVG_stage_01.$_Norm_Backlash\n");
+            fprintf(new_ID, "   subvar($_Tooth_Damping, str= '500000000')                                                  ! $SVG_stage_01.$_Tooth_Damping\n");
+            fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $SVG_stage_01.$_Tooth_Stiff_ratio\n");
+            fprintf(new_ID, "   subvar($_k_SP, str= '%e N/m')                                                           ! $SVG_stage_01.$_k_SP\n", k_sp(1));
+            fprintf(new_ID, "   subvar($_k_RP, str= '%e N/m')                                                           ! $SVG_stage_01.$_k_RP\n", k_rp(1));
+            fprintf(new_ID, "   subvar($_mesh_damping, str= '5.0e3 Ns/m')                                                  ! $SVG_stage_01.$_mesh_damping\n");
+            fprintf(new_ID, "   subvar($_transition_depth, str= '1.0e-6 m')                                                ! $SVG_stage_01.$_transition_depth\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_PLC_A                    )                           ! $SVG_stage_01.$SVG_PLC_A\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '6.6e+4')                                                         ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '1770000000')                                                     ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1770000000')                                                     ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1390000')                                                       ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '1.39e+6')                                                       ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_PLC_A                    )                           ! $SVG_stage_01.$SVG_PLC_A\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_PLC_B                    )                           ! $SVG_stage_01.$SVG_PLC_B\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '6.6e+7')                                                         ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '1770000000')                                                     ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1770000000')                                                     ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1390000')                                                       ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '1.39e+6')                                                       ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_PLC_B                    )                           ! $SVG_stage_01.$SVG_PLC_B\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_PL_AB                    )                           ! $SVG_stage_01.$SVG_PL_AB\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '91016')                                                          ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '9.37E+9')                                                        ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '3.20E+9')                                                        ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1.39E+6')                                                       ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '4.45E+6')                                                       ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_PL_AB                    )                           ! $SVG_stage_01.$SVG_PL_AB\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02\n");
+            fprintf(new_ID, "   subvar($_gamma_m_n, str= '%e')                                                              ! $SVG_stage_02.$_gamma_m_n\n", obj.gamma('m_n2'));
+            fprintf(new_ID, "   subvar($_gamma_b, str= '%e')                                                                ! $SVG_stage_02.$_gamma_b\n", obj.gamma('b_2'));
+            fprintf(new_ID, "   subvar($_gamma_d, str= '%e')                                                                ! $SVG_stage_02.$_gamma_d\n", obj.gamma('d_2'));
+            fprintf(new_ID, "   subvar($_gamma_L, str= '%e')                                                                ! $SVG_stage_02.$_gamma_L\n", obj.gamma('L_2'));
+            fprintf(new_ID, "   subvar($_m_n, str= '%e mm')                                                                ! $SVG_stage_02.$_m_n\n", obj.stage(2).m_n);
+            fprintf(new_ID, "   subvar($_b, str= '%e mm')                                                                 ! $SVG_stage_02.$_b\n", obj.stage(2).b);
+            fprintf(new_ID, "   subvar($_a_w, str= '%e mm')                                                               ! $SVG_stage_02.$_a_w\n", obj.stage(2).a_w);
+            fprintf(new_ID, "   subvar($_alpha, str= '20 deg')                                                             ! $SVG_stage_02.$_alpha\n");
+            fprintf(new_ID, "   subvar($_x_sun, str= '0.389')                                                              ! $SVG_stage_02.$_x_sun\n");
+            fprintf(new_ID, "   subvar($_x_planet, str= '0.504')                                                           ! $SVG_stage_02.$_x_planet\n");
+            fprintf(new_ID, "   subvar($_x_ring, str= '0.117')                                                             ! $SVG_stage_02.$_x_ring\n");
+            fprintf(new_ID, "   subvar($_z_sun, str= '18')                                                                 ! $SVG_stage_02.$_z_sun\n");
+            fprintf(new_ID, "   subvar($_z_planet, str= '36')                                                              ! $SVG_stage_02.$_z_planet\n");
+            fprintf(new_ID, "   subvar($_z_ring, str= '93')                                                                ! $SVG_stage_02.$_z_ring\n");
+            fprintf(new_ID, "   subvar($_Norm_Backlash, str= '0.40*$SVG_stage_02.$_gamma_m_n mm')                          ! $SVG_stage_02.$_Norm_Backlash\n");
+            fprintf(new_ID, "   subvar($_Tooth_Damping, str= '50000000')                                                   ! $SVG_stage_02.$_Tooth_Damping\n");
+            fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $SVG_stage_02.$_Tooth_Stiff_ratio\n");
+            fprintf(new_ID, "   subvar($_k_SP, str= '%e N/m')                                                           ! $SVG_stage_02.$_k_SP\n", k_sp(2));
+            fprintf(new_ID, "   subvar($_k_RP, str= '%e N/m')                                                           ! $SVG_stage_02.$_k_RP\n", k_rp(2));
+            fprintf(new_ID, "   subvar($_mesh_damping, str= '5.0e3 Ns/m')                                                  ! $SVG_stage_02.$_mesh_damping\n");
+            fprintf(new_ID, "   subvar($_transition_depth, str= '1.0e-6 m')                                                ! $SVG_stage_02.$_transition_depth\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_IMS_PLC_A                )                           ! $SVG_stage_02.$SVG_IMS_PLC_A\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '9.1e+4')                                                         ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '6.12e+7')                                                        ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1.16e+9')                                                        ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '74428')                                                         ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '3239.8')                                                        ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_IMS_PLC_A                )                           ! $SVG_stage_02.$SVG_IMS_PLC_A\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_IMS_PLC_B                )                           ! $SVG_stage_02.$SVG_IMS_PLC_B\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '9.1e+7')                                                         ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '6.12e+7')                                                        ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1.16e+9')                                                        ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '74428')                                                         ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '3239.8')                                                        ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_IMS_PLC_B                )                           ! $SVG_stage_02.$SVG_IMS_PLC_B\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_PL_AB                    )                           ! $SVG_stage_02.$SVG_PL_AB\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '91016')                                                          ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '6.12E+7')                                                        ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1.16E+9')                                                        ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '7.5e+4')                                                        ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '7.5e+4')                                                        ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_PL_AB                    )                           ! $SVG_stage_02.$SVG_PL_AB\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03\n");
+            fprintf(new_ID, "   subvar($_gamma_m_n, str= '%e')                                                              ! $SVG_stage_03.$_gamma_m_n\n", obj.gamma('m_n3'));
+            fprintf(new_ID, "   subvar($_gamma_b, str= '%e')                                                                ! $SVG_stage_03.$_gamma_b\n", obj.gamma('b_3'));
+            fprintf(new_ID, "   subvar($_gamma_d, str= '%e')                                                                ! $SVG_stage_03.$_gamma_d\n", obj.gamma('d_3'));
+            fprintf(new_ID, "   subvar($_gamma_L, str= '%e')                                                                ! $SVG_stage_03.$_gamma_L\n", obj.gamma('L_3'));
+            fprintf(new_ID, "   subvar($_m_n, str= '%e mm')                                                                ! $SVG_stage_03.$_m_n\n", obj.stage(3).m_n);
+            fprintf(new_ID, "   subvar($_b, str= '%e mm')                                                                 ! $SVG_stage_03.$_b\n", obj.stage(3).b);
+            fprintf(new_ID, "   subvar($_a_w, str= '%e mm')                                                               ! $SVG_stage_03.$_a_w\n", obj.stage(3).a_w);
+            fprintf(new_ID, "   subvar($_alpha, str= '20 deg')                                                             ! $SVG_stage_03.$_alpha\n");
+            fprintf(new_ID, "   subvar($_helix, str= '10 deg')                                                             ! $SVG_stage_03.$_helix\n");
+            fprintf(new_ID, "   subvar($_x_pinion, str= '0.480')                                                           ! $SVG_stage_03.$_x_pinion\n");
+            fprintf(new_ID, "   subvar($_x_gear, str= '0.669')                                                             ! $SVG_stage_03.$_x_gear\n");
+            fprintf(new_ID, "   subvar($_z_pinion, str= '24')                                                              ! $SVG_stage_03.$_z_pinion\n");
+            fprintf(new_ID, "   subvar($_z_gear, str= '95')                                                                ! $SVG_stage_03.$_z_gear\n");
+            fprintf(new_ID, "   subvar($_Norm_Backlash, str= '0.40*$SVG_stage_03.$_gamma_m_n mm')                          ! $SVG_stage_03.$_Norm_Backlash\n");
+            fprintf(new_ID, "   subvar($_Tooth_Damping, str= '5000000')                                                    ! $SVG_stage_03.$_Tooth_Damping\n");
+            fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $SVG_stage_03.$_Tooth_Stiff_ratio\n");
+            fprintf(new_ID, "   subvar($_k_mesh, str= '%e N/m')                                                         ! $SVG_stage_03.$_k_mesh\n", k_3);
+            fprintf(new_ID, "   subvar($_mesh_damping, str= '5.0e3 Ns/m')                                                  ! $SVG_stage_03.$_mesh_damping\n");
+            fprintf(new_ID, "   subvar($_transition_depth, str= '1.0e-6 m')                                                ! $SVG_stage_03.$_transition_depth\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_IMS_A                    )                           ! $SVG_stage_03.$SVG_IMS_A\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '0')                                                              ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '6.12E+7')                                                        ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1.16E+9')                                                        ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '74428')                                                         ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '3239.8')                                                        ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_IMS_A                    )                           ! $SVG_stage_03.$SVG_IMS_A\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_IMS_B                    )                           ! $SVG_stage_03.$SVG_IMS_B\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '7.41e+7')                                                        ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '5.17E+8')                                                        ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '484000000')                                                      ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1.67e+6')                                                       ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '1.78e+6')                                                       ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_IMS_B                    )                           ! $SVG_stage_03.$SVG_IMS_B\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_IMS_C                    )                           ! $SVG_stage_03.$SVG_IMS_C\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '78723000')                                                       ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '7.3708E+8')                                                      ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '3.2612e+8')                                                      ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1123400')                                                       ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '2539000')                                                       ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_IMS_C                    )                           ! $SVG_stage_03.$SVG_IMS_C\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_HS_A                     )                           ! $SVG_stage_03.$SVG_HS_A\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '1.26e+8')                                                        ! $SVG_stage_03.$SVG_HS_A.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '8.21e+8')                                                        ! $SVG_stage_03.$SVG_HS_A.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '821000000')                                                      ! $SVG_stage_03.$SVG_HS_A.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_03.$SVG_HS_A.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1123400')                                                       ! $SVG_stage_03.$SVG_HS_A.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '2539000')                                                       ! $SVG_stage_03.$SVG_HS_A.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_03.$SVG_HS_A.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_03.$SVG_HS_A.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_03.$SVG_HS_A.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_03.$SVG_HS_A.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_03.$SVG_HS_A.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_HS_A                     )                           ! $SVG_stage_03.$SVG_HS_A\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_HS_B                     )                           ! $SVG_stage_03.$SVG_HS_B\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '6.7e+7')                                                         ! $SVG_stage_03.$SVG_HS_B.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '8.09e+8')                                                        ! $SVG_stage_03.$SVG_HS_B.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '1.33e+8')                                                        ! $SVG_stage_03.$SVG_HS_B.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_03.$SVG_HS_B.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '1.71e+5')                                                       ! $SVG_stage_03.$SVG_HS_B.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '1.04e+6')                                                       ! $SVG_stage_03.$SVG_HS_B.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_03.$SVG_HS_B.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_03.$SVG_HS_B.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_03.$SVG_HS_B.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_03.$SVG_HS_B.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_03.$SVG_HS_B.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_HS_B                     )                           ! $SVG_stage_03.$SVG_HS_B\n");
+            fprintf(new_ID, "   subvargroup.begin (              $SVG_HS_C                     )                           ! $SVG_stage_03.$SVG_HS_C\n");
+            fprintf(new_ID, "      subvar($_PL_c_x, str= '7.93e+7')                                                        ! $SVG_stage_03.$SVG_HS_C.$_PL_c_x\n");
+            fprintf(new_ID, "      subvar($_PL_c_y, str= '1.04e+9')                                                        ! $SVG_stage_03.$SVG_HS_C.$_PL_c_y\n");
+            fprintf(new_ID, "      subvar($_PL_c_z, str= '7.29e+7')                                                        ! $SVG_stage_03.$SVG_HS_C.$_PL_c_z\n");
+            fprintf(new_ID, "      subvar($_PL_c_al, str= '0')                                                             ! $SVG_stage_03.$SVG_HS_C.$_PL_c_al\n");
+            fprintf(new_ID, "      subvar($_PL_c_be, str= '97637.5')                                                       ! $SVG_stage_03.$SVG_HS_C.$_PL_c_be\n");
+            fprintf(new_ID, "      subvar($_PL_c_ga, str= '1.39e+6')                                                       ! $SVG_stage_03.$SVG_HS_C.$_PL_c_ga\n");
+            fprintf(new_ID, "      subvar($_PL_d_x, str= '4.53e+002')                                                      ! $SVG_stage_03.$SVG_HS_C.$_PL_d_x\n");
+            fprintf(new_ID, "      subvar($_PL_d_y, str= '4.20e+004')                                                      ! $SVG_stage_03.$SVG_HS_C.$_PL_d_y\n");
+            fprintf(new_ID, "      subvar($_PL_d_z, str= '3.06e+004')                                                      ! $SVG_stage_03.$SVG_HS_C.$_PL_d_z\n");
+            fprintf(new_ID, "      subvar($_PL_d_al, str= '0')                                                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_al\n");
+            fprintf(new_ID, "      subvar($_PL_d_be, str= '3.43e+001')                                                     ! $SVG_stage_03.$SVG_HS_C.$_PL_d_be\n");
+            fprintf(new_ID, "      subvar($_PL_d_ga, str= '4.78e+001')                                                     ! $SVG_stage_03.$SVG_HS_C.$_PL_d_ga\n");
+            fprintf(new_ID, "   subvargroup.end (                $SVG_HS_C                     )                           ! $SVG_stage_03.$SVG_HS_C\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh\n");
+            fprintf(new_ID, "   subvar($_flag, str= '%i', discr.desc (   1) = 'detailed (FE225)', discr.desc (   2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag\n", mesh_flag);
+            fprintf(new_ID, "   subvar($_use_detailed, str= 'SWITCH($SVG_mesh.$_flag)\n{\n	CASE 0:		0;\n	CASE 1:		1;\n	DEFAULT:		0;\n}') ! $SVG_mesh.$_use_detailed\n");
+            fprintf(new_ID, "   subvar($_use_linear, str= 'SWITCH($SVG_mesh.$_flag)\n{\n	CASE 0:		1;\n	CASE 1:		0;\n	DEFAULT:		1;\n}') ! $SVG_mesh.$_use_linear\n");
+            fprintf(new_ID, "subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh\n");
+            fprintf(new_ID, "\n");
+            fprintf(new_ID, "\n");
+            
+            fclose(new_ID);
+            
+        end
+        
     end
     
 end

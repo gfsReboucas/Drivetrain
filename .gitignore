@@ -49,3 +49,5 @@ check_classes.m
 *.sir
 *.spckst
 *.log
+new.subvar
+scale_SIMPACK.m

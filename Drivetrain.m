@@ -389,13 +389,13 @@ classdef (Abstract) Drivetrain
             mode_shape = mode_shape(:, n);
         end
         
-        function Simpack_time_integration(obj)
-            sim = SimpackCOM();
+        function [model, result] = Simpack_time_integration(obj)
+            sim = SimpackCOM('version', '.2018');
             
-            file = dir(sprintf("@%s\\*.spck", class(obj)));
+            file = dir(sprintf("@%s\\*.Nejad.spck", class(obj)));
             file_name = sprintf("%s\\%s", file.folder, file.name);
             model = sim.open_model(file_name);
-            sim.time_integration();
+            result = sim.time_integration();
         end
         
         function SIMPACK_version(obj, varargin)
@@ -752,7 +752,8 @@ classdef (Abstract) Drivetrain
             % Additionaly, one can define an initial value for gamma to be
             % used on the optimization process
             
-            gm0 = scaling_factor(obj_ref.gamma.name, ones(length(obj_ref.gamma), 1));
+            gamma_P = P_scale/obj_ref.P_rated;
+            gm0 = scaling_factor(obj_ref.gamma.name, ones(length(obj_ref.gamma), 1)*nthroot(gamma_P, 3));
             
             constraint = ["L_1", "L_2";
                           "L_3", "L_S";
@@ -772,7 +773,7 @@ classdef (Abstract) Drivetrain
             gamma_0 = default.gamma_0;
             
             % Input scaling factors:
-            gamma_0('P') =         P_scale/obj_ref.P_rated;
+            gamma_0('P') = gamma_P;
             gamma_0('n') = default.n_scale/obj_ref.n_rotor;
             gamma_T = gamma_0('P')/gamma_0('n');
             

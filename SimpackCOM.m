@@ -20,6 +20,7 @@ classdef SimpackCOM
     
     properties(Dependent)
         current_model;
+        version;
     end
     
     methods
@@ -45,7 +46,7 @@ classdef SimpackCOM
                 error('SimpackCOM:mode', 'Valid modes are [SoLVer] and [GUI].');
             end
             
-            file = dir(sprintf("@%s\\*.spck", default.model_name));
+            file = dir(sprintf("@%s\\*.Nejad.spck", default.model_name));
             file_name = sprintf("%s\\%s", file.folder, file.name);
             obj.model = obj.open_model(file_name);
             
@@ -57,11 +58,22 @@ classdef SimpackCOM
             mdl = obj.COM.Spck.openModel(file);
         end
         
-        function time_integration(obj)
+        function result = time_integration(obj)
             % Sets model time as 0
             obj.COM.Spck.currentModel.Time.src = 0.0;
+%             tic;
             % time integration with measurements
-            result = obj.COM.Spck.Slv.integMeas(obj.current_model);
+            if(contains(obj.version, '2020'))
+                result = obj.COM.Spck.Slv.integMeas(obj.current_model);
+            elseif(contains(obj.version, '2018'))
+                result = obj.COM.Spck.Slv.integ(obj.current_model);
+                obj.COM.Spck.Slv.meas(obj.current_model, 1);
+            end
+%             disp(toc);
+        end
+        
+        function delete(obj)
+            obj.COM.Spck.Quit;
         end
         
     end
@@ -94,6 +106,11 @@ classdef SimpackCOM
         function val = get.current_model(obj)
             val = obj.COM.Spck.currentModel;
         end
+        
+        function val = get.version(obj)
+            val = num2str(obj.COM.Spck.version.number);
+        end
+        
     end
     
 end

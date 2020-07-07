@@ -33,7 +33,7 @@ classdef Eritenel_Parker_09 < Dynamic_Formulation
                             x,  0.0, 0.0;
                           0.0,  0.0, 0.0]);
             
-            if (strcmp(stage_idx.configuration, 'parallel'))
+            if(strcmp(stage_idx.configuration, 'parallel'))
                 % pinion, wheel
                 % Inertia matrix:
                 m_p = stage_idx.mass(1);
@@ -60,7 +60,7 @@ classdef Eritenel_Parker_09 < Dynamic_Formulation
                 GG = blkdiag(G_p_rot, G_p_tra, ...
                              G_w_rot, G_w_tra);
                 
-            elseif (strcmp(stage_idx.configuration, 'planetary'))
+            elseif(strcmp(stage_idx.configuration, 'planetary'))
                 % sun, ring, carrier, N planets
                 
                 % Inertia matrix:
@@ -132,6 +132,7 @@ classdef Eritenel_Parker_09 < Dynamic_Formulation
                 % OBS.: got a negative k_mesh for DTU_10MW planet-ring
                 k_sp = sun_pla.k_mesh;
                 k_rp = pla_rng.k_mesh;
+                
                 % Translational gear mesh stiffness:
                 % - odd index: sun-planet;
                 % - even index: ring-planet;
