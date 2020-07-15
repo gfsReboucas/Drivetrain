@@ -390,11 +390,12 @@ classdef (Abstract) Drivetrain
         end
         
         function [model, result] = Simpack_time_integration(obj)
-            sim = SimpackCOM('version', '.2018');
+            sim = SimpackCOM();
             
-            file = dir(sprintf("@%s\\*.Nejad.spck", class(obj)));
-            file_name = sprintf("%s\\%s", file.folder, file.name);
-            model = sim.open_model(file_name);
+%             file = dir(sprintf("@%s\\*.Nejad.spck", class(obj)));
+%             file_name = sprintf("%s\\%s", file.folder, file.name);
+%             model = sim.open_model(file_name);
+            model = sim.model;
             result = sim.time_integration();
         end
         

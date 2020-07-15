@@ -130,14 +130,14 @@ classdef Gear < Rack
             range_m = [ 0.0,  0.5, 2.0, 3.5, 6.0, 10.0, 16.0, 25.0,  ...
                        40.0, 70.0];
 
-            idx_b = find(range_b > obj.b, 1, "first");
+            idx_b = find(range_b > obj.b, 1, 'first');
             obj.b_int = geomean(range_b(idx_b-1:idx_b));
-            idx_m = find(range_m > obj.m_n, 1, "first");
+            idx_m = find(range_m > obj.m_n, 1, 'first');
             obj.m_int = geomean(range_m(idx_m-1:idx_m));
             
             for idx = 1:length(obj.d)
                 dd  = obj.d(idx);
-                jdx = find(range_d > dd, 1, "first");
+                jdx = find(range_d > dd, 1, 'first');
                 obj.d_int(idx) = geomean(range_d(jdx-1:jdx));
             end
         end
@@ -186,12 +186,12 @@ classdef Gear < Rack
         function h = plot(obj, varargin)
             if(nargin == 1)
                 C = zeros(2, 1);
-                plot_prop = {"lineStyle", "-" , "lineWidth", 2.0, "color", [1.0 0.0 0.0]};
+                plot_prop = {'lineStyle', '-' , 'lineWidth', 2.0, 'color', [1.0 0.0 0.0]};
             elseif(nargin > 1)
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error("prog:input", "Too many variables.");
+                error('prog:input', 'Too many variables.');
             end
             
             [X, Y] = obj.reference_circle(C);
@@ -208,12 +208,12 @@ classdef Gear < Rack
             
             if(nargin == 1)
                 C = zeros(2, 1);
-                plot_prop = {"edgeColor", "none", "lineStyle", "-" , "faceColor", [1.0 0.0 0.0]};
+                plot_prop = {'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', [1.0 0.0 0.0]};
             elseif(nargin > 1)
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error("prog:input", "Too many variables.");
+                error('prog:input', 'Too many variables.');
             end
             
             if(obj.z > 0)
@@ -265,12 +265,12 @@ classdef Gear < Rack
         function h = rectangle(obj, varargin)
             if(nargin == 1)
                 C = zeros(2,1);
-                plot_prop = {[1.0 0.0 0.0], "edgeColor", "k", "lineStyle", "-" , "faceColor", [1.0 0.0 0.0]};
+                plot_prop = {[1.0 0.0 0.0], 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', [1.0 0.0 0.0]};
             elseif(nargin > 1)
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error("prog:input", "Too many variables.");
+                error('prog:input', 'Too many variables.');
             end
             
             X = 0.5.*obj.b.*[1 -1 -1  1] + C(1);
@@ -292,13 +292,13 @@ classdef Gear < Rack
             d_list = [5.0 20.0 50.0 125.0 280.0 560.0 1000.0 1600.0 2500.0 4000.0 6000.0 8000.0 10000.0];
             m_list = [0.5 2.0 3.5 6.0 10.0 16.0 25.0 40.0 70.0];
             
-            idx_m = find(m_list > obj.m_n, 1, "first");
+            idx_m = find(m_list > obj.m_n, 1, 'first');
             m_int = geomean(m_list(idx_m-1:idx_m));
             
             f_pt = zeros(size(obj.d));
             
             for idx = 1:length(obj.d)
-                idx_d = find(d_list > obj.d(idx)  , 1, "first");
+                idx_d = find(d_list > obj.d(idx)  , 1, 'first');
 
                 d_int = geomean(d_list(idx_d-1:idx_d));
 
@@ -314,13 +314,13 @@ classdef Gear < Rack
             d_list = [5.0 20.0 50.0 125.0 280.0 560.0 1000.0 1600.0 2500.0 4000.0 6000.0 8000.0 10000.0];
             m_list = [0.5 2.0 3.5 6.0 10.0 16.0 25.0 40.0 70.0];
 
-            idx_m = find(m_list > obj.m_n, 1, "first");
+            idx_m = find(m_list > obj.m_n, 1, 'first');
             m_int = geomean(m_list(idx_m-1:idx_m));
             
             f_falpha = zeros(size(obj.d));
 
             for idx = 1:length(obj.d)
-                idx_d = find(d_list > obj.d(idx), 1, "first");
+                idx_d = find(d_list > obj.d(idx), 1, 'first');
 
                 d_int = geomean(d_list(idx_d-1:idx_d));
 
@@ -355,7 +355,7 @@ classdef Gear < Rack
             elseif(nargin == 2)
                 C = varargin{1};
             else
-                error("prog:input", "Too many variables.");
+                error('prog:input', 'Too many variables.');
             end
     
             x = R*cos(t) + C(1);
@@ -401,7 +401,7 @@ classdef Gear < Rack
     %% Set methods:
     methods
         function obj = set.m_n(obj, val)
-            obj.m = Rack.module(val, "calc", "nearest");
+            obj.m = Rack.module(val, 'calc', 'nearest');
         end
         
         function obj = set.b(obj, val)

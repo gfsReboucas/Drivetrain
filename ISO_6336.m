@@ -27,8 +27,9 @@ classdef ISO_6336 < Gear_Set
     end
     
     properties(Dependent)
-        K_gamma; % [-], Mesh load factor
-        T_1;     % [N-m], Applied torque
+        K_gamma;      % [-], Mesh load factor
+        T_1;          % [N-m], Applied torque
+        sigma_HP_ref; % [N/mm^2], Permissive contact stress (reference)
     end
     
     properties(Access = private)
@@ -99,6 +100,7 @@ classdef ISO_6336 < Gear_Set
             % to be done...
         end
     end
+    
     %% Calculation methods:
     methods
         function [SH, SF] = safety_factors(obj, varargin)
@@ -388,6 +390,7 @@ classdef ISO_6336 < Gear_Set
                 SH = SH';
             end
         end
+        
     end
     
     methods(Static)

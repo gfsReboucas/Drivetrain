@@ -46,8 +46,8 @@ classdef SimpackCOM
                 error('SimpackCOM:mode', 'Valid modes are [SoLVer] and [GUI].');
             end
             
-            file = dir(sprintf("@%s\\*.Nejad.spck", default.model_name));
-            file_name = sprintf("%s\\%s", file.folder, file.name);
+            file = dir(sprintf('@%s\\*.Nejad.spck', default.model_name));
+            file_name = sprintf('%s\\%s', file.folder, file.name);
             obj.model = obj.open_model(file_name);
             
             obj.project = obj.post.Spck.addProject();
@@ -58,9 +58,17 @@ classdef SimpackCOM
             mdl = obj.COM.Spck.openModel(file);
         end
         
-        function result = time_integration(obj)
+        function result = time_integration(obj, varargin)
+            if(isempty(varargin))
+                time_span = 1000.0;
+            else
+                time_span = varargin{1};
+            end
+            
             % Sets model time as 0
-            obj.COM.Spck.currentModel.Time.src = 0.0;
+            obj.model.time.val = 0.0;
+            obj.model.slv_active.val.integ_tend_duration.val = time_span;
+
 %             tic;
             % time integration with measurements
             if(contains(obj.version, '2020'))

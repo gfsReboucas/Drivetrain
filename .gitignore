@@ -51,3 +51,8 @@ check_classes.m
 *.log
 new.subvar
 scale_SIMPACK.m
+test_LDD.m
+*.tes
+*.spf
+*.bak
+LDD.m
