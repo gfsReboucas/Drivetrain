@@ -19,10 +19,10 @@ classdef Bearing
 %         a;
         name(1, :) string;    % [-],       Bearing designation
         type(1, :) string {mustBeMember(type, ["CARB", "CRB", "SRB", "TRB", "none"])} = "none";
-                                              % CARB: ?
+                                              % CARB: CARB toroidal roller bearing
                                                       % CRB: Cylindrical Roller Bearing
                                                              % SRB: Spherical Roller Bearing
-                                                                    % TRB: Taper Roller Bearing
+                                                                    % TRB: Tapered Roller Bearing
 
         K_x;     % [N/m],     Translational stiffness, x axis
         K_y;     % [N/m],     Translational stiffness, y axis

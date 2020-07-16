@@ -45,8 +45,9 @@ classdef Gear < Rack
         beta      (1, :) {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 0.0; % [deg.], Helix angle (at reference cylinder)
         k         (1, :) {mustBeNumeric, mustBeFinite}                    = 0.0; % [-],    Tip alteration coefficient
         bore_ratio(1, :) {mustBeNumeric, mustBeFinite, mustBePositive}    = 0.5; % [-],    Ratio btw. bore and reference diameters
-        Q         (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive}    = 6.0; % [-], ISO accuracy grade
-        R_a;           % [um], arithmetic mean roughness
+        Q         (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive}    = 6.0; % [-],    ISO accuracy grade
+        R_a       (1, 1) {mustBeNumeric, mustBeFinite, mustBePositive}    = 1.0; % [um],   Arithmetic mean roughness
+        material  (1, :) Material;
     end
     
     properties(Access = public)
@@ -106,7 +107,8 @@ classdef Gear < Rack
                        'k'          ,   0.0,  ...
                        'bore_ratio' ,   0.5,  ...
                        'Q'          ,   5.0,  ...
-                       'R_a'        ,   1.0};
+                       'R_a'        ,   1.0, ...
+                       'material'   ,   Material()};
             
             default = process_varargin(default, varargin);
             
@@ -122,6 +124,7 @@ classdef Gear < Rack
             obj.bore_ratio = default.bore_ratio;
             obj.Q          = default.Q;
             obj.R_a        = default.R_a;
+            obj.material   = default. material;
             
             range_b = [  0.0,   4.0, 10.0, 20.0, 40.0, 80.0, 160.0, 250.0, ...
                        400.0, 650.0,  1.0e3];
@@ -338,7 +341,7 @@ classdef Gear < Rack
         function obj = get_mass(obj, rho)
             %GET_MASS Update the gear's mass with a user defined density.
             if(nargin == 0)
-                rho = Material.rho*1.0e-9;
+                rho = obj.material.rho*1.0e9;
             end
             obj.mass = rho.*obj.V;
         end
@@ -511,7 +514,7 @@ classdef Gear < Rack
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = Material.rho;
+            rho = obj.material.rho*1.0e9;
             val = rho.*obj.V;
         end
         

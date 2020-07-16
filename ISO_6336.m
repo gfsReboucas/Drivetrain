@@ -27,13 +27,20 @@ classdef ISO_6336 < Gear_Set
     end
     
     properties(Dependent)
-        K_gamma;      % [-], Mesh load factor
-        T_1;          % [N-m], Applied torque
-        sigma_HP_ref; % [N/mm^2], Permissive contact stress (reference)
+        K_gamma;       % [-], Mesh load factor
+        T_1;           % [N-m], Applied torque
+        sigma_HP_ref;  % [N/mm^2], Permissive contact stress (reference)
+        sigma_HP_stat; % [N/mm^2], Permissive contact stress (static)
     end
     
     properties(Access = private)
         gear_set (1, :) Gear_Set; % [-], Gear stage
+        Z_NT;
+        Z_L;
+        Z_v;
+        Z_R;
+        Z_W;
+        Z_X;
     end
     
     methods
@@ -73,7 +80,8 @@ classdef ISO_6336 < Gear_Set
                          'bearing'      , gset.bearing, ...
                          'shaft'        , gset.output_shaft, ...
                          'Q'            , gset.Q, ...
-                         'R_a'          , gset.R_a);
+                         'R_a'          , gset.R_a, ...
+                         'material'     , gset.material);
 
             obj.gear_set = gset;
 
@@ -252,22 +260,14 @@ classdef ISO_6336 < Gear_Set
         
         function [SH, out] = Pitting(obj, varargin)
             % [N/mm^2],  Allowable contact stress number:
-            sigma_Hlim = Material().sigma_Hlim*1.0e-6;
+            sigma_Hlim = obj.material.sigma_Hlim;
             % Tip relief by running-in, Table 8, [1]:
             C_ay = (1.0/18.0)*(sigma_Hlim/97.0 - 18.45)^2 + 1.5;
             
             default = {'nu_40', 220.0, ...
-                       'line' ,   4, ...
                        'C_a'  , C_ay};
             
             default = process_varargin(default, varargin);
-            
-            % [N/mm^2],  Young's modulus:
-            E          = Material().E*1.0e-6;
-            % [-],       Poisson's ratio:
-            nu         = Material().nu;
-            % [kg/mm^3], Density
-            rho        = Material().rho*1.0e-9;
             
             out = struct();
 
@@ -310,7 +310,7 @@ classdef ISO_6336 < Gear_Set
             
             line_load = F_t*obj.K_A*obj.K_gamma/mean(obj.b);
             
-            K_v = obj.dynamic_factor(v, rho, line_load, default.C_a, ...
+            K_v = obj.dynamic_factor(v, line_load, default.C_a, ...
             f_pbeff, f_falphaeff);
             out.K_v = K_v;
             
@@ -332,6 +332,11 @@ classdef ISO_6336 < Gear_Set
             Z_BD = obj.tooth_contact_factor();
             out.Z_BD = Z_BD;
             
+            % [N/mm^2], Young's modulus:
+            E = obj.material.E;
+            % [-], Poisson's ratio:
+            nu = obj.material.nu;
+
             % Elasticity factor: (sec. 7)
             Z_E = sqrt(E/(2.0*pi*(1.0 - nu^2)));
             out.Z_E = Z_E;
@@ -340,21 +345,21 @@ classdef ISO_6336 < Gear_Set
             Z_beta = 1.0/sqrt(cosd(obj.beta));
             out.Z_beta = Z_beta;
             
-            [Z_L, Z_v] = obj.lubrication_velocity_factor(sigma_Hlim, default.nu_40, v);
-            out.Z_L = Z_L;
-            out.Z_v = Z_v;
+            [ZL, Zv] = obj.lubrication_velocity_factor(sigma_Hlim, default.nu_40, v);
+            obj.Z_L = ZL;
+            obj.Z_v = Zv;
             
             % Roughness factor:
-            Z_R = obj.roughness_factor(sigma_Hlim);
-            out.Z_R = Z_R;
+            ZR = obj.roughness_factor(sigma_Hlim);
+            obj.Z_R = ZR;
             
             % Work hardening factor:
-            Z_W = 1.0;
-            out.Z_W = Z_W;
+            ZW = 1.0;
+            obj.Z_W = ZW;
             
             % Size factor:
-            Z_X = 1.0;
-            out.Z_X = Z_X;
+            ZX = 1.0;
+            obj.Z_X = ZX;
 
             % Number of load cycles:
             N_L1 = obj.n_out*60.0*obj.L_h; % pinion
@@ -363,10 +368,10 @@ classdef ISO_6336 < Gear_Set
             
             % Life factor:
             % line = 2
-            Z_NT1 = obj.life_factor(default.line, N_L1);
-            Z_NT2 = obj.life_factor(default.line, N_L2);
-            Z_NT = [Z_NT1 Z_NT2];
-            out.Z_NT = Z_NT;
+            Z_NT1 = obj.life_factor(N_L1);
+            Z_NT2 = obj.life_factor(N_L2);
+            ZNT = [Z_NT1 Z_NT2];
+            obj.Z_NT = ZNT;
             
             % Contact stress:
             % Nominal contact stress at pitch point:
@@ -380,7 +385,12 @@ classdef ISO_6336 < Gear_Set
             out.sigma_H = sigma_H;
             
             % Permissible contact stress:
-            sigma_HP = sigma_Hlim*Z_NT*Z_L*Z_v*Z_R*Z_W*Z_X/obj.S_Hmin;
+            sigma_HP = sigma_Hlim*obj.Z_NT* ...
+                                  obj.Z_L * ...
+                                  obj.Z_v * ...
+                                  obj.Z_R * ...
+                                  obj.Z_W * ...
+                                  obj.Z_X/obj.S_Hmin;
             out.sigma_HP = sigma_HP;
             
             % Safety factor for surface durability (against pitting):
@@ -426,8 +436,7 @@ classdef ISO_6336 < Gear_Set
                                   'K_A'        , 1.0);
 
             [SH, SF] = calc.safety_factors('C_a'  ,  70.0, ...
-                                           'nu_40', 320.0, ...
-                                           'line' ,   2);
+                                           'nu_40', 320.0);
             
         end
         
@@ -459,7 +468,7 @@ classdef ISO_6336 < Gear_Set
             
         end
         
-        function K_v = dynamic_factor(obj, v, rho, line_load, C_a, f_pbeff, f_falphaeff)
+        function K_v = dynamic_factor(obj, v, line_load, C_a, f_pbeff, f_falphaeff)
             z1 = obj.z(1);
             uu = obj.u;
             cond = (v*z1/100.0)*sqrt((uu.^2)/(1.0 + uu.^2));
@@ -468,6 +477,8 @@ classdef ISO_6336 < Gear_Set
                     ' outside of its useful range. ', ...
                 'More info at the end of Sec. 6.3.2 of ISO 6336-1.']);
             end
+            
+            rho = obj.material.rho;
             
             if(strcmp(obj.configuration, 'parallel'))
                 % Based on Sec. 6.5.9 of ISO 6336-1, Eq. (30), assuming gears:
@@ -694,7 +705,9 @@ classdef ISO_6336 < Gear_Set
             Z_R = power(3.0/R_z10, C_ZR);
         end
         
-        function Z_NT = life_factor(~, line, N)
+        function Z_NT = life_factor(obj, N)
+            line = obj.material.row;
+            
             switch line
                 case 1
                     % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
@@ -727,6 +740,32 @@ classdef ISO_6336 < Gear_Set
     end
     
     %% Set methods:
+    methods
+        function obj = set.Z_NT(obj, val)
+            obj.Z_NT = val;
+        end
+        
+        function obj = set.Z_L(obj, val)
+            obj.Z_L = val;
+        end
+        
+        function obj = set.Z_v(obj, val)
+            obj.Z_v = val;
+        end
+        
+        function obj = set.Z_R(obj, val)
+            obj.Z_R = val;
+        end
+        
+        function obj = set.Z_W(obj, val)
+            obj.Z_W = val;
+        end
+        
+        function obj = set.Z_X(obj, val)
+            obj.Z_X = val;
+        end
+        
+    end
     
     %% Get methods:
     methods
@@ -736,19 +775,31 @@ classdef ISO_6336 < Gear_Set
         
         function val = get.K_gamma(obj)
             Np = obj.N_p;
-            if(Np == 3)
-                val = 1.1;
-            elseif(Np == 4)
-                val = 1.25;
-            elseif(Np == 5)
-                val = 1.35;
-            elseif(Np == 6)
-                val = 1.44;
-            elseif(Np == 7)
-                val = 1.47;
-            else
-                val = 1.0;
+            
+            switch(Np)
+                case 3
+                    val = 1.1;
+                case 4
+                    val = 1.25;
+                case 5
+                    val = 1.35;
+                case 6
+                    val = 1.44;
+                case 7
+                    val = 1.47;
+                otherwise
+                    val = 1.0;
             end
         end
+        
+        function val = get.sigma_HP_ref(obj)
+            ZNT = 1.0;
+            val = sigma_Hlim*ZNT*obj.Z_L*obj.Z_v*obj.Z_R*obj.Z_W*obj.Z_X/obj.S_Hmin;
+        end
+        
+        function val = get.sigma_HP_stat(obj)
+            val = sigma_Hlim*obj.Z_NT*obj.Z_L*obj.Z_v*obj.Z_R*obj.Z_W*obj.Z_X/obj.S_Hmin;
+        end
+        
     end
 end

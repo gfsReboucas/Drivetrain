@@ -494,10 +494,8 @@ classdef (Abstract) Drivetrain
             % ISO 6336.
             %
             
-            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
-            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
-            K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
-            K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
+            K_f  = 1.0; % [-], Fatigue stress-concentration factor for bending
+            K_fs = 1.0; % [-], Fatigue stress-concentration factor for torsion
             
             T_m  = obj.T_out(1)*obj.stage(1).u;
 
@@ -507,8 +505,7 @@ classdef (Abstract) Drivetrain
             SF_vec     = zeros(obj.N_stage    , max_Np);
             SShaft_vec = zeros(obj.N_stage + 1, 1);
             
-            SShaft_vec(1) = obj.main_shaft.safety_factors(S_ut, S_y, ...
-                                                          K_f, K_fs, T_m);
+            SShaft_vec(1) = obj.main_shaft.safety_factors(K_f, K_fs, T_m);
             
             jdx = 0;
             for idx = 1:obj.N_stage
@@ -517,8 +514,8 @@ classdef (Abstract) Drivetrain
                 kdx = jdx + (1:length(SH));
                 jdx = kdx(end);
                 
-                SH_vec(kdx)     = SH;
-                SF_vec(kdx)     = SF;
+                SH_vec(kdx) = SH;
+                SF_vec(kdx) = SF;
             end
             
             SH_vec(SH_vec == 0) = [];

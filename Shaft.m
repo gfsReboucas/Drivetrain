@@ -23,9 +23,10 @@ classdef Shaft
     %
     
     properties
-        d       (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;   % [mm], Diameter
-        L       (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 100.0; % [mm], Length
-        bearing (1, :) Bearing;                                               % [-], Bearing array
+        d        (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;   % [mm], Diameter
+        L        (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 100.0; % [mm], Length
+        bearing  (1, :) Bearing = Bearing();                                   % [-],  Bearing array
+        material (1, :) Material = Material();                                 % [-],  material
     end
     
     properties(Dependent)
@@ -43,16 +44,18 @@ classdef Shaft
     end
     
     methods
-        function obj = Shaft(dd, LL, brg)
+        function obj = Shaft(dd, LL, brg, mat)
             if(nargin == 0) % LSS
                 dd = 700.0;
                 LL = 2.0e3;
                 brg = Bearing();
+                mat = Material();
             end
             
             obj.d = dd;
             obj.L = LL;
             obj.bearing = brg;
+            obj.material = mat;
 %             obj.F = FF;
 %             obj.M = MM;
         end
@@ -110,10 +113,8 @@ classdef Shaft
     %% Calculations:
     methods
         function k = stiffness(obj, option)
-            E  = Material.E;  % [Pa], Young's modulus
-            nu = Material.nu; % [-],  Poisson's ratio
-            
-            G  = (E/2.0)/(1.0 + nu); % [Pa], Shear modulus
+            E  = obj.material.E*1.0e6; % [Pa], Modulus of elasticity
+            G  = obj.material.G*1.0e6; % [Pa], Shear modulus
             LL = obj.L*1.0e-3;
             
             switch option
@@ -169,7 +170,7 @@ classdef Shaft
             f_1 = omega_1/(2.0*pi);
         end
         
-        function [n, n_y] = safety_factors(obj, S_ut, S_y, K_f, K_fs, T_m)
+        function [n, n_y] = safety_factors(obj, K_f, K_fs, T_m)
             %SHIGLEY Calculates the safety factors for fatigue and yielding
             % for a circular shaft according to [1].
             % Input parameters:
@@ -187,6 +188,9 @@ classdef Shaft
             % S_f:  Finite life strength 
             
             dd = obj.d;
+            S_ut = obj.material.S_ut;
+            S_y = obj.material.S_y;
+            
             % Endurance limit
             if(S_ut <= 1400) % [MPa]
                 S_e_prime = 0.5*S_ut;
@@ -352,7 +356,7 @@ classdef Shaft
         end
         
         function K = stiffness_matrix(obj, option)
-            E  = Material.E; % [N/m^2],  Young's modulus
+            E  = obj.material.E*1.0e6; % [Pa], Modulus of elasticity
             LL = obj.L*1.0e-3;
             
             switch option
@@ -365,7 +369,7 @@ classdef Shaft
 
                 case "torsional"
                     % [alpha_1 alpha_2]
-                    G  = Material.G; % [Pa], Shear modulus
+                    G  = obj.material.G*1.0e6; % [Pa], Shear modulus
                     
                     K = eye(2);
                     K(1, 2) = -1.0;      K(2, 1) = K(1, 2);
@@ -445,9 +449,9 @@ classdef Shaft
             shaft = Shaft(dd, LL);
             
             LL = LL*1.0e-3;
-            E = Material.E;
-            G = Material.G;
-            rho = Material.rho;
+            E = shaft.material.E*1.0e6;
+            G = shaft.material.G*1.0e6;
+            rho = shaft.material.rho*1.0e9;
             
             c_o = sqrt(E/rho);
             c_ot = sqrt(G/rho);
@@ -532,7 +536,7 @@ classdef Shaft
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = Material.rho; % [kg/m^3], Density
+            rho = obj.material.rho*1.0e9; % [kg/m^3], Density
             val = rho*obj.volume;
         end
         

@@ -34,30 +34,18 @@ classdef NREL_5MW < Drivetrain
     
     methods
         function obj = NREL_5MW(varargin)
-            gamma = {'P'   , 1.0, ...
-                     'n'   , 1.0, ...
-                     'm_n1', 1.0, ...
-                     'b_1' , 1.0, ...
-                     'd_1' , 1.0, ...
-                     'L_1' , 1.0, ...
-                     'm_n2', 1.0, ...
-                     'b_2' , 1.0, ...
-                     'd_2' , 1.0, ...
-                     'L_2' , 1.0, ...
-                     'm_n3', 1.0, ...
-                     'b_3' , 1.0, ...
-                     'd_3' , 1.0, ...
-                     'L_3' , 1.0, ...
-                     'J_R' , 1.0, ...
-                     'J_G' , 1.0, ...
-                     'd_S' , 1.0, ...
-                     'L_S' , 1.0};
+            gamma = {'P'   , 1.0, 'n'   , 1.0, ...
+                     'm_n1', 1.0, 'b_1' , 1.0, 'd_1' , 1.0, 'L_1' , 1.0, ...
+                     'm_n2', 1.0, 'b_2' , 1.0, 'd_2' , 1.0, 'L_2' , 1.0, ...
+                     'm_n3', 1.0, 'b_3' , 1.0, 'd_3' , 1.0, 'L_3' , 1.0, ...
+                     'J_R' , 1.0, 'J_G' , 1.0, ...
+                     'd_S' , 1.0, 'L_S' , 1.0};
             
-            gamma = process_varargin(gamma, varargin{:});
+            gamma = process_varargin(gamma, varargin);
             gamma = scaling_factor(gamma);
                         
             N_st = 3;
-            stage = [Gear_Set Gear_Set Gear_Set];
+            stage = [Gear_Set() Gear_Set() Gear_Set()];
             
             for idx = 1:N_st
                 stg = NREL_5MW.gear_stage(idx);
@@ -71,14 +59,15 @@ classdef NREL_5MW < Drivetrain
             
             LSS = NREL_5MW.shaft(0);
             
-            inp_shaft = Shaft(LSS.d*gamma("d_S"), ...
-                              LSS.L*gamma("L_S"), ...
-                              LSS.bearing);
+            inp_shaft = Shaft(LSS.d*gamma('d_S'), ...
+                              LSS.L*gamma('L_S'), ...
+                              LSS.bearing, ...
+                              LSS.material);
             
             m_R = 110.0e3;
-            J_R = 57231535.0  *gamma("J_R"); % according to [1, 3]
+            J_R = 57231535.0  *gamma('J_R'); % according to [1, 3]
             m_G =     1900.0;
-            J_G =      534.116*gamma("J_G");
+            J_G =      534.116*gamma('J_G');
             
             obj@Drivetrain('N_stage'      , N_st, ...
                            'stage'        , stage, ...
@@ -118,17 +107,13 @@ classdef NREL_5MW < Drivetrain
                                            'nu_40'       , 220.0, ...
                                            'stage_idx'   ,   0, ...
                                            'save_report' , false, ...
-                                           'show_report' , false, ...
-                                           'line'        ,   4);
+                                           'show_report' , false);
 
-            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
-            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
-            K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
-            K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
+            K_f  = 1.0; % [-], Fatigue stress-concentration factor for bending
+            K_fs = 1.0; % [-], Fatigue stress-concentration factor for torsion
             
-            SShaft = obj.stage(idx).output_shaft.safety_factors(S_ut, S_y, K_f, K_fs, obj.T_out(idx));
+            SShaft = obj.stage(idx).output_shaft.safety_factors(K_f, K_fs, obj.T_out(idx));
         end
-        
     end
     
     methods(Static)
@@ -136,43 +121,55 @@ classdef NREL_5MW < Drivetrain
             %BEARING returns the bearing sets of each stage of the NREL 
             % 5 MW wind turbine drivetrain according to [1], tables VI and
             % IX shown below in a combined form. Damping values were taken
-            % from a SIMPACK model provided by A. Nejad.
+            % from a SIMPACK model provided by A. Nejad. Labels were
+            % obtained from manufacturers catalogs from the geometric
+            % dimensions of each bearing. See remarks at the end of the
+            % table.
             %
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | Name      | K x (N/m) | K y (N/m) | K z (N/m) | K ? (Nm/rad) | K ? (Nm/rad) | Type |  OD  |  ID  |  B  |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | INP-A     |     0     |   1.5e10  |   1.5e10  |      5e6     |      5e6     | CARB | 1750 | 1250 | 375 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | INP-B     |   4.06e8  |  1.54e10  |  1.54e10  |       0      |       0      |  SRB | 1220 |  750 | 365 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | PLC-A     |   6.6e4   |   1.7e9   |   1.1e9   |     5.6e5    |     1.3e5    |  SRB | 1030 |  710 | 315 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | PLC-B     |   6.6e7   |   1.7e9   |   1.1e9   |     5.6e5    |     1.3e5    |  CRB | 1220 | 1000 | 128 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | PL-A      |   9.1e4   |   9.4e9   |   3.2e9   |     1.4e6    |     4.5e6    |  CRB |  600 |  400 | 272 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | PL-B      |   9.1e4   |   9.4e9   |   3.2e9   |     1.4e6    |     4.5e6    |  CRB |  600 |  400 | 272 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-PLC-A |   9.1e4   |    6e7    |   1.2e9   |     7.5e4    |     7.5e4    | CARB | 1030 |  710 | 236 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-PLC-B |   9.1e7   |    6e7    |   1.2e9   |     7.5e4    |     7.5e4    |  CRB |  870 |  600 | 155 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-PL-A  |   9.1e4   |    6e7    |   1.2e9   |     7.5e4    |     7.5e4    |  CRB |  520 |  380 | 140 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-PL-B  |   9.1e4   |    6e7    |   1.2e9   |     7.5e4    |     7.5e4    |  CRB |  520 |  380 | 140 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-A     |     0     |    6e7    |   1.2e9   |     7.5e4    |     7.5e4    |  CRB |  500 |  400 | 100 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-B     |   7.4e7   |    5e8    |    5e8    |     1.6e6    |     1.8e6    |  TRB |  550 |  410 |  86 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | IMS-C     |   7.8e7   |   7.4e8   |   3.3e8   |     1.1e6    |     2.5e6    |  TRB |  550 |  410 |  86 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | HS-A      |   1.3e8   |   8.2e8   |   8.2e8   |     1.7e5    |      1e6     |  CRB |  360 |  200 |  98 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | HS-B      |   6.7e7   |    8e8    |   1.3e8   |     1.7e5    |      1e6     |  TRB |  460 |  200 | 100 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
-            % | HS-C      |    8e7    |    1e9    |   7.3e7   |     1.7e5    |      1e6     |  TRB |  460 |  200 | 100 |
-            % +-----------+-----------+-----------+-----------+--------------+--------------+------+------+------+-----+
+            % References: (access on 16.07.2020)
+            % - http://bearingsize.info/
+            % - https://simplybearings.co.uk/shop/
+            % - https://www.skf.com/group/products/rolling-bearings
+            %
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    Name   |           Label          | K_x (N/m) | K_y (N/m) | K_z (N/m) | K_beta (Nm/rad) | K_gamma (Nm/rad) | Type |  OD  |  ID  |  B  |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   INP-A   |     SKF C 30/1250 MB*    |    0.0    |   1.5e10  |   1.5e10  |       5e6       |        5e6       | CARB | 1750 | 1250 | 375 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   INP-B   |    SKF 231/750 CA/W33    |   4.06e8  |  1.54e10  |  1.54e10  |        0        |         0        |  SRB | 1220 |  750 | 365 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   PLC-A   |    SKF 240/710 ECA/W33   |   6.6e4   |   1.7e9   |   1.1e9   |      5.6e5      |       1.3e5      |  SRB | 1030 |  710 | 315 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   PLC-B   | SKF NF 28/1000 ECMP/HA1+ |   6.6e7   |   1.7e9   |   1.1e9   |      5.6e5      |       1.3e5      |  CRB | 1220 | 1000 | 128 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    PL-A   |     SKF NNCF 5080 CV     |   9.1e4   |   9.4e9   |   3.2e9   |      1.4e6      |       4.5e6      |  CRB |  600 |  400 | 272 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    PL-B   |     SKF NNCF 5080 CV     |   9.1e4   |   9.4e9   |   3.2e9   |      1.4e6      |       4.5e6      |  CRB |  600 |  400 | 272 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % | IMS-PLC-A |       SKF C30/710M       |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      | CARB | 1030 |  710 | 236 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % | IMS-PLC-B |    SKF NU 20/600 ECMA    |   9.1e7   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  870 |  600 | 155 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |  IMS-PL-A |     SKF NNCF 4976 CV+    |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  520 |  380 | 140 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |  IMS-PL-B |     SKF NNCF 4976 CV+    |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  520 |  380 | 140 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   IMS-A   |     SKF NNCF 4880 CV+    |     0     |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  500 |  400 | 100 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   IMS-B   |  Timken M667948/M667911& |   7.4e7   |    5e8    |    5e8    |      1.6e6      |       1.8e6      |  TRB |  550 |  410 |  86 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   IMS-C   |  Timken M667948/M667911& |   7.8e7   |   7.4e8   |   3.3e8   |      1.1e6      |       2.5e6      |  TRB |  550 |  410 |  86 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    HS-A   |     SKF NCF 2240 ECJB    |   1.3e8   |   8.2e8   |   8.2e8   |      1.7e5      |        1e6       |  CRB |  360 |  200 |  98 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    HS-B   |        SKF 32060 X       |   6.7e7   |    8e8    |   1.3e8   |      1.7e5      |        1e6       |  TRB |  460 | 200? | 100 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    HS-C   |        SKF 32060 X       |    8e7    |    1e9    |   7.3e7   |      1.7e5      |        1e6       |  TRB |  460 | 200? | 100 |
+            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % *: not found on SKF website (access 16.07.2020)
+            % +: multiple bearings with the same geometric parameters
+            % &: in imperial units and rounded values in mm
+            % ?: suspect of a typo, the correct would be 300 instead of 200
             %
             
             cx = 453.0;         cy = 42.0e3;            cz = 30600.0;
@@ -225,25 +222,25 @@ classdef NREL_5MW < Drivetrain
                            Bearing('name', 'ring')];   % Ring
                            
                 case 2
-                    IMS_PL_A  = Bearing('name',  "IMS_PL_A", 'type'  , "CRB" , ...
+                    IMS_PL_A  = Bearing('name',  'IMS_PL_A', 'type'  , 'CRB' , ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
                                         'OD'  ,       520.0, 'ID'    ,  380.0, 'B'      , 140.0);
-                    IMS_PL_B  = Bearing('name',  "IMS_PL_B", 'type'  , "CRB" , ...
+                    IMS_PL_B  = Bearing('name',  'IMS_PL_B', 'type'  , 'CRB' , ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
                                         'OD'  ,       520.0, 'ID'    ,  380.0, 'B'      , 140.0);
-                    IMS_PLC_A = Bearing('name', "IMS_PLC_A", 'type'  , "CARB", ...
+                    IMS_PLC_A = Bearing('name', 'IMS_PLC_A', 'type'  , 'CARB', ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
                                         'OD'  ,      1030.0, 'ID'    ,  710.0, 'B'      , 236.0);
-                    IMS_PLC_B = Bearing('name', "IMS_PLC_B", 'type'  , "CRB" , ...
+                    IMS_PLC_B = Bearing('name', 'IMS_PLC_B', 'type'  , 'CRB' , ...
                                         'K_x' ,       9.1e7, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
@@ -256,37 +253,37 @@ classdef NREL_5MW < Drivetrain
                            Bearing('name', 'ring')];   % Ring
                     
                 case 3
-                    IMS_A     = Bearing('name', "IMS_A", 'type'  , "CRB", ...
+                    IMS_A     = Bearing('name', 'IMS_A', 'type'  , 'CRB', ...
                                         'K_x' ,     0.0, 'K_y'   , 6.0e7, 'K_z'    , 1.2e9, ...
                                                          'K_beta', 7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
                                         'OD'  ,   360.0, 'ID'    , 200.0, 'B'      ,  98.0);
-                    IMS_B     = Bearing('name', "IMS_B", 'type'  , "TRB", ...
+                    IMS_B     = Bearing('name', 'IMS_B', 'type'  , 'TRB', ...
                                         'K_x' ,   7.4e7, 'K_y'   , 5.0e8, 'K_z'    , 5.0e8, ...
                                                          'K_beta', 1.6e6, 'K_gamma', 1.8e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
                                         'OD'  ,   460.0, 'ID'    , 200.0, 'B'      , 100.0);
-                    IMS_C     = Bearing('name', "IMS_C", 'type'  , "TRB", ...
+                    IMS_C     = Bearing('name', 'IMS_C', 'type'  , 'TRB', ...
                                         'K_x' ,   7.8e7, 'K_y'   , 7.4e8, 'K_z'    , 3.3e8, ...
                                                          'K_beta', 1.1e6, 'K_gamma', 2.5e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
                                         'OD'  ,   460.0, 'ID'    , 200.0, 'B'      , 100.0);
-                    HS_A      = Bearing('name',  "HS_A", 'type'  , "CRB", ...
+                    HS_A      = Bearing('name',  'HS_A', 'type'  , 'CRB', ...
                                         'K_x' ,   1.3e8, 'K_y'   , 8.2e8, 'K_z'    , 8.2e8, ...
                                                          'K_beta', 1.7e5, 'K_gamma', 1.0e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
                                         'OD'  ,   500.0, 'ID'    , 400.0, 'B'      , 100.0);
-                    HS_B      = Bearing('name',  "HS_B", 'type'  , "TRB", ...
+                    HS_B      = Bearing('name',  'HS_B', 'type'  , 'TRB', ...
                                         'K_x' ,   6.7e7, 'K_y'   , 8.0e8, 'K_z'    , 1.3e8, ...
                                                          'K_beta', 1.7e5, 'K_gamma', 1.0e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
                                         'OD'  ,   550.0, 'ID'    , 410.0, 'B'      ,  86.0);
-                    HS_C      = Bearing('name',  "HS_C", 'type'  , "TRB", ...
+                    HS_C      = Bearing('name',  'HS_C', 'type'  , 'TRB', ...
                                         'K_x' ,   8.0e7, 'K_y'   , 1.0e9, 'K_z'    , 7.3e7, ...
                                                          'K_beta', 1.7e5, 'K_gamma', 1.0e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
@@ -297,7 +294,7 @@ classdef NREL_5MW < Drivetrain
                            IMS_A, IMS_B, IMS_C];   % Wheel
 
                 otherwise
-                    error("prog:input", "Option [%d] is NOT valid.", idx);
+                    error('NREL_5MW:bearing', 'Option [%d] is NOT valid.', idx);
             end
         end
         
@@ -336,10 +333,10 @@ classdef NREL_5MW < Drivetrain
                     L = 1000.0;
 
                 otherwise
-                    error("prog:input", "Option [%d] is NOT valid.", idx);
+                    error('NREL_5MW:shaft', 'Option [%d] is NOT valid.', idx);
             end
             
-            sft = Shaft(d, L, bearing);
+            sft = Shaft(d, L, bearing, Material());
         end
         
         function g_set = gear_stage(idx)
@@ -398,7 +395,7 @@ classdef NREL_5MW < Drivetrain
             % | Root diameter (mm), ring gear          |   2677.507  |   2000.574   |      -      |
             % +----------------------------------------+-------------+--------------+-------------+
             %
-
+            
             switch(idx)
                 case 1
                     p    =   3;         % [-],    Number of planet gears
@@ -424,7 +421,7 @@ classdef NREL_5MW < Drivetrain
                     x = [x_s x_p x_r];
                     k = [k_s k_p k_r];
                     bore_ratio = [bore_Rs bore_Rp bore_Rr];
-                    config = "planetary";
+                    config = 'planetary';
                     
                 case 2
                     p    =   3;        % [-],    Number of planet gears
@@ -450,7 +447,7 @@ classdef NREL_5MW < Drivetrain
                     x = [x_s x_p x_r];
                     k = [k_s k_p k_r];
                     bore_ratio = [bore_Rs bore_Rp bore_Rr];
-                    config = "planetary";
+                    config = 'planetary';
 
                 case 3
                     p    =   1;         % [-],    Number of planet gears
@@ -472,10 +469,10 @@ classdef NREL_5MW < Drivetrain
                     x = [x_1 x_2];
                     k = [k_1 k_2];
                     bore_ratio = [bore_R1 bore_R2];
-                    config = "parallel";
+                    config = 'parallel';
                     
                 otherwise
-                    error("prog:input", "Option [%d] is NOT valid.", idx);
+                    error('NREL_5MW:gear_stage', 'Option [%d] is NOT valid.', idx);
             end
             
             g_set = Gear_Set('configuration', config, ...
@@ -489,7 +486,8 @@ classdef NREL_5MW < Drivetrain
                              'N_p'          , p, ...
                              'a_w'          , a_w, ...
                              'bearing'      , NREL_5MW.bearing(idx), ...
-                             'shaft'        , NREL_5MW.shaft(idx));
+                             'shaft'        , NREL_5MW.shaft(idx), ...
+                             'material'     , Material());
         end
         
         function property_estimation()
@@ -508,13 +506,14 @@ classdef NREL_5MW < Drivetrain
             R_cyl = sqrt(2.0*J_r_ratio/m_r); % [m], cylinder radius
             h_cyl = m_r/(Material.rho*pi*R_cyl^2); % [m], cylinder height
             
-            fprintf("Rotor mass moment of inertia using:\n")
-            fprintf("\t Rigid free-fixed resonance (%3.4e [Hz]):\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
-            fprintf("\t Rigid free-free  resonance (%3.4e [Hz]):\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
-            fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
-            fprintf("Cylindric rotor dimensions: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
+            fprintf('Rotor mass moment of inertia using:\n')
+            fprintf('\t Rigid free-fixed resonance (%3.4e [Hz]):\t %3.4e [kg-m^2]\n', freq_fix, J_r_fix);
+            fprintf('\t Rigid free-free  resonance (%3.4e [Hz]):\t %3.4e [kg-m^2]\n', freq_free, J_r_free);
+            fprintf('\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n', J_r_ratio);
+            fprintf('Cylindric rotor dimensions: R = %.3f \t h = %.3f [m]\n', R_cyl, h_cyl);
             
         end
+        
     end
     
     methods
@@ -570,7 +569,7 @@ classdef NREL_5MW < Drivetrain
                 mesh_flag = varargin{1};
             end
             
-            gamma_x = max([obj.gamma("m_n1") obj.gamma("m_n2") obj.gamma("m_n3")]);
+            gamma_x = max([obj.gamma('m_n1') obj.gamma('m_n2') obj.gamma('m_n3')]);
             gamma_load = gamma_x^2;
             
             k_sp = zeros(2, 1);
@@ -582,7 +581,7 @@ classdef NREL_5MW < Drivetrain
             
             k_3 = obj.stage(idx + 1).k_mesh;
             
-            new_ID = fopen("@NREL_5MW\NREL_5MW.rigid.subvar", "w");
+            new_ID = fopen('@NREL_5MW\NREL_5MW.rigid.subvar', 'w');
             
             fprintf(new_ID, "!file.version=3.4! Removing this line will make the file unreadable\n");
             fprintf(new_ID, "\n");
@@ -943,7 +942,7 @@ classdef NREL_5MW < Drivetrain
             
             default = process_varargin(default, varargin);
             
-            gamma_x = mean([obj.gamma("m_n1") obj.gamma("m_n2") obj.gamma("m_n3")]);
+            gamma_x = mean([obj.gamma('m_n1') obj.gamma('m_n2') obj.gamma('m_n3')]);
             gamma_load = power(gamma_x, 2.0);
             gamma_Nm = power(gamma_x, 3.0);
             
@@ -960,7 +959,7 @@ classdef NREL_5MW < Drivetrain
             k_rp = [1.006 2.88]*1.0e10;
             k_3 = 8.06e9;
 
-            new_ID = fopen("@NREL_5MW\NREL_5MW.Nejad.subvar", "w");
+            new_ID = fopen('@NREL_5MW\NREL_5MW.Nejad.subvar', 'w');
             
             fprintf(new_ID, "!file.version=2.5! Removing this line will make the file unreadable\n");
             fprintf(new_ID, "\n");
@@ -1245,20 +1244,20 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "\n");
             fprintf(new_ID, "subvargroup.begin($SVG_mesh)  ! $SVG_mesh\n");
             fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'detailed (FE225)', discr.desc(2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag\n", default.linear_mesh);
-            fprintf(new_ID, "   subvar($_use_detailed, str = 'SWITCH($SVG_mesh.$_flag)\n{\n	CASE 0:		0;\n	CASE 1:		1;\n	DEFAULT:		0;\n}') ! $SVG_mesh.$_use_detailed\n");
-            fprintf(new_ID, "   subvar($_use_linear, str = 'SWITCH($SVG_mesh.$_flag)\n{\n	CASE 0:		1;\n	CASE 1:		0;\n	DEFAULT:		1;\n}') ! $SVG_mesh.$_use_linear\n");
+            fprintf(new_ID, "   subvar($_use_detailed, str = 'SWITCH($SVG_mesh.$_flag)\n{\n\tCASE 0:\t0;\n\tCASE 1:\t 1;\n\tDEFAULT:\t0;\n}') ! $SVG_mesh.$_use_detailed\n");
+            fprintf(new_ID, "   subvar($_use_linear,   str = 'SWITCH($SVG_mesh.$_flag)\n{\n\tCASE 0:\t1;\n\tCASE 1:\t 0;\n\tDEFAULT:\t1;\n}') ! $SVG_mesh.$_use_linear\n");
             fprintf(new_ID, "subvargroup.end($SVG_mesh)  ! $SVG_mesh\n");
             fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_generator    )  ! $SVG_generator\n");
+            fprintf(new_ID, "subvargroup.begin($SVG_generator)  ! $SVG_generator\n");
             fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'torque from speed, T(omega)', discr.desc(2) = 'PI control (CE129)', discr.desc(3) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '2', discr.str(3) = '0') ! $SVG_generator.$_flag\n", default.gen_mode);
             fprintf(new_ID, "   subvar($_use_torque,  str = 'IF($SVG_generator.$_flag == 1)\n{\n 0\n }\nELSE\n{\n 1\n}') ! $SVG_generator.$_use_torque\n");
-            fprintf(new_ID, "   subvar($_use_control, str = 'IF($SVG_generator.$_flag == 2)\n{\n	0\n }\nELSE\n{\n 1\n}') ! $SVG_generator.$_use_control\n");
-            fprintf(new_ID, "subvargroup.end($SVG_generator    )  ! $SVG_generator\n");
+            fprintf(new_ID, "   subvar($_use_control, str = 'IF($SVG_generator.$_flag == 2)\n{\n 0\n }\nELSE\n{\n 1\n}') ! $SVG_generator.$_use_control\n");
+            fprintf(new_ID, "subvargroup.end($SVG_generator)  ! $SVG_generator\n");
             fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_base_input   )  ! $SVG_base_input\n");
-            fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'ON', discr.desc(2) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_base_input.$_flag\n", default.bed_plate);
+            fprintf(new_ID, "subvargroup.begin($SVG_base_input)  ! $SVG_base_input\n");
+            fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'ON', discr.desc(2) = 'OFF', discr.str(1) = '1', discr.str(2) = '0') ! $SVG_base_input.$_flag\n", default.bed_plate);
             fprintf(new_ID, "   subvar($_update_joint, str = '0')                                  ! $SVG_base_input.$_update_joint\n");
-            fprintf(new_ID, "subvargroup.end($SVG_base_input   )  ! $SVG_base_input\n");
+            fprintf(new_ID, "subvargroup.end($SVG_base_input)  ! $SVG_base_input\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "\n");
             

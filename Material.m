@@ -1,5 +1,11 @@
 classdef Material
     %MATERIAL
+    % References:
+    %   [1] ISO 6336-1:2006 Calculation of load capacity of spur and 
+    % helical gears -- Part 1: Basic principles, introduction and general 
+    % influence factors.
+    %   [2] ISO 6336-2:2006 Calculation of load capacity of spur and helical
+    % gears -- Part 2: Calculation of surface durability (pitting)
     %
     % written by:
     % Geraldo Rebouças
@@ -13,24 +19,56 @@ classdef Material
     %    https://www.ntnu.edu/imt/lab/md-lab
     %
     
-    properties(Constant)
-        E         (1, 1) = 206.0e9;                   % [Pa],     Young's modulus
-        nu        (1, 1) = 0.3;                       % [-],      Poisson's ratio
-        sigma_Hlim(1, 1) = 1500.0e6;                  % [Pa],     Allowable contact stress number
-        rho       (1, 1) = 7.83e3;                    % [kg/m^3], Density
-        S_ut      (1, 1) = 700.0e6;                   % [Pa],     Tensile strength
-        S_y       (1, 1) = 490.0e6;                   % [Pa],     Yield strength
-        G         (1, 1) = (206.0e9/2.0)/(1.0 + 0.3); % [Pa],     Shear modulus
+    properties
+        row = 1; % [-], cf. ISO 6336-2, Table 2
+        label string; % 
+        E;            % [N/mm^2],  Young's modulus
+        nu;           % [-],       Poisson's ratio
+        sigma_Hlim;   % [kg/mm^3], Allowable stress number (contact)
+        rho;          % [kg/mm^3], Density
+        S_ut          % [Pa],      Tensile strength
+        S_y;          % [Pa],      Yield strength
+        KISS_ID;      % [-],       ID number at KISSsoft's database
     end
     
-    methods(Static)
+    properties(Dependent)
+        G; % [kg/mm^3], Shear modulus
+    end
+    
+    methods
+        function obj = Material(varargin)
+            default = {'row'       , 1, ...
+                       'label'     , '16MnCr5', ...
+                       'E'         , 206.0e3, ...
+                       'nu'        , 0.3, ...
+                       'sigma_Hlim', 1500.0, ...
+                       'rho'       , 7.83e-6, ...
+                       'S_ut'      , 700.0e6, ...
+                       'S_y'       , 490.0e6, ...
+                       'KISS_ID'   , 10250};
+                   
+            default = process_varargin(default, varargin);
+            
+            obj.row        = default.row;
+            obj.label      = default.label;
+            obj.E          = default.E;
+            obj.nu         = default.nu;
+            obj.sigma_Hlim = default.sigma_Hlim;
+            obj.rho        = default.rho;
+            obj.S_ut       = default.S_ut;
+            obj.S_y        = default.S_y;
+            obj.KISS_ID    = default.KISS_ID;
+            
+        end
+    
         function disp(obj)
-            tab_set = {"Young's modulus",                 "E",            Material.E,          "Pa";
-                       "Poisson's ratio",                 "nu",           Material.nu,         "-";
-                       "Density",                         "rho",          Material.rho,        "kg/m^3";
-                       "Allowable contact stress number", "sigma_Hlim",   Material.sigma_Hlim, "Pa";
-                       "Tensile strength",                "S_ut",         Material.S_ut,       "Pa";
-                       "Yield strength",                  "S_y",          Material.S_y,        "Pa";
+            tab_set = {"Label",                             "-",          obj.label,      "-";
+                       "Young's modulus",                   "E",          obj.E,          "N/mm^2";
+                       "Poisson's ratio",                   "nu",         obj.nu,         "-";
+                       "Density",                           "rho",        obj.rho,        "kg/mm^3";
+                       "Allowable stress number (contact)", "sigma_Hlim", obj.sigma_Hlim, "N/mm^2";
+                       "Tensile strength",                  "S_ut",       obj.S_ut,       "Pa";
+                       "Yield strength",                    "S_y",        obj.S_y,        "Pa";
                         };
 
             Property = tab_set(:, 1);
@@ -45,6 +83,13 @@ classdef Material
                 disp(tab);
                 clear tab;
             end
+        end
+    end
+    
+    %% Get methods:
+    methods
+        function val = get.G(obj)
+            val = (obj.E/2.0)/(1.0 + obj.nu);
         end
     end
 end

@@ -50,10 +50,6 @@ classdef Carrier
             
             h = plot(x, y, plot_prop{:});
             
-%             x_0 = -[obj.L/2.0 obj.d/2.0]' + C;
-%             rectangle('Position', [x_0' obj.L obj.d], plot_prop{:});
-%             axis equal;
-%             box on;
         end
         
         function h = rectangle(obj, varargin)
@@ -121,7 +117,7 @@ classdef Carrier
         end
         
         function val = get.mass(obj)
-            rho = Material.rho;
+            rho = Material().rho*1.0e9;
             val = rho*obj.V;
         end
         
