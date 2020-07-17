@@ -257,11 +257,11 @@ classdef (Abstract) Drivetrain
         
         function [tab, tab_str] = stage_comparison(ref, sca, idx)
             if(ref.N_stage ~= sca.N_stage)
-                error("different number of gear stages.");
+                error("Drivetrain:different_stages", "different number of gear stages.");
             elseif(idx > ref.N_stage)
-                error("idx is bigger than the number of stages.");
+                error("Drivetrain:big_idx", "idx is bigger than the number of stages.");
             elseif(idx < 1)
-                error("idx is smaller than 1.");
+                error("Drivetrain:negative_idx", "idx is smaller than 1.");
             end
             
             tab_str = {"Rated power",                                  "P",       "kW",     ref.P_rated,                sca.P_rated,                sca.P_rated               /ref.P_rated;                % 1
@@ -330,7 +330,7 @@ classdef (Abstract) Drivetrain
         
         function plot_comp(DT1, DT2)
             if(DT1.N_stage ~= DT2.N_stage)
-                error("Both DT's should have the same number of stages.");
+                error("Drivetrain:different_stage_number", "Both DT's should have the same number of stages.");
             end
             
             hold on;
@@ -387,6 +387,16 @@ classdef (Abstract) Drivetrain
             
             f = f_n(n);
             mode_shape = mode_shape(:, n);
+        end
+        
+        function [model, result] = Simpack_time_integration(obj)
+            sim = SimpackCOM();
+            
+%             file = dir(sprintf("@%s\\*.Nejad.spck", class(obj)));
+%             file_name = sprintf("%s\\%s", file.folder, file.name);
+%             model = sim.open_model(file_name);
+            model = sim.model;
+            result = sim.time_integration();
         end
         
         function SIMPACK_version(obj, varargin)
@@ -484,10 +494,8 @@ classdef (Abstract) Drivetrain
             % ISO 6336.
             %
             
-            S_ut = Material.S_ut*1.0e-6; % [MPa], Tensile strength
-            S_y  = Material.S_y*1.0e-6;  % [MPa], Yield strength
-            K_f  = 1.0;                  % [-],   Fatigue stress-concentration factor for bending
-            K_fs = 1.0;                  % [-],   Fatigue stress-concentration factor for torsion
+            K_f  = 1.0; % [-], Fatigue stress-concentration factor for bending
+            K_fs = 1.0; % [-], Fatigue stress-concentration factor for torsion
             
             T_m  = obj.T_out(1)*obj.stage(1).u;
 
@@ -497,8 +505,7 @@ classdef (Abstract) Drivetrain
             SF_vec     = zeros(obj.N_stage    , max_Np);
             SShaft_vec = zeros(obj.N_stage + 1, 1);
             
-            SShaft_vec(1) = obj.main_shaft.safety_factors(S_ut, S_y, ...
-                                                          K_f, K_fs, T_m);
+            SShaft_vec(1) = obj.main_shaft.safety_factors(K_f, K_fs, T_m);
             
             jdx = 0;
             for idx = 1:obj.N_stage
@@ -507,8 +514,8 @@ classdef (Abstract) Drivetrain
                 kdx = jdx + (1:length(SH));
                 jdx = kdx(end);
                 
-                SH_vec(kdx)     = SH;
-                SF_vec(kdx)     = SF;
+                SH_vec(kdx) = SH;
+                SF_vec(kdx) = SF;
             end
             
             SH_vec(SH_vec == 0) = [];
@@ -743,7 +750,8 @@ classdef (Abstract) Drivetrain
             % Additionaly, one can define an initial value for gamma to be
             % used on the optimization process
             
-            gm0 = scaling_factor(obj_ref.gamma.name, ones(length(obj_ref.gamma), 1));
+            gamma_P = P_scale/obj_ref.P_rated;
+            gm0 = scaling_factor(obj_ref.gamma.name, ones(length(obj_ref.gamma), 1)*nthroot(gamma_P, 3));
             
             constraint = ["L_1", "L_2";
                           "L_3", "L_S";
@@ -763,7 +771,7 @@ classdef (Abstract) Drivetrain
             gamma_0 = default.gamma_0;
             
             % Input scaling factors:
-            gamma_0('P') =         P_scale/obj_ref.P_rated;
+            gamma_0('P') = gamma_P;
             gamma_0('n') = default.n_scale/obj_ref.n_rotor;
             gamma_T = gamma_0('P')/gamma_0('n');
             
@@ -1336,7 +1344,52 @@ classdef (Abstract) Drivetrain
     
     %% Misc
     methods(Static)
+		function val = read_if2(file_name)
+			%READ_IF2 converts .if2 files to .mat files.
+				
+			fid = fopen(file_name, "r");
+
+			file_type_descriptor = fscanf(fid, "%s", 1);
+			if(file_type_descriptor ~= "$SIMPACK_Input_Function_Set$")
+				error('file type wrong.')
+			end
+
+			release = fscanf(fid, "%f ! Release \n", 1);
+			file_format = fscanf(fid, "%f ! Format: 0/1/2 = ASCII/real/double \n", 1);
+
+			name = fscanf(fid, "%s ! \n", 1);
+			interp_method = fscanf(fid, "%f !            Interpolation Method: 2 = Linear \n", 1);
+			extrapol_param = fscanf(fid, "%f\t%f !            Extrapolation: 0/1 = Spline/Linear ; Transition Rang \n",[1 2]);
+			scaling_factor = fscanf(fid, "%f\t%f !            Unit Factors UNIT/SI = ", [1 2]);
+			unit_fac1 = fscanf(fid, "%s", 1);
+			unit_fac2 = fscanf(fid, "]  | [%s] \n", 1);
+			unit_typ1 = fscanf(fid, "%s !            Unit Types \n", 1);
+			unit_typ2 = fscanf(fid, "%s !            Unit Types \n", 1);
+
+			data = fscanf(fid, "%f", [2, Inf])';
+
+			fclose(fid);
+			
+			val.release = release;
+			val.file_format = file_format;
+			val.name = name;
+			val.interp_method = interp_method;
+			val.extrapol_param = extrapol_param;
+			val.scaling_factor = scaling_factor;
+			val.unit_type = [string(unit_typ1), string(unit_typ2)];
+			val.time = data(:,1);
+			val.data = data(:,2);
+
+        end
+        
         function rewrite_subvar(old_file)
+            %REWRITE_SUBVAR processes a .subvar file making it easier to
+            % modify later on using the method update_subvar() that should 
+            % be implemented by the sub-classes.
+            %
+            % see also update_subvar
+            %
+            
             old_ID = fopen(old_file, 'r');
             new_ID = fopen('new.subvar', 'w');
 

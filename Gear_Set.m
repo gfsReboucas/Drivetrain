@@ -73,16 +73,16 @@ classdef Gear_Set < Gear
                        'bore_ratio'   , [ 1     1  ]*0.5, ...
                        'N_p'          ,   1, ...
                        'a_w'          , 500.0, ...
-                       'bearing'      , [Bearing, Bearing], ...
-                       'shaft'        , Shaft, ...
+                       'bearing'      , [Bearing(), Bearing()], ...
+                       'shaft'        , Shaft(), ...
                        'm_n'          ,   8.0, ...
                        'alpha_n'      ,  20.0, ...
                        'b'            , 100.0, ...
                        'beta'         ,  15.8, ...
                        'rack_type'    ,  'D', ...
                        'Q'            ,   5.0, ...
-                       'R_a'          ,   1.0};
-                   
+                       'R_a'          ,   1.0, ...
+                       'material'     , Material()};
             
             default = process_varargin(default, varargin);
             
@@ -118,7 +118,8 @@ classdef Gear_Set < Gear
                      'k'         , default.k, ...
                      'bore_ratio', default.bore_ratio, ...
                      'Q'         , default.Q, ...
-                     'R_a'       , default.R_a);
+                     'R_a'       , default.R_a, ...
+                     'material'  , default.material);
             
             if(strcmp(default.configuration, 'planetary'))
                 obj.configuration = default.configuration;
@@ -128,7 +129,7 @@ classdef Gear_Set < Gear
                 obj.configuration = default.configuration;
                 obj.N_p    = 1;
             else
-                error('prog:input', 'Configuration [%s] is NOT defined.', default.configuration)
+                error('Gear_Set:configuration_undefined', 'Configuration [%s] is NOT defined.', default.configuration)
             end
             
             obj.a_w = default.a_w;
@@ -467,7 +468,9 @@ classdef Gear_Set < Gear
             
             ref_shaft = obj_ref.output_shaft;
             shaft_sca = Shaft(ref_shaft.d*gamma('d'), ...
-                              ref_shaft.L*gamma('L'));
+                              ref_shaft.L*gamma('L'), ...
+                              ref_shaft.bearing, ...
+                              ref_shaft.material);
                           
             obj_sca = Gear_Set('configuration', obj_ref.configuration, ...
                                'm_n'          , obj_ref.m_n*gamma('m_n'), ...
@@ -484,7 +487,8 @@ classdef Gear_Set < Gear
                                'bearing'      , obj_ref.bearing, ...
                                'shaft'        , shaft_sca, ...
                                'Q'            , obj_ref.Q, ...
-                               'R_a'          , obj_ref.R_a);
+                               'R_a'          , obj_ref.R_a, ...
+                               'material'     , obj_ref.material);
         end
         
         function [obj_sca, gamma, res] = scaled_version(obj_ref, P, n_1, SH_ref, aspect, varargin)
@@ -526,31 +530,6 @@ classdef Gear_Set < Gear
 %             warning('on', id_1);
             
             obj_sca = obj_ref.scale_aspect(gamma, aspect);
-        end
-        
-        %% Dynamics:
-        function [M, K] = Eritenel_2011(obj)
-            %ERITENEL_2011 Returns the inertia and stiffness matrices of
-            % the drivetrain according to:
-            % [1] T. Eritenel, 'Three-Dimensional Nonlinear Dynamics and
-            % Vibration Reduction of Gear Pairs and Planetary Gears',
-            % Ph.D., Ohio State University, Mechanical Engineering, 2011.
-            % http://rave.ohiolink.edu/etdc/view?acc_num=osu1298651902
-            % [2] T. Eritenel and R. Parker, 'Modal properties of
-            % three-dimensional helical planetary gears', Journal of Sound
-            % and Vibration, vol. 325, no. 1-2, pp. 397-420, 2009.
-            % https://doi.org/10.1016/j.jsv.2009.03.002
-            % [3] T. Eritenel and R. Parker, 'Three-dimensional nonlinear
-            % vibration of gear pairs', Journal of Sound and Vibration, 
-            % vol. 331, no. 15, pp. 3628-3648, 2012.
-            % https://doi.org/10.1016/j.jsv.2012.03.019
-            % [4] T. Eritenel and R. Parker, 'An investigation of tooth
-            % mesh nonlinearity and partial contact loss in gear pairs
-            % using a lumped-parameter model', Mechanism and Machine
-            % Theory, vol. 56, pp. 28-51, 2012.
-            % https://doi.org/10.1016/j.mechmachtheory.2012.05.002
-            %
-            M = NaN; K = NaN;
         end
         
         %% Misc.:
