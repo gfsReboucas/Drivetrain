@@ -899,41 +899,47 @@ classdef NREL_5MW < Drivetrain
             %
             % Kinematic Tree:
             % ================================================================================
-            %   $R_Isys
-            %    ---->$B_Bed_Plate.................................... [0 dof]  Joint $J_Bed_Plate of type 0
-            %         ---->$Gearbox_Frame............................. [0 dof]  Joint $J_Gearbox_Frame of type 0
-            %              ---->$B_ISShaft............................ [6 dof]  Joint $J_ISShaft of type 20
-            %                   ---->$BG_stage_01.$B_Sun.............. [0 dof]  Joint $BG_stage_01.$J_Sun of type 0
-            %                   ---->$BG_stage_02.$B_PLC.............. [0 dof]  Joint $BG_stage_02.$J_PLC of type 0
-            %                        ---->$BG_stage_02.$B_Pin1........ [6 dof]  Joint $BG_stage_02.$J_Pin1 of type 20
-            %                             ---->$BG_stage_02.$B_PL1.... [0 dof]  Joint $BG_stage_02.$J_PL1 of type 0
-            % 
-            %                        ---->$BG_stage_02.$B_Pin2........ [6 dof]  Joint $BG_stage_02.$J_Pin2 of type 20
-            %                             ---->$BG_stage_02.$B_PL2.... [0 dof]  Joint $BG_stage_02.$J_PL2 of type 0
-            % 
-            %                        ---->$BG_stage_02.$B_Pin3........ [6 dof]  Joint $BG_stage_02.$J_Pin3 of type 20
-            %                             ---->$BG_stage_02.$B_PL3.... [0 dof]  Joint $BG_stage_02.$J_PL3 of type 0
-            % 
-            %              ---->$B_HSIShaft........................... [6 dof]  Joint $J_HSIShaft of type 20
-            %                   ---->$BG_stage_02.$B_Sun.............. [0 dof]  Joint $BG_stage_02.$J_Sun of type 0
-            %                   ---->$BG_stage_03.$B_Gear............. [0 dof]  Joint $BG_stage_03.$J_Gear of type 0
-            % 
-            %              ---->$B_HSShaft............................ [6 dof]  Joint $J_HSShaft of type 20
-            %                   ---->$BG_stage_03.$B_Pinion........... [0 dof]  Joint $BG_stage_03.$J_Pinion of type 0
-            % 
-            %              ---->$BG_stage_01.$B_Ring.................. [0 dof]  Joint $BG_stage_01.$J_Ring of type 0
-            %              ---->$BG_stage_02.$B_Ring.................. [0 dof]  Joint $BG_stage_02.$J_Ring of type 0
-            % 
-            %         ---->$B_main_shaft_LSS.......................... [6 dof]  Joint $J_main_shaft_LSS of type 20
-            %              ---->$BG_stage_01.$B_PLC................... [0 dof]  Joint $BG_stage_01.$J_PLC of type 0
-            %                   ---->$BG_stage_01.$B_Pin1............. [6 dof]  Joint $BG_stage_01.$J_Pin1 of type 20
-            %                        ---->$BG_stage_01.$B_PL1......... [0 dof]  Joint $BG_stage_01.$J_PL1 of type 0
-            % 
-            %                   ---->$BG_stage_01.$B_Pin2............. [6 dof]  Joint $BG_stage_01.$J_Pin2 of type 20
-            %                        ---->$BG_stage_01.$B_PL2......... [0 dof]  Joint $BG_stage_01.$J_PL2 of type 0
-            % 
-            %                   ---->$BG_stage_01.$B_Pin3............. [6 dof]  Joint $BG_stage_01.$J_Pin3 of type 20
-            %                        ---->$BG_stage_01.$B_PL3......... [0 dof]  Joint $BG_stage_01.$J_PL3 of type 0
+            %
+            % --  $R_Isys
+            % --   ---->$B_Bed_Plate.................................... [6 dof]  Joint $J_Bed_Plate of type 20
+            % .
+            % $CTN_bed_plate_motion..................................... [6 cft]  Connection of type 61 (Constraint type 20)
+            % OR (see $SVG_base_input.$_flag)
+            % .
+            % $CTN_bed_plate_fixed...................................... [6 cft]  Connection of type 2 (Constraint type 0)
+            %           ---->$Gearbox_Frame............................. [0 dof]  Joint $J_Gearbox_Frame of type 0
+            %                ---->$B_ISShaft............................ [6 dof]  Joint $J_ISShaft of type 20
+            %                     ---->$BG_stage_01.$B_Sun.............. [0 dof]  Joint $BG_stage_01.$J_Sun of type 0
+            %                     ---->$BG_stage_02.$B_PLC.............. [0 dof]  Joint $BG_stage_02.$J_PLC of type 0
+            %                          ---->$BG_stage_02.$B_Pin1........ [6 dof]  Joint $BG_stage_02.$J_Pin1 of type 20
+            %                               ---->$BG_stage_02.$B_PL1.... [0 dof]  Joint $BG_stage_02.$J_PL1 of type 0
+            %
+            %                          ---->$BG_stage_02.$B_Pin2........ [6 dof]  Joint $BG_stage_02.$J_Pin2 of type 20
+            %                               ---->$BG_stage_02.$B_PL2.... [0 dof]  Joint $BG_stage_02.$J_PL2 of type 0
+            %
+            %                          ---->$BG_stage_02.$B_Pin3........ [6 dof]  Joint $BG_stage_02.$J_Pin3 of type 20
+            %                               ---->$BG_stage_02.$B_PL3.... [0 dof]  Joint $BG_stage_02.$J_PL3 of type 0
+            %
+            %                ---->$B_HSIShaft........................... [6 dof]  Joint $J_HSIShaft of type 20
+            %                     ---->$BG_stage_02.$B_Sun.............. [0 dof]  Joint $BG_stage_02.$J_Sun of type 0
+            %                     ---->$BG_stage_03.$B_Gear............. [0 dof]  Joint $BG_stage_03.$J_Gear of type 0
+            %
+            %                ---->$B_HSShaft............................ [6 dof]  Joint $J_HSShaft of type 20
+            %                     ---->$BG_stage_03.$B_Pinion........... [0 dof]  Joint $BG_stage_03.$J_Pinion of type 0
+            %
+            %                ---->$BG_stage_01.$B_Ring.................. [0 dof]  Joint $BG_stage_01.$J_Ring of type 0
+            %                ---->$BG_stage_02.$B_Ring.................. [0 dof]  Joint $BG_stage_02.$J_Ring of type 0
+            %
+            %           ---->$B_main_shaft_LSS.......................... [6 dof]  Joint $J_main_shaft_LSS of type 20
+            %                ---->$BG_stage_01.$B_PLC................... [0 dof]  Joint $BG_stage_01.$J_PLC of type 0
+            %                     ---->$BG_stage_01.$B_Pin1............. [6 dof]  Joint $BG_stage_01.$J_Pin1 of type 20
+            %                          ---->$BG_stage_01.$B_PL1......... [0 dof]  Joint $BG_stage_01.$J_PL1 of type 0
+            %
+            %                     ---->$BG_stage_01.$B_Pin2............. [6 dof]  Joint $BG_stage_01.$J_Pin2 of type 20
+            %                          ---->$BG_stage_01.$B_PL2......... [0 dof]  Joint $BG_stage_01.$J_PL2 of type 0
+            %
+            %                     ---->$BG_stage_01.$B_Pin3............. [6 dof]  Joint $BG_stage_01.$J_Pin3 of type 20
+            %                          ---->$BG_stage_01.$B_PL3......... [0 dof]  Joint $BG_stage_01.$J_PL3 of type 0
             % 
             
             default = {'linear_mesh', false, ...
@@ -961,7 +967,7 @@ classdef NREL_5MW < Drivetrain
 
             new_ID = fopen('@NREL_5MW\NREL_5MW.Nejad.subvar', 'w');
             
-            fprintf(new_ID, "!file.version=2.5! Removing this line will make the file unreadable\n");
+            fprintf(new_ID, "!file.version=3.4! Removing this line will make the file unreadable\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "!**********************************************************************\n");
             fprintf(new_ID, "! SubVars\n");
@@ -1242,22 +1248,24 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvargroup.end($SVG_HS_C)  ! $SVG_stage_03.$SVG_HS_C\n");
             fprintf(new_ID, "subvargroup.end($SVG_stage_03)  ! $SVG_stage_03\n");
             fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_mesh)  ! $SVG_mesh\n");
+            fprintf(new_ID, "subvargroup.begin($SVG_mesh)                           ! $SVG_mesh\n");
+            fprintf(new_ID, "   subvar($_full_damping, str= '10e-6 m')                                                     ! $SVG_mesh.$_full_damping\n");
             fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'detailed (FE225)', discr.desc(2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag\n", default.linear_mesh);
-            fprintf(new_ID, "   subvar($_use_detailed, str = 'SWITCH($SVG_mesh.$_flag)\n{\n\tCASE 0:\t0;\n\tCASE 1:\t 1;\n\tDEFAULT:\t0;\n}') ! $SVG_mesh.$_use_detailed\n");
-            fprintf(new_ID, "   subvar($_use_linear,   str = 'SWITCH($SVG_mesh.$_flag)\n{\n\tCASE 0:\t1;\n\tCASE 1:\t 0;\n\tDEFAULT:\t1;\n}') ! $SVG_mesh.$_use_linear\n");
-            fprintf(new_ID, "subvargroup.end($SVG_mesh)  ! $SVG_mesh\n");
+            fprintf(new_ID, "   subvar($_use_detailed, str= 'IF($SVG_mesh.$_flag == 1)\n{\n\t1\n}\nELSE\n{\n\t0\n}')                      ! $SVG_mesh.$_use_detailed\n");
+            fprintf(new_ID, "   subvar($_use_linear,   str= 'IF($SVG_mesh.$_flag == 1)\n{\n\t0\n}\nELSE\n{\n\t1\n}')                      ! $SVG_mesh.$_use_linear\n");
+            fprintf(new_ID, "subvargroup.end($SVG_mesh)                           ! $SVG_mesh\n");
             fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_generator)  ! $SVG_generator\n");
+            fprintf(new_ID, "subvargroup.begin($SVG_generator)                           ! $SVG_generator\n");
             fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'torque from speed, T(omega)', discr.desc(2) = 'PI control (CE129)', discr.desc(3) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '2', discr.str(3) = '0') ! $SVG_generator.$_flag\n", default.gen_mode);
-            fprintf(new_ID, "   subvar($_use_torque,  str = 'IF($SVG_generator.$_flag == 1)\n{\n 0\n }\nELSE\n{\n 1\n}') ! $SVG_generator.$_use_torque\n");
-            fprintf(new_ID, "   subvar($_use_control, str = 'IF($SVG_generator.$_flag == 2)\n{\n 0\n }\nELSE\n{\n 1\n}') ! $SVG_generator.$_use_control\n");
-            fprintf(new_ID, "subvargroup.end($SVG_generator)  ! $SVG_generator\n");
+            fprintf(new_ID, "   subvar($_use_torque,  str = 'IF($SVG_generator.$_flag == 1)\n{\n\t0\n}\nELSE\n{\n\t1\n}') ! $SVG_generator.$_use_torque\n");
+            fprintf(new_ID, "   subvar($_use_control, str = 'IF($SVG_generator.$_flag == 2)\n{\n\t0\n}\nELSE\n{\n\t1\n}') ! $SVG_generator.$_use_control\n");
+            fprintf(new_ID, "subvargroup.end($SVG_generator)                           ! $SVG_generator\n");
             fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_base_input)  ! $SVG_base_input\n");
+            fprintf(new_ID, "subvargroup.begin($SVG_base_input)                           ! $SVG_base_input\n");
             fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'ON', discr.desc(2) = 'OFF', discr.str(1) = '1', discr.str(2) = '0') ! $SVG_base_input.$_flag\n", default.bed_plate);
-            fprintf(new_ID, "   subvar($_update_joint, str = '0')                                  ! $SVG_base_input.$_update_joint\n");
-            fprintf(new_ID, "subvargroup.end($SVG_base_input)  ! $SVG_base_input\n");
+            fprintf(new_ID, "   subvar($_ON,  str= 'IF($SVG_base_input.$_flag == 1)\n{\n\t1\n}\nELSE\n{\n\t0\n}')                       ! $SVG_base_input.$_ON\n");
+            fprintf(new_ID, "   subvar($_OFF, str= 'IF($SVG_base_input.$_flag == 1)\n{\n\t0\n}\nELSE\n{\n\t1\n}')                       ! $SVG_base_input.$_OFF\n");
+            fprintf(new_ID, "subvargroup.end($SVG_base_input)                           ! $SVG_base_input\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "\n");
             

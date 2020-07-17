@@ -154,7 +154,7 @@ slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1         
 slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
 slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
 slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
-slv.integ.type (                    $SLV_SolverSettings           ) = 7                       ! Integrator type
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
 slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
 slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
 slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
@@ -184,7 +184,7 @@ slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000
 slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
 slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
 slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
-slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 500 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
 slv.integ.tend.time (               $SLV_SolverSettings           ) = { 1000 s }              ! TIME_INTEG_TIMEPAR_END_TIME
 slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
 slv.integ.atol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
@@ -273,8 +273,6 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh
-   subvar.str (                     $_full_damping                ) = '10e-6 m'               ! $SVG_mesh.$_full_damping, Definition
-
 subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
@@ -459,14 +457,19 @@ marker.pos (              1 ,       $M_Bed_Plate_Input_Loading    ) = { -3*$SVG_
 
 joint.from (                        $J_Bed_Plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_Bed_Plate                  ) = $M_Bed_Plate_BRF        ! To Marker
-joint.type (                        $J_Bed_Plate                  ) = 0                       ! Type
-joint.par (               1 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
-joint.par (               2 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [rad] Rotation about beta
-joint.par (               3 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [rad] Rotation about gamma
-joint.par (               4 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [m] Translation in x
-joint.par (               5 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [m] Translation in y
-joint.par (               6 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [m] Translation in z
-joint.par (               7 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+joint.type (                        $J_Bed_Plate                  ) = 20                      ! Type
+joint.par (               5 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about al
+joint.par (               6 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot ! [rad] Time Excitation angle al(t)
+joint.par (               7 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_XD ! [rad] Offset in al
+joint.par (              10 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about be
+joint.par (              11 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot_D ! [rad] Time Excitation angle be(t)
+joint.par (              12 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot_D ! [rad] Offset in be
+joint.par (              15 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about ga
+joint.par (              16 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_X_Rot_DD ! [rad] Time Excitation angle ga(t)
+joint.par (              17 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot_DD ! [rad] Offset in ga
+joint.par (              20 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in x
+joint.par (              25 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in y
+joint.par (              30 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in z
 joint.attr.2d.pos.x (     1 ,       $J_Bed_Plate                  ) = 320
 joint.attr.2d.pos.y (     1 ,       $J_Bed_Plate                  ) = -20
 joint.attr.2d.ori (       1 ,       $J_Bed_Plate                  ) = 0
@@ -476,14 +479,7 @@ joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_Bed_Plate   ) = 370, 354.2
 joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_Bed_Plate   ) = -10, -10, -20, -20
 joint.attr.vel ( 1 , $J_Bed_Plate )  = 0
 joint.attr.st.vel ( 1 , $J_Bed_Plate )  = 0
-joint.attr.2d.pos.x(1,$J_Bed_Plate) =  320.0
-joint.attr.2d.pos.y(1,$J_Bed_Plate) =  -20.0
-joint.attr.2d.ori  (1,$J_Bed_Plate) =    0.0
-joint.attr.2d.paths.from.x(1, 1, 1, 1,$J_Bed_Plate) =  100.0,  100.0 ,  110.0 ,  120.0, 130.0, 140.0, 283.0,  283.0,  293.0,  303.0
-joint.attr.2d.paths.from.y(1, 1, 1, 1,$J_Bed_Plate) =  -10.0,    0.0 ,    0.0 ,    0.0,   0.0,   0.0,   0.0,  -20.0,  -20.0,  -20.0
-joint.attr.2d.paths.to.x  (1, 1, 1, 1,$J_Bed_Plate) =  370.0,  354.25,  354.25,  337.0
-joint.attr.2d.paths.to.y  (1, 1, 1, 1,$J_Bed_Plate) =  -10.0,  -10.0 ,  -20.0 ,  -20.0
-joint.attr.st.vel(1$J_Bed_Plate) = 0.0
+joint.attr.st.vel ( 1 , $J_Bed_Plate )  = 0
 
 prim.type (                         $P_Bed_Plate                  ) = 1                       ! Type
 prim.ref (                          $P_Bed_Plate                  ) = $M_Bed_Plate_BRF        ! Reference Marker
@@ -601,349 +597,6 @@ prim.par (                8 ,       $P_main_shaft_LSS_Hub         ) = 1.00000000
 prim.par (                9 ,       $P_main_shaft_LSS_Hub         ) = 0.00000000000000000E+00 ! [rad] Start angle
 prim.par (               10 ,       $P_main_shaft_LSS_Hub         ) = 0.00000000000000000E+00 ! [rad] Delta angle
 prim.par (               11 ,       $P_main_shaft_LSS_Hub         ) = 0.00000000000000000E+00 ! [-] Close geometry with
-
-
-body.m (                            $B_ISShaft                    ) = 1.00000000000000000E+00 ! Mass of the Body
-body.mp (                           $B_ISShaft                    ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
-body.I.tens (             1 ,   1 , $B_ISShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.tens (             2 ,   2 , $B_ISShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.tens (             3 ,   3 , $B_ISShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.kind (                       $B_ISShaft                    ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
-body.attr.2d.pos.x (                $B_ISShaft                    ) = 6.60000000000000000E+02
-body.attr.2d.pos.y (                $B_ISShaft                    ) = -1.30000000000000000E+02
-body.attr.2d.width (                $B_ISShaft                    ) = 5.00000000000000000E+01
-body.attr.2d.height (               $B_ISShaft                    ) = 3.00000000000000000E+01
-
-marker.type (                       $M_ISShaft_BRF                ) = 1                       ! Type
-marker.parent (                     $M_ISShaft_BRF                ) = $B_ISShaft              ! Body
-marker.flx.type (                   $M_ISShaft_BRF                ) = 4                       ! Flexible type
-
-marker.type (                       $M_ISShaft_LS_SUN             ) = 2                       ! Type
-marker.parent (                     $M_ISShaft_LS_SUN             ) = $B_ISShaft              ! Body
-marker.pos (              1 ,       $M_ISShaft_LS_SUN             ) = { -0.75*$SVG_stage_01.$_gamma_L } ! Position
-
-marker.type (                       $M_ISShaft_PLC                ) = 2                       ! Type
-marker.parent (                     $M_ISShaft_PLC                ) = $B_ISShaft              ! Body
-marker.pos (              1 ,       $M_ISShaft_PLC                ) = { 0.75*$SVG_stage_01.$_gamma_L } ! Position
-
-joint.from (                        $J_ISShaft                    ) = $M_Gearbox_Frame_SHAFT_LS_IMS ! From Marker
-joint.to (                          $J_ISShaft                    ) = $M_ISShaft_BRF          ! To Marker
-joint.type (                        $J_ISShaft                    ) = 20                      ! Type
-joint.st.pos (            1 ,       $J_ISShaft                    ) = -8.07604976000964890E-06 ! Position
-joint.st.pos (            2 ,       $J_ISShaft                    ) = -8.64379862495825166E-05 ! Position
-joint.st.pos (            3 ,       $J_ISShaft                    ) = -1.32463695247950270E-08 ! Position
-joint.st.pos (            4 ,       $J_ISShaft                    ) = -1.22557284172935277E-07 ! Position
-joint.st.pos (            5 ,       $J_ISShaft                    ) = 1.78990346067221575E-08 ! Position
-joint.st.pos (            6 ,       $J_ISShaft                    ) = -1.23214990551737493E-04 ! Position
-joint.st.vel (            1 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            2 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            3 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            4 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            5 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            6 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.attr.2d.pos.x (     1 ,       $J_ISShaft                    ) = 540
-joint.attr.2d.pos.y (     1 ,       $J_ISShaft                    ) = -160
-joint.attr.2d.ori (       1 ,       $J_ISShaft                    ) = 0
-joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_ISShaft   ) = 70, 70, 389.75, 389.75, 399.75, 409.75, 523
-joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_ISShaft   ) = 30, -115, -115, -160, -160, -160, -160
-joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_ISShaft     ) = 660, 626.75, 626.75, 557
-joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_ISShaft     ) = -120, -120, -160, -160
-
-prim.type (                         $P_ISShaft                    ) = 2                       ! Type
-prim.ref (                          $P_ISShaft                    ) = $M_ISShaft_BRF          ! Reference Marker
-prim.ang (                1 ,       $P_ISShaft                    ) = { 0 deg }               ! Angles
-prim.ang (                3 ,       $P_ISShaft                    ) = { 90 deg }              ! Angles
-prim.color.r (            1 ,       $P_ISShaft                    ) = 3.40000000000000000E+01 ! Colors (red component)
-prim.color.r (            2 ,       $P_ISShaft                    ) = 2.55000000000000000E+02 ! Colors (red component)
-prim.color.g (            1 ,       $P_ISShaft                    ) = 1.39000000000000000E+02 ! Colors (green component)
-prim.color.g (            2 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (green component)
-prim.color.b (            1 ,       $P_ISShaft                    ) = 3.40000000000000000E+01 ! Colors (blue component)
-prim.color.b (            2 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (blue component)
-prim.color.t (            1 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.color.t (            2 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.mp.dens.solid (                $P_ISShaft                    ) = 7.85000000000000000E+03 ! Density
-prim.par (                2 ,       $P_ISShaft                    ) = { 0.75*$SVG_stage_01.$_gamma_L } ! [m] Height
-prim.par (                3 ,       $P_ISShaft                    ) = { 0.8*$SVG_stage_01.$_gamma_d } ! [m] Outer diameter
-prim.par (                4 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [m] Inner diameter
-prim.par (                5 ,       $P_ISShaft                    ) = $SVG_stage_01.$_z_planet ! [-] Number of planes
-prim.par (                6 ,       $P_ISShaft                    ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
-prim.par (                7 ,       $P_ISShaft                    ) = 1.00000000000000000E+00 ! [-] Show bottom cap
-prim.par (                8 ,       $P_ISShaft                    ) = 1.00000000000000000E+00 ! [-] Show top cap
-prim.par (                9 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [rad] Start angle
-prim.par (               10 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [rad] Delta angle
-prim.par (               11 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [-] Close geometry with
-
-
-body.sb.node.id (         1 ,       $B_HSIShaft                   ) = 1                       ! Node ID
-body.sb.node.pos (        1 ,   1 , $B_HSIShaft                   ) = { -750 mm }             ! Node Position
-body.sb.node.pos (        2 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        3 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.id (         2 ,       $B_HSIShaft                   ) = 2                       ! Node ID
-body.sb.node.pos (        1 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        2 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        3 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.id (         3 ,       $B_HSIShaft                   ) = 3                       ! Node ID
-body.sb.node.pos (        1 ,   3 , $B_HSIShaft                   ) = { 520 mm }              ! Node Position
-body.sb.node.pos (        2 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        3 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.id (         4 ,       $B_HSIShaft                   ) = 4                       ! Node ID
-body.sb.node.pos (        1 ,   4 , $B_HSIShaft                   ) = { 750 mm }              ! Node Position
-body.sb.node.pos (        2 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        3 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.id (         5 ,       $B_HSIShaft                   ) = 5                       ! Node ID
-body.sb.node.pos (        1 ,   5 , $B_HSIShaft                   ) = { 980 mm }              ! Node Position
-body.sb.node.pos (        2 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        3 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.id (         6 ,       $B_HSIShaft                   ) = 6                       ! Node ID
-body.sb.node.pos (        1 ,   6 , $B_HSIShaft                   ) = { 1030 mm }             ! Node Position
-body.sb.node.pos (        2 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.node.pos (        3 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
-body.sb.ele.from (        1 ,       $B_HSIShaft                   ) = 1                       ! From Node
-body.sb.ele.to (          1 ,       $B_HSIShaft                   ) = 2                       ! To Node
-body.sb.ele.type (        1 ,       $B_HSIShaft                   ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   1 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.xsec (        2 ,   1 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.ori.vec (     1 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     2 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     3 ,   1 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.dmp.par (     1 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.dmp.par (     2 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.active (      1 ,       $B_HSIShaft                   ) = 1                       ! Active
-body.sb.ele.from (        2 ,       $B_HSIShaft                   ) = 2                       ! From Node
-body.sb.ele.to (          2 ,       $B_HSIShaft                   ) = 3                       ! To Node
-body.sb.ele.type (        2 ,       $B_HSIShaft                   ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   2 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.xsec (        2 ,   2 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.ori.vec (     1 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     2 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     3 ,   2 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.dmp.par (     1 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.dmp.par (     2 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.active (      2 ,       $B_HSIShaft                   ) = 1                       ! Active
-body.sb.ele.from (        3 ,       $B_HSIShaft                   ) = 3                       ! From Node
-body.sb.ele.to (          3 ,       $B_HSIShaft                   ) = 4                       ! To Node
-body.sb.ele.type (        3 ,       $B_HSIShaft                   ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   3 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.xsec (        2 ,   3 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.ori.vec (     1 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     2 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     3 ,   3 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.dmp.par (     1 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.dmp.par (     2 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.active (      3 ,       $B_HSIShaft                   ) = 1                       ! Active
-body.sb.ele.from (        4 ,       $B_HSIShaft                   ) = 4                       ! From Node
-body.sb.ele.to (          4 ,       $B_HSIShaft                   ) = 5                       ! To Node
-body.sb.ele.type (        4 ,       $B_HSIShaft                   ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   4 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.xsec (        2 ,   4 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.ori.vec (     1 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     2 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     3 ,   4 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.dmp.par (     1 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.dmp.par (     2 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.active (      4 ,       $B_HSIShaft                   ) = 1                       ! Active
-body.sb.ele.from (        5 ,       $B_HSIShaft                   ) = 5                       ! From Node
-body.sb.ele.to (          5 ,       $B_HSIShaft                   ) = 6                       ! To Node
-body.sb.ele.type (        5 ,       $B_HSIShaft                   ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   5 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.xsec (        2 ,   5 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.ori.vec (     1 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     2 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     3 ,   5 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.dmp.par (     1 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.dmp.par (     2 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.active (      5 ,       $B_HSIShaft                   ) = 1                       ! Active
-body.sb.ele.from (        6 ,       $B_HSIShaft                   ) = 6                       ! From Node
-body.sb.ele.to (          6 ,       $B_HSIShaft                   ) = 0                       ! To Node
-body.sb.ele.type (        6 ,       $B_HSIShaft                   ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   6 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.xsec (        2 ,   6 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
-body.sb.ele.ori.vec (     1 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     2 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.ori.vec (     3 ,   6 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Orientation Vector
-body.sb.ele.dmp.par (     1 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.dmp.par (     2 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Damping
-body.sb.ele.active (      6 ,       $B_HSIShaft                   ) = 0                       ! Active
-body.m (                            $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Mass of the Body
-body.mp (                           $B_HSIShaft                   ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
-body.I.tens (             1 ,   1 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.tens (             2 ,   2 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.tens (             3 ,   3 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.kind (                       $B_HSIShaft                   ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
-body.type (                         $B_HSIShaft                   ) = 0                       ! Body type: 0=rigid; 1=linear flex; 2=linear SIMBEAM; 4=nonlinear SIMBEAM; 6=nonlinear flex; 7=Abq Co-Sim; 8=flextrack
-body.flx.st.pos (         1 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Flexible position
-body.flx.st.pos (         2 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Flexible position
-body.flx.st.pos (         3 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Flexible position
-body.flx.st.vel (         1 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity state
-body.flx.st.vel (         2 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity state
-body.flx.st.vel (         3 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity state
-body.flx.st.dep (         1 ,       $B_HSIShaft                   ) = 0                       ! State dependency
-body.flx.st.dep (         2 ,       $B_HSIShaft                   ) = 0                       ! State dependency
-body.flx.st.dep (         3 ,       $B_HSIShaft                   ) = 0                       ! State dependency
-body.flx.st.prestress (   1 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Pre-Stress Forces
-body.flx.st.prestress (   2 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Pre-Stress Forces
-body.flx.st.prestress (   3 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Pre-Stress Forces
-body.flx.eigenmodes.kind (          $B_HSIShaft                   ) = 2                       ! Eigenmode frequency range: 0=none; 1=f-min,f-max; 2=f-min,n-modes; 3=f-min,all modes
-body.flx.eigenmodes.freqrange.min ( $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Eigenmode minimum frequency
-body.flx.eigenmodes.nmodes (        $B_HSIShaft                   ) = 3                       ! Eigenmode number of modes
-body.flx.ifacemodes.kind (          $B_HSIShaft                   ) = -1                      ! Interface modes; -1=none; 0=IRM (default); 1=FRM-Auto; 2=FRM-Manual
-body.flx.st.active (      1 ,       $B_HSIShaft                   ) = 1                       ! User defined selection of the mode vectors
-body.flx.st.active (      2 ,       $B_HSIShaft                   ) = 1                       ! User defined selection of the mode vectors
-body.flx.st.active (      3 ,       $B_HSIShaft                   ) = 1                       ! User defined selection of the mode vectors
-body.flx.defhandling (              $B_HSIShaft                   ) = 1                       ! 0=Retain deformation; 1=Retain modal coordinates; 2=Reset deformation to zero
-body.attr.2d.pos.x (                $B_HSIShaft                   ) = 4.70000000000000000E+02
-body.attr.2d.pos.y (                $B_HSIShaft                   ) = -6.00000000000000000E+01
-body.attr.2d.width (                $B_HSIShaft                   ) = 5.00000000000000000E+01
-body.attr.2d.height (               $B_HSIShaft                   ) = 3.00000000000000000E+01
-
-marker.type (                       $M_HSIShaft_BRF               ) = 1                       ! Type
-marker.parent (                     $M_HSIShaft_BRF               ) = $B_HSIShaft             ! Body
-marker.flx.type (                   $M_HSIShaft_BRF               ) = 4                       ! Flexible type
-
-marker.type (                       $M_HSIShaft_IMS_SUN           ) = 2                       ! Type
-marker.parent (                     $M_HSIShaft_IMS_SUN           ) = $B_HSIShaft             ! Body
-marker.pos (              1 ,       $M_HSIShaft_IMS_SUN           ) = { -0.5*$SVG_stage_02.$_gamma_L } ! Position
-
-marker.type (                       $M_HSIShaft_GEAR              ) = 2                       ! Type
-marker.parent (                     $M_HSIShaft_GEAR              ) = $B_HSIShaft             ! Body
-marker.pos (              1 ,       $M_HSIShaft_GEAR              ) = { 0.5*$SVG_stage_02.$_gamma_L } ! Position
-
-marker.type (                       $M_HSIShaft_Bearing_IMS_A     ) = 2                       ! Type
-marker.parent (                     $M_HSIShaft_Bearing_IMS_A     ) = $B_HSIShaft             ! Body
-marker.pos (              1 ,       $M_HSIShaft_Bearing_IMS_A     ) = { (500-360/2-100/2)*$SVG_stage_03.$_gamma_d mm } ! Position
-
-marker.type (                       $M_HSIShaft_Bearing_IMS_B     ) = 2                       ! Type
-marker.parent (                     $M_HSIShaft_Bearing_IMS_B     ) = $B_HSIShaft             ! Body
-marker.pos (              1 ,       $M_HSIShaft_Bearing_IMS_B     ) = { (500+360/2+100/2)*$SVG_stage_03.$_gamma_d mm } ! Position
-
-marker.type (                       $M_HSIShaft_Bearing_IMS_C     ) = 2                       ! Type
-marker.parent (                     $M_HSIShaft_Bearing_IMS_C     ) = $B_HSIShaft             ! Body
-marker.pos (              1 ,       $M_HSIShaft_Bearing_IMS_C     ) = { (500+360/2+100/2+100/2)*$SVG_stage_03.$_gamma_d mm } ! Position
-
-joint.from (                        $J_HSIShaft                   ) = $M_Gearbox_Frame_SHAFT_IMS_HS ! From Marker
-joint.to (                          $J_HSIShaft                   ) = $M_HSIShaft_BRF         ! To Marker
-joint.type (                        $J_HSIShaft                   ) = 20                      ! Type
-joint.st.pos (            1 ,       $J_HSIShaft                   ) = -2.31143977141366768E-04 ! Position
-joint.st.pos (            2 ,       $J_HSIShaft                   ) = -5.00895311694251160E-05 ! Position
-joint.st.pos (            3 ,       $J_HSIShaft                   ) = -2.44043141011617446E-07 ! Position
-joint.st.pos (            4 ,       $J_HSIShaft                   ) = -1.60159348790325994E-08 ! Position
-joint.st.pos (            5 ,       $J_HSIShaft                   ) = 1.77491337727153396E-07 ! Position
-joint.st.pos (            6 ,       $J_HSIShaft                   ) = -5.06850095580324255E-05 ! Position
-joint.st.vel (            1 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            2 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            3 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            4 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            5 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            6 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
-joint.attr.2d.pos.x (     1 ,       $J_HSIShaft                   ) = 620
-joint.attr.2d.pos.y (     1 ,       $J_HSIShaft                   ) = -100
-joint.attr.2d.ori (       1 ,       $J_HSIShaft                   ) = 0
-joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_HSIShaft  ) = 60, 60, 343, 343, 353, 363, 373, 373, 383, 393, 403, 413, 423, 433, 443, 443, 453, 463, 473, 483, 493, 503, 513, 513, 523, 533, 543, 553, 563, 573, 573, 583, 593, 603
-joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_HSIShaft  ) = 30, 5.9375, 5.9375, -36.25, -36.25, -36.25, -36.25, -55, -55, -55, -55, -55, -55, -55, -55, -80, -80, -80, -80, -80, -80, -80, -80, -90, -90, -90, -90, -90, -90, -90, -100, -100, -100, -100
-joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_HSIShaft    ) = 510, 510, 647, 647, 637
-joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_HSIShaft    ) = -60, -77.5, -77.5, -100, -100
-
-prim.type (                         $P_HSIShaft                   ) = 2                       ! Type
-prim.ref (                          $P_HSIShaft                   ) = $M_HSIShaft_BRF         ! Reference Marker
-prim.pos (                1 ,       $P_HSIShaft                   ) = { 250*$SVG_stage_02.$_gamma_L mm } ! Position
-prim.ang (                1 ,       $P_HSIShaft                   ) = { 0 deg }               ! Angles
-prim.ang (                3 ,       $P_HSIShaft                   ) = { 90 deg }              ! Angles
-prim.color.r (            1 ,       $P_HSIShaft                   ) = 3.40000000000000000E+01 ! Colors (red component)
-prim.color.r (            2 ,       $P_HSIShaft                   ) = 2.55000000000000000E+02 ! Colors (red component)
-prim.color.g (            1 ,       $P_HSIShaft                   ) = 1.39000000000000000E+02 ! Colors (green component)
-prim.color.g (            2 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (green component)
-prim.color.b (            1 ,       $P_HSIShaft                   ) = 3.40000000000000000E+01 ! Colors (blue component)
-prim.color.b (            2 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (blue component)
-prim.color.t (            1 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.color.t (            2 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.mp.dens.solid (                $P_HSIShaft                   ) = 7.85000000000000000E+03 ! Density
-prim.par (                2 ,       $P_HSIShaft                   ) = { 1*$SVG_stage_02.$_gamma_L } ! [m] Height
-prim.par (                3 ,       $P_HSIShaft                   ) = { 0.5*$SVG_stage_02.$_gamma_d } ! [m] Outer diameter
-prim.par (                4 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [m] Inner diameter
-prim.par (                5 ,       $P_HSIShaft                   ) = $SVG_stage_02.$_z_sun   ! [-] Number of planes
-prim.par (                6 ,       $P_HSIShaft                   ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
-prim.par (                7 ,       $P_HSIShaft                   ) = 1.00000000000000000E+00 ! [-] Show bottom cap
-prim.par (                8 ,       $P_HSIShaft                   ) = 1.00000000000000000E+00 ! [-] Show top cap
-prim.par (                9 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [rad] Start angle
-prim.par (               10 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [rad] Delta angle
-prim.par (               11 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [-] Close geometry with
-
-
-body.m (                            $B_HSShaft                    ) = 1.00000000000000000E+00 ! Mass of the Body
-body.mp (                           $B_HSShaft                    ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
-body.I.tens (             1 ,   1 , $B_HSShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.tens (             2 ,   2 , $B_HSShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.tens (             3 ,   3 , $B_HSShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
-body.I.kind (                       $B_HSShaft                    ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
-body.attr.2d.pos.x (                $B_HSShaft                    ) = 5.40000000000000000E+02
-body.attr.2d.pos.y (                $B_HSShaft                    ) = -2.30000000000000000E+02
-body.attr.2d.width (                $B_HSShaft                    ) = 5.00000000000000000E+01
-body.attr.2d.height (               $B_HSShaft                    ) = 3.00000000000000000E+01
-
-marker.type (                       $M_HSShaft_BRF                ) = 1                       ! Type
-marker.parent (                     $M_HSShaft_BRF                ) = $B_HSShaft              ! Body
-marker.flx.type (                   $M_HSShaft_BRF                ) = 4                       ! Flexible type
-
-marker.type (                       $M_HSShaft_Bearing_HS_A       ) = 2                       ! Type
-marker.parent (                     $M_HSShaft_Bearing_HS_A       ) = $B_HSShaft              ! Body
-marker.pos (              1 ,       $M_HSShaft_Bearing_HS_A       ) = { -230*$SVG_stage_03.$_gamma_d mm } ! Position
-marker.pos (              2 ,       $M_HSShaft_Bearing_HS_A       ) = 0.00000000000000000E+00 ! Position
-
-marker.type (                       $M_HSShaft_Bearing_HS_B       ) = 2                       ! Type
-marker.parent (                     $M_HSShaft_Bearing_HS_B       ) = $B_HSShaft              ! Body
-marker.pos (              1 ,       $M_HSShaft_Bearing_HS_B       ) = { 230*$SVG_stage_03.$_gamma_d mm } ! Position
-marker.pos (              2 ,       $M_HSShaft_Bearing_HS_B       ) = 0.00000000000000000E+00 ! Position
-
-marker.type (                       $M_HSShaft_Bearing_HS_C       ) = 2                       ! Type
-marker.parent (                     $M_HSShaft_Bearing_HS_C       ) = $B_HSShaft              ! Body
-marker.pos (              1 ,       $M_HSShaft_Bearing_HS_C       ) = { 280*$SVG_stage_03.$_gamma_L mm } ! Position
-marker.pos (              2 ,       $M_HSShaft_Bearing_HS_C       ) = 0.00000000000000000E+00 ! Position
-
-joint.from (                        $J_HSShaft                    ) = $M_Gearbox_Frame_Shaft_Gen ! From Marker
-joint.to (                          $J_HSShaft                    ) = $M_HSShaft_BRF          ! To Marker
-joint.type (                        $J_HSShaft                    ) = 20                      ! Type
-joint.st.pos (            1 ,       $J_HSShaft                    ) = 3.94099749148967438E-03 ! Position
-joint.st.pos (            2 ,       $J_HSShaft                    ) = 1.18234294268707532E-05 ! Position
-joint.st.pos (            3 ,       $J_HSShaft                    ) = 1.03517179835490056E-08 ! Position
-joint.st.pos (            4 ,       $J_HSShaft                    ) = 8.82540100873223233E-11 ! Position
-joint.st.pos (            5 ,       $J_HSShaft                    ) = 1.32648670411579618E-08 ! Position
-joint.st.pos (            6 ,       $J_HSShaft                    ) = -4.93890975455986746E-06 ! Position
-joint.st.vel (            1 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            2 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            3 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            4 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            5 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            6 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
-joint.attr.2d.pos.x (     1 ,       $J_HSShaft                    ) = 430
-joint.attr.2d.pos.y (     1 ,       $J_HSShaft                    ) = -190
-joint.attr.2d.ori (       1 ,       $J_HSShaft                    ) = 0
-joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_HSShaft   ) = 80, 90, 90, 100.09375, 100.09375, 110.1875, 170.75, 413
-joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_HSShaft   ) = 40, 40, -132.5, -132.5, -190, -190, -190, -190
-joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_HSShaft     ) = 550, 550, 447
-joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_HSShaft     ) = -200, -190, -190
-
-prim.type (                         $P_HSShaft                    ) = 2                       ! Type
-prim.ref (                          $P_HSShaft                    ) = $M_HSShaft_BRF          ! Reference Marker
-prim.ang (                3 ,       $P_HSShaft                    ) = { 90 deg }              ! Angles
-prim.color.r (            1 ,       $P_HSShaft                    ) = 5.80000000000000000E+01 ! Colors (red component)
-prim.color.r (            2 ,       $P_HSShaft                    ) = 2.55000000000000000E+02 ! Colors (red component)
-prim.color.g (            1 ,       $P_HSShaft                    ) = 9.50000000000000000E+01 ! Colors (green component)
-prim.color.g (            2 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (green component)
-prim.color.b (            1 ,       $P_HSShaft                    ) = 2.05000000000000000E+02 ! Colors (blue component)
-prim.color.b (            2 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (blue component)
-prim.color.t (            1 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.color.t (            2 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.mp.dens.solid (                $P_HSShaft                    ) = 7.85000000000000000E+03 ! Density
-prim.par (                2 ,       $P_HSShaft                    ) = { 700*$SVG_stage_03.$_gamma_L mm } ! [m] Height
-prim.par (                3 ,       $P_HSShaft                    ) = { 200*$SVG_stage_03.$_gamma_d mm } ! [m] Outer diameter
-prim.par (                4 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [m] Inner diameter
-prim.par (                5 ,       $P_HSShaft                    ) = 1.50000000000000000E+01 ! [-] Number of planes
-prim.par (                6 ,       $P_HSShaft                    ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
-prim.par (                7 ,       $P_HSShaft                    ) = 1.00000000000000000E+00 ! [-] Show bottom cap
-prim.par (                8 ,       $P_HSShaft                    ) = 1.00000000000000000E+00 ! [-] Show top cap
-prim.par (                9 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [rad] Start angle
-prim.par (               10 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [rad] Delta angle
-prim.par (               11 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [-] Close geometry with
 
 
 bodygroup.begin (                   $BG_stage_01                  )                           ! $BG_stage_01
@@ -1077,6 +730,77 @@ bodygroup.begin (                   $BG_stage_01                  )             
    prim.par (             9 ,       $P_PLC                        ) = 0.00000000000000000E+00 ! [rad] Start angle
 
 
+   body.m (                         $B_ISShaft                    ) = 1.00000000000000000E+00 ! Mass of the Body
+   body.mp (                        $B_ISShaft                    ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_ISShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_ISShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_ISShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.kind (                    $B_ISShaft                    ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.attr.2d.pos.x (             $B_ISShaft                    ) = 6.60000000000000000E+02
+   body.attr.2d.pos.y (             $B_ISShaft                    ) = -1.30000000000000000E+02
+   body.attr.2d.width (             $B_ISShaft                    ) = 5.00000000000000000E+01
+   body.attr.2d.height (            $B_ISShaft                    ) = 3.00000000000000000E+01
+
+   marker.type (                    $M_ISShaft_LS_SUN             ) = 2                       ! Type
+   marker.parent (                  $M_ISShaft_LS_SUN             ) = $BG_stage_01.$B_ISShaft ! Body
+   marker.pos (           1 ,       $M_ISShaft_LS_SUN             ) = { -0.75*$SVG_stage_01.$_gamma_L } ! Position
+
+   marker.type (                    $M_ISShaft_BRF                ) = 1                       ! Type
+   marker.parent (                  $M_ISShaft_BRF                ) = $BG_stage_01.$B_ISShaft ! Body
+   marker.flx.type (                $M_ISShaft_BRF                ) = 4                       ! Flexible type
+
+   marker.type (                    $M_ISShaft_PLC                ) = 2                       ! Type
+   marker.parent (                  $M_ISShaft_PLC                ) = $BG_stage_01.$B_ISShaft ! Body
+   marker.pos (           1 ,       $M_ISShaft_PLC                ) = { 0.75*$SVG_stage_01.$_gamma_L } ! Position
+
+   joint.from (                     $J_ISShaft                    ) = $M_Gearbox_Frame_SHAFT_LS_IMS ! From Marker
+   joint.to (                       $J_ISShaft                    ) = $BG_stage_01.$M_ISShaft_BRF ! To Marker
+   joint.type (                     $J_ISShaft                    ) = 20                      ! Type
+   joint.st.pos (         1 ,       $J_ISShaft                    ) = -8.07604976000964890E-06 ! Position
+   joint.st.pos (         2 ,       $J_ISShaft                    ) = -8.64379862495825166E-05 ! Position
+   joint.st.pos (         3 ,       $J_ISShaft                    ) = -1.32463695247950270E-08 ! Position
+   joint.st.pos (         4 ,       $J_ISShaft                    ) = -1.22557284172935277E-07 ! Position
+   joint.st.pos (         5 ,       $J_ISShaft                    ) = 1.78990346067221575E-08 ! Position
+   joint.st.pos (         6 ,       $J_ISShaft                    ) = -1.23214990551737493E-04 ! Position
+   joint.st.vel (         1 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         2 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         3 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         4 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         5 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         6 ,       $J_ISShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.attr.2d.pos.x (   1 ,      $J_ISShaft                    ) = 540
+   joint.attr.2d.pos.y (   1 ,      $J_ISShaft                    ) = -160
+   joint.attr.2d.ori (    1 ,       $J_ISShaft                    ) = 0
+   joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_ISShaft) = 70, 70, 389.75, 389.75, 399.75, 409.75, 523
+   joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_ISShaft) = 30, -115, -115, -160, -160, -160, -160
+   joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_ISShaft  ) = 660, 626.75, 626.75, 557
+   joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_ISShaft  ) = -120, -120, -160, -160
+
+   prim.type (                      $P_ISShaft                    ) = 2                       ! Type
+   prim.ref (                       $P_ISShaft                    ) = $BG_stage_01.$M_ISShaft_BRF ! Reference Marker
+   prim.ang (             1 ,       $P_ISShaft                    ) = { 0 deg }               ! Angles
+   prim.ang (             3 ,       $P_ISShaft                    ) = { 90 deg }              ! Angles
+   prim.color.r (         1 ,       $P_ISShaft                    ) = 3.40000000000000000E+01 ! Colors (red component)
+   prim.color.r (         2 ,       $P_ISShaft                    ) = 2.55000000000000000E+02 ! Colors (red component)
+   prim.color.g (         1 ,       $P_ISShaft                    ) = 1.39000000000000000E+02 ! Colors (green component)
+   prim.color.g (         2 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (green component)
+   prim.color.b (         1 ,       $P_ISShaft                    ) = 3.40000000000000000E+01 ! Colors (blue component)
+   prim.color.b (         2 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (blue component)
+   prim.color.t (         1 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_ISShaft                    ) = 7.85000000000000000E+03 ! Density
+   prim.par (             2 ,       $P_ISShaft                    ) = { 0.75*$SVG_stage_01.$_gamma_L } ! [m] Height
+   prim.par (             3 ,       $P_ISShaft                    ) = { 0.8*$SVG_stage_01.$_gamma_d } ! [m] Outer diameter
+   prim.par (             4 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [m] Inner diameter
+   prim.par (             5 ,       $P_ISShaft                    ) = $SVG_stage_01.$_z_planet ! [-] Number of planes
+   prim.par (             6 ,       $P_ISShaft                    ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+   prim.par (             7 ,       $P_ISShaft                    ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+   prim.par (             8 ,       $P_ISShaft                    ) = 1.00000000000000000E+00 ! [-] Show top cap
+   prim.par (             9 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [rad] Start angle
+   prim.par (            10 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [rad] Delta angle
+   prim.par (            11 ,       $P_ISShaft                    ) = 0.00000000000000000E+00 ! [-] Close geometry with
+
+
    body.m (                         $B_Sun                        ) = 1.00000000000000000E+03 ! Mass of the Body
    body.mp (                        $B_Sun                        ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
    body.I.tens (          1 ,   1 , $B_Sun                        ) = 1.00000000000000000E+00 ! Moments of inertia
@@ -1096,7 +820,7 @@ bodygroup.begin (                   $BG_stage_01                  )             
    marker.parent (                  $M_Sun_ref                    ) = $BG_stage_01.$B_Sun     ! Body
    marker.ang (           2 ,       $M_Sun_ref                    ) = { 90 deg }              ! Angles
 
-   joint.from (                     $J_Sun                        ) = $M_ISShaft_LS_SUN       ! From Marker
+   joint.from (                     $J_Sun                        ) = $BG_stage_01.$M_ISShaft_LS_SUN ! From Marker
    joint.to (                       $J_Sun                        ) = $BG_stage_01.$M_Sun_BRF ! To Marker
    joint.type (                     $J_Sun                        ) = 0                       ! Type
    joint.par (            1 ,       $J_Sun                        ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
@@ -2029,7 +1753,7 @@ bodygroup.begin (                   $BG_stage_02                  )             
    marker.parent (                  $M_PLC_IMS_PLC_B              ) = $BG_stage_02.$B_PLC     ! Body
    marker.pos (           1 ,       $M_PLC_IMS_PLC_B              ) = { 0.5*$SVG_stage_02.$_gamma_d } ! Position
 
-   joint.from (                     $J_PLC                        ) = $M_ISShaft_PLC          ! From Marker
+   joint.from (                     $J_PLC                        ) = $BG_stage_01.$M_ISShaft_PLC ! From Marker
    joint.to (                       $J_PLC                        ) = $BG_stage_02.$M_PLC_BRF ! To Marker
    joint.type (                     $J_PLC                        ) = 0                       ! Type
    joint.par (            1 ,       $J_PLC                        ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
@@ -2070,6 +1794,201 @@ bodygroup.begin (                   $BG_stage_02                  )             
    prim.par (             9 ,       $P_PLC                        ) = 0.00000000000000000E+00 ! [rad] Start angle
 
 
+   body.sb.node.id (      1 ,       $B_HSIShaft                   ) = 1                       ! Node ID
+   body.sb.node.pos (     1 ,   1 , $B_HSIShaft                   ) = { -750 mm }             ! Node Position
+   body.sb.node.pos (     2 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     3 ,   1 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.id (      2 ,       $B_HSIShaft                   ) = 2                       ! Node ID
+   body.sb.node.pos (     1 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     2 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     3 ,   2 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.id (      3 ,       $B_HSIShaft                   ) = 3                       ! Node ID
+   body.sb.node.pos (     1 ,   3 , $B_HSIShaft                   ) = { 520 mm }              ! Node Position
+   body.sb.node.pos (     2 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     3 ,   3 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.id (      4 ,       $B_HSIShaft                   ) = 4                       ! Node ID
+   body.sb.node.pos (     1 ,   4 , $B_HSIShaft                   ) = { 750 mm }              ! Node Position
+   body.sb.node.pos (     2 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     3 ,   4 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.id (      5 ,       $B_HSIShaft                   ) = 5                       ! Node ID
+   body.sb.node.pos (     1 ,   5 , $B_HSIShaft                   ) = { 980 mm }              ! Node Position
+   body.sb.node.pos (     2 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     3 ,   5 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.id (      6 ,       $B_HSIShaft                   ) = 6                       ! Node ID
+   body.sb.node.pos (     1 ,   6 , $B_HSIShaft                   ) = { 1030 mm }             ! Node Position
+   body.sb.node.pos (     2 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.node.pos (     3 ,   6 , $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Node Position
+   body.sb.ele.from (     1 ,       $B_HSIShaft                   ) = 1                       ! From Node
+   body.sb.ele.to (       1 ,       $B_HSIShaft                   ) = 2                       ! To Node
+   body.sb.ele.type (     1 ,       $B_HSIShaft                   ) = 4                       ! Type
+   body.sb.ele.xsec (     1 ,   1 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.xsec (     2 ,   1 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.ori.vec (   1 ,   1 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   2 ,   1 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   3 ,   1 , $B_HSIShaft                  ) = 1.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.dmp.par (   1 ,   1 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.dmp.par (   2 ,   1 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.active (   1 ,       $B_HSIShaft                   ) = 1                       ! Active
+   body.sb.ele.from (     2 ,       $B_HSIShaft                   ) = 2                       ! From Node
+   body.sb.ele.to (       2 ,       $B_HSIShaft                   ) = 3                       ! To Node
+   body.sb.ele.type (     2 ,       $B_HSIShaft                   ) = 4                       ! Type
+   body.sb.ele.xsec (     1 ,   2 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.xsec (     2 ,   2 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.ori.vec (   1 ,   2 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   2 ,   2 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   3 ,   2 , $B_HSIShaft                  ) = 1.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.dmp.par (   1 ,   2 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.dmp.par (   2 ,   2 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.active (   2 ,       $B_HSIShaft                   ) = 1                       ! Active
+   body.sb.ele.from (     3 ,       $B_HSIShaft                   ) = 3                       ! From Node
+   body.sb.ele.to (       3 ,       $B_HSIShaft                   ) = 4                       ! To Node
+   body.sb.ele.type (     3 ,       $B_HSIShaft                   ) = 4                       ! Type
+   body.sb.ele.xsec (     1 ,   3 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.xsec (     2 ,   3 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.ori.vec (   1 ,   3 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   2 ,   3 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   3 ,   3 , $B_HSIShaft                  ) = 1.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.dmp.par (   1 ,   3 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.dmp.par (   2 ,   3 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.active (   3 ,       $B_HSIShaft                   ) = 1                       ! Active
+   body.sb.ele.from (     4 ,       $B_HSIShaft                   ) = 4                       ! From Node
+   body.sb.ele.to (       4 ,       $B_HSIShaft                   ) = 5                       ! To Node
+   body.sb.ele.type (     4 ,       $B_HSIShaft                   ) = 4                       ! Type
+   body.sb.ele.xsec (     1 ,   4 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.xsec (     2 ,   4 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.ori.vec (   1 ,   4 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   2 ,   4 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   3 ,   4 , $B_HSIShaft                  ) = 1.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.dmp.par (   1 ,   4 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.dmp.par (   2 ,   4 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.active (   4 ,       $B_HSIShaft                   ) = 1                       ! Active
+   body.sb.ele.from (     5 ,       $B_HSIShaft                   ) = 5                       ! From Node
+   body.sb.ele.to (       5 ,       $B_HSIShaft                   ) = 6                       ! To Node
+   body.sb.ele.type (     5 ,       $B_HSIShaft                   ) = 4                       ! Type
+   body.sb.ele.xsec (     1 ,   5 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.xsec (     2 ,   5 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.ori.vec (   1 ,   5 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   2 ,   5 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   3 ,   5 , $B_HSIShaft                  ) = 1.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.dmp.par (   1 ,   5 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.dmp.par (   2 ,   5 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.active (   5 ,       $B_HSIShaft                   ) = 1                       ! Active
+   body.sb.ele.from (     6 ,       $B_HSIShaft                   ) = 6                       ! From Node
+   body.sb.ele.to (       6 ,       $B_HSIShaft                   ) = 0                       ! To Node
+   body.sb.ele.type (     6 ,       $B_HSIShaft                   ) = 4                       ! Type
+   body.sb.ele.xsec (     1 ,   6 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.xsec (     2 ,   6 , $B_HSIShaft                   ) = $XSc_Shaft_IMS_HS       ! Cross Section
+   body.sb.ele.ori.vec (   1 ,   6 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   2 ,   6 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.ori.vec (   3 ,   6 , $B_HSIShaft                  ) = 1.00000000000000000E+00 ! Orientation Vector
+   body.sb.ele.dmp.par (   1 ,   6 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.dmp.par (   2 ,   6 , $B_HSIShaft                  ) = 0.00000000000000000E+00 ! Damping
+   body.sb.ele.active (   6 ,       $B_HSIShaft                   ) = 0                       ! Active
+   body.m (                         $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Mass of the Body
+   body.mp (                        $B_HSIShaft                   ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_HSIShaft                   ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.kind (                    $B_HSIShaft                   ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.type (                      $B_HSIShaft                   ) = 0                       ! Body type: 0=rigid; 1=linear flex; 2=linear SIMBEAM; 4=nonlinear SIMBEAM; 6=nonlinear flex; 7=Abq Co-Sim; 8=flextrack
+   body.flx.st.pos (      1 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Flexible position
+   body.flx.st.pos (      2 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Flexible position
+   body.flx.st.pos (      3 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Flexible position
+   body.flx.st.vel (      1 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity state
+   body.flx.st.vel (      2 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity state
+   body.flx.st.vel (      3 ,       $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity state
+   body.flx.st.dep (      1 ,       $B_HSIShaft                   ) = 0                       ! State dependency
+   body.flx.st.dep (      2 ,       $B_HSIShaft                   ) = 0                       ! State dependency
+   body.flx.st.dep (      3 ,       $B_HSIShaft                   ) = 0                       ! State dependency
+   body.flx.st.prestress (   1 ,    $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+   body.flx.st.prestress (   2 ,    $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+   body.flx.st.prestress (   3 ,    $B_HSIShaft                   ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+   body.flx.eigenmodes.kind (       $B_HSIShaft                   ) = 2                       ! Eigenmode frequency range: 0=none; 1=f-min,f-max; 2=f-min,n-modes; 3=f-min,all modes
+   body.flx.eigenmodes.freqrange.min ( $B_HSIShaft                ) = 0.00000000000000000E+00 ! Eigenmode minimum frequency
+   body.flx.eigenmodes.nmodes (     $B_HSIShaft                   ) = 3                       ! Eigenmode number of modes
+   body.flx.ifacemodes.kind (       $B_HSIShaft                   ) = -1                      ! Interface modes; -1=none; 0=IRM (default); 1=FRM-Auto; 2=FRM-Manual
+   body.flx.st.active (   1 ,       $B_HSIShaft                   ) = 1                       ! User defined selection of the mode vectors
+   body.flx.st.active (   2 ,       $B_HSIShaft                   ) = 1                       ! User defined selection of the mode vectors
+   body.flx.st.active (   3 ,       $B_HSIShaft                   ) = 1                       ! User defined selection of the mode vectors
+   body.flx.defhandling (           $B_HSIShaft                   ) = 1                       ! 0=Retain deformation; 1=Retain modal coordinates; 2=Reset deformation to zero
+   body.attr.2d.pos.x (             $B_HSIShaft                   ) = 4.70000000000000000E+02
+   body.attr.2d.pos.y (             $B_HSIShaft                   ) = -6.00000000000000000E+01
+   body.attr.2d.width (             $B_HSIShaft                   ) = 5.00000000000000000E+01
+   body.attr.2d.height (            $B_HSIShaft                   ) = 3.00000000000000000E+01
+
+   marker.type (                    $M_HSIShaft_Bearing_IMS_C     ) = 2                       ! Type
+   marker.parent (                  $M_HSIShaft_Bearing_IMS_C     ) = $BG_stage_02.$B_HSIShaft ! Body
+   marker.pos (           1 ,       $M_HSIShaft_Bearing_IMS_C     ) = { (500+360/2+100/2+100/2)*$SVG_stage_03.$_gamma_d mm } ! Position
+
+   marker.type (                    $M_HSIShaft_IMS_SUN           ) = 2                       ! Type
+   marker.parent (                  $M_HSIShaft_IMS_SUN           ) = $BG_stage_02.$B_HSIShaft ! Body
+   marker.pos (           1 ,       $M_HSIShaft_IMS_SUN           ) = { -0.5*$SVG_stage_02.$_gamma_L } ! Position
+
+   marker.type (                    $M_HSIShaft_GEAR              ) = 2                       ! Type
+   marker.parent (                  $M_HSIShaft_GEAR              ) = $BG_stage_02.$B_HSIShaft ! Body
+   marker.pos (           1 ,       $M_HSIShaft_GEAR              ) = { 0.5*$SVG_stage_02.$_gamma_L } ! Position
+
+   marker.type (                    $M_HSIShaft_BRF               ) = 1                       ! Type
+   marker.parent (                  $M_HSIShaft_BRF               ) = $BG_stage_02.$B_HSIShaft ! Body
+   marker.flx.type (                $M_HSIShaft_BRF               ) = 4                       ! Flexible type
+
+   marker.type (                    $M_HSIShaft_Bearing_IMS_A     ) = 2                       ! Type
+   marker.parent (                  $M_HSIShaft_Bearing_IMS_A     ) = $BG_stage_02.$B_HSIShaft ! Body
+   marker.pos (           1 ,       $M_HSIShaft_Bearing_IMS_A     ) = { (500-360/2-100/2)*$SVG_stage_03.$_gamma_d mm } ! Position
+
+   marker.type (                    $M_HSIShaft_Bearing_IMS_B     ) = 2                       ! Type
+   marker.parent (                  $M_HSIShaft_Bearing_IMS_B     ) = $BG_stage_02.$B_HSIShaft ! Body
+   marker.pos (           1 ,       $M_HSIShaft_Bearing_IMS_B     ) = { (500+360/2+100/2)*$SVG_stage_03.$_gamma_d mm } ! Position
+
+   joint.from (                     $J_HSIShaft                   ) = $M_Gearbox_Frame_SHAFT_IMS_HS ! From Marker
+   joint.to (                       $J_HSIShaft                   ) = $BG_stage_02.$M_HSIShaft_BRF ! To Marker
+   joint.type (                     $J_HSIShaft                   ) = 20                      ! Type
+   joint.st.pos (         1 ,       $J_HSIShaft                   ) = -2.31143977141366768E-04 ! Position
+   joint.st.pos (         2 ,       $J_HSIShaft                   ) = -5.00895311694251160E-05 ! Position
+   joint.st.pos (         3 ,       $J_HSIShaft                   ) = -2.44043141011617446E-07 ! Position
+   joint.st.pos (         4 ,       $J_HSIShaft                   ) = -1.60159348790325994E-08 ! Position
+   joint.st.pos (         5 ,       $J_HSIShaft                   ) = 1.77491337727153396E-07 ! Position
+   joint.st.pos (         6 ,       $J_HSIShaft                   ) = -5.06850095580324255E-05 ! Position
+   joint.st.vel (         1 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         2 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         3 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         4 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         5 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         6 ,       $J_HSIShaft                   ) = 0.00000000000000000E+00 ! Velocity
+   joint.attr.2d.pos.x (   1 ,      $J_HSIShaft                   ) = 620
+   joint.attr.2d.pos.y (   1 ,      $J_HSIShaft                   ) = -100
+   joint.attr.2d.ori (    1 ,       $J_HSIShaft                   ) = 0
+   joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_HSIShaft) = 60, 60, 343, 343, 353, 363, 373, 373, 383, 393, 403, 413, 423, 433, 443, 443, 453, 463, 473, 483, 493, 503, 513, 513, 523, 533, 543, 553, 563, 573, 573, 583, 593, 603
+   joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_HSIShaft) = 30, 5.9375, 5.9375, -36.25, -36.25, -36.25, -36.25, -55, -55, -55, -55, -55, -55, -55, -55, -80, -80, -80, -80, -80, -80, -80, -80, -90, -90, -90, -90, -90, -90, -90, -100, -100, -100, -100
+   joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_HSIShaft ) = 510, 510, 647, 647, 637
+   joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_HSIShaft ) = -60, -77.5, -77.5, -100, -100
+
+   prim.type (                      $P_HSIShaft                   ) = 2                       ! Type
+   prim.ref (                       $P_HSIShaft                   ) = $BG_stage_02.$M_HSIShaft_BRF ! Reference Marker
+   prim.pos (             1 ,       $P_HSIShaft                   ) = { 250*$SVG_stage_02.$_gamma_L mm } ! Position
+   prim.ang (             1 ,       $P_HSIShaft                   ) = { 0 deg }               ! Angles
+   prim.ang (             3 ,       $P_HSIShaft                   ) = { 90 deg }              ! Angles
+   prim.color.r (         1 ,       $P_HSIShaft                   ) = 3.40000000000000000E+01 ! Colors (red component)
+   prim.color.r (         2 ,       $P_HSIShaft                   ) = 2.55000000000000000E+02 ! Colors (red component)
+   prim.color.g (         1 ,       $P_HSIShaft                   ) = 1.39000000000000000E+02 ! Colors (green component)
+   prim.color.g (         2 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (green component)
+   prim.color.b (         1 ,       $P_HSIShaft                   ) = 3.40000000000000000E+01 ! Colors (blue component)
+   prim.color.b (         2 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (blue component)
+   prim.color.t (         1 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_HSIShaft                   ) = 7.85000000000000000E+03 ! Density
+   prim.par (             2 ,       $P_HSIShaft                   ) = { 1*$SVG_stage_02.$_gamma_L } ! [m] Height
+   prim.par (             3 ,       $P_HSIShaft                   ) = { 0.5*$SVG_stage_02.$_gamma_d } ! [m] Outer diameter
+   prim.par (             4 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [m] Inner diameter
+   prim.par (             5 ,       $P_HSIShaft                   ) = $SVG_stage_02.$_z_sun   ! [-] Number of planes
+   prim.par (             6 ,       $P_HSIShaft                   ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+   prim.par (             7 ,       $P_HSIShaft                   ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+   prim.par (             8 ,       $P_HSIShaft                   ) = 1.00000000000000000E+00 ! [-] Show top cap
+   prim.par (             9 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [rad] Start angle
+   prim.par (            10 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [rad] Delta angle
+   prim.par (            11 ,       $P_HSIShaft                   ) = 0.00000000000000000E+00 ! [-] Close geometry with
+
+
    body.m (                         $B_Sun                        ) = 1.00000000000000000E+03 ! Mass of the Body
    body.mp (                        $B_Sun                        ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
    body.I.tens (          1 ,   1 , $B_Sun                        ) = 1.00000000000000000E+00 ! Moments of inertia
@@ -2089,7 +2008,7 @@ bodygroup.begin (                   $BG_stage_02                  )             
    marker.parent (                  $M_Sun_ref                    ) = $BG_stage_02.$B_Sun     ! Body
    marker.ang (           2 ,       $M_Sun_ref                    ) = { 90 deg }              ! Angles
 
-   joint.from (                     $J_Sun                        ) = $M_HSIShaft_IMS_SUN     ! From Marker
+   joint.from (                     $J_Sun                        ) = $BG_stage_02.$M_HSIShaft_IMS_SUN ! From Marker
    joint.to (                       $J_Sun                        ) = $BG_stage_02.$M_Sun_BRF ! To Marker
    joint.type (                     $J_Sun                        ) = 0                       ! Type
    joint.par (            1 ,       $J_Sun                        ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
@@ -2946,7 +2865,7 @@ bodygroup.begin (                   $BG_stage_03                  )             
    marker.parent (                  $M_Pinion_ref                 ) = $BG_stage_03.$B_Pinion  ! Body
    marker.ang (           2 ,       $M_Pinion_ref                 ) = { 90 deg }              ! Angles
 
-   joint.from (                     $J_Pinion                     ) = $M_HSShaft_BRF          ! From Marker
+   joint.from (                     $J_Pinion                     ) = $BG_stage_03.$M_HSShaft_BRF ! From Marker
    joint.to (                       $J_Pinion                     ) = $BG_stage_03.$M_Pinion_BRF ! To Marker
    joint.type (                     $J_Pinion                     ) = 0                       ! Type
    joint.par (            1 ,       $J_Pinion                     ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
@@ -3073,7 +2992,7 @@ bodygroup.begin (                   $BG_stage_03                  )             
    marker.parent (                  $M_Gear_ref                   ) = $BG_stage_03.$B_Gear    ! Body
    marker.ang (           2 ,       $M_Gear_ref                   ) = { 90 deg }              ! Angles
 
-   joint.from (                     $J_Gear                       ) = $M_HSIShaft_GEAR        ! From Marker
+   joint.from (                     $J_Gear                       ) = $BG_stage_02.$M_HSIShaft_GEAR ! From Marker
    joint.to (                       $J_Gear                       ) = $BG_stage_03.$M_Gear_BRF ! To Marker
    joint.type (                     $J_Gear                       ) = 0                       ! Type
    joint.par (            1 ,       $J_Gear                       ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
@@ -3181,6 +3100,83 @@ bodygroup.begin (                   $BG_stage_03                  )             
    prim.plot.par (        1 ,   1 ,   2 ,   1 , $P_Gear           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 
+   body.m (                         $B_HSShaft                    ) = 1.00000000000000000E+00 ! Mass of the Body
+   body.mp (                        $B_HSShaft                    ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+   body.I.tens (          1 ,   1 , $B_HSShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.tens (          2 ,   2 , $B_HSShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.tens (          3 ,   3 , $B_HSShaft                    ) = 1.00000000000000000E+00 ! Moments of inertia
+   body.I.kind (                    $B_HSShaft                    ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+   body.attr.2d.pos.x (             $B_HSShaft                    ) = 5.40000000000000000E+02
+   body.attr.2d.pos.y (             $B_HSShaft                    ) = -2.30000000000000000E+02
+   body.attr.2d.width (             $B_HSShaft                    ) = 5.00000000000000000E+01
+   body.attr.2d.height (            $B_HSShaft                    ) = 3.00000000000000000E+01
+
+   marker.type (                    $M_HSShaft_BRF                ) = 1                       ! Type
+   marker.parent (                  $M_HSShaft_BRF                ) = $BG_stage_03.$B_HSShaft ! Body
+   marker.flx.type (                $M_HSShaft_BRF                ) = 4                       ! Flexible type
+
+   marker.type (                    $M_HSShaft_Bearing_HS_C       ) = 2                       ! Type
+   marker.parent (                  $M_HSShaft_Bearing_HS_C       ) = $BG_stage_03.$B_HSShaft ! Body
+   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_C       ) = { 280*$SVG_stage_03.$_gamma_L mm } ! Position
+   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_C       ) = 0.00000000000000000E+00 ! Position
+
+   marker.type (                    $M_HSShaft_Bearing_HS_B       ) = 2                       ! Type
+   marker.parent (                  $M_HSShaft_Bearing_HS_B       ) = $BG_stage_03.$B_HSShaft ! Body
+   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_B       ) = { 230*$SVG_stage_03.$_gamma_d mm } ! Position
+   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_B       ) = 0.00000000000000000E+00 ! Position
+
+   marker.type (                    $M_HSShaft_Bearing_HS_A       ) = 2                       ! Type
+   marker.parent (                  $M_HSShaft_Bearing_HS_A       ) = $BG_stage_03.$B_HSShaft ! Body
+   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_A       ) = { -230*$SVG_stage_03.$_gamma_d mm } ! Position
+   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_A       ) = 0.00000000000000000E+00 ! Position
+
+   joint.from (                     $J_HSShaft                    ) = $M_Gearbox_Frame_Shaft_Gen ! From Marker
+   joint.to (                       $J_HSShaft                    ) = $BG_stage_03.$M_HSShaft_BRF ! To Marker
+   joint.type (                     $J_HSShaft                    ) = 20                      ! Type
+   joint.st.pos (         1 ,       $J_HSShaft                    ) = 3.94099749148967438E-03 ! Position
+   joint.st.pos (         2 ,       $J_HSShaft                    ) = 1.18234294268707532E-05 ! Position
+   joint.st.pos (         3 ,       $J_HSShaft                    ) = 1.03517179835490056E-08 ! Position
+   joint.st.pos (         4 ,       $J_HSShaft                    ) = 8.82540100873223233E-11 ! Position
+   joint.st.pos (         5 ,       $J_HSShaft                    ) = 1.32648670411579618E-08 ! Position
+   joint.st.pos (         6 ,       $J_HSShaft                    ) = -4.93890975455986746E-06 ! Position
+   joint.st.vel (         1 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         2 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         3 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         4 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         5 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.st.vel (         6 ,       $J_HSShaft                    ) = 0.00000000000000000E+00 ! Velocity
+   joint.attr.2d.pos.x (   1 ,      $J_HSShaft                    ) = 430
+   joint.attr.2d.pos.y (   1 ,      $J_HSShaft                    ) = -190
+   joint.attr.2d.ori (    1 ,       $J_HSShaft                    ) = 0
+   joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_HSShaft) = 80, 90, 90, 100.09375, 100.09375, 110.1875, 170.75, 413
+   joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_HSShaft) = 40, 40, -132.5, -132.5, -190, -190, -190, -190
+   joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_HSShaft  ) = 550, 550, 447
+   joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_HSShaft  ) = -200, -190, -190
+
+   prim.type (                      $P_HSShaft                    ) = 2                       ! Type
+   prim.ref (                       $P_HSShaft                    ) = $BG_stage_03.$M_HSShaft_BRF ! Reference Marker
+   prim.ang (             3 ,       $P_HSShaft                    ) = { 90 deg }              ! Angles
+   prim.color.r (         1 ,       $P_HSShaft                    ) = 5.80000000000000000E+01 ! Colors (red component)
+   prim.color.r (         2 ,       $P_HSShaft                    ) = 2.55000000000000000E+02 ! Colors (red component)
+   prim.color.g (         1 ,       $P_HSShaft                    ) = 9.50000000000000000E+01 ! Colors (green component)
+   prim.color.g (         2 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (green component)
+   prim.color.b (         1 ,       $P_HSShaft                    ) = 2.05000000000000000E+02 ! Colors (blue component)
+   prim.color.b (         2 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (blue component)
+   prim.color.t (         1 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
+   prim.color.t (         2 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
+   prim.mp.dens.solid (             $P_HSShaft                    ) = 7.85000000000000000E+03 ! Density
+   prim.par (             2 ,       $P_HSShaft                    ) = { 700*$SVG_stage_03.$_gamma_L mm } ! [m] Height
+   prim.par (             3 ,       $P_HSShaft                    ) = { 200*$SVG_stage_03.$_gamma_d mm } ! [m] Outer diameter
+   prim.par (             4 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [m] Inner diameter
+   prim.par (             5 ,       $P_HSShaft                    ) = 1.50000000000000000E+01 ! [-] Number of planes
+   prim.par (             6 ,       $P_HSShaft                    ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+   prim.par (             7 ,       $P_HSShaft                    ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+   prim.par (             8 ,       $P_HSShaft                    ) = 1.00000000000000000E+00 ! [-] Show top cap
+   prim.par (             9 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [rad] Start angle
+   prim.par (            10 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [rad] Delta angle
+   prim.par (            11 ,       $P_HSShaft                    ) = 0.00000000000000000E+00 ! [-] Close geometry with
+
+
 bodygroup.end (                     $BG_stage_03                  )                           ! $BG_stage_03
 
 !**********************************************************************
@@ -3190,12 +3186,12 @@ force.type (                        $F_rotor_load                 ) = 93        
 force.from (                        $F_rotor_load                 ) = $M_Bed_Plate_Input_Loading ! From Marker
 force.to (                          $F_rotor_load                 ) = $M_main_shaft_LSS_Input_Loading ! To Marker
 force.disabled (                    $F_rotor_load                 ) = 0                       ! Disabled
-force.par (               1 ,       $F_rotor_load                 ) = $UE_Fx                  ! [-] u-Vector Element force x
-force.par (               2 ,       $F_rotor_load                 ) = $UE_Fy                  ! [-] u-Vector Element force y
-force.par (               3 ,       $F_rotor_load                 ) = $UE_Fz                  ! [-] u-Vector Element force z
-force.par (               4 ,       $F_rotor_load                 ) = $UE_Mx                  ! [-] u-Vector Element torque x
-force.par (               5 ,       $F_rotor_load                 ) = $UE_My                  ! [-] u-Vector Element torque y
-force.par (               6 ,       $F_rotor_load                 ) = $UE_Mz                  ! [-] u-Vector Element torque z
+force.par (               1 ,       $F_rotor_load                 ) = $UEG_rotor_load.$UE_Fx  ! [-] u-Vector Element force x
+force.par (               2 ,       $F_rotor_load                 ) = $UEG_rotor_load.$UE_Fy  ! [-] u-Vector Element force y
+force.par (               3 ,       $F_rotor_load                 ) = $UEG_rotor_load.$UE_Fz  ! [-] u-Vector Element force z
+force.par (               4 ,       $F_rotor_load                 ) = $UEG_rotor_load.$UE_Mx  ! [-] u-Vector Element torque x
+force.par (               5 ,       $F_rotor_load                 ) = $UEG_rotor_load.$UE_My  ! [-] u-Vector Element torque y
+force.par (               6 ,       $F_rotor_load                 ) = $UEG_rotor_load.$UE_Mz  ! [-] u-Vector Element torque z
 force.attr.2d.pos.x (     1 ,       $F_rotor_load                 ) = -20
 force.attr.2d.pos.y (     1 ,       $F_rotor_load                 ) = -20
 force.attr.2d.ori (       1 ,       $F_rotor_load                 ) = 0
@@ -3205,14 +3201,14 @@ force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_rotor_load  ) = -130, -55.
 force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_rotor_load  ) = -30, -30, -40, -40, -30, -20, -20
 
 force.type (                        $F_generator_torque           ) = 50                      ! Type
-force.from (                        $F_generator_torque           ) = $M_HSShaft_BRF          ! From Marker
+force.from (                        $F_generator_torque           ) = $BG_stage_03.$M_HSShaft_BRF ! From Marker
 force.to (                          $F_generator_torque           ) = $M_Gearbox_Frame_Shaft_Gen ! To Marker
 force.disabled (                    $F_generator_torque           ) = $SVG_generator.$_use_torque ! Disabled
-force.par (               1 ,       $F_generator_torque           ) = $M_HSShaft_BRF          ! [-] Reference Marker for calc.
+force.par (               1 ,       $F_generator_torque           ) = $BG_stage_03.$M_HSShaft_BRF ! [-] Reference Marker for calc.
 force.par (               3 ,       $F_generator_torque           ) = null                    ! [-] Expression for Fx
 force.par (               4 ,       $F_generator_torque           ) = null                    ! [-] Expression for Fy
 force.par (               5 ,       $F_generator_torque           ) = null                    ! [-] Expression for Fz
-force.par (               6 ,       $F_generator_torque           ) = $X_gen_torq             ! [-] Expression for Lx
+force.par (               6 ,       $F_generator_torque           ) = $X_generator_torque     ! [-] Expression for Lx
 force.par (               7 ,       $F_generator_torque           ) = null                    ! [-] Expression for Ly
 force.par (               8 ,       $F_generator_torque           ) = null                    ! [-] Expression for Lz
 force.attr.2d.pos.x (     1 ,       $F_generator_torque           ) = 370
@@ -3224,7 +3220,7 @@ force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_generator_torque) = 50, 50
 force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_generator_torque) = 30, 20, 20, 1.015625, -17.96875, -55.9375, -81.25, -115, -115, -115, -115, -115, -160, -160, -160, -160, -160
 
 force.type (                        $F_generator_torque_PI        ) = 110                     ! Type
-force.from (                        $F_generator_torque_PI        ) = $M_HSShaft_BRF          ! From Marker
+force.from (                        $F_generator_torque_PI        ) = $BG_stage_03.$M_HSShaft_BRF ! From Marker
 force.to (                          $F_generator_torque_PI        ) = $M_Gearbox_Frame_Shaft_Gen ! To Marker
 force.disabled (                    $F_generator_torque_PI        ) = $SVG_generator.$_use_control ! Disabled
 force.par (               1 ,       $F_generator_torque_PI        ) = $C_PI_generator         ! [-] Input Control Element 1
@@ -5185,7 +5181,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           40 ,       $F_Pinion_Gear_linear         ) = 0.00000000000000000E+00 ! [-] Power loss input mode
 
    force.type (                     $F_IMS_A                      ) = 43                      ! Type
-   force.from (                     $F_IMS_A                      ) = $M_HSIShaft_Bearing_IMS_A ! From Marker
+   force.from (                     $F_IMS_A                      ) = $BG_stage_02.$M_HSIShaft_Bearing_IMS_A ! From Marker
    force.to (                       $F_IMS_A                      ) = $M_Gearbox_Frame_Bearing_IMS_A ! To Marker
    force.par (            1 ,       $F_IMS_A                      ) = 0.00000000000000000E+00 ! [N] Nominal force in x
    force.par (            2 ,       $F_IMS_A                      ) = 0.00000000000000000E+00 ! [N] Nominal force in y
@@ -5241,7 +5237,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_IMS_A    ) = 50, 50, -40, -40, -40
 
    force.type (                     $F_IMS_B                      ) = 43                      ! Type
-   force.from (                     $F_IMS_B                      ) = $M_HSIShaft_Bearing_IMS_B ! From Marker
+   force.from (                     $F_IMS_B                      ) = $BG_stage_02.$M_HSIShaft_Bearing_IMS_B ! From Marker
    force.to (                       $F_IMS_B                      ) = $M_Gearbox_Frame_Bearing_IMS_B ! To Marker
    force.par (            1 ,       $F_IMS_B                      ) = 0.00000000000000000E+00 ! [N] Nominal force in x
    force.par (            2 ,       $F_IMS_B                      ) = 0.00000000000000000E+00 ! [N] Nominal force in y
@@ -5297,7 +5293,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_IMS_B    ) = 30, 2.5, 2.5, -50, -50
 
    force.type (                     $F_IMS_C                      ) = 43                      ! Type
-   force.from (                     $F_IMS_C                      ) = $M_HSIShaft_Bearing_IMS_C ! From Marker
+   force.from (                     $F_IMS_C                      ) = $BG_stage_02.$M_HSIShaft_Bearing_IMS_C ! From Marker
    force.to (                       $F_IMS_C                      ) = $M_Gearbox_Frame_Bearing_IMS_C ! To Marker
    force.par (            1 ,       $F_IMS_C                      ) = 0.00000000000000000E+00 ! [N] Nominal force in x
    force.par (            2 ,       $F_IMS_C                      ) = 0.00000000000000000E+00 ! [N] Nominal force in y
@@ -5353,7 +5349,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_IMS_C    ) = 80, 80, 70, 60, -70, -70
 
    force.type (                     $F_HS_A                       ) = 43                      ! Type
-   force.from (                     $F_HS_A                       ) = $M_HSShaft_Bearing_HS_A ! From Marker
+   force.from (                     $F_HS_A                       ) = $BG_stage_03.$M_HSShaft_Bearing_HS_A ! From Marker
    force.to (                       $F_HS_A                       ) = $M_Gearbox_Frame_Bearing_HS_A ! To Marker
    force.par (            1 ,       $F_HS_A                       ) = 0.00000000000000000E+00 ! [N] Nominal force in x
    force.par (            2 ,       $F_HS_A                       ) = 0.00000000000000000E+00 ! [N] Nominal force in y
@@ -5409,7 +5405,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_HS_A     ) = 30, -40, -40
 
    force.type (                     $F_HS_B                       ) = 43                      ! Type
-   force.from (                     $F_HS_B                       ) = $M_HSShaft_Bearing_HS_B ! From Marker
+   force.from (                     $F_HS_B                       ) = $BG_stage_03.$M_HSShaft_Bearing_HS_B ! From Marker
    force.to (                       $F_HS_B                       ) = $M_Gearbox_Frame_Bearing_HS_B ! To Marker
    force.par (            1 ,       $F_HS_B                       ) = 0.00000000000000000E+00 ! [N] Nominal force in x
    force.par (            2 ,       $F_HS_B                       ) = 0.00000000000000000E+00 ! [N] Nominal force in y
@@ -5465,7 +5461,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_HS_B     ) = 60, 60, -70, -70
 
    force.type (                     $F_HS_C                       ) = 43                      ! Type
-   force.from (                     $F_HS_C                       ) = $M_HSShaft_Bearing_HS_C ! From Marker
+   force.from (                     $F_HS_C                       ) = $BG_stage_03.$M_HSShaft_Bearing_HS_C ! From Marker
    force.to (                       $F_HS_C                       ) = $M_Gearbox_Frame_Bearing_HS_C ! To Marker
    force.par (            1 ,       $F_HS_C                       ) = 0.00000000000000000E+00 ! [N] Nominal force in x
    force.par (            2 ,       $F_HS_C                       ) = 0.00000000000000000E+00 ! [N] Nominal force in y
@@ -5541,7 +5537,7 @@ control.type (                      $C_measured_speed             ) = 160       
 control.disabled (                  $C_measured_speed             ) = $SVG_generator.$_use_control ! Disabled
 control.par (             1 ,       $C_measured_speed             ) = 1.00000000000000000E+00 ! [-] Number of Conn./Joint states
 control.par (            10 ,       $C_measured_speed             ) = 1.00000000000000000E+00 ! [-]  Ch 1: State type
-control.par (            11 ,       $C_measured_speed             ) = $J_HSShaft              ! [-]  Ch 1: Connection/Joint
+control.par (            11 ,       $C_measured_speed             ) = $BG_stage_03.$J_HSShaft ! [-]  Ch 1: Connection/Joint
 control.par (            12 ,       $C_measured_speed             ) = 1.00000000000000000E+00 ! [-]  Ch 1: -> Conn./Joint state
 control.par (            13 ,       $C_measured_speed             ) = 1.00000000000000000E+00 ! [-]  Ch 1: Gain factor C
 control.par (            14 ,       $C_measured_speed             ) = null                    ! [-]  Ch 1: Disturb. Ctrl. Element
@@ -5565,6 +5561,152 @@ control.par (             9 ,       $C_speed_difference           ) = 0.00000000
 control.par (            13 ,       $C_speed_difference           ) = 0.00000000000000000E+00 ! [-] Constant zero deviation K
 
 !**********************************************************************
+! Connection Elements
+!**********************************************************************
+connect.type (                      $CTN_bed_plate_motion         ) = 61                      ! Type
+connect.st.type (         1 ,       $CTN_bed_plate_motion         ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         2 ,       $CTN_bed_plate_motion         ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         3 ,       $CTN_bed_plate_motion         ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         4 ,       $CTN_bed_plate_motion         ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         5 ,       $CTN_bed_plate_motion         ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         6 ,       $CTN_bed_plate_motion         ) = 1                       ! 0=Free; 1=Driven
+connect.st.pos (          1 ,       $CTN_bed_plate_motion         ) = -1.42731499999999989E+00 ! Position states
+connect.st.pos (          2 ,       $CTN_bed_plate_motion         ) = 1.18342000000000003E-01 ! Position states
+connect.st.pos (          3 ,       $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          5 ,       $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          6 ,       $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $CTN_bed_plate_motion         ) = -5.48499999999999988E-01 ! Velocity states
+connect.st.vel (          2 ,       $CTN_bed_plate_motion         ) = -4.15999999999999964E-03 ! Velocity states
+connect.st.vel (          3 ,       $CTN_bed_plate_motion         ) = 6.04999999999999982E-02 ! Velocity states
+connect.st.vel (          4 ,       $CTN_bed_plate_motion         ) = 1.90000000000000010E-05 ! Velocity states
+connect.st.vel (          5 ,       $CTN_bed_plate_motion         ) = -4.34800000000000030E-03 ! Velocity states
+connect.st.vel (          6 ,       $CTN_bed_plate_motion         ) = -1.11999999999999998E-04 ! Velocity states
+connect.st.excit.ele (    1 ,       $CTN_bed_plate_motion         ) = $EG_bed_plate_motion.$E_X ! Time excitations to use in driven mode
+connect.st.excit.ele (    2 ,       $CTN_bed_plate_motion         ) = $EG_bed_plate_motion.$E_Y ! Time excitations to use in driven mode
+connect.st.excit.ele (    3 ,       $CTN_bed_plate_motion         ) = $EG_bed_plate_motion.$E_Z ! Time excitations to use in driven mode
+connect.st.excit.ele (    4 ,       $CTN_bed_plate_motion         ) = $EG_bed_plate_motion.$E_X_rot ! Time excitations to use in driven mode
+connect.st.excit.ele (    5 ,       $CTN_bed_plate_motion         ) = $EG_bed_plate_motion.$E_Y_rot ! Time excitations to use in driven mode
+connect.st.excit.ele (    6 ,       $CTN_bed_plate_motion         ) = $EG_bed_plate_motion.$E_Z_rot ! Time excitations to use in driven mode
+connect.st.excit.offset (   1 ,     $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   2 ,     $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   3 ,     $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   4 ,     $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   5 ,     $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   6 ,     $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.equi (         1 ,       $CTN_bed_plate_motion         ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         2 ,       $CTN_bed_plate_motion         ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         3 ,       $CTN_bed_plate_motion         ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         4 ,       $CTN_bed_plate_motion         ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         5 ,       $CTN_bed_plate_motion         ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         6 ,       $CTN_bed_plate_motion         ) = 0                       ! Equilibrium calculation flags
+connect.st.lin (          1 ,       $CTN_bed_plate_motion         ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          2 ,       $CTN_bed_plate_motion         ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          3 ,       $CTN_bed_plate_motion         ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          4 ,       $CTN_bed_plate_motion         ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          5 ,       $CTN_bed_plate_motion         ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          6 ,       $CTN_bed_plate_motion         ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.disabled (                  $CTN_bed_plate_motion         ) = $SVG_base_input.$_OFF   ! Disabled
+connect.par (             2 ,       $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! [-] Interface
+connect.par (             2 ,   2 , $CTN_bed_plate_motion         ) = $M_Isys                 ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_bed_plate_motion         ) = $M_Bed_Plate_BRF        ! [-] To Marker
+connect.par (             4 ,       $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! [-] Limits <prel>
+connect.par (             4 ,   1 , $CTN_bed_plate_motion         ) = 0.00000000000000000E+00 ! [-] Translation in x
+connect.par (             4 ,   1 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable minimum
+connect.par (             4 ,   1 ,   2 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [m] Minimum value
+connect.par (             4 ,   1 ,   3 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable maximum
+connect.par (             4 ,   1 ,   4 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [m] Maximum value
+connect.par (             4 ,   2 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable minimum
+connect.par (             4 ,   2 ,   3 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable maximum
+connect.par (             4 ,   3 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable minimum
+connect.par (             4 ,   3 ,   3 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable maximum
+connect.par (             4 ,   4 ,   3 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable maximum
+connect.par (             4 ,  10 , $CTN_bed_plate_motion         ) = 1.00000000000000000E+00 ! [-] Advanced
+connect.par (             4 ,  10 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Translation in x min
+connect.par (             4 ,  10 ,   1 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   1 ,   2 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   1 ,   5 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Restitution coefficient
+connect.par (             4 ,  10 ,   1 ,   6 , $CTN_bed_plate_motion) = 1.00000000000000000E+08 ! [N/m] Stiffness
+connect.par (             4 ,  10 ,   1 ,   7 , $CTN_bed_plate_motion) = 1.00000000000000000E+08 ! [Ns/m] Damping
+connect.par (             4 ,  10 ,   2 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Translation in x max
+connect.par (             4 ,  10 ,   2 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   2 ,   2 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   2 ,   5 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Restitution coefficient
+connect.par (             4 ,  10 ,   2 ,   6 , $CTN_bed_plate_motion) = 1.00000000000000000E+08 ! [N/m] Stiffness
+connect.par (             4 ,  10 ,   2 ,   7 , $CTN_bed_plate_motion) = 1.00000000000000000E+08 ! [Ns/m] Damping
+connect.par (             4 ,  10 ,   3 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   3 ,   2 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   3 ,   5 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Restitution coefficient
+connect.par (             4 ,  10 ,   4 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   4 ,   2 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   4 ,   5 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Restitution coefficient
+connect.par (             4 ,  10 ,   5 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   5 ,   2 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   5 ,   5 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Restitution coefficient
+connect.par (             4 ,  10 ,   6 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   6 ,   2 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   6 ,   5 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Restitution coefficient
+connect.par (             4 ,  10 ,   7 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
+connect.par (             4 ,  10 ,   7 ,   2 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Root handling
+connect.par (             4 ,  10 ,   7 ,   5 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Restitution coefficient
+
+connect.type (                      $CTN_bed_plate_fixed          ) = 2                       ! Type
+connect.st.type (         1 ,       $CTN_bed_plate_fixed          ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         2 ,       $CTN_bed_plate_fixed          ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         3 ,       $CTN_bed_plate_fixed          ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         4 ,       $CTN_bed_plate_fixed          ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         5 ,       $CTN_bed_plate_fixed          ) = 1                       ! 0=Free; 1=Driven
+connect.st.type (         6 ,       $CTN_bed_plate_fixed          ) = 1                       ! 0=Free; 1=Driven
+connect.st.pos (          1 ,       $CTN_bed_plate_fixed          ) = -1.42731499999999989E+00 ! Position states
+connect.st.pos (          2 ,       $CTN_bed_plate_fixed          ) = 1.18342000000000003E-01 ! Position states
+connect.st.pos (          3 ,       $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          5 ,       $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          6 ,       $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $CTN_bed_plate_fixed          ) = -5.48499999999999988E-01 ! Velocity states
+connect.st.vel (          2 ,       $CTN_bed_plate_fixed          ) = -4.15999999999999964E-03 ! Velocity states
+connect.st.vel (          3 ,       $CTN_bed_plate_fixed          ) = 6.04999999999999982E-02 ! Velocity states
+connect.st.vel (          4 ,       $CTN_bed_plate_fixed          ) = 1.90000000000000010E-05 ! Velocity states
+connect.st.vel (          5 ,       $CTN_bed_plate_fixed          ) = -4.34800000000000030E-03 ! Velocity states
+connect.st.vel (          6 ,       $CTN_bed_plate_fixed          ) = -1.11999999999999998E-04 ! Velocity states
+connect.st.excit.ele (    1 ,       $CTN_bed_plate_fixed          ) = $EG_bed_plate_motion.$E_X ! Time excitations to use in driven mode
+connect.st.excit.ele (    2 ,       $CTN_bed_plate_fixed          ) = $EG_bed_plate_motion.$E_Y ! Time excitations to use in driven mode
+connect.st.excit.ele (    3 ,       $CTN_bed_plate_fixed          ) = $EG_bed_plate_motion.$E_Z ! Time excitations to use in driven mode
+connect.st.excit.ele (    4 ,       $CTN_bed_plate_fixed          ) = $EG_bed_plate_motion.$E_X_rot ! Time excitations to use in driven mode
+connect.st.excit.ele (    5 ,       $CTN_bed_plate_fixed          ) = $EG_bed_plate_motion.$E_Y_rot ! Time excitations to use in driven mode
+connect.st.excit.ele (    6 ,       $CTN_bed_plate_fixed          ) = $EG_bed_plate_motion.$E_Z_rot ! Time excitations to use in driven mode
+connect.st.excit.offset (   1 ,     $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   2 ,     $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   3 ,     $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   4 ,     $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   5 ,     $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.excit.offset (   6 ,     $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! Excitation offsets to use in driven mode
+connect.st.equi (         1 ,       $CTN_bed_plate_fixed          ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         2 ,       $CTN_bed_plate_fixed          ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         3 ,       $CTN_bed_plate_fixed          ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         4 ,       $CTN_bed_plate_fixed          ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         5 ,       $CTN_bed_plate_fixed          ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         6 ,       $CTN_bed_plate_fixed          ) = 0                       ! Equilibrium calculation flags
+connect.st.lin (          1 ,       $CTN_bed_plate_fixed          ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          2 ,       $CTN_bed_plate_fixed          ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          3 ,       $CTN_bed_plate_fixed          ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          4 ,       $CTN_bed_plate_fixed          ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          5 ,       $CTN_bed_plate_fixed          ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          6 ,       $CTN_bed_plate_fixed          ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.disabled (                  $CTN_bed_plate_fixed          ) = $SVG_base_input.$_ON    ! Disabled
+connect.par (             2 ,       $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [-] Interface
+connect.par (             2 ,   2 , $CTN_bed_plate_fixed          ) = $M_Isys                 ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_bed_plate_fixed          ) = $M_Bed_Plate_BRF        ! [-] To Marker
+connect.par (             3 ,       $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [-] Kinematic parameters
+connect.par (             3 ,   3 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [m] Translation in x
+connect.par (             3 ,   4 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [m] Translation in y
+connect.par (             3 ,   5 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [m] Translation in z
+connect.par (             3 ,   6 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+connect.par (             3 ,   7 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation alpha
+connect.par (             3 ,   8 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation beta
+connect.par (             3 ,   9 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation gamma
+
+!**********************************************************************
 ! Input Functions
 !**********************************************************************
 ifctn.file (                        $I_generator_speed            ) = 'GEN_SPD.if2'           ! File or URI
@@ -5574,97 +5716,124 @@ ifctn.settings.fromfile (           $I_generator_speed            ) = 1         
 ifctn.intpol.type (                 $I_generator_speed            ) = 2                       ! Interpolation type
 ifctn.range.handling (              $I_generator_speed            ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 
-ifctn.file (                        $I_Fx                         ) = 'Fx.if2'                ! File or URI
-ifctn.scal.z (                      $I_Fx                         ) = $_gamma_load            ! Scaling factor
-ifctn.range.handling (              $I_Fx                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
-ifctn.plot.par (          1 ,       $I_Fx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   1 , $I_Fx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   2 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   3 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   4 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   5 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   6 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   7 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   8 ,   1 , $I_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   9 ,   1 , $I_Fx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,  10 ,   1 , $I_Fx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctngroup.begin (                  $IFG_rotor_load               )                           ! $IFG_rotor_load
+   ifctn.file (                     $I_Fx                         ) = 'Fx.if2'                ! File or URI
+   ifctn.scal.z (                   $I_Fx                         ) = $_gamma_load            ! Scaling factor
+   ifctn.formula.range.xmin (       $I_Fx                         ) = { -inf }                ! x min
+   ifctn.formula.range.ymin (       $I_Fx                         ) = { -inf }                ! y min
+   ifctn.formula.range.xmax (       $I_Fx                         ) = { inf }                 ! x max
+   ifctn.formula.range.ymax (       $I_Fx                         ) = { inf }                 ! y max
+   ifctn.range.handling (           $I_Fx                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_Fx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_Fx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_Fx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_Fx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-ifctn.file (                        $I_Fy                         ) = 'Fy.if2'                ! File or URI
-ifctn.scal.z (                      $I_Fy                         ) = $_gamma_load            ! Scaling factor
-ifctn.range.handling (              $I_Fy                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
-ifctn.plot.par (          1 ,       $I_Fy                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   1 , $I_Fy                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   2 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   3 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   4 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   5 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   6 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   7 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   8 ,   1 , $I_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   9 ,   1 , $I_Fy                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,  10 ,   1 , $I_Fy                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.file (                     $I_Fy                         ) = 'Fy.if2'                ! File or URI
+   ifctn.scal.z (                   $I_Fy                         ) = $_gamma_load            ! Scaling factor
+   ifctn.formula.range.xmin (       $I_Fy                         ) = { -inf }                ! x min
+   ifctn.formula.range.ymin (       $I_Fy                         ) = { -inf }                ! y min
+   ifctn.formula.range.xmax (       $I_Fy                         ) = { inf }                 ! x max
+   ifctn.formula.range.ymax (       $I_Fy                         ) = { inf }                 ! y max
+   ifctn.range.handling (           $I_Fy                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_Fy                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_Fy                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_Fy                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_Fy                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-ifctn.file (                        $I_Fz                         ) = 'Fz.if2'                ! File or URI
-ifctn.scal.z (                      $I_Fz                         ) = $_gamma_load            ! Scaling factor
-ifctn.range.handling (              $I_Fz                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
-ifctn.plot.par (          1 ,       $I_Fz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   1 , $I_Fz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   2 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   3 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   4 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   5 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   6 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   7 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   8 ,   1 , $I_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   9 ,   1 , $I_Fz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,  10 ,   1 , $I_Fz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.file (                     $I_Fz                         ) = 'Fz.if2'                ! File or URI
+   ifctn.scal.z (                   $I_Fz                         ) = $_gamma_load            ! Scaling factor
+   ifctn.formula.range.xmin (       $I_Fz                         ) = { -inf }                ! x min
+   ifctn.formula.range.ymin (       $I_Fz                         ) = { -inf }                ! y min
+   ifctn.formula.range.xmax (       $I_Fz                         ) = { inf }                 ! x max
+   ifctn.formula.range.ymax (       $I_Fz                         ) = { inf }                 ! y max
+   ifctn.range.handling (           $I_Fz                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_Fz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_Fz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_Fz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_Fz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-ifctn.file (                        $I_Mx                         ) = 'Mx.if2'                ! File or URI
-ifctn.scal.z (                      $I_Mx                         ) = $_gamma_load            ! Scaling factor
-ifctn.settings.fromfile (           $I_Mx                         ) = 0                       ! Inter- and extrapolation settings from file
-ifctn.intpol.type (                 $I_Mx                         ) = 2                       ! Interpolation type
-ifctn.range.handling (              $I_Mx                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
-ifctn.plot.par (          1 ,       $I_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   1 , $I_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   2 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   3 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   4 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   5 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   6 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   7 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   8 ,   1 , $I_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   9 ,   1 , $I_Mx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,  10 ,   1 , $I_Mx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.file (                     $I_Mx                         ) = 'Mx.if2'                ! File or URI
+   ifctn.scal.z (                   $I_Mx                         ) = $_gamma_load            ! Scaling factor
+   ifctn.settings.fromfile (        $I_Mx                         ) = 0                       ! Inter- and extrapolation settings from file
+   ifctn.intpol.type (              $I_Mx                         ) = 2                       ! Interpolation type
+   ifctn.formula.range.xmin (       $I_Mx                         ) = { -inf }                ! x min
+   ifctn.formula.range.ymin (       $I_Mx                         ) = { -inf }                ! y min
+   ifctn.formula.range.xmax (       $I_Mx                         ) = { inf }                 ! x max
+   ifctn.formula.range.ymax (       $I_Mx                         ) = { inf }                 ! y max
+   ifctn.range.handling (           $I_Mx                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_Mx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_Mx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-ifctn.file (                        $I_My                         ) = 'My.if2'                ! File or URI
-ifctn.scal.z (                      $I_My                         ) = $_gamma_Nm              ! Scaling factor
-ifctn.range.handling (              $I_My                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
-ifctn.plot.par (          1 ,       $I_My                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   1 , $I_My                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   2 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   3 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   4 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   5 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   6 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   7 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   8 ,   1 , $I_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   9 ,   1 , $I_My                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,  10 ,   1 , $I_My                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.file (                     $I_My                         ) = 'My.if2'                ! File or URI
+   ifctn.scal.z (                   $I_My                         ) = $_gamma_Nm              ! Scaling factor
+   ifctn.formula.range.xmin (       $I_My                         ) = { -inf }                ! x min
+   ifctn.formula.range.ymin (       $I_My                         ) = { -inf }                ! y min
+   ifctn.formula.range.xmax (       $I_My                         ) = { inf }                 ! x max
+   ifctn.formula.range.ymax (       $I_My                         ) = { inf }                 ! y max
+   ifctn.range.handling (           $I_My                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_My                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_My                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_My                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_My                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
-ifctn.file (                        $I_Mz                         ) = 'Mz.if2'                ! File or URI
-ifctn.scal.z (                      $I_Mz                         ) = $_gamma_Nm              ! Scaling factor
-ifctn.range.handling (              $I_Mz                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
-ifctn.plot.par (          1 ,       $I_Mz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   1 , $I_Mz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   2 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   3 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   4 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   5 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   6 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   7 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   8 ,   1 , $I_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,   9 ,   1 , $I_Mz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
-ifctn.plot.par (          1 ,  10 ,   1 , $I_Mz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.file (                     $I_Mz                         ) = 'Mz.if2'                ! File or URI
+   ifctn.scal.z (                   $I_Mz                         ) = $_gamma_Nm              ! Scaling factor
+   ifctn.formula.range.xmin (       $I_Mz                         ) = { -inf }                ! x min
+   ifctn.formula.range.ymin (       $I_Mz                         ) = { -inf }                ! y min
+   ifctn.formula.range.xmax (       $I_Mz                         ) = { inf }                 ! x max
+   ifctn.formula.range.ymax (       $I_Mz                         ) = { inf }                 ! y max
+   ifctn.range.handling (           $I_Mz                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+   ifctn.plot.par (       1 ,       $I_Mz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   1 , $I_Mz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   2 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   3 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   4 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   5 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   6 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   7 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   8 ,   1 , $I_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,   9 ,   1 , $I_Mz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   ifctn.plot.par (       1 ,  10 ,   1 , $I_Mz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctngroup.end (                    $IFG_rotor_load               )                           ! $IFG_rotor_load
 
 ifctngroup.begin (                  $IFG_bed_plate_motion         )                           ! $IFG_bed_plate_motion
    ifctn.file (                     $I_X                          ) = 'EC4_s01_X.if2'         ! File or URI
@@ -5726,83 +5895,11 @@ ifctngroup.end (                    $IFG_bed_plate_motion         )             
 !**********************************************************************
 ! Expressions
 !**********************************************************************
-express.str (                       $X_omeg_read                  ) = 'WX($M_HSShaft_BRF,0,0)' ! Definition
-
-express.str (                       $X_omeg_input                 ) = 'IFCTNX(0,$I_generator_speed,0,-1)' ! Definition
-
-express.str (                       $X_delta_t                    ) = '0.005'                 ! Definition
-
-express.str (                       $X_omg_error                  ) = '$X_omeg_input-$X_omeg_read' ! Definition
-
-express.str (                       $X_last_int_omg_error         ) = 'if (TIME==0)\n{0}\nelse\n{$X_omg_error*$X_delta_t}' ! Definition
-
-express.str (                       $X_int_omg_error              ) = '$X_last_int_omg_error+$X_omg_error*$X_delta_t' ! Definition
-
-express.str (                       $X_gen_torq                   ) = '$_rated_power/IFCTNX(TIME,$I_generator_speed, 0, -1)' ! Definition
+express.str (                       $X_generator_torque           ) = '-$_rated_power/IFCTNX(TIME,$I_generator_speed, 0, -1)' ! Definition
 
 !**********************************************************************
 ! Excitations
 !**********************************************************************
-excit.type (                        $E_Fx                         ) = 2                       ! Type
-excit.par (               1 ,       $E_Fx                         ) = $I_Fx                   ! [-] Input Function f(t)
-excit.par (               2 ,       $E_Fx                         ) = null                    ! [-] Input Function fd(t)
-excit.par (               3 ,       $E_Fx                         ) = null                    ! [-] Input Function fdd(t)
-excit.par (               4 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
-excit.par (               5 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
-excit.par (               6 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
-excit.par (               7 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
-
-excit.type (                        $E_Fy                         ) = 2                       ! Type
-excit.par (               1 ,       $E_Fy                         ) = $I_Fy                   ! [-] Input Function f(t)
-excit.par (               2 ,       $E_Fy                         ) = null                    ! [-] Input Function fd(t)
-excit.par (               3 ,       $E_Fy                         ) = null                    ! [-] Input Function fdd(t)
-excit.par (               4 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
-excit.par (               5 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
-excit.par (               6 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
-excit.par (               7 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
-
-excit.type (                        $E_Fz                         ) = 2                       ! Type
-excit.par (               1 ,       $E_Fz                         ) = $I_Fz                   ! [-] Input Function f(t)
-excit.par (               2 ,       $E_Fz                         ) = null                    ! [-] Input Function fd(t)
-excit.par (               3 ,       $E_Fz                         ) = null                    ! [-] Input Function fdd(t)
-excit.par (               4 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
-excit.par (               5 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
-excit.par (               6 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
-excit.par (               7 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
-
-excit.type (                        $E_Mx                         ) = 2                       ! Type
-excit.par (               1 ,       $E_Mx                         ) = $I_Mx                   ! [-] Input Function f(t)
-excit.par (               2 ,       $E_Mx                         ) = null                    ! [-] Input Function fd(t)
-excit.par (               3 ,       $E_Mx                         ) = null                    ! [-] Input Function fdd(t)
-excit.par (               4 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
-excit.par (               5 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
-excit.par (               6 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
-excit.par (               7 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
-
-excit.type (                        $E_My                         ) = 2                       ! Type
-excit.par (               1 ,       $E_My                         ) = $I_My                   ! [-] Input Function f(t)
-excit.par (               2 ,       $E_My                         ) = null                    ! [-] Input Function fd(t)
-excit.par (               3 ,       $E_My                         ) = null                    ! [-] Input Function fdd(t)
-excit.par (               4 ,       $E_My                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
-excit.par (               5 ,       $E_My                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
-excit.par (               6 ,       $E_My                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
-excit.par (               7 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
-
-excit.type (                        $E_Mz                         ) = 2                       ! Type
-excit.par (               1 ,       $E_Mz                         ) = $I_Mz                   ! [-] Input Function f(t)
-excit.par (               2 ,       $E_Mz                         ) = null                    ! [-] Input Function fd(t)
-excit.par (               3 ,       $E_Mz                         ) = null                    ! [-] Input Function fdd(t)
-excit.par (               4 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
-excit.par (               5 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
-excit.par (               6 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
-excit.par (               7 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
-
 excit.type (                        $E_reference_speed            ) = 14                      ! Type
 excit.disabled (                    $E_reference_speed            ) = $SVG_generator.$_use_control ! Disabled
 excit.par (               1 ,       $E_reference_speed            ) = { dimless($_rotor_speed)*$_GB_ratio*PI/30.0 } ! [-] Constant value
@@ -5817,35 +5914,275 @@ excit.plot.par (          1 ,   6 ,   1 , $E_reference_speed      ) = 1.00000000
 excit.plot.par (          1 ,   7 ,   1 , $E_reference_speed      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   8 ,   1 , $E_reference_speed      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
+excitgroup.begin (                  $EG_rotor_load                )                           ! $EG_rotor_load
+   excit.type (                     $E_Fx                         ) = 2                       ! Type
+   excit.par (            1 ,       $E_Fx                         ) = $IFG_rotor_load.$I_Fx   ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Fx                         ) = null                    ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Fx                         ) = null                    ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Fx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Fx                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Fy                         ) = 2                       ! Type
+   excit.par (            1 ,       $E_Fy                         ) = $IFG_rotor_load.$I_Fy   ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Fy                         ) = null                    ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Fy                         ) = null                    ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Fy                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Fy                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Fz                         ) = 2                       ! Type
+   excit.par (            1 ,       $E_Fz                         ) = $IFG_rotor_load.$I_Fz   ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Fz                         ) = null                    ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Fz                         ) = null                    ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Fz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Fz                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Mx                         ) = 2                       ! Type
+   excit.par (            1 ,       $E_Mx                         ) = $IFG_rotor_load.$I_Mx   ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Mx                         ) = null                    ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Mx                         ) = null                    ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Mx                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_My                         ) = 2                       ! Type
+   excit.par (            1 ,       $E_My                         ) = $IFG_rotor_load.$I_My   ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_My                         ) = null                    ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_My                         ) = null                    ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_My                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_My                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_My                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_My                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Mz                         ) = 2                       ! Type
+   excit.par (            1 ,       $E_Mz                         ) = $IFG_rotor_load.$I_Mz   ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Mz                         ) = null                    ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Mz                         ) = null                    ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Mz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Mz                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excitgroup.end (                    $EG_rotor_load                )                           ! $EG_rotor_load
+
+excitgroup.begin (                  $EG_bed_plate_motion          )                           ! $EG_bed_plate_motion
+   excit.type (                     $E_X                          ) = 2                       ! Type
+   excit.par (            1 ,       $E_X                          ) = $IFG_bed_plate_motion.$I_X ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_X                          ) = $IFG_bed_plate_motion.$I_XD ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_X                          ) = $IFG_bed_plate_motion.$I_XDD ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_X                          ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_X                          ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_X                          ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_X                          ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_X                          ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_X                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_X                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_X                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_X                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_X                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_X                          ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_X                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_X                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_X                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Y                          ) = 2                       ! Type
+   excit.par (            1 ,       $E_Y                          ) = $IFG_bed_plate_motion.$I_Y ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Y                          ) = $IFG_bed_plate_motion.$I_YD ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Y                          ) = $IFG_bed_plate_motion.$I_YDD ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Y                          ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Y                          ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Y                          ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Y                          ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Y                          ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Y                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Y                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Y                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Y                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Y                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Y                          ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Y                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Y                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Y                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Z                          ) = 2                       ! Type
+   excit.par (            1 ,       $E_Z                          ) = $IFG_bed_plate_motion.$I_Z ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Z                          ) = $IFG_bed_plate_motion.$I_ZD ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Z                          ) = $IFG_bed_plate_motion.$I_ZDD ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Z                          ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Z                          ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Z                          ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Z                          ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Z                          ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Z                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Z                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Z                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Z                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Z                          ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Z                          ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Z                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Z                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Z                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_X_rot                      ) = 2                       ! Type
+   excit.par (            1 ,       $E_X_rot                      ) = $IFG_bed_plate_motion.$I_X_Rot ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_X_rot                      ) = $IFG_bed_plate_motion.$I_X_Rot_D ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_X_rot                      ) = $IFG_bed_plate_motion.$I_X_Rot_DD ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_X_rot                      ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_X_rot                      ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_X_rot                      ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_X_rot                      ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_X_rot                      ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_X_rot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_X_rot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_X_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_X_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_X_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_X_rot                      ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_X_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_X_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_X_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Y_rot                      ) = 2                       ! Type
+   excit.par (            1 ,       $E_Y_rot                      ) = $IFG_bed_plate_motion.$I_Y_Rot ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Y_rot                      ) = $IFG_bed_plate_motion.$I_Y_Rot_D ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Y_rot                      ) = $IFG_bed_plate_motion.$I_Y_Rot_DD ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Y_rot                      ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Y_rot                      ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Y_rot                      ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Y_rot                      ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Y_rot                      ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Y_rot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Y_rot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Y_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Y_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Y_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Y_rot                      ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Y_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Y_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Y_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   excit.type (                     $E_Z_rot                      ) = 2                       ! Type
+   excit.par (            1 ,       $E_Z_rot                      ) = $IFG_bed_plate_motion.$I_Z_Rot ! [-] Input Function f(t)
+   excit.par (            2 ,       $E_Z_rot                      ) = $IFG_bed_plate_motion.$I_Z_Rot_D ! [-] Input Function fd(t)
+   excit.par (            3 ,       $E_Z_rot                      ) = $IFG_bed_plate_motion.$I_Z_Rot_DD ! [-] Input Function fdd(t)
+   excit.par (            4 ,       $E_Z_rot                      ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+   excit.par (            5 ,       $E_Z_rot                      ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+   excit.par (            6 ,       $E_Z_rot                      ) = 0.00000000000000000E+00 ! [s] Time offset t0
+   excit.par (            7 ,       $E_Z_rot                      ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+   excit.par (            8 ,       $E_Z_rot                      ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+   excit.plot.par (       1 ,       $E_Z_rot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   1 , $E_Z_rot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   2 , $E_Z_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   3 , $E_Z_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   4 , $E_Z_rot                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   5 , $E_Z_rot                      ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   6 ,   1 , $E_Z_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   7 ,   1 , $E_Z_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   excit.plot.par (       1 ,   8 ,   1 , $E_Z_rot                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excitgroup.end (                    $EG_bed_plate_motion          )                           ! $EG_bed_plate_motion
+
 !**********************************************************************
 ! u-Vector
 !**********************************************************************
-uele.type (                         $UE_Fx                        ) = 1                       ! Type
-uele.excit (                        $UE_Fx                        ) = $E_Fx                   ! Referenced Excitation
-uele.index (                        $UE_Fx                        ) = 0                       ! Index
-
-uele.type (                         $UE_Fy                        ) = 1                       ! Type
-uele.excit (                        $UE_Fy                        ) = $E_Fy                   ! Referenced Excitation
-uele.index (                        $UE_Fy                        ) = 0                       ! Index
-
-uele.type (                         $UE_Fz                        ) = 1                       ! Type
-uele.excit (                        $UE_Fz                        ) = $E_Fz                   ! Referenced Excitation
-uele.index (                        $UE_Fz                        ) = 0                       ! Index
-
-uele.type (                         $UE_Mx                        ) = 1                       ! Type
-uele.excit (                        $UE_Mx                        ) = $E_Mx                   ! Referenced Excitation
-uele.index (                        $UE_Mx                        ) = 0                       ! Index
-
-uele.type (                         $UE_My                        ) = 1                       ! Type
-uele.excit (                        $UE_My                        ) = $E_My                   ! Referenced Excitation
-uele.index (                        $UE_My                        ) = 0                       ! Index
-
-uele.type (                         $UE_Mz                        ) = 1                       ! Type
-uele.excit (                        $UE_Mz                        ) = $E_Mz                   ! Referenced Excitation
-uele.index (                        $UE_Mz                        ) = 0                       ! Index
-
 uele.type (                         $UE_reference_speed           ) = 1                       ! Type
 uele.excit (                        $UE_reference_speed           ) = $E_reference_speed      ! Referenced Excitation
+
+uelegroup.begin (                   $UEG_rotor_load               )                           ! $UEG_rotor_load
+   uele.type (                      $UE_Fx                        ) = 1                       ! Type
+   uele.excit (                     $UE_Fx                        ) = $EG_rotor_load.$E_Fx    ! Referenced Excitation
+   uele.index (                     $UE_Fx                        ) = 0                       ! Index
+
+   uele.type (                      $UE_Fy                        ) = 1                       ! Type
+   uele.excit (                     $UE_Fy                        ) = $EG_rotor_load.$E_Fy    ! Referenced Excitation
+   uele.index (                     $UE_Fy                        ) = 0                       ! Index
+
+   uele.type (                      $UE_Fz                        ) = 1                       ! Type
+   uele.excit (                     $UE_Fz                        ) = $EG_rotor_load.$E_Fz    ! Referenced Excitation
+   uele.index (                     $UE_Fz                        ) = 0                       ! Index
+
+   uele.type (                      $UE_Mx                        ) = 1                       ! Type
+   uele.excit (                     $UE_Mx                        ) = $EG_rotor_load.$E_Mx    ! Referenced Excitation
+   uele.index (                     $UE_Mx                        ) = 0                       ! Index
+
+   uele.type (                      $UE_My                        ) = 1                       ! Type
+   uele.excit (                     $UE_My                        ) = $EG_rotor_load.$E_My    ! Referenced Excitation
+   uele.index (                     $UE_My                        ) = 0                       ! Index
+
+   uele.type (                      $UE_Mz                        ) = 1                       ! Type
+   uele.excit (                     $UE_Mz                        ) = $EG_rotor_load.$E_Mz    ! Referenced Excitation
+   uele.index (                     $UE_Mz                        ) = 0                       ! Index
+
+uelegroup.end (                     $UEG_rotor_load               )                           ! $UEG_rotor_load
+
+uelegroup.begin (                   $UEG_bed_plate_motion         )                           ! $UEG_bed_plate_motion
+uelegroup.end (                     $UEG_bed_plate_motion         )                           ! $UEG_bed_plate_motion
 
 !**********************************************************************
 ! Materials
