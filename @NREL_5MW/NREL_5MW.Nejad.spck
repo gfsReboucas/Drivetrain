@@ -1,11 +1,11 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.3! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20200002
 version.desc   = ''
-version.build  = 82
+version.build  = 149
 
 !**********************************************************************
 !  Global parameters
@@ -19,7 +19,6 @@ vehicle.startvel                                                    = 0.00000000
 vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
 glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
 glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
-glob.compat.track.excit                                             = 1                       ! Track Excitation rotation sequence
 glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
 glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
 glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
@@ -224,8 +223,6 @@ slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1         
 slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
 slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
-slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
-slv.equi.fallback.enable (          $SLV_SolverSettings           ) = 0                       ! Enable fallbacks
 slv.init.tol (                      $SLV_SolverSettings           ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
@@ -273,6 +270,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh
+   subvar.str (                     $_full_damping                ) = '10e-6 m'               ! $SVG_mesh.$_full_damping, Definition
 subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
@@ -459,14 +457,8 @@ joint.from (                        $J_Bed_Plate                  ) = $M_Isys   
 joint.to (                          $J_Bed_Plate                  ) = $M_Bed_Plate_BRF        ! To Marker
 joint.type (                        $J_Bed_Plate                  ) = 20                      ! Type
 joint.par (               5 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about al
-joint.par (               6 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot ! [rad] Time Excitation angle al(t)
-joint.par (               7 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_XD ! [rad] Offset in al
 joint.par (              10 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about be
-joint.par (              11 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot_D ! [rad] Time Excitation angle be(t)
-joint.par (              12 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Z_Rot_D ! [rad] Offset in be
 joint.par (              15 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about ga
-joint.par (              16 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_X_Rot_DD ! [rad] Time Excitation angle ga(t)
-joint.par (              17 ,       $J_Bed_Plate                  ) = $IFG_bed_plate_motion.$I_Y_Rot_DD ! [rad] Offset in ga
 joint.par (              20 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in x
 joint.par (              25 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in y
 joint.par (              30 ,       $J_Bed_Plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in z
@@ -5719,10 +5711,6 @@ ifctn.range.handling (              $I_generator_speed            ) = 2         
 ifctngroup.begin (                  $IFG_rotor_load               )                           ! $IFG_rotor_load
    ifctn.file (                     $I_Fx                         ) = 'Fx.if2'                ! File or URI
    ifctn.scal.z (                   $I_Fx                         ) = $_gamma_load            ! Scaling factor
-   ifctn.formula.range.xmin (       $I_Fx                         ) = { -inf }                ! x min
-   ifctn.formula.range.ymin (       $I_Fx                         ) = { -inf }                ! y min
-   ifctn.formula.range.xmax (       $I_Fx                         ) = { inf }                 ! x max
-   ifctn.formula.range.ymax (       $I_Fx                         ) = { inf }                 ! y max
    ifctn.range.handling (           $I_Fx                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_Fx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_Fx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5738,10 +5726,6 @@ ifctngroup.begin (                  $IFG_rotor_load               )             
 
    ifctn.file (                     $I_Fy                         ) = 'Fy.if2'                ! File or URI
    ifctn.scal.z (                   $I_Fy                         ) = $_gamma_load            ! Scaling factor
-   ifctn.formula.range.xmin (       $I_Fy                         ) = { -inf }                ! x min
-   ifctn.formula.range.ymin (       $I_Fy                         ) = { -inf }                ! y min
-   ifctn.formula.range.xmax (       $I_Fy                         ) = { inf }                 ! x max
-   ifctn.formula.range.ymax (       $I_Fy                         ) = { inf }                 ! y max
    ifctn.range.handling (           $I_Fy                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_Fy                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_Fy                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5778,10 +5762,6 @@ ifctngroup.begin (                  $IFG_rotor_load               )             
    ifctn.scal.z (                   $I_Mx                         ) = $_gamma_load            ! Scaling factor
    ifctn.settings.fromfile (        $I_Mx                         ) = 0                       ! Inter- and extrapolation settings from file
    ifctn.intpol.type (              $I_Mx                         ) = 2                       ! Interpolation type
-   ifctn.formula.range.xmin (       $I_Mx                         ) = { -inf }                ! x min
-   ifctn.formula.range.ymin (       $I_Mx                         ) = { -inf }                ! y min
-   ifctn.formula.range.xmax (       $I_Mx                         ) = { inf }                 ! x max
-   ifctn.formula.range.ymax (       $I_Mx                         ) = { inf }                 ! y max
    ifctn.range.handling (           $I_Mx                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5797,10 +5777,6 @@ ifctngroup.begin (                  $IFG_rotor_load               )             
 
    ifctn.file (                     $I_My                         ) = 'My.if2'                ! File or URI
    ifctn.scal.z (                   $I_My                         ) = $_gamma_Nm              ! Scaling factor
-   ifctn.formula.range.xmin (       $I_My                         ) = { -inf }                ! x min
-   ifctn.formula.range.ymin (       $I_My                         ) = { -inf }                ! y min
-   ifctn.formula.range.xmax (       $I_My                         ) = { inf }                 ! x max
-   ifctn.formula.range.ymax (       $I_My                         ) = { inf }                 ! y max
    ifctn.range.handling (           $I_My                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_My                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_My                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -5816,10 +5792,6 @@ ifctngroup.begin (                  $IFG_rotor_load               )             
 
    ifctn.file (                     $I_Mz                         ) = 'Mz.if2'                ! File or URI
    ifctn.scal.z (                   $I_Mz                         ) = $_gamma_Nm              ! Scaling factor
-   ifctn.formula.range.xmin (       $I_Mz                         ) = { -inf }                ! x min
-   ifctn.formula.range.ymin (       $I_Mz                         ) = { -inf }                ! y min
-   ifctn.formula.range.xmax (       $I_Mz                         ) = { inf }                 ! x max
-   ifctn.formula.range.ymax (       $I_Mz                         ) = { inf }                 ! y max
    ifctn.range.handling (           $I_Mz                         ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
    ifctn.plot.par (       1 ,       $I_Mz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    ifctn.plot.par (       1 ,   1 , $I_Mz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -6180,9 +6152,6 @@ uelegroup.begin (                   $UEG_rotor_load               )             
    uele.index (                     $UE_Mz                        ) = 0                       ! Index
 
 uelegroup.end (                     $UEG_rotor_load               )                           ! $UEG_rotor_load
-
-uelegroup.begin (                   $UEG_bed_plate_motion         )                           ! $UEG_bed_plate_motion
-uelegroup.end (                     $UEG_bed_plate_motion         )                           ! $UEG_bed_plate_motion
 
 !**********************************************************************
 ! Materials

@@ -967,7 +967,7 @@ classdef NREL_5MW < Drivetrain
 
             new_ID = fopen('@NREL_5MW\NREL_5MW.Nejad.subvar', 'w');
             
-            fprintf(new_ID, "!file.version=3.4! Removing this line will make the file unreadable\n");
+            fprintf(new_ID, "!file.version=3.3! Removing this line will make the file unreadable\n");
             fprintf(new_ID, "\n");
             fprintf(new_ID, "!**********************************************************************\n");
             fprintf(new_ID, "! SubVars\n");

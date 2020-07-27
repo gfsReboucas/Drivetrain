@@ -1,301 +1,343 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.3! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar($_gamma_Nm, str= '1')                                                                  ! $_gamma_Nm
-subvar($_gamma_load, str= '1')                                                                ! $_gamma_load
-subvar($_rated_power, str= '5000 kW')                                                         ! $_rated_power
-subvar($_rotor_speed, str= '12.1 rpm')                                                        ! $_rotor_speed
-subvar($_GB_ratio, str= '96.3542')                                                            ! $_GB_ratio
-subvargroup.begin (                 $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS
-   subvar($_gamma_d, str= '1')                                                                ! $SVG_main_shaft_LSS.$_gamma_d
-   subvar($_gamma_L, str= '1')                                                                ! $SVG_main_shaft_LSS.$_gamma_L
-   subvargroup.begin (              $SVG_INP_A                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_A
-      subvar($_PL_c_x, str= '0 N/m')                                                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x
-      subvar($_PL_c_y, str= '1.54e+10 N/m')                                                   ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y
-      subvar($_PL_c_z, str= '15400000000 N/m')                                                ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_al
-      subvar($_PL_c_be, str= '5e+6 Nm/rad')                                                   ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_be
-      subvar($_PL_c_ga, str= '5e+6 Nm/rad')                                                   ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_ga
-      subvar($_PL_d_x, str= '0 Ns/m')                                                         ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_z
-      subvar($_PL_d_al, str= '0 N m s/rad')                                                   ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_ga
-   subvargroup.end (                $SVG_INP_A                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_A
-   subvargroup.begin (              $SVG_INP_B                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_B
-      subvar($_PL_c_x, str= '4.06e+8 N/m')                                                    ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_x
-      subvar($_PL_c_y, str= '1.54e+10 N/m')                                                   ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_y
-      subvar($_PL_c_z, str= '15400000000 N/m')                                                ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_al
-      subvar($_PL_c_be, str= '97637.5 Nm/rad')                                                ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_be
-      subvar($_PL_c_ga, str= '97637.5 Nm/rad')                                                ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_ga
-   subvargroup.end (                $SVG_INP_B                    )                           ! $SVG_main_shaft_LSS.$SVG_INP_B
-subvargroup.end (                   $SVG_main_shaft_LSS           )                           ! $SVG_main_shaft_LSS
+subvar($_gamma_Nm, str = '1')                                        ! $_gamma_Nm
+subvar($_gamma_load, str = '1')                                      ! $_gamma_load
+subvar($_rated_power, str = '5000 kW')                                  ! $_rated_power
+subvar($_rotor_speed, str = '12.1 rpm')                                 ! $_rotor_speed
+subvar($_GB_ratio, str = '96.3542')                                        ! $_GB_ratio
+subvargroup.begin($SVG_main_shaft_LSS)                                ! $SVG_main_shaft_LSS
+   subvar($_gamma_d, str = '1')                                      ! $SVG_main_shaft_LSS.$_gamma_d
+   subvar($_gamma_L, str = '1')                                      ! $SVG_main_shaft_LSS.$_gamma_L
+   subvargroup.begin($SVG_INP_A)                                      ! $SVG_main_shaft_LSS.$SVG_INP_A
+      subvar($_PL_c_x, str = '0 N/m')                                 ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x
+      subvar($_PL_c_y, str = '1.54e+10 N/m')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y
+      subvar($_PL_c_z, str = '15400000000 N/m')                       ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                             ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_al
+      subvar($_PL_c_be, str = '5e+6 Nm/rad')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_be
+      subvar($_PL_c_ga, str = '5e+6 Nm/rad')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_ga
+      subvar($_PL_d_x, str = '0 Ns/m')                                ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_z
+      subvar($_PL_d_al, str = '0 N m s/rad')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_ga
+   subvargroup.end($SVG_INP_A)                                        ! $SVG_main_shaft_LSS.$SVG_INP_A
+   subvargroup.begin($SVG_INP_B)                                      ! $SVG_main_shaft_LSS.$SVG_INP_B
+      subvar($_PL_c_x, str = '4.06e+8 N/m')                           ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_x
+      subvar($_PL_c_y, str = '1.54e+10 N/m')                          ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_y
+      subvar($_PL_c_z, str = '15400000000 N/m')                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                             ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_al
+      subvar($_PL_c_be, str = '97637.5 Nm/rad')                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_be
+      subvar($_PL_c_ga, str = '97637.5 Nm/rad')                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                            ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_ga
+   subvargroup.end($SVG_INP_B)                                        ! $SVG_main_shaft_LSS.$SVG_INP_B
+subvargroup.end($SVG_main_shaft_LSS)                                  ! $SVG_main_shaft_LSS
 
-subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
-   subvar($_gamma_m_n, str= '1')                                                              ! $SVG_stage_01.$_gamma_m_n
-   subvar($_gamma_b, str= '1')                                                                ! $SVG_stage_01.$_gamma_b
-   subvar($_gamma_d, str= '1')                                                                ! $SVG_stage_01.$_gamma_d
-   subvar($_gamma_L, str= '1')                                                                ! $SVG_stage_01.$_gamma_L
-   subvar($_m_n, str= '45 mm')                                                                ! $SVG_stage_01.$_m_n
-   subvar($_b, str= '491 mm')                                                                 ! $SVG_stage_01.$_b
-   subvar($_a_w, str= '863 mm')                                                               ! $SVG_stage_01.$_a_w
-   subvar($_alpha, str= '20 deg')                                                             ! $SVG_stage_01.$_alpha
-   subvar($_x_sun, str= '0.617')                                                              ! $SVG_stage_01.$_x_sun
-   subvar($_x_planet, str= '0.802')                                                           ! $SVG_stage_01.$_x_planet
-   subvar($_x_ring, str= '-0.501')                                                            ! $SVG_stage_01.$_x_ring
-   subvar($_z_sun, str= '19')                                                                 ! $SVG_stage_01.$_z_sun
-   subvar($_z_planet, str= '17')                                                              ! $SVG_stage_01.$_z_planet
-   subvar($_z_ring, str= '56')                                                                ! $SVG_stage_01.$_z_ring
-   subvar($_Norm_Backlash, str= '0.40*$SVG_stage_01.$_gamma_m_n mm')                          ! $SVG_stage_01.$_Norm_Backlash
-   subvar($_Tooth_Damping, str= '500000000')                                                  ! $SVG_stage_01.$_Tooth_Damping
-   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $SVG_stage_01.$_Tooth_Stiff_ratio
-   subvar($_k_SP, str= '8.8807e+09 N/m')                                                      ! $SVG_stage_01.$_k_SP
-   subvar($_k_RP, str= '1.006e+10 N/m')                                                       ! $SVG_stage_01.$_k_RP
-   subvar($_mesh_damping, str= '5.0e3 Ns/m')                                                  ! $SVG_stage_01.$_mesh_damping
-   subvar($_transition_depth, str= '$SVG_mesh.$_full_damping')                                ! $SVG_stage_01.$_transition_depth
-   subvargroup.begin (              $SVG_PLC_A                    )                           ! $SVG_stage_01.$SVG_PLC_A
-      subvar($_PL_c_x, str= '6.6e+4 N/m')                                                     ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_x
-      subvar($_PL_c_y, str= '1770000000 N/m')                                                 ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_y
-      subvar($_PL_c_z, str= '1770000000 N/m')                                                 ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_al
-      subvar($_PL_c_be, str= '1390000 Nm/rad')                                                ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_be
-      subvar($_PL_c_ga, str= '1.39e+6 Nm/rad')                                                ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_ga
-   subvargroup.end (                $SVG_PLC_A                    )                           ! $SVG_stage_01.$SVG_PLC_A
-   subvargroup.begin (              $SVG_PLC_B                    )                           ! $SVG_stage_01.$SVG_PLC_B
-      subvar($_PL_c_x, str= '6.6e+7 N/m')                                                     ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_x
-      subvar($_PL_c_y, str= '1770000000 N/m')                                                 ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_y
-      subvar($_PL_c_z, str= '1770000000 N/m')                                                 ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_al
-      subvar($_PL_c_be, str= '1390000 Nm/rad')                                                ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_be
-      subvar($_PL_c_ga, str= '1.39e+6 Nm/rad')                                                ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_ga
-   subvargroup.end (                $SVG_PLC_B                    )                           ! $SVG_stage_01.$SVG_PLC_B
-   subvargroup.begin (              $SVG_PL_AB                    )                           ! $SVG_stage_01.$SVG_PL_AB
-      subvar($_PL_c_x, str= '91016 N/m')                                                      ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_x
-      subvar($_PL_c_y, str= '9.37E+9 N/m')                                                    ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_y
-      subvar($_PL_c_z, str= '3.20E+9 N/m')                                                    ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_al
-      subvar($_PL_c_be, str= '1.39E+6 Nm/rad')                                                ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_be
-      subvar($_PL_c_ga, str= '4.45E+6 Nm/rad')                                                ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_ga
-   subvargroup.end (                $SVG_PL_AB                    )                           ! $SVG_stage_01.$SVG_PL_AB
-subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
+subvargroup.begin($SVG_stage_01)  ! $SVG_stage_01
+   subvar($_gamma_m_n, str = '1')                                    ! $SVG_stage_01.$_gamma_m_n
+   subvar($_gamma_b, str = '1')                                      ! $SVG_stage_01.$_gamma_b
+   subvar($_gamma_d, str = '1')                                      ! $SVG_stage_01.$_gamma_d
+   subvar($_gamma_L, str = '1')                                      ! $SVG_stage_01.$_gamma_L
+   subvar($_m_n, str = '45 mm')                                       ! $SVG_stage_01.$_m_n
+   subvar($_b, str = '491 mm')                                         ! $SVG_stage_01.$_b
+   subvar($_a_w, str = '863 mm')                                       ! $SVG_stage_01.$_a_w
+   subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_01.$_alpha
+   subvar($_x_sun, str = '0.617')                                     ! $SVG_stage_01.$_x_sun
+   subvar($_x_planet, str = '0.802')                                  ! $SVG_stage_01.$_x_planet
+   subvar($_x_ring, str = '-0.501')                                   ! $SVG_stage_01.$_x_ring
+   subvar($_z_sun, str = '19')                                        ! $SVG_stage_01.$_z_sun
+   subvar($_z_planet, str = '17')                                     ! $SVG_stage_01.$_z_planet
+   subvar($_z_ring, str = '56')                                       ! $SVG_stage_01.$_z_ring
+   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_01.$_gamma_m_n mm') ! $SVG_stage_01.$_Norm_Backlash
+   subvar($_Tooth_Damping, str = '500000000')                         ! $SVG_stage_01.$_Tooth_Damping
+   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_01.$_Tooth_Stiff_ratio
+   subvar($_k_SP, str = '8.8807e+09 N/m')                                     ! $SVG_stage_01.$_k_SP
+   subvar($_k_RP, str = '1.006e+10 N/m')                                     ! $SVG_stage_01.$_k_RP
+   subvar($_mesh_damping, str = '5.0e3 Ns/m')                         ! $SVG_stage_01.$_mesh_damping
+   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_01.$_transition_depth
+   subvargroup.begin($SVG_PLC_A)                                      ! $SVG_stage_01.$SVG_PLC_A
+      subvar($_PL_c_x, str = '6.6e+4 N/m')                            ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_x
+      subvar($_PL_c_y, str = '1770000000 N/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_y
+      subvar($_PL_c_z, str = '1770000000 N/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                             ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_al
+      subvar($_PL_c_be, str = '1390000 Nm/rad')                       ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_be
+      subvar($_PL_c_ga, str = '1.39e+6 Nm/rad')                       ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                            ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                    ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                    ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_ga
+   subvargroup.end($SVG_PLC_A)                                        ! $SVG_stage_01.$SVG_PLC_A
+   subvargroup.begin($SVG_PLC_B)  ! $SVG_stage_01.$SVG_PLC_B
+      subvar($_PL_c_x, str = '6.6e+7 N/m')                                ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_x
+      subvar($_PL_c_y, str = '1770000000 N/m')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_y
+      subvar($_PL_c_z, str = '1770000000 N/m')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_al
+      subvar($_PL_c_be, str = '1390000 Nm/rad')                              ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_be
+      subvar($_PL_c_ga, str = '1.39e+6 Nm/rad')                              ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_ga
+   subvargroup.end($SVG_PLC_B)  ! $SVG_stage_01.$SVG_PLC_B
+   subvargroup.begin($SVG_PL_AB)  ! $SVG_stage_01.$SVG_PL_AB
+      subvar($_PL_c_x, str = '91016 N/m')                                 ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_x
+      subvar($_PL_c_y, str = '9.37E+9 N/m')                               ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_y
+      subvar($_PL_c_z, str = '3.20E+9 N/m')                               ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_al
+      subvar($_PL_c_be, str = '1.39E+6 Nm/rad')                              ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_be
+      subvar($_PL_c_ga, str = '4.45E+6 Nm/rad')                              ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_ga
+   subvargroup.end($SVG_PL_AB)  ! $SVG_stage_01.$SVG_PL_AB
+subvargroup.end($SVG_stage_01)  ! $SVG_stage_01
 
-subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
-   subvar($_gamma_m_n, str= '1')                                                              ! $SVG_stage_02.$_gamma_m_n
-   subvar($_gamma_b, str= '1')                                                                ! $SVG_stage_02.$_gamma_b
-   subvar($_gamma_d, str= '1')                                                                ! $SVG_stage_02.$_gamma_d
-   subvar($_gamma_L, str= '1')                                                                ! $SVG_stage_02.$_gamma_L
-   subvar($_m_n, str= '21 mm')                                                                ! $SVG_stage_02.$_m_n
-   subvar($_b, str= '550 mm')                                                                 ! $SVG_stage_02.$_b
-   subvar($_a_w, str= '584 mm')                                                               ! $SVG_stage_02.$_a_w
-   subvar($_alpha, str= '20 deg')                                                             ! $SVG_stage_02.$_alpha
-   subvar($_x_sun, str= '0.389')                                                              ! $SVG_stage_02.$_x_sun
-   subvar($_x_planet, str= '0.504')                                                           ! $SVG_stage_02.$_x_planet
-   subvar($_x_ring, str= '0.117')                                                             ! $SVG_stage_02.$_x_ring
-   subvar($_z_sun, str= '18')                                                                 ! $SVG_stage_02.$_z_sun
-   subvar($_z_planet, str= '36')                                                              ! $SVG_stage_02.$_z_planet
-   subvar($_z_ring, str= '93')                                                                ! $SVG_stage_02.$_z_ring
-   subvar($_Norm_Backlash, str= '0.40*$SVG_stage_02.$_gamma_m_n mm')                          ! $SVG_stage_02.$_Norm_Backlash
-   subvar($_Tooth_Damping, str= '50000000')                                                   ! $SVG_stage_02.$_Tooth_Damping
-   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $SVG_stage_02.$_Tooth_Stiff_ratio
-   subvar($_k_SP, str= '5.6255e+09 N/m')                                                      ! $SVG_stage_02.$_k_SP
-   subvar($_k_RP, str= '2.88e+10 N/m')                                                        ! $SVG_stage_02.$_k_RP
-   subvar($_mesh_damping, str= '5.0e3 Ns/m')                                                  ! $SVG_stage_02.$_mesh_damping
-   subvar($_transition_depth, str= '$SVG_mesh.$_full_damping')                                ! $SVG_stage_02.$_transition_depth
-   subvargroup.begin (              $SVG_IMS_PLC_A                )                           ! $SVG_stage_02.$SVG_IMS_PLC_A
-      subvar($_PL_c_x, str= '9.1e+4 N/m')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_x
-      subvar($_PL_c_y, str= '6.12e+7 N/m')                                                    ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_y
-      subvar($_PL_c_z, str= '1.16e+9 N/m')                                                    ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_al
-      subvar($_PL_c_be, str= '74428 Nm/rad')                                                  ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_be
-      subvar($_PL_c_ga, str= '3239.8 Nm/rad')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_ga
-   subvargroup.end (                $SVG_IMS_PLC_A                )                           ! $SVG_stage_02.$SVG_IMS_PLC_A
-   subvargroup.begin (              $SVG_IMS_PLC_B                )                           ! $SVG_stage_02.$SVG_IMS_PLC_B
-      subvar($_PL_c_x, str= '9.1e+7 N/m')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_x
-      subvar($_PL_c_y, str= '6.12e+7 N/m')                                                    ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_y
-      subvar($_PL_c_z, str= '1.16e+9 N/m')                                                    ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_al
-      subvar($_PL_c_be, str= '74428 Nm/rad')                                                  ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_be
-      subvar($_PL_c_ga, str= '3239.8 Nm/rad')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_ga
-   subvargroup.end (                $SVG_IMS_PLC_B                )                           ! $SVG_stage_02.$SVG_IMS_PLC_B
-   subvargroup.begin (              $SVG_PL_AB                    )                           ! $SVG_stage_02.$SVG_PL_AB
-      subvar($_PL_c_x, str= '91016 N/m')                                                      ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_x
-      subvar($_PL_c_y, str= '6.12E+7 N/m')                                                    ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_y
-      subvar($_PL_c_z, str= '1.16E+9 N/m')                                                    ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_al
-      subvar($_PL_c_be, str= '7.5e+4 Nm/rad')                                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_be
-      subvar($_PL_c_ga, str= '7.5e+4 Nm/rad')                                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_ga
-   subvargroup.end (                $SVG_PL_AB                    )                           ! $SVG_stage_02.$SVG_PL_AB
-subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
+subvargroup.begin($SVG_stage_02)  ! $SVG_stage_02
+   subvar($_gamma_m_n, str = '1')                                     ! $SVG_stage_02.$_gamma_m_n
+   subvar($_gamma_b, str = '1')                                       ! $SVG_stage_02.$_gamma_b
+   subvar($_gamma_d, str = '1')                                       ! $SVG_stage_02.$_gamma_d
+   subvar($_gamma_L, str = '1')                                       ! $SVG_stage_02.$_gamma_L
+   subvar($_m_n, str = '21 mm')                                       ! $SVG_stage_02.$_m_n
+   subvar($_b, str = '550 mm')                                        ! $SVG_stage_02.$_b
+   subvar($_a_w, str = '584 mm')                                      ! $SVG_stage_02.$_a_w
+   subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_02.$_alpha
+   subvar($_x_sun, str = '0.389')                                     ! $SVG_stage_02.$_x_sun
+   subvar($_x_planet, str = '0.504')                                  ! $SVG_stage_02.$_x_planet
+   subvar($_x_ring, str = '0.117')                                    ! $SVG_stage_02.$_x_ring
+   subvar($_z_sun, str = '18')                                        ! $SVG_stage_02.$_z_sun
+   subvar($_z_planet, str = '36')                                     ! $SVG_stage_02.$_z_planet
+   subvar($_z_ring, str = '93')                                       ! $SVG_stage_02.$_z_ring
+   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_02.$_gamma_m_n mm') ! $SVG_stage_02.$_Norm_Backlash
+   subvar($_Tooth_Damping, str = '50000000')                          ! $SVG_stage_02.$_Tooth_Damping
+   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_02.$_Tooth_Stiff_ratio
+   subvar($_k_SP, str = '5.6255e+09 N/m')                                  ! $SVG_stage_02.$_k_SP
+   subvar($_k_RP, str = '2.88e+10 N/m')                                  ! $SVG_stage_02.$_k_RP
+   subvar($_mesh_damping, str = '5.0e3 Ns/m')                         ! $SVG_stage_02.$_mesh_damping
+   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_02.$_transition_depth
+   subvargroup.begin($SVG_IMS_PLC_A)  ! $SVG_stage_02.$SVG_IMS_PLC_A
+      subvar($_PL_c_x, str = '9.1e+4 N/m')                                ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_x
+      subvar($_PL_c_y, str = '6.12e+7 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_y
+      subvar($_PL_c_z, str = '1.16e+9 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_al
+      subvar($_PL_c_be, str = '74428 Nm/rad')                                ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_be
+      subvar($_PL_c_ga, str = '3239.8 Nm/rad')                               ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_ga
+   subvargroup.end($SVG_IMS_PLC_A)  ! $SVG_stage_02.$SVG_IMS_PLC_A
+   subvargroup.begin($SVG_IMS_PLC_B)  ! $SVG_stage_02.$SVG_IMS_PLC_B
+      subvar($_PL_c_x, str = '9.1e+7 N/m')                                ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_x
+      subvar($_PL_c_y, str = '6.12e+7 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_y
+      subvar($_PL_c_z, str = '1.16e+9 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_al
+      subvar($_PL_c_be, str = '74428 Nm/rad')                                ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_be
+      subvar($_PL_c_ga, str = '3239.8 Nm/rad')                               ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_ga
+   subvargroup.end($SVG_IMS_PLC_B)  ! $SVG_stage_02.$SVG_IMS_PLC_B
+   subvargroup.begin($SVG_PL_AB)  ! $SVG_stage_02.$SVG_PL_AB
+      subvar($_PL_c_x, str = '91016 N/m')                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_x
+      subvar($_PL_c_y, str = '6.12E+7 N/m')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_y
+      subvar($_PL_c_z, str = '1.16E+9 N/m')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_al
+      subvar($_PL_c_be, str = '7.5e+4 Nm/rad')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_be
+      subvar($_PL_c_ga, str = '7.5e+4 Nm/rad')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_ga
+   subvargroup.end($SVG_PL_AB)  ! $SVG_stage_02.$SVG_PL_AB
+subvargroup.end($SVG_stage_02)  ! $SVG_stage_02
 
-subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
-   subvar($_gamma_m_n, str= '1')                                                              ! $SVG_stage_03.$_gamma_m_n
-   subvar($_gamma_b, str= '1')                                                                ! $SVG_stage_03.$_gamma_b
-   subvar($_gamma_d, str= '1')                                                                ! $SVG_stage_03.$_gamma_d
-   subvar($_gamma_L, str= '1')                                                                ! $SVG_stage_03.$_gamma_L
-   subvar($_m_n, str= '14 mm')                                                                ! $SVG_stage_03.$_m_n
-   subvar($_b, str= '360 mm')                                                                 ! $SVG_stage_03.$_b
-   subvar($_a_w, str= '861 mm')                                                               ! $SVG_stage_03.$_a_w
-   subvar($_alpha, str= '20 deg')                                                             ! $SVG_stage_03.$_alpha
-   subvar($_helix, str= '10 deg')                                                             ! $SVG_stage_03.$_helix
-   subvar($_x_pinion, str= '0.480')                                                           ! $SVG_stage_03.$_x_pinion
-   subvar($_x_gear, str= '0.669')                                                             ! $SVG_stage_03.$_x_gear
-   subvar($_z_pinion, str= '24')                                                              ! $SVG_stage_03.$_z_pinion
-   subvar($_z_gear, str= '95')                                                                ! $SVG_stage_03.$_z_gear
-   subvar($_Norm_Backlash, str= '0.40*$SVG_stage_03.$_gamma_m_n mm')                          ! $SVG_stage_03.$_Norm_Backlash
-   subvar($_Tooth_Damping, str= '5000000')                                                    ! $SVG_stage_03.$_Tooth_Damping
-   subvar($_Tooth_Stiff_ratio, str= '0.8')                                                    ! $SVG_stage_03.$_Tooth_Stiff_ratio
-   subvar($_k_mesh, str= '8.06e+09 N/m')                                                      ! $SVG_stage_03.$_k_mesh
-   subvar($_mesh_damping, str= '5.0e3 Ns/m')                                                  ! $SVG_stage_03.$_mesh_damping
-   subvar($_transition_depth, str= '$SVG_mesh.$_full_damping')                                ! $SVG_stage_03.$_transition_depth
-   subvargroup.begin (              $SVG_IMS_A                    )                           ! $SVG_stage_03.$SVG_IMS_A
-      subvar($_PL_c_x, str= '0 N/m')                                                          ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_x
-      subvar($_PL_c_y, str= '6.12E+7 N/m')                                                    ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_y
-      subvar($_PL_c_z, str= '1.16E+9 N/m')                                                    ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_al
-      subvar($_PL_c_be, str= '74428 Nm/rad')                                                  ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_be
-      subvar($_PL_c_ga, str= '3239.8 Nm/rad')                                                 ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_ga
-   subvargroup.end (                $SVG_IMS_A                    )                           ! $SVG_stage_03.$SVG_IMS_A
-   subvargroup.begin (              $SVG_IMS_B                    )                           ! $SVG_stage_03.$SVG_IMS_B
-      subvar($_PL_c_x, str= '7.41e+7 N/m')                                                    ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_x
-      subvar($_PL_c_y, str= '5.17E+8 N/m')                                                    ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_y
-      subvar($_PL_c_z, str= '484000000 N/m')                                                  ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_al
-      subvar($_PL_c_be, str= '1.67e+6 Nm/rad')                                                ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_be
-      subvar($_PL_c_ga, str= '1.78e+6 Nm/rad')                                                ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_ga
-   subvargroup.end (                $SVG_IMS_B                    )                           ! $SVG_stage_03.$SVG_IMS_B
-   subvargroup.begin (              $SVG_IMS_C                    )                           ! $SVG_stage_03.$SVG_IMS_C
-      subvar($_PL_c_x, str= '78723000 N/m')                                                   ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_x
-      subvar($_PL_c_y, str= '7.3708E+8 N/m')                                                  ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_y
-      subvar($_PL_c_z, str= '3.2612e+8 N/m')                                                  ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_al
-      subvar($_PL_c_be, str= '1123400 Nm/rad')                                                ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_be
-      subvar($_PL_c_ga, str= '2539000 Nm/rad')                                                ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_ga
-   subvargroup.end (                $SVG_IMS_C                    )                           ! $SVG_stage_03.$SVG_IMS_C
-   subvargroup.begin (              $SVG_HS_A                     )                           ! $SVG_stage_03.$SVG_HS_A
-      subvar($_PL_c_x, str= '1.26e+8 N/m')                                                    ! $SVG_stage_03.$SVG_HS_A.$_PL_c_x
-      subvar($_PL_c_y, str= '8.21e+8 N/m')                                                    ! $SVG_stage_03.$SVG_HS_A.$_PL_c_y
-      subvar($_PL_c_z, str= '821000000 N/m')                                                  ! $SVG_stage_03.$SVG_HS_A.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_03.$SVG_HS_A.$_PL_c_al
-      subvar($_PL_c_be, str= '1123400 Nm/rad')                                                ! $SVG_stage_03.$SVG_HS_A.$_PL_c_be
-      subvar($_PL_c_ga, str= '2539000 Nm/rad')                                                ! $SVG_stage_03.$SVG_HS_A.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_A.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_A.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_A.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_03.$SVG_HS_A.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_ga
-   subvargroup.end (                $SVG_HS_A                     )                           ! $SVG_stage_03.$SVG_HS_A
-   subvargroup.begin (              $SVG_HS_B                     )                           ! $SVG_stage_03.$SVG_HS_B
-      subvar($_PL_c_x, str= '6.7e+7 N/m')                                                     ! $SVG_stage_03.$SVG_HS_B.$_PL_c_x
-      subvar($_PL_c_y, str= '8.09e+8 N/m')                                                    ! $SVG_stage_03.$SVG_HS_B.$_PL_c_y
-      subvar($_PL_c_z, str= '1.33e+8 N/m')                                                    ! $SVG_stage_03.$SVG_HS_B.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_03.$SVG_HS_B.$_PL_c_al
-      subvar($_PL_c_be, str= '1.71e+5 Nm/rad')                                                ! $SVG_stage_03.$SVG_HS_B.$_PL_c_be
-      subvar($_PL_c_ga, str= '1.04e+6 Nm/rad')                                                ! $SVG_stage_03.$SVG_HS_B.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_B.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_B.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_B.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_03.$SVG_HS_B.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_ga
-   subvargroup.end (                $SVG_HS_B                     )                           ! $SVG_stage_03.$SVG_HS_B
-   subvargroup.begin (              $SVG_HS_C                     )                           ! $SVG_stage_03.$SVG_HS_C
-      subvar($_PL_c_x, str= '7.93e+7 N/m')                                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_c_x
-      subvar($_PL_c_y, str= '1.04e+9 N/m')                                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_c_y
-      subvar($_PL_c_z, str= '7.29e+7 N/m')                                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_c_z
-      subvar($_PL_c_al, str= '0 Nm/rad')                                                      ! $SVG_stage_03.$SVG_HS_C.$_PL_c_al
-      subvar($_PL_c_be, str= '97637.5 Nm/rad')                                                ! $SVG_stage_03.$SVG_HS_C.$_PL_c_be
-      subvar($_PL_c_ga, str= '1.39e+6 Nm/rad')                                                ! $SVG_stage_03.$SVG_HS_C.$_PL_c_ga
-      subvar($_PL_d_x, str= '4.53e+002 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_C.$_PL_d_x
-      subvar($_PL_d_y, str= '4.20e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_C.$_PL_d_y
-      subvar($_PL_d_z, str= '3.06e+004 Ns/m')                                                 ! $SVG_stage_03.$SVG_HS_C.$_PL_d_z
-      subvar($_PL_d_al, str= '0 Nms/rad')                                                     ! $SVG_stage_03.$SVG_HS_C.$_PL_d_al
-      subvar($_PL_d_be, str= '3.43e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_be
-      subvar($_PL_d_ga, str= '4.78e+001 Nms/rad')                                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_ga
-   subvargroup.end (                $SVG_HS_C                     )                           ! $SVG_stage_03.$SVG_HS_C
-subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
+subvargroup.begin($SVG_stage_03)  ! $SVG_stage_03
+   subvar($_gamma_m_n, str = '1')                                     ! $SVG_stage_03.$_gamma_m_n
+   subvar($_gamma_b, str = '1')                                       ! $SVG_stage_03.$_gamma_b
+   subvar($_gamma_d, str = '1')                                       ! $SVG_stage_03.$_gamma_d
+   subvar($_gamma_L, str = '1')                                       ! $SVG_stage_03.$_gamma_L
+   subvar($_m_n, str = '14 mm')                                       ! $SVG_stage_03.$_m_n
+   subvar($_b, str = '360 mm')                                        ! $SVG_stage_03.$_b
+   subvar($_a_w, str = '861 mm')                                      ! $SVG_stage_03.$_a_w
+   subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_03.$_alpha
+   subvar($_helix, str = '10 deg')                                    ! $SVG_stage_03.$_helix
+   subvar($_x_pinion, str = '0.480')                                  ! $SVG_stage_03.$_x_pinion
+   subvar($_x_gear, str = '0.669')                                    ! $SVG_stage_03.$_x_gear
+   subvar($_z_pinion, str = '24')                                     ! $SVG_stage_03.$_z_pinion
+   subvar($_z_gear, str = '95')                                       ! $SVG_stage_03.$_z_gear
+   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_03.$_gamma_m_n mm') ! $SVG_stage_03.$_Norm_Backlash
+   subvar($_Tooth_Damping, str = '5000000')                           ! $SVG_stage_03.$_Tooth_Damping
+   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_03.$_Tooth_Stiff_ratio
+   subvar($_k_mesh, str = '8.06e+09 N/m')                                ! $SVG_stage_03.$_k_mesh
+   subvar($_mesh_damping, str = '5.0e3 Ns/m')                         ! $SVG_stage_03.$_mesh_damping
+   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_03.$_transition_depth
+   subvargroup.begin($SVG_IMS_A)  ! $SVG_stage_03.$SVG_IMS_A
+      subvar($_PL_c_x, str = '0 N/m')                                     ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_x
+      subvar($_PL_c_y, str = '6.12E+7 N/m')                               ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_y
+      subvar($_PL_c_z, str = '1.16E+9 N/m')                               ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_al
+      subvar($_PL_c_be, str = '74428 Nm/rad')                                ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_be
+      subvar($_PL_c_ga, str = '3239.8 Nm/rad')                               ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_ga
+   subvargroup.end($SVG_IMS_A)  ! $SVG_stage_03.$SVG_IMS_A
+   subvargroup.begin($SVG_IMS_B)  ! $SVG_stage_03.$SVG_IMS_B
+      subvar($_PL_c_x, str = '7.41e+7 N/m')                               ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_x
+      subvar($_PL_c_y, str = '5.17E+8 N/m')                               ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_y
+      subvar($_PL_c_z, str = '484000000 N/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_al
+      subvar($_PL_c_be, str = '1.67e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_be
+      subvar($_PL_c_ga, str = '1.78e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_ga
+   subvargroup.end($SVG_IMS_B)  ! $SVG_stage_03.$SVG_IMS_B
+   subvargroup.begin($SVG_IMS_C)  ! $SVG_stage_03.$SVG_IMS_C
+      subvar($_PL_c_x, str = '78723000 N/m')                              ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_x
+      subvar($_PL_c_y, str = '7.3708E+8 N/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_y
+      subvar($_PL_c_z, str = '3.2612e+8 N/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_al
+      subvar($_PL_c_be, str = '1123400 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_be
+      subvar($_PL_c_ga, str = '2539000 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_ga
+   subvargroup.end($SVG_IMS_C)  ! $SVG_stage_03.$SVG_IMS_C
+   subvargroup.begin($SVG_HS_A )  ! $SVG_stage_03.$SVG_HS_A
+      subvar($_PL_c_x, str = '1.26e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_A.$_PL_c_x
+      subvar($_PL_c_y, str = '8.21e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_A.$_PL_c_y
+      subvar($_PL_c_z, str = '821000000 N/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_HS_A.$_PL_c_al
+      subvar($_PL_c_be, str = '1123400 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_A.$_PL_c_be
+      subvar($_PL_c_ga, str = '2539000 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_A.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_HS_A.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_A.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_A.$_PL_d_ga
+   subvargroup.end($SVG_HS_A )  ! $SVG_stage_03.$SVG_HS_A
+   subvargroup.begin($SVG_HS_B )  ! $SVG_stage_03.$SVG_HS_B
+      subvar($_PL_c_x, str = '6.7e+7 N/m')                                ! $SVG_stage_03.$SVG_HS_B.$_PL_c_x
+      subvar($_PL_c_y, str = '8.09e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_B.$_PL_c_y
+      subvar($_PL_c_z, str = '1.33e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_B.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_HS_B.$_PL_c_al
+      subvar($_PL_c_be, str = '1.71e+5 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_B.$_PL_c_be
+      subvar($_PL_c_ga, str = '1.04e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_B.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_HS_B.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_B.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_B.$_PL_d_ga
+   subvargroup.end($SVG_HS_B)  ! $SVG_stage_03.$SVG_HS_B
+   subvargroup.begin($SVG_HS_C)  ! $SVG_stage_03.$SVG_HS_C
+      subvar($_PL_c_x, str = '7.93e+7 N/m')                               ! $SVG_stage_03.$SVG_HS_C.$_PL_c_x
+      subvar($_PL_c_y, str = '1.04e+9 N/m')                               ! $SVG_stage_03.$SVG_HS_C.$_PL_c_y
+      subvar($_PL_c_z, str = '7.29e+7 N/m')                               ! $SVG_stage_03.$SVG_HS_C.$_PL_c_z
+      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_c_al
+      subvar($_PL_c_be, str = '97637.5 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_C.$_PL_c_be
+      subvar($_PL_c_ga, str = '1.39e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_C.$_PL_c_ga
+      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_x
+      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_y
+      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_z
+      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_d_al
+      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_C.$_PL_d_be
+      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_C.$_PL_d_ga
+   subvargroup.end($SVG_HS_C)  ! $SVG_stage_03.$SVG_HS_C
+subvargroup.end($SVG_stage_03)  ! $SVG_stage_03
 
-subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh
+subvargroup.begin($SVG_mesh)                           ! $SVG_mesh
    subvar($_full_damping, str= '10e-6 m')                                                     ! $SVG_mesh.$_full_damping
-   subvar($_flag, str= '0', discr.desc (   1) = 'detailed (FE225)', discr.desc (   2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag
-   subvar($_use_detailed, str= 'IF($SVG_mesh.$_flag == 1){ 1 }ELSE{ 0}')                      ! $SVG_mesh.$_use_detailed
-   subvar($_use_linear, str= 'IF($SVG_mesh.$_flag == 1){ 0 }ELSE{ 1}')                        ! $SVG_mesh.$_use_linear
-subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh
+   subvar($_flag, str = '1', discr.desc(1) = 'detailed (FE225)', discr.desc(2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag
+   subvar($_use_detailed, str= 'IF($SVG_mesh.$_flag == 1)
+{
+	1
+}
+ELSE
+{
+	0
+}')                      ! $SVG_mesh.$_use_detailed
+   subvar($_use_linear,   str= 'IF($SVG_mesh.$_flag == 1)
+{
+	0
+}
+ELSE
+{
+	1
+}')                      ! $SVG_mesh.$_use_linear
+subvargroup.end($SVG_mesh)                           ! $SVG_mesh
 
-subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-   subvar($_flag, str= '1', discr.desc (   1) = 'torque from speed, T(omega)', discr.desc (   2) = 'PI control (CE129)', discr.desc (   3) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '2', discr.str (   3) = '0') ! $SVG_generator.$_flag
-   subvar($_use_torque, str= 'IF($SVG_generator.$_flag == 1){ 0 }ELSE{ 1}')                   ! $SVG_generator.$_use_torque
-   subvar($_use_control, str= 'IF($SVG_generator.$_flag == 2){	0 }ELSE{ 1}')                  ! $SVG_generator.$_use_control
-subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
+subvargroup.begin($SVG_generator)                           ! $SVG_generator
+   subvar($_flag, str = '1', discr.desc(1) = 'torque from speed, T(omega)', discr.desc(2) = 'PI control (CE129)', discr.desc(3) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '2', discr.str(3) = '0') ! $SVG_generator.$_flag
+   subvar($_use_torque,  str = 'IF($SVG_generator.$_flag == 1)
+{
+	0
+}
+ELSE
+{
+	1
+}') ! $SVG_generator.$_use_torque
+   subvar($_use_control, str = 'IF($SVG_generator.$_flag == 2)
+{
+	0
+}
+ELSE
+{
+	1
+}') ! $SVG_generator.$_use_control
+subvargroup.end($SVG_generator)                           ! $SVG_generator
 
-subvargroup.begin (                 $SVG_base_input               )                           ! $SVG_base_input
-   subvar($_flag, str= '0', discr.desc (   1) = 'ON', discr.desc (   2) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_base_input.$_flag
-   subvar($_ON, str= 'IF($SVG_base_input.$_flag == 1){ 1 }ELSE{ 0}')                          ! $SVG_base_input.$_ON
-   subvar($_OFF, str= 'IF($SVG_base_input.$_flag == 1){ 0 }ELSE{ 1}')                         ! $SVG_base_input.$_OFF
-subvargroup.end (                   $SVG_base_input               )                           ! $SVG_base_input
+subvargroup.begin($SVG_base_input)                           ! $SVG_base_input
+   subvar($_flag, str = '1', discr.desc(1) = 'ON', discr.desc(2) = 'OFF', discr.str(1) = '1', discr.str(2) = '0') ! $SVG_base_input.$_flag
+   subvar($_ON,  str= 'IF($SVG_base_input.$_flag == 1)
+{
+	1
+}
+ELSE
+{
+	0
+}')                       ! $SVG_base_input.$_ON
+   subvar($_OFF, str= 'IF($SVG_base_input.$_flag == 1)
+{
+	0
+}
+ELSE
+{
+	1
+}')                       ! $SVG_base_input.$_OFF
+subvargroup.end($SVG_base_input)                           ! $SVG_base_input
 
-                                                                                                                                                                                                                                                                                                                                                                                                                   
+
