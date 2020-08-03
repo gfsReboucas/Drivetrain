@@ -45,7 +45,7 @@ classdef NREL_5MW < Drivetrain
             gamma = scaling_factor(gamma);
                         
             N_st = 3;
-            stage = [Gear_Set() Gear_Set() Gear_Set()];
+            stage = repmat(Gear_Set(), 1, N_st);
             
             for idx = 1:N_st
                 stg = NREL_5MW.gear_stage(idx);
@@ -82,8 +82,6 @@ classdef NREL_5MW < Drivetrain
                            'S_Fmin'       , 1.56, ...
                            'dynamic_model', @Kahraman_94);
 %                            'dynamic_model', @Lin_Parker_99);
-                           
-            [obj.S_H_val, obj.S_F_val, obj.S_shaft_val] = obj.safety_factors();
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);
         end
@@ -91,9 +89,20 @@ classdef NREL_5MW < Drivetrain
     
     %% Calculation:
     methods
-        function [SH, SF, SShaft] = safety_factor_stage(obj, idx)
+        function [SH, SF, SShaft, calc] = safety_factor_stage(obj, idx)
             L_h    = 20*365*24;
             K_A    = 1.25;
+            
+            switch(idx)
+                case 1
+                    n_idx = [nan, nan, 0.0, obj.n_rotor];
+                case 2
+                    n_idx = [nan, nan, 0.0, obj.n_out(1)];
+                case 3
+                    n_idx = [obj.n_out(3), nan];
+                otherwise
+                    error();
+            end
             
             calc = ISO_6336(obj.stage(idx), 'calculation', 'default', ...
                                             'P_rated'    , obj.P_rated, ...
@@ -101,11 +110,12 @@ classdef NREL_5MW < Drivetrain
                                             'S_Hmin'     , obj.S_Hmin, ...
                                             'S_Fmin'     , obj.S_Fmin, ...
                                             'L_h'        , L_h, ... % [h], Required life
-                                            'K_A'        , K_A);    % [-], Application factor
-            
+                                            'K_A'        , K_A, ... % [-], Application factor
+                                            'nu_40'      , 220.0, ... % [], lubricant viscosity
+                                            'n_nominal'  , n_idx);
             [SH, SF] = calc.safety_factors('lubricant_ID', '11220', ...
                                            'nu_40'       , 220.0, ...
-                                           'stage_idx'   ,   0, ...
+                                           'stage_idx'   ,   idx, ...
                                            'save_report' , false, ...
                                            'show_report' , false);
 
@@ -396,6 +406,8 @@ classdef NREL_5MW < Drivetrain
             % +----------------------------------------+-------------+--------------+-------------+
             %
             
+            mat = [Material() Material() Material()];
+            
             switch(idx)
                 case 1
                     p    =   3;         % [-],    Number of planet gears
@@ -470,6 +482,7 @@ classdef NREL_5MW < Drivetrain
                     k = [k_1 k_2];
                     bore_ratio = [bore_R1 bore_R2];
                     config = 'parallel';
+                    mat = mat(1:2);
                     
                 otherwise
                     error('NREL_5MW:gear_stage', 'Option [%d] is NOT valid.', idx);
@@ -487,7 +500,7 @@ classdef NREL_5MW < Drivetrain
                              'a_w'          , a_w, ...
                              'bearing'      , NREL_5MW.bearing(idx), ...
                              'shaft'        , NREL_5MW.shaft(idx), ...
-                             'material'     , Material());
+                             'material'     , mat);
         end
         
         function property_estimation()
@@ -940,7 +953,16 @@ classdef NREL_5MW < Drivetrain
             %
             %                     ---->$BG_stage_01.$B_Pin3............. [6 dof]  Joint $BG_stage_01.$J_Pin3 of type 20
             %                          ---->$BG_stage_01.$B_PL3......... [0 dof]  Joint $BG_stage_01.$J_PL3 of type 0
-            % 
+            %
+            % color for the different elements in SIMPACK:
+            % sun / pinion  : 231-049-051
+            % planet / wheel: 075-139-191
+            % ring          : 095-183-092
+            % carrier       : 255-140-025
+            % shaft         : 221-207-110
+            % bearing       : 175-103-061
+            % highlight     : 248-142-197
+            %
             
             default = {'linear_mesh', false, ...
                        'gen_mode', 1, ...
@@ -1270,6 +1292,34 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "\n");
             
             fclose(new_ID);
+            
+        end
+        
+        function update_subvar_WTDB(obj, varargin)
+            %UPDATE_SUBVAR_WTDB updates some parameters from Simpack's Wind
+            % Turbine database gearbox.
+            % 
+            % Kinematic Tree:
+            % ================================================================================
+            %   $R_Isys
+            %    ---->$B_HSG................... [6 dof]  Connection $G_SHAFT.$CTN_HSG of type 63 (Joint type 15)
+            %         ---->$B_LSS_PLC.......... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLC of type 63 (Joint type 15)
+            %              ---->$B_LSS_PLT1.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT1 of type 63 (Joint type 15)
+            %              ---->$B_LSS_PLT2.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT2 of type 63 (Joint type 15)
+            %              ---->$B_LSS_PLT3.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT3 of type 63 (Joint type 15)
+            %              ---->$B_LSS_PLT4.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT4 of type 63 (Joint type 15)
+            % 
+            %         ---->$B_IMS_PLC.......... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLC of type 63 (Joint type 15)
+            %              ---->$B_LSS_SUN..... [6 dof]  Connection $G_SHAFT.$CTN_LSS_SUN of type 63 (Joint type 15)
+            %              ---->$B_IMS_PLT1.... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLT1 of type 63 (Joint type 15)
+            %              ---->$B_IMS_PLT2.... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLT2 of type 63 (Joint type 15)
+            %              ---->$B_IMS_PLT3.... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLT3 of type 63 (Joint type 15)
+            % 
+            %         ---->$B_HSS_BGR.......... [6 dof]  Connection $G_SHAFT.$CTN_HSS_BGR of type 63 (Joint type 15)
+            %              ---->$B_IMS_SUN..... [6 dof]  Connection $G_SHAFT.$CTN_IMS_SUN of type 63 (Joint type 15)
+            % 
+            %         ---->$B_HSS_HSH.......... [6 dof]  Connection $G_SHAFT.$CTN_HSS_HSH of type 63 (Joint type 15)
+            %
             
         end
         

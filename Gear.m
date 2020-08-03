@@ -514,7 +514,7 @@ classdef Gear < Rack
         
         function val = get.mass(obj)
             % [kg],     Mass
-            rho = obj.material.rho*1.0e9;
+            rho = [obj.material.rho]*1.0e9;
             val = rho.*obj.V;
         end
         

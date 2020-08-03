@@ -32,10 +32,10 @@ classdef (Abstract) Drivetrain
     % see also NREL_5MW, DTU_10MW.
     
     properties(Access = public)
-        stage         (1, :) Gear_Set;                                                                    % [-],      gearbox stages
+        stage         (1, :) Gear_Set;                                                                    % [class],  gearbox stages
         P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 5.0e3;              % [kW],     Rated power
         n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 12.1;               % [1/min.], Rated rotor speed
-        main_shaft    (1, :) Shaft                                                  = Shaft;              % [-],      Input Shaft
+        main_shaft    (1, :) Shaft                                                  = Shaft;              % [class],  Input Shaft
         m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 110.0e3;            % [kg],     Rotor mass according to [3]
         J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0;         % [kg-m^2], Rotor mass moment of inertia according to [6]
         m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;             % [kg],     Generator mass according to [4]
@@ -45,6 +45,7 @@ classdef (Abstract) Drivetrain
         gamma                scaling_factor;                                                              % Scaling factors
         S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
         S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
+        calc_stage ISO_6336; % [class], Calculations for each gear stage 
     end
     
     properties(Dependent)
@@ -76,16 +77,16 @@ classdef (Abstract) Drivetrain
             end
             
             default = {'N_stage'      ,        3, ...
-                       'stage'        , stage, ...
                        'P_rated'      ,        5.0e3, ...
                        'n_rotor'      ,       12.1, ...
-                       'main_shaft'   , Shaft(), ...
                        'm_Rotor'      ,      110.0e3, ...
                        'J_Rotor'      , 57231535.0, ...
                        'm_Gen'        ,     1900.0, ...
                        'J_Gen'        ,      534.116, ...
                        'S_Hmin'       ,        1.25, ...
                        'S_Fmin'       ,        1.56, ...
+                       'stage'        , stage, ...
+                       'main_shaft'   , Shaft(), ...
                        'dynamic_model', @Dynamic_Formulation};
             
             default = process_varargin(default, varargin);
@@ -114,6 +115,9 @@ classdef (Abstract) Drivetrain
             obj.S_Fmin = default.S_Fmin;
             
             obj.dynamic_model = default.dynamic_model;
+
+            [obj.S_H_val, obj.S_F_val, ...
+                obj.S_shaft_val, obj.calc_stage] = obj.safety_factors();
         end
         
         function tab = disp(obj)
@@ -483,9 +487,9 @@ classdef (Abstract) Drivetrain
         end
         
         %% Pitting:
-        [SH, SF, SShaft] = safety_factor_stage(obj, idx)
+        [SH, SF, SShaft, calc] = safety_factor_stage(obj, idx)
         
-        function [SH_vec, SF_vec, SShaft_vec] = safety_factors(obj)
+        function [SH_vec, SF_vec, SShaft_vec, calc] = safety_factors(obj)
             %SAFETY_FACTORS returns the safety factors of the shafts and
             % gear stages from a Drivetrain object. The shafts' safety
             % factor is calculated against fatigue and yield according to
@@ -504,12 +508,13 @@ classdef (Abstract) Drivetrain
             SH_vec     = zeros(obj.N_stage    , max_Np);
             SF_vec     = zeros(obj.N_stage    , max_Np);
             SShaft_vec = zeros(obj.N_stage + 1, 1);
+            calc = repmat(ISO_6336(), 1, obj.N_stage);
             
             SShaft_vec(1) = obj.main_shaft.safety_factors(K_f, K_fs, T_m);
-            
+
             jdx = 0;
             for idx = 1:obj.N_stage
-                [SH, SF, SShaft_vec(idx + 1)] = obj.safety_factor_stage(idx);
+                [SH, SF, SShaft_vec(idx + 1), calc(idx)] = obj.safety_factor_stage(idx);
 
                 kdx = jdx + (1:length(SH));
                 jdx = kdx(end);

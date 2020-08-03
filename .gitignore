@@ -56,3 +56,4 @@ test_LDD.m
 *.spf
 *.bak
 LDD.m
+@NREL_5MW/input_functions/gen_speed.m

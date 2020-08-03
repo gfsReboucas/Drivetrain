@@ -62,6 +62,8 @@ classdef Gear_Set < Gear
         carrier;       % [-],         Planet carrier
         d_Nf;          % [mm],        Start of active profile diameter
         d_Na;          % [mm],        Active tip diameter
+        f_pb;          % [um],        Transverse base pitch deviation
+        y_alpha;       % [um],        Running-in allowance
     end
     
     methods
@@ -82,7 +84,7 @@ classdef Gear_Set < Gear
                        'rack_type'    ,  'D', ...
                        'Q'            ,   5.0, ...
                        'R_a'          ,   1.0, ...
-                       'material'     , Material()};
+                       'material'     , [Material(), Material()]};
             
             default = process_varargin(default, varargin);
             
@@ -204,7 +206,7 @@ classdef Gear_Set < Gear
                                 join([obj.bearing(3:4).type], ' / ')};
                             
                 tab = table(Parameter, Symbol, v_sun, v_pla, v_rng, v_car, Unit, ...
-                            'variableNames', ['Parameter', 'Symbol', 'Sun', 'Planet', 'Ring', 'Carrier', 'Unit']);
+                            'variableNames', ["Parameter", "Symbol", "Sun", "Planet", "Ring", "Carrier", "Unit"]);
 
             else
                 error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
@@ -707,25 +709,25 @@ classdef Gear_Set < Gear
             val = 0.85*obj.c_gamma_alpha;
         end
         
-        function dNf = get.d_Nf(obj)
+        function val = get.d_Nf(obj)
             % ISO 21771, Sec. 5.4.1, Eqs. (64-67)
             
             d_Fa = obj.d_a;
-            dNf(1) = sqrt((2.0*obj.a_w*sind(obj.alpha_wt) - sign(obj.z(2))*sqrt(d_Fa(2)^2 - obj.d_b(2)^2))^2 + obj.d_b(1)^2);
-            dNf(2) = sqrt((2.0*obj.a_w*sind(obj.alpha_wt) -                sqrt(d_Fa(1)^2 - obj.d_b(1)^2))^2 + obj.d_b(2)^2);
+            val(1) = sqrt((2.0*obj.a_w*sind(obj.alpha_wt) - sign(obj.z(2))*sqrt(d_Fa(2)^2 - obj.d_b(2)^2))^2 + obj.d_b(1)^2);
+            val(2) = sqrt((2.0*obj.a_w*sind(obj.alpha_wt) -                sqrt(d_Fa(1)^2 - obj.d_b(1)^2))^2 + obj.d_b(2)^2);
             
             if(strcmp(obj.configuration, 'planetary'))
-                dNf(3) = nan;
+                val(3) = nan;
             end
             
             for idx = 1:length(obj.z)
-                if(obj.d_Ff(idx) > dNf(idx))
-                    dNf(idx) = obj.d_Ff(idx);
+                if(obj.d_Ff(idx) > val(idx))
+                    val(idx) = obj.d_Ff(idx);
                 end
             end
         end
         
-        function dNa = get.d_Na(obj)
+        function val = get.d_Na(obj)
             % ISO 21771, Sec. 5.4.1, Eqs. (68-69)
             
             aw = 2.0*obj.a_w*sind(obj.alpha_wt);
@@ -741,11 +743,23 @@ classdef Gear_Set < Gear
                 dNa1 = obj.d_a(1); % d_Fa
             end
             
-            dNa = [dNa1, dNa2];
+            val = [dNa1, dNa2];
             if(strcmp(obj.configuration, 'planetary'))
-                dNa(3) = nan;
+                val(3) = nan;
             end
 
+        end
+        
+        function val = get.f_pb(obj)
+            val = max(obj.f_pt.*cosd(obj.alpha_t));
+        end
+        
+        function val = get.y_alpha(obj)
+            if(obj.f_pb >= 40.0) % [um]
+                val = 3.0; % [um]
+            else
+                val = obj.f_pb*75.0e-3;
+            end
         end
         
     end
