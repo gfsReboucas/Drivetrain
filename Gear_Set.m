@@ -185,7 +185,7 @@ classdef Gear_Set < Gear
                 v_wheel  = Value(:, 2);
                 
                 tab = table(Parameter, Symbol, v_pinion, v_wheel, Unit, ...
-                            'variableNames', ['Parameter', 'Symbol', 'Pinion', 'Wheel', 'Unit']);
+                            'variableNames', ["Parameter", "Symbol", "Pinion", "Wheel", "Unit"]);
             elseif(strcmp(obj.configuration, 'planetary'))
                 Value{end - 1, 2} = join([obj.bearing(1:2).name], ' / ');
                 Value{end    , 2} = join([obj.bearing(1:2).type], ' / ');
@@ -375,8 +375,10 @@ classdef Gear_Set < Gear
             end
             
             ks = KISSsoftCOM(module);
+            version = ks.get_version();
+            version = strrep(version, '/', '-');            
             
-            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft 03-2017\\example\\%s', std_file);
+            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft %s\\example\\%s', version, std_file);
             
             try
                 ks.load_file(file_name);

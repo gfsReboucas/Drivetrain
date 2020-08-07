@@ -56,15 +56,25 @@ classdef KISSsoftCOM
             val = obj.COM.GetKsoftVersion();
         end
         
-        function val = calculate(obj)
-            val = true;
-            if(~obj.is_module_loaded())
-                warning('No module loaded');
+        function calculate(obj)
+            obj.COM.Calculate();
+        end
+        
+        function val = check_calculations(obj)
+            flag_mod = obj.is_module_loaded();
+            flag_calc = obj.COM.CalculateRetVal();
+            
+            if(flag_mod == false)
                 val = false;
+                warning('No module loaded');
+            else
+                val = true;
             end
             
-            if(~obj.COM.CalculateRetVal())
-                error('Error(s) during calculation');
+            
+            if(flag_calc == false)
+                val = false;
+                warning('Error(s) during calculation');
             else
                 val = true;
             end
@@ -138,6 +148,58 @@ classdef KISSsoftCOM
                 warning(msg.identifier, "%s", msg.message);
             end
         end
+        
+        function example_02()
+            %EXAMPLE_02 from KUM
+            %
+            
+            ex02 = KISSsoftCOM('Z012');
+            version = ex02.get_version();
+            version = strrep(version, '/', '-');            
+            
+            std_file = 'CylGearPair 1 (spur gear).Z12';
+            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft %s\\example\\%s', version, std_file);
+            
+            ex02.load_file(file_name);
+            
+            ex02.check_calculations();
+            ex02.calculate();
+            val = ex02.get_var('ZPP[0].Fuss.SFnorm');
+            disp(val);
+        end
+        
+        function example_03()
+            %EXAMPLE_02 from KUM
+            %
+            
+            ex03 = KISSsoftCOM('Z012');
+            version = ex03.get_version();
+            version = strrep(version, '/', '-');            
+            
+            std_file = 'CylGearPair 1 (spur gear).Z12';
+            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft %s\\example\\%s', version, std_file);
+            
+            ex03.load_file(file_name);
+            
+            ex03.check_calculations();
+            ex03.calculate();
+            
+%             fprintf('ZF_original = %.3f\n', ex03.get_var("c"));
+            
+            fprintf('Current profile shift gear 1 : %.3f\n', ex03.get_var("ZR[0].x.nul"));
+            fprintf('Current tooth root safety gear 1: %.3f\n', ex03.get_var("ZPP[0].Fuss.SFnorm"));
+            
+            ex03.set_var('ZR[0].x.nul', 0.1);
+            
+            ex03.check_calculations();
+            ex03.calculate();
+            
+            fprintf('New profile shift gear 1 : %.3f\n', ex03.get_var("ZR[0].x.nul"));
+            fprintf('New tooth root safety gear 1: %.3f\n', ex03.get_var("ZPP[0].Fuss.SFnorm"));
+
+        end
+        
+        
         
     end
 end
