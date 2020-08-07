@@ -933,7 +933,7 @@ classdef (Abstract) Drivetrain
                             gamma_MMI];
                 res_3 = Inf;
             else
-                gm_val_3 = [mean(gamma_0(["L_1" "L_2" "L_3" "L_s"]));
+                gm_val_3 = [mean(gamma_0(["L_1" "L_2" "L_3" "L_S"]));
                             mean(gamma_0(["J_R" "J_G"]))];
                        
                 res_3 = Inf;
@@ -979,7 +979,7 @@ classdef (Abstract) Drivetrain
                 
                 res_4 = Inf;
             else
-                gm_val_4 = gamma_0(["L_1" "L_2" "L_3" "L_s" "J_R" "J_G"]);
+                gm_val_4 = gamma_0(["L_1" "L_2" "L_3" "L_S" "J_R" "J_G"]);
                 res_4    = Inf;
             end
             

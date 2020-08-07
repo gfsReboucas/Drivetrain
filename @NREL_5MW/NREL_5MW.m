@@ -406,7 +406,7 @@ classdef NREL_5MW < Drivetrain
             % +----------------------------------------+-------------+--------------+-------------+
             %
             
-            mat = [Material() Material() Material()];
+            mat = repmat(Material(), 1, 3);
             
             switch(idx)
                 case 1
@@ -965,8 +965,8 @@ classdef NREL_5MW < Drivetrain
             %
             
             default = {'linear_mesh', false, ...
-                       'gen_mode', 1, ...
-                       'bed_plate', true};
+                       'gen_mode'   , 1, ...
+                       'bed_plate'  , true};
             
             default = process_varargin(default, varargin);
             
