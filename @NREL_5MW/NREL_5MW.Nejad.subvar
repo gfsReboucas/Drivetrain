@@ -3,14 +3,14 @@
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar($_gamma_Nm, str = '1')                                        ! $_gamma_Nm
-subvar($_gamma_load, str = '1')                                      ! $_gamma_load
-subvar($_rated_power, str = '5000 kW')                                  ! $_rated_power
+subvar($_gamma_Nm, str = '0.0153')                                        ! $_gamma_Nm
+subvar($_gamma_load, str = '0.0616304')                                      ! $_gamma_load
+subvar($_rated_power, str = '50 kW')                                  ! $_rated_power
 subvar($_rotor_speed, str = '12.1 rpm')                                 ! $_rotor_speed
 subvar($_GB_ratio, str = '96.3542')                                        ! $_GB_ratio
 subvargroup.begin($SVG_main_shaft_LSS)                                ! $SVG_main_shaft_LSS
-   subvar($_gamma_d, str = '1')                                      ! $SVG_main_shaft_LSS.$_gamma_d
-   subvar($_gamma_L, str = '1')                                      ! $SVG_main_shaft_LSS.$_gamma_L
+   subvar($_gamma_d, str = '0.215443')                                      ! $SVG_main_shaft_LSS.$_gamma_d
+   subvar($_gamma_L, str = '0.167551')                                      ! $SVG_main_shaft_LSS.$_gamma_L
    subvargroup.begin($SVG_INP_A)                                      ! $SVG_main_shaft_LSS.$SVG_INP_A
       subvar($_PL_c_x, str = '0 N/m')                                 ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x
       subvar($_PL_c_y, str = '1.54e+10 N/m')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y
@@ -42,13 +42,13 @@ subvargroup.begin($SVG_main_shaft_LSS)                                ! $SVG_mai
 subvargroup.end($SVG_main_shaft_LSS)                                  ! $SVG_main_shaft_LSS
 
 subvargroup.begin($SVG_stage_01)  ! $SVG_stage_01
-   subvar($_gamma_m_n, str = '1')                                    ! $SVG_stage_01.$_gamma_m_n
-   subvar($_gamma_b, str = '1')                                      ! $SVG_stage_01.$_gamma_b
-   subvar($_gamma_d, str = '1')                                      ! $SVG_stage_01.$_gamma_d
-   subvar($_gamma_L, str = '1')                                      ! $SVG_stage_01.$_gamma_L
-   subvar($_m_n, str = '45 mm')                                       ! $SVG_stage_01.$_m_n
-   subvar($_b, str = '491 mm')                                         ! $SVG_stage_01.$_b
-   subvar($_a_w, str = '863 mm')                                       ! $SVG_stage_01.$_a_w
+   subvar($_gamma_m_n, str = '0.226907')                                    ! $SVG_stage_01.$_gamma_m_n
+   subvar($_gamma_b, str = '0.226907')                                      ! $SVG_stage_01.$_gamma_b
+   subvar($_gamma_d, str = '0.215443')                                      ! $SVG_stage_01.$_gamma_d
+   subvar($_gamma_L, str = '0.120757')                                      ! $SVG_stage_01.$_gamma_L
+   subvar($_m_n, str = '10 mm')                                       ! $SVG_stage_01.$_m_n
+   subvar($_b, str = '111.411 mm')                                         ! $SVG_stage_01.$_b
+   subvar($_a_w, str = '191.778 mm')                                       ! $SVG_stage_01.$_a_w
    subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_01.$_alpha
    subvar($_x_sun, str = '0.617')                                     ! $SVG_stage_01.$_x_sun
    subvar($_x_planet, str = '0.802')                                  ! $SVG_stage_01.$_x_planet
@@ -108,13 +108,13 @@ subvargroup.begin($SVG_stage_01)  ! $SVG_stage_01
 subvargroup.end($SVG_stage_01)  ! $SVG_stage_01
 
 subvargroup.begin($SVG_stage_02)  ! $SVG_stage_02
-   subvar($_gamma_m_n, str = '1')                                     ! $SVG_stage_02.$_gamma_m_n
-   subvar($_gamma_b, str = '1')                                       ! $SVG_stage_02.$_gamma_b
-   subvar($_gamma_d, str = '1')                                       ! $SVG_stage_02.$_gamma_d
-   subvar($_gamma_L, str = '1')                                       ! $SVG_stage_02.$_gamma_L
-   subvar($_m_n, str = '21 mm')                                       ! $SVG_stage_02.$_m_n
-   subvar($_b, str = '550 mm')                                        ! $SVG_stage_02.$_b
-   subvar($_a_w, str = '584 mm')                                      ! $SVG_stage_02.$_a_w
+   subvar($_gamma_m_n, str = '0.25')                                     ! $SVG_stage_02.$_gamma_m_n
+   subvar($_gamma_b, str = '0.446967')                                       ! $SVG_stage_02.$_gamma_b
+   subvar($_gamma_d, str = '0.215443')                                       ! $SVG_stage_02.$_gamma_d
+   subvar($_gamma_L, str = '0.120757')                                       ! $SVG_stage_02.$_gamma_L
+   subvar($_m_n, str = '5 mm')                                       ! $SVG_stage_02.$_m_n
+   subvar($_b, str = '245.832 mm')                                        ! $SVG_stage_02.$_b
+   subvar($_a_w, str = '139.048 mm')                                      ! $SVG_stage_02.$_a_w
    subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_02.$_alpha
    subvar($_x_sun, str = '0.389')                                     ! $SVG_stage_02.$_x_sun
    subvar($_x_planet, str = '0.504')                                  ! $SVG_stage_02.$_x_planet
@@ -174,13 +174,13 @@ subvargroup.begin($SVG_stage_02)  ! $SVG_stage_02
 subvargroup.end($SVG_stage_02)  ! $SVG_stage_02
 
 subvargroup.begin($SVG_stage_03)  ! $SVG_stage_03
-   subvar($_gamma_m_n, str = '1')                                     ! $SVG_stage_03.$_gamma_m_n
-   subvar($_gamma_b, str = '1')                                       ! $SVG_stage_03.$_gamma_b
-   subvar($_gamma_d, str = '1')                                       ! $SVG_stage_03.$_gamma_d
-   subvar($_gamma_L, str = '1')                                       ! $SVG_stage_03.$_gamma_L
-   subvar($_m_n, str = '14 mm')                                       ! $SVG_stage_03.$_m_n
-   subvar($_b, str = '360 mm')                                        ! $SVG_stage_03.$_b
-   subvar($_a_w, str = '861 mm')                                      ! $SVG_stage_03.$_a_w
+   subvar($_gamma_m_n, str = '0.267857')                                     ! $SVG_stage_03.$_gamma_m_n
+   subvar($_gamma_b, str = '0.175491')                                       ! $SVG_stage_03.$_gamma_b
+   subvar($_gamma_d, str = '0.215443')                                       ! $SVG_stage_03.$_gamma_d
+   subvar($_gamma_L, str = '0.167551')                                       ! $SVG_stage_03.$_gamma_L
+   subvar($_m_n, str = '3.5 mm')                                       ! $SVG_stage_03.$_m_n
+   subvar($_b, str = '63.1768 mm')                                        ! $SVG_stage_03.$_b
+   subvar($_a_w, str = '215.25 mm')                                      ! $SVG_stage_03.$_a_w
    subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_03.$_alpha
    subvar($_helix, str = '10 deg')                                    ! $SVG_stage_03.$_helix
    subvar($_x_pinion, str = '0.480')                                  ! $SVG_stage_03.$_x_pinion
@@ -281,7 +281,7 @@ subvargroup.end($SVG_stage_03)  ! $SVG_stage_03
 
 subvargroup.begin($SVG_mesh)                           ! $SVG_mesh
    subvar($_full_damping, str= '10e-6 m')                                                     ! $SVG_mesh.$_full_damping
-   subvar($_flag, str = '1', discr.desc(1) = 'detailed (FE225)', discr.desc(2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag
+   subvar($_flag, str = '0', discr.desc(1) = 'detailed (FE225)', discr.desc(2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag
    subvar($_use_detailed, str= 'IF($SVG_mesh.$_flag == 1)
 {
 	1

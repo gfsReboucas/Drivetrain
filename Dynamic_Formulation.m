@@ -40,6 +40,13 @@ classdef Dynamic_Formulation < Drivetrain
     
     %% Calculation:
     methods
+        function [SH, SF, SShaft, calc] = safety_factor_stage(obj, ~)
+            SH = obj.S_Hmin;
+            SF = obj.S_Fmin;
+            SShaft = 2.0;
+            calc = ISO_6336();
+        end
+        
         function [f_n, mode_shape] = modal_analysis(obj)
             %MODAL_ANALYSIS calculates the resonances and mode shapes of
             % the Drivetrain via a symmetric eigenvalue problem [1].

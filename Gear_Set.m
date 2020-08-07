@@ -44,7 +44,7 @@ classdef Gear_Set < Gear
     
     properties
         a_w           (1, :)          {mustBeFinite,  mustBePositive}                          = 13;         % [mm], Center distance
-        output_shaft     (1, 1) Shaft;                                                                          % [-], Output shaft
+        output_shaft  (1, 1) Shaft;                                                                          % [-], Output shaft
     end
     
     properties(Dependent)
