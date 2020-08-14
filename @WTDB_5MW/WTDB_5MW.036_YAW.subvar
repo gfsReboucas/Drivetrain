@@ -1,0 +1,13 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+subvar($G_PA.$_CONNECTION_TYPE, str= '0', discr.desc (   1) = 'Rigid', discr.desc (   2) = 'Spherical al-be-ga', discr.str (   1) = '0', discr.str (   2) = '10', txt= 'CONNECTION TYPE: 0/10; 0:Rigid, 10:Spherical al-be-ga') ! $G_PA.$_CONNECTION_TYPE
+subvar($G_FE.$G_YAW_BU.$_ACTIVE, str= 'SWITCH($G_PA.$_CONNECTION_TYPE)\n{\ncase 0: 1;\ncase 10: 0;\n\nDEFAULT: 1;\n\n}', intent= 2, status= 1, txt= 'Activation switch for Force Element') ! $G_FE.$G_YAW_BU.$_ACTIVE
+subvar($G_FE.$G_YAW_BU.$_C_AL, str= '0 Nm/rad', intent= 0, status= 1, txt= 'stiffness about alpha') ! $G_FE.$G_YAW_BU.$_C_AL
+subvar($G_FE.$G_YAW_BU.$_C_BE, str= '0 Nm/rad', intent= 0, status= 1, txt= 'stiffness about beta') ! $G_FE.$G_YAW_BU.$_C_BE
+subvar($G_FE.$G_YAW_BU.$_C_GA, str= '0 Nm/rad', intent= 0, status= 1, txt= 'stiffness about gamma') ! $G_FE.$G_YAW_BU.$_C_GA
+subvar($G_FE.$G_YAW_BU.$_D_AL, str= '0 Nms/rad', intent= 0, status= 1, txt= 'damping about alpha') ! $G_FE.$G_YAW_BU.$_D_AL
+subvar($G_FE.$G_YAW_BU.$_D_BE, str= '0 Nms/rad', intent= 0, status= 1, txt= 'damping about beta') ! $G_FE.$G_YAW_BU.$_D_BE
+subvar($G_FE.$G_YAW_BU.$_D_GA, str= '0 Nms/rad', intent= 0, status= 1, txt= 'damping about gamma') ! $G_FE.$G_YAW_BU.$_D_GA
+subvar($G_3D.$G_YAW.$_L, str= '0.5 m', intent= 0, status= 1, txt= 'Length')                   ! $G_3D.$G_YAW.$_L
+subvar($G_3D.$G_YAW.$_D_O, str= '4.5 m', intent= 0, status= 1, txt= 'Diameter Out')           ! $G_3D.$G_YAW.$_D_O
+subvar($G_3D.$G_YAW.$_D_I, str= '1 m', intent= 0, status= 1, txt= 'Diameter Out')             ! $G_3D.$G_YAW.$_D_I

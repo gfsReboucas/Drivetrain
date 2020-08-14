@@ -61,20 +61,20 @@ classdef Shaft
         end
         
         function tab = disp(obj)
-            tab_str = {"Diameter",                           "d",    "mm",     obj.d;
-                       "Length",                             "L",    "mm",     obj.L;
-                       "Slenderness ratio"                   "s",    "-",      obj.slender_ratio;
-                       "Mass",                               "m",    "kg",     obj.mass;
-                       "Area moment of inertia (rot. axis)", "I_xx", "m^4",    obj.I_x;
-                       "Mass moment of inertia (rot. axis)", "J_xx", "kg-m^2", obj.J_x;
+            tab_str = {'Diameter',                           'd',    'mm',     obj.d;
+                       'Length',                             'L',    'mm',     obj.L;
+                       'Slenderness ratio'                   's',    '-',      obj.slender_ratio;
+                       'Mass',                               'm',    'kg',     obj.mass;
+                       'Area moment of inertia (rot. axis)', 'I_xx', 'm^4',    obj.I_x;
+                       'Mass moment of inertia (rot. axis)', 'J_xx', 'kg-m^2', obj.J_x;
                         };
-%                        "Applied force (rot. axis)",          "F_x",  "N",      obj.F(1);
-%                        "Applied force",                      "F_y",  "N",      obj.F(2);
-%                        "Applied force",                      "F_z",  "N",      obj.F(3);
-%                        "Applied torque (rot. axis)",         "M_x",  "N-m",    obj.M(1);
-%                        "Applied torque",                     "M_y",  "N-m",    obj.M(2);
-%                        "Applied torque",                     "M_z",  "N-m",    obj.M(3);
-%                        "Safety factor",                      "S_F",  "-",    obj.S_H;
+%                        'Applied force (rot. axis)',          'F_x',  'N',      obj.F(1);
+%                        'Applied force',                      'F_y',  'N',      obj.F(2);
+%                        'Applied force',                      'F_z',  'N',      obj.F(3);
+%                        'Applied torque (rot. axis)',         'M_x',  'N-m',    obj.M(1);
+%                        'Applied torque',                     'M_y',  'N-m',    obj.M(2);
+%                        'Applied torque',                     'M_z',  'N-m',    obj.M(3);
+%                        'Safety factor',                      'S_F',  '-',    obj.S_H;
             
             Parameter = tab_str(:,1);
             Symbol    = tab_str(:,2);
@@ -93,12 +93,12 @@ classdef Shaft
         function h = rectangle(obj, varargin)
             if(nargin == 1)
                 C = zeros(2, 1);
-                plot_prop = {[1.0 0.0 0.0], "edgeColor", "k", "lineStyle", "-" , "faceColor", [1.0 0.0 0.0]};
+                plot_prop = {[1.0 0.0 0.0], 'edgeColor', 'k', 'lineStyle', '-' , 'faceColor', [1.0 0.0 0.0]};
             elseif(nargin > 1)
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error("prog:input", "Too many variables.");
+                error('prog:input', 'Too many variables.');
             end
             
             X = 0.5*obj.L*[1 -1 -1  1] + C(1);
@@ -118,25 +118,25 @@ classdef Shaft
             LL = obj.L*1.0e-3;
             
             switch option
-                case "axial"
+                case 'axial'
                     k = E*obj.A/LL;
-                case "torsional"
+                case 'torsional'
                     k = G*obj.I_x/LL;
-                case "bending"
+                case 'bending'
                     k = E*obj.I_y/LL^3;
-                case "full"
-                    k = [obj.stiffness("axial");
-                         obj.stiffness("torsional");
-                         obj.stiffness("bending")];
+                case 'full'
+                    k = [obj.stiffness('axial');
+                         obj.stiffness('torsional');
+                         obj.stiffness('bending')];
                 otherwise
-                    error("prog:input", "Option [%s] is NOT valid.", option);
+                    error('prog:input', 'Option [%s] is NOT valid.', option);
             end
         end
         
         function obj_sca = scaled_Shaft(obj_ref, gamma)
             
             if(numel(gamma) ~= 2) 
-                error("Scaling factor gamma should have two elements.");
+                error('Scaling factor gamma should have two elements.');
             end
             
             gamma_d = gamma(1, :);      gamma_L = gamma(2, :);
@@ -149,14 +149,14 @@ classdef Shaft
         function sca = scaled_version(obj, T_scale, option)
             
             switch(option)
-                case "critical_speed"
+                case 'critical_speed'
                     
-                case "axial_nat_freq"
-                case "torsion_nat_freq"
-                case "bending_nat_freq"
-                case "all_nat_freqs"
+                case 'axial_nat_freq'
+                case 'torsion_nat_freq'
+                case 'bending_nat_freq'
+                case 'all_nat_freqs'
                 otherwise
-                    error("prog:input", "Option [%s] is NOT valid.", option);
+                    error('prog:input', 'Option [%s] is NOT valid.', option);
             end
         end
         
@@ -256,19 +256,19 @@ classdef Shaft
         
         function M = inertia_matrix(obj, option)
             switch option
-                case "axial"
+                case 'axial'
                     M = eye(2)*2;
                     M(2, 1) = 1.0;      M(1, 2) = 1.0;
 
                     M = M*(obj.mass/6.0);
 
-                case "torsional"
+                case 'torsional'
                     M = eye(2)*2;
                     M(2, 1) = 1.0;      M(1, 2) = 1.0;
 
                     M = M*(obj.mass*obj.I_x)/(6.0*obj.A);
 
-                case "bending"
+                case 'bending'
                     LL = obj.L*1.0e-3;
                     
                     M_d = diag([156.0 4.0*LL^2 156.0 4.0*LL^2]);
@@ -280,7 +280,7 @@ classdef Shaft
                     M = M_u + M_u' + M_d;
                     M = M*(obj.mass/420.0);
                     
-                case "full"
+                case 'full'
                     % +----------+-----------------------------------------------------------------------+
                     % |          |                             Full beam (3D)                            |
                     % +----------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
@@ -303,9 +303,9 @@ classdef Shaft
                     % Coordinate transformation: u = R v
                     % Full beam (3D): (R^T M R) v'' + (R^T K R) v = R^T f
                     %
-                    M_a = obj.inertia_matrix("axial");
-                    M_t = obj.inertia_matrix("torsional");
-                    M_b = obj.inertia_matrix("bending");
+                    M_a = obj.inertia_matrix('axial');
+                    M_t = obj.inertia_matrix('torsional');
+                    M_b = obj.inertia_matrix('bending');
                     
                     M = blkdiag(M_a, ... % [1: x_1      2: x_2]
                                 M_t, ... % [3: alpha_1  4: alpha_2]
@@ -351,7 +351,7 @@ classdef Shaft
                     M = R' * M * R;
                     
                 otherwise
-                    error("prog:input", "Option [%s] is NOT valid.", option);
+                    error('prog:input', 'Option [%s] is NOT valid.', option);
             end
         end
         
@@ -360,14 +360,14 @@ classdef Shaft
             LL = obj.L*1.0e-3;
             
             switch option
-                case "axial"
+                case 'axial'
                     % [x_1 x_2]
                     K = eye(2);
                     K(1, 2) = -1.0;      K(2, 1) = K(1, 2);
                     
                     K = K*(E*obj.A/LL);
 
-                case "torsional"
+                case 'torsional'
                     % [alpha_1 alpha_2]
                     G  = obj.material.G*1.0e6; % [Pa], Shear modulus
                     
@@ -376,7 +376,7 @@ classdef Shaft
 
                     K = K*(G*obj.I_x/LL);
 
-                case "bending"
+                case 'bending'
                     % [y_1 gamma_1 y_2 gamma_2] OR [z_1 beta_1 z_2 beta_2] 
                     LL = obj.L*1.0e-3;
                     K_d = diag([12.0 4.0*LL^2 12.0 4.0*LL^2]);
@@ -388,11 +388,11 @@ classdef Shaft
                     K = K_u + K_u' + K_d;
                     K = K*(E*obj.I_y/LL^3);
                     
-                case "full"
+                case 'full'
                     
-                    K_a = obj.stiffness_matrix("axial");     % [x_1 x_2]
-                    K_t = obj.stiffness_matrix("torsional"); % [alpha_1 alpha_2]
-                    K_b = obj.stiffness_matrix("bending");   % [y_1 beta_1 y_2 beta_2]
+                    K_a = obj.stiffness_matrix('axial');     % [x_1 x_2]
+                    K_t = obj.stiffness_matrix('torsional'); % [alpha_1 alpha_2]
+                    K_b = obj.stiffness_matrix('bending');   % [y_1 beta_1 y_2 beta_2]
                     
                     K = blkdiag(K_a, ... % [1: x_1      2: x_2]
                                 K_t, ... % [3: alpha_1  4: alpha_2]
@@ -418,7 +418,7 @@ classdef Shaft
                     K = R' * K * R;
                     
                 otherwise
-                    error("prog:input", "Option [%s] is NOT valid.", option);
+                    error('prog:input', 'Option [%s] is NOT valid.', option);
             end
         end
     end
@@ -430,18 +430,18 @@ classdef Shaft
             %     Reference    Calculated     Rel_Diff      has_Problem
             %     _________    __________    ___________    ___________
             %
-            %           0             0              NaN       "no"
-            %           0             0              NaN       "no"
-            %           0             0              NaN       "no"
-            %           0             0              NaN       "no"
-            %           0             0              NaN       "no"
-            %           0             0              NaN       "no"
-            %      273.81        273.81      -1.4532e-13       "no"
-            %      273.81        273.81        2.076e-13       "no"
-            %      935.24        935.24      -1.2156e-14       "no"
-            %      935.24        935.24                0       "no"
-            %      1753.8        1753.8                0       "no"
-            %      2827.9        2827.9      -1.6081e-14       "no"
+            %           0             0              NaN       'no'
+            %           0             0              NaN       'no'
+            %           0             0              NaN       'no'
+            %           0             0              NaN       'no'
+            %           0             0              NaN       'no'
+            %           0             0              NaN       'no'
+            %      273.81        273.81      -1.4532e-13       'no'
+            %      273.81        273.81        2.076e-13       'no'
+            %      935.24        935.24      -1.2156e-14       'no'
+            %      935.24        935.24                0       'no'
+            %      1753.8        1753.8                0       'no'
+            %      2827.9        2827.9      -1.6081e-14       'no'
             %
             
             dd = 50.0;
@@ -463,23 +463,23 @@ classdef Shaft
             
             fn_ana = sort([w_na; w_nt; w_nb'])/(2*pi);
             
-            K_f = shaft.stiffness_matrix("full");
-            M_f = shaft.inertia_matrix("full");
+            K_f = shaft.stiffness_matrix('full');
+            M_f = shaft.inertia_matrix('full');
             
-            K_LP = shaft.stiffness_matrix("Lin_Parker_99");
-            M_LP = shaft.inertia_matrix("Lin_Parker_99");
+            K_LP = shaft.stiffness_matrix('Lin_Parker_99');
+            M_LP = shaft.inertia_matrix('Lin_Parker_99');
             
             import matlab.mock.TestCase;
             dyn_for_TC = TestCase.forInteractiveUse;
 
-            id = ["ISO_6336:KV", ...
-                  "ISO_6336:SF", ...
-                  "ISO_6336:KS", ...
-                  "Dynamic_Formulation:imag", ...
-                  "Dynamic_Formulation:RB"];
+            id = ['ISO_6336:KV', ...
+                  'ISO_6336:SF', ...
+                  'ISO_6336:KS', ...
+                  'Dynamic_Formulation:imag', ...
+                  'Dynamic_Formulation:RB'];
             
             for idx = 1:length(id)
-                warning("off", id(idx));
+                warning('off', id(idx));
             end
             
             [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, 'ConstructorInputs', {NREL_5MW()});
@@ -488,7 +488,7 @@ classdef Shaft
             fn_ref = dyn_for_mock.modal_analysis();
             fn_ref = sort(fn_ref);
             
-            name = ["axial", "torsional", "bending", "bending"];
+            name = ['axial', 'torsional', 'bending', 'bending'];
             fn_test = [];
             for idx = 1:length(name)
                 dyn_for_mock.K = shaft.stiffness_matrix(name{idx});
@@ -499,14 +499,14 @@ classdef Shaft
             fn_test = sort(fn_test);
             
             for idx = 1:length(id)
-                warning("on", id(idx));
+                warning('on', id(idx));
             end
             
             diff_fn = 100*(fn_ref - fn_test)./fn_ref;
-            has_problem = repmat("no", length(fn_ref), 1);
+            has_problem = repmat('no', length(fn_ref), 1);
 
             idx = abs(diff_fn) > 1.0;
-            has_problem(idx) = "[YES]";
+            has_problem(idx) = '[YES]';
             
             table(fn_ref, fn_test, diff_fn, has_problem, 'variableNames', ...
                   {'Reference', 'Calculated', 'Rel_Diff', 'has_Problem'})

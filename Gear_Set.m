@@ -106,8 +106,8 @@ classdef Gear_Set < Gear
                 error('prog:input', 'Pressure angles alpha_n should be equal for all gears.');
             elseif(std(default.beta) ~= 0.0)
                 error('prog:input', 'Helix angles beta should be equal for all gears.');
-            elseif(std(default.b) ~= 0.0)
-                error('prog:input', 'Face width b should be equal for all gears.');
+%             elseif(std(default.b) ~= 0.0)
+%                 error('prog:input', 'Face width b should be equal for all gears.');
             end
             
             obj@Gear('m_n'       , default.m_n, ...
@@ -190,10 +190,10 @@ classdef Gear_Set < Gear
                 Value{end - 1, 2} = join([obj.bearing(1:2).name], ' / ');
                 Value{end    , 2} = join([obj.bearing(1:2).type], ' / ');
                 
-                v_sun = Value(:, 1);
-                v_pla = Value(:, 2);
-                v_rng = Value(:, 3);
-                v_car = {'-+-'; '-+-'; '-+-'; ... 
+                Sun     = Value(:, 1);
+                Planet  = Value(:, 2);
+                Ring    = Value(:, 3);
+                Carrier = {'-+-'; '-+-'; '-+-'; ... 
                          '-+-'; '-+-'; '-+-'; ...
                          '-+-'; '-+-'; '-+-'; ...
                          '-+-'; obj.carrier.d_a;
@@ -204,9 +204,8 @@ classdef Gear_Set < Gear
                                 obj.carrier.J_z;
                                 join([obj.bearing(3:4).name], ' / ');
                                 join([obj.bearing(3:4).type], ' / ')};
-                            
-                tab = table(Parameter, Symbol, v_sun, v_pla, v_rng, v_car, Unit, ...
-                            'variableNames', ["Parameter", "Symbol", "Sun", "Planet", "Ring", "Carrier", "Unit"]);
+
+                tab = table(Parameter, Symbol, Sun, Planet, Ring, Carrier, Unit);
 
             else
                 error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
@@ -367,11 +366,11 @@ classdef Gear_Set < Gear
             if(strcmp(obj.configuration, 'parallel'))
                 module = 'Z012';
                 std_file = 'CylGearPair 1 (spur gear).Z12';
-                geo_meth = false;
+                geo_meth = false; % maybe replace??
             elseif(strcmp(obj.configuration, 'planetary'))
                 module = 'Z014';
                 std_file = 'PlanetarySet 1 (ISO6336).Z14';
-                geo_meth = true;
+                geo_meth = true;% maybe replace??
             end
             
             ks = KISSsoftCOM(module);
@@ -393,7 +392,7 @@ classdef Gear_Set < Gear
             ks.set_var('ZS.Geo.alfn' , deg2rad(obj.alpha_n)); % normal pressure angle
             ks.set_var('ZS.Geo.beta' , deg2rad(obj.beta)   ); % helix angle
             
-            ks.set_var('RechSt.GeometrieMeth', geo_meth);    % tooth geometry according to ISO 21771:2007
+            ks.set_var('RechSt.GeometrieMeth', geo_meth);    % tooth geometry according to ISO 21771:2007 % maybe replace??
             
             for idx = 1:numel(obj.z)
                 ks.set_var(sprintf('ZR[%d].z'                   , idx - 1), obj.z(idx));

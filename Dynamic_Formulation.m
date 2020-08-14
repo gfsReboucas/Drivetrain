@@ -40,13 +40,6 @@ classdef Dynamic_Formulation < Drivetrain
     
     %% Calculation:
     methods
-        function [SH, SF, SShaft, calc] = safety_factor_stage(obj, ~)
-            SH = obj.S_Hmin;
-            SF = obj.S_Fmin;
-            SShaft = 2.0;
-            calc = ISO_6336();
-        end
-        
         function [f_n, mode_shape] = modal_analysis(obj)
             %MODAL_ANALYSIS calculates the resonances and mode shapes of
             % the Drivetrain via a symmetric eigenvalue problem [1].
@@ -56,7 +49,7 @@ classdef Dynamic_Formulation < Drivetrain
             %
 
             % Cholesky decomposition (coordinate change):
-            L = chol(obj.M, "lower");
+            L = chol(obj.M, 'lower');
             K_tilde = L\obj.K/(L');
             
             % correcting numeric erros and make the problem symmetric:
@@ -139,9 +132,9 @@ classdef Dynamic_Formulation < Drivetrain
             k_LSS = obj.main_shaft.stiffness('torsional');
             k_HSS = obj.stage(end).output_shaft.stiffness('torsional');
             
-            uu = obj.u;
+            u2 = obj.u^2;
             
-            k = (k_LSS*k_HSS*uu^2)/(k_LSS + k_HSS*uu^2);
+            k = (k_LSS*k_HSS*u2)/(k_LSS + k_HSS*u2);
             KK = k*[ 1.0, -1.0;
                     -1.0,  1.0];
         end

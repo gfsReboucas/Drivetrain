@@ -28,8 +28,13 @@ classdef KISSsoftCOM
             
             obj.module = mod;
 
-            obj.COM.SetSilentMode(true);
+            obj.COM.SetSilentMode(false);
             obj.COM.GetModule(obj.module, false);
+        end
+        
+        function show_UI(obj)
+            obj.COM.SetSilentMode(false);
+            obj.COM.ShowInterface(true);
         end
         
         function set_var(obj, name, val)
@@ -97,8 +102,7 @@ classdef KISSsoftCOM
                 obj.COM.GetVar(name);
             catch err
                 val = false;
-                err.message = [err.message, fprintf('Variable [%s] undefined.', upper(name))];
-                warning(err.identifier, "%s", err.message);
+                warning(err.identifier, '%sVariable [%s] undefined.', err.message, upper(name));
             end
             
         end
@@ -113,7 +117,7 @@ classdef KISSsoftCOM
                 warning('No module loaded');
             end
             
-            obj.COM.SaveFile(file_name);
+            obj.COM.SaveFile([file_name, '.',strrep(obj.module, '0', '')]);
         end
         
         function write_report(obj, template, name, show_flag, format)
@@ -169,7 +173,7 @@ classdef KISSsoftCOM
         end
         
         function example_03()
-            %EXAMPLE_02 from KUM
+            %EXAMPLE_03 from KUM
             %
             
             ex03 = KISSsoftCOM('Z012');

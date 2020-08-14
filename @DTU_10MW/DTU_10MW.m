@@ -30,72 +30,58 @@ classdef DTU_10MW < Drivetrain
     
     methods
         function obj = DTU_10MW(varargin)
+            gamma = {'P'   , 1.0, 'n'   , 1.0, ...
+                     'm_n1', 1.0, 'b_1' , 1.0, 'd_1' , 1.0, 'L_1' , 1.0, ...
+                     'm_n2', 1.0, 'b_2' , 1.0, 'd_2' , 1.0, 'L_2' , 1.0, ...
+                     'm_n3', 1.0, 'b_3' , 1.0, 'd_3' , 1.0, 'L_3' , 1.0, ...
+                     'J_R' , 1.0, 'J_G' , 1.0, ...
+                     'd_S' , 1.0, 'L_S' , 1.0};
             
-            N_st = 3;
-            stage = [Gear_Set Gear_Set Gear_Set];
-            
-            %      Gear stage               , Output shaft
-            %      Normal module, Face width, Length, Diameter
-            par = ["m_n1"       , "b_1"     , "d_1" , "L_1", ... % Stage 01
-                   "m_n2"       , "b_2"     , "d_2" , "L_2", ... % Stage 02
-                   "m_n3"       , "b_3"     , "d_3" , "L_3", ... % Stage 03
-                   "J_R",                                    ... % M. M. Inertia (rotor)
-                   "J_G",                                    ... % M. M. Inertia (generator)
-                                              "d_s" , "L_s"]'; % Main shaft
-
-            if(isempty(varargin))
-
-                for idx = 1:N_st
-                    stage(idx) =  DTU_10MW.gear_stage(idx);
-                end
-
-                P_r = 10.0e3; % [kW], Rated power
-                n_r = 9.6; % [1/min.], Input speed
-                inp_shaft = DTU_10MW.shaft(0);
-
-                m_R = 227962.0; % [kg], according to [2], Table 2.1
-                J_R = 156.7374e6; % [kg-m^2] according to property_estimation
-                m_G = 0.02*m_R; % [kg], according to ???
-                J_G = 1500.5; % [kg-m^2] according to [2], Table 6.3
-
-                gm_val = ones(size(par));
-                
-            elseif(length(varargin) == 3)
-                if(isa(varargin{3}, "scaling_factor"))
-                    gm_P = varargin{1};
-                    gm_n = varargin{2};
-                    gm   = varargin{3};
-                    
-                    for idx = 1:N_st
-                        stg = DTU_10MW.gear_stage(idx);
+            gamma = process_varargin(gamma, varargin);
+            gamma = scaling_factor(gamma);
                         
-                        jdx = 4*idx + (-3:0);
-                        gm_stg = gm(jdx);
-                        stage(idx) = stg.scale_aspect(gm_stg, "Gear_Set");
-                    end
-                    
-                    P_r = gm_P*10.0e3; % [kW], Rated power
-                    n_r = gm_n*9.6; % [1/min.], Input speed
-                    
-                    LSS = DTU_10MW.shaft(0);
-                    
-                    inp_shaft = Shaft(LSS.d*gm("d_s"), ...
-                                      LSS.L*gm("L_s"));
-                                  
-                    m_R = 227962.0; % [kg], according to [2], Table 2.1
-                    J_R = 156.7374e6*gm("J_R"); % [kg-m^2] according to property_estimation
-                    m_G = 0.02*m_R; % [kg], according to ???
-                    J_G = 1500.5*gm("J_G"); % [kg-m^2] according to [2], Table 6.3
-                    
-                    gm_val = gm.value;
-                end
+            N_st = 3;
+            stage = repmat(Gear_Set(), 1, N_st);
+            
+            for idx = 1:N_st
+                stg = DTU_10MW.gear_stage(idx);
+                
+                gamma_idx = gamma.ends_with(num2str(idx));
+                stage(idx) = stg.scale_by(gamma_idx);
             end
             
-            obj@Drivetrain(N_st, stage, P_r, n_r, inp_shaft, m_R, J_R, m_G, J_G);
-            obj.dynamic_model =  "Kahraman_1994";
+            P_r = gamma('P')* 5.0e3; % [kW], Rated power
+            n_r = gamma('n')*12.1;   % [1/min.], Input speed
             
-            obj.gamma = scaling_factor(par, gm_val);
+            LSS = DTU_10MW.shaft(0);
             
+            inp_shaft = Shaft(LSS.d*gamma('d_S'), ...
+                              LSS.L*gamma('L_S'), ...
+                              LSS.bearing, ...
+                              LSS.material);
+
+            m_R = 227962.0;                   % [kg], according to [2], Table 2.1
+            J_R =    156.7374e6*gamma('J_R'); % [kg-m^2] according to property_estimation
+            m_G =      0.02*m_R;              % [kg], according to ???
+            J_G =   1500.5     *gamma('J_G'); % [kg-m^2] according to [2], Table 6.3
+            
+            obj@Drivetrain('N_stage'      , N_st, ...
+                           'stage'        , stage, ...
+                           'P_rated'      , P_r, ...
+                           'n_rotor'      , n_r, ...
+                           'main_shaft'   , inp_shaft, ...
+                           'm_Rotor'      , m_R, ...
+                           'J_Rotor'      , J_R, ...
+                           'm_Gen'        , m_G, ...
+                           'J_Gen'        , J_G, ...
+                           'S_Hmin'       , 1.25, ...
+                           'S_Fmin'       , 1.56, ...
+                           'dynamic_model', @Kahraman_94);
+
+            obj.gamma = scaling_factor(gamma.name, gamma.value);
+
+            [obj.S_H_val, obj.S_F_val, ...
+                obj.S_shaft_val] = obj.safety_factors();
         end
     end
     
@@ -305,25 +291,27 @@ classdef DTU_10MW < Drivetrain
             freq_free = 4.003; % [Hz], taken from [2], Table 6.2
             freq_fix  = 0.612; % [Hz], taken from [2], Table 6.2
             
+            rho = Material().rho*1.0e9;
+            
             J_r_fix   = k_eq/(2.0*pi*freq_fix)^2;
             J_r_free  = (k_eq*J_g*u^2)/(J_g*(2.0*pi*u*freq_free)^2 - k_eq);
             J_r_ratio = ((freq_free/freq_fix)^2 - 1.0)*J_g*u^2;
             
             R_cyl = sqrt(2.0*J_r_ratio/m_r); % [m], cylinder radius
-            h_cyl = m_r/(Material.rho*pi*R_cyl^2); % [m], cylinder height
+            h_cyl = m_r/(rho*pi*R_cyl^2); % [m], cylinder height
             
-            f = @(x)([(pi*Material.rho/m_r)            .*x(1, :).*(1.0 - x(3, :).^2).*x(2, :)^2 - 1.0; ...
-                      (pi*Material.rho/(2.0*J_r_ratio)).*x(1, :).*(1.0 - x(3, :).^4).*x(2, :)^4 - 1.0]);
+            f = @(x)([(pi*rho/m_r)            .*x(1, :).*(1.0 - x(3, :).^2).*x(2, :)^2 - 1.0; ...
+                      (pi*rho/(2.0*J_r_ratio)).*x(1, :).*(1.0 - x(3, :).^4).*x(2, :)^4 - 1.0]);
             x = fmincon(@(x)(norm(f(x)))^2, rand*ones(3,1), [], [], [], [], zeros(3, 1), [Inf, Inf, 1.0]');
             r_ext = x(2);           r_int = x(3)*r_ext;           h = x(1);
 
-            fprintf("Rotor mass moment of inertia using:\n")
+            fprintf("Rotor mass moment of inertia using:\n");
             fprintf("\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
             fprintf("\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
             fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
-            fprintf("Rotor dimensions assuming:\n")
-            fprintf("\tCylindric geometry: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
-            fprintf("\tCylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n", r_ext, r_int, h);
+            fprintf("Rotor dimensions assuming:\n");
+            fprintf("\t Cylindric geometry: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
+            fprintf("\t Cylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n", r_ext, r_int, h);
             
         end
     end

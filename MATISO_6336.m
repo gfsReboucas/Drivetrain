@@ -1,6 +1,6 @@
-classdef (Abstract) ISO_6336 < Gear_Set
-    %ISO_6336 do some calculations following the ISO 6336 standard.
-    % see also: KSISO_6336, MATISO_6336, Gear_Set
+classdef MATISO_6336 < ISO_6336
+    %MATISO_6336 do some calculations following the ISO 6336 standard.
+    % see also: ISO_6336, KSISO_6336, Gear_Set
     %
     % References:
     %   [1] ISO 6336-1:2006 Calculation of load capacity of spur and 
@@ -19,40 +19,46 @@ classdef (Abstract) ISO_6336 < Gear_Set
     %
     
     properties(Access = public)
-        P_rated;     % [kW],     Rated power
-        S_Hmin;      % [-],      Minimum required safety factor for surface durability (pitting)
-        S_Fmin;      % [-],      Minimum required safety factor for tooth bending strength
-        L_h;         % [h],      Required life
-        K_A;         % [-],      Application factor
-        n_nominal;   % [1/min.], Nominal speed of each component(gears and carrier)
+        nu_40;       % [mm^2/s], Kinematic viscosity of the lubricant at 40 deg. C
+        C_a;         % [um],     Tip relief
     end
     
     properties(Access = private)
-        idx_fixed; % [-],        Index of the fixed element (if planetary)
-        idx_input; % [-],        Index of the input element
-        gear_set;
+        K_v_val;
     end
     
     properties(Dependent, Access = public)
-        speed_ratio;   % [-],      Speed ratio w.r.t. input element
-        torque_ratio;  % [-],      Torque ratio w.r.t. input element
-        T_nominal;     % [N-m],    Nominal torque applied on each element
-        T_input;       % [N-m],    Input torque of the Gear_Set
-        T_output;      % [N-m],    Output torque of the Gear_Set
-        n_input;       % [1/min.], Input speed of the Gear_Set
-        n_output;      % [1/min.], Output speed of the Gear_Set
-        sigma_HP_ref;  % [N/mm^2], Permissive contact stress (reference)
-        sigma_HP_stat; % [N/mm^2], Permissive contact stress (static)
-        K_gamma;       % [-],      Mesh load factor
-        F_tH;          % [N],      Determinant tangential load in a transverse plane for K_Halpha and K_Falpha
-    end
-    
-    properties(Dependent, Access = private)
-        idx_output; % [-],        Index of the output element
+        S_H;           % [-],      Pitting safety factor
+        S_F;           % [-],      Tooth bending safety factor
+        sigma_H0;      % [N/mm^2], Nominal contact stress
+        sigma_H;       % [N/mm^2], Contact stress
+        sigma_HP;      % [N/mm^2], Permissible contact stress
+        sigma_Hlim;    % [N/mm^2], Allowable stress number
+        F_t;           % [N],      Transverse tangential load at reference cylinder (nominal, per mesh)
+        line_load;     % [N/mm],   Line load
+        v_pitch_line;  % [m/s],    Pitch line velocity
+        N_L;           % [-],      Number of load cycles
+        K_Falpha;   % [-],        Transverse load factor (root stress) 
+        K_Fbeta;    % [-],        Face load factor (root stress) 
+        K_Halpha;   % [-],        Transverse load factor (contact stress)
+        K_Hbeta;    % [-],        Face load factor (contact stress)
+        K_v;        % [-],        Dynamic factor
+        Z_beta;     % [-],        Helix angle factor
+        Z_eps;      % [-],        Contact ratio factor
+        Z_BD;       % [-],        Single pair tooth contact factor
+        Z_E;        % [N^0.5/mm], Elasticity factor
+        Z_H;        % [-],        Zone factor
+        Z_L;        % [-],        Lubrication factor
+        Z_N;        % [-],        Life factor for contact stress
+        Z_NT;       % [-],        Life factor for contact stress for reference test conditions
+        Z_R;        % [-],        Roughness factor affecting surface durability
+        Z_v;        % [-],        Velocity factor (circumferential velocity at pitch line)
+        Z_W;        % [-],        Work hardening factor
+        Z_X;        % [-],        Size factor (pitting)
     end
     
     methods
-        function obj = ISO_6336(gset, varargin)
+        function obj = MATISO_6336(gset, varargin)
             if(~exist('gset', "var"))
                 gset = Gear_Set();
             elseif(~strcmp(class(gset), "Gear_Set"))
@@ -63,182 +69,57 @@ classdef (Abstract) ISO_6336 < Gear_Set
             n_1 = 360.0;
             P_r = 1.0e-3*T_1*n_1*pi/30.0;
             
+            C_ay = (1.0/18.0)*([gset.material(1:2).sigma_Hlim]./97.0 - 18.45).^2 + 1.5;
+            C_ay = mean(C_ay);
+
             default = {'P_rated'    , P_r, ...
                        'S_Hmin'     , 1.0, ...
                        'S_Fmin'     , 1.0, ...
                        'L_h'        , 50.0e3, ...
                        'K_A'        , 1.0, ...
-                       'n_nominal'  , [n_1, NaN]};
+                       'nu_40'      , 320.0, ...
+                       'n_nominal'  , [n_1, NaN], ...
+                       'C_a'        , C_ay};
             
             default = process_varargin(default, varargin);
             
-            obj@Gear_Set('configuration', gset.configuration, ...
-                         'm_n'          , gset.m_n, ...
-                         'alpha_n'      , gset.alpha_n, ...
-                         'z'            , gset.z, ...
-                         'b'            , gset.b, ...
-                         'x'            , gset.x, ...
-                         'beta'         , gset.beta, ...
-                         'k'            , gset.k, ...
-                         'bore_ratio'   , gset.bore_ratio, ...
-                         'N_p'          , gset.N_p, ...
-                         'a_w'          , gset.a_w, ...
-                         'rack_type'    , gset.type, ...
-                         'bearing'      , gset.bearing, ...
-                         'shaft'        , gset.output_shaft, ...
-                         'Q'            , gset.Q, ...
-                         'R_a'          , gset.R_a, ...
-                         'material'     , gset.material);
+            obj@ISO_6336(gset, 'P_rated'    , default.P_rated, ...
+                               'S_Hmin'     , default.S_Hmin, ...
+                               'S_Fmin'     , default.S_Fmin, ...
+                               'L_h'        , default.L_h, ...
+                               'K_A'        , default.K_A, ...
+                               'n_nominal'  , default.n_nominal);
             
-            obj.gear_set = gset;
-            
-            obj.P_rated = default.P_rated;
-            obj.S_Hmin  = default.S_Hmin;
-            obj.S_Fmin  = default.S_Fmin;
-            obj.L_h     = default.L_h;
-            obj.K_A     = default.K_A;
+            obj.nu_40   = default.nu_40;
+            obj.C_a     = default.C_a;
 
-            [obj.n_nominal, ...
-                obj.idx_fixed, obj.idx_input] = obj.set_gear_speed(default.n_nominal);
+            obj.K_v_val = obj.dynamic_factor();
         end
         
-        function [N, sigma] = Pitting_SN_curve(obj)
-            N = logspace(4, 10, 100);
-            ZN = zeros(2, length(N));
-            
-            for idx = 1:length(N)
-                ZN(:, idx) = obj.life_factor(N(idx));
-            end
-            
-            sigma = diag(obj.sigma_HP_ref)*ZN;
+        function save_KS(obj, name)
+            % do nothing...
         end
-        
-        function disp(obj)
-            obj.Z_NT
-            % to be done...
-        end
-        
     end
     
     %% Calculation methods:
     methods
-%         function variable_load(obj, input_torque, fs)
-%             torque = obj.torque_ratio'.*input_torque;
-%             
-%             torque = torque(:, obj.idx_input);
-%             
-%             [~, edge_torque, ~] = histcounts(torque);
-%             diff_torque = mean(diff(edge_torque));
-%             torque_0   = edge_torque(1)   - diff_torque;
-%             torque_end = edge_torque(end) + diff_torque;
-%             edge_torque = [torque_0, edge_torque, torque_end];
-%             
-%             [bin_torque, edge_torque, ~] = histcounts(torque, edge_torque);
-%             bin_torque = fliplr(bin_torque);
-%             edge_torque = fliplr(edge_torque);
-%             bin_number = length(bin_torque);
-%             
-%             edge_speed = obj.P_rated*1.0e3./edge_torque;
-%             edge_speed = edge_speed*(30.0/pi);
-%             
-%             if(strcmp(obj.configuration, 'parallel'))
-%                 n_nom = NaN(2, 1);
-%             elseif(strcmp(obj.configuration, 'planetary'))
-%                 n_nom = NaN(4, 1);
-%                 n_nom(obj.idx_fixed) = 0.0;
-%             end
-%             
-%             id = ["ISO_6336:KV", ...
-%                   "ISO_6336:SF", ...
-%                   "ISO_6336:KS", ...
-%                   "MATLAB:COM:InvalidProgid", ...
-%                   "CVX:Renamed"];
-% 
-%             for idx = 1:length(id)
-%                 warning("off", id(idx));
-%             end
-%             
-%             gset = obj.gear_set;
-%             
-%             sig_H = zeros(2, bin_number + 1);
-%             SH = zeros(2, bin_number + 1);
-%             ZNT = zeros(2, bin_number + 1);
-%             N_fail = zeros(2, bin_number + 1);
-%             for idx = 1:(bin_number + 1)
-%                 n_nom(obj.idx_input) = edge_speed(idx);
-%                 copy_obj = ISO_6336(gset, 'P_rated'    , obj.P_rated    , ...
-%                                           'S_Hmin'     , obj.S_Hmin     , ...
-%                                           'S_Fmin'     , obj.S_Fmin     , ...
-%                                           'L_h'        , obj.L_h        , ...
-%                                           'K_A'        , obj.K_A        , ...
-%                                           'nu_40'      , obj.nu_40      , ...
-%                                           'n_nominal'  , n_nom);
-% 
-%                 sig_H(:, idx) = copy_obj.sigma_H;
-%                 SH(:, idx)    = copy_obj.S_H;
-%                 ZNT(:, idx)   = copy_obj.Z_NT;
-%                 N_fail(:, idx) = copy_obj.num_cycles_failure();
-%             end
-%             
-% %             sig_H = diag(obj.S_H)*sig_H;
-%             
-%             n = 60.0*obj.L_h*edge_speed*obj.u;
-%             
-%             for idx = 1:length(id)
-%                 warning('on', id(idx));
-%             end
-%             
-%             [N_x, sig_y] = obj.Pitting_SN_curve();
-%             
-%             for idx = 1:2
-%                 aa = find(sig_y(idx, :) <= min(sig_H(idx, :)), 1, 'last')
-%                 bb = find(sig_y(idx, :) >= max(sig_H(idx, :)), 1, 'first')
-%                 range = aa:bb
-%                 N_x = N_x(range);
-%                 sig_y = sig_y(:, range);
-%             end
-%             
-%             figure;
-%             for idx = 1:2
-%                 subplot(1,2,idx)
-%                 semilogx(N_x, sig_y(idx, :), 'r');
-%                 hold on;
-%                 semilogx(n, sigS(idx, :), 'b');
-%             end
-%             
-%             n1 = interp1(sig_y(1, :), log(N_x), log(sig_H(1, :)));
-%             n2 = interp1(sig_y(2, :), log(N_x), log(sig_H(2, :)));
-%             
-%             one2N = 1:bin_number;
-%             
-%             tab = table(one2N', edge_torque(1:end-1)', edge_torque(2:end)', bin_torque', ...
-%                 'variableNames', ["Bin_no", "min_Torque", "Max_Torque", "Load_Cycles"]);
-%         end
-%         
-        function N_star = num_cycles_failure(obj)
-            N_star = zeros(1, 2);
-            sig_HPR = obj.sigma_HP_ref;
+        function [SH, SF] = safety_factors(obj, varargin)
+            SH = obj.Pitting(varargin{:});
+            SF = nan(size(SH));
+        end
+        
+        function SH = Pitting(obj, varargin)
+            % Safety factor for surface durability (against pitting):
+            SH = obj.S_Hmin*obj.sigma_HP./obj.sigma_H; % pinion/planet
             
-            for idx = 1:2
-                func = @(x)(obj.sigma_H(idx).*obj.S_H(idx) - obj.life_factor(x).*sig_HPR(idx));
-                x0 = obj.N_L(idx)*2.0;
-                [N_star(idx),~] = fsolve(func, x0);
+            if(isrow(SH))
+                SH = SH';
             end
         end
         
-        function sigH = sigma_H_spectra(obj, torque)
-            equiv_force = abs(2.0e3*(torque./obj.d(1))/obj.N_p)*(obj.u + 1.0)/(obj.d(1)*obj.b*obj.u);
-            
-            sigH = obj.Z_H   * ...
-                   obj.Z_E   * ...
-                   obj.Z_eps * ...
-                   obj.Z_beta* ...
-                   obj.Z_BD  * ...
-                   sqrt(equiv_force*obj.K_gamma* ...
-                                    obj.K_v    * ...
-                                    obj.K_Hbeta* ...
-                                    obj.K_Halpha);
-        end
+%         function SF = tooth_bending(obj, varargin)
+%             % to do...
+%         end
     end
     
     methods(Static)
@@ -454,7 +335,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
                            % output: carrier* (* or vice-versa)
                         U(:, 4) = [0.0, (r + s)/p, (1.0 + s/r), 1.0]';
                     case 2
-                        error('ISO_6336:speed', 'Direct drive not implemented yet.');
+                        error('MATISO_6336:speed', 'Direct drive not implemented yet.');
                     case 3 % fixed: ring
                            % input: sun*
                            % output: carrier*
@@ -465,9 +346,9 @@ classdef (Abstract) ISO_6336 < Gear_Set
                         U(:, 3) = [-r/s, r/p, 1.0, 0.0];
                     otherwise
                         if(isempty(idx_zero))
-                            error('ISO_6336:speed', 'There are no fixed elements or the size.');
+                            error('MATISO_6336:speed', 'There are no fixed elements or the size.');
                         elseif(idx_zero > 4)
-                            error('ISO_6336:speed', 'There should be a maximum of 4 velocities.');
+                            error('MATISO_6336:speed', 'There should be a maximum of 4 velocities.');
                         end
                 end
                 
@@ -486,7 +367,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
             uu = obj.u;
             cond = (obj.v_pitch_line*z1/100.0)*sqrt((uu.^2)/(1.0 + uu.^2));
             if(cond < 3.0) % [m/s]
-                warning('ISO_6336:KV', ['Calculating K_v using method B', ...
+                warning('MATISO_6336:KV', ['Calculating K_v using method B', ...
                     ' outside of its useful range. ', ...
                 'More info at the end of Sec. 6.3.2 of ISO 6336-1.']);
             end
@@ -608,27 +489,6 @@ classdef (Abstract) ISO_6336 < Gear_Set
             end
         end
         
-        function [Z_L, Z_v] = lubrication_velocity_factor(obj)
-
-            % [N/mm^2],  Allowable contact stress number:
-            sig_Hlim = min(obj.sigma_Hlim);
-            
-            if(sig_Hlim  < 850.0) % [N/mm^2]
-                C_ZL = 0.83;
-            elseif((850.0 <= sig_Hlim) && (sig_Hlim  < 1200.0))
-                C_ZL = sig_Hlim/4375.0 + 0.6357;
-            else
-                C_ZL = 0.91;
-            end
-            
-            % Lubricant factor:
-            Z_L = C_ZL + 4.0*(1.0 - C_ZL)/(1.2 + 134.0/obj.nu_40)^2;
-            
-            % Velocity factor:
-            C_Zv = C_ZL + 0.02;
-            Z_v = C_Zv + 2.0*(1.0 - C_Zv)/sqrt(0.8 + 32.0/obj.v_pitch_line);
-        end
-        
         function ZN = life_factor(obj, N)
             
             ZN = zeros(1, 2);
@@ -686,7 +546,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
                             val = 1.0;
                         end
                     otherwise
-                        error("ISO_6336:ZN", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
+                        error("MATISO_6336:ZN", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
                 end
                 ZN(idx) = val;
             end
@@ -701,95 +561,309 @@ classdef (Abstract) ISO_6336 < Gear_Set
     
     %% Get methods:
     methods
-        function val = get.speed_ratio(obj)
-            val = obj.n_nominal./obj.n_input;
+        function val = get.S_H(obj)
+            val = obj.S_Hmin.*obj.sigma_HP./obj.sigma_H;
         end
         
-        function val = get.torque_ratio(obj)
-            val = obj.T_nominal./obj.T_input;
+        function val = get.S_F(obj)
+            val = nan(size(obj.S_H));
         end
         
-        function val = get.F_tH(obj)
-            val = obj.F_t*obj.K_gamma* ...
-                          obj.K_A    * ...
-                          obj.K_v    * ...
-                          obj.K_Hbeta;
+        function val = get.sigma_H0(obj)
+            % Nominal contact stress at pitch point:
+            num = obj.F_t*(obj.u + 1.0);
+            den = obj.d(1)*obj.b*obj.u;
+            val = obj.Z_H  * ...
+                  obj.Z_E  * ...
+                  obj.Z_eps* ...
+                  obj.Z_beta*sqrt(num/den);
         end
         
-        function val = get.sigma_HP_ref(obj)
-            ZNT = 1.0;
-            val = [obj.material(1:2).sigma_Hlim].*ZNT*obj.Z_L* ...
-                                                      obj.Z_v* ...
-                                                      obj.Z_R* ...
-                                                      obj.Z_W* ...
-                                                      obj.Z_X./obj.S_Hmin;
+        function val = get.sigma_H(obj)
+            % Contact stress:
+            val = obj.sigma_H0*obj.Z_BD*sqrt(obj.K_gamma* ...
+                                             obj.K_A    * ...
+                                             obj.K_v    * ...
+                                             obj.K_Hbeta* ...
+                                             obj.K_Halpha); % pinion/wheel
         end
         
-        function val = get.sigma_HP_stat(obj)
-            val = [obj.material(1:2).sigma_Hlim].*obj.Z_NT* ...
-                                                  obj.Z_L* ...
-                                                  obj.Z_v* ...
-                                                  obj.Z_R* ...
-                                                  obj.Z_W* ...
-                                                  obj.Z_X./obj.S_Hmin;
+        function val = get.sigma_HP(obj)
+            % Permissible contact stress:
+            val = obj.sigma_Hlim.*obj.Z_NT* ...
+                                  obj.Z_L * ...
+                                  obj.Z_v * ...
+                                  obj.Z_R * ...
+                                  obj.Z_W * ...
+                                  obj.Z_X./obj.S_Hmin;
         end
         
-        function val = get.T_nominal(obj)
-            val = (obj.P_rated*1.0e3)./(obj.n_nominal*pi/30.0);
-            val(2) = val(2)/obj.N_p;
-            val(val == inf) = nan;
+        function val = get.sigma_Hlim(obj)
+            val = [obj.material(1:2).sigma_Hlim];
         end
         
-        function val = get.T_input(obj)
-            val = obj.T_nominal(obj.idx_input);
+        function val = get.F_t(obj)
+            % [N], Nominal tangential load:
+            val = 2.0e3*(obj.T_nominal(1)/obj.d(1))/obj.N_p;
+            val = abs(val);
         end
         
-        function val = get.T_output(obj)
-            val = obj.T_nominal(obj.idx_output);
-        end
-        
-        function val = get.n_input(obj)
-            val = obj.n_nominal(obj.idx_input);
-        end
-        
-        function val = get.n_output(obj)
-            val = obj.n_nominal(obj.idx_output);
-        end
-        
-        function val = get.idx_output(obj)
-            if(strcmpi(obj.configuration, 'parallel'))
-                val = setdiff([1 2], obj.idx_input);
-            elseif(strcmpi(obj.configuration, 'planetary'))
-                switch(obj.idx_fixed)
+        function val = get.Z_NT(obj)
+            val = zeros(1, 2);
+            
+            for idx = 1:2
+                line = obj.material(idx).row;
+
+                switch line
                     case 1
-                        val = setdiff([3 4], obj.idx_input);
+                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
+                        x = [6.0e5 1.0e7 1.0e9 1.0e10];
+                        y = [1.6   1.3   1.0   0.85];
                     case 2
-                        error('ISO_6336:idx_out', 'Direct drive not implemented yet.');
+                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
+                        x = [1.0e5 5.0e7 1.0e9 1.0e10];
+                        y = [1.6   1.0   1.0   0.85];
                     case 3
-                        val = setdiff([1 4], obj.idx_input);
+                        % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
+                        x = [1.0e5 2.0e6 1.0e10];
+                        y = [1.3   1.0   0.85];
                     case 4
-                        val = setdiff([1 3], obj.idx_input);
+                        % NV (nitrocar.)
+                        x = [1.0e5 2.0e6 1.0e10];
+                        y = [1.1   1.0   0.85];
                     otherwise
-                        error('ISO_6336:idx_out', 'Invalid index.');
+                        error("MATISO_6336:ZNT", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
+                end
+
+                jdx = find(y == 1, 1, 'first');
+                N_Lref = x(jdx);
+                
+                N = obj.N_L(idx);
+                
+                if(N <= x(1))
+                    val(idx) = y(1);
+                elseif(N > x(end))
+                    val(idx) = y(end);
+                else
+                    if(N > N_Lref)
+                        x = x([jdx end]);
+                        y = y([jdx end]);
+                    end
+                    val(idx) = interp1(log(x), y, log(N));
                 end
             end
+            
         end
         
-        function val = get.K_gamma(obj)
-            switch(obj.N_p)
-                case 3
-                    val = 1.1;
-                case 4
-                    val = 1.25;
-                case 5
-                    val = 1.35;
-                case 6
-                    val = 1.44;
-                case 7
-                    val = 1.47;
-                otherwise
-                    val = 1.0;
+        function val = get.N_L(obj)
+            % Number of load cycles:
+            if(strcmp(obj.configuration, 'parallel'))
+                N_L1 = obj.n_input*60.0*obj.L_h; % pinion
+                val = N_L1*[1.0 1.0/obj.u];
+            elseif(strcmp(obj.configuration, 'planetary'))
+                n_rel = obj.n_nominal(1) - obj.n_nominal(4);
+                val = [obj.N_p obj.z(1)/obj.z(2)]*60.0*obj.L_h*n_rel;
             end
+        end
+        
+        function val = get.K_v(obj)
+            val = obj.K_v_val;
+        end
+        
+        function val = get.line_load(obj)
+            val = obj.F_t*obj.K_A*obj.K_gamma/mean(obj.b);
+        end
+        
+        function val = get.v_pitch_line(obj)
+            val = nan;
+            if(strcmp(obj.configuration, 'parallel'))
+                val = (pi*obj.n_input/60.0e3)*obj.d(1);
+            elseif(strcmp(obj.configuration, 'planetary'))
+                val = (pi*obj.n_output/60.0e3)*(obj.d(1) - obj.a_w/obj.u);
+            end
+        end
+        
+        function val = get.K_Halpha(obj)
+            val = obj.K_Falpha;
+            
+            % Section 8.3.4 of [1]:
+            % Transverse load factor (contact stress), Eq. (75):
+            K_Halpha_lim = obj.eps_gamma/(obj.eps_alpha*obj.Z_eps.^2);
+            if(val > K_Halpha_lim)
+                val = K_Halpha_lim;
+            elseif(val < 1.0)
+                val = 1.0;
+            end            
+        end
+        
+        function val = get.K_Falpha(obj)
+            term = obj.c_gamma_alpha*(obj.f_pb - obj.y_alpha)/(obj.F_tH/obj.b);
+            % Section 8.3.2 of [1]:
+            if(obj.eps_gamma <= 2.0) % Eq. (73)
+                val = (0.9 + 0.4*term)*(obj.eps_gamma/2.0);
+            else % Eq. (74)
+                val = 0.9 + 0.4*sqrt(2.0*(obj.eps_gamma - 1.0)/obj.eps_gamma)*term;
+            end
+            
+            % Section 8.3.5 of [1]:
+            % Transverse load factor (root stress), Eq. (76):
+            K_Falpha_lim = obj.eps_gamma/(0.25*obj.eps_alpha + 0.75);
+            if(val > K_Falpha_lim)
+                val = K_Falpha_lim;
+            elseif(val < 1.0)
+                val = 1.0;
+            end
+        end
+        
+        function val = get.K_Hbeta(obj)
+            % The face load factor (contact stress) is not calculated from
+            % ISO 6336 [1], but according to [4], Eq.(17.14):
+            val = 1.0 + 0.4*(obj.b/obj.d(1))^2;
+        end
+        
+        function val = get.K_Fbeta(obj)
+            % Method B, Sec. 7.6:
+            % h_1 = h_aP + h_fP + k_1*m_n;
+            h_1 = abs(obj.d_a(1) - obj.d_f(1))/2.0;
+            bh1 = obj.b/h_1;
+            h_2 = abs(obj.d_a(2) - obj.d_f(2))/2.0;
+            bh2 = obj.b/h_2;
+            
+            bh = min(bh1, bh2);
+            
+            if(bh < 3.0)
+                bh = 3.0;
+            end
+            
+            N_F = (bh.^2)/(1.0 + bh + bh.^2);
+            
+            val = power(obj.K_Hbeta, N_F);
+        end
+        
+        function val = get.Z_E(obj)
+            % [N/mm^2], Young's modulus:
+            E = [obj.material.E];
+            % [-], Poisson's ratio:
+            nu = [obj.material.nu];
+            
+            vec = (1.0 - nu.^2)./E;
+            val = sqrt(1.0/(pi*sum(vec(1:2))));
+            
+        end
+        
+        function val = get.Z_H(obj)
+            num = 2.0*cosd(obj.beta_b)*cosd(obj.alpha_wt);
+            den = sind(obj.alpha_wt)*cosd(obj.alpha_t).^2;
+            val = sqrt(num/den);
+        end
+        
+        function val = get.Z_eps(obj)
+            eps_a = obj.eps_alpha;
+            eps_b = obj.eps_beta;
+            
+            if(obj.beta == 0.0)
+                val = sqrt((4.0 - eps_a)/3.0);
+            else
+                if(eps_b < 1.0)
+                    val = sqrt((1.0 - eps_b)*(4.0 - eps_a)/3.0 + eps_b/eps_a);
+                else
+                    val = sqrt(1.0/eps_a);
+                end
+            end
+            
+        end
+        
+        function val = get.Z_beta(obj)
+            % Helix angle factor: (sec. 9)
+            val = 1.0/sqrt(cosd(obj.beta));
+        end
+        
+        function val = get.Z_BD(obj)
+            M_1 = tand(obj.alpha_wt)/sqrt((sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - ...
+                2.0*pi/obj.z(1))*(sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - ...
+                (obj.eps_alpha - 1.0)*2.0*pi/obj.z(2)));
+            M_2 = tand(obj.alpha_wt)/sqrt((sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - ...
+                2.0*pi/obj.z(2))*(sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - ...
+                (obj.eps_alpha - 1.0)*2.0*pi/obj.z(1)));
+            M = [M_1 M_2];
+            
+            val = nan(1, 2);
+            if((obj.eps_beta == 0.0) && (obj.eps_alpha > 1.0))
+                for idx = 1:2
+                    if(M(idx) > 1.0)
+                        val(idx) = M(idx);
+                    else
+                        val(1) = 1.0;
+                    end
+                end
+            elseif((obj.eps_alpha > 1.0) && (obj.eps_beta >= 1.0))
+                val = ones(1, 2);
+            elseif((obj.eps_alpha > 1.0) && (obj.eps_beta <  1.0))
+                val = M - obj.eps_beta*(M - 1.0);
+            end
+        end
+        
+        function val = get.Z_R(obj)
+            rho_1 = 0.5*obj.d_b(1)*tand(obj.alpha_wt);
+            rho_2 = 0.5*obj.d_b(2)*tand(obj.alpha_wt);
+            
+            rho_red = (rho_1*rho_2)/(rho_1 + rho_2);
+            
+            R_z10 = obj.R_z*power(10.0/rho_red, 1.0/3.0);
+            sig_Hlim = min(obj.sigma_Hlim);
+            
+            if(sig_Hlim < 850.0) % [N/mm^2]
+                C_ZR = 0.15;
+            elseif((850.0 <= sig_Hlim) && (sig_Hlim < 1200.0))
+                C_ZR = 0.32 - sig_Hlim*2.0e-4;
+            else
+                C_ZR = 0.08;
+            end
+            
+            val = power(3.0/R_z10, C_ZR);
+        end
+        
+        function val = get.Z_L(obj)
+            % [N/mm^2],  Allowable contact stress number:
+            sig_Hlim = min(obj.sigma_Hlim);
+            
+            if(sig_Hlim  < 850.0) % [N/mm^2]
+                C_ZL = 0.83;
+            elseif((850.0 <= sig_Hlim) && (sig_Hlim  < 1200.0))
+                C_ZL = sig_Hlim/4375.0 + 0.6357;
+            else
+                C_ZL = 0.91;
+            end
+            
+            % Lubricant factor:
+            val = C_ZL + 4.0*(1.0 - C_ZL)/(1.2 + 134.0/obj.nu_40)^2;
+            
+        end
+        
+        function val = get.Z_v(obj)
+            % [N/mm^2],  Allowable contact stress number:
+            sig_Hlim = min(obj.sigma_Hlim);
+            
+            if(sig_Hlim  < 850.0) % [N/mm^2]
+                C_ZL = 0.83;
+            elseif((850.0 <= sig_Hlim) && (sig_Hlim  < 1200.0))
+                C_ZL = sig_Hlim/4375.0 + 0.6357;
+            else
+                C_ZL = 0.91;
+            end
+            
+            % Velocity factor:
+            C_Zv = C_ZL + 0.02;
+            val = C_Zv + 2.0*(1.0 - C_Zv)/sqrt(0.8 + 32.0/obj.v_pitch_line);
+            
+        end
+        
+        function val = get.Z_W(~)
+            val = 1.0;
+        end
+        
+        function val = get.Z_X(~)
+            val = 1.0;
         end
         
     end
