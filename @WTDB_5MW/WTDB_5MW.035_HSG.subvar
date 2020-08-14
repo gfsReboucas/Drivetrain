@@ -1,0 +1,10 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+subvar($G_BP.$G_HSG.$_M, str= '240000 kg', intent= 0, status= 1, txt= 'Mass')                 ! $G_BP.$G_HSG.$_M
+subvar($G_BP.$G_HSG.$_CM_X, str= '1.9 m', intent= 0, status= 1, txt= 'Center of Mass wrt. BRF') ! $G_BP.$G_HSG.$_CM_X
+subvar($G_BP.$G_HSG.$_CM_Y, str= '0 m', intent= 0, status= 1, txt= 'Center of Mass wrt. BRF') ! $G_BP.$G_HSG.$_CM_Y
+subvar($G_BP.$G_HSG.$_CM_Z, str= '1.75 m', intent= 0, status= 1, txt= 'Center of Mass wrt. BRF') ! $G_BP.$G_HSG.$_CM_Z
+subvar($G_BP.$G_HSG.$_IXX, str= '1300000 kgm^2', intent= 0, status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_HSG.$_IXX
+subvar($G_BP.$G_HSG.$_IYY, str= '2250000 kgm^2', intent= 0, status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_HSG.$_IYY
+subvar($G_BP.$G_HSG.$_IZZ, str= '2610000 kgm^2', intent= 0, status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_HSG.$_IZZ
+subvar($G_3D.$G_HSG.$_TRANSPARENCY_ALL, str= '0.7\n', intent= 1, status= 1, txt= 'Transparency global') ! $G_3D.$G_HSG.$_TRANSPARENCY_ALL

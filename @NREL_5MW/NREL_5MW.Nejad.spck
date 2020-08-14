@@ -77,18 +77,18 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 4.13752126693725586E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -4.49333238601684570E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 2.32783913612365723E+00 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 5.24405717849731445E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 2.11789414286613464E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.88275688886642456E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 7.72684276103973389E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 4.84943866729736328E-01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -5.48055231571197510E-01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.59398394823074341E-01 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 4.84662950038909912E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 2.46969051659107208E-02 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -9.51510202139616013E-03 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 8.74300479888916016E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.28433573991060257E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.28433570861816406E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.78610742092132568E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -270,7 +270,6 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_mesh                     )                           ! $SVG_mesh
-   subvar.str (                     $_full_damping                ) = '10e-6 m'               ! $SVG_mesh.$_full_damping, Definition
 subvargroup.end (                   $SVG_mesh                     )                           ! $SVG_mesh
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
@@ -2893,9 +2892,9 @@ bodygroup.begin (                   $BG_stage_03                  )             
    prim.par (             2 ,   3 ,   3 , $P_Pinion               ) = $SVG_stage_03.$_x_pinion ! [-] Shift factor
    prim.par (             2 ,   3 ,   4 , $P_Pinion               ) = $SVG_stage_03.$_helix   ! [rad] Helix angle
    prim.par (             2 ,   3 ,   5 , $P_Pinion               ) = 0.00000000000000000E+00 ! [rad] Bevel angle
-   prim.par (             2 ,   3 ,   6 ,   1 , $P_Pinion         ) = 2.00000000000000000E+00 ! [-] Type
-   prim.par (             2 ,   3 ,   6 ,   2 , $P_Pinion         ) = { 380.751*$SVG_stage_03.$_gamma_m_n mm } ! [m] Addendum value
-   prim.par (             2 ,   3 ,   6 ,   3 , $P_Pinion         ) = { 319.627*$SVG_stage_03.$_gamma_m_n mm } ! [m] Dedendum value
+   prim.par (             2 ,   3 ,   6 ,   1 , $P_Pinion         ) = 0.00000000000000000E+00 ! [-] Type
+   prim.par (             2 ,   3 ,   6 ,   2 , $P_Pinion         ) = 1.00000000000000000E+00 ! [-] Addendum value
+   prim.par (             2 ,   3 ,   6 ,   3 , $P_Pinion         ) = 1.25000000000000000E+00 ! [-] Dedendum value
    prim.par (             2 ,   3 ,   7 ,   1 , $P_Pinion         ) = 1.00000000000000000E+00 ! [-] Type
    prim.par (             2 ,   3 ,   7 ,   2 , $P_Pinion         ) = $SVG_stage_03.$_Norm_Backlash ! [m] Value
    prim.par (             2 ,   3 ,   8 , $P_Pinion               ) = $SVG_stage_03.$_z_pinion ! [-] Number of teeth
@@ -3020,9 +3019,9 @@ bodygroup.begin (                   $BG_stage_03                  )             
    prim.par (             2 ,   3 ,   3 , $P_Gear                 ) = $SVG_stage_03.$_x_gear  ! [-] Shift factor
    prim.par (             2 ,   3 ,   4 , $P_Gear                 ) = { -$SVG_stage_03.$_helix } ! [rad] Helix angle
    prim.par (             2 ,   3 ,   5 , $P_Gear                 ) = 0.00000000000000000E+00 ! [rad] Bevel angle
-   prim.par (             2 ,   3 ,   6 ,   1 , $P_Gear           ) = 2.00000000000000000E+00 ! [-] Type
-   prim.par (             2 ,   3 ,   6 ,   2 , $P_Gear           ) = { 1395.372*$SVG_stage_03.$_gamma_m_n mm } ! [m] Addendum value
-   prim.par (             2 ,   3 ,   6 ,   3 , $P_Gear           ) = { 1334.248*$SVG_stage_03.$_gamma_m_n mm } ! [m] Dedendum value
+   prim.par (             2 ,   3 ,   6 ,   1 , $P_Gear           ) = 0.00000000000000000E+00 ! [-] Type
+   prim.par (             2 ,   3 ,   6 ,   2 , $P_Gear           ) = 1.00000000000000000E+00 ! [-] Addendum value
+   prim.par (             2 ,   3 ,   6 ,   3 , $P_Gear           ) = 1.25000000000000000E+00 ! [-] Dedendum value
    prim.par (             2 ,   3 ,   7 ,   1 , $P_Gear           ) = 1.00000000000000000E+00 ! [-] Type
    prim.par (             2 ,   3 ,   7 ,   2 , $P_Gear           ) = $SVG_stage_03.$_Norm_Backlash ! [m] Value
    prim.par (             2 ,   3 ,   8 , $P_Gear                 ) = $SVG_stage_03.$_z_gear  ! [-] Number of teeth
@@ -3107,20 +3106,20 @@ bodygroup.begin (                   $BG_stage_03                  )             
    marker.parent (                  $M_HSShaft_BRF                ) = $BG_stage_03.$B_HSShaft ! Body
    marker.flx.type (                $M_HSShaft_BRF                ) = 4                       ! Flexible type
 
-   marker.type (                    $M_HSShaft_Bearing_HS_C       ) = 2                       ! Type
-   marker.parent (                  $M_HSShaft_Bearing_HS_C       ) = $BG_stage_03.$B_HSShaft ! Body
-   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_C       ) = { 280*$SVG_stage_03.$_gamma_L mm } ! Position
-   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_C       ) = 0.00000000000000000E+00 ! Position
+   marker.type (                    $M_HSShaft_Bearing_HS_A       ) = 2                       ! Type
+   marker.parent (                  $M_HSShaft_Bearing_HS_A       ) = $BG_stage_03.$B_HSShaft ! Body
+   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_A       ) = { -230*$SVG_stage_03.$_gamma_d mm } ! Position
+   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_A       ) = 0.00000000000000000E+00 ! Position
 
    marker.type (                    $M_HSShaft_Bearing_HS_B       ) = 2                       ! Type
    marker.parent (                  $M_HSShaft_Bearing_HS_B       ) = $BG_stage_03.$B_HSShaft ! Body
    marker.pos (           1 ,       $M_HSShaft_Bearing_HS_B       ) = { 230*$SVG_stage_03.$_gamma_d mm } ! Position
    marker.pos (           2 ,       $M_HSShaft_Bearing_HS_B       ) = 0.00000000000000000E+00 ! Position
 
-   marker.type (                    $M_HSShaft_Bearing_HS_A       ) = 2                       ! Type
-   marker.parent (                  $M_HSShaft_Bearing_HS_A       ) = $BG_stage_03.$B_HSShaft ! Body
-   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_A       ) = { -230*$SVG_stage_03.$_gamma_d mm } ! Position
-   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_A       ) = 0.00000000000000000E+00 ! Position
+   marker.type (                    $M_HSShaft_Bearing_HS_C       ) = 2                       ! Type
+   marker.parent (                  $M_HSShaft_Bearing_HS_C       ) = $BG_stage_03.$B_HSShaft ! Body
+   marker.pos (           1 ,       $M_HSShaft_Bearing_HS_C       ) = { 280*$SVG_stage_03.$_gamma_L mm } ! Position
+   marker.pos (           2 ,       $M_HSShaft_Bearing_HS_C       ) = 0.00000000000000000E+00 ! Position
 
    joint.from (                     $J_HSShaft                    ) = $M_Gearbox_Frame_Shaft_Gen ! From Marker
    joint.to (                       $J_HSShaft                    ) = $BG_stage_03.$M_HSShaft_BRF ! To Marker
@@ -5614,13 +5613,13 @@ connect.par (             4 ,   3 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000
 connect.par (             4 ,   3 ,   3 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable maximum
 connect.par (             4 ,   4 ,   3 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Enable maximum
 connect.par (             4 ,  10 , $CTN_bed_plate_motion         ) = 1.00000000000000000E+00 ! [-] Advanced
-connect.par (             4 ,  10 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Translation in x min
+connect.par (             4 ,  10 ,   1 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Translation in x               min
 connect.par (             4 ,  10 ,   1 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
 connect.par (             4 ,  10 ,   1 ,   2 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Root handling
 connect.par (             4 ,  10 ,   1 ,   5 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Restitution coefficient
 connect.par (             4 ,  10 ,   1 ,   6 , $CTN_bed_plate_motion) = 1.00000000000000000E+08 ! [N/m] Stiffness
 connect.par (             4 ,  10 ,   1 ,   7 , $CTN_bed_plate_motion) = 1.00000000000000000E+08 ! [Ns/m] Damping
-connect.par (             4 ,  10 ,   2 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Translation in x max
+connect.par (             4 ,  10 ,   2 , $CTN_bed_plate_motion   ) = 0.00000000000000000E+00 ! [-] Translation in x               max
 connect.par (             4 ,  10 ,   2 ,   1 , $CTN_bed_plate_motion) = 0.00000000000000000E+00 ! [-] Enforcement
 connect.par (             4 ,  10 ,   2 ,   2 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Root handling
 connect.par (             4 ,  10 ,   2 ,   5 , $CTN_bed_plate_motion) = 1.00000000000000000E+00 ! [-] Restitution coefficient
@@ -5694,9 +5693,9 @@ connect.par (             3 ,   3 , $CTN_bed_plate_fixed          ) = 0.00000000
 connect.par (             3 ,   4 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [m] Translation in y
 connect.par (             3 ,   5 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [m] Translation in z
 connect.par (             3 ,   6 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [-] Rotation sequence
-connect.par (             3 ,   7 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation alpha
-connect.par (             3 ,   8 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation beta
-connect.par (             3 ,   9 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation gamma
+connect.par (             3 ,   7 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation about al
+connect.par (             3 ,   8 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation about be
+connect.par (             3 ,   9 , $CTN_bed_plate_fixed          ) = 0.00000000000000000E+00 ! [rad] Rotation about ga
 
 !**********************************************************************
 ! Input Functions

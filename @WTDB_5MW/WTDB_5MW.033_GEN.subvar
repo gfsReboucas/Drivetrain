@@ -1,0 +1,106 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+subvar($G_PA.$G_BR.$G_GRO.$_1_X, str= '-1.05 m', status= 1, txt= 'x-pos. Generator ROtor BeaRing 1 (wrt. Generator ROtor reference frame)') ! $G_PA.$G_BR.$G_GRO.$_1_X
+subvar($G_PA.$G_BR.$G_GRO.$_2_X, str= '1.05 m', status= 1, txt= 'x-pos. Generator ROtor BeaRing 1 (wrt. Generator ROtor reference frame)') ! $G_PA.$G_BR.$G_GRO.$_2_X
+subvar($G_PA.$G_BU.$G_STR.$G_01.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_01.$_X
+subvar($G_PA.$G_BU.$G_STR.$G_01.$_Y, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_01.$_Y
+subvar($G_PA.$G_BU.$G_STR.$G_01.$_Z, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_01.$_Z
+subvar($G_PA.$G_BU.$G_STR.$G_02.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_02.$_X
+subvar($G_PA.$G_BU.$G_STR.$G_02.$_Y, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_02.$_Y
+subvar($G_PA.$G_BU.$G_STR.$G_02.$_Z, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_02.$_Z
+subvar($G_PA.$G_BU.$G_STR.$G_03.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_03.$_X
+subvar($G_PA.$G_BU.$G_STR.$G_03.$_Y, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_03.$_Y
+subvar($G_PA.$G_BU.$G_STR.$G_03.$_Z, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_03.$_Z
+subvar($G_PA.$G_BU.$G_STR.$G_04.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_04.$_X
+subvar($G_PA.$G_BU.$G_STR.$G_04.$_Y, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_04.$_Y
+subvar($G_PA.$G_BU.$G_STR.$G_04.$_Z, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_PA.$G_BU.$G_STR.$G_04.$_Z
+subvar($G_PA.$G_SCN.$_CPL_2_GEN_X, str= '$G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X', intent= 2, status= 1, txt= 'x-pos. CouPLing connection to GENerator (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_CPL_2_GEN_X
+subvar($G_PA.$G_TRQ.$_X, str= '0 m', status= 1, txt= 'x-pos. of to marker for GENerator ToRQue (wrt. Generator ROtor reference frame)') ! $G_PA.$G_TRQ.$_X
+subvar($G_HP.$G_CPL.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_X', intent= 2, status= 1, txt= 'x-pos. of CouPLing reference marker (wrt. to DRiveTrain reference frame)') ! $G_HP.$G_CPL.$_X
+subvar($G_HP.$G_CPL.$_R, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_R', intent= 2, status= 1, txt= 'radial pos. of CouPLing reference marker (wrt. DriveTRain reference frame)') ! $G_HP.$G_CPL.$_R
+subvar($G_HP.$G_CPL.$_ang, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_ang', intent= 2, status= 1, txt= 'offset angle (around alpha) of CouPLing reference marker (wrt. DRiveTrain reference frame)') ! $G_HP.$G_CPL.$_ang
+subvar($G_HP.$G_GEN.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_GEN.$_X', intent= 2, status= 1, txt= 'x-pos. of STatoR reference marker (wrt. DriveTRain reference frame)') ! $G_HP.$G_GEN.$_X
+subvar($G_KP.$G_GRO.$_BR1_X, str= '$G_PA.$G_BR.$G_GRO.$_1_X', intent= 2, status= 1, txt= 'x-pos. Generator ROtor BeaRing 1 (wrt. Generator ROtor reference frame)') ! $G_KP.$G_GRO.$_BR1_X
+subvar($G_KP.$G_GRO.$_BR2_X, str= '$G_PA.$G_BR.$G_GRO.$_2_X', intent= 2, status= 1, txt= 'x-pos. Generator ROtor BeaRing 2 (wrt. Generator ROtor reference frame)') ! $G_KP.$G_GRO.$_BR2_X
+subvar($G_KP.$G_GRO.$_CPL_X, str= '$G_HP.$G_CPL.$_X \n- $G_HP.$G_GEN.$_X\n+ $G_PA.$G_SCN.$_CPL_2_GEN_X ', intent= 2, status= 1, txt= 'x-pos. connection to Generator ROtor (wrt. Generator ROtor reference frame)') ! $G_KP.$G_GRO.$_CPL_X
+subvar($G_KP.$G_GRO.$_TRQ_X, str= '$G_PA.$G_TRQ.$_X', intent= 2, status= 1, txt= 'x-pos. of to marker for GENerator ToRQue (wrt. Generator ROtor reference frame)') ! $G_KP.$G_GRO.$_TRQ_X
+subvar($G_KP.$G_STR.$_BR1_X, str= '$G_PA.$G_BR.$G_GRO.$_1_X', intent= 2, status= 1, txt= 'x-pos. STatoR BeaRing 1 (wrt. STatoR reference frame)') ! $G_KP.$G_STR.$_BR1_X
+subvar($G_KP.$G_STR.$_BR2_X, str= '$G_PA.$G_BR.$G_GRO.$_2_X', intent= 2, status= 1, txt= 'x-pos. STatoR BeaRing 2 (wrt. STatoR reference frame)') ! $G_KP.$G_STR.$_BR2_X
+subvar($G_KP.$G_STR.$_TRQ_X, str= '$G_PA.$G_TRQ.$_X', intent= 2, status= 1, txt= 'x-pos. of from marker for GENerator ToRQue (wrt. STatoR reference frame)') ! $G_KP.$G_STR.$_TRQ_X
+subvar($G_KP.$G_STR.$_BU1_X, str= '$G_PA.$G_BU.$G_STR.$G_01.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU1_X
+subvar($G_KP.$G_STR.$_BU1_Y, str= '$G_PA.$G_BU.$G_STR.$G_01.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU1_Y
+subvar($G_KP.$G_STR.$_BU1_Z, str= '$G_PA.$G_BU.$G_STR.$G_01.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU1_Z
+subvar($G_KP.$G_STR.$_BU2_X, str= '$G_PA.$G_BU.$G_STR.$G_02.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU2_X
+subvar($G_KP.$G_STR.$_BU2_Y, str= '$G_PA.$G_BU.$G_STR.$G_02.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU2_Y
+subvar($G_KP.$G_STR.$_BU2_Z, str= '$G_PA.$G_BU.$G_STR.$G_02.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU2_Z
+subvar($G_KP.$G_STR.$_BU3_X, str= '$G_PA.$G_BU.$G_STR.$G_03.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU3_X
+subvar($G_KP.$G_STR.$_BU3_Y, str= '$G_PA.$G_BU.$G_STR.$G_03.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU3_Y
+subvar($G_KP.$G_STR.$_BU3_Z, str= '$G_PA.$G_BU.$G_STR.$G_03.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU3_Z
+subvar($G_KP.$G_STR.$_BU4_X, str= '$G_PA.$G_BU.$G_STR.$G_04.$_X', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU4_X
+subvar($G_KP.$G_STR.$_BU4_Y, str= '$G_PA.$G_BU.$G_STR.$G_04.$_Y', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU4_Y
+subvar($G_KP.$G_STR.$_BU4_Z, str= '$G_PA.$G_BU.$G_STR.$G_04.$_Z', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_KP.$G_STR.$_BU4_Z
+subvar($G_BP.$G_GRO.$_M, str= '5290.64 kg', status= 1, txt= 'Mass')                           ! $G_BP.$G_GRO.$_M
+subvar($G_BP.$G_GRO.$_CMX, str= '-0.00354 m', status= 1, txt= 'Center of Mass, wrt. BRF')     ! $G_BP.$G_GRO.$_CMX
+subvar($G_BP.$G_GRO.$_CMY, str= '0 m', status= 1, txt= 'Center of Mass, wrt. BRF')            ! $G_BP.$G_GRO.$_CMY
+subvar($G_BP.$G_GRO.$_CMZ, str= '0 m', status= 1, txt= 'Center of Mass, wrt. BRF')            ! $G_BP.$G_GRO.$_CMZ
+subvar($G_BP.$G_GRO.$_IXX, str= '300 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')     ! $G_BP.$G_GRO.$_IXX
+subvar($G_BP.$G_GRO.$_IYY, str= '8957.122 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_GRO.$_IYY
+subvar($G_BP.$G_GRO.$_IZZ, str= '8957.122 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_GRO.$_IZZ
+subvar($G_BP.$G_GRO.$_ECC_SWITCH, str= '0', status= 1, discr.desc (   1) = 'Off', discr.desc (   2) = 'On', discr.str (   1) = '0', discr.str (   2) = '1', txt= 'ECCentricity switch: 0:off / 1:on; If on, the center of gravity of the Generator ROtor has an eccenctric position.') ! $G_BP.$G_GRO.$_ECC_SWITCH
+subvar($G_BP.$G_GRO.$_ECC_R, str= '0.00002 m', status= 1, txt= 'ECCentricity')                ! $G_BP.$G_GRO.$_ECC_R
+subvar($G_BP.$G_STR.$_M, str= '18000 kg', status= 1, txt= 'Mass')                             ! $G_BP.$G_STR.$_M
+subvar($G_BP.$G_STR.$_CMX, str= '0.1549 m', status= 1, txt= 'Center of Mass, wrt. BRF')       ! $G_BP.$G_STR.$_CMX
+subvar($G_BP.$G_STR.$_CMY, str= '0 m', status= 1, txt= 'Center of Mass, wrt. BRF')            ! $G_BP.$G_STR.$_CMY
+subvar($G_BP.$G_STR.$_CMZ, str= '0 m', status= 1, txt= 'Center of Mass, wrt. BRF')            ! $G_BP.$G_STR.$_CMZ
+subvar($G_BP.$G_STR.$_IXX, str= '3324.981 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_STR.$_IXX
+subvar($G_BP.$G_STR.$_IYY, str= '30171.67 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_STR.$_IYY
+subvar($G_BP.$G_STR.$_IZZ, str= '30133.394 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_STR.$_IZZ
+subvar($G_FE.$G_BU.$G_STR.$_C_X, str= '1000000000 N/m', status= 1, txt= 'stiffness in x-direction') ! $G_FE.$G_BU.$G_STR.$_C_X
+subvar($G_FE.$G_BU.$G_STR.$_C_Y, str= '1000000000 N/m', status= 1, txt= 'stiffness in y-direction') ! $G_FE.$G_BU.$G_STR.$_C_Y
+subvar($G_FE.$G_BU.$G_STR.$_C_Z, str= '1000000000 N/m', status= 1, txt= 'stiffness in z-direction') ! $G_FE.$G_BU.$G_STR.$_C_Z
+subvar($G_FE.$G_BU.$G_STR.$_D_X, str= '350000 Ns/m', status= 1, txt= 'damping in x-direction') ! $G_FE.$G_BU.$G_STR.$_D_X
+subvar($G_FE.$G_BU.$G_STR.$_D_Y, str= '350000 Ns/m', status= 1, txt= 'damping in y-direction') ! $G_FE.$G_BU.$G_STR.$_D_Y
+subvar($G_FE.$G_BU.$G_STR.$_D_Z, str= '350000 Ns/m', status= 1, txt= 'damping in z-direction') ! $G_FE.$G_BU.$G_STR.$_D_Z
+subvar($G_FE.$G_BR.$G_GRO.$_C_A, str= '5000000000 N/m', status= 1, txt= 'axial stiffness (in x-direction)') ! $G_FE.$G_BR.$G_GRO.$_C_A
+subvar($G_FE.$G_BR.$G_GRO.$_C_R, str= '5000000000 N/m', status= 1, txt= 'radial stiffness (in y- and z-direction)') ! $G_FE.$G_BR.$G_GRO.$_C_R
+subvar($G_FE.$G_BR.$G_GRO.$_D_A, str= '260000 Ns/m', status= 1, txt= 'axial damping (in x-direction)') ! $G_FE.$G_BR.$G_GRO.$_D_A
+subvar($G_FE.$G_BR.$G_GRO.$_D_R, str= '350000 Ns/m', status= 1, txt= 'radial damping (in y- and z-direction)') ! $G_FE.$G_BR.$G_GRO.$_D_R
+subvar($G_DOF.$G_GRO.$_TLT, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TiLTing') ! $G_DOF.$G_GRO.$_TLT
+subvar($G_DOF.$G_GRO.$_TRANS_X, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TRANSlation in X') ! $G_DOF.$G_GRO.$_TRANS_X
+subvar($G_DOF.$G_GRO.$_TRANS_Y, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TRANSlation in Y') ! $G_DOF.$G_GRO.$_TRANS_Y
+subvar($G_DOF.$G_GRO.$_TRANS_Z, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TRANSlation in Z') ! $G_DOF.$G_GRO.$_TRANS_Z
+subvar($G_DOF.$G_STR.$_TLT, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TiLTing') ! $G_DOF.$G_STR.$_TLT
+subvar($G_DOF.$G_STR.$_TRANS_X, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TRANSlation in X') ! $G_DOF.$G_STR.$_TRANS_X
+subvar($G_DOF.$G_STR.$_TRANS_Y, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TRANSlation in Y') ! $G_DOF.$G_STR.$_TRANS_Y
+subvar($G_DOF.$G_STR.$_TRANS_Z, str= '0', intent= 1, status= 1, discr.desc (   1) = 'Disabled', discr.desc (   2) = 'Enabled', discr.str (   1) = '1', discr.str (   2) = '0', txt= 'TRANSlation in Z') ! $G_DOF.$G_STR.$_TRANS_Z
+subvar($G_3D.$G_GRO.$_TRANSPARENCY, str= '0', intent= 1, status= 1, txt= 'Transparency')      ! $G_3D.$G_GRO.$_TRANSPARENCY
+subvar($G_3D.$G_GRO.$G_BR.$_1_D_O, str= '$G_3D.$G_GRO.$G_BR.$_1_D_I + 0.1 m', intent= 1, status= 1, txt= 'Diameter Out') ! $G_3D.$G_GRO.$G_BR.$_1_D_O
+subvar($G_3D.$G_GRO.$G_BR.$_1_D_I, str= '0.46 m', intent= 0, status= 1, txt= 'Diameter In')   ! $G_3D.$G_GRO.$G_BR.$_1_D_I
+subvar($G_3D.$G_GRO.$G_BR.$_1_L, str= '0.15 m', intent= 0, status= 1, txt= 'Lenght')          ! $G_3D.$G_GRO.$G_BR.$_1_L
+subvar($G_3D.$G_GRO.$G_BR.$_2_D_O, str= '$G_3D.$G_GRO.$G_BR.$_2_D_I + 0.1 m', intent= 1, status= 1, txt= 'Diameter Out') ! $G_3D.$G_GRO.$G_BR.$_2_D_O
+subvar($G_3D.$G_GRO.$G_BR.$_2_D_I, str= '0.46 m', intent= 0, status= 1, txt= 'Diameter In')   ! $G_3D.$G_GRO.$G_BR.$_2_D_I
+subvar($G_3D.$G_GRO.$G_BR.$_2_L, str= '0.15 m', intent= 0, status= 1, txt= 'Lenght')          ! $G_3D.$G_GRO.$G_BR.$_2_L
+subvar($G_3D.$G_STR.$_TRANSPARENCY, str= '0.75', intent= 1, status= 1, txt= 'Transparency')   ! $G_3D.$G_STR.$_TRANSPARENCY
+subvar($G_3D.$G_STR.$G_BU.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_X', intent= 1, status= 1, txt= 'x-dimension, stator bushing') ! $G_3D.$G_STR.$G_BU.$_X
+subvar($G_3D.$G_STR.$G_BU.$_Y, str= '$G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_Y', intent= 1, status= 1, txt= 'y-dimension, stator bushing') ! $G_3D.$G_STR.$G_BU.$_Y
+subvar($G_3D.$G_STR.$G_BU.$_Z, str= '$G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_Z', intent= 1, status= 1, txt= 'z-dimension, stator bushing') ! $G_3D.$G_STR.$G_BU.$_Z
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_X, str= '-0.9 m', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_Y, str= '0.69675 m', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_Y
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_Z, str= '-0.667694 m', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 1 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_01.$_Z
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_X, str= '-0.9 m', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_Y, str= '-0.69675 m', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_Y
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_Z, str= '-0.667694 m', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 2 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_02.$_Z
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_X, str= '0.9 m', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_Y, str= '0.69675 m', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_Y
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_Z, str= '-0.667694 m', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 3 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_03.$_Z
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_X, str= '0.9 m', intent= 2, status= 1, txt= 'x-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_Y, str= '-0.69675 m', intent= 2, status= 1, txt= 'y-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_Y
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_Z, str= '-0.667694 m', intent= 2, status= 1, txt= 'z-pos. of STaTor BUshing 4 (wrt. STaTor reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BU.$G_GEN.$G_04.$_Z
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_GEN.$_X, str= '5.2425 m', intent= 2, status= 1, txt= 'x-pos. of GENerator reference marker (wrt. DriveTRain reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_GEN.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_X, str= '2.89 m', intent= 2, status= 1, txt= 'x-pos. of CouPLing reference marker (wrt. to DRiveTrain reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_R, str= '0.68 m', intent= 2, status= 1, txt= 'radial pos. of CouPLing reference marker (wrt. DriveTRain reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_R
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_ang, str= '36 deg', intent= 2, status= 1, txt= 'offset angle (around alpha) of CouPLing reference marker (wrt. DRiveTrain reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_CPL.$_ang
+subvar($G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_X, str= '0.3 m', intent= 2, status= 1, txt= 'x-dimension, stator bushing') ! $G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_Y, str= '0.15 m', intent= 2, status= 1, txt= 'y-dimension, stator bushing') ! $G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_Y
+subvar($G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_Z, str= '0.1 m', intent= 2, status= 1, txt= 'z-dimension, stator bushing') ! $G_INTERFACE.$G_031_MFR.$G_3D.$G_STR.$G_BU.$_Z
+subvar($G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X, str= '0.79 m', intent= 2, status= 1, txt= 'x-pos. CouPLing connection to GENerator (wrt. CouPLing reference frame)') ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X

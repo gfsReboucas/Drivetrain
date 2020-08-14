@@ -84,6 +84,9 @@ classdef NREL_5MW < Drivetrain
 %                            'dynamic_model', @Lin_Parker_99);
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);
+
+            [obj.S_H_val, obj.S_F_val, ...
+                obj.S_shaft_val] = obj.safety_factors();
         end
     end
     
@@ -104,21 +107,21 @@ classdef NREL_5MW < Drivetrain
                     error();
             end
             
-            calc = ISO_6336(obj.stage(idx), 'calculation', 'default', ...
-                                            'P_rated'    , obj.P_rated, ...
-                                            'n_out'      , obj.n_out(idx), ...
-                                            'S_Hmin'     , obj.S_Hmin, ...
-                                            'S_Fmin'     , obj.S_Fmin, ...
-                                            'L_h'        , L_h, ... % [h], Required life
-                                            'K_A'        , K_A, ... % [-], Application factor
-                                            'nu_40'      , 220.0, ... % [], lubricant viscosity
-                                            'n_nominal'  , n_idx);
-            [SH, SF] = calc.safety_factors('lubricant_ID', '11220', ...
+            calc = KSISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
+                                              'n_out'       , obj.n_out(idx), ...
+                                              'S_Hmin'      , obj.S_Hmin, ...
+                                              'S_Fmin'      , obj.S_Fmin, ...
+                                              'L_h'         , L_h, ... % [h], Required life
+                                              'K_A'         , K_A, ... % [-], Application factor
+                                              'lubricant_ID', 11170, ...
+                                              'nu_40'       , 220.0, ... % [], lubricant viscosity
+                                              'n_nominal'   , n_idx);
+            [SH, SF] = calc.safety_factors('lubricant_ID', 11220, ...
                                            'nu_40'       , 220.0, ...
                                            'stage_idx'   ,   idx, ...
                                            'save_report' , false, ...
                                            'show_report' , false);
-
+            
             K_f  = 1.0; % [-], Fatigue stress-concentration factor for bending
             K_fs = 1.0; % [-], Fatigue stress-concentration factor for torsion
             
@@ -512,21 +515,28 @@ classdef NREL_5MW < Drivetrain
             freq_free = 2.18; % [Hz], taken from [3], p. 45
             freq_fix  = mean([0.6205 0.6094]); % [Hz], taken from [2], Table 9-1. Mean of the results obtained using FAST and ADAMS, respectively.
             
+            rho = Material().rho*1.0e9;
+            
             J_r_fix   = k_eq/(2*pi*freq_fix)^2;
             J_r_free  = (k_eq*J_g*u^2)/(J_g*(2.0*pi*u*freq_free)^2 - k_eq);
             J_r_ratio = ((freq_free/freq_fix)^2 - 1.0)*J_g*u^2;
             
             R_cyl = sqrt(2.0*J_r_ratio/m_r); % [m], cylinder radius
-            h_cyl = m_r/(Material.rho*pi*R_cyl^2); % [m], cylinder height
+            h_cyl = m_r/(rho*pi*R_cyl^2); % [m], cylinder height
             
-            fprintf('Rotor mass moment of inertia using:\n')
-            fprintf('\t Rigid free-fixed resonance (%3.4e [Hz]):\t %3.4e [kg-m^2]\n', freq_fix, J_r_fix);
-            fprintf('\t Rigid free-free  resonance (%3.4e [Hz]):\t %3.4e [kg-m^2]\n', freq_free, J_r_free);
-            fprintf('\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n', J_r_ratio);
-            fprintf('Cylindric rotor dimensions: R = %.3f \t h = %.3f [m]\n', R_cyl, h_cyl);
-            
+            f = @(x)([(pi*rho/m_r)            .*x(1, :).*(1.0 - x(3, :).^2).*x(2, :)^2 - 1.0; ...
+                      (pi*rho/(2.0*J_r_ratio)).*x(1, :).*(1.0 - x(3, :).^4).*x(2, :)^4 - 1.0]);
+            x = fmincon(@(x)(norm(f(x)))^2, rand*ones(3,1), [], [], [], [], zeros(3, 1), [Inf, Inf, 1.0]');
+            r_ext = x(2);           r_int = x(3)*r_ext;           h = x(1);
+
+            fprintf("Rotor mass moment of inertia using:\n");
+            fprintf("\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
+            fprintf("\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
+            fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
+            fprintf("Rotor dimensions assuming:\n");
+            fprintf("\t Cylindric geometry: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
+            fprintf("\t Cylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n", r_ext, r_int, h);
         end
-        
     end
     
     methods
