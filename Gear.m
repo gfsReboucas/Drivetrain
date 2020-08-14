@@ -399,6 +399,46 @@ classdef Gear < Rack
             end
             
         end
+        
+        function [u, v, w, k] = gear_dimensions(obj, option, val)
+            if(length(val) ~= 2)
+                error('Gear:dimensions', 'Wrong number of parameters.');
+            end
+            
+            if(isrow(val))
+                val = val';
+            end
+            
+            I = eye(2);
+            c = [-1.0, 1.0]';
+            A = diag(flipud(c));
+            u = zeros(length(obj.z));
+            switch(option)
+                case 'coefficient' % u = (1/m_n) I v + c x
+                    u = val;
+                    v = obj.m_n*(u - c*obj.x);
+                    w = A\(2*v - c*obj.d);
+                case 'height' % v = (1/2) A w + (1/2) c d
+                    v = val;
+                    u = (1.0/obj.m_n)*I*v + c*obj.x;
+                    w = A\(2*v - c*obj.d);
+                case 'diameter' % w
+                    w = val;
+                    v = (1.0/2.0)*(A*w + c*obj.d);
+                    u = (1.0/obj.m_n)*I*v + c*obj.x;
+                otherwise
+                    error('Gear:dimensions', 'Option [%s] is NOT valid', upper(option));
+            end
+            
+            k = u(1)*obj.m_n - v(1);
+            
+            fprintf('Coefficients: Addendum: %4.3f\tDedendum: %4.3f.\n', u);
+            fprintf('Heights     : Addendum: %4.3f\tDedendum: %4.3f mm.\n', v);
+            fprintf('Diameters   :      Tip: %4.3f\t    Root: %4.3f mm.\n', w);
+            fprintf('Tooth depth modification, k: %.3f.\n', k);
+                        
+        end
+        
     end
     
     %% Set methods:
@@ -597,6 +637,7 @@ classdef Gear < Rack
         end
     end
     
+    %% Static methods:
 end
 
 function x_r = round_ISO(x)

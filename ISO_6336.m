@@ -396,6 +396,9 @@ classdef ISO_6336 < Gear_Set
             end
             
 %             sig_H = diag(obj.S_H)*sig_H;
+
+            duration = (length(input_torque)-1)./fs; % [s]
+            k_N = obj.L_h*3600.0/duration;
             
             n = 60.0*obj.L_h*edge_speed*obj.u;
             
