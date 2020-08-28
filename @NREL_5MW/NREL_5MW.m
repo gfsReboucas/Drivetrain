@@ -1058,7 +1058,6 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_z_planet, str = '17')                                     ! $SVG_stage_01.$_z_planet\n");
             fprintf(new_ID, "   subvar($_z_ring, str = '56')                                       ! $SVG_stage_01.$_z_ring\n");
             fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_01.$_gamma_m_n mm') ! $SVG_stage_01.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Damping, str = '500000000')                         ! $SVG_stage_01.$_Tooth_Damping\n");
             fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_01.$_Tooth_Stiff_ratio\n");
             fprintf(new_ID, "   subvar($_k_SP, str = '%g N/m')                                     ! $SVG_stage_01.$_k_SP\n", k_sp(1));
             fprintf(new_ID, "   subvar($_k_RP, str = '%g N/m')                                     ! $SVG_stage_01.$_k_RP\n", k_rp(1));
@@ -1124,7 +1123,6 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_z_planet, str = '36')                                     ! $SVG_stage_02.$_z_planet\n");
             fprintf(new_ID, "   subvar($_z_ring, str = '93')                                       ! $SVG_stage_02.$_z_ring\n");
             fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_02.$_gamma_m_n mm') ! $SVG_stage_02.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Damping, str = '50000000')                          ! $SVG_stage_02.$_Tooth_Damping\n");
             fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_02.$_Tooth_Stiff_ratio\n");
             fprintf(new_ID, "   subvar($_k_SP, str = '%g N/m')                                  ! $SVG_stage_02.$_k_SP\n", k_sp(2));
             fprintf(new_ID, "   subvar($_k_RP, str = '%g N/m')                                  ! $SVG_stage_02.$_k_RP\n", k_rp(2));
@@ -1189,7 +1187,6 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_z_pinion, str = '24')                                     ! $SVG_stage_03.$_z_pinion\n");
             fprintf(new_ID, "   subvar($_z_gear, str = '95')                                       ! $SVG_stage_03.$_z_gear\n");
             fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_03.$_gamma_m_n mm') ! $SVG_stage_03.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Damping, str = '5000000')                           ! $SVG_stage_03.$_Tooth_Damping\n");
             fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_03.$_Tooth_Stiff_ratio\n");
             fprintf(new_ID, "   subvar($_k_mesh, str = '%g N/m')                                ! $SVG_stage_03.$_k_mesh\n", k_3);
             fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_03.$_mesh_damping\n");
