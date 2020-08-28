@@ -408,6 +408,28 @@ classdef (Abstract) ISO_6336 < Gear_Set
         end
         
         function [N, edges, bin] = LDD(signal, varargin)
+            % adapted from Simpack's Load Calculation Tool [1], script 
+            % SC_ldd.qs
+            %
+            % [1] Simpack Wind. Access on 28.08.2020. 
+            % https://www.3ds.com/products-services/simulia/training/course-descriptions/simpack-wind/
+            %
+            
+            num_bins = 40;
+            LDD_data = zeros(1, num_bins);
+            for idx = 1:length(signal)
+                delta = signal(idx) - bin_min;
+                act_test = floor(delta/bin_step);
+                
+                if(act_test == -1)
+                    bin_test = 1;
+%                 elseif(bin_test == num_bins)
+%                     bin_test = num_bins - 1;
+                end
+                % oc is the occurrence?
+                LDD_data(bin_test) = LDD_data(bin_test) + time_step*oc;
+            end
+            
 %             [x_min, x_Max] = bounds(signal);
             
 %             edges = linspace(x_min, x_Max, 200);

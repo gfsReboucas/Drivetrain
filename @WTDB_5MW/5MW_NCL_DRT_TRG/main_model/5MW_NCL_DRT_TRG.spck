@@ -3,9 +3,9 @@
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20200002
 version.desc   = ''
-version.build  = 82
+version.build  = 149
 
 !**********************************************************************
 !  Global parameters
@@ -77,9 +77,9 @@ substr.attr.2d.height (             $S_TRG                        ) = 4.00000000
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = -3.09439411163330078E+01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -7.34413681030273438E+01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 2.38639717102050781E+01 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = -1.12727117538452148E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -2.56868457794189453E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.00875253677368164E+01 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation

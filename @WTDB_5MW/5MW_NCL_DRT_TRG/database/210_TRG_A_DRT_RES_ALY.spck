@@ -3,9 +3,9 @@
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20200002
 version.desc   = ''
-version.build  = 82
+version.build  = 149
 
 !**********************************************************************
 !  Global parameters
@@ -202,8 +202,10 @@ slv.integ.tout.freq (               $GlobalSolverSettings         ) = $G_SLV.$_S
 slv.integ.tend.time (               $GlobalSolverSettings         ) = $G_SLV.$_TIME           ! TIME_INTEG_TIMEPAR_END_TIME
 slv.integ.atol.gen (                $GlobalSolverSettings         ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
 slv.integ.atol.vel (                $GlobalSolverSettings         ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.atol.body.flx.st.vel (    $GlobalSolverSettings         ) = $G_SLV.$_FBVS           ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
 slv.integ.rtol.gen (                $GlobalSolverSettings         ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
 slv.integ.rtol.vel (                $GlobalSolverSettings         ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.body.flx.st.vel (    $GlobalSolverSettings         ) = $G_SLV.$_FBVS           ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
 slv.meas.geo (                      $GlobalSolverSettings         ) = 1                       ! Animation data to result file
 slv.meas.sensor.pos (               $GlobalSolverSettings         ) = 1                       ! Sensor position to result file
 slv.meas.sensor.vel (               $GlobalSolverSettings         ) = 1                       ! Sensor velocity to result file
@@ -230,7 +232,9 @@ slv.meas.subvar (                   $GlobalSolverSettings         ) = 1         
 slv.assmbl.task (                   $GlobalSolverSettings         ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
 slv.output.path.type (              $GlobalSolverSettings         ) = 1                       ! OUTPUT_PATH_PAR_TYPE
 slv.output.file.basename (          $GlobalSolverSettings         ) = ''                      ! OUTPUT_FILEBASENAME
+slv.output.mat.enabled (            $GlobalSolverSettings         ) = 1                       ! mat file generation 0 = disable; 1 = enable
 slv.output.eva.enabled (            $GlobalSolverSettings         ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $GlobalSolverSettings         ) = ''                      ! Description written to the output file if supported
 slv.output.fileinlining.enabled (   $GlobalSolverSettings         ) = 0                       ! file inlining 0 = disable; 1 = enable
 slv.threads (                       $GlobalSolverSettings         ) = $G_SLV.$_N_CPU_Cores    ! Solver Threads
 slv.compat.solver (                 $GlobalSolverSettings         ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
@@ -244,12 +248,12 @@ slv.txt (                           $GlobalSolverSettings         ) = ''        
 ! SubVars
 !**********************************************************************
 subvargroup.begin (                 $G_SLV                        )                           ! $G_SLV
-   subvar.str (                     $_TIME                        ) = '100 s'                 ! $G_SLV.$_TIME, Definition
+   subvar.str (                     $_TIME                        ) = '10 s'                  ! $G_SLV.$_TIME, Definition
    subvar.intent (                  $_TIME                        ) = 0                       ! Intent
    subvar.status (                  $_TIME                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
    subvar.txt (                     $_TIME                        ) = 'simulation TIME'       ! Comment
 
-   subvar.str (                     $_SAMPLE_RATE                 ) = '1000 Hz'               ! $G_SLV.$_SAMPLE_RATE, Definition
+   subvar.str (                     $_SAMPLE_RATE                 ) = '200 Hz'                ! $G_SLV.$_SAMPLE_RATE, Definition
    subvar.intent (                  $_SAMPLE_RATE                 ) = 0                       ! Intent
    subvar.status (                  $_SAMPLE_RATE                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
    subvar.txt (                     $_SAMPLE_RATE                 ) = 'SAMPLE RATE'           ! Comment
@@ -258,6 +262,9 @@ subvargroup.begin (                 $G_SLV                        )             
    subvar.intent (                  $_N_CPU_Cores                 ) = 0                       ! Intent
    subvar.status (                  $_N_CPU_Cores                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
    subvar.txt (                     $_N_CPU_Cores                 ) = 'Number of CPU CORES'   ! Comment
+
+   subvar.str (                     $_FBVS                        ) = '1.0e-4'                ! $G_SLV.$_FBVS, Definition
+   subvar.txt (                     $_FBVS                        ) = 'FlexBody Velocity States' ! Comment
 
 subvargroup.end (                   $G_SLV                        )                           ! $G_SLV
 
@@ -297,7 +304,7 @@ subvargroup.end (                   $G_KP                         )             
 subvargroup.txt (                   $G_KP                         ) = 'Kinematic Points'      ! Comment
 
 subvargroup.begin (                 $G_HL                         )                           ! $G_HL
-   subvar.str (                     $_DRV_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_DRV_disabled, Definition
+   subvar.str (                     $_DRV_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 1;\n   CASE 3: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_DRV_disabled, Definition
    subvar.intent (                  $_DRV_disabled                ) = 2                       ! Intent
    subvar.status (                  $_DRV_disabled                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
 
@@ -305,17 +312,20 @@ subvargroup.begin (                 $G_HL                         )             
    subvar.intent (                  $_GEN_TRQ_RunUp_gain          ) = 2                       ! Intent
    subvar.status (                  $_GEN_TRQ_RunUp_gain          ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
 
-   subvar.str (                     $_BLP_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_BLP_disabled, Definition
+   subvar.str (                     $_BLP_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 1;\n   CASE 3: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_BLP_disabled, Definition
    subvar.intent (                  $_BLP_disabled                ) = 2                       ! Intent
    subvar.status (                  $_BLP_disabled                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
 
-   subvar.str (                     $_ROT_TRQ_static_disabled     ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 1;\n   CASE 1: 0;\n   CASE 2: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_ROT_TRQ_static_disabled, Definition
+   subvar.str (                     $_ROT_TRQ_static_disabled     ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 1;\n   CASE 1: 0;\n   CASE 2: 1;\n   CASE 3: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_ROT_TRQ_static_disabled, Definition
    subvar.intent (                  $_ROT_TRQ_static_disabled     ) = 2                       ! Intent
    subvar.status (                  $_ROT_TRQ_static_disabled     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
 
    subvar.str (                     $_GEN_TRQ_static_gain         ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 0;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_GEN_TRQ_static_gain, Definition
    subvar.intent (                  $_GEN_TRQ_static_gain         ) = 2                       ! Intent
    subvar.status (                  $_GEN_TRQ_static_gain         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvar.str (                     $_DLC_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 1;\n   CASE 1: 1;\n   CASE 2: 1;\n   CASE 3: 0;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_DLC_disabled, Definition
+   subvar.intent (                  $_DLC_disabled                ) = 2                       ! Intent
 
    subvar.str (                     $_TWR_H                       ) = '$G_INTERFACE.$G_020_TWR.$G_HL.$_H' ! $G_HL.$_TWR_H, Definition
    subvar.intent (                  $_TWR_H                       ) = 2                       ! Intent
@@ -356,15 +366,17 @@ subvargroup.end (                   $G_FE                         )             
 subvargroup.txt (                   $G_FE                         ) = 'Force Elements'        ! Comment
 
 subvargroup.begin (                 $G_LC                         )                           ! $G_LC
-   subvar.str (                     $_SIM_mode                    ) = '0'                     ! $G_LC.$_SIM_mode, Definition
+   subvar.str (                     $_SIM_mode                    ) = '3'                     ! $G_LC.$_SIM_mode, Definition
    subvar.intent (                  $_SIM_mode                    ) = 0                       ! Intent
    subvar.status (                  $_SIM_mode                    ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
    subvar.discr.desc (    1 ,       $_SIM_mode                    ) = 'Run Up'                ! Description of discrete values
    subvar.discr.desc (    2 ,       $_SIM_mode                    ) = 'Static Torque'         ! Description of discrete values
    subvar.discr.desc (    3 ,       $_SIM_mode                    ) = 'No Torque'             ! Description of discrete values
+   subvar.discr.desc (    4 ,       $_SIM_mode                    ) = 'Dyn. Load Case'        ! Description of discrete values
    subvar.discr.str (     1 ,       $_SIM_mode                    ) = '0'                     ! Discrete values
    subvar.discr.str (     2 ,       $_SIM_mode                    ) = '1'                     ! Discrete values
    subvar.discr.str (     3 ,       $_SIM_mode                    ) = '2'                     ! Discrete values
+   subvar.discr.str (     4 ,       $_SIM_mode                    ) = '3'                     ! Discrete values
    subvar.txt (                     $_SIM_mode                    ) = 'SIMulation mode'       ! Comment
 
    subvargroup.begin (              $G_BLP                        )                           ! $G_LC.$G_BLP
@@ -696,7 +708,7 @@ prim.par (                9 ,       $P_TRG_BR                     ) = 0.00000000
 !**********************************************************************
 ! Force Elements
 !**********************************************************************
-force.type (                        $F_DRV                        ) = 93                      ! Type
+force.type (                        $F_DRV                        ) = 14                      ! Type
 force.from (                        $F_DRV                        ) = $M_DRV_JNT              ! From Marker
 force.to (                          $F_DRV                        ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
 force.st.dyn (            1 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! Dynamic states
@@ -704,12 +716,23 @@ force.st.dyn (            2 ,       $F_DRV                        ) = 0.00000000
 force.st.equi (           1 ,       $F_DRV                        ) = 0                       ! Equilibrium
 force.st.equi (           2 ,       $F_DRV                        ) = 0                       ! Equilibrium
 force.disabled (                    $F_DRV                        ) = $G_HL.$_DRV_disabled    ! Disabled
-force.par (               1 ,       $F_DRV                        ) = $UE_Fx                  ! [-] u-Vector Element force x
-force.par (               2 ,       $F_DRV                        ) = $UE_Fy                  ! [-] u-Vector Element force y
-force.par (               3 ,       $F_DRV                        ) = $UE_Fz                  ! [-] u-Vector Element force z
-force.par (               4 ,       $F_DRV                        ) = $UE_Mx                  ! [-] u-Vector Element torque x
-force.par (               5 ,       $F_DRV                        ) = $UE_My                  ! [-] u-Vector Element torque y
-force.par (               6 ,       $F_DRV                        ) = $UE_Mz                  ! [-] u-Vector Element torque z
+force.par (               3 ,       $F_DRV                        ) = 1.00000000000000000E+00 ! [-] Kinematic input
+force.par (               4 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Spring-damper element location
+force.par (               6 ,       $F_DRV                        ) = null                    ! [-] Input shaft Connection/Joint
+force.par (              10 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Rotation axis
+force.par (              11 ,       $F_DRV                        ) = $M_DRV_JNT              ! [-] Input shaft Marker
+force.par (              12 ,       $F_DRV                        ) = $M_Isys_INTERFACE_TRG_HUB ! [-] Output shaft Marker
+force.par (              13 ,       $F_DRV                        ) = $M_TRG_DRV              ! [-] Housing Marker
+force.par (              15 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Kinematics mode
+force.par (              16 ,       $F_DRV                        ) = 1.00000000000000000E+00 ! [-] Gear ratio omega_in/omega_out
+force.par (              22 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [rad] Nominal input shaft angle
+force.par (              23 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [rad] Nominal output shaft angle
+force.par (              25 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [Nm] Nominal torque T_in
+force.par (              26 ,       $F_DRV                        ) = $G_FE.$G_DRV.$_C_ROT    ! [Nm/rad] Stiffness c_in
+force.par (              27 ,       $F_DRV                        ) = $G_FE.$G_DRV.$_D_ROT    ! [Nms/rad] Damping d_in
+force.par (              28 ,       $F_DRV                        ) = null                    ! [-] IFctn T_c_in(dalpha_in)
+force.par (              29 ,       $F_DRV                        ) = null                    ! [-] IFctn T_d_in(domega_in)
+force.par (              31 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Power loss mode
 force.attr.2d.pos.x (     1 ,       $F_DRV                        ) = -160
 force.attr.2d.pos.y (     1 ,       $F_DRV                        ) = 20
 force.attr.2d.ori (       1 ,       $F_DRV                        ) = 270
@@ -774,6 +797,17 @@ force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT   ) = -60, -60
 force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT   ) = 150, 47
 force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT     ) = -60, -60
 force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT     ) = -70, 13
+
+force.type (                        $F_DLC                        ) = 93                      ! Type
+force.from (                        $F_DLC                        ) = $M_DRV_JNT              ! From Marker
+force.to (                          $F_DLC                        ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
+force.disabled (                    $F_DLC                        ) = $G_HL.$_DLC_disabled    ! Disabled
+force.par (               1 ,       $F_DLC                        ) = $UE_Fx                  ! [-] u-Vector Element force x
+force.par (               2 ,       $F_DLC                        ) = $UE_Fy                  ! [-] u-Vector Element force y
+force.par (               3 ,       $F_DLC                        ) = $UE_Fz                  ! [-] u-Vector Element force z
+force.par (               4 ,       $F_DLC                        ) = $UE_Mx                  ! [-] u-Vector Element torque x
+force.par (               5 ,       $F_DLC                        ) = $UE_My                  ! [-] u-Vector Element torque y
+force.par (               6 ,       $F_DLC                        ) = $UE_Mz                  ! [-] u-Vector Element torque z
 
 !**********************************************************************
 ! Control Elements
