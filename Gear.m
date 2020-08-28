@@ -400,7 +400,10 @@ classdef Gear < Rack
             
         end
         
-        function [u, v, w, k] = gear_dimensions(obj, option, val)
+    end
+
+    methods(Static)
+        function [u, v, w] = gear_dimensions(option, val, xx, mn, dd)
             if(length(val) ~= 2)
                 error('Gear:dimensions', 'Wrong number of parameters.');
             end
@@ -409,36 +412,33 @@ classdef Gear < Rack
                 val = val';
             end
             
-            I = eye(2);
-            c = [-1.0, 1.0]';
-            A = diag(flipud(c));
-            u = zeros(length(obj.z));
+            c = [1.0, -1.0]';   e = ones(2, 1);
+            I = eye(2);         A = diag(c);
+            
             switch(option)
                 case 'coefficient' % u = (1/m_n) I v + c x
                     u = val;
-                    v = obj.m_n*(u - c*obj.x);
-                    w = A\(2*v - c*obj.d);
+                    u = u./u(1);
+                    v = mn*(u + c*xx);
+                    w = 2.0*A*v + dd*e;
                 case 'height' % v = (1/2) A w + (1/2) c d
                     v = val;
-                    u = (1.0/obj.m_n)*I*v + c*obj.x;
-                    w = A\(2*v - c*obj.d);
+                    w = 2.0*A*v + dd*e;
+                    u = v./mn - c*xx;
                 case 'diameter' % w
                     w = val;
-                    v = (1.0/2.0)*(A*w + c*obj.d);
-                    u = (1.0/obj.m_n)*I*v + c*obj.x;
+                    v = (1.0/2.0)*A\(w - obj.d(1)*e);
+                    u = v./obj.m_n - c*obj.x(1);
                 otherwise
                     error('Gear:dimensions', 'Option [%s] is NOT valid', upper(option));
             end
-            
-            k = u(1)*obj.m_n - v(1);
-            
+            u = u./u(1);
+
             fprintf('Coefficients: Addendum: %4.3f\tDedendum: %4.3f.\n', u);
             fprintf('Heights     : Addendum: %4.3f\tDedendum: %4.3f mm.\n', v);
             fprintf('Diameters   :      Tip: %4.3f\t    Root: %4.3f mm.\n', w);
-            fprintf('Tooth depth modification, k: %.3f.\n', k);
                         
         end
-        
     end
     
     %% Set methods:

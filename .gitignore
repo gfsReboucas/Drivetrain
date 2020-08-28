@@ -57,3 +57,8 @@ test_LDD.m
 *.bak
 LDD.m
 @NREL_5MW/input_functions/gen_speed.m
+@NREL_5MW/input_functions/rotor_torque.m
+*.STL
+*.fbi
+*.slp
+*.obj
