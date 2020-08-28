@@ -1058,11 +1058,10 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_z_planet, str = '17')                                     ! $SVG_stage_01.$_z_planet\n");
             fprintf(new_ID, "   subvar($_z_ring, str = '56')                                       ! $SVG_stage_01.$_z_ring\n");
             fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_01.$_gamma_m_n mm') ! $SVG_stage_01.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Damping, str = '500000000')                         ! $SVG_stage_01.$_Tooth_Damping\n");
             fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_01.$_Tooth_Stiff_ratio\n");
             fprintf(new_ID, "   subvar($_k_SP, str = '%g N/m')                                     ! $SVG_stage_01.$_k_SP\n", k_sp(1));
             fprintf(new_ID, "   subvar($_k_RP, str = '%g N/m')                                     ! $SVG_stage_01.$_k_RP\n", k_rp(1));
-            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e3 Ns/m')                         ! $SVG_stage_01.$_mesh_damping\n");
+            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_01.$_mesh_damping\n");
             fprintf(new_ID, "   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_01.$_transition_depth\n");
             fprintf(new_ID, "   subvargroup.begin($SVG_PLC_A)                                      ! $SVG_stage_01.$SVG_PLC_A\n");
             fprintf(new_ID, "      subvar($_PL_c_x, str = '6.6e+4 N/m')                            ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_x\n");
@@ -1124,11 +1123,10 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_z_planet, str = '36')                                     ! $SVG_stage_02.$_z_planet\n");
             fprintf(new_ID, "   subvar($_z_ring, str = '93')                                       ! $SVG_stage_02.$_z_ring\n");
             fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_02.$_gamma_m_n mm') ! $SVG_stage_02.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Damping, str = '50000000')                          ! $SVG_stage_02.$_Tooth_Damping\n");
             fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_02.$_Tooth_Stiff_ratio\n");
             fprintf(new_ID, "   subvar($_k_SP, str = '%g N/m')                                  ! $SVG_stage_02.$_k_SP\n", k_sp(2));
             fprintf(new_ID, "   subvar($_k_RP, str = '%g N/m')                                  ! $SVG_stage_02.$_k_RP\n", k_rp(2));
-            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e3 Ns/m')                         ! $SVG_stage_02.$_mesh_damping\n");
+            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_02.$_mesh_damping\n");
             fprintf(new_ID, "   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_02.$_transition_depth\n");
             fprintf(new_ID, "   subvargroup.begin($SVG_IMS_PLC_A)  ! $SVG_stage_02.$SVG_IMS_PLC_A\n");
             fprintf(new_ID, "      subvar($_PL_c_x, str = '9.1e+4 N/m')                                ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_x\n");
@@ -1189,10 +1187,9 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "   subvar($_z_pinion, str = '24')                                     ! $SVG_stage_03.$_z_pinion\n");
             fprintf(new_ID, "   subvar($_z_gear, str = '95')                                       ! $SVG_stage_03.$_z_gear\n");
             fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_03.$_gamma_m_n mm') ! $SVG_stage_03.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Damping, str = '5000000')                           ! $SVG_stage_03.$_Tooth_Damping\n");
             fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_03.$_Tooth_Stiff_ratio\n");
             fprintf(new_ID, "   subvar($_k_mesh, str = '%g N/m')                                ! $SVG_stage_03.$_k_mesh\n", k_3);
-            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e3 Ns/m')                         ! $SVG_stage_03.$_mesh_damping\n");
+            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_03.$_mesh_damping\n");
             fprintf(new_ID, "   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_03.$_transition_depth\n");
             fprintf(new_ID, "   subvargroup.begin($SVG_IMS_A)  ! $SVG_stage_03.$SVG_IMS_A\n");
             fprintf(new_ID, "      subvar($_PL_c_x, str = '0 N/m')                                     ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_x\n");

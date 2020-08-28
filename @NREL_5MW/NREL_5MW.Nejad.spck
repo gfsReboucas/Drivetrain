@@ -77,9 +77,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 4.84943866729736328E-01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -5.48055231571197510E-01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 3.59398394823074341E-01 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 7.66576528549194336E-01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -7.57980060577392578E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 4.74606132507324219E+00 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 4.84662950038909912E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 2.46969051659107208E-02 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = -9.51510202139616013E-03 ! Orientation
@@ -87,8 +87,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.74300479
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.78610742092132568E+00 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.76767464727163315E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.76767463684082031E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -184,7 +184,7 @@ slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 0.00000000
 slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
 slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
 slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
-slv.integ.tend.time (               $SLV_SolverSettings           ) = { 1000 s }              ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 50 s }                ! TIME_INTEG_TIMEPAR_END_TIME
 slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
 slv.integ.atol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
 slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
@@ -3806,6 +3806,7 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        10 ,       $F_Sun_PL1                    ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_Sun_PL1                    ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_Sun_PL1                    ) = $SVG_stage_01.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_Sun_PL1                    ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_Sun_PL1                    ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_Sun_PL1                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_Sun_PL1                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -3813,8 +3814,8 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        18 ,       $F_Sun_PL1                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_Sun_PL1                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_Sun_PL1                    ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_Sun_PL1                    ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_Sun_PL1                    ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_Sun_PL1                    ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_Sun_PL1                    ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_Sun_PL1                    ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_Sun_PL1                    ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_Sun_PL1                    ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -3857,6 +3858,7 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        10 ,       $F_Sun_PL2                    ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_Sun_PL2                    ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_Sun_PL2                    ) = $SVG_stage_01.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_Sun_PL2                    ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_Sun_PL2                    ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_Sun_PL2                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_Sun_PL2                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -3864,8 +3866,8 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        18 ,       $F_Sun_PL2                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_Sun_PL2                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_Sun_PL2                    ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_Sun_PL2                    ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_Sun_PL2                    ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_Sun_PL2                    ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_Sun_PL2                    ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_Sun_PL2                    ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_Sun_PL2                    ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_Sun_PL2                    ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -3908,6 +3910,7 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        10 ,       $F_Sun_PL3                    ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_Sun_PL3                    ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_Sun_PL3                    ) = $SVG_stage_01.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_Sun_PL3                    ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_Sun_PL3                    ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_Sun_PL3                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_Sun_PL3                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -3915,8 +3918,8 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        18 ,       $F_Sun_PL3                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_Sun_PL3                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_Sun_PL3                    ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_Sun_PL3                    ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_Sun_PL3                    ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_Sun_PL3                    ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_Sun_PL3                    ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_Sun_PL3                    ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_Sun_PL3                    ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_Sun_PL3                    ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -3959,6 +3962,7 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        10 ,       $F_PL1_Ring                   ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_PL1_Ring                   ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_PL1_Ring                   ) = $SVG_stage_01.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_PL1_Ring                   ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_PL1_Ring                   ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_PL1_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_PL1_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -3966,8 +3970,8 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        18 ,       $F_PL1_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_PL1_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_PL1_Ring                   ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_PL1_Ring                   ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_PL1_Ring                   ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_PL1_Ring                   ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_PL1_Ring                   ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_PL1_Ring                   ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_PL1_Ring                   ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_PL1_Ring                   ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4010,6 +4014,7 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        10 ,       $F_PL2_Ring                   ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_PL2_Ring                   ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_PL2_Ring                   ) = $SVG_stage_01.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_PL2_Ring                   ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_PL2_Ring                   ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_PL2_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_PL2_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4017,8 +4022,8 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        18 ,       $F_PL2_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_PL2_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_PL2_Ring                   ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_PL2_Ring                   ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_PL2_Ring                   ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_PL2_Ring                   ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_PL2_Ring                   ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_PL2_Ring                   ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_PL2_Ring                   ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_PL2_Ring                   ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4061,6 +4066,7 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        10 ,       $F_PL3_Ring                   ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_PL3_Ring                   ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_PL3_Ring                   ) = $SVG_stage_01.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_PL3_Ring                   ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_PL3_Ring                   ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_PL3_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_PL3_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4068,8 +4074,8 @@ forcegroup.begin (                  $FEG_stage_01                 )             
       force.par (        18 ,       $F_PL3_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_PL3_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_PL3_Ring                   ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_PL3_Ring                   ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_PL3_Ring                   ) = $SVG_stage_01.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_PL3_Ring                   ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_PL3_Ring                   ) = $SVG_stage_01.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_PL3_Ring                   ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_PL3_Ring                   ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_PL3_Ring                   ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4657,6 +4663,7 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        10 ,       $F_Sun_PL1                    ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_Sun_PL1                    ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_Sun_PL1                    ) = $SVG_stage_02.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_Sun_PL1                    ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_Sun_PL1                    ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_Sun_PL1                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_Sun_PL1                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4664,8 +4671,8 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        18 ,       $F_Sun_PL1                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_Sun_PL1                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_Sun_PL1                    ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_Sun_PL1                    ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_Sun_PL1                    ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_Sun_PL1                    ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_Sun_PL1                    ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_Sun_PL1                    ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_Sun_PL1                    ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_Sun_PL1                    ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4708,6 +4715,7 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        10 ,       $F_Sun_PL2                    ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_Sun_PL2                    ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_Sun_PL2                    ) = $SVG_stage_02.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_Sun_PL2                    ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_Sun_PL2                    ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_Sun_PL2                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_Sun_PL2                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4715,8 +4723,8 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        18 ,       $F_Sun_PL2                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_Sun_PL2                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_Sun_PL2                    ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_Sun_PL2                    ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_Sun_PL2                    ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_Sun_PL2                    ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_Sun_PL2                    ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_Sun_PL2                    ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_Sun_PL2                    ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_Sun_PL2                    ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4759,6 +4767,7 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        10 ,       $F_Sun_PL3                    ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_Sun_PL3                    ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_Sun_PL3                    ) = $SVG_stage_02.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_Sun_PL3                    ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_Sun_PL3                    ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_Sun_PL3                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_Sun_PL3                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4766,8 +4775,8 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        18 ,       $F_Sun_PL3                    ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_Sun_PL3                    ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_Sun_PL3                    ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_Sun_PL3                    ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_Sun_PL3                    ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_Sun_PL3                    ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_Sun_PL3                    ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_Sun_PL3                    ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_Sun_PL3                    ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_Sun_PL3                    ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4810,6 +4819,7 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        10 ,       $F_PL1_Ring                   ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_PL1_Ring                   ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_PL1_Ring                   ) = $SVG_stage_02.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_PL1_Ring                   ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_PL1_Ring                   ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_PL1_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_PL1_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4817,8 +4827,8 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        18 ,       $F_PL1_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_PL1_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_PL1_Ring                   ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_PL1_Ring                   ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_PL1_Ring                   ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_PL1_Ring                   ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_PL1_Ring                   ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_PL1_Ring                   ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_PL1_Ring                   ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_PL1_Ring                   ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4861,6 +4871,7 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        10 ,       $F_PL2_Ring                   ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_PL2_Ring                   ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_PL2_Ring                   ) = $SVG_stage_02.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_PL2_Ring                   ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_PL2_Ring                   ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_PL2_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_PL2_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4868,8 +4879,8 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        18 ,       $F_PL2_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_PL2_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_PL2_Ring                   ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_PL2_Ring                   ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_PL2_Ring                   ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_PL2_Ring                   ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_PL2_Ring                   ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_PL2_Ring                   ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_PL2_Ring                   ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_PL2_Ring                   ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -4912,6 +4923,7 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        10 ,       $F_PL3_Ring                   ) = 1.00000000000000000E+00 ! [-] Gear blank factor
       force.par (        11 ,       $F_PL3_Ring                   ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
       force.par (        12 ,       $F_PL3_Ring                   ) = $SVG_stage_02.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+      force.par (        13 ,       $F_PL3_Ring                   ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
       force.par (        14 ,       $F_PL3_Ring                   ) = $Mat_Steel              ! [-] Material (Gear 1)
       force.par (        15 ,       $F_PL3_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
       force.par (        16 ,       $F_PL3_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -4919,8 +4931,8 @@ forcegroup.begin (                  $FEG_stage_02                 )             
       force.par (        18 ,       $F_PL3_Ring                   ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
       force.par (        19 ,       $F_PL3_Ring                   ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
       force.par (        20 ,       $F_PL3_Ring                   ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-      force.par (        21 ,       $F_PL3_Ring                   ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-      force.par (        22 ,       $F_PL3_Ring                   ) = $SVG_stage_02.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+      force.par (        21 ,       $F_PL3_Ring                   ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient IN
+      force.par (        22 ,       $F_PL3_Ring                   ) = $SVG_stage_02.$_mesh_damping ! [Ns/m] Damping coefficient OUT
       force.par (        24 ,       $F_PL3_Ring                   ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
       force.par (        31 ,       $F_PL3_Ring                   ) = 0.00000000000000000E+00 ! [-] Friction coefficient
       force.par (        32 ,       $F_PL3_Ring                   ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -5119,6 +5131,7 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           10 ,       $F_Pinion_Gear                ) = 1.00000000000000000E+00 ! [-] Gear blank factor
    force.par (           11 ,       $F_Pinion_Gear                ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
    force.par (           12 ,       $F_Pinion_Gear                ) = $SVG_stage_03.$_Tooth_Stiff_ratio ! [-] Teeth stiffness ratio
+   force.par (           13 ,       $F_Pinion_Gear                ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
    force.par (           14 ,       $F_Pinion_Gear                ) = $Mat_Steel              ! [-] Material (Gear 1)
    force.par (           15 ,       $F_Pinion_Gear                ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 1)
    force.par (           16 ,       $F_Pinion_Gear                ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 1)
@@ -5126,8 +5139,8 @@ forcegroup.begin (                  $FEG_stage_03                 )             
    force.par (           18 ,       $F_Pinion_Gear                ) = 2.10000000000000000E+11 ! [N/m²] Young's modulus (Gear 2)
    force.par (           19 ,       $F_Pinion_Gear                ) = 2.99999999999999989E-01 ! [-] Poisson's ratio (Gear 2)
    force.par (           20 ,       $F_Pinion_Gear                ) = 1.00000000000000000E+00 ! [-] Hertzian scaling factor
-   force.par (           21 ,       $F_Pinion_Gear                ) = $SVG_stage_03.$_Tooth_Damping ! [Ns/m] Damping coefficient IN
-   force.par (           22 ,       $F_Pinion_Gear                ) = $SVG_stage_03.$_Tooth_Damping ! [Ns/m] Damping coefficient OUT
+   force.par (           21 ,       $F_Pinion_Gear                ) = $SVG_stage_03.$_mesh_damping ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_Pinion_Gear                ) = $SVG_stage_03.$_mesh_damping ! [Ns/m] Damping coefficient OUT
    force.par (           24 ,       $F_Pinion_Gear                ) = $SVG_mesh.$_full_damping ! [m] Full damping starts at
    force.par (           31 ,       $F_Pinion_Gear                ) = 0.00000000000000000E+00 ! [-] Friction coefficient
    force.par (           32 ,       $F_Pinion_Gear                ) = 1.00000000000000002E-03 ! [m/s] Regularization velocity
@@ -5866,7 +5879,7 @@ ifctngroup.end (                    $IFG_bed_plate_motion         )             
 !**********************************************************************
 ! Expressions
 !**********************************************************************
-express.str (                       $X_generator_torque           ) = '-$_rated_power/IFCTNX(TIME,$I_generator_speed, 0, -1)' ! Definition
+express.str (                       $X_generator_torque           ) = '$_rated_power/IFCTNX(TIME,$I_generator_speed, 0, -1)' ! Definition
 
 !**********************************************************************
 ! Excitations
