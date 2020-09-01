@@ -1,11 +1,11 @@
-!file.version=3.3! Removing this line will make the file unreadable
+!file.version=3.4! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200002
+version.number = 20200100
 version.desc   = ''
-version.build  = 149
+version.build  = 82
 
 !**********************************************************************
 !  Global parameters
@@ -18,6 +18,7 @@ vehicle.startvel                                                    = 0.00000000
 vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
 glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
 glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.compat.track.excit                                             = 1                       ! Track Excitation rotation sequence
 rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
 rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
 time                                                                = 0.00000000000000000E+00 ! Time
@@ -77,9 +78,9 @@ substr.attr.2d.height (             $S_TRG                        ) = 4.00000000
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = -1.12727117538452148E+01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -2.56868457794189453E+01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 1.00875253677368164E+01 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = -1.26186609268188477E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -2.89543094635009766E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.10301399230957031E+01 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation
@@ -239,6 +240,7 @@ slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1         
 slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
 slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.fallback.enable (          $SLV_SolverSettings           ) = 0                       ! Enable fallbacks
 slv.equi.st.meth (                  $SLV_SolverSettings           ) = 2                       ! EQUI_STATIC_INTPAR_METHOD
 slv.init.task (                     $SLV_SolverSettings           ) = 2                       ! Task: 0 = No initialization; 1 = Assemble System; 2 = Apply Initial Conditions and Assemble System
 slv.init.meth (                     $SLV_SolverSettings           ) = 0                       ! Algorithm: 0 = Nonlinear solver; 1 = Projection
@@ -267,230 +269,515 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 
 
 ! Overwritten substructure values
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 7.74428264055973112E-25 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -6.68198589184867206E-25 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -2.41926138670597505E-24 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -6.97336078318658070E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -1.61558713389263218E-27 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 2.02356712770313241E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 4.78912953817546562E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 8.72664626536530097E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -6.80595733929644231E-12 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 2.90325060071700739E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 2.61943244872497871E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -1.04390204517305874E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 1.04412971471935871E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -2.97938756999051202E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -7.25503570314406434E-16 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 8.07905850331995466E-25 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -6.97438976598050472E-25 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -2.41497620658198579E-24 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -6.97336078318658070E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 3.06961555439600114E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 2.02356712770313241E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 4.78912953817543573E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 8.72664626536530097E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -6.80595733929643827E-12 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 2.90325060071700739E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 2.61943244872497871E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -1.04390204517305874E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 1.04412971471935871E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -2.97938756999051202E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -7.25503570314406434E-16 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 1.37286917797906686E-24 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -1.50189553271947345E-16 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 1.30898798388916774E-17 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -6.34148164787650681E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -3.45890645442716982E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 2.74580828381624054E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 4.78897934862286150E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 8.72664626536530097E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -6.80594424941417519E-12 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -1.86151126298726699E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 2.61867833526367093E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -1.02507591675826700E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 1.04412971471975314E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -2.97938756999051202E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -7.25503570314410772E-16 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 4.02516451016818148E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -6.97336078323573250E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -7.25000000000000200E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 2.02356712770009128E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 1.52477199073999858E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 4.02516450587681908E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -8.71738184127218013E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 2.37926206331610457E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 2.61943244872834399E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -1.04345118454628025E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -1.81852732473659873E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -2.09273676947720448E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 2.97293148076313712E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -3.04884193443413665E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 8.07226011739163411E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -7.60523991849664904E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 3.45871942197817361E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 1.30132597159002383E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -3.04884193442891727E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -8.68932575221461334E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 8.07226012918252356E-03 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 2.44216138313066879E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 2.62018656218629202E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -1.06272817358785036E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -2.39880567778492612E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 2.97327525629516396E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -2.04753173022443847E-15 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -6.97336078294899853E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 7.24999999999999978E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -1.52477199073558323E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 4.02516451016830205E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -6.97336078313741559E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 7.25000000000000089E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 2.02356712770617486E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -1.52477199073160286E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 4.02516451942270138E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 8.71738184120978282E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 3.42723913811789326E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 2.61943244872161304E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -1.04435290579983737E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 5.77450782682141601E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -6.48781821214222131E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -2.97958193779653400E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 4.61739023272357209E-25 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -2.68197755928924056E-16 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 2.33749723700311071E-17 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -6.97336078318657848E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -3.19886252510741171E-25 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 2.02356712770313241E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 4.78886134042020305E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 8.72664626536530097E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -6.80593396432163521E-12 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 2.90325060071700108E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 2.61943244872497871E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -1.04390204517305925E-13 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 1.04412971472006129E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -2.97938756999051202E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -7.25503570314414520E-16 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -2.16663576265061525E-24 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -2.68197755909166295E-16 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 2.33749721639319481E-17 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 4.58249771462314270E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -7.41072634854870291E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 1.92246646605352001E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 4.78886134042022324E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 8.72664626536530097E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -6.80593396432184281E-12 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 5.91543114707800295E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 1.77795386920038704E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -6.99608233483659323E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 1.04412971472006129E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -2.97938756999051202E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -7.25503570314414520E-16 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 5.04442315147783815E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 1.38777878078144568E-16 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 2.45044965610239496E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -8.52306785171813852E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 8.69512880270909699E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 7.41942084749923521E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 5.04442315147050846E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -9.93918836122986704E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 2.45044965603965625E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -8.52306785127967537E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 8.69512880814089645E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 7.41942084532706825E-03 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -9.81523438700829624E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 1.77740258625625505E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -6.85845684435604645E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 2.21676095555135838E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -2.96242005280220200E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -3.26874717676945981E-15 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 4.35153499663395560E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -4.58993464005752527E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -1.10533372969026211E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 3.92479172334415163E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 7.79625487210111323E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 4.35153499616833972E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -4.58993464011899222E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 1.65847487105852665E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -1.10533372968783938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 3.92479172637090062E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 7.79625487662012340E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 1.34490296880784658E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 1.77822951067457842E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -7.06204070654764166E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 9.96032893633389010E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -1.27267178112658068E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -2.69693876628825489E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 4.35153499663395504E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 4.58993464005752083E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 1.65847487111945568E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -2.12099703525833494E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -4.57123092526713209E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 7.43617769045892552E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 4.35153499623057771E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 4.58993463999605167E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 1.65847487106237534E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -2.12099703525187344E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -4.57123092750930313E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 7.43617769541625590E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 1.41124981401638362E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 1.77822951067029649E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -7.06774945360608276E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -1.20666082719105743E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 1.61940561469472300E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -2.50451542359311339E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 4.58249771491524904E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.11022302462515654E-16 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.92246646611376915E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 3.15281477634358209E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 8.29852513224368926E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -2.70288998301099516E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 4.58249771462313493E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -7.41051664476799488E-12 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.92246646605351978E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 3.15281477640481367E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 8.29852513716124174E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -2.70288998533606654E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 5.91543114707799901E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.77795386920038901E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -6.99608233483658692E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -7.73468607487690396E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -2.85494208345773565E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 8.58101841096048178E-15 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.11022302462515654E-16 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.84054006793097047E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 3.15281477634358209E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 8.29852513224368926E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -2.70288998301099516E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.39467278766413605E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -1.34154909403605416E-11 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.84054006782021395E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 3.15281477640481422E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 8.29852513716124451E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -2.70288998533606759E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 8.35633607257742190E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.09606605475804571E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -4.20611524011214071E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -7.73468607487690987E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -2.85494208345773629E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 8.58101841096048336E-15 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 1.42950841266074158E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 5.50131556174964453E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 2.23871308325716134E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -1.14233679370127206E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 3.63329258248130185E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 7.93607380919092720E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 1.42950841265231787E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 5.50131556159641488E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 2.23871308314683404E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -1.14233679369875718E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 3.63329258533892224E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 7.93607381381839921E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -3.10917762615747924E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 1.09565031047362766E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -4.10574755215410090E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 9.32757729562850372E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -1.17211355492620066E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -2.74190488772455587E-14 ! Velocity x/y/z/al/be/ga
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -6.65655891818349135E-25 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 7.03784466059513102E-24 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -2.47749873104931957E-24 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -5.17183194150924952E-24 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 7.74428264055972928E-25 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.16597735371402057E-23 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 4.77090545438245551E-12 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 5.39365481566374808E-11 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -6.38855719702468464E-12 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 1.42188363548297048E+00 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.18342000000000003E-01 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 1.24398698959874848E-01 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -2.86891424574084279E-05 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 4.34799999997002341E-03 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 1.09917847071797198E-04 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 5.60740339100503693E-01 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 4.28020541465728901E-03 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.48564925501478012E-02 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9d+6sut//e4ptoTfHpyfLztqyNpTYPZCYs5fhviAf54Fv9iUu+7xXeu/bv27apuvTb+y3bzg84bae6L99r6bfiDE9X2ifX3XJuuyCjP2XRvudUz8+tN//PeuJXEehvcR1sbUiuX37AeO5NOi0AAAAAAAAAA==' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -2.91291189111617492E-26 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -3.79024680329133490E-27 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.73671244076419173E-27 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.97854637971359765E-28 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 3.34775862760220783E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -1.29854237768235139E-26 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -2.98883619770136953E-26 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.91850972149750071E-27 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -1.96100954521887729E-37 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 3.06961555439600114E-26 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -1.46448455913251063E-37 ! Position states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -2.25136552430356254E-41 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -1.43826441547211704E-52 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 2.08004026501502742E-46 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 'eJxjfmvMyAAFRkDMD8RsDKQDNnR9DYt2oapIthL5+SBq87qAHRD+YivXZ7Nu7nrlsQOXmZxArJJYv913blKmVa/2VoYGid0//heZAQCziBfStAAAAAAAAAA=' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -1.49618035983496716E-16 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -1.62515366649902673E-27 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 2.46298150906560816E-25 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -2.70866804458498127E-26 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 6.12442719164126402E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -3.08570826864935184E-26 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -1.49618035982518184E-16 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 2.48396521835992197E-25 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 3.31899791734461563E-17 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 6.10250373234093925E-26 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 8.94474863899235749E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 3.68482790651893447E-33 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 4.97323031330681826E-43 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 9.93066588849384756E-32 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 4.03252295297420917E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -7.64524251750708244E-31 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -1.24626003797732567E-29 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 'eJxjfmvMyAAFRkDMD8RsDKQDNhR9/anv+pfuQVFgcdlq1zbjbz8Vm21iJKadffZok5XH5tp2TtkLNhBxY8vlrYk3c/TUzCHiDZZcYhYNKv2cVsu6Xwi7Ma/f6cOUvmrDjPc7AZdPJxG0AAAAAAAAAA==' ! Internal state
 
 connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -4.61998919645544431E-02 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -3.58624132903842546E-26 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 9.14132008161197179E-27 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 5.86598966285196198E-28 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 6.10891128198994054E-28 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 1.04129641321854199E-28 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -1.62336334558868252E-18 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -2.77555756156289135E-17 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 2.93094562293868242E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 4.71428010046750080E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 1.11022302458394127E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 4.90939198462069657E-33 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -1.97539040208278535E-31 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 1.89326617253051942E-29 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -9.36913004670527648E-30 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 1.88133056573182996E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -1.00382371576387491E-30 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9k7iVlJqXL9/PwPDljuwn2z0Q0YY9RyQ/vV8st9VGZMP2V+p/Dthce/rr////823E9wS0ba61tCyzWbphJ9uEna5gF/2w/Mbbue/lgec7GyXeLzATOWyZvuXHVLWYLTsBc8Mv57QAAAAAAAAA' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 9.23997839291122586E-02 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -4.27492448791893479E-27 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -4.22829443984362630E-28 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -2.18055248242368618E-25 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 2.13169944079758674E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -1.59507674734933766E-26 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 9.23997839291123835E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -2.77555756156289135E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -9.65233924649351516E-18 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 5.58514091194617360E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 9.82455561784728777E-17 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 1.28849302403585934E-15 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 1.44910580281576381E-31 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 6.31088724175955283E-30 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -1.59642648448803759E-30 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -4.99498082595583719E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -6.72053012628429134E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -7.68117560101114543E-30 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9fTxKSs3Lt9tDeA17GBgCXPY4pu15FrNbJkn+iE2EobSYXeAcG7t5noIKZtdtTE0ZZkU2t1smXvgPBPct7z5ISO43OLDzb6XenYsr+HdF7fGaeZ/z4c4/r46bxFU+3gkA1yos7bQAAAAAAAAA' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 4.61998919645560668E-02 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -3.88161755627312346E-26 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -2.12045816620652731E-27 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -8.28913704822372206E-27 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 2.71454303422891746E-27 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 4.73316665245032285E-29 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 4.61998919645559905E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 1.02969807263814858E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -2.77555756156289135E-17 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 9.56693536787895779E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -5.29485397477536980E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 1.11022302471153459E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -2.45469592377174077E-32 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -9.87695201553231563E-31 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -1.26217744835316333E-29 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 2.14313989039991498E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 5.33433648945680302E-29 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -1.66491314368846085E-30 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9hTxKSs3Ll9szNCzf7bwv3QYi2rAn36Q1/of1RRthH36eJcKH92yPYAWKL7DJPvw9QuFu/M7vir9lMji27PT9/B8I3u+csWb6t0davy1D0tkjdj0XsKpxWTAl5tGBnQBSiS21tAAAAAAAAAA=' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -1.96825725065013894E-26 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -7.00772801040988502E-28 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 2.04377156766605606E-25 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -3.48910396989721971E-26 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -6.37571426187719570E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 7.03348354175615575E-27 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -2.01948391736579022E-26 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 2.05583462787837445E-25 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -4.86631725126821683E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -6.79765699506162353E-26 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 6.26103578445712095E-16 ! Position states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 1.25250100841464884E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -7.51347758012787525E-31 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -2.40467902592468994E-29 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 'eJxjfmvMyAAFRkDMD8RsDKQDNgx9M3ehcC+ctwpSmLwmqePgnvxTsxet4Ny6a5XlPbeTfcdscJmp173E0ejge8vrKV8+FVSt2xniqaK7sPrfTgCtxB6etAAAAAAAAAA=' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -2.67177181811159705E-16 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -3.20566326016613627E-26 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 2.19121622922102693E-26 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -9.18070111975517185E-26 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -6.71653660974363595E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 1.37005102074016338E-26 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -2.67177181811592494E-16 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 2.37289360290480351E-26 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 6.11056532844717865E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -6.68860995777732884E-26 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -6.15217818302240937E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 8.59421977018916989E-33 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -4.13753633096469469E-43 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -9.82323814136648349E-32 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -1.48731531550948331E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 4.48174822907646051E-31 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -3.05742859457677741E-29 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 'eJxjfmvMyAAFRkDMD8RsDKQDNhR9jRN7HDbvQVGQMNdKOudZIQPLMRv3RdtdnDdv2dVzZC5DktaxPQ+m/N1xzd/N8qJOqaV1idJ22wLxLZcf1O/cLf7ZYu6tTzsZJAS5ZfUWWf6IWKL2LYF5FwBynygstAAAAAAAAAA=' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -8.49079095564809760E-02 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -5.42703297880600897E-26 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -1.76704855565077190E-27 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -2.59357823692856756E-27 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 1.55008417878607573E-25 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -3.04847407101836265E-26 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -8.49079095564809205E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 8.32667268468867405E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 1.11360107719417598E-19 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.76750333923635434E-17 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -5.53117530196050332E-18 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.23134904412879546E-15 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -4.54536348301265677E-32 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -6.31088724177737664E-30 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -1.88467796384117955E-30 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.67238530612058554E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -4.31845224223698515E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -1.69735347962194563E-29 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9Xxq2h7Xt2bofwpthw8Dg8EAgn8Hmw93LaVYv6m00l6/U4G+K3DN5IcM/ZcknNpu32Z1zb8jd+UASpP7BzitbTaOfyxze+ThAPdfwA4PVBMnZz1c/vbrTot9cyqrl604At6EskbQAAAAAAAAA' ! Internal state
 
 connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 3.08498738055213950E+00 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.01673102794064794E-25 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -4.59432592841372190E-27 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 7.66510705724065162E-27 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 6.06419548175731726E-27 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.00185332446422797E-26 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -6.24500451351650554E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -5.25424416500189440E-17 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -5.27562280670423421E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 4.32785737189029114E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.21435661181605677E-30 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 9.39062587421820043E-30 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 9.15268941509116167E-30 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -4.73369496741695573E-30 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -7.85071409766297580E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 5.94345191561021659E-30 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9mVEKd3nXcThAeJP2wNTM278h6Kln3x75EHfz54yH90jU8Nyp0d9vc2OJ+jmfhTt2zld6HXn33HPLzgbrhHyT55YC1z99X89wY+fJ5qfz0p8/3tk9OXE1l/I9SwDFhCwXtAAAAAAAAAA=' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.83026365188237088E-02 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 4.52808148535618918E-27 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -5.31057210586540836E-26 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 7.58122266710037623E-27 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -8.51245702467305206E-28 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -7.33640689318268030E-27 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.83026365188233167E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -3.46944695195361419E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -6.93889390390722838E-17 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.49175604978683243E-17 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 2.81659978957316520E-15 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 9.21078328352714340E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 6.91333769670720963E-31 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -1.76297795598845690E-29 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 2.62573665039656037E-29 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -6.63058565388335562E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -4.55466242578096406E-29 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -5.27334809796622337E-29 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9l5Z/ORH7e85+CK9lD4Sesoeh6dvi2F01e/SjVfgWx720+STrFL1z+gWbC2s+p1lwr7EUennuhEHkt53nFluENixhsJrMon84jll0l9iyuQdi7vHsavr6rsd+m8AuANtWLOi0AAAAAAAAAA==' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -2.33525596971829773E-26 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -1.59403622403860506E-26 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -1.34988662201580992E-25 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 1.77161735265508049E-27 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -5.42156998226124612E-27 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 4.79631113111627089E-27 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -5.55111512312578270E-17 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -2.77555756156289135E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 6.93889390390722838E-18 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -4.42399316328169583E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -3.28725932212540823E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 6.61127635583471294E-17 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 1.96464762746696132E-31 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 1.20093323896824190E-29 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -3.88399563720861067E-30 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -3.58923651581723482E-31 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 9.32449684093945714E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 4.21978605570929194E-30 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 'eJxjfmvMyAAFRkDMD8RsDKQDNgx9E/ZA6AYonWCz4rjYlssP9u+xCmEPfrN++56C9TWnnfgm2+yxu7/58oN+S4GisFkNRe8sS/qU3m/beHnnaY6LZb1yc3deMntz/OPi55Zxn3cXzEi9agkAt40tJ7QAAAAAAAAA' ! Internal state
 
 connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 3.14159265358978645E-01 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 2.16465568732667135E-26 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -3.80413292429957690E-27 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 3.80579711665995146E-26 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -1.74227602885351082E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -3.29308490380953040E-27 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -2.77555756156289135E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 7.91761577334398555E-18 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 2.98609508071191773E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 4.82920663466345877E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -8.65446170185616694E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -1.14680514554156524E-30 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -1.26217744835194378E-29 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 5.04685001770819214E-30 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -3.14842446333739767E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 1.00787763257314980E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 1.59752253103283406E-29 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9Vz7MKdOXvmIP4TXsYWDIcdnjmGTzUsOrI75lqw3ji0JdjbSDNrfv+f8L0Tu/xy0vqLHXaftOv4v/geD9zq7gxKn6029abqpXiZ7zhXmX6IcELePCLZa3JLtPOzp8sQQA7EkuVrQAAAAAAAAA' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.14089417419839623E+00 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 7.42251015558442103E-25 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.82111747334632500E-25 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -3.51637167512814364E-25 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -8.27543451328178450E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 9.30872694999402439E-25 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.14089417419839645E+00 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.77555756156289135E-17 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 9.78721869184321684E-19 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 5.58514091193280438E-16 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 1.11022302459936424E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.28849302403685784E-15 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.05371088644035813E-18 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.47743954208479563E-41 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 5.14998065489024330E-30 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -2.55845616402947092E-29 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.97344082662015268E-30 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 3.49129423252652094E-30 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9PQLP7KUcP+2H8BpsGBh8lB/xGtl8UN8tkyR/xGbOuT////+fb8O6yVNQwez6HptPnD5MBcZ7nnYcjX7m3Gju83XrXD7ZW5YnDuyRCTVn2KV2yyC1Tv2cZdwH56avmy9aAgBCwStDtAAAAAAAAAA=' ! Internal state
 
+body.brf.st.pos (         1 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 4.56005025141405529E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 5.50131556174964231E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 1.96482616167264568E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         4 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 8.64271783873209984E-27 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 8.72664625997164461E-02 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         6 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -5.08264235867654421E-25 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 4.37561200716047106E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -1.73472347597680709E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -9.40048394722509602E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -1.36042956081083234E-20 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -4.70463512436202742E-43 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -5.46426038007811382E-17 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 4.56005025141244147E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 5.50131556080210027E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 1.96482616164025226E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 4.56005025141244591E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 5.50131556080209583E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 1.96482616164024959E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         4 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -1.14233679369653851E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 3.63329258255099957E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 7.93607379963037762E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 3.63329258255100235E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 7.93607379963037346E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 4.37561200710889139E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -1.73472347604392498E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -9.40048394717983882E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -3.95395462160823545E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 4.95141505215655819E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -2.26309131145586149E-17 ! Velocity x/y/z/al/be/ga
 
 connect.st.pos (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 8.60982968804786795E-27 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 1.25658749535463804E-25 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -2.77555756156289135E-17 ! Position states
 connect.st.pos (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -5.07510973375061328E-25 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 1.77550507249688509E-25 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 8.72988658056109912E-26 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 5.61051645861332877E-26 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 1.42188363550682340E+00 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -1.18342000000000169E-01 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 1.24398698959873807E-01 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -2.86891424514808880E-05 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 4.34800000000000030E-03 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 1.09917847074015353E-04 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 5.62417739212567880E-01 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 4.86791660523015236E-03 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -3.76666653527299861E-02 ! Velocity states
+connect.st.intern (                 $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9ByKU9ioEtlpBeA17XriK66kuerxrQZMwH+eBb/YNLvu8V3rv2588bdP16Tf22zcLlt3WE/2377XczRjT84X2x35esS67IGO/umxyTfD/h/ZaL59nJn4otq/bv7af23PxfgD2Si+btAAAAAAAAAA=' ! Internal state
 
 connect.st.pos (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -1.14089417419362538E+00 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -8.66164522799640872E-11 ! Position states
-connect.st.pos (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -4.00656344672981065E-11 ! Position states
-connect.st.pos (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 1.21866688664139290E-12 ! Position states
-connect.st.pos (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -9.47540721073874119E-11 ! Position states
-connect.st.pos (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -3.24106814166849634E-11 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -8.66164501234223394E-11 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -4.00656799404148178E-11 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 1.22021109391881203E-12 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -9.47545375495906228E-11 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -3.24126331754218492E-11 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -6.90557229645948541E-34 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -2.76676049941671798E-44 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 1.23126188477824664E-32 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -6.63073756397601188E-32 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -2.27567709288221443E-34 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 2.02324625020159913E-32 ! Velocity states
+connect.st.intern (                 $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9c/c8tZdy/LQfyHQQP39976b//+33sR3bO0fLfk54eaktSM0h7lt7p0+p0Ftz8eBew827pjmv59kJEu/Y93jbw6aLXcrf/S0P3Fj4emZL6c6V/w+XXnn+aYeu0NK+ZOcoSwDMATHLtAAAAAAAAAA=' ! Internal state
 
-body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 5.50131556174964453E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 2.16986004648651143E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.14233679370127206E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 3.63329258248130185E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 7.93607380919092720E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 2.21650222414108278E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 5.50131556154594525E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 2.16986004633373586E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.14233679369875718E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 3.63329258533892224E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 7.93607381381839921E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.05777880579094076E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 5.22574381314640771E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.76098797254525811E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 9.32757729562850372E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.17211355492620066E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -2.74190488772455587E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 5.50131556174964453E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 2.15678668507436244E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -1.14233679370127206E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 3.63329258248130185E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 7.93607380919092720E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 2.36593142885413998E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 5.50131556153636292E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 2.15678668491352798E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -1.14233679369875718E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 3.63329258533892155E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 7.93607381381841032E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -6.68272700658053683E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 4.13762496031289090E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -1.31578045742965531E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 9.32757729562850175E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -1.17211355492620082E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -2.74190488772455587E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 5.50131556174964453E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 2.13761242166987797E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -1.14233679370127206E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 3.63329258248130185E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 7.93607380919092720E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 2.58509426243328999E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 5.50131556152230750E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 2.13761242149722186E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -1.14233679369875718E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 3.63329258533892224E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 7.93607381381841032E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -9.69970797964854670E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 2.54171730949041114E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -6.62809435260104164E-15 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 9.32757729562850372E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -1.17211355492620098E-14 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -2.74190488772455619E-14 ! Velocity x/y/z/al/be/ga
 
-body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 2.80425709601243422E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 5.50131556150825762E-01 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 2.11843815808091929E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 2.80425709601243955E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 5.50131556150825429E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 2.11843815808091662E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -1.14233679369653851E+00 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 3.63329258255099957E-02 ! Position x/y/z/al/be/ga
-body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 7.93607379963037762E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 3.63329258255100235E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 7.93607379963037346E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 4.37561200714733061E-16 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 9.45749555058413243E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -9.40048394721356386E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -3.95395462160823545E-18 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 4.95141505215655819E-17 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -2.26309131145586149E-17 ! Velocity x/y/z/al/be/ga
 
-connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 1.08079421526386221E-27 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = -2.77074648205126722E-26 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 6.93889390390722838E-18 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = -1.11022302462515679E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 1.42870202653265067E-30 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = -6.55063594989544574E-31 ! Velocity states
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 'eJxjfmvMyAAFRkAsCcRMMAEGDgcow4EJSRyiYYENhJewZ3qezt6Jk1ZZ/p5httvu156dAAD9DRxUAAAAAAAAAA==' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_2) = 7.98120242579646642E-41 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_2) = -1.11022302462515679E-16 ! Position states
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_2) = 'eJxjfmvMyAAFRkAM4zCisRkYFtjA1AEASsICNzQAAAAAAAAA' ! Internal state
 
-connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = -3.19758108879852898E-13 ! Position states
-connect.st.pos (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = 9.54335499514513815E-11 ! Position states
+connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = 2.79672257574858918E-11 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = 1.41799766373296166E-10 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = -1.18078137420263705E-14 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = -2.73623919752964718E-14 ! Velocity states
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = ''                     ! Internal state
+
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_4) = ''                     ! Internal state
+
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_GBX ) = ''                      ! Internal state
+
+body.brf.st.pos (         1 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
 force.st.intern (                   $S_TRG.$TPL.$F_DRV            ) = ''                      ! Internal state
 force.attr.2d.pos.x (     1 ,       $S_TRG.$TPL.$F_DRV            ) = 10
@@ -527,17 +814,5 @@ force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 1
 force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 70, 70
 force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 80, 93
 
-control.st.intern (                 $S_TRG.$TPL.$C_HUB_angle      ) = ''                      ! Internal State
-
-control.st.intern (                 $S_TRG.$TPL.$C_GEN_speed      ) = ''                      ! Internal State
-
-control.st.intern (                 $S_TRG.$TPL.$C_GEN_TRQ_connector) = ''                    ! Internal State
-
-control.st.intern (                 $S_TRG.$TPL.$C_GEN_TRQ_static ) = ''                      ! Internal State
-
-control.st.intern (                 $S_TRG.$TPL.$C_GEN_TRQ_runUp  ) = ''                      ! Internal State
-
-control.st.intern (                 $S_TRG.$TPL.$C_GEN_TRQ        ) = ''                      ! Internal State
-
-model.data.redundancy                                               = 'eJxjYMAOjMwtTVOSjU1S08ySzMzNjJMMUlINjS2TDZNTTEwNkkwAj+8IwTgAAAAAAAAA' ! Constraint redundancy data
-model.data.dependency                                               = 'eJxjYMAN2ICYkUgMA7jE2fDYQyoYNWvUrFGzKDeLUF4e6maBABMe/djEjcwtTVOSjU1S08ySzMzNjJMMUlINjS2TDZNTTEwNkkwA/T4JRzAFAAAAAAAA' ! Solver state dependency data
+model.data.redundancy                                               = 'eJxjYCANJCZaGhpaGKaYJxqYGqemmqQlW6aaJFukGJhbGhqYmVkCAJLxCJlQAAAAAAAAAA==' ! Constraint redundancy data
+model.data.dependency                                               = 'eJxjYEAFbEDMiAMzYOEz4BFnY6AeGDVr1KxRsyg3C1feRs/PMIBLnFA5QS13kQqY8OjFJZ6YaGloaGGYYp5oYGqcmmqSlmyZapJskWJgbmloYGZmCQD4fAkfJAUAAAAAAAA=' ! Solver state dependency data

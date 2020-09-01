@@ -1,11 +1,11 @@
-!file.version=3.3! Removing this line will make the file unreadable
+!file.version=3.4! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200002
+version.number = 20200100
 version.desc   = ''
-version.build  = 149
+version.build  = 82
 
 !**********************************************************************
 !  Global parameters
@@ -18,6 +18,7 @@ vehicle.startvel                                                    = 0.00000000
 vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
 glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
 glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.compat.track.excit                                             = 1                       ! Track Excitation rotation sequence
 glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
 glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
 glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
@@ -238,6 +239,7 @@ slv.output.file.desc (              $GlobalSolverSettings         ) = ''        
 slv.output.fileinlining.enabled (   $GlobalSolverSettings         ) = 0                       ! file inlining 0 = disable; 1 = enable
 slv.threads (                       $GlobalSolverSettings         ) = $G_SLV.$_N_CPU_Cores    ! Solver Threads
 slv.compat.solver (                 $GlobalSolverSettings         ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.fallback.enable (          $GlobalSolverSettings         ) = 0                       ! Enable fallbacks
 slv.equi.st.meth (                  $GlobalSolverSettings         ) = 2                       ! EQUI_STATIC_INTPAR_METHOD
 slv.init.task (                     $GlobalSolverSettings         ) = 2                       ! Task: 0 = No initialization; 1 = Assemble System; 2 = Apply Initial Conditions and Assemble System
 slv.init.tol (                      $GlobalSolverSettings         ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
@@ -799,7 +801,7 @@ force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT     ) = -60, -60
 force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT     ) = -70, 13
 
 force.type (                        $F_DLC                        ) = 93                      ! Type
-force.from (                        $F_DLC                        ) = $M_DRV_JNT              ! From Marker
+force.from (                        $F_DLC                        ) = $M_TRG_HUB              ! From Marker
 force.to (                          $F_DLC                        ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
 force.disabled (                    $F_DLC                        ) = $G_HL.$_DLC_disabled    ! Disabled
 force.par (               1 ,       $F_DLC                        ) = $UE_Fx                  ! [-] u-Vector Element force x
@@ -1248,7 +1250,7 @@ excit.par (               4 ,       $E_Mx                         ) = 0.00000000
 excit.par (               5 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_Mx                         ) = -1.00000000000000000E+00 ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
