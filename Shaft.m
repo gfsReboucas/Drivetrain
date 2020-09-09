@@ -446,7 +446,7 @@ classdef Shaft
             
             dd = 50.0;
             LL = 1.0e3;
-            shaft = Shaft(dd, LL);
+            shaft = Shaft(dd, LL, Bearing(), Material());
             
             LL = LL*1.0e-3;
             E = shaft.material.E*1.0e6;
@@ -472,14 +472,14 @@ classdef Shaft
             import matlab.mock.TestCase;
             dyn_for_TC = TestCase.forInteractiveUse;
 
-            id = ['ISO_6336:KV', ...
+            id = {'ISO_6336:KV', ...
                   'ISO_6336:SF', ...
                   'ISO_6336:KS', ...
                   'Dynamic_Formulation:imag', ...
-                  'Dynamic_Formulation:RB'];
+                  'Dynamic_Formulation:RB'};
             
             for idx = 1:length(id)
-                warning('off', id(idx));
+                warning('off', id{idx});
             end
             
             [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, 'ConstructorInputs', {NREL_5MW()});
@@ -488,7 +488,7 @@ classdef Shaft
             fn_ref = dyn_for_mock.modal_analysis();
             fn_ref = sort(fn_ref);
             
-            name = ['axial', 'torsional', 'bending', 'bending'];
+            name = {'axial', 'torsional', 'bending', 'bending'};
             fn_test = [];
             for idx = 1:length(name)
                 dyn_for_mock.K = shaft.stiffness_matrix(name{idx});
@@ -499,20 +499,23 @@ classdef Shaft
             fn_test = sort(fn_test);
             
             for idx = 1:length(id)
-                warning('on', id(idx));
+                warning('on', id{idx});
             end
             
             diff_fn = 100*(fn_ref - fn_test)./fn_ref;
             has_problem = repmat('no', length(fn_ref), 1);
 
             idx = abs(diff_fn) > 1.0;
-            has_problem(idx) = '[YES]';
+
+            flag = any(idx);
+            
+            if(flag)
+                has_problem(idx) = '[YES]';
+            end
             
             table(fn_ref, fn_test, diff_fn, has_problem, 'variableNames', ...
                   {'Reference', 'Calculated', 'Rel_Diff', 'has_Problem'})
 
-            flag = any(idx);
-            
         end
     end
     

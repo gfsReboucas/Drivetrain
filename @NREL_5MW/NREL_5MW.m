@@ -107,7 +107,7 @@ classdef NREL_5MW < Drivetrain
                     error();
             end
             
-            calc = KSISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
+            calc = MATISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
                                               'n_out'       , obj.n_out(idx), ...
                                               'S_Hmin'      , obj.S_Hmin, ...
                                               'S_Fmin'      , obj.S_Fmin, ...
@@ -943,16 +943,6 @@ classdef NREL_5MW < Drivetrain
             %                          ---->$BG_stage_02.$B_Pin3........ [6 dof]  Joint $BG_stage_02.$J_Pin3 of type 20
             %                               ---->$BG_stage_02.$B_PL3.... [0 dof]  Joint $BG_stage_02.$J_PL3 of type 0
             %
-            %                ---->$B_HSIShaft........................... [6 dof]  Joint $J_HSIShaft of type 20
-            %                     ---->$BG_stage_02.$B_Sun.............. [0 dof]  Joint $BG_stage_02.$J_Sun of type 0
-            %                     ---->$BG_stage_03.$B_Gear............. [0 dof]  Joint $BG_stage_03.$J_Gear of type 0
-            %
-            %                ---->$B_HSShaft............................ [6 dof]  Joint $J_HSShaft of type 20
-            %                     ---->$BG_stage_03.$B_Pinion........... [0 dof]  Joint $BG_stage_03.$J_Pinion of type 0
-            %
-            %                ---->$BG_stage_01.$B_Ring.................. [0 dof]  Joint $BG_stage_01.$J_Ring of type 0
-            %                ---->$BG_stage_02.$B_Ring.................. [0 dof]  Joint $BG_stage_02.$J_Ring of type 0
-            %
             %           ---->$B_main_shaft_LSS.......................... [6 dof]  Joint $J_main_shaft_LSS of type 20
             %                ---->$BG_stage_01.$B_PLC................... [0 dof]  Joint $BG_stage_01.$J_PLC of type 0
             %                     ---->$BG_stage_01.$B_Pin1............. [6 dof]  Joint $BG_stage_01.$J_Pin1 of type 20
@@ -963,6 +953,17 @@ classdef NREL_5MW < Drivetrain
             %
             %                     ---->$BG_stage_01.$B_Pin3............. [6 dof]  Joint $BG_stage_01.$J_Pin3 of type 20
             %                          ---->$BG_stage_01.$B_PL3......... [0 dof]  Joint $BG_stage_01.$J_PL3 of type 0
+            %
+            %                ---->$B_HSIShaft........................... [6 dof]  Joint $J_HSIShaft of type 20
+            %                     ---->$BG_stage_02.$B_Sun.............. [0 dof]  Joint $BG_stage_02.$J_Sun of type 0
+            %                     ---->$BG_stage_03.$B_Gear............. [0 dof]  Joint $BG_stage_03.$J_Gear of type 0
+            %
+            %                ---->$B_HSShaft............................ [6 dof]  Joint $J_HSShaft of type 20
+            %                     ---->$BG_stage_03.$B_Pinion........... [0 dof]  Joint $BG_stage_03.$J_Pinion of type 0
+            %
+            %                ---->$BG_stage_01.$B_Ring.................. [0 dof]  Joint $BG_stage_01.$J_Ring of type 0
+            %                ---->$BG_stage_02.$B_Ring.................. [0 dof]  Joint $BG_stage_02.$J_Ring of type 0
+            %
             %
             % color for the different elements in SIMPACK:
             % sun / pinion  : 231-049-051

@@ -264,7 +264,7 @@ marker.parent (                     $M_Isys                       ) = $R_Isys   
 
 
 ! Overwritten substructure values
-subvar.str (                        $TPL.$G_SLV.$_TIME            ) = '30 s'                  ! $TPL.$G_SLV.$_TIME, Definition
+subvar.str (                        $TPL.$G_SLV.$_TIME            ) = '20 s'                  ! $TPL.$G_SLV.$_TIME, Definition
 
 joint.disabled (                    $TPL.$J_DRV                   ) = 0                       ! Disabled
 joint.par (               8 ,       $TPL.$J_DRV                   ) = 0.00000000000000000E+00 ! [-] Scaling factor for s/sd/sdd

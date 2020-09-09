@@ -427,8 +427,8 @@ classdef Gear < Rack
                     u = v./mn - c*xx;
                 case 'diameter' % w
                     w = val;
-                    v = (1.0/2.0)*A\(w - obj.d(1)*e);
-                    u = v./obj.m_n - c*obj.x(1);
+                    v = (1.0/2.0)*A\(w - dd*e);
+                    u = v./mn - c*xx;
                 otherwise
                     error('Gear:dimensions', 'Option [%s] is NOT valid', upper(option));
             end

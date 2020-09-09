@@ -40,46 +40,47 @@ classdef Dynamic_Formulation < Drivetrain
     
     %% Calculation:
     methods
-        function [f_n, mode_shape] = modal_analysis(obj)
+        function [f_n, mode_shape, zeta] = modal_analysis(obj)
             %MODAL_ANALYSIS calculates the resonances and mode shapes of
-            % the Drivetrain via a symmetric eigenvalue problem [1].
+            % the Drivetrain via a standard algebraic eigenvalue problem [1].
             %
             % [1] D. Inman, Engineering Vibrations, 4th ed. Boston:
-            % Pearson, 2014, pp. 408-413.
+            % Pearson, 2014, pp. 402-407.
             %
+            
+            n = obj.n_DOF(end);
+            A = [zeros(n), eye(n);
+                 -obj.M\obj.K, zeros(n)];
 
-            % Cholesky decomposition (coordinate change):
-            L = chol(obj.M, 'lower');
-            K_tilde = L\obj.K/(L');
+            [mode_shape, D] = eig(A);
             
-            % correcting numeric erros and make the problem symmetric:
-            if(~issymmetric(K_tilde) && (issymmetric(obj.M) && issymmetric(obj.K)))
-                K_tilde = (K_tilde + K_tilde')/2.0;
-            end
+            real_part = (D + D')/2.0;
+            imag_part = (D' - D)*sqrt(-1.0)/2;
             
-            [mode_shape, D] = eig(K_tilde);
-            D = diag(D);   % matrix to vector
-            w_n = sqrt(D); % lambda to omega_n
-            f_n = w_n./(2.0*pi); % rad/s to Hz
+            real_part = diag(real_part); % matrix to vector
+            imag_part = diag(imag_part);
             
-            % back to original coordinates:
-            mode_shape = (L')\mode_shape;
+            omega_n = sqrt(real_part.^2 + imag_part.^2); % lambda to omega_n
+            f_n = omega_n./(2.0*pi); % rad/s to Hz
+            zeta = -real_part./omega_n;
             
             % sorting in ascending order:
             [f_n, idx] = sort(f_n);
+            zeta = zeta(idx);
             mode_shape = mode_shape(:, idx);
             
-            flag_im = any(abs(imag(f_n)) > 1.0e-4);
-            if(flag_im)
-                warning('Dynamic_Formulation:imag', 'Imaginary resonances.');
-                
-                idx = (imag(f_n) ~= 0.0);
-                f_n(idx) = 0.0;
-                
-                f_n = [f_n(~idx);
-                       f_n(idx)];
-                   
-                mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
+            % eliminating repeated values:
+            f_n = f_n(1:2:end);
+            zeta = zeta(1:2:end);
+            mode_shape = mode_shape(1:n, 1:2:end);
+            
+            % remove if there is damping:
+            mode_shape = real(mode_shape);
+            
+            % Normalizing the mode shapes so that the maximum is always +1:
+            for idx = 1:length(f_n)
+                [ms_max, n] = max(abs(mode_shape(:, idx)));
+                mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
             end
             
             flag_RB = any(abs(f_n) < 1.0e-2);
@@ -92,12 +93,6 @@ classdef Dynamic_Formulation < Drivetrain
                        f_n(idx)];
                    
                 mode_shape = [mode_shape(:, ~idx), mode_shape(:, idx)];
-            end
-            
-            % Normalizing the mode shapes so that the maximum is always +1:
-            for idx = 1:length(f_n)
-                [ms_max, n] = max(abs(mode_shape(:, idx)));
-                mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
             end
             
         end
