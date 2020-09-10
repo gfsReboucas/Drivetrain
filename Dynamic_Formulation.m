@@ -2,6 +2,7 @@ classdef Dynamic_Formulation < Drivetrain
     properties
         M;     % Inertia matrix
         K;     % Stiffness matrix
+        D;     % Damping matix
         n_DOF; % number of degrees of freedom
         load;  % load vector
     end
@@ -26,6 +27,7 @@ classdef Dynamic_Formulation < Drivetrain
             obj.n_DOF = 2;
             obj.M = obj.inertia_matrix();
             obj.K = obj.stiffness_matrix();
+            obj.D = obj.damping_matrix();
             
             obj.load      = ones(obj.n_DOF, 1);
             obj.load(end) = - obj.load(1);
@@ -132,6 +134,10 @@ classdef Dynamic_Formulation < Drivetrain
             k = (k_LSS*k_HSS*u2)/(k_LSS + k_HSS*u2);
             KK = k*[ 1.0, -1.0;
                     -1.0,  1.0];
+        end
+        
+        function DD = damping_matrix(obj)
+            DD = 0.05*obj.stiffness_matrix();
         end
     end
 end

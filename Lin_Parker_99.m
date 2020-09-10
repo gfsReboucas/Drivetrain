@@ -41,42 +41,6 @@ classdef Lin_Parker_99 < Dynamic_Formulation
         end
         
         %% Calculation:
-        function [Kb, Km, KO] = stiffness_matrix(obj)
-            N = obj.n_DOF(end);
-            Kb = zeros(N, N);
-            Km = zeros(N, N);
-            KO = zeros(N, N);
-            
-            K_tmp = obj.main_shaft.stiffness_matrix('Lin_Parker_99');
-            
-            range = 1:6;
-            Kb(range, range) = Kb(range, range) + K_tmp;
-
-            N = obj.n_DOF;
-            Z3 = zeros(3);
-            for idx = 1:obj.N_stage
-                R = Lin_Parker_99.stage_coordinate_change(obj.stage(idx));
-                [Kb_idx, Km_idx, KO_idx] = Lin_Parker_99.stage_stiffness_matrix(obj.stage(idx));
-                Kb_idx = R' * Kb_idx * R;
-                Km_idx = R' * Km_idx * R;
-                KO_idx = R' * KO_idx * R;
-                
-                range = (N(idx) - 2):(N(idx + 1));
-
-                % adding shaft stiffness:
-                n_idx = length(range);
-                rng = (-5:0) + n_idx;
-                
-                Kb_tmp = blkdiag(Kb_idx, Z3);
-                Kb_tmp(rng, rng) = Kb_tmp(rng, rng) + ...
-                    obj.stage(idx).output_shaft.stiffness_matrix('Lin_Parker_99');
-
-                Kb(range, range) = Kb(range, range) + Kb_tmp;
-                Km(range, range) = Km(range, range) + blkdiag(Km_idx, Z3);
-                KO(range, range) = KO(range, range) + blkdiag(KO_idx, Z3);
-            end
-        end
-        
         function [MM, GG] = inertia_matrix(obj)
             N = obj.n_DOF(end);
             MM = zeros(N, N);
@@ -119,6 +83,42 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             end
         end
         
+        function [Kb, Km, KO] = stiffness_matrix(obj)
+            N = obj.n_DOF(end);
+            Kb = zeros(N, N);
+            Km = zeros(N, N);
+            KO = zeros(N, N);
+            
+            K_tmp = obj.main_shaft.stiffness_matrix('Lin_Parker_99');
+            
+            range = 1:6;
+            Kb(range, range) = Kb(range, range) + K_tmp;
+
+            N = obj.n_DOF;
+            Z3 = zeros(3);
+            for idx = 1:obj.N_stage
+                R = Lin_Parker_99.stage_coordinate_change(obj.stage(idx));
+                [Kb_idx, Km_idx, KO_idx] = Lin_Parker_99.stage_stiffness_matrix(obj.stage(idx));
+                Kb_idx = R' * Kb_idx * R;
+                Km_idx = R' * Km_idx * R;
+                KO_idx = R' * KO_idx * R;
+                
+                range = (N(idx) - 2):(N(idx + 1));
+
+                % adding shaft stiffness:
+                n_idx = length(range);
+                rng = (-5:0) + n_idx;
+                
+                Kb_tmp = blkdiag(Kb_idx, Z3);
+                Kb_tmp(rng, rng) = Kb_tmp(rng, rng) + ...
+                    obj.stage(idx).output_shaft.stiffness_matrix('Lin_Parker_99');
+
+                Kb(range, range) = Kb(range, range) + Kb_tmp;
+                Km(range, range) = Km(range, range) + blkdiag(Km_idx, Z3);
+                KO(range, range) = KO(range, range) + blkdiag(KO_idx, Z3);
+            end
+        end
+        
         function nn = calculate_DOF(obj)
             nn = ones(obj.N_stage + 1, 1)*6.0;
             
@@ -135,6 +135,64 @@ classdef Lin_Parker_99 < Dynamic_Formulation
     end
     
     methods(Static)
+        function [MM, GG] = stage_inertia_matrix(stage_idx)
+            G_ = @(x)[0.0  , -2.0*x, 0.0;
+                      2.0*x,  0.0  , 0.0;
+                      0.0  ,  0.0  , 0.0];
+            
+            if(strcmp(stage_idx.configuration, 'parallel'))
+                m_p = stage_idx.mass(1);
+                m_w = stage_idx.mass(2);
+                
+                r_p = (stage_idx.d_b(1)*1.0e-3)/2.0;
+                r_w = (stage_idx.d_b(2)*1.0e-3)/2.0;
+                
+                J_p = stage_idx.J_x(1)/r_p^2;
+                J_w = stage_idx.J_x(2)/r_w^2;
+                
+                diag_inertia = [m_p, m_p, J_p, ... % pinion
+                                m_w, m_w, J_w];    % wheel
+                
+                % Gyroscopic matrix:
+                GG = blkdiag(G_(m_p), G_(m_w));
+                
+            elseif(strcmp(stage_idx.configuration, 'planetary'))
+                % carrier, ring, sun, N planets
+                
+                m_c = stage_idx.carrier.mass;
+                m_r = stage_idx.mass(3);
+                m_s = stage_idx.mass(1);
+                m_p = stage_idx.mass(2);
+                
+                r_c =  stage_idx.a_w   *1.0e-3;
+                r_r = (stage_idx.d_b(3)*1.0e-3)/2.0;
+                r_s = (stage_idx.d_b(1)*1.0e-3)/2.0;
+                r_p = (stage_idx.d_b(2)*1.0e-3)/2.0;
+                
+                J_c = stage_idx.carrier.J_x/r_c^2;
+                J_r = stage_idx.J_x(3)     /r_r^2;
+                J_s = stage_idx.J_x(1)     /r_s^2;
+                J_p = stage_idx.J_x(2)     /r_p^2;
+                
+                diag_inertia = [m_c, m_c, J_c, ...
+                                m_r, m_r, J_r, ...
+                                m_s, m_s, J_s, ...
+                               [m_p, m_p, J_p]*repmat(eye(3), 1, stage_idx.N_p)];
+                
+                % Gyroscopic matrix:
+                Gp = repmat({G_(m_p)}, 1, stage_idx.N_p);
+                Gp = blkdiag(Gp{:});
+                
+                GG = blkdiag(G_(m_c), ... % carrier
+                             G_(m_r), ... % ring
+                             G_(m_s), ... % sun
+                             Gp     );    % planet
+                
+            end
+            
+            MM = diag(diag_inertia);
+        end
+        
         function [Kb, Km, KO] = stage_stiffness_matrix(stage_idx)
             alpha_n = stage_idx.alpha_n;
             
@@ -314,62 +372,178 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             
         end
         
-        function [MM, GG] = stage_inertia_matrix(stage_idx)
-            G_ = @(x)[0.0  , -2.0*x, 0.0;
-                      2.0*x,  0.0  , 0.0;
-                      0.0  ,  0.0  , 0.0];
+        function [Db, Dm, DO] = stage_damping_matrix(stage_idx)
+            alpha_n = stage_idx.alpha_n;
+            
+            N1    = stage_idx.N_p - 1;
+            psi   = (0:N1)*(360.0/stage_idx.N_p);
+            psi_s = psi - alpha_n;
+            psi_r = psi + alpha_n;
+            
+            % carrier-carrier bearing stiffness sub-matrix:
+            K_c1 = @(i)[ 1.0         , 0.0         , -sind(psi(i));
+                         0.0         , 1.0         ,  cosd(psi(i));
+                        -sind(psi(i)), cosd(psi(i)),        1.0  ];
+
+            % carrier-planet bearing stiffness sub-matrix:
+            K_c2 = @(i)[-cosd(psi(i)),  sind(psi(i)), 0.0;
+                        -sind(psi(i)), -cosd(psi(i)), 0.0;
+                         0.0         , -1.0         , 0.0];
+            
+            % ring-ring mesh stiffness sub-matrix:
+            K_r1 = @(i)[ sind(psi_r(i))^2             , -sind(psi_r(i))*cosd(psi_r(i))  , -sind(psi_r(i));
+                        -sind(psi_r(i))*cosd(psi_r(i)),                 cosd(psi_r(i))^2,  cosd(psi_r(i));
+                        -sind(psi_r(i))               ,                 cosd(psi_r(i))  ,       1.0     ];
+            
+            % ring-planet mesh stiffness sub-matrix:
+            K_r2 = @(i)[-sind(psi_r(i))*sind(alpha_n),  sind(psi_r(i))*cosd(alpha_n),  sind(psi_r(i));
+                         cosd(psi_r(i))*sind(alpha_n), -cosd(psi_r(i))*cosd(alpha_n), -cosd(psi_r(i));
+                                        sind(alpha_n), -               cosd(alpha_n), -1.0          ];
+            
+            % planet-ring mesh stiffness sub-matrix:
+            K_r3 = [ sind(alpha_n)^2            , -sind(alpha_n)*cosd(alpha_n)  , -sind(alpha_n);
+                    -sind(alpha_n)*cosd(alpha_n),                cosd(alpha_n)^2,  cosd(alpha_n);
+                    -sind(alpha_n)              ,                cosd(alpha_n)  ,        1.0   ];
+            
+            % sun-sun mesh-stiffness matrix:
+            K_s1 = @(i)[                sind(psi_s(i))^2, -cosd(psi_s(i))*sind(psi_s(i)), -sind(psi_s(i));
+                        -cosd(psi_s(i))*sind(psi_s(i))  ,  cosd(psi_s(i))^2             ,  cosd(psi_s(i));
+                        -               sind(psi_s(i))  ,  cosd(psi_s(i))               ,         1.0   ];
+            
+            % sun-planet mesh-stiffness matrix:
+            K_s2 = @(i)[ sind(psi_s(i))*sind(alpha_n),  sind(psi_s(i))*cosd(alpha_n), -sind(psi_s(i));
+                        -cosd(psi_s(i))*sind(alpha_n), -cosd(psi_s(i))*cosd(alpha_n),  cosd(psi_s(i));
+                        -               sind(alpha_n), -               cosd(alpha_n),         1.0   ];
+                                 
+            % planet-planet (?) mesh-stiffness matrix:
+            K_s3 = [ sind(alpha_n)^2            ,  sind(alpha_n)*cosd(alpha_n)  , -sind(alpha_n);
+                     sind(alpha_n)*cosd(alpha_n),                cosd(alpha_n)^2, -cosd(alpha_n);
+                    -sind(alpha_n)              , -              cosd(alpha_n)  ,        1.0   ];
             
             if(strcmp(stage_idx.configuration, 'parallel'))
-                m_p = stage_idx.mass(1);
-                m_w = stage_idx.mass(2);
                 
-                r_p = (stage_idx.d_b(1)*1.0e-3)/2.0;
+                r_p = (stage_idx.d_b(1)*1.0e-3)/2.0; % [m]
                 r_w = (stage_idx.d_b(2)*1.0e-3)/2.0;
                 
-                J_p = stage_idx.J_x(1)/r_p^2;
-                J_w = stage_idx.J_x(2)/r_w^2;
+                % Bearing component:
+                brg_w  = stage_idx.bearing(4:6);
+                brg_w = brg_w.parallel_association();
+                k_wx = brg_w.K_y;
+                k_wy = brg_w.K_z;
+                k_wu = brg_w.K_alpha/(r_w^2);
                 
-                diag_inertia = [m_p, m_p, J_p, ... % pinion
-                                m_w, m_w, J_w];    % wheel
+                Db = diag([zeros(1, 3) k_wx k_wy k_wu]);
                 
-                % Gyroscopic matrix:
-                GG = blkdiag(G_(m_p), G_(m_w));
+                brg_p  = stage_idx.bearing(1:3);
+                brg_p = brg_p.parallel_association();
+                d_px = brg_p.C_y;
+                d_py = brg_p.C_z;
+                d_pu = brg_p.C_alpha/(r_p^2);
                 
+                % Mesh component:
+                damp = 500.0e6;
+                D_c31 =  diag([d_px, d_py, d_pu]);
+                Dm = [damp*K_s3 + D_c31, damp*K_s2(1) ;
+                      damp*K_s2(1)'    , damp*K_s1(1)];
+
             elseif(strcmp(stage_idx.configuration, 'planetary'))
-                % carrier, ring, sun, N planets
+                np = 3*stage_idx.N_p;
                 
+                % Centripetal component:
                 m_c = stage_idx.carrier.mass;
                 m_r = stage_idx.mass(3);
                 m_s = stage_idx.mass(1);
                 m_p = stage_idx.mass(2);
+                                                          
+                DO = diag([m_c m_c 0.0, ... % carrier
+                           m_r m_r 0.0, ... % ring
+                           m_s m_s 0.0, ... % sun
+                          [m_p m_p 0.0]*repmat(eye(3), 1, stage_idx.N_p)]);
                 
-                r_c =  stage_idx.a_w   *1.0e-3;
+                r_c =  stage_idx.a_w   *1.0e-3; % [m]
                 r_r = (stage_idx.d_b(3)*1.0e-3)/2.0;
                 r_s = (stage_idx.d_b(1)*1.0e-3)/2.0;
                 r_p = (stage_idx.d_b(2)*1.0e-3)/2.0;
                 
-                J_c = stage_idx.carrier.J_x/r_c^2;
-                J_r = stage_idx.J_x(3)     /r_r^2;
-                J_s = stage_idx.J_x(1)     /r_s^2;
-                J_p = stage_idx.J_x(2)     /r_p^2;
+                % Bearing component:
+                brg_s = stage_idx.bearing(5);
+                k_sx = brg_s.K_y;
+                k_sy = brg_s.K_z;
+                k_su = brg_s.K_alpha/(r_s^2);
+
+                brg_r = stage_idx.bearing(6);
+                k_rx = brg_r.K_y;
+                k_ry = brg_r.K_z;
+                k_ru = brg_r.K_alpha/(r_r^2);
                 
-                diag_inertia = [m_c, m_c, J_c, ...
-                                m_r, m_r, J_r, ...
-                                m_s, m_s, J_s, ...
-                               [m_p, m_p, J_p]*repmat(eye(3), 1, stage_idx.N_p)];
+                brg_c = stage_idx.bearing(3:4);
+                brg_c = brg_c.parallel_association();
+                k_cx = brg_c.K_y;
+                k_cy = brg_c.K_z;
+                k_cu = brg_c.K_alpha/(r_c^2);
                 
-                % Gyroscopic matrix:
-                Gp = repmat({G_(m_p)}, 1, stage_idx.N_p);
-                Gp = blkdiag(Gp{:});
+                Db = diag([k_cx, k_cy, k_cu, ... % carrier
+                           k_rx, k_ry, k_ru, ... % ring
+                           k_sx, k_sy, k_su, ... % sun
+                           zeros(1, np)]);       % planets
                 
-                GG = blkdiag(G_(m_c), ... % carrier
-                             G_(m_r), ... % ring
-                             G_(m_s), ... % sun
-                             Gp     );    % planet
+                brg_p = stage_idx.bearing(1:2);
+                brg_p = brg_p.parallel_association();
+                d_px = brg_p.K_y;
+                d_py = brg_p.K_z;
+                d_pu = brg_p.K_alpha/(r_p^2);
+
+                % Mesh component:
+                sun_pla = stage_idx.sub_set('sun_planet');
+                pla_rng = stage_idx.sub_set('planet_ring');
                 
+                % OBS.: got a negative k_mesh for DTU_10MW planet-ring
+                k_sp = sun_pla.k_mesh;
+                k_pr = pla_rng.k_mesh;
+                
+                K_c_row = zeros(3, np);
+                K_r_row = K_c_row;
+                K_s_row = K_c_row;
+                
+                sum_Kc1 = zeros(3);
+                sum_Kr1 = zeros(3);
+                sum_Ks1 = zeros(3);
+                for idx = 1:stage_idx.N_p
+                    rng = (-2:0) + 3*idx;
+                    K_c_row(:, rng) = K_c2(idx);
+                    K_r_row(:, rng) = K_r2(idx);
+                    K_s_row(:, rng) = K_s2(idx);
+                    
+                    sum_Kc1 = sum_Kc1 + K_c1(idx);
+                    sum_Kr1 = sum_Kr1 + K_r1(idx);
+                    sum_Ks1 = sum_Ks1 + K_s1(idx);
+                end
+                
+                K_c_row = diag([d_px, d_py, d_px])*K_c_row;
+                K_r_row =                   k_pr  *K_r_row;
+                K_s_row =                   k_sp  *K_s_row;
+                sum_Kc1 = diag([d_px, d_py, d_px])*sum_Kc1;
+                sum_Kr1 =                   k_pr  *sum_Kr1;
+                sum_Ks1 =                   k_sp  *sum_Ks1;
+                
+                diag_01 = blkdiag(sum_Kc1, sum_Kr1, sum_Ks1);
+                diag_up = [K_c_row;
+                           K_r_row;
+                           K_s_row];
+
+                K_pp = diag([d_px, d_py, d_pu]) + k_pr*K_r3 + k_sp*K_s3;
+                KppCell = repmat({K_pp}, 1, stage_idx.N_p);
+                diag_02 = blkdiag(KppCell{:});
+                
+                Dm = [diag_01 , diag_up;
+                      diag_up', diag_02];
             end
             
-            MM = diag(diag_inertia);
+            % removing rounding errors from matrices:
+            Db(abs(Db) < 1.0e-4) = 0.0;
+            Dm(abs(Dm) < 1.0e-4) = 0.0;
+            DO(abs(DO) < 1.0e-4) = 0.0;
+            
         end
         
         function [WVR, R, V, W] = stage_coordinate_change(stage_idx)

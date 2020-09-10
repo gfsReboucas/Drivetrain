@@ -20,6 +20,24 @@ classdef Kahraman_94 < Dynamic_Formulation
         end
         
         %% Calculation:
+        function MM = inertia_matrix(obj)
+            N = obj.n_DOF(end);
+            MM = zeros(N, N);
+            
+            MM(1, 1) = obj.J_Rotor;     MM(end, end) = obj.J_Gen;
+            
+            M_tmp = obj.main_shaft.inertia_matrix("torsional");
+            MM(1:2, 1:2) = MM(1:2, 1:2) + M_tmp;
+            
+            for idx = 1:obj.N_stage
+                M_tmp = Kahraman_94.stage_inertia_matrix(obj.stage(idx));
+                jdx = obj.n_DOF(idx);
+                kdx = jdx:(jdx + length(M_tmp) - 1);
+                
+                MM(kdx, kdx) = MM(kdx, kdx) + M_tmp;
+            end
+        end
+        
         function KK = stiffness_matrix(obj)
             N = obj.n_DOF(end);
             KK = zeros(N, N);
@@ -36,21 +54,19 @@ classdef Kahraman_94 < Dynamic_Formulation
             end
         end
         
-        function MM = inertia_matrix(obj)
+        function DD = damping_matrix(obj)
             N = obj.n_DOF(end);
-            MM = zeros(N, N);
+            DD = zeros(N, N);
             
-            MM(1, 1) = obj.J_Rotor;     MM(end, end) = obj.J_Gen;
-            
-            M_tmp = obj.main_shaft.inertia_matrix("torsional");
-            MM(1:2, 1:2) = MM(1:2, 1:2) + M_tmp;
+            D_tmp = 0.01*obj.main_shaft.stiffness_matrix("torsional");
+            DD(1:2, 1:2) = DD(1:2, 1:2) + D_tmp;
             
             for idx = 1:obj.N_stage
-                M_tmp = Kahraman_94.stage_inertia_matrix(obj.stage(idx));
+                D_tmp = Kahraman_94.stage_damping_matrix(obj.stage(idx));
                 jdx = obj.n_DOF(idx);
-                kdx = jdx:(jdx + length(M_tmp) - 1);
+                kdx = jdx:(jdx + length(D_tmp) - 1);
                 
-                MM(kdx, kdx) = MM(kdx, kdx) + M_tmp;
+                DD(kdx, kdx) = DD(kdx, kdx) + D_tmp;
             end
         end
         
@@ -70,6 +86,44 @@ classdef Kahraman_94 < Dynamic_Formulation
     end
     
     methods(Static)
+        function MM = stage_inertia_matrix(stage_idx)
+            
+            if(strcmp(stage_idx.configuration, 'parallel'))
+                n = 3;
+                MM = zeros(n, n);
+                
+                m_p = stage_idx.mass(1);
+                m_w = stage_idx.mass(2);
+                
+                r_p = (stage_idx.d(1)*1.0e-3)/2.0;
+                r_w = (stage_idx.d(2)*1.0e-3)/2.0;
+                
+                range = 1:2;
+                MM(range, range) = diag([m_w*r_w^2 m_p*r_p^2]);
+            elseif(strcmp(stage_idx.configuration, 'planetary'))
+                n = stage_idx.N_p + 3;
+                MM = zeros(n, n);
+                
+                m_s = stage_idx.mass(1);
+                m_p = stage_idx.mass(2);
+                m_c = stage_idx.carrier.mass;
+                
+                aw  =  stage_idx.a_w *1.0e-3;
+                r_s = (stage_idx.d(1)*1.0e-3)/2.0;
+                r_p = (stage_idx.d(2)*1.0e-3)/2.0;
+                
+                range = 1:(n - 1);
+                MM(range, range) = diag([m_c* aw^2, ...
+                                         m_p*r_p^2*ones(1, stage_idx.N_p), ...
+                                         m_s*r_s^2]);
+            end
+            
+            range = (n - 1):n;
+            
+            MM(range, range) = MM(range, range) + ...
+                stage_idx.output_shaft.inertia_matrix('torsional');
+        end
+        
         function KK = stage_stiffness_matrix(stage_idx)
 
             if(strcmp(stage_idx.configuration, 'parallel'))
@@ -146,42 +200,49 @@ classdef Kahraman_94 < Dynamic_Formulation
             
         end
         
-        function MM = stage_inertia_matrix(stage_idx)
-            
+        function DD = stage_damping_matrix(stage_idx)
+
             if(strcmp(stage_idx.configuration, 'parallel'))
                 n = 3;
-                MM = zeros(n, n);
-                
-                m_p = stage_idx.mass(1);
-                m_w = stage_idx.mass(2);
+                DD = zeros(n, n);
                 
                 r_p = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_w = (stage_idx.d(2)*1.0e-3)/2.0;
                 
+                damp_pw = 500.0e6;
+                
                 range = 1:2;
-                MM(range, range) = diag([m_w*r_w^2 m_p*r_p^2]);
+                DD(range, range) = [r_w ^ 2 * damp_pw         r_p     * damp_pw * r_w;
+                                r_w     * damp_pw * r_p   r_p ^ 2 * damp_pw];
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 n = stage_idx.N_p + 3;
-                MM = zeros(n, n);
+                DD = zeros(n, n);
                 
-                m_s = stage_idx.mass(1);
-                m_p = stage_idx.mass(2);
-                m_c = stage_idx.carrier.mass;
+                damp_sp = 500.0e6;
+                damp_rp = 500.0e6;
                 
                 aw  =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_p = (stage_idx.d(2)*1.0e-3)/2.0;
                 
-                range = 1:(n - 1);
-                MM(range, range) = diag([m_c* aw^2, ...
-                                         m_p*r_p^2*ones(1, stage_idx.N_p), ...
-                                         m_s*r_s^2]);
+                DD(    1,     1) =  stage_idx.N_p*(damp_rp + damp_sp)*aw^2;
+                DD(    1, n - 1) = -stage_idx.N_p*  r_s * damp_sp *aw;
+                DD(n - 1,     1) = DD(1, n - 1);
+                DD(n - 1, n - 1) =  stage_idx.N_p*damp_sp*r_s^2;
+                
+                for jdx = 2:(n - 2)
+                    DD(    1,   jdx) = aw*r_p*(damp_rp - damp_sp);
+                    DD(jdx  ,     1) = DD(1, jdx);
+                    DD(jdx  ,   jdx) = (damp_rp + damp_sp)*r_p^2;
+                    DD(n - 1,   jdx) = r_s*r_p*damp_sp;
+                    DD(jdx  , n - 1) = DD(n - 1, jdx);
+                end
             end
-            
             range = (n - 1):n;
             
-            MM(range, range) = MM(range, range) + ...
-                stage_idx.output_shaft.inertia_matrix('torsional');
+            DD(range, range) = DD(range, range) + ...
+                0.01*stage_idx.output_shaft.stiffness_matrix('torsional');
+            
         end
         
     end
