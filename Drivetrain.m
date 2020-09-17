@@ -48,6 +48,8 @@ classdef (Abstract) Drivetrain
         M; % Inertia matrix
         K; % Stiffness matrix
         D; % Damping matrix
+        A; % State matrix
+        load; % Load vector
         f_n; % natural frequencies
         mode_shape; % mode shapes
         zeta; % damping ratio
@@ -77,6 +79,7 @@ classdef (Abstract) Drivetrain
             
             % for default parameter:
             N_st = 3;
+            stage = repmat(Gear_Set(), 1, N_st);
             for idx = 1:N_st
                 stage(idx) = NREL_5MW.gear_stage(idx);
             end
@@ -124,6 +127,8 @@ classdef (Abstract) Drivetrain
             obj.M = dyn_calc.M;
             obj.K = dyn_calc.K;
             obj.D = dyn_calc.D;
+            obj.A = dyn_calc.A;
+            obj.load = dyn_calc.load;
             
             [obj.f_n, obj.mode_shape, obj.zeta] = dyn_calc.modal_analysis();
 
@@ -1383,28 +1388,28 @@ classdef (Abstract) Drivetrain
 		function val = read_if2(file_name)
 			%READ_IF2 converts .if2 files to .mat files.
 				
-			fid = fopen(file_name, 'r');
+			file_ID = fopen(file_name, 'r');
 
-			file_type_descriptor = fscanf(fid, '%s', 1);
+			file_type_descriptor = fscanf(file_ID, '%s', 1);
 			if(file_type_descriptor ~= '$SIMPACK_Input_Function_Set$')
 				error('file type wrong.')
 			end
 
-			release = fscanf(fid, '%f ! Release \n', 1);
-			file_format = fscanf(fid, '%f ! Format: 0/1/2 = ASCII/real/double \n', 1);
+			release = fscanf(file_ID, '%f ! Release \n', 1);
+			file_format = fscanf(file_ID, '%f ! Format: %*s = %*s\n');
 
-			name = fscanf(fid, '%s ! \n', 1);
-			interp_method = fscanf(fid, '%f !            Interpolation Method: 2 = Linear \n', 1);
-			extrapol_param = fscanf(fid, '%f\t%f !            Extrapolation: 0/1 = Spline/Linear ; Transition Rang \n',[1 2]);
-			scaling_factor = fscanf(fid, '%f\t%f !            Unit Factors UNIT/SI = ', [1 2]);
-			unit_fac1 = fscanf(fid, '%s', 1);
-			unit_fac2 = fscanf(fid, ']  | [%s] \n', 1);
-			unit_typ1 = fscanf(fid, '%s !            Unit Types \n', 1);
-			unit_typ2 = fscanf(fid, '%s !            Unit Types \n', 1);
+			name = fscanf(file_ID, '%s ! Input Function 1\n', 1);
+			interp_method  = fscanf(file_ID, ' %f !            Interpolation Method: %*s = %*s \n', 1);
+			extrapol_param = fscanf(file_ID, '  %f !            Extrapolation: %*s = %*s ; %*s\n', [1 2]);
+			scaling_factor = fscanf(file_ID, '  %f \t %f !            Unit Factors %*s = %*s', [1 2]);
+			unit_fac1 = fscanf(file_ID, '%s', 1);
+			unit_fac2 = fscanf(file_ID, ']  | [%s] \n', 1);
+			unit_typ1 = fscanf(file_ID, '%s !            Unit Types \n', 1);
+			unit_typ2 = fscanf(file_ID, '%s !            Unit Types \n', 1);
 
-			data = fscanf(fid, '%f', [2, Inf])';
+			data = fscanf(file_ID, '%f', [2, Inf])';
 
-			fclose(fid);
+			fclose(file_ID);
 			
 			val.release = release;
 			val.file_format = file_format;

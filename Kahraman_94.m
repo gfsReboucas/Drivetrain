@@ -14,10 +14,11 @@ classdef Kahraman_94 < Dynamic_Formulation
             obj.M = obj.inertia_matrix();
             obj.K = obj.stiffness_matrix();
             obj.D = obj.damping_matrix();
+            obj.A = obj.state_matrix();
             
-            obj.load      = zeros(obj.n_DOF(end), 1);
-            obj.load(1)   = 1.0;
-            obj.load(end) = -obj.load(1);
+            obj.load         = zeros(obj.n_DOF(end), 2);
+            obj.load(1, 1)   = 1.0;
+            obj.load(end, 2) = 1.0;
         end
         
         %% Calculation:

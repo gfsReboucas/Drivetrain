@@ -62,3 +62,5 @@ LDD.m
 *.fbi
 *.slp
 *.obj
+freq_response.m
+time_response.m

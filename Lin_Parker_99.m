@@ -40,9 +40,9 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             [obj.D_bearing, obj.D_mesh] = obj.damping_matrix();
             obj.D = obj.D_bearing + obj.D_mesh;
             
-            obj.load      = zeros(obj.n_DOF(end), 1);
-            obj.load(1:3) = 1.0;
-            obj.load(end-2:end) = -obj.load(1:3);
+            obj.load                       = zeros(obj.n_DOF(end), 6);
+            obj.load(1:3, 1:3)             = eye(3);
+            obj.load(end-2:end, end-2:end) = eye(3);
         end
         
         %% Calculation:

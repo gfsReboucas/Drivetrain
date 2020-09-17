@@ -3,7 +3,8 @@ classdef Dynamic_Formulation
         drive_train;
         M;     % Inertia matrix
         K;     % Stiffness matrix
-        D;     % Damping matix
+        D;     % Damping matrix
+        A;     % State matrix
         n_DOF; % number of degrees of freedom
         load;  % load vector
     end
@@ -16,22 +17,17 @@ classdef Dynamic_Formulation
             
             obj.drive_train = DT;
             
-            obj.n_DOF = 2;
+            obj.n_DOF = obj.calculate_DOF();
             obj.M = obj.inertia_matrix();
             obj.K = obj.stiffness_matrix();
             obj.D = obj.damping_matrix();
             
-            obj.load      = ones(obj.n_DOF, 1);
-            obj.load(end) = - obj.load(1);
+            obj.load      = ones(obj.n_DOF(end), 2);
             
         end
         
         function tab = disp(obj)
             
-        end
-        
-        function export_MAT(obj, filename)
-            save(filename, 'obj.M', 'obj.K', 'obj.D', 'obj.load');
         end
         
     end
@@ -46,11 +42,7 @@ classdef Dynamic_Formulation
             % Pearson, 2014, pp. 402-407.
             %
             
-            n = obj.n_DOF(end);
-            A = [ zeros(n),     eye(n);
-                 -obj.M\obj.K, -obj.M\obj.D];
-
-            [mode_shape, eig_val] = eig(A);
+            [mode_shape, eig_val] = eig(obj.A);
             
             real_part = (eig_val  + eig_val')/2.0;
             imag_part = (eig_val' - eig_val )*sqrt(-1.0)/2;
@@ -70,6 +62,7 @@ classdef Dynamic_Formulation
             % eliminating repeated values:
             f_n = f_n(1:2:end);
             zeta = zeta(1:2:end);
+            n = obj.n_DOF(end);
             mode_shape = mode_shape(1:n, 1:2:end);
             
             % Normalizing the mode shapes so that the maximum is always +1:
@@ -108,12 +101,14 @@ classdef Dynamic_Formulation
             end
             
         end
-    end
-    
-    methods(Access = private)
+        
+        function nn = calculate_DOF(obj)
+            nn = 2;
+        end
+        
         function MM = inertia_matrix(obj)
             MM = diag([obj.drive_train.J_Rotor;
-                       obj.drive_train.J_Gen*obj.drive_train.u^2]);
+                obj.drive_train.J_Gen*obj.drive_train.u^2]);
         end
         
         function KK = stiffness_matrix(obj)
@@ -130,5 +125,17 @@ classdef Dynamic_Formulation
         function DD = damping_matrix(obj)
             DD = 0.05*obj.stiffness_matrix();
         end
+        
+        function AA = state_matrix(obj)
+            n = obj.n_DOF(end);
+            AA = [ zeros(n),     eye(n);
+                  -obj.M\obj.K, -obj.M\obj.D];
+        end
     end
+    
+    methods(Static)
+        function time_response(A, b, T_A, T_G)
+        end
+    end
+    
 end
