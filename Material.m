@@ -47,7 +47,7 @@ classdef Material
                        'S_y'       , 490.0e6, ...
                        'KISS_ID'   , 10250};
                    
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj.row        = default.row;
             obj.label      = default.label;

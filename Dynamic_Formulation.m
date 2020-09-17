@@ -1,5 +1,6 @@
-classdef Dynamic_Formulation < Drivetrain
+classdef Dynamic_Formulation
     properties
+        drive_train;
         M;     % Inertia matrix
         K;     % Stiffness matrix
         D;     % Damping matix
@@ -13,16 +14,7 @@ classdef Dynamic_Formulation < Drivetrain
                 error('DT should be a Drivetrain object.');
             end
             
-            obj@Drivetrain('N_stage',    DT.N_stage, ...
-                           'stage',      DT.stage, ...
-                           'n_rotor',    DT.n_rotor, ...
-                           'main_shaft', DT.main_shaft, ...
-                           'm_Rotor',    DT.m_Rotor, ...
-                           'J_Rotor',    DT.J_Rotor, ...
-                           'm_Gen',      DT.m_Gen, ...
-                           'J_Gen',      DT.J_Gen, ...
-                           'S_Hmin',     DT.S_Hmin, ...
-                           'S_Fmin',     DT.S_Fmin);
+            obj.drive_train = DT;
             
             obj.n_DOF = 2;
             obj.M = obj.inertia_matrix();
@@ -38,6 +30,10 @@ classdef Dynamic_Formulation < Drivetrain
             
         end
         
+        function export_MAT(obj, filename)
+            save(filename, 'obj.M', 'obj.K', 'obj.D', 'obj.load');
+        end
+        
     end
     
     %% Calculation:
@@ -51,13 +47,13 @@ classdef Dynamic_Formulation < Drivetrain
             %
             
             n = obj.n_DOF(end);
-            A = [zeros(n), eye(n);
-                 -obj.M\obj.K, zeros(n)];
+            A = [ zeros(n),     eye(n);
+                 -obj.M\obj.K, -obj.M\obj.D];
 
-            [mode_shape, D] = eig(A);
+            [mode_shape, eig_val] = eig(A);
             
-            real_part = (D + D')/2.0;
-            imag_part = (D' - D)*sqrt(-1.0)/2;
+            real_part = (eig_val  + eig_val')/2.0;
+            imag_part = (eig_val' - eig_val )*sqrt(-1.0)/2;
             
             real_part = diag(real_part); % matrix to vector
             imag_part = diag(imag_part);
@@ -76,13 +72,11 @@ classdef Dynamic_Formulation < Drivetrain
             zeta = zeta(1:2:end);
             mode_shape = mode_shape(1:n, 1:2:end);
             
-            % remove if there is damping:
-            mode_shape = real(mode_shape);
-            
             % Normalizing the mode shapes so that the maximum is always +1:
             for idx = 1:length(f_n)
-                [ms_max, n] = max(abs(mode_shape(:, idx)));
-                mode_shape(:, idx) = mode_shape(:, idx)*sign(mode_shape(n, idx))./ms_max;
+                [~, n] = max(abs(mode_shape(:, idx)));
+
+                mode_shape(:, idx) = mode_shape(:, idx)./mode_shape(n, idx);
             end
             
             flag_RB = any(abs(f_n) < 1.0e-2);
@@ -99,11 +93,8 @@ classdef Dynamic_Formulation < Drivetrain
             
         end
         
-        function H = FRF(obj, freq, varargin)
-            default = {'beta', 0.05};
-            default = process_varargin(default, varargin);
-            
-            beta = default.beta;
+        function H = FRF(obj, freq)
+
             Omega = 2.0*pi*freq;
             i = sqrt(-1.0);
             
@@ -113,7 +104,7 @@ classdef Dynamic_Formulation < Drivetrain
             KK = @(x)(obj.K);
             
             for idx = 1:n_Om
-                H(idx, :) = (-obj.M.*Omega(idx).^2 + i.*Omega(idx).*beta.*KK(Omega(idx)) + KK(Omega(idx)))\obj.load;
+                H(idx, :) = (-obj.M.*Omega(idx).^2 + i.*Omega(idx).*obj.D + KK(Omega(idx)))\obj.load;
             end
             
         end
@@ -121,15 +112,15 @@ classdef Dynamic_Formulation < Drivetrain
     
     methods(Access = private)
         function MM = inertia_matrix(obj)
-            MM = diag([obj.J_Rotor;
-                       obj.J_Gen*obj.u^2]);
+            MM = diag([obj.drive_train.J_Rotor;
+                       obj.drive_train.J_Gen*obj.drive_train.u^2]);
         end
         
         function KK = stiffness_matrix(obj)
-            k_LSS = obj.main_shaft.stiffness('torsional');
-            k_HSS = obj.stage(end).output_shaft.stiffness('torsional');
+            k_LSS = obj.drive_train.main_shaft.stiffness('torsional');
+            k_HSS = obj.drive_train.stage(end).output_shaft.stiffness('torsional');
             
-            u2 = obj.u^2;
+            u2 = obj.drive_train.u^2;
             
             k = (k_LSS*k_HSS*u2)/(k_LSS + k_HSS*u2);
             KK = k*[ 1.0, -1.0;

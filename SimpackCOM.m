@@ -30,7 +30,7 @@ classdef SimpackCOM
                        'model_name', 'NREL_5MW'};
                    
             [flag, msg] = SimpackCOM.is_installed();
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             if(flag)
                 obj.post   = actxserver(sprintf('Simpack.Post%s', default.version));

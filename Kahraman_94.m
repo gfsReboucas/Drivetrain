@@ -13,6 +13,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             obj.n_DOF = obj.calculate_DOF();
             obj.M = obj.inertia_matrix();
             obj.K = obj.stiffness_matrix();
+            obj.D = obj.damping_matrix();
             
             obj.load      = zeros(obj.n_DOF(end), 1);
             obj.load(1)   = 1.0;
@@ -24,13 +25,15 @@ classdef Kahraman_94 < Dynamic_Formulation
             N = obj.n_DOF(end);
             MM = zeros(N, N);
             
-            MM(1, 1) = obj.J_Rotor;     MM(end, end) = obj.J_Gen;
+            DT = obj.drive_train;
+
+            MM(1, 1) = DT.J_Rotor;     MM(end, end) = DT.J_Gen;
             
-            M_tmp = obj.main_shaft.inertia_matrix("torsional");
+            M_tmp = DT.main_shaft.inertia_matrix("torsional");
             MM(1:2, 1:2) = MM(1:2, 1:2) + M_tmp;
             
-            for idx = 1:obj.N_stage
-                M_tmp = Kahraman_94.stage_inertia_matrix(obj.stage(idx));
+            for idx = 1:DT.N_stage
+                M_tmp = Kahraman_94.stage_inertia_matrix(DT.stage(idx));
                 jdx = obj.n_DOF(idx);
                 kdx = jdx:(jdx + length(M_tmp) - 1);
                 
@@ -42,11 +45,13 @@ classdef Kahraman_94 < Dynamic_Formulation
             N = obj.n_DOF(end);
             KK = zeros(N, N);
             
-            K_tmp = obj.main_shaft.stiffness_matrix("torsional");
+            DT = obj.drive_train;
+
+            K_tmp = DT.main_shaft.stiffness_matrix("torsional");
             KK(1:2, 1:2) = KK(1:2, 1:2) + K_tmp;
             
-            for idx = 1:obj.N_stage
-                K_tmp = Kahraman_94.stage_stiffness_matrix(obj.stage(idx));
+            for idx = 1:DT.N_stage
+                K_tmp = Kahraman_94.stage_stiffness_matrix(DT.stage(idx));
                 jdx = obj.n_DOF(idx);
                 kdx = jdx:(jdx + length(K_tmp) - 1);
                 
@@ -58,11 +63,13 @@ classdef Kahraman_94 < Dynamic_Formulation
             N = obj.n_DOF(end);
             DD = zeros(N, N);
             
-            D_tmp = 0.01*obj.main_shaft.stiffness_matrix("torsional");
+            DT = obj.drive_train;
+            
+            D_tmp = DT.main_shaft.damping_matrix("torsional");
             DD(1:2, 1:2) = DD(1:2, 1:2) + D_tmp;
             
-            for idx = 1:obj.N_stage
-                D_tmp = Kahraman_94.stage_damping_matrix(obj.stage(idx));
+            for idx = 1:DT.N_stage
+                D_tmp = Kahraman_94.stage_damping_matrix(DT.stage(idx));
                 jdx = obj.n_DOF(idx);
                 kdx = jdx:(jdx + length(D_tmp) - 1);
                 
@@ -71,18 +78,20 @@ classdef Kahraman_94 < Dynamic_Formulation
         end
         
         function nn = calculate_DOF(obj)
-            nn = ones(obj.N_stage + 1, 1)*2.0;
+            DT = obj.drive_train;
+            nn = ones(DT.N_stage + 1, 1)*2.0;
             
-            for idx = 1:obj.N_stage
-                if(strcmp(obj.stage(idx).configuration, "parallel"))
-                    tmp = obj.stage(idx).N_p + 1;
-                elseif(strcmp(obj.stage(idx).configuration, "planetary"))
-                    tmp = obj.stage(idx).N_p + 2;
+            for idx = 1:DT.N_stage
+                if(strcmp(DT.stage(idx).configuration, "parallel"))
+                    tmp = DT.stage(idx).N_p + 1;
+                elseif(strcmp(DT.stage(idx).configuration, "planetary"))
+                    tmp = DT.stage(idx).N_p + 2;
                 end
                 
                 nn(idx + 1) = nn(idx) + tmp;
             end
         end
+        
     end
     
     methods(Static)
@@ -213,7 +222,7 @@ classdef Kahraman_94 < Dynamic_Formulation
                 
                 range = 1:2;
                 DD(range, range) = [r_w ^ 2 * damp_pw         r_p     * damp_pw * r_w;
-                                r_w     * damp_pw * r_p   r_p ^ 2 * damp_pw];
+                                    r_w     * damp_pw * r_p   r_p ^ 2 * damp_pw];
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 n = stage_idx.N_p + 3;
                 DD = zeros(n, n);
@@ -241,7 +250,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             range = (n - 1):n;
             
             DD(range, range) = DD(range, range) + ...
-                0.01*stage_idx.output_shaft.stiffness_matrix('torsional');
+                stage_idx.output_shaft.damping_matrix('torsional');
             
         end
         

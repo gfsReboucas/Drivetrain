@@ -86,7 +86,7 @@ classdef Gear_Set < Gear
                        'R_a'          ,   1.0, ...
                        'material'     , [Material(), Material()]};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             if(length(default.z) < 2)
                 error('prog:input', 'There should be at least two gears.');

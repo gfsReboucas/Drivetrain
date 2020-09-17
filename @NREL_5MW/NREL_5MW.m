@@ -41,7 +41,7 @@ classdef NREL_5MW < Drivetrain
                      'J_R' , 1.0, 'J_G' , 1.0, ...
                      'd_S' , 1.0, 'L_S' , 1.0};
             
-            gamma = process_varargin(gamma, varargin);
+            gamma = scaling_factor.process_varargin(gamma, varargin);
             gamma = scaling_factor(gamma);
                         
             N_st = 3;
@@ -979,7 +979,7 @@ classdef NREL_5MW < Drivetrain
                        'gen_mode'   , 1, ...
                        'bed_plate'  , true};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             gamma_x = mean([obj.gamma('m_n1') obj.gamma('m_n2') obj.gamma('m_n3')]);
             gamma_load = power(gamma_x, 2.0);

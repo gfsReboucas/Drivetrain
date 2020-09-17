@@ -82,7 +82,7 @@ classdef KSISO_6336 < ISO_6336
                        'lubricant_ID', 11170, ...
                        'n_nominal'   , [n_1, NaN]};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj@ISO_6336(gset, 'P_rated'    , default.P_rated, ...
                                'S_Hmin'     , default.S_Hmin, ...
@@ -205,7 +205,7 @@ classdef KSISO_6336 < ISO_6336
                        'save_report' ,  false, ...
                        'show_report' ,  false};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
 %             ks = obj.KISSsoft();
             ksCOM.set_var('ZS.P'       , obj.P_rated); % rated power

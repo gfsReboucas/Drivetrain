@@ -236,6 +236,33 @@ classdef scaling_factor
     
     %% Static method:
     methods(Static)
+        function out = process_varargin(standard, updated)
+            standard = struct(standard{:});
+            
+            if(~exist('updated', "var"))
+                updated = cell(0);
+            end
+            
+            if(~isempty(updated))
+                arg_in = struct(updated{:});
+                out = standard;
+                
+                field_v = fields(arg_in);
+                
+                lv = length(field_v);
+                
+                for idx = 1:lv
+                    f = field_v{idx};
+                    if(isfield(standard, f))
+                        out.(f) = arg_in.(f);
+                    end
+                end
+            else
+                out = standard;
+            end
+            
+        end
+        
         function gamma = generate_gamma(n, N)
             %GENERATE_GAMMA generates an array of values from power(10, -n) to 1 with N
             % elements.

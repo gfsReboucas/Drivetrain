@@ -45,6 +45,12 @@ classdef (Abstract) Drivetrain
         gamma                scaling_factor;                                                              % Scaling factors
         S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
         S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
+        M; % Inertia matrix
+        K; % Stiffness matrix
+        D; % Damping matrix
+        f_n; % natural frequencies
+        mode_shape; % mode shapes
+        zeta; % damping ratio
     end
     
     properties(Dependent)
@@ -88,7 +94,7 @@ classdef (Abstract) Drivetrain
                        'main_shaft'   , Shaft(), ...
                        'dynamic_model', @Dynamic_Formulation};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj.P_rated    = default.P_rated;
             obj.n_rotor    = default.n_rotor;
@@ -114,6 +120,13 @@ classdef (Abstract) Drivetrain
             obj.S_Fmin = default.S_Fmin;
             
             obj.dynamic_model = default.dynamic_model;
+            dyn_calc = obj.dynamic_model(obj);
+            obj.M = dyn_calc.M;
+            obj.K = dyn_calc.K;
+            obj.D = dyn_calc.D;
+            
+            [obj.f_n, obj.mode_shape, obj.zeta] = dyn_calc.modal_analysis();
+
         end
         
         function tab = disp(obj)
@@ -351,49 +364,49 @@ classdef (Abstract) Drivetrain
     %% Calculations:
     methods
         %% Dynamics:
-        function [f_n, mode_shape] = resonances(obj, varargin)
+        function [fn, modeShape] = resonances(obj, varargin)
             %RESONANCES returns the first N resonances and mode shapes of a
             % Drivetrain object. The resonances can be normalized or not.
             %
-            calc = obj.dynamic_model(obj);
-            
+
             default = {'N'        , calc.n_DOF(end), ...
                        'normalize', false};
 
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             N = default.N;
             normalize = default.normalize;
             
-            [f_n, mode_shape] = calc.modal_analysis;
+            fn = obj.f_n;
+            modeShape = obj.mode_shape;
             
-            N_fn = numel(f_n);
+            N_fn = numel(fn);
             
             if(N <= 0)
                 error('N = %d < 0. It should be positive and smaller than %d.', N, N_fn);
             elseif(N > N_fn)
                 error('N = %d > %d. It should be positive and smaller than %d.', N, N_fn, N_fn);
             else
-                f_n = f_n(1:N);
-                mode_shape = mode_shape(:, 1:N);
+                fn = fn(1:N);
+                modeShape = modeShape(:, 1:N);
             end
             
             if(normalize == true)
-                f_n = f_n./f_n(1);
-                f_n = f_n(2:end);
+                fn = fn./fn(1);
+                fn = fn(2:end);
             end
             
         end
         
-        function [f, mode_shape] = nth_resonance(obj, n)
-            [f_n, mode_shape] = obj.resonances('N', n, 'normalize', false);
+        function [f, modeShape] = nth_resonance(obj, n)
+            [fn, modeShape] = obj.resonances('N', n, 'normalize', false);
             
-            if((n < 1) || (n > numel(f_n)))
+            if((n < 1) || (n > numel(fn)))
                 error('n = %d > or ~= 0.');
             end
             
-            f = f_n(n);
-            mode_shape = mode_shape(:, n);
+            f = fn(n);
+            modeShape = modeShape(:, n);
         end
         
         function [model, result] = Simpack_time_integration(obj)
@@ -775,7 +788,7 @@ classdef (Abstract) Drivetrain
                        'gamma_0'       , gm0, ...
                        'constraint'    , constraint};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             constraint = default.constraint;
             
@@ -1080,7 +1093,7 @@ classdef (Abstract) Drivetrain
                 default = {'aspect_set', 'DA', ...
                     'n_scale', obj_ref.n_rotor};
                 
-                default = process_varargin(default, varargin);
+                default = scaling_factor.process_varargin(default, varargin);
                 
                 fprintf('Reference %s drivetrain with rated power %.1f kW.\n', class(obj_ref), obj_ref.P_rated);
                 

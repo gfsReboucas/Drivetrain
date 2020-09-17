@@ -421,6 +421,11 @@ classdef Shaft
                     error('prog:input', 'Option [%s] is NOT valid.', option);
             end
         end
+        
+        function D = damping_matrix(obj, option)
+            D = 0.01*obj.stiffness_matrix(option);
+        end
+        
     end
     
     methods(Static)

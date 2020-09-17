@@ -65,7 +65,7 @@ classdef Bearing
                       'C_beta' , 0.0, ...
                       'C_gamma', 0.0};
                   
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj.name    = default.name;
             obj.type    = default.type;
@@ -172,11 +172,19 @@ classdef Bearing
                     cg = cg + 1.0/obj(idx).C_gamma;
                 end
                 
-                kx = 1.0/kx;    ky = 1.0/ky;    kz = 1.0/kz;
-                ka = 1.0/ka;    kb = 1.0/kb;    kg = 1.0/kg;
-                
-                cx = 1.0/cx;    cy = 1.0/cy;    cz = 1.0/cz;
-                ca = 1.0/ca;    cb = 1.0/cb;    cg = 1.0/cg;
+                if(1.0/kx == inf),  kx = 0.0;  else,  kx = 1.0/kx;  end
+                if(1.0/ky == inf),  ky = 0.0;  else,  ky = 1.0/ky;  end
+                if(1.0/kz == inf),  kz = 0.0;  else,  kz = 1.0/kz;  end
+                if(1.0/ka == inf),  ka = 0.0;  else,  ka = 1.0/ka;  end
+                if(1.0/kb == inf),  kb = 0.0;  else,  kb = 1.0/kb;  end
+                if(1.0/kg == inf),  kg = 0.0;  else,  kg = 1.0/kg;  end
+
+                if(1.0/cx == inf),  cx = 0.0;  else,  cx = 1.0/cx;  end
+                if(1.0/cy == inf),  cy = 0.0;  else,  cy = 1.0/cy;  end
+                if(1.0/cz == inf),  cz = 0.0;  else,  cz = 1.0/cz;  end
+                if(1.0/ca == inf),  ca = 0.0;  else,  ca = 1.0/ca;  end
+                if(1.0/cb == inf),  cb = 0.0;  else,  cb = 1.0/cb;  end
+                if(1.0/cg == inf),  cg = 0.0;  else,  cg = 1.0/cg;  end
                 
                 val = Bearing('name'   , nam      , 'type'  , obj(1).type, ...
                               'K_x'    , kx       , 'K_y'   , ky         , 'K_z'    , kz,...
@@ -239,6 +247,20 @@ classdef Bearing
                                        obj(idx).K_alpha ...
                                        obj(idx).K_beta ...
                                        obj(idx).K_gamma]);
+            end
+        end
+        
+        function mat = damping_matrix(obj)
+            n = numel(obj);
+            mat = zeros(6, 6, n);
+            
+            for idx = 1:n
+                mat(:, :, idx) = diag([obj(idx).C_x ...
+                                       obj(idx).C_y ...
+                                       obj(idx).C_z ...
+                                       obj(idx).C_alpha ...
+                                       obj(idx).C_beta ...
+                                       obj(idx).C_gamma]);
             end
         end
         
