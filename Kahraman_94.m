@@ -9,16 +9,6 @@ classdef Kahraman_94 < Dynamic_Formulation
     methods
         function obj = Kahraman_94(DT)
             obj@Dynamic_Formulation(DT);
-            
-            obj.n_DOF = obj.calculate_DOF();
-            obj.M = obj.inertia_matrix();
-            obj.K = obj.stiffness_matrix();
-            obj.D = obj.damping_matrix();
-            obj.A = obj.state_matrix();
-            
-            obj.load         = zeros(obj.n_DOF(end), 2);
-            obj.load(1, 1)   = 1.0;
-            obj.load(end, 2) = 1.0;
         end
         
         %% Calculation:
@@ -78,6 +68,12 @@ classdef Kahraman_94 < Dynamic_Formulation
             end
         end
         
+        function cc = load_vector(obj)
+            cc         = zeros(obj.n_DOF(end), 2);
+            cc(1  , 1) = 1.0;
+            cc(end, 2) = 1.0;
+        end
+        
         function nn = calculate_DOF(obj)
             DT = obj.drive_train;
             nn = ones(DT.N_stage + 1, 1)*2.0;
@@ -118,12 +114,12 @@ classdef Kahraman_94 < Dynamic_Formulation
                 m_p = stage_idx.mass(2);
                 m_c = stage_idx.carrier.mass;
                 
-                aw  =  stage_idx.a_w *1.0e-3;
+                r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_p = (stage_idx.d(2)*1.0e-3)/2.0;
                 
                 range = 1:(n - 1);
-                MM(range, range) = diag([m_c* aw^2, ...
+                MM(range, range) = diag([m_c*r_c^2, ...
                                          m_p*r_p^2*ones(1, stage_idx.N_p), ...
                                          m_s*r_s^2]);
             end
@@ -153,50 +149,26 @@ classdef Kahraman_94 < Dynamic_Formulation
                 KK = zeros(n, n);
                 
                 % Mesh stiffness:
-                sun_pla = Gear_Set('configuration', 'parallel'               , ...
-                                   'm_n'          , stage_idx.m_n            , ...
-                                   'alpha_n'      , stage_idx.alpha_n        , ...
-                                   'z'            , stage_idx.z(1:2)         , ...
-                                   'b'            , stage_idx.b              , ...
-                                   'beta'         , stage_idx.beta           , ...
-                                   'x'            , stage_idx.x(1:2)         , ...
-                                   'k'            , stage_idx.k(1:2)         , ...
-                                   'bore_ratio'   , stage_idx.bore_ratio(1:2), ...
-                                   'N_p'          , 1                        , ...
-                                   'a_w'          , stage_idx.a_w            , ...
-                                   'rack_type'    , stage_idx.type           , ...
-                                   'bearing'      , stage_idx.bearing        , ...
-                                   'shaft'        , stage_idx.output_shaft);
+                % Mesh component:
+                sun_pla = stage_idx.sub_set('sun_planet');
+                pla_rng = stage_idx.sub_set('planet_ring');
 
-                pla_rng = Gear_Set('configuration', 'parallel'               , ...
-                                   'm_n'          , stage_idx.m_n            , ...
-                                   'alpha_n'      , stage_idx.alpha_n        , ...
-                                   'z'            , stage_idx.z(2:3)         , ...
-                                   'b'            , stage_idx.b              , ...
-                                   'beta'         , stage_idx.beta           , ...
-                                   'x'            , stage_idx.x(2:3)         , ...
-                                   'k'            , stage_idx.k(2:3)         , ...
-                                   'bore_ratio'   , stage_idx.bore_ratio(2:3), ...
-                                   'N_p'          , 1                        , ...
-                                   'a_w'          , stage_idx.a_w            , ...
-                                   'rack_type'    , stage_idx.type           , ...
-                                   'bearing'      , stage_idx.bearing        , ...
-                                   'shaft'        , stage_idx.output_shaft);
+                
+                % OBS.: got a negative k_mesh for DTU_10MW planet-ring
+                k_sp = sun_pla.k_mesh;
+                k_rp = pla_rng.k_mesh;
 
-                k_sp = abs(sun_pla.k_mesh);
-                k_rp = abs(pla_rng.k_mesh); % got a negative k_mesh for DTU_10MW
-
-                aw  =  stage_idx.a_w *1.0e-3;
+                r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_p = (stage_idx.d(2)*1.0e-3)/2.0;
                 
-                KK(    1,     1) =  stage_idx.N_p*(k_rp + k_sp)*aw^2;
-                KK(    1, n - 1) = -stage_idx.N_p*  r_s * k_sp *aw;
+                KK(    1,     1) =  stage_idx.N_p*(k_rp + k_sp)*r_c^2;
+                KK(    1, n - 1) = -stage_idx.N_p*  r_s * k_sp *r_c;
                 KK(n - 1,     1) = KK(1, n - 1);
                 KK(n - 1, n - 1) =  stage_idx.N_p*k_sp*r_s^2;
                 
                 for jdx = 2:(n - 2)
-                    KK(    1,   jdx) = aw*r_p*(k_rp - k_sp);
+                    KK(    1,   jdx) = r_c*r_p*(k_rp - k_sp);
                     KK(jdx  ,     1) = KK(1, jdx);
                     KK(jdx  ,   jdx) = (k_rp + k_sp)*r_p^2;
                     KK(n - 1,   jdx) = r_s*r_p*k_sp;
@@ -219,32 +191,32 @@ classdef Kahraman_94 < Dynamic_Formulation
                 r_p = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_w = (stage_idx.d(2)*1.0e-3)/2.0;
                 
-                damp_pw = 500.0e6;
+                d_pw = 500.0e6;
                 
                 range = 1:2;
-                DD(range, range) = [r_w ^ 2 * damp_pw         r_p     * damp_pw * r_w;
-                                    r_w     * damp_pw * r_p   r_p ^ 2 * damp_pw];
+                DD(range, range) = [r_w ^ 2 * d_pw         r_p     * d_pw * r_w;
+                                    r_w     * d_pw * r_p   r_p ^ 2 * d_pw];
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 n = stage_idx.N_p + 3;
                 DD = zeros(n, n);
                 
-                damp_sp = 500.0e6;
-                damp_rp = 500.0e6;
+                d_sp = 500.0e6;
+                d_rp = 500.0e6;
                 
-                aw  =  stage_idx.a_w *1.0e-3;
+                r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_p = (stage_idx.d(2)*1.0e-3)/2.0;
                 
-                DD(    1,     1) =  stage_idx.N_p*(damp_rp + damp_sp)*aw^2;
-                DD(    1, n - 1) = -stage_idx.N_p*  r_s * damp_sp *aw;
+                DD(    1,     1) =  stage_idx.N_p*(d_rp + d_sp)*r_c^2;
+                DD(    1, n - 1) = -stage_idx.N_p* r_s  * d_sp *r_c;
                 DD(n - 1,     1) = DD(1, n - 1);
-                DD(n - 1, n - 1) =  stage_idx.N_p*damp_sp*r_s^2;
+                DD(n - 1, n - 1) =  stage_idx.N_p*d_sp*r_s^2;
                 
                 for jdx = 2:(n - 2)
-                    DD(    1,   jdx) = aw*r_p*(damp_rp - damp_sp);
+                    DD(    1,   jdx) = r_c*r_p*(d_rp - d_sp);
                     DD(jdx  ,     1) = DD(1, jdx);
-                    DD(jdx  ,   jdx) = (damp_rp + damp_sp)*r_p^2;
-                    DD(n - 1,   jdx) = r_s*r_p*damp_sp;
+                    DD(jdx  ,   jdx) = (d_rp + d_sp)*r_p^2;
+                    DD(n - 1,   jdx) = r_s*r_p*d_sp;
                     DD(jdx  , n - 1) = DD(n - 1, jdx);
                 end
             end

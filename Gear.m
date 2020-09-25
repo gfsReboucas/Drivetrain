@@ -199,13 +199,16 @@ classdef Gear < Rack
             
             [X, Y] = obj.reference_circle(C);
             
+            h = plot(X, Y, plot_prop{:});
             axis equal;
             box on;
-            h = plot(X, Y, plot_prop{:});
             
+            if(nargout == 0)
+                clear h;
+            end
         end
         
-        function [X, Y, Z] = plot3(obj, varargin)
+        function [h, X, Y, Z] = plot3(obj, varargin)
             % adapted from: (access on 20/11/2019)
             % https://www.mathworks.com/matlabcentral/answers/62894-trying-to-plot-a-3d-closed-cylinder
             
@@ -216,35 +219,35 @@ classdef Gear < Rack
                 C = varargin{1};
                 plot_prop = varargin(2:end);
             else
-                error('prog:input', 'Too many variables.');
+                error('Gear:plot3', 'Too many variables.');
             end
             
             if(obj.z > 0)
                 [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d/2, obj.z);
                 X =  X_tmp + C(1);
-                Y =  Z_tmp.*obj.b;
+                Y =  Z_tmp.*obj.b - obj.b/2.0;
                 Z = -Y_tmp - C(2);
 
                 surf(X, Y, Z, plot_prop{:});
                 hold on;
                 fill3(X(1,:), Y(1,:), Z(1,:), plot_prop{end});
-                fill3(X(2,:), Y(2,:), Z(2,:), plot_prop{end});
+                h = fill3(X(2,:), Y(2,:), Z(2,:), plot_prop{end});
             else
                 % External cylinder
                 [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d_bore/2, abs(obj.z));
                 X =  X_tmp + C(1);
-                Y =  Z_tmp.*obj.b;
+                Y =  Z_tmp.*obj.b - obj.b/2.0;
                 Z = -Y_tmp - C(2);
 
                 % Internal cylinder
                 [X2_tmp, Y2_tmp, Z2_tmp] = cylinder(obj.d/2, abs(obj.z));
                 X2 =  X2_tmp + C(1);
-                Y2 =  Z2_tmp.*obj.b;
+                Y2 =  Z2_tmp.*obj.b - obj.b/2.0;
                 Z2 = -Y2_tmp - C(2);
 
                 [x1_tmp, y1_tmp, z1_tmp] = fill_ring(obj.d_bore/2, obj.d/2, abs(obj.z));
                 x1 =  x1_tmp + C(1);
-                y1 =  z1_tmp;
+                y1 =  z1_tmp - obj.b/2.0;
                 z1 = -y1_tmp - C(2);
                 
                 surf(X, Y, Z, plot_prop{:});
@@ -252,16 +255,15 @@ classdef Gear < Rack
                 
                 surf(X2, Y2,         Z2, plot_prop{:});
                 surf(x1, y1        , z1, plot_prop{:});
-                surf(x1, y1 + obj.b, z1, plot_prop{:});
+                h = surf(x1, y1 + obj.b, z1, plot_prop{:});
             end
             
-            hold off;
             box on;
             axis equal;
             axis ij;
             
             if(nargout == 0)
-                clear X Y Z;
+                clear h X Y Z;
             end
         end
         

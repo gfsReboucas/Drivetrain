@@ -33,14 +33,14 @@ classdef (Abstract) Drivetrain
     
     properties(Access = public)
         stage         (1, :) Gear_Set;                                                                    % [class],  gearbox stages
-        P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 5.0e3;              % [kW],     Rated power
-        n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 12.1;               % [1/min.], Rated rotor speed
+        P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 5.0e3;              % [kW],     Rated power
+        n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 12.1;               % [1/min.], Rated rotor speed
         main_shaft    (1, :) Shaft                                                  = Shaft;              % [class],  Input Shaft
-        m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 110.0e3;            % [kg],     Rotor mass according to [3]
-        J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 57231535.0;         % [kg-m^2], Rotor mass moment of inertia according to [6]
-        m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 1900.0;             % [kg],     Generator mass according to [4]
-        J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBePositive} = 534.116;            % [kg-m^2], Generator mass moment of inertia [4]
-        N_stage       (1, 1)          {mustBeNumeric, mustBeFinite, mustBePositive} = 3;                  % [-],      Number of stages
+        m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 110.0e3;            % [kg],     Rotor mass according to [3]
+        J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 57231535.0;         % [kg-m^2], Rotor mass moment of inertia according to [6]
+        m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 1900.0;             % [kg],     Generator mass according to [4]
+        J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 534.116;            % [kg-m^2], Generator mass moment of inertia [4]
+        N_stage       (1, 1)          {mustBeInteger, mustBeFinite, mustBeNonnegative} = 3;                  % [-],      Number of stages
         dynamic_model (1, :)                                                        = @Dynamic_Formulation; % which dynamic model should be used to perform modal analysis on the Drivetrain.
         gamma                scaling_factor;                                                              % Scaling factors
         S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
@@ -51,7 +51,9 @@ classdef (Abstract) Drivetrain
         A; % State matrix
         load; % Load vector
         f_n; % natural frequencies
+        f_nd; % damped natural frequencies
         mode_shape; % mode shapes
+        mode_shape_d; % damped mode shapes
         zeta; % damping ratio
     end
     
@@ -128,9 +130,10 @@ classdef (Abstract) Drivetrain
             obj.K = dyn_calc.K;
             obj.D = dyn_calc.D;
             obj.A = dyn_calc.A;
-            obj.load = dyn_calc.load;
+            obj.load = dyn_calc.c;
             
-            [obj.f_n, obj.mode_shape, obj.zeta] = dyn_calc.modal_analysis();
+            [obj.f_n , obj.mode_shape  , ...
+             obj.f_nd, obj.mode_shape_d, obj.zeta] = dyn_calc.modal_analysis();
 
         end
         
@@ -235,7 +238,7 @@ classdef (Abstract) Drivetrain
                         val_stg{36} = obj.stage(idx).J_z(3);
                     end
                     
-                    tab_val{idx + 1} =  table(val_stg, 'variableNames', sprintf('Stage_%d', idx));
+                    tab_val{idx + 1} =  table(val_stg, 'variableNames', sprintf("Stage_%d", idx));
                 end
                 
                 tab_val{idx + 2} = table(Unit);
@@ -724,7 +727,7 @@ classdef (Abstract) Drivetrain
             idx_D = contains(key_set, 'd');
             gamma_full(key_set(idx_D)) = gamma_ds*ones(sum(idx_D), 1);
             
-            if(strcmp(class(obj_ref), 'Drivetrain'))
+            if(isa(obj_ref, 'Drivetrain'))
                 obj_sca = scale_all(gamma_P, gamma_n, gamma_full);
             else
                 scale_func = str2func(class(obj_ref));
@@ -1391,7 +1394,7 @@ classdef (Abstract) Drivetrain
 			file_ID = fopen(file_name, 'r');
 
 			file_type_descriptor = fscanf(file_ID, '%s', 1);
-			if(file_type_descriptor ~= '$SIMPACK_Input_Function_Set$')
+			if(~strcmp(file_type_descriptor, '$SIMPACK_Input_Function_Set$'))
 				error('file type wrong.')
 			end
 

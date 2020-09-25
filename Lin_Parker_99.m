@@ -21,6 +21,13 @@ classdef Lin_Parker_99 < Dynamic_Formulation
         G;         % Gyroscopic matrix
         D_bearing; % Bearing damping
         D_mesh;    % Mesh damping
+        
+        K_bearing_spc; % Bearing stiffness, (SParCe version)
+        K_mesh_spc;    % Mesh stiffness
+        K_Omega_spc;   % Centripetal stiffness
+        G_spc;         % Gyroscopic matrix
+        D_bearing_spc; % Bearing damping
+        D_mesh_spc;    % Mesh damping
     end
     
     properties(Dependent)
@@ -31,18 +38,21 @@ classdef Lin_Parker_99 < Dynamic_Formulation
         function obj = Lin_Parker_99(DT)
             obj@Dynamic_Formulation(DT);
             
-            obj.n_DOF = obj.calculate_DOF();
             [obj.M, obj.G] = obj.inertia_matrix();
-            
             [obj.K_bearing, obj.K_mesh, obj.K_Omega] = obj.stiffness_matrix();
             obj.K = obj.K_bearing + obj.K_mesh;
-            
             [obj.D_bearing, obj.D_mesh] = obj.damping_matrix();
             obj.D = obj.D_bearing + obj.D_mesh;
             
-            obj.load                       = zeros(obj.n_DOF(end), 6);
-            obj.load(1:3, 1:3)             = eye(3);
-            obj.load(end-2:end, end-2:end) = eye(3);
+            obj.M_spc         = sparse(obj.M);
+            obj.G_spc         = sparse(obj.G);
+            obj.K_bearing_spc = sparse(obj.K_bearing);
+            obj.K_mesh_spc    = sparse(obj.K_mesh);
+            obj.K_Omega_spc   = sparse(obj.K_Omega);
+            obj.K_spc         = sparse(obj.K);
+            obj.D_bearing_spc = sparse(obj.D_bearing);
+            obj.D_mesh_spc    = sparse(obj.D_mesh);
+            obj.D_spc         = sparse(obj.D);
         end
         
         %% Calculation:
@@ -134,12 +144,12 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             Dm = zeros(N, N);
             
             DT = obj.drive_train;
-
+            
             D_tmp = DT.main_shaft.damping_matrix('Lin_Parker_99');
             
             range = 1:6;
             Db(range, range) = Db(range, range) + D_tmp;
-
+            
             N = obj.n_DOF;
             Z3 = zeros(3);
             for idx = 1:DT.N_stage
@@ -147,9 +157,9 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 [Db_idx, Dm_idx] = Lin_Parker_99.stage_stiffness_matrix(DT.stage(idx));
                 Db_idx = R' * Db_idx * R;
                 Dm_idx = R' * Dm_idx * R;
-
+                
                 range = (N(idx) - 2):(N(idx + 1));
-
+                
                 % adding shaft stiffness:
                 n_idx = length(range);
                 rng = (-5:0) + n_idx;
@@ -157,10 +167,16 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 Db_tmp = blkdiag(Db_idx, Z3);
                 Db_tmp(rng, rng) = Db_tmp(rng, rng) + ...
                     DT.stage(idx).output_shaft.damping_matrix('Lin_Parker_99');
-
+                
                 Db(range, range) = Db(range, range) + Db_tmp;
                 Dm(range, range) = Dm(range, range) + blkdiag(Dm_idx, Z3);
             end
+        end
+        
+        function cc = load_vector(obj)
+            cc                       = zeros(obj.n_DOF(end), 6);
+            cc(1:3      , 1:3)       = eye(3);
+            cc(end-2:end, end-2:end) = eye(3);
         end
         
         function nn = calculate_DOF(obj)
@@ -178,6 +194,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 nn(idx + 1) = nn(idx) + tmp*3;
             end
         end
+        
         
     end
     
@@ -488,10 +505,10 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 d_pu = brg_p.C_alpha/(r_p^2);
                 
                 % Mesh component:
-                damp = 500.0e6;
+                d_pw = 500.0e6;
                 D_c31 =  diag([d_px, d_py, d_pu]);
-                Dm = [damp*D_s3 + D_c31, damp*D_s2(1) ;
-                      damp*D_s2(1)'    , damp*D_s1(1)];
+                Dm = [d_pw*D_s3 + D_c31, d_pw*D_s2(1) ;
+                      d_pw*D_s2(1)'    , d_pw*D_s1(1)];
 
             elseif(strcmp(stage_idx.configuration, 'planetary'))
                 np = 3*stage_idx.N_p;
@@ -529,8 +546,8 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 d_py = brg_p.C_z;
                 d_pu = brg_p.C_alpha/(r_p^2);
 
-                damp_sp = 500.0e6;
-                damp_pr = 500.0e6;
+                d_sp = 500.0e6;
+                d_pr = 500.0e6;
                 
                 D_c_row = zeros(3, np);
                 D_r_row = D_c_row;
@@ -551,18 +568,18 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 end
                 
                 D_c_row = diag([d_px, d_py, d_pu])*D_c_row;
-                D_r_row =                damp_pr  *D_r_row;
-                D_s_row =                damp_sp  *D_s_row;
+                D_r_row =                d_pr  *D_r_row;
+                D_s_row =                d_sp  *D_s_row;
                 sum_Dc1 = diag([d_px, d_py, d_pu])*sum_Dc1;
-                sum_Dr1 =                damp_pr  *sum_Dr1;
-                sum_Ds1 =                damp_sp  *sum_Ds1;
+                sum_Dr1 =                d_pr  *sum_Dr1;
+                sum_Ds1 =                d_sp  *sum_Ds1;
                 
                 diag_01 = blkdiag(sum_Dc1, sum_Dr1, sum_Ds1);
                 diag_up = [D_c_row;
                            D_r_row;
                            D_s_row];
 
-                D_pp = diag([d_px, d_py, d_pu]) + damp_pr*D_r3 + damp_sp*D_s3;
+                D_pp = diag([d_px, d_py, d_pu]) + d_pr*D_r3 + d_sp*D_s3;
                 DppCell = repmat({D_pp}, 1, stage_idx.N_p);
                 diag_02 = blkdiag(DppCell{:});
                 

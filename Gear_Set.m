@@ -266,7 +266,7 @@ classdef Gear_Set < Gear
                 plot(obj.gear(1), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(1, :));
                 plot(obj.gear(2), C_p*1.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
                 
-                legend(['Pinion', 'Wheel'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+                legend(["Pinion", "Wheel"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
             elseif(strcmp(obj.configuration, 'planetary'))
                 plot(obj.gear(1), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(1, :));
@@ -281,7 +281,7 @@ classdef Gear_Set < Gear
                     plot(obj.gear(2), RotXY(ang*(idx - 1))*C_p, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
                 end
                 
-                legend(['Sun', 'Planet', 'Ring', 'Carrier'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+                legend(["Sun", "Planet", "Ring", "Carrier"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
             end
             
             xlabel('y');
@@ -300,13 +300,15 @@ classdef Gear_Set < Gear
             C_p = [obj.a_w, 0.0]';
 
             if(strcmp(obj.configuration, 'parallel'))
-                plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
-                plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
+                hp = plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
+                hw = plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
                 
+                legend([hp, hw], ["Pinion", "Wheel"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+
             elseif(strcmp(obj.configuration, 'planetary'))
-                plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
-                plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
-                plot3(obj.gear(3), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(3, :));
+                hs = plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
+                hp = plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
+                hr = plot3(obj.gear(3), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(3, :));
                 
                 RotXY = @(x)[cos(x), sin(x); sin(x), cos(x)];
                 
@@ -315,8 +317,11 @@ classdef Gear_Set < Gear
                     plot3(obj.gear(2), RotXY(ang*(idx - 1))*C_p, 'edgeColor', 'none', 'lineStyle', 'none' , 'faceColor', color(2, :));
                 end
                 
-                legend(['Sun', 'Planet', 'Ring', 'Carrier'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+                legend([hs, hp, hr], ["Sun", "Planet", "Ring", "Carrier"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
             end
+            xlabel('y');
+            ylabel('x');
+            zlabel('z');
             
         end
         
@@ -557,6 +562,85 @@ classdef Gear_Set < Gear
             aw = abs(obj.z(1) + obj.z(2))*obj.m_n*cosd(obj.alpha_t)/(2.0*cosd(alpha_wt_star)*cosd(obj.beta));
         end
         
+        function kinematic_tree(obj)
+            % +--------------+----------------------------------+--------------------------------+-----------------------+
+            % |              |              Stage 1             |             Stage 2            |        Stage 3        |
+            % |    Element   +------------+---------------------+------------+-------------------+------------+----------+
+            % |              |    Prev.   |         Next        |    Prev.   |        Next       |    Prev.   |   Next   |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % | Output shaft |    frame   | sun   1 / carrier 2 |    frame   | sun   2 / Wheel 3 |    frame   | Pinion 3 |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % |  Sun/Pinion  | O. shaft 1 |          NA         | O. shaft 2 |         NA        | O. shaft 3 |    NA    |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % | Planet/Wheel |    pin 1   |          NA         |    pin 2   |         NA        | O. shaft 2 |    NA    |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % |     Ring     |    Frame   |          NA         |    Frame   |         NA        |                       |
+            % +--------------+------------+---------------------+------------+-------------------+                       |
+            % |    Carrier   |  M. shaft  |        pin 1        | O. shaft 1 |       pin 2       |                       |
+            % +--------------+------------+---------------------+------------+-------------------+                       |
+            % |      pin     |  carrier 1 |       planet 1      |  carrier 2 |      planet 2     |                       |
+            % +--------------+------------+---------------------+------------+-------------------+-----------------------+
+            
+            clr = ['r', 'g', 'b', 'k', 'c']';
+            
+            origin = 's';
+            input  = 'o';
+            output = '>';
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                
+            elseif(strcmp(obj.configuration, 'planetary'))
+                SUN = struct;
+                PLT = struct;
+                RNG = struct;
+                CAR = struct; % 2
+                SFT = struct; % 1
+                HSG = struct;
+                
+                HSG.y = 0.0;
+                
+                
+                SUN.y = 5.0;
+                SUN.out = obj.carrier.b/2.0;
+                
+                PLT.y = 4.0;
+                PLT.A = -0.77*obj.b;
+                PLT.B = -PLT.A;
+                
+                RNG.y = 3.0;
+                
+                SFT.y   = 1.0;
+                SFT.inp = -obj.output_shaft.L/2.0;
+                SFT.out = -SFT.inp;
+                
+                CAR.y = 2.0;
+                CAR.A   = -0.6*obj.carrier.b/2.0;
+                CAR.B   =  0.6*obj.carrier.b/2.0;
+                CAR.inp =  CAR.A;
+                CAR.out =  0.0;
+                
+                figure;
+                subplot(121)
+                hold on;
+                plot(0.0    , SUN.y, [clr(1, :), origin]);
+                plot(SUN.out, SUN.y, [clr(1, :), output]);
+                
+                plot(0.0    , CAR.y, [clr(4, :), origin])
+                plot(CAR.inp, CAR.y, [clr(4, :), input ]);
+                
+                plot(0.0    , SFT.y, [clr(5, :), origin]);
+                plot(SFT.inp, SFT.y, [clr(5, :), input ]);
+                plot(SFT.out, SFT.y, [clr(5, :), output]);
+                
+                set(gca, 'ytick'     ,  0:5);
+                set(gca, 'yticklabel', ["HSG", "SFT", "CAR", "RNG", "PLT", "SUN"]);
+                set(gca, 'ylim', [0 5]);
+                
+                subplot(122)
+                hold on;
+                
+            end
+        end
     end
     
     %% Set methods:
