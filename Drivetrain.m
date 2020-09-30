@@ -35,13 +35,13 @@ classdef (Abstract) Drivetrain
         stage         (1, :) Gear_Set;                                                                    % [class],  gearbox stages
         P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 5.0e3;              % [kW],     Rated power
         n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 12.1;               % [1/min.], Rated rotor speed
-        main_shaft    (1, :) Shaft                                                  = Shaft;              % [class],  Input Shaft
+        main_shaft    (1, :) Shaft                                                     = Shaft;              % [class],  Input Shaft
         m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 110.0e3;            % [kg],     Rotor mass according to [3]
         J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 57231535.0;         % [kg-m^2], Rotor mass moment of inertia according to [6]
         m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 1900.0;             % [kg],     Generator mass according to [4]
         J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 534.116;            % [kg-m^2], Generator mass moment of inertia [4]
         N_stage       (1, 1)          {mustBeInteger, mustBeFinite, mustBeNonnegative} = 3;                  % [-],      Number of stages
-        dynamic_model (1, :)                                                        = @Dynamic_Formulation; % which dynamic model should be used to perform modal analysis on the Drivetrain.
+        dynamic_model (1, :)                                                           = @Dynamic_Formulation; % which dynamic model should be used to perform modal analysis on the Drivetrain.
         gamma                scaling_factor;                                                              % Scaling factors
         S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
         S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
@@ -124,16 +124,10 @@ classdef (Abstract) Drivetrain
             obj.S_Hmin = default.S_Hmin;
             obj.S_Fmin = default.S_Fmin;
             
-            obj.dynamic_model = default.dynamic_model;
-            dyn_calc = obj.dynamic_model(obj);
-            obj.M = dyn_calc.M;
-            obj.K = dyn_calc.K;
-            obj.D = dyn_calc.D;
-            obj.A = dyn_calc.A;
-            obj.load = dyn_calc.c;
+            obj.dynamic_model = default.dynamic_model(obj);
             
             [obj.f_n , obj.mode_shape  , ...
-             obj.f_nd, obj.mode_shape_d, obj.zeta] = dyn_calc.modal_analysis();
+             obj.f_nd, obj.mode_shape_d, obj.zeta] = obj.dynamic_model.modal_analysis();
 
         end
         

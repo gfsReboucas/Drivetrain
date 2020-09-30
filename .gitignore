@@ -67,3 +67,5 @@ time_response.m
 modal_reduction_test.m
 solver_analysis.m
 time_response_PI.m
+control_tune.m
+model_control.ipynb

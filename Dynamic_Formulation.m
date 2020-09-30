@@ -6,13 +6,13 @@ classdef Dynamic_Formulation
         K;     % Stiffness matrix
         D;     % Damping matrix
         A;     % State matrix
-        c;     % Load vector
+        b;     % Load vector
         
         M_spc; % Inertia matrix, (SParCe version)
         K_spc; % Stiffness matrix
         D_spc; % Damping matrix
         A_spc; % State matrix
-        c_spc; % Load vector
+        b_spc; % Load vector
     end
     
     methods
@@ -29,13 +29,13 @@ classdef Dynamic_Formulation
             obj.K = obj.stiffness_matrix();
             obj.D = obj.damping_matrix();
             obj.A = obj.state_matrix();
-            obj.c = obj.load_vector();
+            obj.b = obj.load_vector();
             
             obj.M_spc = sparse(obj.M);
             obj.K_spc = sparse(obj.K);
             obj.D_spc = sparse(obj.D);
             obj.A_spc = sparse(obj.A);
-            obj.c_spc = sparse(obj.c);
+            obj.b_spc = sparse(obj.b);
             
         end
         
@@ -123,13 +123,132 @@ classdef Dynamic_Formulation
             
         end
         
-        function [M_r, K_r, D_r, c_r, MS_r] = modal_reduction(obj, N, prec)
+        function [M_r, K_r, D_r, b_r, MS_r] = modal_reduction(obj, N, prec)
             [~, MS] = obj.modal_analysis();
-            [M_r, K_r, D_r, c_r, MS_r] = ...
-                Dynamic_Formulation.modal_truncation(obj.M, obj.K, obj.D, obj.c, MS, N, prec);
+            [M_r, K_r, D_r, b_r, MS_r] = ...
+                Dynamic_Formulation.modal_truncation(obj.M, obj.K, obj.D, obj.b, MS, N, prec);
             
         end
         
+%         function sol = time_response(obj, varargin)
+%             %TIME_RESPONSE calculates the time response of the drivetrain.
+%             % The optional parameters are:
+%             % - solver: one of MATLAB's ODE solvers. These are recommended
+%             % for stiff problems: ode15s, ode23s, ode23t, and ode23tb.
+%             % - time_range: range of integration.
+%             % - IC: initial conditions.
+%             % - N_red: Number of modes to be used. The system is solved on
+%             % (N_red reduced) modal coordinates.
+%             % - ref_speed: output reference speed, in [1/min].
+%             % - K_p: Proportional gain.
+%             % - K_I: Integral gain.
+%             %
+%             
+%             default = {'solver'    , @ode15s, ... 
+%                        'time_range', [    0.0, ...  % initial time instant, [s]
+%                                          80.0], ... % final time instant, [s]
+%                        'IC'        , zeros(2*obj.n_DOF(end), 1), ... % [rad, 1/min]
+%                        'N_red'     ,      2, ...
+%                        'ref_speed' ,   1165.9, ... % [1/min]
+%                        'K_p'       ,   2200.0, ...
+%                        'K_I'       ,    220.0};
+%             
+%             default = scaling_factor.process_varargin(default, varargin);
+%             
+%             solver     = default.solver;
+%             time_range = default.time_range;
+%             IC         = default.IC;
+%             N_red      = default.N_red;
+%             ref_speed  = default.ref_speed;
+%             K_p        = default.K_p;
+%             K_I        = default.K_I;
+%             
+%             warning('off', 'Dynamic_Formulation:RB');
+%             
+%             % x_red = MS_r * x:
+%             % Modal reduction, changing coordinates from physical to modal.
+%             [M_r, K_r, D_r, b_r, Phi_r] = obj.modal_reduction(1:N_red, 3);
+%             
+%             % rad/s to 1/min:
+%             Phi_rv = Phi_r*30.0/pi;
+%             
+%             AA    = [zeros(N_red), eye(N_red);
+%                     -M_r\K_r    , -M_r\D_r];
+%             B_GA = [zeros(N_red, 2);
+%                     b_r];
+%             
+%             B_A = B_GA(:, 1);
+%             B_G = B_GA(:, 2);
+%             
+%             % Back to physical coordinates:
+%             C = [zeros(1, N_red), Phi_rv(end, :)];
+% %             C = blkdiag(MS_r*1.0, ... discard angular position later (?)
+% %                         MS_r*30.0/pi); % and get angular speed in [1/min]
+%             IC = pinv(blkdiag(Phi_r, Phi_rv))*IC;
+%             
+%             % checking controllability using staircase form to avoid
+%             % problems with ill-conditioned systems.
+%             [~, ~, ~, ~, k] = ctrbf(AA, B_G, C);
+%             if(sum(k) ~= length(AA))
+%                 warning('System is not-controllable.');
+%             end
+%             
+%             % adding integral control:
+%             A_bar   = [AA - K_p*B_G*C, B_G;
+%                           - K_I    *C, 0.0];
+%             B_A_bar = [B_A;
+%                        0.0];
+%             B_r_bar = [K_p*B_G;
+%                        K_I];
+%             IC_bar = [IC;
+%                       ref_speed];
+%             
+%             A_bar   = sparse(A_bar);
+%             B_A_bar = sparse(B_A_bar);
+%             B_r_bar = sparse(B_r_bar);
+%             
+%             % Smallest natural period:
+%             [f_n, ~, f_nd, ~, ~] = obj.modal_analysis();
+%             
+%             T_n = 1.0/max(f_n);   % undamped
+%             T_nd = 1.0/max(f_nd); % damped
+%             time_step = min([T_n, T_nd])/2.0; % initial time-step
+%             
+%             opt_ODE = odeset('vectorized' , 'on', ...
+%                              'jacobian'   , A_bar, ...
+%                              'initialStep', time_step);
+% 
+%             warning('on', 'Dynamic_Formulation:RB');
+%             
+%             data = load('input_load.mat');
+%             t_aero = data.time;
+%             T_aero = -data.Mx*1.0e3;
+% %             T_aero = mean(T_aero);
+% 
+%             T_A = @(t)interp1(t_aero, T_aero, t, 'linear');
+% %             T_A = @(t) T_aero;
+%             
+%             RHS = @(t, x, ref)(A_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
+%             
+%             sol_tmp = solver(@(t, x)RHS(t, x, ref_speed), time_range, IC_bar, opt_ODE);
+%             
+%             sol           = sol_tmp;
+%             sol.t         = sol_tmp.x;
+%             sol.x_red     = sol_tmp.y(1:end - 1, :);
+%             sol.x_full    = blkdiag(Phi_r, Phi_rv)*sol.x_red;
+%             sol.error     = ref_speed - C*sol.x_red;
+%             sol.T_gen     = K_p*sol.error + sol_tmp.y(end, :);
+%             sol.ref_speed = ref_speed*ones(size(sol.t));
+%             sol.T_aero    = T_A(sol.t);
+%             
+%             sol = rmfield(sol, {'x', 'y'});
+%             
+% %             function x_dot = RHS(t, x)
+% %                 x_dot = A_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed;
+% %                 x_dot = A*x + B_A*T_A(t) + B_G*TG;
+% %             end
+%         end
+%         
         function H = FRF(obj, freq)
 
             Omega = 2.0*pi*freq;
@@ -166,8 +285,8 @@ classdef Dynamic_Formulation
             DD = 0.05*obj.stiffness_matrix();
         end
         
-        function cc = load_vector(obj)
-            cc = eye(obj.n_DOF(end));
+        function bb = load_vector(obj)
+            bb = eye(obj.n_DOF(end));
         end
         
         function nn = calculate_DOF(obj)
@@ -182,7 +301,11 @@ classdef Dynamic_Formulation
     end
     
     methods(Static)
-        function [M_r, K_r, D_r, c_r, MS_r] = modal_truncation(MM, KK, DD, cc, MS, N, prec)
+        function [M_r, K_r, D_r, b_r, MS_r] = modal_truncation(MM, KK, DD, bb, MS, N, prec)
+            %MODAL_TRUNCATION 
+            % u = MS_r * u_r
+            %
+            
             MS_r = MS(:, N);
             
             eps = power(10.0, -prec);
@@ -190,7 +313,7 @@ classdef Dynamic_Formulation
             M_r = MS_r'*MM*MS_r;   M_r(abs(M_r) < eps) = 0.0;
             K_r = MS_r'*KK*MS_r;   K_r(abs(K_r) < eps) = 0.0;
             D_r = MS_r'*DD*MS_r;   D_r(abs(D_r) < eps) = 0.0;
-            c_r = MS_r'*cc;        c_r(abs(c_r) < eps) = 0.0;
+            b_r = MS_r'*bb;        b_r(abs(b_r) < eps) = 0.0;
             
         end
                 
