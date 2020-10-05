@@ -541,6 +541,41 @@ classdef Gear_Set < Gear
         end
         
         %% Misc.:
+        function k_tau = mesh_stiffness(obj, t, k, Omega_1)
+            %MESH_STIFFNESS Calculates the mesh stiffness for a Gear_Set
+            %according to [1-2].
+            % [1] Gu, X., Velex, P., Sainsot, P., and Bruyère, J. (June 1,
+            % 2015). "Analytical Investigations on the Mesh Stiffness
+            % Function of Solid Spur and Helical Gears." ASME. J. Mech.
+            % Des. June 2015; 137(6): 063301. 
+            % https://doi.org/10.1115/1.4030272
+            % [2] Velex Philippe (April 11th 2012). On the Modelling of 
+            % Spur and Helical Gear Dynamic Behaviour, Mechanical 
+            % Engineering, Murat Gokcek, IntechOpen, DOI: 10.5772/36157. 
+            % Available from: https://www.intechopen.com/books/mechanical-engineering/on-the-dynamic-behaviour-of-spur-and-helical-gears
+            
+            % Meshing period, [2]:
+            T_m = pi*obj.m_n*cosd(obj.alpha_n)/(2.0*obj.d_b(1)*Omega_1);
+            tau = t/T_m; % normalized time instant
+            
+            eps_a = obj.eps_alpha;            eps_b = obj.eps_beta;
+            
+            % Eq. (10), [1]:
+            Xi = @(k)((0.7 + 0.09./(k.*eps_a).^2).*sinc(k.*eps_a) + ...
+                - cos(pi.*k.*eps_a).*0.09./(k.*eps_a).^2);
+            
+            gen_term = @(kk, tt)(Xi(kk).*sinc(kk.*eps_b).* ...
+                                 cos(pi.*kk.*(2.0.*tt - eps_a - eps_b)));
+            
+            k_tau = 1.0;
+            for idx = 1:k
+                k_tau = k_tau + 2.0*gen_term(idx, tau);
+            end
+            
+            k_tau = k_tau .*obj.k_mesh;
+            
+        end
+        
         function m_tot = get_mass(obj)
             if(strcmp(obj.configuration, 'parallel'))
                 m_tot = sum(obj.mass);
@@ -847,6 +882,14 @@ classdef Gear_Set < Gear
             end
         end
         
+    end
+    
+    %% Validation:
+    methods(Static)
+        function test_k_mesh()
+            % to do: test obj.mesh_stiffness against data from Fig. 5 of
+            % [1].
+        end
     end
     
 end

@@ -43,7 +43,7 @@ classdef NREL_5MW < Drivetrain
             
             gamma = scaling_factor.process_varargin(gamma, varargin);
             gamma = scaling_factor(gamma);
-                        
+
             N_st = 3;
             stage = repmat(Gear_Set(), 1, N_st);
             
@@ -81,6 +81,7 @@ classdef NREL_5MW < Drivetrain
                            'S_Hmin'       , 1.25, ...
                            'S_Fmin'       , 1.56, ...
                            'dynamic_model', @Kahraman_94);
+%                            'dynamic_model', @Dynamic_Formulation);
 %                            'dynamic_model', @Lin_Parker_99);
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);

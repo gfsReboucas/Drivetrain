@@ -174,9 +174,9 @@ classdef Lin_Parker_99 < Dynamic_Formulation
         end
         
         function bb = load_vector(obj)
-            bb                       = zeros(obj.n_DOF(end), 6);
-            bb(1:3      , 1:3)       = eye(3);
-            bb(end-2:end, end-2:end) = eye(3);
+            bb         = zeros(obj.n_DOF(end), 2);
+            bb(3  , 1) = 1.0; % Torque at the rotor 
+            bb(end, 2) = 1.0; % Torque at the generator
         end
         
         function nn = calculate_DOF(obj)
@@ -193,105 +193,6 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 
                 nn(idx + 1) = nn(idx) + tmp*3;
             end
-        end
-        
-        function sol = time_response(obj, varargin)
-            default = {'solver'    , @ode15s, ...
-                       'time_range', [0.0 1.0e3], ... % [s]
-                       'IC'        , zeros(2*obj.n_DOF(end), 1), ... % [1/min]
-                       'N_red'     ,    6, ...
-                       'ref_speed' , 1165.9, ... % [1/min]
-                       'K_p'       , 2200.0, ...
-                       'K_I'       ,  220.0};
-            
-            default = scaling_factor.process_varargin(default, varargin);
-            
-            solver     = default.solver;
-            time_range = default.time_range;
-            IC         = default.IC;
-            N_red      = default.N_red;
-            ref_speed  = default.ref_speed;
-            K_p        = default.K_p;
-            K_I        = default.K_I;
-            
-            warning('off', 'Dynamic_Formulation:RB');
-            
-            % x_red = MS_r * x:
-            % Modal reduction, changing coordinates from physical to modal.
-            [M_r, K_r, D_r, b_r, Phi_r] = obj.modal_reduction(1:N_red, 3);
-            
-            % rad/s to 1/min:
-            Phi_rv = Phi_r*30.0/pi;
-            
-            A    = [zeros(N_red), eye(N_red);
-                    -M_r\K_r    , -M_r\D_r];
-            B_GA = [zeros(N_red, 6);
-                    b_r];
-            
-            B_A = B_GA(:, 1:3);
-            B_G = B_GA(:, 4:end);
-            
-            % Back to physical coordinates:
-            C = [zeros(1, N_red), Phi_rv(end, :)];
-%             C = blkdiag(MS_r*1.0, ... discard angular position later (?)
-%                         MS_r*30.0/pi); % and get angular speed in [1/min]
-            IC = pinv(blkdiag(Phi_r, Phi_rv))*IC;
-            
-            % checking controllability using staircase form to avoid
-            % problems with ill-conditioned systems.
-            [~, ~, ~, ~, k] = ctrbf(A, B_G, C);
-            if(sum(k) ~= length(A))
-                warning('System is not-controllable.');
-            end
-            
-            % adding integral control:
-            A_bar   = [A - K_p*B_G*C, B_G;
-                         - K_I    *C, 0.0];
-            B_A_bar = [B_A;
-                       0.0];
-            B_r_bar = [K_p*B_G;
-                       K_I];
-            IC_bar = [IC;
-                      0.0];
-            
-            A_bar   = sparse(A_bar);
-            B_A_bar = sparse(B_A_bar);
-            B_r_bar = sparse(B_r_bar);
-            
-            % Smallest natural period:
-            [f_n, ~, f_nd, ~, ~] = obj.modal_analysis();
-            
-            T_n = 1.0/max(f_n);   % undamped
-            T_nd = 1.0/max(f_nd); % damped
-            time_step = min([T_n, T_nd])/2.0; % initial time-step
-            
-            opt_ODE = odeset('vectorized' , 'on', ...
-                             'jacobian'   , A_bar, ...
-                             'initialStep', time_step);
-
-            warning('on', 'Dynamic_Formulation:RB');
-            
-            data = load('input_load.mat');
-            t_aero = data.time;
-            T_aero = -data.Mx*1.0e3;
-
-            T_A = @(t)interp1(t_aero, T_aero, t, 'linear');
-
-            RHS = @(t, x, ref)(A_bar*x + B_A_bar*T_A(t) + B_r_bar*ref);
-            
-            sol_tmp = solver(@(t, x)RHS(t, x, ref_speed), time_range, IC_bar, opt_ODE);
-            
-            sol           = sol_tmp;
-            sol.t         = sol_tmp.x;
-            sol.x_red     = sol_tmp.y(1:end - 1, :);
-            sol.x_full    = blkdiag(Phi_r, Phi_rv)*sol.x_red;
-            sol.error     = ref_speed - C*sol.x_red;
-            sol.T_gen     = K_p*sol.error + sol_tmp.y(end, :);
-            sol.ref_speed = ref_speed;
-            sol.T_aero    = T_A(sol.t);
-            
-            sol = rmfield(sol, {'x', 'y'});
-            
         end
         
     end
