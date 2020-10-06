@@ -1,18 +1,34 @@
 classdef Dynamic_Formulation
+    %DYNAMIC_FORMULATION Generates the dynamic matrices for a Drivetrain 
+    % object, based on its Gear_Set and inertia elements. The equations of
+    % motion are given as:
+    % M q'' + (D + Omega_c G) q' + (K_m + K_b - Omega_c^2 K_Omega) q =
+    %       = Omega_c^2 c + b [T, F],
+    % where:
+    % - q = q(t) is the (angular/translational) displacement vector, whose
+    % first and second time derivatives are q' and q'', respectively.
+    % - M is the inertia matrix.
+    % - D is the damping matrix.
+    % - G is the gyroscopic matrix.
+    % - K_m is the mesh stiffness matrix.
+    % - K_b is the bearing stiffness matrix.
+    % - K_Omega is the centripetal stiffness matrix.
+    % - c is the centripetal force vector.
+    % - b is the external load vector.
+    %
+   
     properties
         drive_train;
-        n_DOF; % number of degrees of freedom
-        M;     % Inertia matrix
-        K;     % Stiffness matrix
-        D;     % Damping matrix
-        A;     % State matrix
-        b;     % Load vector
-        
-        M_spc; % Inertia matrix, (SParCe version)
-        K_spc; % Stiffness matrix
-        D_spc; % Damping matrix
-        A_spc; % State matrix
-        b_spc; % Load vector
+        n_DOF;   % number of degrees of freedom
+        M;       % Inertia matrix
+        D;       % Damping matrix
+        G;       % Gyroscopic matrix
+        K_m;     % Mesh stiffness matrix
+        K_b;     % Bearing stiffness matrix
+        K_Omega; % Centripetal stiffness matrix
+        c;       % Centripetal force vector
+        b;       % External load vector
+        A;       % State matrix
     end
     
     methods
@@ -25,18 +41,15 @@ classdef Dynamic_Formulation
             
             obj.n_DOF = obj.calculate_DOF();
             
-            obj.M = obj.inertia_matrix();
-            obj.K = obj.stiffness_matrix();
-            obj.D = obj.damping_matrix();
-            obj.A = obj.state_matrix();
-            obj.b = obj.load_vector();
-            
-            obj.M_spc = sparse(obj.M);
-            obj.K_spc = sparse(obj.K);
-            obj.D_spc = sparse(obj.D);
-            obj.A_spc = sparse(obj.A);
-            obj.b_spc = sparse(obj.b);
-            
+            [obj.M, ...
+             obj.G]       = obj.inertia_matrix();
+            obj.D         = obj.damping_matrix();
+            [obj.K_m, ...
+             obj.K_b, ...
+             obj.K_Omega] = obj.stiffness_matrix();
+            obj.c         = obj.centripetal_force_vector();
+            obj.b         = obj.external_load_vector();
+            obj.A         = obj.state_matrix();
         end
         
         function tab = disp(obj)
@@ -56,7 +69,7 @@ classdef Dynamic_Formulation
             %
             
             %% Undamped analysis:
-            [MS, EV] = eig(obj.K, obj.M);
+            [MS, EV] = eig(obj.K_m + obj.K_b, obj.M);
             
             EV = diag(EV); % matrix to vector
             omega_n = sqrt(EV); % lambda to omega
@@ -123,10 +136,10 @@ classdef Dynamic_Formulation
             
         end
         
-        function [M_r, D_r, K_r, b_r, MS_r] = modal_reduction(obj, N, prec)
+        function [M_r, D_r, K_mr, K_br, b_r, MS_r] = modal_reduction(obj, N, prec)
             [~, MS] = obj.modal_analysis();
-            [M_r, D_r, K_r, b_r, MS_r] = ...
-                Dynamic_Formulation.modal_truncation(obj.M, obj.D, obj.K, obj.b, MS, N, prec);
+            [M_r, D_r, K_mr, K_br, b_r, MS_r] = ...
+                Dynamic_Formulation.modal_truncation(obj.M, obj.D, obj.K_m, obj.K_b, obj.b, MS, N, prec);
             
         end
         
@@ -172,24 +185,32 @@ classdef Dynamic_Formulation
             % x_red = MS_r * x:
             % Modal reduction, changing coordinates from physical to modal.
             if(modal_red)
-                [MM, DD, KK, bb, Phi] = obj.modal_reduction(1:N_modes, 3);
+                [MM, DD, Km, Kb, bb, Phi] = obj.modal_reduction(1:N_modes, 3);
             else
-                MM      = obj.M;          DD = obj.D;
-                KK      = obj.K;          bb = obj.b;
+                MM = obj.M;
+                DD = obj.D;
+                Km = obj.K_m;
+                Kb = obj.K_b;
+                bb = obj.b;
+%                 cc = obj.c;
+
                 N_modes = length(MM);
                 Phi     = eye(N_modes);
             end
             
+            KK = Km + Kb;
+            
             % rad/s to 1/min:
             Phi_v = Phi*30.0/pi;
             
-            AA    = [zeros(N_modes), eye(N_modes);
-                    -MM\KK    , -MM\DD];
-            B_GA = [zeros(N_modes, 2);
-                    MM\bb];
-            
-            B_A = B_GA(:, 1);
-            B_G = B_GA(:, 2);
+            AA = blkdiag(MM, MM);
+            BB = [zeros(N_modes),  MM;
+                        -KK     , -DD];
+            b_GA = [zeros(N_modes, 2);
+                        bb];
+                
+            b_A = b_GA(:, 1);
+            b_G = b_GA(:, 2);
             
             % Back to physical coordinates:
             C = [zeros(1, N_modes), Phi_v(end, :)];
@@ -199,22 +220,24 @@ classdef Dynamic_Formulation
             
             % checking controllability using staircase form to avoid
             % problems with ill-conditioned systems.
-            [~, ~, ~, ~, k] = ctrbf(AA, B_G, C);
+            [~, ~, ~, ~, k] = ctrbf(AA\BB, b_G, C);
             if(sum(k) ~= length(AA))
                 warning('System is not-controllable.');
             end
             
             % coupling PI control:
-            A_bar   = [AA - K_p*B_G*C, B_G;
+            A_bar = blkdiag(AA, 1.0);
+            B_bar = [BB - K_p*b_G*C, b_G;
                           - K_I    *C, 0.0];
-            B_A_bar = [B_A;
+            B_A_bar = [b_A;
                        0.0];
-            B_r_bar = [K_p*B_G;
+            B_r_bar = [K_p*b_G;
                        K_I];
             IC_bar = [IC;
                       ref_speed];
             
             A_bar   = sparse(A_bar);
+            B_bar   = sparse(B_bar);
             B_A_bar = sparse(B_A_bar);
             B_r_bar = sparse(B_r_bar);
             
@@ -226,7 +249,8 @@ classdef Dynamic_Formulation
             time_step = min([T_n, T_nd])/2.0; % initial time-step
             
             opt_ODE = odeset('vectorized' , 'on', ...
-                             'jacobian'   , A_bar, ...
+                             'mass'       , A_bar, ...
+                             'jacobian'   , B_bar, ...
                              'initialStep', time_step, ...
                              'relTol'     , 1.0e-6, ...
                              'absTol'     , 1.0e-8);
@@ -246,7 +270,7 @@ classdef Dynamic_Formulation
             T_A = @(t)interp1(t_load, T_aero, t, 'linear');
 %             T_A = @(t) T_aero;
             
-            RHS = @(t, x)(A_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
+            RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
             
             sol_tmp = solver(@(t, x)RHS(t, x), time_range, IC_bar, opt_ODE);
             
@@ -300,27 +324,37 @@ classdef Dynamic_Formulation
             
         end
         
-        function MM = inertia_matrix(obj)
+        function [MM, GG] = inertia_matrix(obj)
             MM = diag([obj.drive_train.J_Rotor;
                        obj.drive_train.J_Gen*obj.drive_train.u^2]);
+            GG = zeros(obj.n_DOF(end));
         end
         
-        function KK = stiffness_matrix(obj)
+        function DD = damping_matrix(obj)
+            [~, Kb, ~] = obj.stiffness_matrix();
+            DD = 0.05*Kb;
+        end
+        
+        function [Km, Kb, KOm] = stiffness_matrix(obj)
+            Km = zeros(obj.n_DOF(end));
+            KOm = zeros(obj.n_DOF(end));
+            
+            % Bearing matrix:
             k_LSS = obj.drive_train.main_shaft.stiffness('torsional');
             k_HSS = obj.drive_train.stage(end).output_shaft.stiffness('torsional');
             
             u2 = obj.drive_train.u^2;
             
             k = (k_LSS*k_HSS*u2)/(k_LSS + k_HSS*u2);
-            KK = k*[ 1.0, -1.0;
+            Kb = k*[ 1.0, -1.0;
                     -1.0,  1.0];
         end
         
-        function DD = damping_matrix(obj)
-            DD = 0.05*obj.stiffness_matrix();
+        function cc = centripetal_force_vector(obj)
+            cc = zeros(obj.n_DOF(end), 1);
         end
         
-        function bb = load_vector(obj)
+        function bb = external_load_vector(obj)
             bb = eye(obj.n_DOF(end));
         end
         
@@ -329,14 +363,17 @@ classdef Dynamic_Formulation
         end
         
         function AA = state_matrix(obj)
+            KK = obj.K_m + obj.K_b;
+            
             n = obj.n_DOF(end);
-            AA = [ zeros(n),     eye(n);
-                  -obj.M\obj.K, -obj.M\obj.D];
+            
+            AA = [ zeros(n),  eye(n);
+                  -obj.M\KK, -obj.M\obj.D];
         end
     end
     
     methods(Static)
-        function [M_r, D_r, K_r, b_r, Phi_r] = modal_truncation(MM, DD, KK, bb, Phi, N, prec)
+        function [M_r, D_r, K_mr, K_br, b_r, Phi_r] = modal_truncation(MM, DD, Km, Kb, bb, Phi, N, prec)
             %MODAL_TRUNCATION 
             % u = Phi_r * u_r
             %
@@ -345,10 +382,11 @@ classdef Dynamic_Formulation
             
             eps = power(10.0, -prec);
             
-            M_r = Phi_r'*MM*Phi_r;   M_r(abs(M_r) < eps) = 0.0;
-            D_r = Phi_r'*DD*Phi_r;   D_r(abs(D_r) < eps) = 0.0;
-            K_r = Phi_r'*KK*Phi_r;   K_r(abs(K_r) < eps) = 0.0;
-            b_r = Phi_r'*bb;        b_r(abs(b_r) < eps) = 0.0;
+            M_r = Phi_r'*MM*Phi_r;    M_r( abs(M_r)  < eps) = 0.0;
+            D_r = Phi_r'*DD*Phi_r;    D_r( abs(D_r)  < eps) = 0.0;
+            K_mr = Phi_r'*Km*Phi_r;   K_mr(abs(K_mr) < eps) = 0.0;
+            K_br = Phi_r'*Kb*Phi_r;   K_br(abs(K_br) < eps) = 0.0;
+            b_r = Phi_r'*bb;          b_r( abs(b_r)  < eps) = 0.0;
             
         end
                 

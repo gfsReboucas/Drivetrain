@@ -27,7 +27,7 @@ classdef Rack
     
     properties(SetAccess = private)
         type    (1, :) string {mustBeMember(type, ["A", "B", "C", "D"])}     = "A";  % [-],    Type of basic rack tooth profile
-        alpha_P (1, 1) double {mustBePositive}                               = 20.0; % [deg.], Pressure angle
+        alpha_P (1, 1) double {mustBeNonnegative}                            = 20.0; % [deg.], Pressure angle
         U_FP    (1, 1) double {mustBeNumeric}                                = 0.0;  % [mm],   Size of undercut
         alpha_FP(1, 1) double {mustBeNumeric}                                = 0.0;  % [deg.], Angle of undercut
     end

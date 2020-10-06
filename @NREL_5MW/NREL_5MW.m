@@ -39,9 +39,12 @@ classdef NREL_5MW < Drivetrain
                      'm_n2', 1.0, 'b_2' , 1.0, 'd_2' , 1.0, 'L_2' , 1.0, ...
                      'm_n3', 1.0, 'b_3' , 1.0, 'd_3' , 1.0, 'L_3' , 1.0, ...
                      'J_R' , 1.0, 'J_G' , 1.0, ...
-                     'd_S' , 1.0, 'L_S' , 1.0};
+                     'd_S' , 1.0, 'L_S' , 1.0, ...
+                     'dynamic_model', @Kahraman_94};
             
             gamma = scaling_factor.process_varargin(gamma, varargin);
+            dynamic_model = gamma.dynamic_model;
+            gamma = rmfield(gamma, 'dynamic_model');
             gamma = scaling_factor(gamma);
 
             N_st = 3;
@@ -80,9 +83,9 @@ classdef NREL_5MW < Drivetrain
                            'J_Gen'        , J_G, ...
                            'S_Hmin'       , 1.25, ...
                            'S_Fmin'       , 1.56, ...
-                           'dynamic_model', @Kahraman_94);
-%                            'dynamic_model', @Dynamic_Formulation);
+                           'dynamic_model', dynamic_model);
 %                            'dynamic_model', @Lin_Parker_99);
+%                            'dynamic_model', @Dynamic_Formulation);
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);
 

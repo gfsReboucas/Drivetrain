@@ -245,7 +245,7 @@ classdef Gear < Rack
                 Y2 =  Z2_tmp.*obj.b - obj.b/2.0;
                 Z2 = -Y2_tmp - C(2);
 
-                [x1_tmp, y1_tmp, z1_tmp] = fill_ring(obj.d_bore/2, obj.d/2, abs(obj.z));
+                [x1_tmp, y1_tmp, z1_tmp] = obj.fill_ring();
                 x1 =  x1_tmp + C(1);
                 y1 =  z1_tmp - obj.b/2.0;
                 z1 = -y1_tmp - C(2);
@@ -290,51 +290,6 @@ classdef Gear < Rack
     
     %% Calculations:
     methods
-        function f_pt = single_pitch_tol(obj, Q)
-        %SINGLE_PITCH_TOL Single pitch tolerance, according to ISO
-        % 1328-1:1995.
-
-            d_list = [5.0 20.0 50.0 125.0 280.0 560.0 1000.0 1600.0 2500.0 4000.0 6000.0 8000.0 10000.0];
-            m_list = [0.5 2.0 3.5 6.0 10.0 16.0 25.0 40.0 70.0];
-            
-            idx_m = find(m_list > obj.m_n, 1, 'first');
-            m_int = geomean(m_list(idx_m-1:idx_m));
-            
-            f_pt = zeros(size(obj.d));
-            
-            for idx = 1:length(obj.d)
-                idx_d = find(d_list > obj.d(idx)  , 1, 'first');
-
-                d_int = geomean(d_list(idx_d-1:idx_d));
-
-                f_pt(idx) = (0.3.*(m_int + 0.4.*sqrt(d_int)) + 4.0).*power(2.0, (Q - 5.0)/2.0);
-                f_pt(idx) = round_ISO(f_pt(idx));
-            end
-
-        end
-        
-        function f_falpha = profile_form_tol(obj, Q)
-        %PROFILE_FORM Profile form tolerance, according to ISO 1328-1:1995.
-
-            d_list = [5.0 20.0 50.0 125.0 280.0 560.0 1000.0 1600.0 2500.0 4000.0 6000.0 8000.0 10000.0];
-            m_list = [0.5 2.0 3.5 6.0 10.0 16.0 25.0 40.0 70.0];
-
-            idx_m = find(m_list > obj.m_n, 1, 'first');
-            m_int = geomean(m_list(idx_m-1:idx_m));
-            
-            f_falpha = zeros(size(obj.d));
-
-            for idx = 1:length(obj.d)
-                idx_d = find(d_list > obj.d(idx), 1, 'first');
-
-                d_int = geomean(d_list(idx_d-1:idx_d));
-
-                f_falpha(idx) = (2.5.*sqrt(m_int) + 0.17.*sqrt(d_int) + 0.5).*power(2.0, (Q - 5.0)/2.0);
-                f_falpha(idx) = round_ISO(f_falpha(idx));
-            end
-            
-        end
-        
         function obj = work_pitch_diam(obj, alpha_wt)
             %WORK_PITCH_DIAM Working pitch diameter, [mm]
             obj.d_w = obj.d_b./cosd(alpha_wt);
@@ -414,8 +369,7 @@ classdef Gear < Rack
                 val = val';
             end
             
-            c = [1.0, -1.0]';   e = ones(2, 1);
-            I = eye(2);         A = diag(c);
+            c = [1.0, -1.0]';   e = ones(2, 1);     A = diag(c);
             
             switch(option)
                 case 'coefficient' % u = (1/m_n) I v + c x
@@ -640,64 +594,27 @@ classdef Gear < Rack
     end
     
     %% Static methods:
-end
-
-function x_r = round_ISO(x)
-% rounding according to ISO 1328-1, Sec. 5.2.3:
-    
-    if(x < 5.0) % [um]
-        x_r = round_near(x, 0.1);
-    elseif((5.0 <= x) && (x <= 10.0))
-        x_r = round_near(x, 0.5);
-    else
-        x_r = round(x);
-    end
-end
-
-function x_r = round_near(x, y)
-%ROUND_NEAR rounds the number x to the nearest y. Based on:
-% https://www.mathworks.com/matlabcentral/answers/14495-rounding-elements-in-array-to-nearest-0-25
-% (Accessed on 08/10/2019)
-%
-
-    % decimal part:
-    dp = x - floor(x);
-    
-    up =  ceil(dp/y)*y;
-    dw = floor(dp/y)*y;
-    
-    d_up = up - dp;
-    d_dw = dp - dw;
-    
-    dx = zeros(size(x));
-    
-    for idx = 1:length(x)
-        if(d_up(idx) < d_dw(idx))
-            dx(idx) = up(idx);
-        else
-            dx(idx) = dw(idx);
+    methods(Access = private)
+        function [x, y, z] = fill_ring(obj)
+            % https://www.mathworks.com/matlabcentral/answers/178464-how-to-make-circular-ring
+            r_out = obj.d_bore/2;
+            r_in  = obj.d/2;
+            n     = abs(obj.z);
+            
+            t = linspace(0.0, 2.0*pi, n + 1);
+            r_outer = ones(size(t))*r_out;
+            r_inner = ones(size(t))*r_in;
+            r = [r_outer; r_inner];
+            t = [t; t];
+            x = r.*cos(t);
+            y = r.*sin(t);
+            z = zeros(size(x));
+            
+            if(nargout == 0)
+                surf(x, y, z);
+                clear x y z;
+            end
         end
     end
-    
-    x_r = floor(x) + dx;
-
 end
 
-function [x, y, z] = fill_ring(r_out, r_in, n)
-    % https://www.mathworks.com/matlabcentral/answers/178464-how-to-make-circular-ring
-    
-    t = linspace(0.0, 2.0*pi, n + 1);
-    r_outer = ones(size(t))*r_out;
-    r_inner = ones(size(t))*r_in;
-    r = [r_outer; r_inner];
-    t = [t; t];
-    x = r.*cos(t);
-    y = r.*sin(t);
-    z = zeros(size(x));
-    
-    if(nargout == 0)
-        surf(x, y, z);
-        clear x y z;
-    end
-    
-end
