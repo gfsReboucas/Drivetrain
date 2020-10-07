@@ -153,8 +153,8 @@ classdef Dynamic_Formulation
             % - ref_speed: output reference speed, in [1/min].
             % - K_p: Proportional gain.
             % - K_I: Integral gain.
-            % - N_modes: Number of modes to be used. The system is solved on
-            % (N_red reduced) modal coordinates.
+            % - N_modes: Number of modes to be used. The system is solved
+            % using modal coordinates.
             %
             
             IC = zeros(2*obj.n_DOF(end), 1);
