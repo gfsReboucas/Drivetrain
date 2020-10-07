@@ -11,6 +11,39 @@ classdef Kahraman_94 < Dynamic_Formulation
             obj@Dynamic_Formulation(DT);
         end
         
+        function desc = explain_DOF(obj)
+            N = obj.n_DOF(end);
+            desc = cell(2*N, 1);
+            jdx = 1;
+            desc{jdx} = 'Rotor angular displacement, [rad/s]';
+            desc{N} = 'Generator angular displacement, [rad/s]';
+            
+            DT = obj.drive_train;
+            
+            for idx = 1:DT.N_stage
+                stage_idx = DT.stage(idx);
+                if(strcmp(stage_idx.configuration, 'parallel'))
+                    jdx = jdx + 1;
+                    desc{jdx} = sprintf('Stage %d: Wheel angular displacement, [rad/s]', idx);
+                    jdx = jdx + 1;
+                    desc{jdx} = sprintf('Stage %d: Pinion angular displacement, [rad/s]', idx);
+                elseif(strcmp(stage_idx.configuration, 'planetary'))
+                    jdx = jdx + 1;
+                    desc{jdx} = sprintf('Stage %d: Carrier angular displacement, [rad/s]', idx);
+                    for kdx = 1:stage_idx.N_p
+                        desc{jdx + kdx} = sprintf('Stage %d: Planet %d angular displacement, [rad/s]', idx, kdx);
+                    end
+                    jdx = jdx + kdx + 1;
+                    desc{jdx} = sprintf('Stage %d: Sun angular displacement, [rad/s]', idx);
+                end
+            end
+            
+            for idx = 1:N
+                desc{N + idx} = strrep(desc{idx}, 'displacement, [rad/s]', ...
+                                                  'speed, [1/min]');
+            end
+        end
+        
         %% Calculation:
         function [MM, GG] = inertia_matrix(obj)
             N = obj.n_DOF(end);
@@ -138,7 +171,9 @@ classdef Kahraman_94 < Dynamic_Formulation
         end
         
         function DD = stage_damping_matrix(stage_idx)
-
+            
+%             mesh_damp = 500.0e6;
+            mesh_damp = 0.0;
             if(strcmp(stage_idx.configuration, 'parallel'))
                 n = 3;
                 DD = zeros(n, n);
@@ -146,7 +181,7 @@ classdef Kahraman_94 < Dynamic_Formulation
                 r_p = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_w = (stage_idx.d(2)*1.0e-3)/2.0;
                 
-                d_pw = 500.0e6;
+                d_pw = mesh_damp*stage_idx.k_mesh;
                 
                 range = 1:2;
                 DD(range, range) = [r_w ^ 2 * d_pw         r_p     * d_pw * r_w;
@@ -155,8 +190,13 @@ classdef Kahraman_94 < Dynamic_Formulation
                 n = stage_idx.N_p + 3;
                 DD = zeros(n, n);
                 
-                d_sp = 500.0e6;
-                d_rp = 500.0e6;
+                % Mesh stiffness:
+                % Mesh component:
+                sun_pla = stage_idx.sub_set('sun_planet');
+                pla_rng = stage_idx.sub_set('planet_ring');
+
+                d_sp = mesh_damp*sun_pla.k_mesh;
+                d_rp = mesh_damp*pla_rng.k_mesh;
                 
                 r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;

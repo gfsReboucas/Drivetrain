@@ -23,7 +23,7 @@ classdef Bearing
                                                       % CRB: Cylindrical Roller Bearing
                                                              % SRB: Spherical Roller Bearing
                                                                     % TRB: Tapered Roller Bearing
-        x;       % [mm],      bearing axial position w. r. t. shaft 
+        x;       % [mm],      bearing axial position w. r. t. shaft/pin 
         K_x;     % [N/m],     Translational stiffness, x axis
         K_y;     % [N/m],     Translational stiffness, y axis
         K_z;     % [N/m],     Translational stiffness, z axis
@@ -44,8 +44,7 @@ classdef Bearing
     end
     
     methods
-%         function obj = Bearing(nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
-        function obj = Bearing(varargin)%nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
+        function obj = Bearing(varargin)
             default = {'name'  , 'no_name', ...
                       'type'   , 'none', ...
                       'x'      , 0.0, ...

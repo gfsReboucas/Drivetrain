@@ -29,6 +29,7 @@ classdef Dynamic_Formulation
         c;       % Centripetal force vector
         b;       % External load vector
         A;       % State matrix
+        DOF_description; 
     end
     
     methods
@@ -50,12 +51,19 @@ classdef Dynamic_Formulation
             obj.c         = obj.centripetal_force_vector();
             obj.b         = obj.external_load_vector();
             obj.A         = obj.state_matrix();
+            
+            obj.DOF_description = obj.explain_DOF();
         end
         
         function tab = disp(obj)
             
         end
         
+        function desc = explain_DOF(obj)
+            desc = cell(obj.n_DOF(end), 1);
+            desc{1} = 'Rotor angular displacement';
+            desc{2} = 'Generator angular displacement';
+        end
     end
     
     %% Calculation:
@@ -159,7 +167,7 @@ classdef Dynamic_Formulation
             
             IC = zeros(2*obj.n_DOF(end), 1);
             
-            default = {'solver'    , @ode15s  , ... 
+            default = {'solver'    , @ode23t  , ... 
                        'time_range', [    0.0 , ...  % initial time instant, [s]
                                         400.0], ... % final time instant, [s]
                        'IC'        ,    IC    , ... % [rad, 1/min]
@@ -167,7 +175,8 @@ classdef Dynamic_Formulation
                        'K_p'       ,   2200.0 , ...
                        'K_I'       ,    220.0 , ...
                        'modal_red' ,    false , ...
-                       'N_modes'   , obj.n_DOF(end)};
+                       'N_modes'   , obj.n_DOF(end), ...
+                       'T_sample'  , 50.0e-6};
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -179,6 +188,7 @@ classdef Dynamic_Formulation
             K_I        = default.K_I;
             modal_red  = default.modal_red;
             N_modes    = default.N_modes;
+            T_sample   = default.T_sample;
             
             warning('off', 'Dynamic_Formulation:RB');
             
@@ -274,13 +284,17 @@ classdef Dynamic_Formulation
             
             sol_tmp = solver(@(t, x)RHS(t, x), time_range, IC_bar, opt_ODE);
             
+            t_sample = time_range(1):T_sample:time_range(end);
+            x_sample = deval(sol_tmp, t_sample);
+            
             sol           = sol_tmp;
-            sol.t         = sol_tmp.x;
-            sol.x_red     = sol_tmp.y(1:end - 1, :);
+            sol.t         = t_sample;
+            sol.x_red     = x_sample(1:end - 1, :);
             sol.x         = blkdiag(Phi, Phi_v)*sol.x_red;
-            sol.error     = ref_speed - C*sol.x_red;
-            sol.T_gen     = K_p*sol.error + sol_tmp.y(end, :);
+            sol.gen_speed = C*sol.x_red;
             sol.ref_speed = ref_speed*ones(size(sol.t));
+            sol.error     = sol.ref_speed - sol.gen_speed;
+            sol.T_gen     = K_p*sol.error + x_sample(end, :);
             sol.T_aero    = T_A(sol.t);
             sol.M         = MM;
             sol.D         = DD;
@@ -288,6 +302,8 @@ classdef Dynamic_Formulation
             sol.b         = bb;
             sol.K_p       = K_p;
             sol.K_I       = K_I;
+            
+            sol.DOF_description = obj.DOF_description;
             
             field_name = {'y'};
             if(~modal_red)
@@ -308,18 +324,26 @@ classdef Dynamic_Formulation
 %             end
         end
         
-        function H = FRF(obj, freq)
+        function [Hx, Hv, Ha] = FRF(obj, freq)
+            % FRF Calculates the Frequency Response Function of the model
+            % for the frequencies freq in [Hz], returns:
+            % - Hx: Receptance function
+            % - Hv: Mobility function
+            % - Ha: Accelerance function
+            %
 
             Omega = 2.0*pi*freq;
             i = sqrt(-1.0);
             
             n_Om = length(Omega);
-            H = zeros(n_Om, n);
-            
-            KK = @(x)(obj.K);
+            Hx = zeros([n_Om, size(obj.b)]);
+            Hv = Hx;        Ha = Hx;
+            KK = obj.K_m + obj.K_b;
             
             for idx = 1:n_Om
-                H(idx, :) = (-obj.M.*Omega(idx).^2 + i.*Omega(idx).*obj.D + KK(Omega(idx)))\obj.load;
+                Hx(idx, :, :) = (-obj.M.*Omega(idx).^2 + i.*Omega(idx).*obj.D + KK)\obj.b;
+                Hv(idx, :, :) = Hx(idx, :, :).*Omega(idx);
+                Ha(idx, :, :) = Hv(idx, :, :).*Omega(idx);
             end
             
         end
