@@ -151,7 +151,7 @@ classdef Dynamic_Formulation
             
         end
         
-        function sol = time_response(obj, varargin)
+        function [sol, t_sample, x_sample] = time_response(obj, varargin)
             %TIME_RESPONSE calculates the time response of the drivetrain.
             % The optional parameters are:
             % - solver: one of MATLAB's ODE solvers. These are recommended
@@ -169,14 +169,14 @@ classdef Dynamic_Formulation
             
             default = {'solver'    , @ode23t  , ... 
                        'time_range', [    0.0 , ...  % initial time instant, [s]
-                                        400.0], ... % final time instant, [s]
+                                        100.0], ... % final time instant, [s]
                        'IC'        ,    IC    , ... % [rad, 1/min]
                        'ref_speed' ,   1165.9 , ... % [1/min]
                        'K_p'       ,   2200.0 , ...
                        'K_I'       ,    220.0 , ...
                        'modal_red' ,    false , ...
                        'N_modes'   , obj.n_DOF(end), ...
-                       'T_sample'  , 50.0e-6};
+                       'f_sample'  , 1.0e3};
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -188,7 +188,7 @@ classdef Dynamic_Formulation
             K_I        = default.K_I;
             modal_red  = default.modal_red;
             N_modes    = default.N_modes;
-            T_sample   = default.T_sample;
+            T_sample   = 1.0/default.f_sample;
             
             warning('off', 'Dynamic_Formulation:RB');
             
@@ -207,6 +207,8 @@ classdef Dynamic_Formulation
                 N_modes = length(MM);
                 Phi     = eye(N_modes);
             end
+            
+            DD = 0.0*DD;
             
             KK = Km + Kb;
             
