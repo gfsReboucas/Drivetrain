@@ -78,9 +78,9 @@ substr.id (                         $S_stage_03                   ) = '3'       
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 5.25845670700073242E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -8.13426589965820313E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 5.78208160400390625E+00 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 5.24073076248168945E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -8.04026699066162109E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 5.72710371017456055E+00 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.00578582286834717E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = -1.63600016385316849E-02 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 1.88090875744819641E-01 ! Orientation
@@ -88,8 +88,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.44852149
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.59643050283193588E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.59643049240112305E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.58539768308401108E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.58539762496948242E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -230,9 +230,9 @@ subvar.str (                        $_drive_ratio                 ) = '$SVG_stag
 subvar.str (                        $_simulation_time             ) = '100 s'                 ! Definition
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-   subvar.str (                     $_mass                        ) = '110.0e3 kg'            ! $SVG_rotor.$_mass, Definition
+   subvar.str (                     $_mass                        ) = '(1*0 + 110.0e3) kg'    ! $SVG_rotor.$_mass, Definition
 
-   subvar.str (                     $_mass_mom_inertia            ) = '57231535.0 kg m^2'     ! $SVG_rotor.$_mass_mom_inertia, Definition
+   subvar.str (                     $_mass_mom_inertia            ) = '(1*0 + 57231535.0) kg m^2' ! $SVG_rotor.$_mass_mom_inertia, Definition
 
    subvar.str (                     $_diameter                    ) = '1.2*$SVG_main_shaft.$_diameter' ! $SVG_rotor.$_diameter, Definition
 
@@ -318,7 +318,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
    subvar.str (                     $_num_planets                 ) = '3'                     ! $SVG_stage_01.$_num_planets, Definition
 
-   subvar.str (                     $_mesh_flag                   ) = '204'                   ! $SVG_stage_01.$_mesh_flag, Definition
+   subvar.str (                     $_mesh_flag                   ) = '225'                   ! $SVG_stage_01.$_mesh_flag, Definition
    subvar.discr.desc (    1 ,       $_mesh_flag                   ) = 'advanced'              ! Description of discrete values
    subvar.discr.desc (    2 ,       $_mesh_flag                   ) = 'basic'                 ! Description of discrete values
    subvar.discr.str (     1 ,       $_mesh_flag                   ) = '225'                   ! Discrete values
@@ -326,13 +326,13 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
    subvar.str (                     $_normal_backlash             ) = '0.40 mm'               ! $SVG_stage_01.$_normal_backlash, Definition
 
-   subvar.str (                     $_tooth_damping               ) = '500000000'             ! $SVG_stage_01.$_tooth_damping, Definition
+   subvar.str (                     $_tooth_damping               ) = '5.0e8 Ns/m'            ! $SVG_stage_01.$_tooth_damping, Definition
 
    subvar.str (                     $_tooth_stiffness_ratio       ) = '0.8'                   ! $SVG_stage_01.$_tooth_stiffness_ratio, Definition
 
    subvar.str (                     $_planet_angle                ) = '(360.0 deg)/$SVG_stage_01.$_num_planets' ! $SVG_stage_01.$_planet_angle, Definition
 
-   subvar.str (                     $_x0_full_damping             ) = '10.0e-6 m'             ! $SVG_stage_01.$_x0_full_damping, Definition
+   subvar.str (                     $_x0_full_damping             ) = '0.0 m'                 ! $SVG_stage_01.$_x0_full_damping, Definition
 
    subvar.str (                     $_regularization_vel          ) = '1.0e-3 m/s'            ! $SVG_stage_01.$_regularization_vel, Definition
 
@@ -358,7 +358,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_01.$SVG_sun.$SVG_material
          subvar.str (               $_density                     ) = '7830 kg/m^3'           ! $SVG_stage_01.$SVG_sun.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_01.$SVG_sun.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_01.$SVG_sun.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_01.$SVG_sun.$SVG_material.$_poissons_ratio, Definition
 
@@ -410,7 +410,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_01.$SVG_planet.$SVG_material
          subvar.str (               $_density                     ) = '7850.0 kg/m^3'         ! $SVG_stage_01.$SVG_planet.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_01.$SVG_planet.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_01.$SVG_planet.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_01.$SVG_planet.$SVG_material.$_poissons_ratio, Definition
 
@@ -430,7 +430,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_01.$SVG_ring.$SVG_material
          subvar.str (               $_density                     ) = '7850.0 kg/m^3'         ! $SVG_stage_01.$SVG_ring.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_01.$SVG_ring.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_01.$SVG_ring.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_01.$SVG_ring.$SVG_material.$_poissons_ratio, Definition
 
@@ -531,7 +531,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 
    subvar.str (                     $_normal_backlash             ) = '0.40 mm'               ! $SVG_stage_02.$_normal_backlash, Definition
 
-   subvar.str (                     $_tooth_damping               ) = '500000000'             ! $SVG_stage_02.$_tooth_damping, Definition
+   subvar.str (                     $_tooth_damping               ) = '5.0e7 Ns/m'            ! $SVG_stage_02.$_tooth_damping, Definition
 
    subvar.str (                     $_tooth_stiffness_ratio       ) = '0.8'                   ! $SVG_stage_02.$_tooth_stiffness_ratio, Definition
 
@@ -563,7 +563,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_02.$SVG_sun.$SVG_material
          subvar.str (               $_density                     ) = '7830 kg/m^3'           ! $SVG_stage_02.$SVG_sun.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_02.$SVG_sun.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_02.$SVG_sun.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_02.$SVG_sun.$SVG_material.$_poissons_ratio, Definition
 
@@ -615,7 +615,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_02.$SVG_planet.$SVG_material
          subvar.str (               $_density                     ) = '7850.0 kg/m^3'         ! $SVG_stage_02.$SVG_planet.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_02.$SVG_planet.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_02.$SVG_planet.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_02.$SVG_planet.$SVG_material.$_poissons_ratio, Definition
 
@@ -635,7 +635,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_02.$SVG_ring.$SVG_material
          subvar.str (               $_density                     ) = '7850.0 kg/m^3'         ! $SVG_stage_02.$SVG_ring.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_02.$SVG_ring.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_02.$SVG_ring.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_02.$SVG_ring.$SVG_material.$_poissons_ratio, Definition
 
@@ -699,7 +699,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_02.$SVG_carrier.$SVG_material
          subvar.str (               $_density                     ) = '7830 kg/m^3'           ! $SVG_stage_02.$SVG_carrier.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_02.$SVG_carrier.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_02.$SVG_carrier.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_02.$SVG_carrier.$SVG_material.$_poissons_ratio, Definition
 
@@ -715,7 +715,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_02.$SVG_shaft.$SVG_material
          subvar.str (               $_density                     ) = '7830 kg/m^3'           ! $SVG_stage_02.$SVG_shaft.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_02.$SVG_shaft.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_02.$SVG_shaft.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_02.$SVG_shaft.$SVG_material.$_poissons_ratio, Definition
 
@@ -734,7 +734,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
    subvar.str (                     $_normal_backlash             ) = '0.40 mm'               ! $SVG_stage_03.$_normal_backlash, Definition
 
-   subvar.str (                     $_tooth_damping               ) = '500000000'             ! $SVG_stage_03.$_tooth_damping, Definition
+   subvar.str (                     $_tooth_damping               ) = '5.0e6 Ns/m'            ! $SVG_stage_03.$_tooth_damping, Definition
 
    subvar.str (                     $_tooth_stiffness_ratio       ) = '0.8'                   ! $SVG_stage_03.$_tooth_stiffness_ratio, Definition
 
@@ -792,7 +792,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
          subvar.str (               $_k_z                         ) = '130.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z, Definition
 
-         subvar.str (               $_k_alpha                     ) = '0.0 N/m'               ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha, Definition
+         subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha, Definition
 
          subvar.str (               $_k_beta                      ) = '170.0e3 Nm/rad'        ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta, Definition
 
@@ -818,7 +818,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
          subvar.str (               $_k_z                         ) = '73.0e6 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z, Definition
 
-         subvar.str (               $_k_alpha                     ) = '0.0 N/m'               ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha, Definition
+         subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha, Definition
 
          subvar.str (               $_k_beta                      ) = '17.0e6 Nm/rad'         ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta, Definition
 
@@ -840,7 +840,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_03.$SVG_pinion.$SVG_material
          subvar.str (               $_density                     ) = '7830 kg/m^3'           ! $SVG_stage_03.$SVG_pinion.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_03.$SVG_pinion.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_03.$SVG_pinion.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_03.$SVG_pinion.$SVG_material.$_poissons_ratio, Definition
 
@@ -938,7 +938,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_03.$SVG_wheel.$SVG_material
          subvar.str (               $_density                     ) = '7850.0 kg/m^3'         ! $SVG_stage_03.$SVG_wheel.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_03.$SVG_wheel.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_03.$SVG_wheel.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_03.$SVG_wheel.$SVG_material.$_poissons_ratio, Definition
 
@@ -954,7 +954,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvargroup.begin (           $SVG_material                 )                           ! $SVG_stage_03.$SVG_shaft.$SVG_material
          subvar.str (               $_density                     ) = '7830 kg/m^3'           ! $SVG_stage_03.$SVG_shaft.$SVG_material.$_density, Definition
 
-         subvar.str (               $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_stage_03.$SVG_shaft.$SVG_material.$_elasticity_modulus, Definition
+         subvar.str (               $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_stage_03.$SVG_shaft.$SVG_material.$_elasticity_modulus, Definition
 
          subvar.str (               $_poissons_ratio              ) = '0.3'                   ! $SVG_stage_03.$SVG_shaft.$SVG_material.$_poissons_ratio, Definition
 
@@ -963,9 +963,9 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-   subvar.str (                     $_mass                        ) = '110.0e3 kg'            ! $SVG_generator.$_mass, Definition
+   subvar.str (                     $_mass                        ) = '(1*0 + 1900.0) kg'     ! $SVG_generator.$_mass, Definition
 
-   subvar.str (                     $_mass_mom_inertia            ) = '57231535.0 kg m^2'     ! $SVG_generator.$_mass_mom_inertia, Definition
+   subvar.str (                     $_mass_mom_inertia            ) = '(1 + 0*534.116) kg m^2' ! $SVG_generator.$_mass_mom_inertia, Definition
 
    subvar.str (                     $_diameter                    ) = '1.2*$SVG_main_shaft.$_diameter' ! $SVG_generator.$_diameter, Definition
 
@@ -1167,7 +1167,6 @@ force.par (               6 ,       $F_gen_time_series            ) = null      
 force.type (                        $F_gen_PI                     ) = 110                     ! Type
 force.from (                        $F_gen_PI                     ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
 force.to (                          $F_gen_PI                     ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
-force.st.dyn (            1 ,       $F_gen_PI                     ) = 0.00000000000000000E+00 ! Dynamic states
 force.st.equi (           1 ,       $F_gen_PI                     ) = 0                       ! Equilibrium
 force.disabled (                    $F_gen_PI                     ) = $SVG_loading.$_use_PI   ! Disabled
 force.par (               1 ,       $F_gen_PI                     ) = $C_PI                   ! [-] Input Control Element 1
@@ -1307,7 +1306,7 @@ ifctn.plot.par (          1 ,  10 ,   1 , $I_M_z                  ) = 0.00000000
 
 ifctn.file (                        $I_w_gen                      ) = '../ref_files/GEN_SPD.if2' ! File or URI
 ifctn.desc (              1 ,       $I_w_gen                      ) = 'in [rad/s]'            ! Description
-ifctn.range.handling (              $I_w_gen                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.range.handling (              $I_w_gen                      ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_w_gen                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_w_gen                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   2 , $I_w_gen                      ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1657,6 +1656,12 @@ sendergroup.begin (                 $SG_stage_01                  )             
    sender.ref (                     $COM_k_RP                     ) = $SVG_stage_01.$_k_RP    ! Source object
    sender.alias (                   $COM_k_RP                     ) = '$COM_stage_01_k_RP'    ! Alias
 
+   sender.ref (                     $COM_tooth_damping            ) = $SVG_stage_01.$_tooth_damping ! Source object
+   sender.alias (                   $COM_tooth_damping            ) = '$COM_stage_01_tooth_damping' ! Alias
+
+   sender.ref (                     $COM_x0_full_damping          ) = $SVG_stage_01.$_x0_full_damping ! Source object
+   sender.alias (                   $COM_x0_full_damping          ) = '$COM_stage_01_x0_full_damping' ! Alias
+
    sendergroup.begin (              $SG_sun                       )                           ! $SG_stage_01.$SG_sun
       sender.ref (                  $COM_num_teeth                ) = $SVG_stage_01.$SVG_sun.$_num_teeth ! Source object
       sender.alias (                $COM_num_teeth                ) = '$COM_stage_01_sun_num_teeth' ! Alias
@@ -1891,6 +1896,12 @@ sendergroup.begin (                 $SG_stage_02                  )             
 
    sender.ref (                     $COM_k_RP                     ) = $SVG_stage_02.$_k_RP    ! Source object
    sender.alias (                   $COM_k_RP                     ) = '$COM_stage_02_k_RP'    ! Alias
+
+   sender.ref (                     $COM_tooth_damping            ) = $SVG_stage_02.$_tooth_damping ! Source object
+   sender.alias (                   $COM_tooth_damping            ) = '$COM_stage_02_tooth_damping' ! Alias
+
+   sender.ref (                     $COM_x0_full_damping          ) = $SVG_stage_02.$_x0_full_damping ! Source object
+   sender.alias (                   $COM_x0_full_damping          ) = '$COM_stage_02_x0_full_damping' ! Alias
 
    sendergroup.begin (              $SG_sun                       )                           ! $SG_stage_02.$SG_sun
       sender.ref (                  $COM_num_teeth                ) = $SVG_stage_02.$SVG_sun.$_num_teeth ! Source object
@@ -2457,15 +2468,68 @@ sendergroup.end (                   $SG_gear_params               )             
 
 
 ! Overwritten substructure values
+joint.st.pos (            1 ,       $S_main_shaft.$S_TPL.$J_shaft ) = -8.80281861366398119E-03 ! Position
+joint.st.pos (            2 ,       $S_main_shaft.$S_TPL.$J_shaft ) = -5.32398039866964894E-05 ! Position
+joint.st.pos (            3 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 8.93452081407285562E-03 ! Position
+joint.st.pos (            4 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 4.53788377465976434E-19 ! Velocity
+joint.st.vel (            2 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 2.63982826156728439E-18 ! Velocity
+joint.st.vel (            3 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 1.44861524003752995E-18 ! Velocity
+joint.st.vel (            4 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_main_shaft.$S_TPL.$J_shaft ) = 0.00000000000000000E+00 ! Velocity
+
+
 view.fclip.value (                  $S_stage_01.$S_TPL.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
 view.bclip.value (                  $S_stage_01.$S_TPL.$V_WorkingView) = 5.31139945983886719E+00 ! Back clipping plane value
 
+joint.st.pos (            1 ,       $S_stage_01.$S_TPL.$J_shaft   ) = 1.52248365951775655E-02 ! Position
+joint.st.pos (            2 ,       $S_stage_01.$S_TPL.$J_shaft   ) = 1.53113218037434218E-02 ! Position
+joint.st.pos (            3 ,       $S_stage_01.$S_TPL.$J_shaft   ) = -1.88846753975943950E-02 ! Position
+joint.st.pos (            4 ,       $S_stage_01.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_stage_01.$S_TPL.$J_shaft   ) = -8.35002088594721456E-03 ! Position
+joint.st.pos (            6 ,       $S_stage_01.$S_TPL.$J_shaft   ) = -6.72212865055781331E-03 ! Position
+joint.st.vel (            1 ,       $S_stage_01.$S_TPL.$J_shaft   ) = -3.93400445815377304E-19 ! Velocity
+joint.st.vel (            2 ,       $S_stage_01.$S_TPL.$J_shaft   ) = -1.72434908543155555E-18 ! Velocity
+joint.st.vel (            3 ,       $S_stage_01.$S_TPL.$J_shaft   ) = 2.48809979350105746E-18 ! Velocity
+joint.st.vel (            4 ,       $S_stage_01.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_stage_01.$S_TPL.$J_shaft   ) = 1.34005549287847330E-18 ! Velocity
+joint.st.vel (            6 ,       $S_stage_01.$S_TPL.$J_shaft   ) = -3.27011386869374231E-18 ! Velocity
+
+
 sender.alias (                      $S_stage_01.$S_TPL.$COM_stage_ratio) = '$COM_stage_01_ratio' ! Alias
+
+joint.st.pos (            5 ,       $S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -3.27291994416329737E-02 ! Position
+
+
+joint.st.pos (            5 ,       $S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 6.51464342236726097E-13 ! Position
+joint.st.vel (            5 ,       $S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 3.73667229587361402E-18 ! Velocity
+
 
 view.fclip.value (                  $S_stage_02.$S_TPL.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
 view.bclip.value (                  $S_stage_02.$S_TPL.$V_WorkingView) = 5.31139945983886719E+00 ! Back clipping plane value
 
+joint.st.pos (            1 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_stage_02.$S_TPL.$J_shaft   ) = -3.52470375736083563E-03 ! Position
+joint.st.pos (            3 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_stage_02.$S_TPL.$J_shaft   ) = -2.16718379262046228E-02 ! Position
+joint.st.pos (            6 ,       $S_stage_02.$S_TPL.$J_shaft   ) = -3.77113637840409020E-03 ! Position
+joint.st.vel (            1 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 4.82047744755444171E-18 ! Velocity
+joint.st.vel (            3 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_stage_02.$S_TPL.$J_shaft   ) = -2.43095142046171759E-20 ! Velocity
+joint.st.vel (            6 ,       $S_stage_02.$S_TPL.$J_shaft   ) = 7.68211942764661055E-18 ! Velocity
+
+
 sender.alias (                      $S_stage_02.$S_TPL.$COM_stage_ratio) = '$COM_stage_02_ratio' ! Alias
+
+joint.st.pos (            5 ,       $S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 4.16251645342432391E-02 ! Position
+joint.st.vel (            5 ,       $S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.21389801903535518E-18 ! Velocity
+
 
 joint.from (                        $S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = $S_stage_01.$S_TPL.$M_shaft_output ! From Marker
 joint.type (                        $S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = 0      ! Type

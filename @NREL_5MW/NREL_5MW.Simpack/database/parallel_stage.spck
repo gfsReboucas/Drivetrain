@@ -254,7 +254,7 @@ subvargroup.begin (                 $SVG_pinion                   )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_pinion.$SVG_material
       subvar.str (                  $_density                     ) = '7830 kg/m^3'           ! $SVG_pinion.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_pinion.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_pinion.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_pinion.$SVG_material.$_poissons_ratio, Definition
 
@@ -371,7 +371,7 @@ subvargroup.begin (                 $SVG_wheel                    )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_wheel.$SVG_material
       subvar.str (                  $_density                     ) = '7830 kg/m^3'           ! $SVG_wheel.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_wheel.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_wheel.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_wheel.$SVG_material.$_poissons_ratio, Definition
 
@@ -1112,7 +1112,7 @@ forcegroup.begin (                  $FEG_pinion_bearing           )             
    force.par (           28 ,       $F_A                          ) = null                    ! [-] Input Function T_d(ald)
    force.par (           29 ,       $F_A                          ) = null                    ! [-] Input Function T_d(bed)
    force.par (           30 ,       $F_A                          ) = null                    ! [-] Input Function T_d(gad)
-   force.par (           31 ,       $F_A                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           31 ,       $F_A                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
    force.par (           33 ,       $F_A                          ) = null                    ! [-] Expression for force in x
    force.par (           34 ,       $F_A                          ) = null                    ! [-] Expression for force in y
    force.par (           35 ,       $F_A                          ) = null                    ! [-] Expression for force in z
@@ -1149,7 +1149,26 @@ forcegroup.begin (                  $FEG_pinion_bearing           )             
    force.par (           16 ,       $F_B                          ) = $SVG_pinion.$SVG_bearing_B.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_B                          ) = $SVG_pinion.$SVG_bearing_B.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_B                          ) = $SVG_pinion.$SVG_bearing_B.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_B                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_B                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_B                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_B                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_B                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_B                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_B                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_B                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_B                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_B                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_B                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_B                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_B                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_B                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_B                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_B                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_B                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_B                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_B                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_B                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_B                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1179,7 +1198,26 @@ forcegroup.begin (                  $FEG_pinion_bearing           )             
    force.par (           16 ,       $F_C                          ) = $SVG_pinion.$SVG_bearing_C.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_C                          ) = $SVG_pinion.$SVG_bearing_C.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_C                          ) = $SVG_pinion.$SVG_bearing_C.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_C                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_C                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_C                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_C                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_C                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_C                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_C                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_C                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_C                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_C                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_C                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_C                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_C                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_C                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_C                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_C                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_C                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_C                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_C                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_C                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_C                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1224,7 +1262,7 @@ forcegroup.begin (                  $FEG_wheel_bearing            )             
    force.par (           28 ,       $F_A                          ) = null                    ! [-] Input Function T_d(ald)
    force.par (           29 ,       $F_A                          ) = null                    ! [-] Input Function T_d(bed)
    force.par (           30 ,       $F_A                          ) = null                    ! [-] Input Function T_d(gad)
-   force.par (           31 ,       $F_A                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           31 ,       $F_A                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
    force.par (           33 ,       $F_A                          ) = null                    ! [-] Expression for force in x
    force.par (           34 ,       $F_A                          ) = null                    ! [-] Expression for force in y
    force.par (           35 ,       $F_A                          ) = null                    ! [-] Expression for force in z
@@ -1261,7 +1299,26 @@ forcegroup.begin (                  $FEG_wheel_bearing            )             
    force.par (           16 ,       $F_B                          ) = $SVG_wheel.$SVG_bearing_B.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_B                          ) = $SVG_wheel.$SVG_bearing_B.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_B                          ) = $SVG_wheel.$SVG_bearing_B.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_B                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_B                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_B                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_B                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_B                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_B                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_B                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_B                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_B                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_B                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_B                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_B                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_B                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_B                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_B                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_B                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_B                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_B                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_B                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_B                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_B                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1291,7 +1348,26 @@ forcegroup.begin (                  $FEG_wheel_bearing            )             
    force.par (           16 ,       $F_C                          ) = $SVG_wheel.$SVG_bearing_C.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_C                          ) = $SVG_wheel.$SVG_bearing_C.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_C                          ) = $SVG_wheel.$SVG_bearing_C.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_C                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_C                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_C                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_C                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_C                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_C                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_C                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_C                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_C                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_C                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_C                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_C                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_C                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_C                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_C                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_C                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_C                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_C                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_C                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_C                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_C                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1353,10 +1429,18 @@ receiver.priolist (       3 ,       $COM_normal_backlash          ) = '$COM_stag
 receiver.override (                 $COM_normal_backlash          ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_tooth_damping            ) = $_tooth_damping         ! Destination object
+receiver.priolist (       1 ,       $COM_tooth_damping            ) = '$COM_stage_01_tooth_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_tooth_damping            ) = '$COM_stage_02_tooth_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_tooth_damping            ) = '$COM_stage_03_tooth_damping' ! Sender priority list
+receiver.override (                 $COM_tooth_damping            ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_tooth_stiffness_ratio    ) = $_tooth_stiffness_ratio ! Destination object
 
 receiver.ref (                      $COM_x0_full_damping          ) = $_x0_full_damping       ! Destination object
+receiver.priolist (       1 ,       $COM_x0_full_damping          ) = '$COM_stage_01_x0_full_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_x0_full_damping          ) = '$COM_stage_02_x0_full_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_x0_full_damping          ) = '$COM_stage_03_x0_full_damping' ! Sender priority list
+receiver.override (                 $COM_x0_full_damping          ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_regularization_vel       ) = $_regularization_vel    ! Destination object
 

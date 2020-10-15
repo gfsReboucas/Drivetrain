@@ -281,7 +281,7 @@ subvargroup.begin (                 $SVG_sun                      )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_sun.$SVG_material
       subvar.str (                  $_density                     ) = '7830 kg/m^3'           ! $SVG_sun.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_sun.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_sun.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_sun.$SVG_material.$_poissons_ratio, Definition
 
@@ -334,7 +334,7 @@ subvargroup.begin (                 $SVG_planet                   )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_planet.$SVG_material
       subvar.str (                  $_density                     ) = '7850.0 kg/m^3'         ! $SVG_planet.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_planet.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_planet.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_planet.$SVG_material.$_poissons_ratio, Definition
 
@@ -355,7 +355,7 @@ subvargroup.begin (                 $SVG_ring                     )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_ring.$SVG_material
       subvar.str (                  $_density                     ) = '7850.0 kg/m^3'         ! $SVG_ring.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_ring.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_ring.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_ring.$SVG_material.$_poissons_ratio, Definition
 
@@ -1073,6 +1073,10 @@ receiver.override (                 $COM_M_Isys_shaft             ) = { SUBSTR_I
 receiver.ref (                      $COM_mesh_flag                ) = $_mesh_flag             ! Destination object
 
 receiver.ref (                      $COM_tooth_damping            ) = $_tooth_damping         ! Destination object
+receiver.priolist (       1 ,       $COM_tooth_damping            ) = '$COM_stage_01_tooth_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_tooth_damping            ) = '$COM_stage_02_tooth_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_tooth_damping            ) = '$COM_stage_03_tooth_damping' ! Sender priority list
+receiver.override (                 $COM_tooth_damping            ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_k_SP                     ) = $_k_SP                  ! Destination object
 receiver.priolist (       1 ,       $COM_k_SP                     ) = '$COM_stage_01_k_SP'    ! Sender priority list
@@ -1089,6 +1093,10 @@ receiver.override (                 $COM_k_RP                     ) = { SUBSTR_I
 receiver.ref (                      $COM_tooth_stiffness_ratio    ) = $_tooth_stiffness_ratio ! Destination object
 
 receiver.ref (                      $COM_x0_full_damping          ) = $_x0_full_damping       ! Destination object
+receiver.priolist (       1 ,       $COM_x0_full_damping          ) = '$COM_stage_01_x0_full_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_x0_full_damping          ) = '$COM_stage_02_x0_full_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_x0_full_damping          ) = '$COM_stage_03_x0_full_damping' ! Sender priority list
+receiver.override (                 $COM_x0_full_damping          ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_regularization_vel       ) = $_regularization_vel    ! Destination object
 
