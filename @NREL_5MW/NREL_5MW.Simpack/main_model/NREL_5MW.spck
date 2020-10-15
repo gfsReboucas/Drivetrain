@@ -227,7 +227,7 @@ subvar.str (                        $_rated_power                 ) = '5.0e3 kW'
 
 subvar.str (                        $_drive_ratio                 ) = '$SVG_stage_01.$_gear_ratio*$SVG_stage_02.$_gear_ratio*$SVG_stage_03.$_gear_ratio' ! Definition
 
-subvar.str (                        $_simulation_time             ) = '50 s'                  ! Definition
+subvar.str (                        $_simulation_time             ) = '100 s'                 ! Definition
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
    subvar.str (                     $_mass                        ) = '110.0e3 kg'            ! $SVG_rotor.$_mass, Definition
@@ -318,7 +318,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
    subvar.str (                     $_num_planets                 ) = '3'                     ! $SVG_stage_01.$_num_planets, Definition
 
-   subvar.str (                     $_mesh_flag                   ) = '225'                   ! $SVG_stage_01.$_mesh_flag, Definition
+   subvar.str (                     $_mesh_flag                   ) = '204'                   ! $SVG_stage_01.$_mesh_flag, Definition
    subvar.discr.desc (    1 ,       $_mesh_flag                   ) = 'advanced'              ! Description of discrete values
    subvar.discr.desc (    2 ,       $_mesh_flag                   ) = 'basic'                 ! Description of discrete values
    subvar.discr.str (     1 ,       $_mesh_flag                   ) = '225'                   ! Discrete values
@@ -1359,8 +1359,8 @@ trf.plot.par (            1 ,   5 ,   1 , $TF_const               ) = 1.00000000
 !**********************************************************************
 ! Expressions
 !**********************************************************************
-express.str (                       $X_T_gen                      ) = 'DIMLESS($_rated_power)/IFCTNX(TIME(), $I_w_gen, 1, 2,- 1)' ! Definition
-express.txt (                       $X_T_gen                      ) = 'xinp = TIME()[br]id = $I_w_gen[br]kind_deriv = 1[br]kind_spl = 2[br]kind_extr = -1[br][br]' ! Comment
+express.str (                       $X_T_gen                      ) = 'DIMLESS($_rated_power)/IFCTNX(TIME(), $I_w_gen, 0, 2,- 1)' ! Definition
+express.txt (                       $X_T_gen                      ) = 'xinp = TIME()[br]id = $I_w_gen[br]kind_deriv = 0[br]kind_spl = 2[br]kind_extr = -1[br][br]More info on: Simpack Assistant 2020x \\> Modeling Element Library \\> Expressions \\> Expressions: Library \\> FUNCTIONS \\> ifctn[br]' ! Comment
 
 !**********************************************************************
 ! Excitations

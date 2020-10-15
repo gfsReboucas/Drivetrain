@@ -34,7 +34,6 @@ compare_length.m
 @NREL_5MW/input_functions/if2_read.m
 *.tikz
 *.tex
-*.if2
 *.sir
 *.spckst
 *.log
