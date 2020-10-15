@@ -252,23 +252,23 @@ subvargroup.begin (                 $SVG_main_shaft               )             
    subvargroup.begin (              $SVG_bearing_A                )                           ! $SVG_main_shaft.$SVG_bearing_A
       subvar.str (                  $_x                           ) = '333.0 mm'              ! $SVG_main_shaft.$SVG_bearing_A.$_x, Definition
 
-      subvar.str (                  $_k_x                         ) = '91016 N/m'             ! $SVG_main_shaft.$SVG_bearing_A.$_k_x, Definition
+      subvar.str (                  $_k_x                         ) = '0.0 N/m'               ! $SVG_main_shaft.$SVG_bearing_A.$_k_x, Definition
 
-      subvar.str (                  $_k_y                         ) = '9.37E+9 N/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_k_y, Definition
+      subvar.str (                  $_k_y                         ) = '15.0e9 N/m'            ! $SVG_main_shaft.$SVG_bearing_A.$_k_y, Definition
 
-      subvar.str (                  $_k_z                         ) = '3.20E+9 N/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_k_z, Definition
+      subvar.str (                  $_k_z                         ) = '15.0e9 N/m'            ! $SVG_main_shaft.$SVG_bearing_A.$_k_z, Definition
 
       subvar.str (                  $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_main_shaft.$SVG_bearing_A.$_k_alpha, Definition
 
-      subvar.str (                  $_k_beta                      ) = '1.39E+6 Nm/rad'        ! $SVG_main_shaft.$SVG_bearing_A.$_k_beta, Definition
+      subvar.str (                  $_k_beta                      ) = '5.0e6 Nm/rad'          ! $SVG_main_shaft.$SVG_bearing_A.$_k_beta, Definition
 
-      subvar.str (                  $_k_gamma                     ) = '4.45E+6 Nm/rad'        ! $SVG_main_shaft.$SVG_bearing_A.$_k_gamma, Definition
+      subvar.str (                  $_k_gamma                     ) = '5.0e6 Nm/rad'          ! $SVG_main_shaft.$SVG_bearing_A.$_k_gamma, Definition
 
-      subvar.str (                  $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_d_x, Definition
+      subvar.str (                  $_d_x                         ) = '0.0 Ns/m'              ! $SVG_main_shaft.$SVG_bearing_A.$_d_x, Definition
 
-      subvar.str (                  $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_d_y, Definition
+      subvar.str (                  $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_d_y, Definition
 
-      subvar.str (                  $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_d_z, Definition
+      subvar.str (                  $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_A.$_d_z, Definition
 
       subvar.str (                  $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_main_shaft.$SVG_bearing_A.$_d_alpha, Definition
 
@@ -280,23 +280,23 @@ subvargroup.begin (                 $SVG_main_shaft               )             
    subvargroup.begin (              $SVG_bearing_B                )                           ! $SVG_main_shaft.$SVG_bearing_B
       subvar.str (                  $_x                           ) = '1166.0 mm'             ! $SVG_main_shaft.$SVG_bearing_B.$_x, Definition
 
-      subvar.str (                  $_k_x                         ) = '91016 N/m'             ! $SVG_main_shaft.$SVG_bearing_B.$_k_x, Definition
+      subvar.str (                  $_k_x                         ) = '406.0e6 N/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_k_x, Definition
 
-      subvar.str (                  $_k_y                         ) = '9.37E+9 N/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_k_y, Definition
+      subvar.str (                  $_k_y                         ) = '15.4e9 N/m'            ! $SVG_main_shaft.$SVG_bearing_B.$_k_y, Definition
 
-      subvar.str (                  $_k_z                         ) = '3.20E+9 N/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_k_z, Definition
+      subvar.str (                  $_k_z                         ) = '15.4e9 N/m'            ! $SVG_main_shaft.$SVG_bearing_B.$_k_z, Definition
 
       subvar.str (                  $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_main_shaft.$SVG_bearing_B.$_k_alpha, Definition
 
-      subvar.str (                  $_k_beta                      ) = '1.39E+6 Nm/rad'        ! $SVG_main_shaft.$SVG_bearing_B.$_k_beta, Definition
+      subvar.str (                  $_k_beta                      ) = '0.0 Nm/rad'            ! $SVG_main_shaft.$SVG_bearing_B.$_k_beta, Definition
 
-      subvar.str (                  $_k_gamma                     ) = '4.45E+6 Nm/rad'        ! $SVG_main_shaft.$SVG_bearing_B.$_k_gamma, Definition
+      subvar.str (                  $_k_gamma                     ) = '0.0 Nm/rad'            ! $SVG_main_shaft.$SVG_bearing_B.$_k_gamma, Definition
 
-      subvar.str (                  $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_d_x, Definition
+      subvar.str (                  $_d_x                         ) = '453.0 Ns/m'            ! $SVG_main_shaft.$SVG_bearing_B.$_d_x, Definition
 
-      subvar.str (                  $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_d_y, Definition
+      subvar.str (                  $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_d_y, Definition
 
-      subvar.str (                  $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_d_z, Definition
+      subvar.str (                  $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_main_shaft.$SVG_bearing_B.$_d_z, Definition
 
       subvar.str (                  $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_main_shaft.$SVG_bearing_B.$_d_alpha, Definition
 
@@ -376,7 +376,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvar.str (                  $_helix_sign                  ) = '+1'                    ! $SVG_stage_01.$SVG_planet.$_helix_sign, Definition
 
       subvargroup.begin (           $SVG_AB                       )                           ! $SVG_stage_01.$SVG_planet.$SVG_AB
-         subvar.str (               $_k_x                         ) = '9.1e4 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '91.0e3 N/m'            ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_x, Definition
 
          subvar.str (               $_k_y                         ) = '9.4e9 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_y, Definition
 
@@ -388,11 +388,11 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
          subvar.str (               $_k_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_gamma, Definition
 
-         subvar.str (               $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_x, Definition
+         subvar.str (               $_d_x                         ) = '453.0 Ns/m'            ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_x, Definition
 
-         subvar.str (               $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_y, Definition
+         subvar.str (               $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_y, Definition
 
-         subvar.str (               $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_z, Definition
+         subvar.str (               $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_z, Definition
 
          subvar.str (               $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_alpha, Definition
 
@@ -440,23 +440,23 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvar.str (                  $_width                       ) = '1.8*$SVG_stage_01.$SVG_planet.$_flank_width' ! $SVG_stage_01.$SVG_carrier.$_width, Definition
 
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
-         subvar.str (               $_k_x                         ) = '6.6e4 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '66.0e3 N/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_x, Definition
 
          subvar.str (               $_k_y                         ) = '1.7e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '1.1e9  N/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '1.1e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_z, Definition
 
          subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '5.6e5  Nm/rad'         ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '560.0e3  Nm/rad'       ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '1.3e+5 Nm/rad'         ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '130.0e3 Nm/rad'        ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_gamma, Definition
 
-         subvar.str (               $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_x, Definition
+         subvar.str (               $_d_x                         ) = '453.0 Ns/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_x, Definition
 
-         subvar.str (               $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_y, Definition
+         subvar.str (               $_d_y                         ) = '420.0 Ns/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_y, Definition
 
-         subvar.str (               $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_z, Definition
+         subvar.str (               $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_z, Definition
 
          subvar.str (               $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_alpha, Definition
 
@@ -466,7 +466,7 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
-         subvar.str (               $_k_x                         ) = '6.6e7 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '66.0e6 N/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_x, Definition
 
          subvar.str (               $_k_y                         ) = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_y' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_y, Definition
 
@@ -581,23 +581,23 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvar.str (                  $_helix_sign                  ) = '+1'                    ! $SVG_stage_02.$SVG_planet.$_helix_sign, Definition
 
       subvargroup.begin (           $SVG_AB                       )                           ! $SVG_stage_02.$SVG_planet.$SVG_AB
-         subvar.str (               $_k_x                         ) = '9.1e4 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '91.0e3 N/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '9.4e9 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '60.0e6 N/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '3.2e9 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '1.2e9 N/m'             ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_z, Definition
 
          subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '1.4e6 Nm/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '75.0e3 Nm/rad'         ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '4.5e6 Nm/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '75.0e3 Nm/rad'         ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_gamma, Definition
 
-         subvar.str (               $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_x, Definition
+         subvar.str (               $_d_x                         ) = '453.0 Ns/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_x, Definition
 
-         subvar.str (               $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_y, Definition
+         subvar.str (               $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_y, Definition
 
-         subvar.str (               $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_z, Definition
+         subvar.str (               $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_z, Definition
 
          subvar.str (               $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_alpha, Definition
 
@@ -645,23 +645,23 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvar.str (                  $_width                       ) = '1.8*$SVG_stage_02.$SVG_planet.$_flank_width' ! $SVG_stage_02.$SVG_carrier.$_width, Definition
 
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
-         subvar.str (               $_k_x                         ) = '6.6e4 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '91.0e3 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '1.7e9 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '60.0e6 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '1.1e9  N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '1.2e9 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z, Definition
 
          subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '5.6e5  Nm/rad'         ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '75.0e3 Nm/rad'         ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '1.3e+5 Nm/rad'         ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '75.0e3 Nm/rad'         ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma, Definition
 
-         subvar.str (               $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x, Definition
+         subvar.str (               $_d_x                         ) = '453.0 Ns/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x, Definition
 
-         subvar.str (               $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y, Definition
+         subvar.str (               $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y, Definition
 
-         subvar.str (               $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z, Definition
+         subvar.str (               $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z, Definition
 
          subvar.str (               $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha, Definition
 
@@ -671,7 +671,7 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
-         subvar.str (               $_k_x                         ) = '6.6e7 N/m'             ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '91.0e6 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x, Definition
 
          subvar.str (               $_k_y                         ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y, Definition
 
@@ -760,23 +760,23 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvar.str (                  $_x_input                     ) = '$SVG_stage_03.$SVG_pinion.$_flank_width/2.0' ! $SVG_stage_03.$SVG_pinion.$_x_input, Definition
 
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
-         subvar.str (               $_k_x                         ) = '6.6e4 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '130.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '1.7e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '820.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '1.1e9  N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '820.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z, Definition
 
          subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '5.6e5  Nm/rad'         ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '170.0e3 Nm/rad'        ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '1.3e+5 Nm/rad'         ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '1.0e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma, Definition
 
-         subvar.str (               $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x, Definition
+         subvar.str (               $_d_x                         ) = '453.0 Ns/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x, Definition
 
-         subvar.str (               $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y, Definition
+         subvar.str (               $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y, Definition
 
-         subvar.str (               $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z, Definition
+         subvar.str (               $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z, Definition
 
          subvar.str (               $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha, Definition
 
@@ -786,17 +786,17 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
-         subvar.str (               $_k_x                         ) = '6.6e7 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '6.7e6 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '800.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '130.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z, Definition
 
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha, Definition
+         subvar.str (               $_k_alpha                     ) = '0.0 N/m'               ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '170.0e3 Nm/rad'        ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '1.0e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_gamma, Definition
 
          subvar.str (               $_d_x                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_x, Definition
 
@@ -812,17 +812,17 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
       subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
-         subvar.str (               $_k_x                         ) = '6.6e7 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '80.0e6 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '1.0e9 N/m'             ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '73.0e6 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z, Definition
 
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha, Definition
+         subvar.str (               $_k_alpha                     ) = '0.0 N/m'               ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '17.0e6 Nm/rad'         ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '1.0e6 Nm/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_gamma, Definition
 
          subvar.str (               $_d_x                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_x, Definition
 
@@ -858,23 +858,23 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvar.str (                  $_helix_sign                  ) = '-1'                    ! $SVG_stage_03.$SVG_wheel.$_helix_sign, Definition
 
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
-         subvar.str (               $_k_x                         ) = '6.6e4 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '0.0 N/m'               ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '1.7e9 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '60.0e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '1.1e9  N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '1.2e9 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z, Definition
 
          subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '5.6e5  Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '75.0e3 Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '1.3e+5 Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '75.0e3 Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma, Definition
 
-         subvar.str (               $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x, Definition
+         subvar.str (               $_d_x                         ) = '453.0 Ns/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x, Definition
 
-         subvar.str (               $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y, Definition
+         subvar.str (               $_d_y                         ) = '42.0e3 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y, Definition
 
-         subvar.str (               $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z, Definition
+         subvar.str (               $_d_z                         ) = '30.6e3 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z, Definition
 
          subvar.str (               $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_alpha, Definition
 
@@ -884,17 +884,17 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
-         subvar.str (               $_k_x                         ) = '6.6e7 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '74.0e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '50.0e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '50.0e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_z, Definition
 
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_alpha' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_alpha, Definition
+         subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '1.6e6 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '1.8e6 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_gamma, Definition
 
          subvar.str (               $_d_x                         ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_x, Definition
 
@@ -910,17 +910,17 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
       subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
-         subvar.str (               $_k_x                         ) = '6.6e7 N/m'             ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_x, Definition
+         subvar.str (               $_k_x                         ) = '78.0e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_x, Definition
 
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_y, Definition
+         subvar.str (               $_k_y                         ) = '740.0e6 N/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_y, Definition
 
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_z, Definition
+         subvar.str (               $_k_z                         ) = '330.0e6 N/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_z, Definition
 
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_alpha, Definition
+         subvar.str (               $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_alpha, Definition
 
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_beta, Definition
+         subvar.str (               $_k_beta                      ) = '1.1e6 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_beta, Definition
 
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_gamma, Definition
+         subvar.str (               $_k_gamma                     ) = '2.5e6 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_gamma, Definition
 
          subvar.str (               $_d_x                         ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_x, Definition
 
@@ -1787,6 +1787,84 @@ sendergroup.begin (                 $SG_stage_01                  )             
       sender.alias (                $COM_shaft_diameter           ) = '$COM_stage_01_shaft_diameter' ! Alias
 
    sendergroup.end (                $SG_shaft                     )                           ! $SG_stage_01.$SG_shaft
+   sendergroup.begin (              $SG_carrier                   )                           ! $SG_stage_01.$SG_carrier
+      sendergroup.begin (           $SG_bearing_A                 )                           ! $SG_stage_01.$SG_carrier.$SG_bearing_A
+         sender.ref (               $COM_k_x                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_x ! Source object
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_01_carrier_A_k_x' ! Alias
+
+         sender.ref (               $COM_k_y                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_y ! Source object
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_01_carrier_A_k_y' ! Alias
+
+         sender.ref (               $COM_k_z                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_z ! Source object
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_01_carrier_A_k_z' ! Alias
+
+         sender.ref (               $COM_k_alpha                  ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_alpha ! Source object
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_01_carrier_A_k_alpha' ! Alias
+
+         sender.ref (               $COM_k_beta                   ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_beta ! Source object
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_01_carrier_A_k_beta' ! Alias
+
+         sender.ref (               $COM_k_gamma                  ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_gamma ! Source object
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_01_carrier_A_k_gamma' ! Alias
+
+         sender.ref (               $COM_d_x                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_x ! Source object
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_01_carrier_A_d_x' ! Alias
+
+         sender.ref (               $COM_d_y                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_y ! Source object
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_01_carrier_A_d_y' ! Alias
+
+         sender.ref (               $COM_d_z                      ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_z ! Source object
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_01_carrier_A_d_z' ! Alias
+
+         sender.ref (               $COM_d_alpha                  ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_alpha ! Source object
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_01_carrier_A_d_alpha' ! Alias
+
+         sender.ref (               $COM_d_beta                   ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_beta ! Source object
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_01_carrier_A_d_beta' ! Alias
+
+         sender.ref (               $COM_d_gamma                  ) = $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_gamma ! Source object
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_01_carrier_A_d_gamma' ! Alias
+
+      sendergroup.end (             $SG_bearing_A                 )                           ! $SG_stage_01.$SG_carrier.$SG_bearing_A
+      sendergroup.begin (           $SG_bearing_B                 )                           ! $SG_stage_01.$SG_carrier.$SG_bearing_B
+         sender.ref (               $COM_k_x                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_x ! Source object
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_01_carrier_B_k_x' ! Alias
+
+         sender.ref (               $COM_k_y                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_y ! Source object
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_01_carrier_B_k_y' ! Alias
+
+         sender.ref (               $COM_k_z                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_z ! Source object
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_01_carrier_B_k_z' ! Alias
+
+         sender.ref (               $COM_k_alpha                  ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_alpha ! Source object
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_01_carrier_B_k_alpha' ! Alias
+
+         sender.ref (               $COM_k_beta                   ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_beta ! Source object
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_01_carrier_B_k_beta' ! Alias
+
+         sender.ref (               $COM_k_gamma                  ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_gamma ! Source object
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_01_carrier_B_k_gamma' ! Alias
+
+         sender.ref (               $COM_d_x                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_x ! Source object
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_01_carrier_B_d_x' ! Alias
+
+         sender.ref (               $COM_d_y                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_y ! Source object
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_01_carrier_B_d_y' ! Alias
+
+         sender.ref (               $COM_d_z                      ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_z ! Source object
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_01_carrier_B_d_z' ! Alias
+
+         sender.ref (               $COM_d_alpha                  ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_alpha ! Source object
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_01_carrier_B_d_alpha' ! Alias
+
+         sender.ref (               $COM_d_beta                   ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_beta ! Source object
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_01_carrier_B_d_beta' ! Alias
+
+         sender.ref (               $COM_d_gamma                  ) = $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_gamma ! Source object
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_01_carrier_B_d_gamma' ! Alias
+
+      sendergroup.end (             $SG_bearing_B                 )                           ! $SG_stage_01.$SG_carrier.$SG_bearing_B
+   sendergroup.end (                $SG_carrier                   )                           ! $SG_stage_01.$SG_carrier
 sendergroup.end (                   $SG_stage_01                  )                           ! $SG_stage_01
 
 sendergroup.begin (                 $SG_stage_02                  )                           ! $SG_stage_02
@@ -1936,6 +2014,84 @@ sendergroup.begin (                 $SG_stage_02                  )             
 
       sendergroup.end (             $SG_material                  )                           ! $SG_stage_02.$SG_ring.$SG_material
    sendergroup.end (                $SG_ring                      )                           ! $SG_stage_02.$SG_ring
+   sendergroup.begin (              $SG_carrier                   )                           ! $SG_stage_02.$SG_carrier
+      sendergroup.begin (           $SG_bearing_A                 )                           ! $SG_stage_02.$SG_carrier.$SG_bearing_A
+         sender.ref (               $COM_k_x                      ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_x ! Source object
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_02_carrier_A_k_x' ! Alias
+
+         sender.ref (               $COM_k_y                      ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y ! Source object
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_02_carrier_A_k_y' ! Alias
+
+         sender.ref (               $COM_k_z                      ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z ! Source object
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_02_carrier_A_k_z' ! Alias
+
+         sender.ref (               $COM_k_alpha                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha ! Source object
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_02_carrier_A_k_alpha' ! Alias
+
+         sender.ref (               $COM_k_beta                   ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta ! Source object
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_02_carrier_A_k_beta' ! Alias
+
+         sender.ref (               $COM_k_gamma                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma ! Source object
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_02_carrier_A_k_gamma' ! Alias
+
+         sender.ref (               $COM_d_x                      ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x ! Source object
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_02_carrier_A_d_x' ! Alias
+
+         sender.ref (               $COM_d_y                      ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y ! Source object
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_02_carrier_A_d_y' ! Alias
+
+         sender.ref (               $COM_d_z                      ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z ! Source object
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_02_carrier_A_d_z' ! Alias
+
+         sender.ref (               $COM_d_alpha                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha ! Source object
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_02_carrier_A_d_alpha' ! Alias
+
+         sender.ref (               $COM_d_beta                   ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta ! Source object
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_02_carrier_A_d_beta' ! Alias
+
+         sender.ref (               $COM_d_gamma                  ) = $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma ! Source object
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_02_carrier_A_d_gamma' ! Alias
+
+      sendergroup.end (             $SG_bearing_A                 )                           ! $SG_stage_02.$SG_carrier.$SG_bearing_A
+      sendergroup.begin (           $SG_bearing_B                 )                           ! $SG_stage_02.$SG_carrier.$SG_bearing_B
+         sender.ref (               $COM_k_x                      ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x ! Source object
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_02_carrier_B_k_x' ! Alias
+
+         sender.ref (               $COM_k_y                      ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y ! Source object
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_02_carrier_B_k_y' ! Alias
+
+         sender.ref (               $COM_k_z                      ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_z ! Source object
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_02_carrier_B_k_z' ! Alias
+
+         sender.ref (               $COM_k_alpha                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_alpha ! Source object
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_02_carrier_B_k_alpha' ! Alias
+
+         sender.ref (               $COM_k_beta                   ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_beta ! Source object
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_02_carrier_B_k_beta' ! Alias
+
+         sender.ref (               $COM_k_gamma                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_gamma ! Source object
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_02_carrier_B_k_gamma' ! Alias
+
+         sender.ref (               $COM_d_x                      ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_x ! Source object
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_02_carrier_B_d_x' ! Alias
+
+         sender.ref (               $COM_d_y                      ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_y ! Source object
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_02_carrier_B_d_y' ! Alias
+
+         sender.ref (               $COM_d_z                      ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_z ! Source object
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_02_carrier_B_d_z' ! Alias
+
+         sender.ref (               $COM_d_alpha                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_alpha ! Source object
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_02_carrier_B_d_alpha' ! Alias
+
+         sender.ref (               $COM_d_beta                   ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_beta ! Source object
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_02_carrier_B_d_beta' ! Alias
+
+         sender.ref (               $COM_d_gamma                  ) = $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_gamma ! Source object
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_02_carrier_B_d_gamma' ! Alias
+
+      sendergroup.end (             $SG_bearing_B                 )                           ! $SG_stage_02.$SG_carrier.$SG_bearing_B
+   sendergroup.end (                $SG_carrier                   )                           ! $SG_stage_02.$SG_carrier
    sendergroup.begin (              $SG_shaft                     )                           ! $SG_stage_02.$SG_shaft
       sender.ref (                  $COM_shaft_length             ) = $SVG_stage_02.$SVG_shaft.$_length ! Source object
       sender.alias (                $COM_shaft_length             ) = '$COM_stage_02_shaft_length' ! Alias
@@ -1998,116 +2154,116 @@ sendergroup.begin (                 $SG_stage_03                  )             
 
       sendergroup.begin (           $SG_bearing_A                 )                           ! $SG_stage_03.$SG_pinion.$SG_bearing_A
          sender.ref (               $COM_k_x                      ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_x ! Source object
-         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_pinion_k_x' ! Alias
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_pinion_A_k_x' ! Alias
 
          sender.ref (               $COM_k_y                      ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y ! Source object
-         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_pinion_k_y' ! Alias
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_pinion_A_k_y' ! Alias
 
          sender.ref (               $COM_k_z                      ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z ! Source object
-         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_pinion_k_z' ! Alias
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_pinion_A_k_z' ! Alias
 
          sender.ref (               $COM_k_alpha                  ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha ! Source object
-         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_pinion_k_alpha' ! Alias
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_pinion_A_k_alpha' ! Alias
 
          sender.ref (               $COM_k_beta                   ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta ! Source object
-         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_pinion_k_beta' ! Alias
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_pinion_A_k_beta' ! Alias
 
          sender.ref (               $COM_k_gamma                  ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma ! Source object
-         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_pinion_k_gamma' ! Alias
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_pinion_A_k_gamma' ! Alias
 
          sender.ref (               $COM_d_x                      ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x ! Source object
-         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_pinion_d_x' ! Alias
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_pinion_A_d_x' ! Alias
 
          sender.ref (               $COM_d_y                      ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y ! Source object
-         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_pinion_d_y' ! Alias
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_pinion_A_d_y' ! Alias
 
          sender.ref (               $COM_d_z                      ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z ! Source object
-         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_pinion_d_z' ! Alias
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_pinion_A_d_z' ! Alias
 
          sender.ref (               $COM_d_alpha                  ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha ! Source object
-         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_pinion_d_alpha' ! Alias
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_pinion_A_d_alpha' ! Alias
 
          sender.ref (               $COM_d_beta                   ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta ! Source object
-         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_pinion_d_beta' ! Alias
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_pinion_A_d_beta' ! Alias
 
          sender.ref (               $COM_d_gamma                  ) = $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma ! Source object
-         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_pinion_d_gamma' ! Alias
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_pinion_A_d_gamma' ! Alias
 
       sendergroup.end (             $SG_bearing_A                 )                           ! $SG_stage_03.$SG_pinion.$SG_bearing_A
       sendergroup.begin (           $SG_bearing_B                 )                           ! $SG_stage_03.$SG_pinion.$SG_bearing_B
          sender.ref (               $COM_k_x                      ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_x ! Source object
-         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_pinion_k_x' ! Alias
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_pinion_B_k_x' ! Alias
 
          sender.ref (               $COM_k_y                      ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_y ! Source object
-         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_pinion_k_y' ! Alias
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_pinion_B_k_y' ! Alias
 
          sender.ref (               $COM_k_z                      ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z ! Source object
-         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_pinion_k_z' ! Alias
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_pinion_B_k_z' ! Alias
 
          sender.ref (               $COM_k_alpha                  ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha ! Source object
-         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_pinion_k_alpha' ! Alias
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_pinion_B_k_alpha' ! Alias
 
          sender.ref (               $COM_k_beta                   ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta ! Source object
-         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_pinion_k_beta' ! Alias
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_pinion_B_k_beta' ! Alias
 
          sender.ref (               $COM_k_gamma                  ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_gamma ! Source object
-         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_pinion_k_gamma' ! Alias
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_pinion_B_k_gamma' ! Alias
 
          sender.ref (               $COM_d_x                      ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_x ! Source object
-         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_pinion_d_x' ! Alias
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_pinion_B_d_x' ! Alias
 
          sender.ref (               $COM_d_y                      ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_y ! Source object
-         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_pinion_d_y' ! Alias
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_pinion_B_d_y' ! Alias
 
          sender.ref (               $COM_d_z                      ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_z ! Source object
-         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_pinion_d_z' ! Alias
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_pinion_B_d_z' ! Alias
 
          sender.ref (               $COM_d_alpha                  ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_alpha ! Source object
-         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_pinion_d_alpha' ! Alias
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_pinion_B_d_alpha' ! Alias
 
          sender.ref (               $COM_d_beta                   ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_beta ! Source object
-         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_pinion_d_beta' ! Alias
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_pinion_B_d_beta' ! Alias
 
          sender.ref (               $COM_d_gamma                  ) = $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_gamma ! Source object
-         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_pinion_d_gamma' ! Alias
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_pinion_B_d_gamma' ! Alias
 
       sendergroup.end (             $SG_bearing_B                 )                           ! $SG_stage_03.$SG_pinion.$SG_bearing_B
       sendergroup.begin (           $SG_bearing_C                 )                           ! $SG_stage_03.$SG_pinion.$SG_bearing_C
          sender.ref (               $COM_k_x                      ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_x ! Source object
-         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_pinion_k_x' ! Alias
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_pinion_C_k_x' ! Alias
 
          sender.ref (               $COM_k_y                      ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_y ! Source object
-         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_pinion_k_y' ! Alias
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_pinion_C_k_y' ! Alias
 
          sender.ref (               $COM_k_z                      ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z ! Source object
-         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_pinion_k_z' ! Alias
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_pinion_C_k_z' ! Alias
 
          sender.ref (               $COM_k_alpha                  ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha ! Source object
-         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_pinion_k_alpha' ! Alias
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_pinion_C_k_alpha' ! Alias
 
          sender.ref (               $COM_k_beta                   ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta ! Source object
-         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_pinion_k_beta' ! Alias
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_pinion_C_k_beta' ! Alias
 
          sender.ref (               $COM_k_gamma                  ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_gamma ! Source object
-         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_pinion_k_gamma' ! Alias
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_pinion_C_k_gamma' ! Alias
 
          sender.ref (               $COM_d_x                      ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_x ! Source object
-         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_pinion_d_x' ! Alias
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_pinion_C_d_x' ! Alias
 
          sender.ref (               $COM_d_y                      ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_y ! Source object
-         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_pinion_d_y' ! Alias
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_pinion_C_d_y' ! Alias
 
          sender.ref (               $COM_d_z                      ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_z ! Source object
-         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_pinion_d_z' ! Alias
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_pinion_C_d_z' ! Alias
 
          sender.ref (               $COM_d_alpha                  ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_alpha ! Source object
-         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_pinion_d_alpha' ! Alias
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_pinion_C_d_alpha' ! Alias
 
          sender.ref (               $COM_d_beta                   ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_beta ! Source object
-         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_pinion_d_beta' ! Alias
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_pinion_C_d_beta' ! Alias
 
          sender.ref (               $COM_d_gamma                  ) = $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_gamma ! Source object
-         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_pinion_d_gamma' ! Alias
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_pinion_C_d_gamma' ! Alias
 
       sendergroup.end (             $SG_bearing_C                 )                           ! $SG_stage_03.$SG_pinion.$SG_bearing_C
       sendergroup.begin (           $SG_material                  )                           ! $SG_stage_03.$SG_pinion.$SG_material
@@ -2151,116 +2307,116 @@ sendergroup.begin (                 $SG_stage_03                  )             
       sendergroup.end (             $SG_material                  )                           ! $SG_stage_03.$SG_wheel.$SG_material
       sendergroup.begin (           $SG_bearing_A                 )                           ! $SG_stage_03.$SG_wheel.$SG_bearing_A
          sender.ref (               $COM_k_x                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_x ! Source object
-         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_wheel_k_x' ! Alias
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_wheel_A_k_x' ! Alias
 
          sender.ref (               $COM_k_y                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y ! Source object
-         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_wheel_k_y' ! Alias
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_wheel_A_k_y' ! Alias
 
          sender.ref (               $COM_k_z                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z ! Source object
-         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_wheel_k_z' ! Alias
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_wheel_A_k_z' ! Alias
 
          sender.ref (               $COM_k_alpha                  ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_alpha ! Source object
-         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_wheel_k_alpha' ! Alias
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_wheel_A_k_alpha' ! Alias
 
          sender.ref (               $COM_k_beta                   ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta ! Source object
-         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_wheel_k_beta' ! Alias
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_wheel_A_k_beta' ! Alias
 
          sender.ref (               $COM_k_gamma                  ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma ! Source object
-         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_wheel_k_gamma' ! Alias
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_wheel_A_k_gamma' ! Alias
 
          sender.ref (               $COM_d_x                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x ! Source object
-         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_wheel_d_x' ! Alias
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_wheel_A_d_x' ! Alias
 
          sender.ref (               $COM_d_y                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y ! Source object
-         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_wheel_d_y' ! Alias
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_wheel_A_d_y' ! Alias
 
          sender.ref (               $COM_d_z                      ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z ! Source object
-         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_wheel_d_z' ! Alias
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_wheel_A_d_z' ! Alias
 
          sender.ref (               $COM_d_alpha                  ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_alpha ! Source object
-         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_wheel_d_alpha' ! Alias
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_wheel_A_d_alpha' ! Alias
 
          sender.ref (               $COM_d_beta                   ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_beta ! Source object
-         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_wheel_d_beta' ! Alias
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_wheel_A_d_beta' ! Alias
 
          sender.ref (               $COM_d_gamma                  ) = $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_gamma ! Source object
-         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_wheel_d_gamma' ! Alias
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_wheel_A_d_gamma' ! Alias
 
       sendergroup.end (             $SG_bearing_A                 )                           ! $SG_stage_03.$SG_wheel.$SG_bearing_A
       sendergroup.begin (           $SG_bearing_B                 )                           ! $SG_stage_03.$SG_wheel.$SG_bearing_B
          sender.ref (               $COM_k_x                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_x ! Source object
-         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_wheel_k_x' ! Alias
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_wheel_B_k_x' ! Alias
 
          sender.ref (               $COM_k_y                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_y ! Source object
-         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_wheel_k_y' ! Alias
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_wheel_B_k_y' ! Alias
 
          sender.ref (               $COM_k_z                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_z ! Source object
-         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_wheel_k_z' ! Alias
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_wheel_B_k_z' ! Alias
 
          sender.ref (               $COM_k_alpha                  ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_alpha ! Source object
-         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_wheel_k_alpha' ! Alias
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_wheel_B_k_alpha' ! Alias
 
          sender.ref (               $COM_k_beta                   ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_beta ! Source object
-         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_wheel_k_beta' ! Alias
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_wheel_B_k_beta' ! Alias
 
          sender.ref (               $COM_k_gamma                  ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_gamma ! Source object
-         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_wheel_k_gamma' ! Alias
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_wheel_B_k_gamma' ! Alias
 
          sender.ref (               $COM_d_x                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_x ! Source object
-         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_wheel_d_x' ! Alias
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_wheel_B_d_x' ! Alias
 
          sender.ref (               $COM_d_y                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_y ! Source object
-         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_wheel_d_y' ! Alias
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_wheel_B_d_y' ! Alias
 
          sender.ref (               $COM_d_z                      ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_z ! Source object
-         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_wheel_d_z' ! Alias
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_wheel_B_d_z' ! Alias
 
          sender.ref (               $COM_d_alpha                  ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_alpha ! Source object
-         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_wheel_d_alpha' ! Alias
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_wheel_B_d_alpha' ! Alias
 
          sender.ref (               $COM_d_beta                   ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_beta ! Source object
-         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_wheel_d_beta' ! Alias
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_wheel_B_d_beta' ! Alias
 
          sender.ref (               $COM_d_gamma                  ) = $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_gamma ! Source object
-         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_wheel_d_gamma' ! Alias
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_wheel_B_d_gamma' ! Alias
 
       sendergroup.end (             $SG_bearing_B                 )                           ! $SG_stage_03.$SG_wheel.$SG_bearing_B
       sendergroup.begin (           $SG_bearing_C                 )                           ! $SG_stage_03.$SG_wheel.$SG_bearing_C
          sender.ref (               $COM_k_x                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_x ! Source object
-         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_wheel_k_x' ! Alias
+         sender.alias (             $COM_k_x                      ) = '$COM_stage_03_wheel_C_k_x' ! Alias
 
          sender.ref (               $COM_k_y                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_y ! Source object
-         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_wheel_k_y' ! Alias
+         sender.alias (             $COM_k_y                      ) = '$COM_stage_03_wheel_C_k_y' ! Alias
 
          sender.ref (               $COM_k_z                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_z ! Source object
-         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_wheel_k_z' ! Alias
+         sender.alias (             $COM_k_z                      ) = '$COM_stage_03_wheel_C_k_z' ! Alias
 
          sender.ref (               $COM_k_alpha                  ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_alpha ! Source object
-         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_wheel_k_alpha' ! Alias
+         sender.alias (             $COM_k_alpha                  ) = '$COM_stage_03_wheel_C_k_alpha' ! Alias
 
          sender.ref (               $COM_k_beta                   ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_beta ! Source object
-         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_wheel_k_beta' ! Alias
+         sender.alias (             $COM_k_beta                   ) = '$COM_stage_03_wheel_C_k_beta' ! Alias
 
          sender.ref (               $COM_k_gamma                  ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_gamma ! Source object
-         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_wheel_k_gamma' ! Alias
+         sender.alias (             $COM_k_gamma                  ) = '$COM_stage_03_wheel_C_k_gamma' ! Alias
 
          sender.ref (               $COM_d_x                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_x ! Source object
-         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_wheel_d_x' ! Alias
+         sender.alias (             $COM_d_x                      ) = '$COM_stage_03_wheel_C_d_x' ! Alias
 
          sender.ref (               $COM_d_y                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_y ! Source object
-         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_wheel_d_y' ! Alias
+         sender.alias (             $COM_d_y                      ) = '$COM_stage_03_wheel_C_d_y' ! Alias
 
          sender.ref (               $COM_d_z                      ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_z ! Source object
-         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_wheel_d_z' ! Alias
+         sender.alias (             $COM_d_z                      ) = '$COM_stage_03_wheel_C_d_z' ! Alias
 
          sender.ref (               $COM_d_alpha                  ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_alpha ! Source object
-         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_wheel_d_alpha' ! Alias
+         sender.alias (             $COM_d_alpha                  ) = '$COM_stage_03_wheel_C_d_alpha' ! Alias
 
          sender.ref (               $COM_d_beta                   ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_beta ! Source object
-         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_wheel_d_beta' ! Alias
+         sender.alias (             $COM_d_beta                   ) = '$COM_stage_03_wheel_C_d_beta' ! Alias
 
          sender.ref (               $COM_d_gamma                  ) = $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_gamma ! Source object
-         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_wheel_d_gamma' ! Alias
+         sender.alias (             $COM_d_gamma                  ) = '$COM_stage_03_wheel_C_d_gamma' ! Alias
 
       sendergroup.end (             $SG_bearing_C                 )                           ! $SG_stage_03.$SG_wheel.$SG_bearing_C
    sendergroup.end (                $SG_wheel                     )                           ! $SG_stage_03.$SG_wheel

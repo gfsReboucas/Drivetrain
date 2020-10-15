@@ -57,7 +57,7 @@ prop2d.proj.dir                                                     = 2         
 !**********************************************************************
 ! Substructures
 !**********************************************************************
-substr.file (                       $S_TPL                        ) = 'carrier_08.spck'       ! Filename
+substr.file (                       $S_TPL                        ) = 'carrier.spck'          ! Filename
 substr.id (                         $S_TPL                        ) = '1'                     ! Substructure Id
 
 !**********************************************************************
