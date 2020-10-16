@@ -363,13 +363,12 @@ marker.pos (              1 ,       $M_pin_Bearing_B              ) = $SVG_beari
 
 joint.from (                        $J_pin                        ) = $M_Isys_input           ! From Marker
 joint.to (                          $J_pin                        ) = $M_pin_BRF              ! To Marker
-joint.type (                        $J_pin                        ) = 20                      ! Type
-joint.par (               5 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Driven rotation about al
-joint.par (              10 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Driven rotation about be
-joint.par (              15 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Driven rotation about ga
-joint.par (              20 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Driven translation in x
-joint.par (              25 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Driven translation in y
-joint.par (              30 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Driven translation in z
+joint.type (                        $J_pin                        ) = 15                      ! Type
+joint.par (               2 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Rotation axis
+joint.par (               3 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Tilting
+joint.par (               4 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Translation in x
+joint.par (               5 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Translation in y
+joint.par (               6 ,       $J_pin                        ) = 0.00000000000000000E+00 ! [-] Translation in z
 joint.attr.2d.pos.x (     1 ,       $J_pin                        ) = 380
 joint.attr.2d.pos.y (     1 ,       $J_pin                        ) = -220
 joint.attr.2d.ori (       1 ,       $J_pin                        ) = 270
@@ -821,13 +820,22 @@ receivergroup.end (                 $RG_bearing_A                 )             
 
 receivergroup.begin (               $RG_material                  )                           ! $RG_material
    receiver.ref (                   $COM_density                  ) = $SVG_material.$_density ! Destination object
-   receiver.priolist (    1 ,       $COM_density                  ) = '$COM_planet_density'   ! Sender priority list
+   receiver.priolist (    1 ,       $COM_density                  ) = '$COM_stage_01_planet_material_density' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_density                  ) = '$COM_stage_02_planet_material_density' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_density                  ) = '$COM_stage_03_planet_material_density' ! Sender priority list
+   receiver.override (              $COM_density                  ) = { SUBSTR_ID(3) }        ! Override index
 
    receiver.ref (                   $COM_elasticity_modulus       ) = $SVG_material.$_elasticity_modulus ! Destination object
-   receiver.priolist (    1 ,       $COM_elasticity_modulus       ) = '$COM_planet_elasticity_modulus' ! Sender priority list
+   receiver.priolist (    1 ,       $COM_elasticity_modulus       ) = '$COM_stage_01_planet_material_elasticity_modulus' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_elasticity_modulus       ) = '$COM_stage_02_planet_material_elasticity_modulus' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_elasticity_modulus       ) = '$COM_stage_03_planet_material_elasticity_modulus' ! Sender priority list
+   receiver.override (              $COM_elasticity_modulus       ) = { SUBSTR_ID(3) }        ! Override index
 
    receiver.ref (                   $COM_poissons_ratio           ) = $SVG_material.$_poissons_ratio ! Destination object
-   receiver.priolist (    1 ,       $COM_poissons_ratio           ) = '$COM_planet_poissons_ratio' ! Sender priority list
+   receiver.priolist (    1 ,       $COM_poissons_ratio           ) = '$COM_stage_01_planet_material_poissons_ratio' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_poissons_ratio           ) = '$COM_stage_02_planet_material_poissons_ratio' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_poissons_ratio           ) = '$COM_stage_03_planet_material_poissons_ratio' ! Sender priority list
+   receiver.override (              $COM_poissons_ratio           ) = { SUBSTR_ID(3) }        ! Override index
 
 receivergroup.end (                 $RG_material                  )                           ! $RG_material
 

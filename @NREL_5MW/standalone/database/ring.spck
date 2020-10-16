@@ -491,13 +491,22 @@ receivergroup.end (                 $RG_planet                    )             
 
 receivergroup.begin (               $RG_material                  )                           ! $RG_material
    receiver.ref (                   $COM_density                  ) = $SVG_material.$_density ! Destination object
-   receiver.priolist (    1 ,       $COM_density                  ) = '$COM_ring_density'     ! Sender priority list
+   receiver.priolist (    1 ,       $COM_density                  ) = '$COM_stage_01_ring_material_poissons_ratio' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_density                  ) = '$COM_stage_02_ring_material_poissons_ratio' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_density                  ) = '$COM_stage_03_ring_material_poissons_ratio' ! Sender priority list
+   receiver.override (              $COM_density                  ) = { SUBSTR_ID(3) }        ! Override index
 
    receiver.ref (                   $COM_elasticity_modulus       ) = $SVG_material.$_elasticity_modulus ! Destination object
-   receiver.priolist (    1 ,       $COM_elasticity_modulus       ) = '$COM_ring_elasticity_modulus' ! Sender priority list
+   receiver.priolist (    1 ,       $COM_elasticity_modulus       ) = '$COM_stage_01_ring_material_elasticity_modulus' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_elasticity_modulus       ) = '$COM_stage_02_ring_material_elasticity_modulus' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_elasticity_modulus       ) = '$COM_stage_03_ring_material_elasticity_modulus' ! Sender priority list
+   receiver.override (              $COM_elasticity_modulus       ) = { SUBSTR_ID(3) }        ! Override index
 
    receiver.ref (                   $COM_poissons_ratio           ) = $SVG_material.$_poissons_ratio ! Destination object
-   receiver.priolist (    1 ,       $COM_poissons_ratio           ) = '$COM_ring_poissons_ratio' ! Sender priority list
+   receiver.priolist (    1 ,       $COM_poissons_ratio           ) = '$COM_stage_01_ring_material_poissons_ratio' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_poissons_ratio           ) = '$COM_stage_02_ring_material_poissons_ratio' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_poissons_ratio           ) = '$COM_stage_03_ring_material_poissons_ratio' ! Sender priority list
+   receiver.override (              $COM_poissons_ratio           ) = { SUBSTR_ID(3) }        ! Override index
 
 receivergroup.end (                 $RG_material                  )                           ! $RG_material
 

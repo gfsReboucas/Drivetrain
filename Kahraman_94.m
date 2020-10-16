@@ -172,8 +172,8 @@ classdef Kahraman_94 < Dynamic_Formulation
         
         function DD = stage_damping_matrix(stage_idx)
             
-%             mesh_damp = 500.0e6;
-            mesh_damp = 0.0;
+            mesh_damp = 500.0e6;
+%             mesh_damp = 0.0;
             if(strcmp(stage_idx.configuration, 'parallel'))
                 n = 3;
                 DD = zeros(n, n);
@@ -181,7 +181,7 @@ classdef Kahraman_94 < Dynamic_Formulation
                 r_p = (stage_idx.d(1)*1.0e-3)/2.0;
                 r_w = (stage_idx.d(2)*1.0e-3)/2.0;
                 
-                d_pw = mesh_damp*stage_idx.k_mesh;
+                d_pw = mesh_damp; %*stage_idx.k_mesh;
                 
                 range = 1:2;
                 DD(range, range) = [r_w ^ 2 * d_pw         r_p     * d_pw * r_w;
@@ -195,8 +195,8 @@ classdef Kahraman_94 < Dynamic_Formulation
                 sun_pla = stage_idx.sub_set('sun_planet');
                 pla_rng = stage_idx.sub_set('planet_ring');
 
-                d_sp = mesh_damp*sun_pla.k_mesh;
-                d_rp = mesh_damp*pla_rng.k_mesh;
+                d_sp = mesh_damp; %*sun_pla.k_mesh;
+                d_rp = mesh_damp; %*pla_rng.k_mesh;
                 
                 r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;

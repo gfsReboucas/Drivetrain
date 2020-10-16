@@ -208,7 +208,7 @@ classdef Dynamic_Formulation
                 Phi     = eye(N_modes);
             end
             
-            DD = 0.0*DD;
+%             DD = 0.0*DD;
             
             KK = Km + Kb;
             
@@ -272,7 +272,8 @@ classdef Dynamic_Formulation
             
             data = load('input_load.mat');
             t_load = data.time;
-            T_aero = -data.Mx*1.0e3;
+            T_aero = data.Mx*1.0e3;
+            gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
 %             T_aero = mean(T_aero);
 
 %             k = find(t_load >= 0.2*time_range(end), 1, 'first');
@@ -280,9 +281,11 @@ classdef Dynamic_Formulation
 %                          ones(1, length(t_load) - k)]';
 %             T_aero = T_aero.*transient;
             T_A = @(t)interp1(t_load, T_aero, t, 'linear');
+            ref_gen_speed = @(t)interp1(t_load, gen_speed, t, 'linear');
 %             T_A = @(t) T_aero;
             
-            RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
+%             RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
+            RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_gen_speed(t));
             
             sol_tmp = solver(@(t, x)RHS(t, x), time_range, IC_bar, opt_ODE);
             
@@ -294,7 +297,8 @@ classdef Dynamic_Formulation
             sol.x_red     = x_sample(1:end - 1, :);
             sol.x         = blkdiag(Phi, Phi_v)*sol.x_red;
             sol.gen_speed = C*sol.x_red;
-            sol.ref_speed = ref_speed*ones(size(sol.t));
+%             sol.ref_speed = ref_speed*ones(size(sol.t));
+            sol.ref_speed = ref_gen_speed(sol.t);
             sol.error     = sol.ref_speed - sol.gen_speed;
             sol.T_gen     = K_p*sol.error + x_sample(end, :);
             sol.T_aero    = T_A(sol.t);

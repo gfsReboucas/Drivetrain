@@ -281,7 +281,7 @@ subvargroup.begin (                 $SVG_sun                      )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_sun.$SVG_material
       subvar.str (                  $_density                     ) = '7830 kg/m^3'           ! $SVG_sun.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_sun.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_sun.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_sun.$SVG_material.$_poissons_ratio, Definition
 
@@ -334,7 +334,7 @@ subvargroup.begin (                 $SVG_planet                   )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_planet.$SVG_material
       subvar.str (                  $_density                     ) = '7850.0 kg/m^3'         ! $SVG_planet.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_planet.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_planet.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_planet.$SVG_material.$_poissons_ratio, Definition
 
@@ -355,7 +355,7 @@ subvargroup.begin (                 $SVG_ring                     )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_ring.$SVG_material
       subvar.str (                  $_density                     ) = '7850.0 kg/m^3'         ! $SVG_ring.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_ring.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_ring.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_ring.$SVG_material.$_poissons_ratio, Definition
 
@@ -538,6 +538,144 @@ prim.par (               11 ,       $P_shaft                      ) = 0.00000000
 ! Force Elements
 !**********************************************************************
 forcegroup.begin (                  $FEG_mesh                     )                           ! $FEG_mesh
+   force.type (                     $F_sun_planet_01              ) = 225                     ! Type
+   force.from (                     $F_sun_planet_01              ) = $M_Isys                 ! From Marker
+   force.to (                       $F_sun_planet_01              ) = $M_Isys                 ! To Marker
+   force.disabled (                 $F_sun_planet_01              ) = $_use_advanced          ! Disabled
+   force.par (            1 ,       $F_sun_planet_01              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
+   force.par (            4 ,       $F_sun_planet_01              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            6 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Damping model
+   force.par (            7 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Friction model
+   force.par (            8 ,       $F_sun_planet_01              ) = 5.00000000000000000E+00 ! [-] Number of slices
+   force.par (           10 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Gear blank factor
+   force.par (           11 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_sun_planet_01              ) = $_tooth_stiffness_ratio ! [-] Teeth stiffness ratio
+   force.par (           13 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
+   force.par (           14 ,       $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$Mat_planet ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_sun_planet_01              ) = $S_sun.$S_TPL.$Mat_sun  ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_sun_planet_01              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_sun_planet_01              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_sun_planet_01              ) = $_x0_full_damping       ! [m] Full damping starts at
+   force.par (           31 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Friction coefficient
+   force.par (           32 ,       $F_sun_planet_01              ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           41 ,       $F_sun_planet_01              ) = ''                      ! [-] Node set (Gear 1)
+   force.par (           42 ,       $F_sun_planet_01              ) = ''                      ! [-] Node set (Gear 2)
+   force.par (           44 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_sun_planet_01              ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_sun_planet_01              ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_01        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_01  ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   force.type (                     $F_sun_planet_02              ) = 225                     ! Type
+   force.from (                     $F_sun_planet_02              ) = $M_Isys                 ! From Marker
+   force.to (                       $F_sun_planet_02              ) = $M_Isys                 ! To Marker
+   force.disabled (                 $F_sun_planet_02              ) = $_use_advanced          ! Disabled
+   force.par (            1 ,       $F_sun_planet_02              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_sun_planet_02              ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
+   force.par (            4 ,       $F_sun_planet_02              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            6 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Damping model
+   force.par (            7 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Friction model
+   force.par (            8 ,       $F_sun_planet_02              ) = 5.00000000000000000E+00 ! [-] Number of slices
+   force.par (           10 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Gear blank factor
+   force.par (           11 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_sun_planet_02              ) = $_tooth_stiffness_ratio ! [-] Teeth stiffness ratio
+   force.par (           13 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
+   force.par (           14 ,       $F_sun_planet_02              ) = $S_planet_02.$S_TPL.$Mat_planet ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_sun_planet_02              ) = $S_sun.$S_TPL.$Mat_sun  ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_sun_planet_02              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_sun_planet_02              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_sun_planet_02              ) = $_x0_full_damping       ! [m] Full damping starts at
+   force.par (           31 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Friction coefficient
+   force.par (           32 ,       $F_sun_planet_02              ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           41 ,       $F_sun_planet_02              ) = ''                      ! [-] Node set (Gear 1)
+   force.par (           42 ,       $F_sun_planet_02              ) = ''                      ! [-] Node set (Gear 2)
+   force.par (           44 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_sun_planet_02              ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_sun_planet_02              ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_02        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_02  ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   force.type (                     $F_sun_planet_03              ) = 225                     ! Type
+   force.from (                     $F_sun_planet_03              ) = $M_Isys                 ! From Marker
+   force.to (                       $F_sun_planet_03              ) = $M_Isys                 ! To Marker
+   force.disabled (                 $F_sun_planet_03              ) = $_use_advanced          ! Disabled
+   force.par (            1 ,       $F_sun_planet_03              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
+   force.par (            2 ,       $F_sun_planet_03              ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
+   force.par (            3 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
+   force.par (            4 ,       $F_sun_planet_03              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            6 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Damping model
+   force.par (            7 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Friction model
+   force.par (            8 ,       $F_sun_planet_03              ) = 5.00000000000000000E+00 ! [-] Number of slices
+   force.par (           10 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Gear blank factor
+   force.par (           11 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
+   force.par (           12 ,       $F_sun_planet_03              ) = $_tooth_stiffness_ratio ! [-] Teeth stiffness ratio
+   force.par (           13 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
+   force.par (           14 ,       $F_sun_planet_03              ) = $S_planet_03.$S_TPL.$Mat_planet ! [-] Material (Gear 1)
+   force.par (           15 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 1)
+   force.par (           16 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 1)
+   force.par (           17 ,       $F_sun_planet_03              ) = $S_sun.$S_TPL.$Mat_sun  ! [-] Material (Gear 2)
+   force.par (           18 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 2)
+   force.par (           19 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 2)
+   force.par (           21 ,       $F_sun_planet_03              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
+   force.par (           22 ,       $F_sun_planet_03              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
+   force.par (           24 ,       $F_sun_planet_03              ) = $_x0_full_damping       ! [m] Full damping starts at
+   force.par (           31 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Friction coefficient
+   force.par (           32 ,       $F_sun_planet_03              ) = $_regularization_vel    ! [m/s] Regularization velocity
+   force.par (           41 ,       $F_sun_planet_03              ) = ''                      ! [-] Node set (Gear 1)
+   force.par (           42 ,       $F_sun_planet_03              ) = ''                      ! [-] Node set (Gear 2)
+   force.par (           44 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Tuning parameters (deprecated)
+   force.par (           50 ,       $F_sun_planet_03              ) = null                    ! [-] Measured stiffness (plot only)
+   force.par (           51 ,       $F_sun_planet_03              ) = null                    ! [-] Measured TE (plot only)
+   force.par (           52 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
+   force.par (           53 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
+   force.plot.par (       1 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_03        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_03  ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
    force.type (                     $F_ring_planet_01             ) = 225                     ! Type
    force.from (                     $F_ring_planet_01             ) = $M_Isys                 ! From Marker
    force.to (                       $F_ring_planet_01             ) = $M_Isys                 ! To Marker
@@ -651,144 +789,6 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.par (           51 ,       $F_ring_planet_03             ) = null                    ! [-] Measured TE (plot only)
    force.par (           52 ,       $F_ring_planet_03             ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
    force.par (           53 ,       $F_ring_planet_03             ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
-
-   force.type (                     $F_sun_planet_01              ) = 225                     ! Type
-   force.from (                     $F_sun_planet_01              ) = $M_Isys                 ! From Marker
-   force.to (                       $F_sun_planet_01              ) = $M_Isys                 ! To Marker
-   force.disabled (                 $F_sun_planet_01              ) = $_use_advanced          ! Disabled
-   force.par (            1 ,       $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
-   force.par (            2 ,       $F_sun_planet_01              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_sun_planet_01              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
-   force.par (            6 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Damping model
-   force.par (            7 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Friction model
-   force.par (            8 ,       $F_sun_planet_01              ) = 5.00000000000000000E+00 ! [-] Number of slices
-   force.par (           10 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Gear blank factor
-   force.par (           11 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
-   force.par (           12 ,       $F_sun_planet_01              ) = $_tooth_stiffness_ratio ! [-] Teeth stiffness ratio
-   force.par (           13 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
-   force.par (           14 ,       $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$Mat_planet ! [-] Material (Gear 1)
-   force.par (           15 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 1)
-   force.par (           16 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 1)
-   force.par (           17 ,       $F_sun_planet_01              ) = $S_sun.$S_TPL.$Mat_sun  ! [-] Material (Gear 2)
-   force.par (           18 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 2)
-   force.par (           19 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 2)
-   force.par (           21 ,       $F_sun_planet_01              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
-   force.par (           22 ,       $F_sun_planet_01              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
-   force.par (           24 ,       $F_sun_planet_01              ) = $_x0_full_damping       ! [m] Full damping starts at
-   force.par (           31 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Friction coefficient
-   force.par (           32 ,       $F_sun_planet_01              ) = $_regularization_vel    ! [m/s] Regularization velocity
-   force.par (           41 ,       $F_sun_planet_01              ) = ''                      ! [-] Node set (Gear 1)
-   force.par (           42 ,       $F_sun_planet_01              ) = ''                      ! [-] Node set (Gear 2)
-   force.par (           44 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Tuning parameters (deprecated)
-   force.par (           50 ,       $F_sun_planet_01              ) = null                    ! [-] Measured stiffness (plot only)
-   force.par (           51 ,       $F_sun_planet_01              ) = null                    ! [-] Measured TE (plot only)
-   force.par (           52 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
-   force.par (           53 ,       $F_sun_planet_01              ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
-   force.plot.par (       1 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 , $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_01        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_01  ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_01  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-
-   force.type (                     $F_sun_planet_02              ) = 225                     ! Type
-   force.from (                     $F_sun_planet_02              ) = $M_Isys                 ! From Marker
-   force.to (                       $F_sun_planet_02              ) = $M_Isys                 ! To Marker
-   force.disabled (                 $F_sun_planet_02              ) = $_use_advanced          ! Disabled
-   force.par (            1 ,       $F_sun_planet_02              ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
-   force.par (            2 ,       $F_sun_planet_02              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_sun_planet_02              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
-   force.par (            6 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Damping model
-   force.par (            7 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Friction model
-   force.par (            8 ,       $F_sun_planet_02              ) = 5.00000000000000000E+00 ! [-] Number of slices
-   force.par (           10 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Gear blank factor
-   force.par (           11 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
-   force.par (           12 ,       $F_sun_planet_02              ) = $_tooth_stiffness_ratio ! [-] Teeth stiffness ratio
-   force.par (           13 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
-   force.par (           14 ,       $F_sun_planet_02              ) = $S_planet_02.$S_TPL.$Mat_planet ! [-] Material (Gear 1)
-   force.par (           15 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 1)
-   force.par (           16 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 1)
-   force.par (           17 ,       $F_sun_planet_02              ) = $S_sun.$S_TPL.$Mat_sun  ! [-] Material (Gear 2)
-   force.par (           18 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 2)
-   force.par (           19 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 2)
-   force.par (           21 ,       $F_sun_planet_02              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
-   force.par (           22 ,       $F_sun_planet_02              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
-   force.par (           24 ,       $F_sun_planet_02              ) = $_x0_full_damping       ! [m] Full damping starts at
-   force.par (           31 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Friction coefficient
-   force.par (           32 ,       $F_sun_planet_02              ) = $_regularization_vel    ! [m/s] Regularization velocity
-   force.par (           41 ,       $F_sun_planet_02              ) = ''                      ! [-] Node set (Gear 1)
-   force.par (           42 ,       $F_sun_planet_02              ) = ''                      ! [-] Node set (Gear 2)
-   force.par (           44 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Tuning parameters (deprecated)
-   force.par (           50 ,       $F_sun_planet_02              ) = null                    ! [-] Measured stiffness (plot only)
-   force.par (           51 ,       $F_sun_planet_02              ) = null                    ! [-] Measured TE (plot only)
-   force.par (           52 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
-   force.par (           53 ,       $F_sun_planet_02              ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
-   force.plot.par (       1 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 , $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_02        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_02  ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_02  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-
-   force.type (                     $F_sun_planet_03              ) = 225                     ! Type
-   force.from (                     $F_sun_planet_03              ) = $M_Isys                 ! From Marker
-   force.to (                       $F_sun_planet_03              ) = $M_Isys                 ! To Marker
-   force.disabled (                 $F_sun_planet_03              ) = $_use_advanced          ! Disabled
-   force.par (            1 ,       $F_sun_planet_03              ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
-   force.par (            2 ,       $F_sun_planet_03              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_sun_planet_03              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
-   force.par (            6 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Damping model
-   force.par (            7 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Friction model
-   force.par (            8 ,       $F_sun_planet_03              ) = 5.00000000000000000E+00 ! [-] Number of slices
-   force.par (           10 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Gear blank factor
-   force.par (           11 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Tooth stiffness method
-   force.par (           12 ,       $F_sun_planet_03              ) = $_tooth_stiffness_ratio ! [-] Teeth stiffness ratio
-   force.par (           13 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Premature/Posterior meshing
-   force.par (           14 ,       $F_sun_planet_03              ) = $S_planet_03.$S_TPL.$Mat_planet ! [-] Material (Gear 1)
-   force.par (           15 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 1)
-   force.par (           16 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 1)
-   force.par (           17 ,       $F_sun_planet_03              ) = $S_sun.$S_TPL.$Mat_sun  ! [-] Material (Gear 2)
-   force.par (           18 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [N/m²] Young's modulus (Gear 2)
-   force.par (           19 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Poisson's ratio (Gear 2)
-   force.par (           21 ,       $F_sun_planet_03              ) = $_tooth_damping         ! [Ns/m] Damping coefficient IN
-   force.par (           22 ,       $F_sun_planet_03              ) = $_tooth_damping         ! [Ns/m] Damping coefficient OUT
-   force.par (           24 ,       $F_sun_planet_03              ) = $_x0_full_damping       ! [m] Full damping starts at
-   force.par (           31 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Friction coefficient
-   force.par (           32 ,       $F_sun_planet_03              ) = $_regularization_vel    ! [m/s] Regularization velocity
-   force.par (           41 ,       $F_sun_planet_03              ) = ''                      ! [-] Node set (Gear 1)
-   force.par (           42 ,       $F_sun_planet_03              ) = ''                      ! [-] Node set (Gear 2)
-   force.par (           44 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Tuning parameters (deprecated)
-   force.par (           50 ,       $F_sun_planet_03              ) = null                    ! [-] Measured stiffness (plot only)
-   force.par (           51 ,       $F_sun_planet_03              ) = null                    ! [-] Measured TE (plot only)
-   force.par (           52 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] Contact side (plot only)
-   force.par (           53 ,       $F_sun_planet_03              ) = 0.00000000000000000E+00 ! [-] No. Torques Gear 2 (plot only)
-   force.plot.par (       1 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 , $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 , $F_sun_planet_03        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_sun_planet_03  ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 forcegroup.end (                    $FEG_mesh                     )                           ! $FEG_mesh
 
@@ -1073,6 +1073,10 @@ receiver.override (                 $COM_M_Isys_shaft             ) = { SUBSTR_I
 receiver.ref (                      $COM_mesh_flag                ) = $_mesh_flag             ! Destination object
 
 receiver.ref (                      $COM_tooth_damping            ) = $_tooth_damping         ! Destination object
+receiver.priolist (       1 ,       $COM_tooth_damping            ) = '$COM_stage_01_tooth_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_tooth_damping            ) = '$COM_stage_02_tooth_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_tooth_damping            ) = '$COM_stage_03_tooth_damping' ! Sender priority list
+receiver.override (                 $COM_tooth_damping            ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_k_SP                     ) = $_k_SP                  ! Destination object
 receiver.priolist (       1 ,       $COM_k_SP                     ) = '$COM_stage_01_k_SP'    ! Sender priority list
@@ -1089,6 +1093,7 @@ receiver.override (                 $COM_k_RP                     ) = { SUBSTR_I
 receiver.ref (                      $COM_tooth_stiffness_ratio    ) = $_tooth_stiffness_ratio ! Destination object
 
 receiver.ref (                      $COM_x0_full_damping          ) = $_x0_full_damping       ! Destination object
+receiver.override (                 $COM_x0_full_damping          ) = 0                       ! Override index
 
 receiver.ref (                      $COM_regularization_vel       ) = $_regularization_vel    ! Destination object
 

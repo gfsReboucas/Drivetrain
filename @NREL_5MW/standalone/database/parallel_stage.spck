@@ -57,9 +57,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 1.79293930530548096E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -1.37307906150817871E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 7.94876992702484131E-01 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 1.69511640071868896E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.21339952945709229E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 7.23535001277923584E-01 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.49259781837463379E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 1.42501920461654663E-01 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 2.40029186010360718E-01 ! Orientation
@@ -68,7 +68,7 @@ view.angle (                        $V_WorkingView                ) = 7.85398185
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 3.82814574241638184E+00 ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 3.62775492668151855E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -254,7 +254,7 @@ subvargroup.begin (                 $SVG_pinion                   )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_pinion.$SVG_material
       subvar.str (                  $_density                     ) = '7830 kg/m^3'           ! $SVG_pinion.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_pinion.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_pinion.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_pinion.$SVG_material.$_poissons_ratio, Definition
 
@@ -371,7 +371,7 @@ subvargroup.begin (                 $SVG_wheel                    )             
    subvargroup.begin (              $SVG_material                 )                           ! $SVG_wheel.$SVG_material
       subvar.str (                  $_density                     ) = '7830 kg/m^3'           ! $SVG_wheel.$SVG_material.$_density, Definition
 
-      subvar.str (                  $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_wheel.$SVG_material.$_elasticity_modulus, Definition
+      subvar.str (                  $_elasticity_modulus          ) = '206.0e3 N/mm^2'        ! $SVG_wheel.$SVG_material.$_elasticity_modulus, Definition
 
       subvar.str (                  $_poissons_ratio              ) = '0.3'                   ! $SVG_wheel.$SVG_material.$_poissons_ratio, Definition
 
@@ -1112,7 +1112,7 @@ forcegroup.begin (                  $FEG_pinion_bearing           )             
    force.par (           28 ,       $F_A                          ) = null                    ! [-] Input Function T_d(ald)
    force.par (           29 ,       $F_A                          ) = null                    ! [-] Input Function T_d(bed)
    force.par (           30 ,       $F_A                          ) = null                    ! [-] Input Function T_d(gad)
-   force.par (           31 ,       $F_A                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           31 ,       $F_A                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
    force.par (           33 ,       $F_A                          ) = null                    ! [-] Expression for force in x
    force.par (           34 ,       $F_A                          ) = null                    ! [-] Expression for force in y
    force.par (           35 ,       $F_A                          ) = null                    ! [-] Expression for force in z
@@ -1149,7 +1149,26 @@ forcegroup.begin (                  $FEG_pinion_bearing           )             
    force.par (           16 ,       $F_B                          ) = $SVG_pinion.$SVG_bearing_B.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_B                          ) = $SVG_pinion.$SVG_bearing_B.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_B                          ) = $SVG_pinion.$SVG_bearing_B.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_B                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_B                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_B                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_B                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_B                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_B                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_B                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_B                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_B                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_B                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_B                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_B                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_B                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_B                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_B                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_B                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_B                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_B                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_B                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_B                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_B                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1179,7 +1198,26 @@ forcegroup.begin (                  $FEG_pinion_bearing           )             
    force.par (           16 ,       $F_C                          ) = $SVG_pinion.$SVG_bearing_C.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_C                          ) = $SVG_pinion.$SVG_bearing_C.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_C                          ) = $SVG_pinion.$SVG_bearing_C.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_C                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_C                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_C                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_C                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_C                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_C                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_C                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_C                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_C                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_C                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_C                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_C                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_C                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_C                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_C                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_C                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_C                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_C                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_C                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_C                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_C                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1224,7 +1262,7 @@ forcegroup.begin (                  $FEG_wheel_bearing            )             
    force.par (           28 ,       $F_A                          ) = null                    ! [-] Input Function T_d(ald)
    force.par (           29 ,       $F_A                          ) = null                    ! [-] Input Function T_d(bed)
    force.par (           30 ,       $F_A                          ) = null                    ! [-] Input Function T_d(gad)
-   force.par (           31 ,       $F_A                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           31 ,       $F_A                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
    force.par (           33 ,       $F_A                          ) = null                    ! [-] Expression for force in x
    force.par (           34 ,       $F_A                          ) = null                    ! [-] Expression for force in y
    force.par (           35 ,       $F_A                          ) = null                    ! [-] Expression for force in z
@@ -1261,7 +1299,26 @@ forcegroup.begin (                  $FEG_wheel_bearing            )             
    force.par (           16 ,       $F_B                          ) = $SVG_wheel.$SVG_bearing_B.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_B                          ) = $SVG_wheel.$SVG_bearing_B.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_B                          ) = $SVG_wheel.$SVG_bearing_B.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_B                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_B                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_B                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_B                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_B                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_B                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_B                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_B                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_B                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_B                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_B                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_B                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_B                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_B                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_B                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_B                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_B                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_B                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_B                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_B                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_B                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_B                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1291,7 +1348,26 @@ forcegroup.begin (                  $FEG_wheel_bearing            )             
    force.par (           16 ,       $F_C                          ) = $SVG_wheel.$SVG_bearing_C.$_d_alpha ! [Nms/rad] Rotat. damping in al
    force.par (           17 ,       $F_C                          ) = $SVG_wheel.$SVG_bearing_C.$_d_beta ! [Nms/rad] Rotat. damping in be
    force.par (           18 ,       $F_C                          ) = $SVG_wheel.$SVG_bearing_C.$_d_gamma ! [Nms/rad] Rotat. damping in ga
-   force.par (           31 ,       $F_C                          ) = 0.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           19 ,       $F_C                          ) = null                    ! [-] Input Function F_c(x)
+   force.par (           20 ,       $F_C                          ) = null                    ! [-] Input Function F_c(y)
+   force.par (           21 ,       $F_C                          ) = null                    ! [-] Input Function F_c(z)
+   force.par (           22 ,       $F_C                          ) = null                    ! [-] Input Function T_c(al)
+   force.par (           23 ,       $F_C                          ) = null                    ! [-] Input Function T_c(be)
+   force.par (           24 ,       $F_C                          ) = null                    ! [-] Input Function T_c(ga)
+   force.par (           25 ,       $F_C                          ) = null                    ! [-] Input Function F_d(xd)
+   force.par (           26 ,       $F_C                          ) = null                    ! [-] Input Function F_d(yd)
+   force.par (           27 ,       $F_C                          ) = null                    ! [-] Input Function F_d(zd)
+   force.par (           28 ,       $F_C                          ) = null                    ! [-] Input Function T_d(ald)
+   force.par (           29 ,       $F_C                          ) = null                    ! [-] Input Function T_d(bed)
+   force.par (           30 ,       $F_C                          ) = null                    ! [-] Input Function T_d(gad)
+   force.par (           31 ,       $F_C                          ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+   force.par (           33 ,       $F_C                          ) = null                    ! [-] Expression for force in x
+   force.par (           34 ,       $F_C                          ) = null                    ! [-] Expression for force in y
+   force.par (           35 ,       $F_C                          ) = null                    ! [-] Expression for force in z
+   force.par (           36 ,       $F_C                          ) = null                    ! [-] Expression for torque in al
+   force.par (           37 ,       $F_C                          ) = null                    ! [-] Expression for torque in be
+   force.par (           38 ,       $F_C                          ) = null                    ! [-] Expression for torque in ga
+   force.par (           39 ,       $F_C                          ) = null                    ! [-] Input Function Set
    force.par (           40 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
    force.par (           41 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
    force.par (           42 ,       $F_C                          ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
@@ -1353,10 +1429,15 @@ receiver.priolist (       3 ,       $COM_normal_backlash          ) = '$COM_stag
 receiver.override (                 $COM_normal_backlash          ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_tooth_damping            ) = $_tooth_damping         ! Destination object
+receiver.priolist (       1 ,       $COM_tooth_damping            ) = '$COM_stage_01_tooth_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_tooth_damping            ) = '$COM_stage_02_tooth_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_tooth_damping            ) = '$COM_stage_03_tooth_damping' ! Sender priority list
+receiver.override (                 $COM_tooth_damping            ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_tooth_stiffness_ratio    ) = $_tooth_stiffness_ratio ! Destination object
 
 receiver.ref (                      $COM_x0_full_damping          ) = $_x0_full_damping       ! Destination object
+receiver.override (                 $COM_x0_full_damping          ) = 0                       ! Override index
 
 receiver.ref (                      $COM_regularization_vel       ) = $_regularization_vel    ! Destination object
 
@@ -1659,6 +1740,26 @@ receivergroup.begin (               $RG_pinion                    )             
       receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
 
    receivergroup.end (              $RG_bearing_C                 )                           ! $RG_pinion.$RG_bearing_C
+   receivergroup.begin (            $RG_material                  )                           ! $RG_pinion.$RG_material
+      receiver.ref (                $COM_density                  ) = $SVG_pinion.$SVG_material.$_density ! Destination object
+      receiver.priolist (   1 ,     $COM_density                  ) = '$COM_stage_01_pinion_density' ! Sender priority list
+      receiver.priolist (   2 ,     $COM_density                  ) = '$COM_stage_02_pinion_density' ! Sender priority list
+      receiver.priolist (   3 ,     $COM_density                  ) = '$COM_stage_03_pinion_density' ! Sender priority list
+      receiver.override (           $COM_density                  ) = { SUBSTR_ID(3) }        ! Override index
+
+      receiver.ref (                $COM_elasticity_modulus       ) = $SVG_pinion.$SVG_material.$_elasticity_modulus ! Destination object
+      receiver.priolist (   1 ,     $COM_elasticity_modulus       ) = '$COM_stage_01_pinion_elasticity_modulus' ! Sender priority list
+      receiver.priolist (   2 ,     $COM_elasticity_modulus       ) = '$COM_stage_02_pinion_elasticity_modulus' ! Sender priority list
+      receiver.priolist (   3 ,     $COM_elasticity_modulus       ) = '$COM_stage_03_pinion_elasticity_modulus' ! Sender priority list
+      receiver.override (           $COM_elasticity_modulus       ) = { SUBSTR_ID(3) }        ! Override index
+
+      receiver.ref (                $COM_poissons_ratio           ) = $SVG_pinion.$SVG_material.$_poissons_ratio ! Destination object
+      receiver.priolist (   1 ,     $COM_poissons_ratio           ) = '$COM_stage_01_pinion_poissons_ratio' ! Sender priority list
+      receiver.priolist (   2 ,     $COM_poissons_ratio           ) = '$COM_stage_02_pinion_poissons_ratio' ! Sender priority list
+      receiver.priolist (   3 ,     $COM_poissons_ratio           ) = '$COM_stage_03_pinion_poissons_ratio' ! Sender priority list
+      receiver.override (           $COM_poissons_ratio           ) = { SUBSTR_ID(3) }        ! Override index
+
+   receivergroup.end (              $RG_material                  )                           ! $RG_pinion.$RG_material
 receivergroup.end (                 $RG_pinion                    )                           ! $RG_pinion
 
 receivergroup.begin (               $RG_wheel                     )                           ! $RG_wheel
@@ -1894,6 +1995,26 @@ receivergroup.begin (               $RG_wheel                     )             
       receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
 
    receivergroup.end (              $RG_bearing_C                 )                           ! $RG_wheel.$RG_bearing_C
+   receivergroup.begin (            $RG_material                  )                           ! $RG_wheel.$RG_material
+      receiver.ref (                $COM_density                  ) = $SVG_wheel.$SVG_material.$_density ! Destination object
+      receiver.priolist (   1 ,     $COM_density                  ) = '$COM_stage_01_wheel_density' ! Sender priority list
+      receiver.priolist (   2 ,     $COM_density                  ) = '$COM_stage_02_wheel_density' ! Sender priority list
+      receiver.priolist (   3 ,     $COM_density                  ) = '$COM_stage_03_wheel_density' ! Sender priority list
+      receiver.override (           $COM_density                  ) = { SUBSTR_ID(3) }        ! Override index
+
+      receiver.ref (                $COM_elasticity_modulus       ) = $SVG_wheel.$SVG_material.$_elasticity_modulus ! Destination object
+      receiver.priolist (   1 ,     $COM_elasticity_modulus       ) = '$COM_stage_01_wheel_elasticity_modulus' ! Sender priority list
+      receiver.priolist (   2 ,     $COM_elasticity_modulus       ) = '$COM_stage_02_wheel_elasticity_modulus' ! Sender priority list
+      receiver.priolist (   3 ,     $COM_elasticity_modulus       ) = '$COM_stage_03_wheel_elasticity_modulus' ! Sender priority list
+      receiver.override (           $COM_elasticity_modulus       ) = { SUBSTR_ID(3) }        ! Override index
+
+      receiver.ref (                $COM_poissons_ratio           ) = $SVG_wheel.$SVG_material.$_poissons_ratio ! Destination object
+      receiver.priolist (   1 ,     $COM_poissons_ratio           ) = '$COM_stage_01_wheel_poissons_ratio' ! Sender priority list
+      receiver.priolist (   2 ,     $COM_poissons_ratio           ) = '$COM_stage_02_wheel_poissons_ratio' ! Sender priority list
+      receiver.priolist (   3 ,     $COM_poissons_ratio           ) = '$COM_stage_03_wheel_poissons_ratio' ! Sender priority list
+      receiver.override (           $COM_poissons_ratio           ) = { SUBSTR_ID(3) }        ! Override index
+
+   receivergroup.end (              $RG_material                  )                           ! $RG_wheel.$RG_material
 receivergroup.end (                 $RG_wheel                     )                           ! $RG_wheel
 
 receivergroup.begin (               $RG_shaft                     )                           ! $RG_shaft
