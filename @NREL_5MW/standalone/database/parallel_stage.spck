@@ -1444,6 +1444,10 @@ receiver.ref (                      $COM_regularization_vel       ) = $_regulari
 receiver.ref (                      $COM_mesh_flag                ) = $_mesh_flag             ! Destination object
 
 receiver.ref (                      $COM_k_PW                     ) = $_k_PW                  ! Destination object
+receiver.priolist (       1 ,       $COM_k_PW                     ) = '$COM_stage_01_k_PW'    ! Sender priority list
+receiver.priolist (       2 ,       $COM_k_PW                     ) = '$COM_stage_02_k_PW'    ! Sender priority list
+receiver.priolist (       3 ,       $COM_k_PW                     ) = '$COM_stage_03_k_PW'    ! Sender priority list
+receiver.override (                 $COM_k_PW                     ) = { SUBSTR_ID(1) }        ! Override index
 
 receivergroup.begin (               $RG_marker                    )                           ! $RG_marker
    receiver.ref (                   $COM_pinion_output            ) = $M_Isys_pinion_output   ! Destination object
@@ -1492,104 +1496,104 @@ receivergroup.begin (               $RG_pinion                    )             
    receiver.priolist (    1 ,       $COM_num_teeth                ) = '$COM_stage_01_pinion_num_teeth' ! Sender priority list
    receiver.priolist (    2 ,       $COM_num_teeth                ) = '$COM_stage_02_pinion_num_teeth' ! Sender priority list
    receiver.priolist (    3 ,       $COM_num_teeth                ) = '$COM_stage_03_pinion_num_teeth' ! Sender priority list
-   receiver.override (              $COM_num_teeth                ) = { SUBSTR_ID(3) }        ! Override index
+   receiver.override (              $COM_num_teeth                ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_flank_width              ) = $SVG_pinion.$_flank_width ! Destination object
    receiver.priolist (    1 ,       $COM_flank_width              ) = '$COM_stage_01_pinion_flank_width' ! Sender priority list
    receiver.priolist (    2 ,       $COM_flank_width              ) = '$COM_stage_02_pinion_flank_width' ! Sender priority list
    receiver.priolist (    3 ,       $COM_flank_width              ) = '$COM_stage_03_pinion_flank_width' ! Sender priority list
-   receiver.override (              $COM_flank_width              ) = { SUBSTR_ID(3) }        ! Override index
+   receiver.override (              $COM_flank_width              ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_shift_factor             ) = $SVG_pinion.$_shift_factor ! Destination object
    receiver.priolist (    1 ,       $COM_shift_factor             ) = '$COM_stage_01_pinion_shift_factor' ! Sender priority list
    receiver.priolist (    2 ,       $COM_shift_factor             ) = '$COM_stage_02_pinion_shift_factor' ! Sender priority list
    receiver.priolist (    3 ,       $COM_shift_factor             ) = '$COM_stage_03_pinion_shift_factor' ! Sender priority list
-   receiver.override (              $COM_shift_factor             ) = { SUBSTR_ID(3) }        ! Override index
+   receiver.override (              $COM_shift_factor             ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_bore_diameter            ) = $SVG_pinion.$_bore_diameter ! Destination object
    receiver.priolist (    1 ,       $COM_bore_diameter            ) = '$COM_stage_01_pinion_bore_diameter' ! Sender priority list
    receiver.priolist (    2 ,       $COM_bore_diameter            ) = '$COM_stage_02_pinion_bore_diameter' ! Sender priority list
    receiver.priolist (    3 ,       $COM_bore_diameter            ) = '$COM_stage_03_pinion_bore_diameter' ! Sender priority list
-   receiver.override (              $COM_bore_diameter            ) = { SUBSTR_ID(3) }        ! Override index
+   receiver.override (              $COM_bore_diameter            ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_helix_sign               ) = $SVG_pinion.$_helix_sign ! Destination object
    receiver.priolist (    1 ,       $COM_helix_sign               ) = '$COM_stage_01_pinion_helix_sign' ! Sender priority list
    receiver.priolist (    2 ,       $COM_helix_sign               ) = '$COM_stage_02_pinion_helix_sign' ! Sender priority list
    receiver.priolist (    3 ,       $COM_helix_sign               ) = '$COM_stage_03_pinion_helix_sign' ! Sender priority list
-   receiver.override (              $COM_helix_sign               ) = { SUBSTR_ID(3) }        ! Override index
+   receiver.override (              $COM_helix_sign               ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.begin (            $RG_bearing_A                 )                           ! $RG_pinion.$RG_bearing_A
       receiver.ref (                $COM_k_x                      ) = $SVG_pinion.$SVG_bearing_A.$_k_x ! Destination object
       receiver.priolist (   1 ,     $COM_k_x                      ) = '$COM_stage_01_pinion_A_k_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_x                      ) = '$COM_stage_02_pinion_A_k_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_x                      ) = '$COM_stage_03_pinion_A_k_x' ! Sender priority list
-      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_y                      ) = $SVG_pinion.$SVG_bearing_A.$_k_y ! Destination object
       receiver.priolist (   1 ,     $COM_k_y                      ) = '$COM_stage_01_pinion_A_k_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_y                      ) = '$COM_stage_02_pinion_A_k_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_y                      ) = '$COM_stage_03_pinion_A_k_y' ! Sender priority list
-      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_z                      ) = $SVG_pinion.$SVG_bearing_A.$_k_z ! Destination object
       receiver.priolist (   1 ,     $COM_k_z                      ) = '$COM_stage_01_pinion_A_k_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_z                      ) = '$COM_stage_02_pinion_A_k_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_z                      ) = '$COM_stage_03_pinion_A_k_z' ! Sender priority list
-      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_alpha                  ) = $SVG_pinion.$SVG_bearing_A.$_k_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_k_alpha                  ) = '$COM_stage_01_pinion_A_k_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_alpha                  ) = '$COM_stage_02_pinion_A_k_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_alpha                  ) = '$COM_stage_03_pinion_A_k_alpha' ! Sender priority list
-      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_beta                   ) = $SVG_pinion.$SVG_bearing_A.$_k_beta ! Destination object
       receiver.priolist (   1 ,     $COM_k_beta                   ) = '$COM_stage_01_pinion_A_k_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_beta                   ) = '$COM_stage_02_pinion_A_k_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_beta                   ) = '$COM_stage_03_pinion_A_k_beta' ! Sender priority list
-      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_gamma                  ) = $SVG_pinion.$SVG_bearing_A.$_k_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_k_gamma                  ) = '$COM_stage_01_pinion_A_k_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_gamma                  ) = '$COM_stage_02_pinion_A_k_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_gamma                  ) = '$COM_stage_03_pinion_A_k_gamma' ! Sender priority list
-      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_x                      ) = $SVG_pinion.$SVG_bearing_A.$_d_x ! Destination object
       receiver.priolist (   1 ,     $COM_d_x                      ) = '$COM_stage_01_pinion_A_d_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_x                      ) = '$COM_stage_02_pinion_A_d_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_x                      ) = '$COM_stage_03_pinion_A_d_x' ! Sender priority list
-      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_y                      ) = $SVG_pinion.$SVG_bearing_A.$_d_y ! Destination object
       receiver.priolist (   1 ,     $COM_d_y                      ) = '$COM_stage_01_pinion_A_d_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_y                      ) = '$COM_stage_02_pinion_A_d_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_y                      ) = '$COM_stage_03_pinion_A_d_y' ! Sender priority list
-      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_z                      ) = $SVG_pinion.$SVG_bearing_A.$_d_z ! Destination object
       receiver.priolist (   1 ,     $COM_d_z                      ) = '$COM_stage_01_pinion_A_d_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_z                      ) = '$COM_stage_02_pinion_A_d_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_z                      ) = '$COM_stage_03_pinion_A_d_z' ! Sender priority list
-      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_alpha                  ) = $SVG_pinion.$SVG_bearing_A.$_d_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_d_alpha                  ) = '$COM_stage_01_pinion_A_d_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_alpha                  ) = '$COM_stage_02_pinion_A_d_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_alpha                  ) = '$COM_stage_03_pinion_A_d_alpha' ! Sender priority list
-      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_beta                   ) = $SVG_pinion.$SVG_bearing_A.$_d_beta ! Destination object
       receiver.priolist (   1 ,     $COM_d_beta                   ) = '$COM_stage_01_pinion_A_d_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_beta                   ) = '$COM_stage_02_pinion_A_d_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_beta                   ) = '$COM_stage_03_pinion_A_d_beta' ! Sender priority list
-      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_gamma                  ) = $SVG_pinion.$SVG_bearing_A.$_d_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_d_gamma                  ) = '$COM_stage_01_pinion_A_d_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_gamma                  ) = '$COM_stage_02_pinion_A_d_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_gamma                  ) = '$COM_stage_03_pinion_A_d_gamma' ! Sender priority list
-      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_bearing_A                 )                           ! $RG_pinion.$RG_bearing_A
    receivergroup.begin (            $RG_bearing_B                 )                           ! $RG_pinion.$RG_bearing_B
@@ -1597,73 +1601,73 @@ receivergroup.begin (               $RG_pinion                    )             
       receiver.priolist (   1 ,     $COM_k_x                      ) = '$COM_stage_01_pinion_B_k_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_x                      ) = '$COM_stage_02_pinion_B_k_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_x                      ) = '$COM_stage_03_pinion_B_k_x' ! Sender priority list
-      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_y                      ) = $SVG_pinion.$SVG_bearing_B.$_k_y ! Destination object
       receiver.priolist (   1 ,     $COM_k_y                      ) = '$COM_stage_01_pinion_B_k_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_y                      ) = '$COM_stage_02_pinion_B_k_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_y                      ) = '$COM_stage_03_pinion_B_k_y' ! Sender priority list
-      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_z                      ) = $SVG_pinion.$SVG_bearing_B.$_k_z ! Destination object
       receiver.priolist (   1 ,     $COM_k_z                      ) = '$COM_stage_01_pinion_B_k_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_z                      ) = '$COM_stage_02_pinion_B_k_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_z                      ) = '$COM_stage_03_pinion_B_k_z' ! Sender priority list
-      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_alpha                  ) = $SVG_pinion.$SVG_bearing_B.$_k_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_k_alpha                  ) = '$COM_stage_01_pinion_B_k_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_alpha                  ) = '$COM_stage_02_pinion_B_k_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_alpha                  ) = '$COM_stage_03_pinion_B_k_alpha' ! Sender priority list
-      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_beta                   ) = $SVG_pinion.$SVG_bearing_B.$_k_beta ! Destination object
       receiver.priolist (   1 ,     $COM_k_beta                   ) = '$COM_stage_01_pinion_B_k_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_beta                   ) = '$COM_stage_02_pinion_B_k_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_beta                   ) = '$COM_stage_03_pinion_B_k_beta' ! Sender priority list
-      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_gamma                  ) = $SVG_pinion.$SVG_bearing_B.$_k_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_k_gamma                  ) = '$COM_stage_01_pinion_B_k_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_gamma                  ) = '$COM_stage_02_pinion_B_k_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_gamma                  ) = '$COM_stage_03_pinion_B_k_gamma' ! Sender priority list
-      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_x                      ) = $SVG_pinion.$SVG_bearing_B.$_d_x ! Destination object
       receiver.priolist (   1 ,     $COM_d_x                      ) = '$COM_stage_01_pinion_B_d_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_x                      ) = '$COM_stage_02_pinion_B_d_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_x                      ) = '$COM_stage_03_pinion_B_d_x' ! Sender priority list
-      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_y                      ) = $SVG_pinion.$SVG_bearing_B.$_d_y ! Destination object
       receiver.priolist (   1 ,     $COM_d_y                      ) = '$COM_stage_01_pinion_B_d_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_y                      ) = '$COM_stage_02_pinion_B_d_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_y                      ) = '$COM_stage_03_pinion_B_d_y' ! Sender priority list
-      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_z                      ) = $SVG_pinion.$SVG_bearing_B.$_d_z ! Destination object
       receiver.priolist (   1 ,     $COM_d_z                      ) = '$COM_stage_01_pinion_B_d_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_z                      ) = '$COM_stage_02_pinion_B_d_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_z                      ) = '$COM_stage_03_pinion_B_d_z' ! Sender priority list
-      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_alpha                  ) = $SVG_pinion.$SVG_bearing_B.$_d_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_d_alpha                  ) = '$COM_stage_01_pinion_B_d_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_alpha                  ) = '$COM_stage_02_pinion_B_d_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_alpha                  ) = '$COM_stage_03_pinion_B_d_alpha' ! Sender priority list
-      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_beta                   ) = $SVG_pinion.$SVG_bearing_B.$_d_beta ! Destination object
       receiver.priolist (   1 ,     $COM_d_beta                   ) = '$COM_stage_01_pinion_B_d_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_beta                   ) = '$COM_stage_02_pinion_B_d_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_beta                   ) = '$COM_stage_03_pinion_B_d_beta' ! Sender priority list
-      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_gamma                  ) = $SVG_pinion.$SVG_bearing_B.$_d_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_d_gamma                  ) = '$COM_stage_01_pinion_B_d_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_gamma                  ) = '$COM_stage_02_pinion_B_d_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_gamma                  ) = '$COM_stage_03_pinion_B_d_gamma' ! Sender priority list
-      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_bearing_B                 )                           ! $RG_pinion.$RG_bearing_B
    receivergroup.begin (            $RG_bearing_C                 )                           ! $RG_pinion.$RG_bearing_C
@@ -1671,73 +1675,73 @@ receivergroup.begin (               $RG_pinion                    )             
       receiver.priolist (   1 ,     $COM_k_x                      ) = '$COM_stage_01_pinion_C_k_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_x                      ) = '$COM_stage_02_pinion_C_k_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_x                      ) = '$COM_stage_03_pinion_C_k_x' ! Sender priority list
-      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_y                      ) = $SVG_pinion.$SVG_bearing_C.$_k_y ! Destination object
       receiver.priolist (   1 ,     $COM_k_y                      ) = '$COM_stage_01_pinion_C_k_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_y                      ) = '$COM_stage_02_pinion_C_k_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_y                      ) = '$COM_stage_03_pinion_C_k_y' ! Sender priority list
-      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_z                      ) = $SVG_pinion.$SVG_bearing_C.$_k_z ! Destination object
       receiver.priolist (   1 ,     $COM_k_z                      ) = '$COM_stage_01_pinion_C_k_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_z                      ) = '$COM_stage_02_pinion_C_k_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_z                      ) = '$COM_stage_03_pinion_C_k_z' ! Sender priority list
-      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_alpha                  ) = $SVG_pinion.$SVG_bearing_C.$_k_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_k_alpha                  ) = '$COM_stage_01_pinion_C_k_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_alpha                  ) = '$COM_stage_02_pinion_C_k_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_alpha                  ) = '$COM_stage_03_pinion_C_k_alpha' ! Sender priority list
-      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_beta                   ) = $SVG_pinion.$SVG_bearing_C.$_k_beta ! Destination object
       receiver.priolist (   1 ,     $COM_k_beta                   ) = '$COM_stage_01_pinion_C_k_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_beta                   ) = '$COM_stage_02_pinion_C_k_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_beta                   ) = '$COM_stage_03_pinion_C_k_beta' ! Sender priority list
-      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_gamma                  ) = $SVG_pinion.$SVG_bearing_C.$_k_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_k_gamma                  ) = '$COM_stage_01_pinion_C_k_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_gamma                  ) = '$COM_stage_02_pinion_C_k_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_gamma                  ) = '$COM_stage_03_pinion_C_k_gamma' ! Sender priority list
-      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_x                      ) = $SVG_pinion.$SVG_bearing_C.$_d_x ! Destination object
       receiver.priolist (   1 ,     $COM_d_x                      ) = '$COM_stage_01_pinion_C_d_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_x                      ) = '$COM_stage_02_pinion_C_d_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_x                      ) = '$COM_stage_03_pinion_C_d_x' ! Sender priority list
-      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_y                      ) = $SVG_pinion.$SVG_bearing_C.$_d_y ! Destination object
       receiver.priolist (   1 ,     $COM_d_y                      ) = '$COM_stage_01_pinion_C_d_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_y                      ) = '$COM_stage_02_pinion_C_d_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_y                      ) = '$COM_stage_03_pinion_C_d_y' ! Sender priority list
-      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_z                      ) = $SVG_pinion.$SVG_bearing_C.$_d_z ! Destination object
       receiver.priolist (   1 ,     $COM_d_z                      ) = '$COM_stage_01_pinion_C_d_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_z                      ) = '$COM_stage_02_pinion_C_d_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_z                      ) = '$COM_stage_03_pinion_C_d_z' ! Sender priority list
-      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_alpha                  ) = $SVG_pinion.$SVG_bearing_C.$_d_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_d_alpha                  ) = '$COM_stage_01_pinion_C_d_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_alpha                  ) = '$COM_stage_02_pinion_C_d_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_alpha                  ) = '$COM_stage_03_pinion_C_d_alpha' ! Sender priority list
-      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_beta                   ) = $SVG_pinion.$SVG_bearing_C.$_d_beta ! Destination object
       receiver.priolist (   1 ,     $COM_d_beta                   ) = '$COM_stage_01_pinion_C_d_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_beta                   ) = '$COM_stage_02_pinion_C_d_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_beta                   ) = '$COM_stage_03_pinion_C_d_beta' ! Sender priority list
-      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_gamma                  ) = $SVG_pinion.$SVG_bearing_C.$_d_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_d_gamma                  ) = '$COM_stage_01_pinion_C_d_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_gamma                  ) = '$COM_stage_02_pinion_C_d_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_gamma                  ) = '$COM_stage_03_pinion_C_d_gamma' ! Sender priority list
-      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_bearing_C                 )                           ! $RG_pinion.$RG_bearing_C
    receivergroup.begin (            $RG_material                  )                           ! $RG_pinion.$RG_material
@@ -1745,106 +1749,126 @@ receivergroup.begin (               $RG_pinion                    )             
       receiver.priolist (   1 ,     $COM_density                  ) = '$COM_stage_01_pinion_density' ! Sender priority list
       receiver.priolist (   2 ,     $COM_density                  ) = '$COM_stage_02_pinion_density' ! Sender priority list
       receiver.priolist (   3 ,     $COM_density                  ) = '$COM_stage_03_pinion_density' ! Sender priority list
-      receiver.override (           $COM_density                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_density                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_elasticity_modulus       ) = $SVG_pinion.$SVG_material.$_elasticity_modulus ! Destination object
       receiver.priolist (   1 ,     $COM_elasticity_modulus       ) = '$COM_stage_01_pinion_elasticity_modulus' ! Sender priority list
       receiver.priolist (   2 ,     $COM_elasticity_modulus       ) = '$COM_stage_02_pinion_elasticity_modulus' ! Sender priority list
       receiver.priolist (   3 ,     $COM_elasticity_modulus       ) = '$COM_stage_03_pinion_elasticity_modulus' ! Sender priority list
-      receiver.override (           $COM_elasticity_modulus       ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_elasticity_modulus       ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_poissons_ratio           ) = $SVG_pinion.$SVG_material.$_poissons_ratio ! Destination object
       receiver.priolist (   1 ,     $COM_poissons_ratio           ) = '$COM_stage_01_pinion_poissons_ratio' ! Sender priority list
       receiver.priolist (   2 ,     $COM_poissons_ratio           ) = '$COM_stage_02_pinion_poissons_ratio' ! Sender priority list
       receiver.priolist (   3 ,     $COM_poissons_ratio           ) = '$COM_stage_03_pinion_poissons_ratio' ! Sender priority list
-      receiver.override (           $COM_poissons_ratio           ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_poissons_ratio           ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_material                  )                           ! $RG_pinion.$RG_material
 receivergroup.end (                 $RG_pinion                    )                           ! $RG_pinion
 
 receivergroup.begin (               $RG_wheel                     )                           ! $RG_wheel
    receiver.ref (                   $COM_num_teeth                ) = $SVG_wheel.$_num_teeth  ! Destination object
+   receiver.priolist (    1 ,       $COM_num_teeth                ) = '$COM_stage_01_wheel_num_teeth' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_num_teeth                ) = '$COM_stage_02_wheel_num_teeth' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_num_teeth                ) = '$COM_stage_03_wheel_num_teeth' ! Sender priority list
+   receiver.override (              $COM_num_teeth                ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_flank_width              ) = $SVG_wheel.$_flank_width ! Destination object
+   receiver.priolist (    1 ,       $COM_flank_width              ) = '$COM_stage_01_wheel_flank_width' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_flank_width              ) = '$COM_stage_02_wheel_flank_width' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_flank_width              ) = '$COM_stage_03_wheel_flank_width' ! Sender priority list
+   receiver.override (              $COM_flank_width              ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_shift_factor             ) = $SVG_wheel.$_shift_factor ! Destination object
+   receiver.priolist (    1 ,       $COM_shift_factor             ) = '$COM_stage_01_wheel_shift_factor' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_shift_factor             ) = '$COM_stage_02_wheel_shift_factor' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_shift_factor             ) = '$COM_stage_03_wheel_shift_factor' ! Sender priority list
+   receiver.override (              $COM_shift_factor             ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_bore_diameter            ) = $SVG_wheel.$_bore_diameter ! Destination object
+   receiver.priolist (    1 ,       $COM_bore_diameter            ) = '$COM_stage_01_wheel_bore_diameter' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_bore_diameter            ) = '$COM_stage_02_wheel_bore_diameter' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_bore_diameter            ) = '$COM_stage_03_wheel_bore_diameter' ! Sender priority list
+   receiver.override (              $COM_bore_diameter            ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_helix_sign               ) = $SVG_wheel.$_helix_sign ! Destination object
+   receiver.priolist (    1 ,       $COM_helix_sign               ) = '$COM_stage_01_wheel_helix_sign' ! Sender priority list
+   receiver.priolist (    2 ,       $COM_helix_sign               ) = '$COM_stage_02_wheel_helix_sign' ! Sender priority list
+   receiver.priolist (    3 ,       $COM_helix_sign               ) = '$COM_stage_03_wheel_helix_sign' ! Sender priority list
+   receiver.override (              $COM_helix_sign               ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.begin (            $RG_bearing_A                 )                           ! $RG_wheel.$RG_bearing_A
       receiver.ref (                $COM_k_x                      ) = $SVG_wheel.$SVG_bearing_A.$_k_x ! Destination object
       receiver.priolist (   1 ,     $COM_k_x                      ) = '$COM_stage_01_wheel_A_k_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_x                      ) = '$COM_stage_02_wheel_A_k_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_x                      ) = '$COM_stage_03_wheel_A_k_x' ! Sender priority list
-      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_y                      ) = $SVG_wheel.$SVG_bearing_A.$_k_y ! Destination object
       receiver.priolist (   1 ,     $COM_k_y                      ) = '$COM_stage_01_wheel_A_k_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_y                      ) = '$COM_stage_02_wheel_A_k_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_y                      ) = '$COM_stage_03_wheel_A_k_y' ! Sender priority list
-      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_z                      ) = $SVG_wheel.$SVG_bearing_A.$_k_z ! Destination object
       receiver.priolist (   1 ,     $COM_k_z                      ) = '$COM_stage_01_wheel_A_k_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_z                      ) = '$COM_stage_02_wheel_A_k_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_z                      ) = '$COM_stage_03_wheel_A_k_z' ! Sender priority list
-      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_alpha                  ) = $SVG_wheel.$SVG_bearing_A.$_k_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_k_alpha                  ) = '$COM_stage_01_wheel_A_k_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_alpha                  ) = '$COM_stage_02_wheel_A_k_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_alpha                  ) = '$COM_stage_03_wheel_A_k_alpha' ! Sender priority list
-      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_beta                   ) = $SVG_wheel.$SVG_bearing_A.$_k_beta ! Destination object
       receiver.priolist (   1 ,     $COM_k_beta                   ) = '$COM_stage_01_wheel_A_k_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_beta                   ) = '$COM_stage_02_wheel_A_k_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_beta                   ) = '$COM_stage_03_wheel_A_k_beta' ! Sender priority list
-      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_gamma                  ) = $SVG_wheel.$SVG_bearing_A.$_k_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_k_gamma                  ) = '$COM_stage_01_wheel_A_k_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_gamma                  ) = '$COM_stage_02_wheel_A_k_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_gamma                  ) = '$COM_stage_03_wheel_A_k_gamma' ! Sender priority list
-      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_x                      ) = $SVG_wheel.$SVG_bearing_A.$_d_x ! Destination object
       receiver.priolist (   1 ,     $COM_d_x                      ) = '$COM_stage_01_wheel_A_d_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_x                      ) = '$COM_stage_02_wheel_A_d_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_x                      ) = '$COM_stage_03_wheel_A_d_x' ! Sender priority list
-      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_y                      ) = $SVG_wheel.$SVG_bearing_A.$_d_y ! Destination object
       receiver.priolist (   1 ,     $COM_d_y                      ) = '$COM_stage_01_wheel_A_d_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_y                      ) = '$COM_stage_02_wheel_A_d_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_y                      ) = '$COM_stage_03_wheel_A_d_y' ! Sender priority list
-      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_z                      ) = $SVG_wheel.$SVG_bearing_A.$_d_z ! Destination object
       receiver.priolist (   1 ,     $COM_d_z                      ) = '$COM_stage_01_wheel_A_d_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_z                      ) = '$COM_stage_02_wheel_A_d_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_z                      ) = '$COM_stage_03_wheel_A_d_z' ! Sender priority list
-      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_alpha                  ) = $SVG_wheel.$SVG_bearing_A.$_d_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_d_alpha                  ) = '$COM_stage_01_wheel_A_d_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_alpha                  ) = '$COM_stage_02_wheel_A_d_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_alpha                  ) = '$COM_stage_03_wheel_A_d_alpha' ! Sender priority list
-      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_beta                   ) = $SVG_wheel.$SVG_bearing_A.$_d_beta ! Destination object
       receiver.priolist (   1 ,     $COM_d_beta                   ) = '$COM_stage_01_wheel_A_d_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_beta                   ) = '$COM_stage_02_wheel_A_d_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_beta                   ) = '$COM_stage_03_wheel_A_d_beta' ! Sender priority list
-      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_gamma                  ) = $SVG_wheel.$SVG_bearing_A.$_d_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_d_gamma                  ) = '$COM_stage_01_wheel_A_d_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_gamma                  ) = '$COM_stage_02_wheel_A_d_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_gamma                  ) = '$COM_stage_03_wheel_A_d_gamma' ! Sender priority list
-      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_bearing_A                 )                           ! $RG_wheel.$RG_bearing_A
    receivergroup.begin (            $RG_bearing_B                 )                           ! $RG_wheel.$RG_bearing_B
@@ -1852,73 +1876,73 @@ receivergroup.begin (               $RG_wheel                     )             
       receiver.priolist (   1 ,     $COM_k_x                      ) = '$COM_stage_01_wheel_B_k_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_x                      ) = '$COM_stage_02_wheel_B_k_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_x                      ) = '$COM_stage_03_wheel_B_k_x' ! Sender priority list
-      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_y                      ) = $SVG_wheel.$SVG_bearing_B.$_k_y ! Destination object
       receiver.priolist (   1 ,     $COM_k_y                      ) = '$COM_stage_01_wheel_B_k_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_y                      ) = '$COM_stage_02_wheel_B_k_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_y                      ) = '$COM_stage_03_wheel_B_k_y' ! Sender priority list
-      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_z                      ) = $SVG_wheel.$SVG_bearing_B.$_k_z ! Destination object
       receiver.priolist (   1 ,     $COM_k_z                      ) = '$COM_stage_01_wheel_B_k_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_z                      ) = '$COM_stage_02_wheel_B_k_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_z                      ) = '$COM_stage_03_wheel_B_k_z' ! Sender priority list
-      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_alpha                  ) = $SVG_wheel.$SVG_bearing_B.$_k_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_k_alpha                  ) = '$COM_stage_01_wheel_B_k_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_alpha                  ) = '$COM_stage_02_wheel_B_k_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_alpha                  ) = '$COM_stage_03_wheel_B_k_alpha' ! Sender priority list
-      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_beta                   ) = $SVG_wheel.$SVG_bearing_B.$_k_beta ! Destination object
       receiver.priolist (   1 ,     $COM_k_beta                   ) = '$COM_stage_01_wheel_B_k_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_beta                   ) = '$COM_stage_02_wheel_B_k_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_beta                   ) = '$COM_stage_03_wheel_B_k_beta' ! Sender priority list
-      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_gamma                  ) = $SVG_wheel.$SVG_bearing_B.$_k_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_k_gamma                  ) = '$COM_stage_01_wheel_B_k_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_gamma                  ) = '$COM_stage_02_wheel_B_k_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_gamma                  ) = '$COM_stage_03_wheel_B_k_gamma' ! Sender priority list
-      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_x                      ) = $SVG_wheel.$SVG_bearing_B.$_d_x ! Destination object
       receiver.priolist (   1 ,     $COM_d_x                      ) = '$COM_stage_01_wheel_B_d_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_x                      ) = '$COM_stage_02_wheel_B_d_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_x                      ) = '$COM_stage_03_wheel_B_d_x' ! Sender priority list
-      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_y                      ) = $SVG_wheel.$SVG_bearing_B.$_d_y ! Destination object
       receiver.priolist (   1 ,     $COM_d_y                      ) = '$COM_stage_01_wheel_B_d_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_y                      ) = '$COM_stage_02_wheel_B_d_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_y                      ) = '$COM_stage_03_wheel_B_d_y' ! Sender priority list
-      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_z                      ) = $SVG_wheel.$SVG_bearing_B.$_d_z ! Destination object
       receiver.priolist (   1 ,     $COM_d_z                      ) = '$COM_stage_01_wheel_B_d_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_z                      ) = '$COM_stage_02_wheel_B_d_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_z                      ) = '$COM_stage_03_wheel_B_d_z' ! Sender priority list
-      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_alpha                  ) = $SVG_wheel.$SVG_bearing_B.$_d_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_d_alpha                  ) = '$COM_stage_01_wheel_B_d_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_alpha                  ) = '$COM_stage_02_wheel_B_d_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_alpha                  ) = '$COM_stage_03_wheel_B_d_alpha' ! Sender priority list
-      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_beta                   ) = $SVG_wheel.$SVG_bearing_B.$_d_beta ! Destination object
       receiver.priolist (   1 ,     $COM_d_beta                   ) = '$COM_stage_01_wheel_B_d_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_beta                   ) = '$COM_stage_02_wheel_B_d_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_beta                   ) = '$COM_stage_03_wheel_B_d_beta' ! Sender priority list
-      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_gamma                  ) = $SVG_wheel.$SVG_bearing_B.$_d_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_d_gamma                  ) = '$COM_stage_01_wheel_B_d_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_gamma                  ) = '$COM_stage_02_wheel_B_d_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_gamma                  ) = '$COM_stage_03_wheel_B_d_gamma' ! Sender priority list
-      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_bearing_B                 )                           ! $RG_wheel.$RG_bearing_B
    receivergroup.begin (            $RG_bearing_C                 )                           ! $RG_wheel.$RG_bearing_C
@@ -1926,73 +1950,73 @@ receivergroup.begin (               $RG_wheel                     )             
       receiver.priolist (   1 ,     $COM_k_x                      ) = '$COM_stage_01_wheel_C_k_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_x                      ) = '$COM_stage_02_wheel_C_k_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_x                      ) = '$COM_stage_03_wheel_C_k_x' ! Sender priority list
-      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_y                      ) = $SVG_wheel.$SVG_bearing_C.$_k_y ! Destination object
       receiver.priolist (   1 ,     $COM_k_y                      ) = '$COM_stage_01_wheel_C_k_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_y                      ) = '$COM_stage_02_wheel_C_k_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_y                      ) = '$COM_stage_03_wheel_C_k_y' ! Sender priority list
-      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_z                      ) = $SVG_wheel.$SVG_bearing_C.$_k_z ! Destination object
       receiver.priolist (   1 ,     $COM_k_z                      ) = '$COM_stage_01_wheel_C_k_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_z                      ) = '$COM_stage_02_wheel_C_k_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_z                      ) = '$COM_stage_03_wheel_C_k_z' ! Sender priority list
-      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_alpha                  ) = $SVG_wheel.$SVG_bearing_C.$_k_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_k_alpha                  ) = '$COM_stage_01_wheel_C_k_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_alpha                  ) = '$COM_stage_02_wheel_C_k_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_alpha                  ) = '$COM_stage_03_wheel_C_k_alpha' ! Sender priority list
-      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_beta                   ) = $SVG_wheel.$SVG_bearing_C.$_k_beta ! Destination object
       receiver.priolist (   1 ,     $COM_k_beta                   ) = '$COM_stage_01_wheel_C_k_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_beta                   ) = '$COM_stage_02_wheel_C_k_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_beta                   ) = '$COM_stage_03_wheel_C_k_beta' ! Sender priority list
-      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_k_gamma                  ) = $SVG_wheel.$SVG_bearing_C.$_k_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_k_gamma                  ) = '$COM_stage_01_wheel_C_k_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_k_gamma                  ) = '$COM_stage_02_wheel_C_k_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_k_gamma                  ) = '$COM_stage_03_wheel_C_k_gamma' ! Sender priority list
-      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_k_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_x                      ) = $SVG_wheel.$SVG_bearing_C.$_d_x ! Destination object
       receiver.priolist (   1 ,     $COM_d_x                      ) = '$COM_stage_01_wheel_C_d_x' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_x                      ) = '$COM_stage_02_wheel_C_d_x' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_x                      ) = '$COM_stage_03_wheel_C_d_x' ! Sender priority list
-      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_x                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_y                      ) = $SVG_wheel.$SVG_bearing_C.$_d_y ! Destination object
       receiver.priolist (   1 ,     $COM_d_y                      ) = '$COM_stage_01_wheel_C_d_y' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_y                      ) = '$COM_stage_02_wheel_C_d_y' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_y                      ) = '$COM_stage_03_wheel_C_d_y' ! Sender priority list
-      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_y                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_z                      ) = $SVG_wheel.$SVG_bearing_C.$_d_z ! Destination object
       receiver.priolist (   1 ,     $COM_d_z                      ) = '$COM_stage_01_wheel_C_d_z' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_z                      ) = '$COM_stage_02_wheel_C_d_z' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_z                      ) = '$COM_stage_03_wheel_C_d_z' ! Sender priority list
-      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_z                      ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_alpha                  ) = $SVG_wheel.$SVG_bearing_C.$_d_alpha ! Destination object
       receiver.priolist (   1 ,     $COM_d_alpha                  ) = '$COM_stage_01_wheel_C_d_alpha' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_alpha                  ) = '$COM_stage_02_wheel_C_d_alpha' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_alpha                  ) = '$COM_stage_03_wheel_C_d_alpha' ! Sender priority list
-      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_alpha                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_beta                   ) = $SVG_wheel.$SVG_bearing_C.$_d_beta ! Destination object
       receiver.priolist (   1 ,     $COM_d_beta                   ) = '$COM_stage_01_wheel_C_d_beta' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_beta                   ) = '$COM_stage_02_wheel_C_d_beta' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_beta                   ) = '$COM_stage_03_wheel_C_d_beta' ! Sender priority list
-      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_beta                   ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_d_gamma                  ) = $SVG_wheel.$SVG_bearing_C.$_d_gamma ! Destination object
       receiver.priolist (   1 ,     $COM_d_gamma                  ) = '$COM_stage_01_wheel_C_d_gamma' ! Sender priority list
       receiver.priolist (   2 ,     $COM_d_gamma                  ) = '$COM_stage_02_wheel_C_d_gamma' ! Sender priority list
       receiver.priolist (   3 ,     $COM_d_gamma                  ) = '$COM_stage_03_wheel_C_d_gamma' ! Sender priority list
-      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_d_gamma                  ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_bearing_C                 )                           ! $RG_wheel.$RG_bearing_C
    receivergroup.begin (            $RG_material                  )                           ! $RG_wheel.$RG_material
@@ -2000,19 +2024,19 @@ receivergroup.begin (               $RG_wheel                     )             
       receiver.priolist (   1 ,     $COM_density                  ) = '$COM_stage_01_wheel_density' ! Sender priority list
       receiver.priolist (   2 ,     $COM_density                  ) = '$COM_stage_02_wheel_density' ! Sender priority list
       receiver.priolist (   3 ,     $COM_density                  ) = '$COM_stage_03_wheel_density' ! Sender priority list
-      receiver.override (           $COM_density                  ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_density                  ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_elasticity_modulus       ) = $SVG_wheel.$SVG_material.$_elasticity_modulus ! Destination object
       receiver.priolist (   1 ,     $COM_elasticity_modulus       ) = '$COM_stage_01_wheel_elasticity_modulus' ! Sender priority list
       receiver.priolist (   2 ,     $COM_elasticity_modulus       ) = '$COM_stage_02_wheel_elasticity_modulus' ! Sender priority list
       receiver.priolist (   3 ,     $COM_elasticity_modulus       ) = '$COM_stage_03_wheel_elasticity_modulus' ! Sender priority list
-      receiver.override (           $COM_elasticity_modulus       ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_elasticity_modulus       ) = { SUBSTR_ID(1) }        ! Override index
 
       receiver.ref (                $COM_poissons_ratio           ) = $SVG_wheel.$SVG_material.$_poissons_ratio ! Destination object
       receiver.priolist (   1 ,     $COM_poissons_ratio           ) = '$COM_stage_01_wheel_poissons_ratio' ! Sender priority list
       receiver.priolist (   2 ,     $COM_poissons_ratio           ) = '$COM_stage_02_wheel_poissons_ratio' ! Sender priority list
       receiver.priolist (   3 ,     $COM_poissons_ratio           ) = '$COM_stage_03_wheel_poissons_ratio' ! Sender priority list
-      receiver.override (           $COM_poissons_ratio           ) = { SUBSTR_ID(3) }        ! Override index
+      receiver.override (           $COM_poissons_ratio           ) = { SUBSTR_ID(1) }        ! Override index
 
    receivergroup.end (              $RG_material                  )                           ! $RG_wheel.$RG_material
 receivergroup.end (                 $RG_wheel                     )                           ! $RG_wheel

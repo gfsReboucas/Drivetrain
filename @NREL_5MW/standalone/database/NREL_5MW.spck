@@ -1029,6 +1029,10 @@ subvargroup.begin (                 $SVG_loading                  )             
 
    subvar.str (                     $_use_time_series             ) = 'IF($SVG_loading.$_generator_flag == 3)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_time_series, Definition
 
+   subvar.str (                     $_gamma_Torque                ) = '1.0'                   ! $SVG_loading.$_gamma_Torque, Definition
+
+   subvar.str (                     $_gamma_Force                 ) = '1.0'                   ! $SVG_loading.$_gamma_Force, Definition
+
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_gear_params              )                           ! $SVG_gear_params
@@ -1479,7 +1483,7 @@ excit.par (               4 ,       $E_F_x                        ) = 1.00000000
 excit.par (               5 ,       $E_F_x                        ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_F_x                        ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_F_x                        ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_F_x                        ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_F_x                        ) = $SVG_loading.$_gamma_Force ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_F_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_F_x                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_F_x                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1498,7 +1502,7 @@ excit.par (               4 ,       $E_F_y                        ) = 1.00000000
 excit.par (               5 ,       $E_F_y                        ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_F_y                        ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_F_y                        ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_F_y                        ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_F_y                        ) = $SVG_loading.$_gamma_Force ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_F_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_F_y                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_F_y                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1517,7 +1521,7 @@ excit.par (               4 ,       $E_F_z                        ) = 1.00000000
 excit.par (               5 ,       $E_F_z                        ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_F_z                        ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_F_z                        ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_F_z                        ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_F_z                        ) = $SVG_loading.$_gamma_Force ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_F_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_F_z                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_F_z                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1536,7 +1540,7 @@ excit.par (               4 ,       $E_M_x                        ) = 1.00000000
 excit.par (               5 ,       $E_M_x                        ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_M_x                        ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_M_x                        ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_M_x                        ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_M_x                        ) = $SVG_loading.$_gamma_Torque ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_M_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_M_x                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_M_x                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1555,7 +1559,7 @@ excit.par (               4 ,       $E_M_y                        ) = 1.00000000
 excit.par (               5 ,       $E_M_y                        ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_M_y                        ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_M_y                        ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_M_y                        ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_M_y                        ) = $SVG_loading.$_gamma_Torque ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_M_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_M_y                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_M_y                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1574,7 +1578,7 @@ excit.par (               4 ,       $E_M_z                        ) = 1.00000000
 excit.par (               5 ,       $E_M_z                        ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
 excit.par (               6 ,       $E_M_z                        ) = 0.00000000000000000E+00 ! [s] Time offset t0
 excit.par (               7 ,       $E_M_z                        ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
-excit.par (               8 ,       $E_M_z                        ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.par (               8 ,       $E_M_z                        ) = $SVG_loading.$_gamma_Torque ! [-] Scaling factor c
 excit.plot.par (          1 ,       $E_M_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_M_z                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   2 , $E_M_z                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -2559,6 +2563,87 @@ sendergroup.begin (                 $SG_gear_params               )             
    sender.ref (                     $COM_regularization_vel       ) = $SVG_gear_params.$_regularization_vel ! Source object
 
 sendergroup.end (                   $SG_gear_params               )                           ! $SG_gear_params
+
+!**********************************************************************
+! Receivers
+!**********************************************************************
+receivergroup.begin (               $RG_loading                   )                           ! $RG_loading
+   receiver.ref (                   $COM_rated_power              ) = $_rated_power           ! Destination object
+   receiver.override (              $COM_rated_power              ) = 0                       ! Override index
+
+   receiver.ref (                   $COM_inertia_flag             ) = $_inertia_flag          ! Destination object
+   receiver.priolist (    1 ,       $COM_inertia_flag             ) = '$COM_inertia_flag'     ! Sender priority list
+
+   receiver.ref (                   $COM_base_excitation_flag     ) = $SVG_loading.$_base_excitation_flag ! Destination object
+   receiver.priolist (    1 ,       $COM_base_excitation_flag     ) = '$COM_flag_base_excitation' ! Sender priority list
+
+   receiver.ref (                   $COM_generator_flag           ) = $SVG_loading.$_generator_flag ! Destination object
+
+   receiver.ref (                   $COM_gamma_Torque             ) = $SVG_loading.$_gamma_Torque ! Destination object
+
+   receiver.ref (                   $COM_gamma_Force              ) = $SVG_loading.$_gamma_Force ! Destination object
+
+receivergroup.end (                 $RG_loading                   )                           ! $RG_loading
+
+receivergroup.begin (               $RG_rotor                     )                           ! $RG_rotor
+   receiver.ref (                   $COM_mass                     ) = $SVG_rotor.$_mass       ! Destination object
+   receiver.priolist (    1 ,       $COM_mass                     ) = '$COM_rotor_mass'       ! Sender priority list
+
+   receiver.ref (                   $COM_mass_mom_inertia         ) = $SVG_rotor.$_mass_mom_inertia ! Destination object
+   receiver.priolist (    1 ,       $COM_mass_mom_inertia         ) = '$COM_rotor_mass_mom_inertia' ! Sender priority list
+
+   receiver.ref (                   $COM_length                   ) = $SVG_rotor.$_length     ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_length_rotor'     ! Sender priority list
+
+receivergroup.end (                 $RG_rotor                     )                           ! $RG_rotor
+
+receivergroup.begin (               $RG_main_shaft                )                           ! $RG_main_shaft
+   receiver.ref (                   $COM_length                   ) = $SVG_main_shaft.$_length ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_main_shaft_length' ! Sender priority list
+
+   receiver.ref (                   $COM_diameter                 ) = $SVG_main_shaft.$_diameter ! Destination object
+
+receivergroup.end (                 $RG_main_shaft                )                           ! $RG_main_shaft
+
+receivergroup.begin (               $RG_generator                 )                           ! $RG_generator
+   receiver.ref (                   $COM_mass                     ) = $SVG_generator.$_mass   ! Destination object
+   receiver.priolist (    1 ,       $COM_mass                     ) = '$COM_generator_mass'   ! Sender priority list
+
+   receiver.ref (                   $COM_mass_mom_inertia         ) = $SVG_generator.$_mass_mom_inertia ! Destination object
+   receiver.priolist (    1 ,       $COM_mass_mom_inertia         ) = '$COM_generator_mass_mom_inertia' ! Sender priority list
+
+   receiver.ref (                   $COM_length                   ) = $SVG_generator.$_length ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_generator_length' ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
+
+   receiver.ref (                   $COM_K_P                      ) = $SVG_generator.$_K_P    ! Destination object
+   receiver.priolist (    1 ,       $COM_K_P                      ) = '$COM_generator_K_P'    ! Sender priority list
+
+   receiver.ref (                   $COM_K_I                      ) = $SVG_generator.$_K_I    ! Destination object
+   receiver.priolist (    1 ,       $COM_K_I                      ) = '$COM_generator_K_I'    ! Sender priority list
+
+receivergroup.end (                 $RG_generator                 )                           ! $RG_generator
+
+receivergroup.begin (               $RG_housing                   )                           ! $RG_housing
+   receiver.ref (                   $COM_length                   ) = $SVG_housing.$_length   ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_length_housing'   ! Sender priority list
+
+   receiver.ref (                   $COM_width                    ) = $SVG_housing.$_width    ! Destination object
+   receiver.priolist (    1 ,       $COM_width                    ) = '$COM_width_housing'    ! Sender priority list
+
+receivergroup.end (                 $RG_housing                   )                           ! $RG_housing
+
+receivergroup.begin (               $RG_bed_plate                 )                           ! $RG_bed_plate
+   receiver.ref (                   $COM_length                   ) = $SVG_bed_plate.$_length ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_length_bed_plate' ! Sender priority list
+
+   receiver.ref (                   $COM_width                    ) = $SVG_bed_plate.$_width  ! Destination object
+   receiver.priolist (    1 ,       $COM_width                    ) = '$COM_width_bed_plate'  ! Sender priority list
+
+   receiver.ref (                   $COM_z0                       ) = $SVG_bed_plate.$_z0     ! Destination object
+   receiver.priolist (    1 ,       $COM_z0                       ) = '$COM_z0_bed_plate'     ! Sender priority list
+
+receivergroup.end (                 $RG_bed_plate                 )                           ! $RG_bed_plate
 
 
 ! Overwritten substructure values

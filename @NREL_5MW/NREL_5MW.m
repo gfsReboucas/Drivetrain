@@ -40,8 +40,8 @@ classdef NREL_5MW < Drivetrain
                      'm_n3', 1.0, 'b_3' , 1.0, 'd_3' , 1.0, 'L_3' , 1.0, ...
                      'J_R' , 1.0, 'J_G' , 1.0, ...
                      'd_S' , 1.0, 'L_S' , 1.0, ...
-                     'dynamic_model', @Kahraman_94};
-%                      'dynamic_model', @Lin_Parker_99};
+                     'dynamic_model', @Lin_Parker_99};
+%                      'dynamic_model', @Kahraman_94};
 %                      'dynamic_model', @Dynamic_Formulation};
             
             gamma = scaling_factor.process_varargin(gamma, varargin);

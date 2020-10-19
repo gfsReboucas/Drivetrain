@@ -1,0 +1,777 @@
+!file.version=3.4! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = 'standalone/main_model'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Substructures
+!**********************************************************************
+substr.file (                       $S_reference                  ) = 'NREL_5MW.par.spck'     ! Filename
+substr.id (                         $S_reference                  ) = '1'                     ! Substructure Id
+substr.attr.2d.pos.x (              $S_reference                  ) = -1.50000000000000000E+02
+substr.attr.2d.pos.y (              $S_reference                  ) = -1.00000000000000000E+02
+substr.attr.2d.width (              $S_reference                  ) = 3.00000000000000000E+02
+substr.attr.2d.height (             $S_reference                  ) = 2.00000000000000000E+02
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = 7.51039600372314453E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -7.86534786224365234E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 5.58263397216796875E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 4.95588064193725586E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 1.44202709197998047E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 2.32620894908905029E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 8.24309170246124268E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.56029583886265755E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.56029577255249023E+01 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = $_simulation_time       ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
+slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvar.str (                        $_simulation_time             ) = '1000 s'                ! Definition
+
+subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
+   subvar.str (                     $_gamma_Power                 ) = '1.0'                   ! $SVG_loading.$_gamma_Power, Definition
+
+   subvar.str (                     $_gamma_Speed                 ) = '1.0'                   ! $SVG_loading.$_gamma_Speed, Definition
+
+   subvar.str (                     $_gamma_Torque                ) = '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed' ! $SVG_loading.$_gamma_Torque, Definition
+
+   subvar.str (                     $_gamma_Force                 ) = 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed' ! $SVG_loading.$_gamma_Force, Definition
+
+   subvar.str (                     $_rated_power_ref             ) = '5.0e3 kW'              ! $SVG_loading.$_rated_power_ref, Definition
+
+   subvar.str (                     $_rated_power                 ) = '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power' ! $SVG_loading.$_rated_power, Definition
+
+   subvar.str (                     $_inertia_flag                ) = '1'                     ! $SVG_loading.$_inertia_flag, Definition
+   subvar.discr.desc (    1 ,       $_inertia_flag                ) = 'yes (value)'           ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_inertia_flag                ) = 'no (unit)'             ! Description of discrete values
+   subvar.discr.str (     1 ,       $_inertia_flag                ) = '1'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_inertia_flag                ) = '0'                     ! Discrete values
+
+   subvar.str (                     $_base_excitation_flag        ) = '1'                     ! $SVG_loading.$_base_excitation_flag, Definition
+   subvar.discr.desc (    1 ,       $_base_excitation_flag        ) = 'ON'                    ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_base_excitation_flag        ) = 'OFF'                   ! Description of discrete values
+   subvar.discr.str (     1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_base_excitation_flag        ) = '0'                     ! Discrete values
+
+   subvar.str (                     $_generator_flag              ) = '2'                     ! $SVG_loading.$_generator_flag, Definition
+   subvar.discr.desc (    1 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
+   subvar.discr.str (     1 ,       $_generator_flag              ) = '1'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_generator_flag              ) = '2'                     ! Discrete values
+   subvar.discr.str (     3 ,       $_generator_flag              ) = '3'                     ! Discrete values
+
+   subvar.str (                     $_mesh_flag                   ) = '225'                   ! $SVG_loading.$_mesh_flag, Definition
+   subvar.discr.desc (    1 ,       $_mesh_flag                   ) = 'advanced'              ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_mesh_flag                   ) = 'basic'                 ! Description of discrete values
+   subvar.discr.str (     1 ,       $_mesh_flag                   ) = '225'                   ! Discrete values
+   subvar.discr.str (     2 ,       $_mesh_flag                   ) = '204'                   ! Discrete values
+
+subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
+
+subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
+   subvar.str (                     $_gamma_m                     ) = '1.0'                   ! $SVG_rotor.$_gamma_m, Definition
+
+   subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_rotor.$_gamma_J, Definition
+
+   subvar.str (                     $_mass_ref                    ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_rotor.$_mass_ref, Definition
+
+   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_rotor.$_mass_mom_inertia_ref, Definition
+
+   subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_rotor.$_length_ref, Definition
+
+   subvar.str (                     $_mass                        ) = '$SVG_rotor.$_mass_ref*$SVG_rotor.$_gamma_m' ! $SVG_rotor.$_mass, Definition
+
+   subvar.str (                     $_mass_mom_inertia            ) = '$SVG_rotor.$_mass_mom_inertia_ref*$SVG_rotor.$_gamma_J' ! $SVG_rotor.$_mass_mom_inertia, Definition
+
+   subvar.str (                     $_length                      ) = '$SVG_rotor.$_length_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_rotor.$_length, Definition
+
+   subvar.str (                     $_rated_speed                 ) = '12.1 rpm'              ! $SVG_rotor.$_rated_speed, Definition
+
+subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor
+
+subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
+   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_main_shaft.$_gamma_L, Definition
+
+   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_main_shaft.$_gamma_d, Definition
+
+   subvar.str (                     $_length_ref                  ) = '2000.0 mm'             ! $SVG_main_shaft.$_length_ref, Definition
+
+   subvar.str (                     $_diameter_ref                ) = '700.0 mm'              ! $SVG_main_shaft.$_diameter_ref, Definition
+
+   subvar.str (                     $_length                      ) = '$SVG_main_shaft.$_length_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_main_shaft.$_length, Definition
+
+   subvar.str (                     $_diameter                    ) = '$SVG_main_shaft.$_diameter_ref*$SVG_main_shaft.$_gamma_d' ! $SVG_main_shaft.$_diameter, Definition
+
+subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
+
+subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
+   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_01.$_gamma_mn, Definition
+
+   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_b, Definition
+
+   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_L, Definition
+
+   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_d, Definition
+
+   subvar.str (                     $_k_SP                        ) = '1.0e9 N/m'             ! $SVG_stage_01.$_k_SP, Definition
+
+   subvar.str (                     $_k_RP                        ) = '1.0e9 N/m'             ! $SVG_stage_01.$_k_RP, Definition
+
+   subvar.str (                     $_normal_module_ref           ) = '45 mm'                 ! $SVG_stage_01.$_normal_module_ref, Definition
+
+   subvar.str (                     $_center_distance_ref         ) = '863.0 mm'              ! $SVG_stage_01.$_center_distance_ref, Definition
+
+   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_01.$_normal_backlash_ref, Definition
+
+   subvar.str (                     $_normal_module               ) = '$SVG_stage_01.$_normal_module_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_normal_module, Definition
+
+   subvar.str (                     $_center_distance             ) = '$SVG_stage_01.$_center_distance_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_center_distance, Definition
+
+   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_01.$_normal_backlash_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_normal_backlash, Definition
+
+   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
+      subvar.str (                  $_flank_width_ref             ) = '491.0 mm'              ! $SVG_stage_01.$SVG_sun.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_sun.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_sun.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_sun.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_sun.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_sun.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
+   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
+      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_01.$SVG_sun.$_flank_width' ! $SVG_stage_01.$SVG_planet.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_planet.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_planet.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_planet.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_planet.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_planet.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
+   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
+      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_01.$SVG_sun.$_flank_width' ! $SVG_stage_01.$SVG_ring.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_ring.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_ring.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_ring.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_ring.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_ring.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+      subvar.str (                  $_length_ref                  ) = '500.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_length_ref, Definition
+
+      subvar.str (                  $_diameter_ref                ) = '533.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_diameter_ref, Definition
+
+      subvar.str (                  $_length                      ) = '$SVG_stage_01.$SVG_shaft.$_length_ref*$SVG_stage_01.$_gamma_L' ! $SVG_stage_01.$SVG_shaft.$_length, Definition
+
+      subvar.str (                  $_diameter                    ) = '$SVG_stage_01.$SVG_shaft.$_diameter_ref*$SVG_stage_01.$_gamma_d' ! $SVG_stage_01.$SVG_shaft.$_diameter, Definition
+
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
+subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
+
+subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
+   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_02.$_gamma_mn, Definition
+
+   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_b, Definition
+
+   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_L, Definition
+
+   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_d, Definition
+
+   subvar.str (                     $_k_SP                        ) = '1.0e9 N/m'             ! $SVG_stage_02.$_k_SP, Definition
+
+   subvar.str (                     $_k_RP                        ) = '1.0e9 N/m'             ! $SVG_stage_02.$_k_RP, Definition
+
+   subvar.str (                     $_normal_module_ref           ) = '21.0 mm'               ! $SVG_stage_02.$_normal_module_ref, Definition
+
+   subvar.str (                     $_center_distance_ref         ) = '584.0 mm'              ! $SVG_stage_02.$_center_distance_ref, Definition
+
+   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_02.$_normal_backlash_ref, Definition
+
+   subvar.str (                     $_normal_module               ) = '$SVG_stage_02.$_normal_module_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_normal_module, Definition
+
+   subvar.str (                     $_center_distance             ) = '$SVG_stage_02.$_center_distance_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_center_distance, Definition
+
+   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_02.$_normal_backlash_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_normal_backlash, Definition
+
+   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
+      subvar.str (                  $_flank_width_ref             ) = '550.0 mm'              ! $SVG_stage_02.$SVG_sun.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '200.0 mm'              ! $SVG_stage_02.$SVG_sun.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_sun.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_sun.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_sun.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_sun.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
+   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
+      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_02.$SVG_sun.$_flank_width' ! $SVG_stage_02.$SVG_planet.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '380.0 mm'              ! $SVG_stage_02.$SVG_planet.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_planet.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_planet.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_planet.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_planet.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
+   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
+      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_02.$SVG_sun.$_flank_width' ! $SVG_stage_02.$SVG_ring.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_02.$SVG_ring.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_ring.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_ring.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_ring.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_ring.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
+      subvar.str (                  $_length_ref                  ) = '666.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_length_ref, Definition
+
+      subvar.str (                  $_diameter_ref                ) = '333.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_diameter_ref, Definition
+
+      subvar.str (                  $_length                      ) = '$SVG_stage_02.$SVG_shaft.$_length_ref*$SVG_stage_02.$_gamma_L' ! $SVG_stage_02.$SVG_shaft.$_length, Definition
+
+      subvar.str (                  $_diameter                    ) = '$SVG_stage_02.$SVG_shaft.$_diameter_ref*$SVG_stage_02.$_gamma_d' ! $SVG_stage_02.$SVG_shaft.$_diameter, Definition
+
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
+subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
+
+subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
+   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_03.$_gamma_mn, Definition
+
+   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_b, Definition
+
+   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_L, Definition
+
+   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_d, Definition
+
+   subvar.str (                     $_normal_module_ref           ) = '14 mm'                 ! $SVG_stage_03.$_normal_module_ref, Definition
+
+   subvar.str (                     $_center_distance_ref         ) = '861.0 mm'              ! $SVG_stage_03.$_center_distance_ref, Definition
+
+   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_03.$_normal_backlash_ref, Definition
+
+   subvar.str (                     $_normal_module               ) = '$SVG_stage_03.$_normal_module_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_normal_module, Definition
+
+   subvar.str (                     $_center_distance             ) = '$SVG_stage_03.$_center_distance_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_center_distance, Definition
+
+   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_03.$_normal_backlash_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_normal_backlash, Definition
+
+   subvar.str (                     $_k_PW                        ) = '1.0e9 N/m'             ! $SVG_stage_03.$_k_PW, Definition
+
+   subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
+      subvar.str (                  $_flank_width_ref             ) = '360.0 mm'              ! $SVG_stage_03.$SVG_pinion.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '200.0 mm'              ! $SVG_stage_03.$SVG_pinion.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_03.$SVG_pinion.$_flank_width_ref*$SVG_stage_03.$_gamma_b' ! $SVG_stage_03.$SVG_pinion.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_03.$SVG_pinion.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$SVG_pinion.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
+   subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
+      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_03.$SVG_pinion.$_flank_width' ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref, Definition
+
+      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_03.$SVG_wheel.$_bore_diameter_ref, Definition
+
+      subvar.str (                  $_flank_width                 ) = '$SVG_stage_03.$SVG_wheel.$_flank_width_ref*$SVG_stage_03.$_gamma_b' ! $SVG_stage_03.$SVG_wheel.$_flank_width, Definition
+
+      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_03.$SVG_wheel.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$SVG_wheel.$_bore_diameter, Definition
+
+   subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
+   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
+      subvar.str (                  $_length_ref                  ) = '1000.0 mm'             ! $SVG_stage_03.$SVG_shaft.$_length_ref, Definition
+
+      subvar.str (                  $_diameter_ref                ) = '333.0 mm'              ! $SVG_stage_03.$SVG_shaft.$_diameter_ref, Definition
+
+      subvar.str (                  $_length                      ) = '$SVG_stage_03.$SVG_shaft.$_length_ref*$SVG_stage_03.$_gamma_L' ! $SVG_stage_03.$SVG_shaft.$_length, Definition
+
+      subvar.str (                  $_diameter                    ) = '$SVG_stage_03.$SVG_shaft.$_diameter_ref*$SVG_stage_03.$_gamma_d' ! $SVG_stage_03.$SVG_shaft.$_diameter, Definition
+
+   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
+subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
+
+subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
+   subvar.str (                     $_gamma_m                     ) = '1.0'                   ! $SVG_generator.$_gamma_m, Definition
+
+   subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_generator.$_gamma_J, Definition
+
+   subvar.str (                     $_mass_ref                    ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n1900.0 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_generator.$_mass_ref, Definition
+
+   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n534.116 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_generator.$_mass_mom_inertia_ref, Definition
+
+   subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_generator.$_length_ref, Definition
+
+   subvar.str (                     $_K_P_ref                     ) = '2200.0'                ! $SVG_generator.$_K_P_ref, Definition
+   subvar.desc (          1 ,       $_K_P_ref                     ) = 'Proportional gain'     ! Description
+
+   subvar.str (                     $_K_I_ref                     ) = '220.0'                 ! $SVG_generator.$_K_I_ref, Definition
+   subvar.desc (          1 ,       $_K_I_ref                     ) = 'Integral gain'         ! Description
+
+   subvar.str (                     $_mass                        ) = '$SVG_generator.$_mass_ref*$SVG_generator.$_gamma_m' ! $SVG_generator.$_mass, Definition
+
+   subvar.str (                     $_mass_mom_inertia            ) = '$SVG_generator.$_mass_mom_inertia_ref*$SVG_generator.$_gamma_J' ! $SVG_generator.$_mass_mom_inertia, Definition
+
+   subvar.str (                     $_length                      ) = '$SVG_generator.$_length_ref*$SVG_stage_03.$_gamma_L' ! $SVG_generator.$_length, Definition
+
+   subvar.str (                     $_K_P                         ) = '$SVG_generator.$_K_P_ref*$SVG_loading.$_gamma_Torque' ! $SVG_generator.$_K_P, Definition
+   subvar.desc (          1 ,       $_K_P                         ) = 'Proportional gain'     ! Description
+
+   subvar.str (                     $_K_I                         ) = '$SVG_generator.$_K_I_ref*$SVG_loading.$_gamma_Torque' ! $SVG_generator.$_K_I, Definition
+   subvar.desc (          1 ,       $_K_I                         ) = 'Integral gain'         ! Description
+
+subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
+
+subvargroup.begin (                 $SVG_housing                  )                           ! $SVG_housing
+   subvar.str (                     $_length_ref                  ) = '4500.0 mm'             ! $SVG_housing.$_length_ref, Definition
+
+   subvar.str (                     $_width_ref                   ) = '3000.0 mm'             ! $SVG_housing.$_width_ref, Definition
+
+   subvar.str (                     $_length                      ) = '$SVG_housing.$_length_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_housing.$_length, Definition
+
+   subvar.str (                     $_width                       ) = '$SVG_housing.$_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_housing.$_width, Definition
+
+subvargroup.end (                   $SVG_housing                  )                           ! $SVG_housing
+
+subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
+   subvar.str (                     $_length_ref                  ) = '8000.0 mm'             ! $SVG_bed_plate.$_length_ref, Definition
+
+   subvar.str (                     $_width_ref                   ) = '4000.0 mm'             ! $SVG_bed_plate.$_width_ref, Definition
+
+   subvar.str (                     $_z0_ref                      ) = '1750 mm'               ! $SVG_bed_plate.$_z0_ref, Definition
+
+   subvar.str (                     $_length                      ) = '$SVG_bed_plate.$_length_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_length, Definition
+
+   subvar.str (                     $_width                       ) = '$SVG_bed_plate.$_width_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_width, Definition
+
+   subvar.str (                     $_z0                          ) = '$SVG_bed_plate.$_z0_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_z0, Definition
+
+subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -9.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -1.00000000000000000E+01
+refsys.attr.2d.width (              $R_Isys                       ) = 2.40000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 2.20000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+!**********************************************************************
+! Senders
+!**********************************************************************
+sendergroup.begin (                 $SG_loading                   )                           ! $SG_loading
+   sender.ref (                     $COM_inertia_flag             ) = $SVG_loading.$_inertia_flag ! Source object
+
+   sender.ref (                     $COM_rated_power              ) = $SVG_loading.$_rated_power ! Source object
+
+   sender.ref (                     $COM_base_excitation_flag     ) = $SVG_loading.$_base_excitation_flag ! Source object
+   sender.alias (                   $COM_base_excitation_flag     ) = '$COM_flag_base_excitation' ! Alias
+
+   sender.ref (                     $COM_generator_flag           ) = $SVG_loading.$_generator_flag ! Source object
+
+   sender.ref (                     $COM_gamma_Torque             ) = $SVG_loading.$_gamma_Torque ! Source object
+
+   sender.ref (                     $COM_Force                    ) = $SVG_loading.$_gamma_Force ! Source object
+
+   sender.ref (                     $COM_mesh_flag                ) = $SVG_loading.$_mesh_flag ! Source object
+
+sendergroup.end (                   $SG_loading                   )                           ! $SG_loading
+
+sendergroup.begin (                 $SG_rotor                     )                           ! $SG_rotor
+   sender.ref (                     $COM_mass                     ) = $SVG_rotor.$_mass       ! Source object
+   sender.alias (                   $COM_mass                     ) = '$COM_rotor_mass'       ! Alias
+
+   sender.ref (                     $COM_mass_mom_inertia         ) = $SVG_rotor.$_mass_mom_inertia ! Source object
+   sender.alias (                   $COM_mass_mom_inertia         ) = '$COM_rotor_mass_mom_inertia' ! Alias
+
+   sender.ref (                     $COM_length                   ) = $SVG_rotor.$_length     ! Source object
+   sender.alias (                   $COM_length                   ) = '$COM_length_rotor'     ! Alias
+
+sendergroup.end (                   $SG_rotor                     )                           ! $SG_rotor
+
+sendergroup.begin (                 $SG_main_shaft                )                           ! $SG_main_shaft
+   sender.ref (                     $COM_length                   ) = $SVG_main_shaft.$_length ! Source object
+   sender.alias (                   $COM_length                   ) = '$COM_main_shaft_length' ! Alias
+
+   sender.ref (                     $COM_diameter                 ) = $SVG_main_shaft.$_diameter ! Source object
+   sender.alias (                   $COM_diameter                 ) = '$COM_main_shaft_diameter' ! Alias
+
+sendergroup.end (                   $SG_main_shaft                )                           ! $SG_main_shaft
+
+sendergroup.begin (                 $SG_stage_01                  )                           ! $SG_stage_01
+   sender.ref (                     $COM_normal_module            ) = $SVG_stage_01.$_normal_module ! Source object
+   sender.alias (                   $COM_normal_module            ) = '$COM_stage_01_normal_module' ! Alias
+
+   sender.ref (                     $COM_center_distance          ) = $SVG_stage_01.$_center_distance ! Source object
+   sender.alias (                   $COM_center_distance          ) = '$COM_stage_01_center_distance' ! Alias
+
+   sender.ref (                     $COM_normal_backlash          ) = $SVG_stage_01.$_normal_backlash ! Source object
+   sender.alias (                   $COM_normal_backlash          ) = '$COM_stage_01_normal_backlash' ! Alias
+
+   sender.ref (                     $COM_k_SP                     ) = $SVG_stage_01.$_k_SP    ! Source object
+   sender.alias (                   $COM_k_SP                     ) = '$COM_stage_01_k_SP'    ! Alias
+
+   sender.ref (                     $COM_k_RP                     ) = $SVG_stage_01.$_k_RP    ! Source object
+   sender.alias (                   $COM_k_RP                     ) = '$COM_stage_01_k_RP'    ! Alias
+
+   sendergroup.begin (              $SG_sun                       )                           ! $SG_stage_01.$SG_sun
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_01.$SVG_sun.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_01_sun_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_01.$SVG_sun.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_01_sun_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_sun                       )                           ! $SG_stage_01.$SG_sun
+   sendergroup.begin (              $SG_planet                    )                           ! $SG_stage_01.$SG_planet
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_01.$SVG_planet.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_01_planet_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_01.$SVG_planet.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_01_planet_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_planet                    )                           ! $SG_stage_01.$SG_planet
+   sendergroup.begin (              $SG_ring                      )                           ! $SG_stage_01.$SG_ring
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_01.$SVG_ring.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_01_ring_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_01.$SVG_ring.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_01_ring_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_ring                      )                           ! $SG_stage_01.$SG_ring
+   sendergroup.begin (              $SG_shaft                     )                           ! $SG_stage_01.$SG_shaft
+      sender.ref (                  $COM_length                   ) = $SVG_stage_01.$SVG_shaft.$_length ! Source object
+      sender.alias (                $COM_length                   ) = '$COM_stage_01_shaft_length' ! Alias
+
+      sender.ref (                  $COM_diameter                 ) = $SVG_stage_01.$SVG_shaft.$_diameter ! Source object
+      sender.alias (                $COM_diameter                 ) = '$COM_stage_01_shaft_diameter' ! Alias
+
+   sendergroup.end (                $SG_shaft                     )                           ! $SG_stage_01.$SG_shaft
+sendergroup.end (                   $SG_stage_01                  )                           ! $SG_stage_01
+
+sendergroup.begin (                 $SG_stage_02                  )                           ! $SG_stage_02
+   sender.ref (                     $COM_normal_module            ) = $SVG_stage_02.$_normal_module ! Source object
+   sender.alias (                   $COM_normal_module            ) = '$COM_stage_02_normal_module' ! Alias
+
+   sender.ref (                     $COM_center_distance          ) = $SVG_stage_02.$_center_distance ! Source object
+   sender.alias (                   $COM_center_distance          ) = '$COM_stage_02_center_distance' ! Alias
+
+   sender.ref (                     $COM_normal_backlash          ) = $SVG_stage_02.$_normal_backlash ! Source object
+   sender.alias (                   $COM_normal_backlash          ) = '$COM_stage_02_normal_backlash' ! Alias
+
+   sender.ref (                     $COM_k_SP                     ) = $SVG_stage_02.$_k_SP    ! Source object
+   sender.alias (                   $COM_k_SP                     ) = '$COM_stage_02_k_SP'    ! Alias
+
+   sender.ref (                     $COM_k_RP                     ) = $SVG_stage_02.$_k_RP    ! Source object
+   sender.alias (                   $COM_k_RP                     ) = '$COM_stage_02_k_RP'    ! Alias
+
+   sendergroup.begin (              $SG_sun                       )                           ! $SG_stage_02.$SG_sun
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_02.$SVG_sun.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_02_sun_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_02.$SVG_sun.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_02_sun_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_sun                       )                           ! $SG_stage_02.$SG_sun
+   sendergroup.begin (              $SG_planet                    )                           ! $SG_stage_02.$SG_planet
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_02.$SVG_planet.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_02_planet_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_02.$SVG_planet.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_02_planet_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_planet                    )                           ! $SG_stage_02.$SG_planet
+   sendergroup.begin (              $SG_ring                      )                           ! $SG_stage_02.$SG_ring
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_02.$SVG_ring.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_02_ring_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_02.$SVG_ring.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_02_ring_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_ring                      )                           ! $SG_stage_02.$SG_ring
+   sendergroup.begin (              $SG_shaft                     )                           ! $SG_stage_02.$SG_shaft
+      sender.ref (                  $COM_length                   ) = $SVG_stage_02.$SVG_shaft.$_length ! Source object
+      sender.alias (                $COM_length                   ) = '$COM_stage_02_shaft_length' ! Alias
+
+      sender.ref (                  $COM_diameter                 ) = $SVG_stage_02.$SVG_shaft.$_diameter ! Source object
+      sender.alias (                $COM_diameter                 ) = '$COM_stage_02_shaft_diameter' ! Alias
+
+   sendergroup.end (                $SG_shaft                     )                           ! $SG_stage_02.$SG_shaft
+sendergroup.end (                   $SG_stage_02                  )                           ! $SG_stage_02
+
+sendergroup.begin (                 $SG_stage_03                  )                           ! $SG_stage_03
+   sender.ref (                     $COM_normal_module            ) = $SVG_stage_03.$_normal_module ! Source object
+   sender.alias (                   $COM_normal_module            ) = '$COM_stage_03_normal_module' ! Alias
+
+   sender.ref (                     $COM_center_distance          ) = $SVG_stage_03.$_center_distance ! Source object
+   sender.alias (                   $COM_center_distance          ) = '$COM_stage_03_center_distance' ! Alias
+
+   sender.ref (                     $COM_normal_backlash          ) = $SVG_stage_03.$_normal_backlash ! Source object
+   sender.alias (                   $COM_normal_backlash          ) = '$COM_stage_03_normal_backlash' ! Alias
+
+   sender.ref (                     $COM_k_PW                     ) = $SVG_stage_03.$_k_PW    ! Source object
+   sender.alias (                   $COM_k_PW                     ) = '$COM_stage_03_k_PW'    ! Alias
+
+   sendergroup.begin (              $SG_pinion                    )                           ! $SG_stage_03.$SG_pinion
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_03.$SVG_pinion.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_03_pinion_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_03.$SVG_pinion.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_03_pinion_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_pinion                    )                           ! $SG_stage_03.$SG_pinion
+   sendergroup.begin (              $SG_wheel                     )                           ! $SG_stage_03.$SG_wheel
+      sender.ref (                  $COM_flank_width              ) = $SVG_stage_03.$SVG_wheel.$_flank_width ! Source object
+      sender.alias (                $COM_flank_width              ) = '$COM_stage_03_wheel_flank_width' ! Alias
+
+      sender.ref (                  $COM_bore_diameter            ) = $SVG_stage_03.$SVG_wheel.$_bore_diameter ! Source object
+      sender.alias (                $COM_bore_diameter            ) = '$COM_stage_03_wheel_bore_diameter' ! Alias
+
+   sendergroup.end (                $SG_wheel                     )                           ! $SG_stage_03.$SG_wheel
+   sendergroup.begin (              $SG_shaft                     )                           ! $SG_stage_03.$SG_shaft
+      sender.ref (                  $COM_length                   ) = $SVG_stage_03.$SVG_shaft.$_length ! Source object
+      sender.alias (                $COM_length                   ) = '$COM_stage_03_shaft_length' ! Alias
+
+      sender.ref (                  $COM_diameter                 ) = $SVG_stage_03.$SVG_shaft.$_diameter ! Source object
+      sender.alias (                $COM_diameter                 ) = '$COM_stage_03_shaft_diameter' ! Alias
+
+   sendergroup.end (                $SG_shaft                     )                           ! $SG_stage_03.$SG_shaft
+sendergroup.end (                   $SG_stage_03                  )                           ! $SG_stage_03
+
+sendergroup.begin (                 $SG_generator                 )                           ! $SG_generator
+   sender.ref (                     $COM_mass                     ) = $SVG_generator.$_mass   ! Source object
+   sender.alias (                   $COM_mass                     ) = '$COM_generator_mass'   ! Alias
+
+   sender.ref (                     $COM_mass_mom_inertia         ) = $SVG_generator.$_mass_mom_inertia ! Source object
+   sender.alias (                   $COM_mass_mom_inertia         ) = '$COM_generator_mass_mom_inertia' ! Alias
+
+   sender.ref (                     $COM_length                   ) = $SVG_generator.$_length ! Source object
+   sender.alias (                   $COM_length                   ) = '$COM_generator_length' ! Alias
+
+   sender.ref (                     $COM_K_P                      ) = $SVG_generator.$_K_P    ! Source object
+   sender.alias (                   $COM_K_P                      ) = '$COM_generator_K_P'    ! Alias
+
+   sender.ref (                     $COM_K_I                      ) = $SVG_generator.$_K_I    ! Source object
+   sender.alias (                   $COM_K_I                      ) = '$COM_generator_K_I'    ! Alias
+
+sendergroup.end (                   $SG_generator                 )                           ! $SG_generator
+
+sendergroup.begin (                 $SG_housing                   )                           ! $SG_housing
+   sender.ref (                     $COM_length                   ) = $SVG_housing.$_length   ! Source object
+   sender.alias (                   $COM_length                   ) = '$COM_length_housing'   ! Alias
+
+   sender.ref (                     $COM_width                    ) = $SVG_housing.$_width    ! Source object
+   sender.alias (                   $COM_width                    ) = '$COM_width_housing'    ! Alias
+
+sendergroup.end (                   $SG_housing                   )                           ! $SG_housing
+
+sendergroup.begin (                 $SG_bed_plate                 )                           ! $SG_bed_plate
+   sender.ref (                     $COM_length                   ) = $SVG_bed_plate.$_length ! Source object
+   sender.alias (                   $COM_length                   ) = '$COM_length_bed_plate' ! Alias
+
+   sender.ref (                     $COM_width                    ) = $SVG_bed_plate.$_width  ! Source object
+   sender.alias (                   $COM_width                    ) = '$COM_width_bed_plate'  ! Alias
+
+   sender.ref (                     $COM_z0                       ) = $SVG_bed_plate.$_z0     ! Source object
+   sender.alias (                   $COM_z0                       ) = '$COM_z0_bed_plate'     ! Alias
+
+sendergroup.end (                   $SG_bed_plate                 )                           ! $SG_bed_plate
+
+                                                                                                                                                                    

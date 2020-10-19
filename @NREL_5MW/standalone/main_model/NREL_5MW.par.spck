@@ -202,63 +202,6 @@ slv.compat.solver (                 $SLV_SolverSettings           ) = 0         
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
 !**********************************************************************
-! SubVars
-!**********************************************************************
-subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
-   subvar.str (                     $_normal_module               ) = '1.0'                   ! $SVG_stage_01.$_normal_module, Definition
-
-   subvar.str (                     $_flank_width                 ) = '1.0'                   ! $SVG_stage_01.$_flank_width, Definition
-
-   subvar.str (                     $_diameter                    ) = '1.0'                   ! $SVG_stage_01.$_diameter, Definition
-
-   subvar.str (                     $_length                      ) = '1.0'                   ! $SVG_stage_01.$_length, Definition
-
-subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
-
-subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
-   subvar.str (                     $_normal_module               ) = '1.0'                   ! $SVG_stage_02.$_normal_module, Definition
-
-   subvar.str (                     $_flank_width                 ) = '1.0'                   ! $SVG_stage_02.$_flank_width, Definition
-
-   subvar.str (                     $_diameter                    ) = '1.0'                   ! $SVG_stage_02.$_diameter, Definition
-
-   subvar.str (                     $_length                      ) = '1.0'                   ! $SVG_stage_02.$_length, Definition
-
-subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
-
-subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
-   subvar.str (                     $_normal_module               ) = '1.0'                   ! $SVG_stage_03.$_normal_module, Definition
-
-   subvar.str (                     $_flank_width                 ) = '1.0'                   ! $SVG_stage_03.$_flank_width, Definition
-
-   subvar.str (                     $_diameter                    ) = '1.0'                   ! $SVG_stage_03.$_diameter, Definition
-
-   subvar.str (                     $_length                      ) = '1.0'                   ! $SVG_stage_03.$_length, Definition
-
-subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
-
-subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-   subvar.str (                     $_mass                        ) = '1.0'                   ! $SVG_rotor.$_mass, Definition
-
-   subvar.str (                     $_mass_mom_inertia            ) = '1.0'                   ! $SVG_rotor.$_mass_mom_inertia, Definition
-
-subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor
-
-subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-   subvar.str (                     $_mass                        ) = '1.0'                   ! $SVG_generator.$_mass, Definition
-
-   subvar.str (                     $_mass_mom_inertia            ) = '1.0'                   ! $SVG_generator.$_mass_mom_inertia, Definition
-
-subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
-
-subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
-   subvar.str (                     $_diameter                    ) = '1.0'                   ! $SVG_main_shaft.$_diameter, Definition
-
-   subvar.str (                     $_length                      ) = '1.0'                   ! $SVG_main_shaft.$_length, Definition
-
-subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
-
-!**********************************************************************
 ! Reference systems
 !**********************************************************************
 refsys.type (                       $R_Isys                       ) = 1                       ! Type
@@ -283,17 +226,5 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 ! Overwritten substructure values
 view.fclip.value (                  $S_TPL.$V_WorkingView         ) = 9.99999977648258209E-03 ! Front clipping plane value
 view.bclip.value (                  $S_TPL.$V_WorkingView         ) = 5.31139945983886719E+00 ! Back clipping plane value
-
-subvar.str (                        $S_TPL.$SVG_rotor.$_mass      ) = '$SVG_rotor.$_mass*\n(\nIF($S_TPL.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}\n)' ! $S_TPL.$SVG_rotor.$_mass, Definition
-
-subvar.str (                        $S_TPL.$SVG_rotor.$_mass_mom_inertia) = '$SVG_rotor.$_mass_mom_inertia*\n(IF($S_TPL.$_inertia_flag == 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n})' ! $S_TPL.$SVG_rotor.$_mass_mom_inertia, Definition
-
-subvar.str (                        $S_TPL.$SVG_main_shaft.$_length) = '$SVG_main_shaft.$_length*2000.0 mm' ! $S_TPL.$SVG_main_shaft.$_length, Definition
-
-subvar.str (                        $S_TPL.$SVG_main_shaft.$_diameter) = '$SVG_main_shaft.$_length*700.0 mm' ! $S_TPL.$SVG_main_shaft.$_diameter, Definition
-
-subvar.str (                        $S_TPL.$SVG_stage_01.$_normal_module) = '$SVG_stage_01.$_normal_module*45 mm' ! $S_TPL.$SVG_stage_01.$_normal_module, Definition
-
-subvar.str (                        $S_TPL.$SVG_stage_01.$_center_distance) = '$SVG_stage_01.$_normal_module*863.0 mm' ! $S_TPL.$SVG_stage_01.$_center_distance, Definition
 
                                        
