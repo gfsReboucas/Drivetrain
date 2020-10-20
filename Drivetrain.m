@@ -371,7 +371,8 @@ classdef (Abstract) Drivetrain
             % Drivetrain object. The resonances can be normalized or not.
             %
 
-            default = {'N'        , calc.n_DOF(end), ...
+            fn = obj.f_n;       N_fn = numel(fn);
+            default = {'N'        , N_fn, ...
                        'normalize', false};
 
             default = scaling_factor.process_varargin(default, varargin);
@@ -379,10 +380,7 @@ classdef (Abstract) Drivetrain
             N = default.N;
             normalize = default.normalize;
             
-            fn = obj.f_n;
             modeShape = obj.mode_shape;
-            
-            N_fn = numel(fn);
             
             if(N <= 0)
                 error('N = %d < 0. It should be positive and smaller than %d.', N, N_fn);
@@ -568,7 +566,7 @@ classdef (Abstract) Drivetrain
             end
             
             gamma_Max = ones(size(gamma_0));
-            gamma_min = gamma_Max*1.0e-6;
+            gamma_min = gamma_Max*eps;
             
             fun_asp = @(x)obj_tmp.scaled_safety_factor_stage(x, idx, SGref);
             fun_min = @(x)(norm(fun_asp(x))^2);
@@ -798,8 +796,8 @@ classdef (Abstract) Drivetrain
             
             % Input scaling factors:
             gamma_0('P') = gamma_P;
-            gamma_0('n') = default.n_scale/obj_ref.n_rotor;
-            gamma_T = gamma_0('P')/gamma_0('n');
+            gamma_0('n_R') = default.n_scale/obj_ref.n_rotor;
+            gamma_T = gamma_0('P')/gamma_0('n_R');
             
             % Scaling factors from dimensional analysis:
             gamma_length = nthroot(gamma_T,     3.0);
@@ -837,7 +835,7 @@ classdef (Abstract) Drivetrain
 
                     [gm_val_1(idx, :), res_1(idx, :)] = ...
                         obj_ref.scaled_version_stage(idx, gamma_idx, aspect_1, gamma_0('P'), ...
-                                                                               gamma_0('n'));
+                                                                               gamma_0('n_R'));
                 end
                 
             elseif(any(aspect_set == 'DA'))
@@ -876,7 +874,7 @@ classdef (Abstract) Drivetrain
                     jdx = 2*idx + (-1:0);
                     [gm_val_2(jdx, :), res_2(jdx, :)] = ...
                         obj_ref.scaled_version_stage(idx, gamma_idx, aspect_2, gamma_0('P'), ...
-                                                                               gamma_0('n'));
+                                                                               gamma_0('n_R'));
                 end
 
             elseif(any(aspect_set == 'DA'))
@@ -927,12 +925,16 @@ classdef (Abstract) Drivetrain
 
             par_L = obj_12.gamma.name_contains('L_')';
             par_J = obj_12.gamma.name_contains('J_')';
+            par_M = obj_12.gamma.name_contains('M_')';
+            
+            max_len = max([length(par_L) length(par_J) length(par_M)]);
             
             if(any(aspect_set == aspect_3))
                 fprintf(opt_wrt, upper(aspect_3));
                 
                 param_constraint = [par_L;
-                                    par_J, repmat("*", 1, abs(length(par_L) - length(par_J)))];
+                                    par_J, repmat("*", 1, max_len - length(par_J));
+                                    par_M, repmat("*", 1, max_len - length(par_J))];
                                 
                 fun_asp  = @(x)(1.0 - obj_12.scale_resonances(x, gamma_0, ...
                                                                  default.N_freq, ...
@@ -942,11 +944,12 @@ classdef (Abstract) Drivetrain
                 
                 constraint_fun = @(x)deal([], fun_asp(x)); % inequalities, equalities
 
-                gm_03 = [mean(gamma_0(par_L)); ... % length
-                         mean(gamma_0(par_J))]; % mass mom. inertia
+                gm_03 = [mean(gamma_0(par_L));  % length
+                         mean(gamma_0(par_J));  % mass mom. inertia
+                         mean(gamma_0(par_M))]; % mass
 
                 gamma_Max = ones(size(gm_03));
-                gamma_min = gamma_Max*1.0e-6;
+                gamma_min = gamma_Max*eps;
 
                 [gm_val_3, res_3, ~] = fmincon(fun_min, gm_03, [], [], [], [], ...
                                                gamma_min, gamma_Max, ...
@@ -956,9 +959,10 @@ classdef (Abstract) Drivetrain
                             gamma_MMI];
                 res_3 = Inf;
             else
-                gm_val_3 = [mean(gamma_0(["L_1" "L_2" "L_3" "L_S"]));
-                            mean(gamma_0(["J_R" "J_G"]))];
-                       
+                gm_val_3 = [mean(gamma_0(par_L));
+                            mean(gamma_0(par_J));
+                            mean(gamma_0(par_M))];
+
                 res_3 = Inf;
             end
             
@@ -991,7 +995,7 @@ classdef (Abstract) Drivetrain
                 end
                 
                 gamma_Max = ones(n, 1);
-                gamma_min = gamma_Max*1.0e-6;
+                gamma_min = gamma_Max*eps;
 
                 [gm_val_4, res_4, ~] = fmincon(fun_min, gm_04, [], [], [], [], ...
                                                gamma_min, gamma_Max, ...
@@ -1091,57 +1095,152 @@ classdef (Abstract) Drivetrain
             % see also SCALED_VERSION
             %
             
-            try
-                default = {'aspect_set', 'DA', ...
-                    'n_scale', obj_ref.n_rotor};
+            default = {'aspect_set', 'DA', ...
+                'n_scale', obj_ref.n_rotor};
+            
+            default = scaling_factor.process_varargin(default, varargin);
+            
+            fprintf('Reference %s drivetrain with rated power %.1f kW.\n', class(obj_ref), obj_ref.P_rated);
+            
+            n_P = numel(P_scale);
+            n_fn = numel(obj_ref.f_n);
+            
+            gamma = zeros(length(obj_ref.gamma), n_P);
+            res = struct;
+            gamma_asp = struct;
+            SH = zeros(numel(obj_ref.S_H), n_P);
+            f_n = zeros(n_fn, n_P);
+            mode_shape = zeros(n_fn, n_fn, n_P);
+            k_mesh = zeros(numel(obj_ref.stage), n_P);
+            
+            gm_P = P_scale./obj_ref.P_rated;
+            
+            MS_ref = obj_ref.mode_shape;
+            
+            SH_ref = obj_ref.S_H;
+            SS = [SH_ref, zeros(size(SH_ref))];
+            
+            plot_prop1 = {'lineStyle', '-' , 'lineWidth', 2.0, 'color', [346.6667e-3   536.0000e-3   690.6667e-3]};
+            plot_prop2 = {'lineStyle', '--', 'lineWidth', 2.0, 'color', [915.2941e-3   281.5686e-3   287.8431e-3]};
+            
+            figure('units', 'centimeters', 'position', [5.0 5.0 34.0 12.0]);
+            subplot(2, 6, 1:3)
+            rectangle(obj_ref);
+            xlim([0 6000])
+            ylim([-1 1]*1500)
+            title(sprintf('Reference: %.1f kW', obj_ref.P_rated));
+            
+            subplot(2, 6, 7:9)
+            axis equal;
+            xlim([0 6000])
+            ylim([-1 1]*1500)
+            
+            for idx = 1:3
+                subplot(2, 6, idx + 3)
+                plot(1:14, MS_ref(:, idx)*90.0, plot_prop1{:});
                 
-                default = scaling_factor.process_varargin(default, varargin);
+                if(idx ~= 3)
+                    subplot(2, 6, idx + 9)
+                    plot(1:14, MS_ref(:, idx + 3)*90.0, plot_prop1{:})
+                else
+                    subplot(2, 6, 12)
+                    b = bar(SS);
+                    ylim([1.0 2.25]);
+                    yticks(1.0:0.25:2.25);
+                    b(1).FaceColor = plot_prop1{end};
+                    b(2).FaceColor = plot_prop2{end};
+                end
+            end
+            
+            tick_x = ["R"  , ...
+                "c_1", "p_{11}", "p_{12}", "p_{13}", "s_1", ...
+                "c_2", "p_{21}", "p_{22}", "p_{23}", "s_2", ...
+                "W_3", "P_3", ...
+                "G"];
+            idx_tick = 2:2:14;
+            
+            font_setting  = {'fontName', 'Times', 'fontSize', 12.0};
+            latex_setting = {'fontName', 'Times', 'fontSize', 12.0, 'interpreter', 'LaTeX'};
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            
+            set(get(fig_axes(1), 'ylabel'), 'string', '$S_H$'             , latex_setting{:});
+            set(get(fig_axes(5), 'ylabel'), 'string', '$\theta_i$, [deg.]', latex_setting{:});
+            set(get(fig_axes(6), 'ylabel'), 'string', '$\theta_i$, [deg.]', latex_setting{:});
+            
+            set(fig_axes(2:6), 'xlim'      , [1 14]);
+            set(fig_axes(2:6), 'ylim'      , [-1 1]*100);
+            set(fig_axes(2:6), 'xtick'     ,        idx_tick);
+            set(fig_axes(2:6), 'xticklabel', tick_x(idx_tick));
+            set(fig_axes     , font_setting{:});
+            
+            label_figure(fig_axes, font_setting);
+            
+            fig_name = @(i)(sprintf('@%s\\plots\\sweep_scale\\scale_%d_%d', class(obj_ref), i, n_P));
+            
+            file_name = sprintf('@%s\\plots\\sweep_scale\\scale_sweep.gif', class(obj_ref));
+            
+            k_P = mean(diff(P_scale));
+            
+            if(k_P > 0.0)
+                gamma_0 = scaling_factor(obj_ref.gamma.name, obj_ref.gamma.value*1.0e-3);
+            else
+                gamma_0 = scaling_factor(obj_ref.gamma.name, obj_ref.gamma.value);
+            end
+            
+            obj_array = cell(n_P + 1, 1);
+            obj_array{1} = obj_ref;
+            
+            for idx = 1:n_P
+                [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), ...
+                    'gamma_0'   , gamma_0, ...
+                    'n_scale'   , default.n_scale, ...
+                    'aspect_set', default.aspect_set);
+                obj_array{idx + 1} = obj_sca;
                 
-                fprintf('Reference %s drivetrain with rated power %.1f kW.\n', class(obj_ref), obj_ref.P_rated);
+                gamma(:, idx) = gamma_0.value;
+                res(idx).stage = res_idx.stage;
+                res(idx).gear  = res_idx.gear;
+                res(idx).KJ    = res_idx.KJ;
+                res(idx).KJ2   = res_idx.KJ2;
                 
-                n_P = numel(P_scale);
-                n_fn = numel(obj_ref.resonances);
+                gamma_asp(idx).stage = gamma_idx.stage;
+                gamma_asp(idx).gear  = gamma_idx.gear;
+                gamma_asp(idx).KJ    = gamma_idx.KJ;
+                gamma_asp(idx).KJ2   = gamma_idx.KJ2;
                 
-                gamma = zeros(length(obj_ref.gamma), n_P);
-                res = struct;
-                gamma_asp = struct;
-                SH = zeros(numel(obj_ref.S_H), n_P);
-                f_n = zeros(n_fn, n_P);
-                mode_shape = zeros(n_fn, n_fn, n_P);
-                k_mesh = zeros(numel(obj_ref.stage), n_P);
+                SH(:, idx) = obj_sca.S_H;
+                k_mesh(:, idx) = [obj_sca.stage.k_mesh]';
+                [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.resonances;
                 
-                gm_P = P_scale./obj_ref.P_rated;
+                subplot(2, 6, 7:9);
+                cla;
+                rectangle(obj_sca);
+                xlim([0 6000]);
+                ylim([-1 1]*1500);
+                title(sprintf('Scale: %.1f kW = %.3f %% of Ref.', obj_sca.P_rated, gm_P(idx)*100.0));
+                SS(:, 2) = SH(:, idx);
                 
-                [~, MS_ref] = obj_ref.resonances;
-                
-                SH_ref = obj_ref.S_H;
-                SS = [SH_ref, zeros(size(SH_ref))];
-                
-                plot_prop1 = {'lineStyle', '-' , 'lineWidth', 2.0, 'color', [346.6667e-3   536.0000e-3   690.6667e-3]};
-                plot_prop2 = {'lineStyle', '--', 'lineWidth', 2.0, 'color', [915.2941e-3   281.5686e-3   287.8431e-3]};
-                
-                figure('units', 'centimeters', 'position', [5.0 5.0 34.0 12.0]);
-                subplot(2, 6, 1:3)
-                rectangle(obj_ref);
-                xlim([0 6000])
-                ylim([-1 1]*1500)
-                title(sprintf('Reference: %.1f kW', obj_ref.P_rated));
-                
-                subplot(2, 6, 7:9)
-                axis equal;
-                xlim([0 6000])
-                ylim([-1 1]*1500)
-                
-                for idx = 1:3
-                    subplot(2, 6, idx + 3)
-                    plot(1:14, MS_ref(:, idx)*90.0, plot_prop1{:});
+                for jdx = 1:3
+                    subplot(2, 6, jdx + 3);
+                    cla;
+                    hold on;
+                    plot(1:14, MS_ref(:, jdx)*90.0, plot_prop1{:});
+                    plot(1:14, mode_shape(:, jdx, idx)*90.0, plot_prop2{:});
                     
-                    if(idx ~= 3)
-                        subplot(2, 6, idx + 9)
-                        plot(1:14, MS_ref(:, idx + 3)*90.0, plot_prop1{:})
+                    if(jdx ~= 3)
+                        subplot(2, 6, jdx + 9);
+                        cla;
+                        hold on;
+                        plot(1:14, MS_ref(:, jdx + 3)*90.0, plot_prop1{:})
+                        plot(1:14, mode_shape(:, jdx + 3, idx)*90.0, plot_prop2{:});
                     else
-                        subplot(2, 6, 12)
+                        subplot(2, 6, 12);
+                        cla;
                         b = bar(SS);
+                        hold on;
+                        plot(0:10, 1.25*ones(1,11), 'k');
+%                         yline(1.25, 'color', 'k');
                         ylim([1.0 2.25]);
                         yticks(1.0:0.25:2.25);
                         b(1).FaceColor = plot_prop1{end};
@@ -1149,118 +1248,18 @@ classdef (Abstract) Drivetrain
                     end
                 end
                 
-                tick_x = ["R"  , ...
-                    "c_1", "p_{11}", "p_{12}", "p_{13}", "s_1", ...
-                    "c_2", "p_{21}", "p_{22}", "p_{23}", "s_2", ...
-                    "W_3", "P_3", ...
-                    "G"];
-                idx_tick = 2:2:14;
+                set(get(fig_axes(1), 'ylabel'), 'string', '$S_H$, [-]'        , latex_setting{:});
+                set(fig_axes(1)  , 'xticklabel', ["s_1", "p_{1i}", "r_1", ...
+                    "s_2", "p_{2i}", "r_2", ...
+                    "P_3", "W_3"]);
                 
-                font_setting  = {'fontName', 'Times', 'fontSize', 12.0};
-                latex_setting = {'fontName', 'Times', 'fontSize', 12.0, 'interpreter', 'LaTeX'};
-                
-                fig_axes = findobj(gcf, 'Type', 'Axes');
-                
-                set(get(fig_axes(1), 'ylabel'), 'string', '$S_H$'             , latex_setting{:});
-                set(get(fig_axes(5), 'ylabel'), 'string', '$\theta_i$, [deg.]', latex_setting{:});
-                set(get(fig_axes(6), 'ylabel'), 'string', '$\theta_i$, [deg.]', latex_setting{:});
-                
-                set(fig_axes(2:6), 'xlim'      , [1 14]);
-                set(fig_axes(2:6), 'ylim'      , [-1 1]*100);
-                set(fig_axes(2:6), 'xtick'     ,        idx_tick);
-                set(fig_axes(2:6), 'xticklabel', tick_x(idx_tick));
-                set(fig_axes     , font_setting{:});
-                
-                label_figure(fig_axes, font_setting);
-                
-                fig_name = @(i)(sprintf('@%s\\plots\\sweep_scale\\scale_%d_%d', class(obj_ref), i, n_P));
-                
-                file_name = sprintf('@%s\\plots\\sweep_scale\\scale_sweep.gif', class(obj_ref));
-                
-                k_P = mean(diff(P_scale));
-                
-                if(k_P > 0.0)
-                    gamma_0 = scaling_factor(obj_ref.gamma.name, obj_ref.gamma.value*1.0e-3);
-                else
-                    gamma_0 = scaling_factor(obj_ref.gamma.name, obj_ref.gamma.value);
-                end
-                
-                obj_array = cell(n_P + 1, 1);
-                obj_array{1} = obj_ref;
-                
-                for idx = 1:n_P
-                    [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), ...
-                        'gamma_0'   , gamma_0, ...
-                        'n_scale'   , default.n_scale, ...
-                        'aspect_set', default.aspect_set);
-                    obj_array{idx + 1} = obj_sca;
-                    
-                    gamma(:, idx) = gamma_0.value;
-                    res(idx).stage = res_idx.stage;
-                    res(idx).gear  = res_idx.gear;
-                    res(idx).KJ    = res_idx.KJ;
-                    res(idx).KJ2   = res_idx.KJ2;
-                    
-                    gamma_asp(idx).stage = gamma_idx.stage;
-                    gamma_asp(idx).gear  = gamma_idx.gear;
-                    gamma_asp(idx).KJ    = gamma_idx.KJ;
-                    gamma_asp(idx).KJ2   = gamma_idx.KJ2;
-                    
-                    SH(:, idx) = obj_sca.S_H;
-                    k_mesh(:, idx) = [obj_sca.stage.k_mesh]';
-                    [f_n(:, idx), mode_shape(:, :, idx)] = obj_sca.resonances;
-                    
-                    subplot(2, 6, 7:9);
-                    cla;
-                    rectangle(obj_sca);
-                    xlim([0 6000]);
-                    ylim([-1 1]*1500);
-                    title(sprintf('Scale: %.1f kW = %.3f %% of Ref.', obj_sca.P_rated, gm_P(idx)*100.0));
-                    SS(:, 2) = SH(:, idx);
-                    
-                    for jdx = 1:3
-                        subplot(2, 6, jdx + 3);
-                        cla;
-                        hold on;
-                        plot(1:14, MS_ref(:, jdx)*90.0, plot_prop1{:});
-                        plot(1:14, mode_shape(:, jdx, idx)*90.0, plot_prop2{:});
-                        
-                        if(jdx ~= 3)
-                            subplot(2, 6, jdx + 9);
-                            cla;
-                            hold on;
-                            plot(1:14, MS_ref(:, jdx + 3)*90.0, plot_prop1{:})
-                            plot(1:14, mode_shape(:, jdx + 3, idx)*90.0, plot_prop2{:});
-                        else
-                            subplot(2, 6, 12);
-                            cla;
-                            b = bar(SS);
-                            hold on;
-                            plot(0:10, 1.25*ones(1,11), 'k');
-%                             yline(1.25, 'color', 'k');
-                            ylim([1.0 2.25]);
-                            yticks(1.0:0.25:2.25);
-                            b(1).FaceColor = plot_prop1{end};
-                            b(2).FaceColor = plot_prop2{end};
-                        end
-                    end
-                    
-                    set(get(fig_axes(1), 'ylabel'), 'string', '$S_H$, [-]'        , latex_setting{:});
-                    set(fig_axes(1)  , 'xticklabel', ["s_1", "p_{1i}", "r_1", ...
-                                                      "s_2", "p_{2i}", "r_2", ...
-                                                      "P_3", "W_3"]);
-                    
-                    set(fig_axes, font_setting{:});
-                    savefig(gcf, fig_name(idx));
-                    print(fig_name(idx), '-dpng');
-                    saveasGIF(file_name, idx);
-                end
-                
-                close all;
-            catch err
-                save error_data_scaled_sweep;
-                error(err.identifier, '%s', err.message);
+                set(fig_axes, font_setting{:});
+                savefig(gcf, fig_name(idx));
+                print(fig_name(idx), '-dpng');
+                saveasGIF(file_name, idx);
             end
+            
+            close all;
         end
         
         function [f, mode_shape] = scale_nth_resonance(obj, n, gamma_P, gamma_n, gamma, aspect)

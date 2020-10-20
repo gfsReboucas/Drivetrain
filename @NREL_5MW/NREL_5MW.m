@@ -34,11 +34,12 @@ classdef NREL_5MW < Drivetrain
     
     methods
         function obj = NREL_5MW(varargin)
-            gamma = {'P'   , 1.0, 'n_R'   , 1.0, ...
+            gamma = {'P'   , 1.0, 'n_R' , 1.0, ...
                      'm_n1', 1.0, 'b_1' , 1.0, 'd_1' , 1.0, 'L_1' , 1.0, ...
                      'm_n2', 1.0, 'b_2' , 1.0, 'd_2' , 1.0, 'L_2' , 1.0, ...
                      'm_n3', 1.0, 'b_3' , 1.0, 'd_3' , 1.0, 'L_3' , 1.0, ...
-                     'J_R' , 1.0, 'J_G' , 1.0, ...
+                     'M_R' , 1.0, 'J_R' , 1.0, ...
+                     'M_G' , 1.0, 'J_G' , 1.0, ...
                      'd_S' , 1.0, 'L_S' , 1.0, ...
                      'dynamic_model', @Lin_Parker_99};
 %                      'dynamic_model', @Kahraman_94};
@@ -59,8 +60,8 @@ classdef NREL_5MW < Drivetrain
                 stage(idx) = stg.scale_by(gamma_idx);
             end
             
-            P_r = gamma('P')* 5.0e3; % [kW], Rated power
-            n_r = gamma('n_R')*12.1;   % [1/min.], Input speed
+            P_r = gamma('P')* 5.0e3; % [kW]    , Rated power
+            n_r = gamma('n_R')*12.1; % [1/min.], Input speed
             
             LSS = NREL_5MW.shaft(0);
             
@@ -69,9 +70,9 @@ classdef NREL_5MW < Drivetrain
                               LSS.bearing, ...
                               LSS.material);
             
-            m_R = 110.0e3;
+            m_R =      110.0e3*gamma('M_R');
             J_R = 57231535.0  *gamma('J_R'); % according to [1, 3]
-            m_G =     1900.0;
+            m_G =     1900.0  *gamma('M_G');
             J_G =      534.116*gamma('J_G');
             
             obj@Drivetrain('N_stage'      , N_st, ...
@@ -112,14 +113,14 @@ classdef NREL_5MW < Drivetrain
             end
             
             calc = MATISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
-                                              'n_out'       , obj.n_out(idx), ...
-                                              'S_Hmin'      , obj.S_Hmin, ...
-                                              'S_Fmin'      , obj.S_Fmin, ...
-                                              'L_h'         , L_h, ... % [h], Required life
-                                              'K_A'         , K_A, ... % [-], Application factor
-                                              'lubricant_ID', 11170, ...
-                                              'nu_40'       , 220.0, ... % [], lubricant viscosity
-                                              'n_nominal'   , n_idx);
+                                               'n_out'       , obj.n_out(idx), ...
+                                               'S_Hmin'      , obj.S_Hmin, ...
+                                               'S_Fmin'      , obj.S_Fmin, ...
+                                               'L_h'         , L_h, ... % [h], Required life
+                                               'K_A'         , K_A, ... % [-], Application factor
+                                               'lubricant_ID', 11170, ...
+                                               'nu_40'       , 220.0, ... % [], lubricant viscosity
+                                               'n_nominal'   , n_idx);
             [SH, SF] = calc.safety_factors('lubricant_ID', 11220, ...
                                            'nu_40'       , 220.0, ...
                                            'stage_idx'   ,   idx, ...
@@ -545,13 +546,13 @@ classdef NREL_5MW < Drivetrain
     
     methods
         function update_subvar(obj, varargin)
-            default = {'simulation_time', 100.0, ... % [s]
-                       'inertia_flag', true, ...
+            default = {'simulation_time'     , 200.0, ... % [s]
+                       'inertia_flag'        , true, ...
                        'base_excitation_flag', true, ...
-                       'generator_flag', 2, ... % PI control
-                       'mesh_flag', 225, ...
-                       'gen_mode'   , 1, ...
-                       'bed_plate'  , true};
+                       'generator_flag'      , 2, ... % PI control
+                       'mesh_flag'           , 225, ...
+                       'gen_mode'            , 1, ...
+                       'bed_plate'           , true};
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -630,13 +631,13 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_sun.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_sun.$_bore_diameter\n");
             fprintf(new_ID, "   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun\n");
             fprintf(new_ID, "   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet\n");
-            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width')                  ! $SVG_stage_01.$SVG_planet.$_flank_width_ref\n");
+            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_01.$SVG_planet.$_flank_width_ref\n");
             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_01.$SVG_planet.$_bore_diameter_ref\n");
             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_01.$SVG_planet.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_planet.$_flank_width\n");
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_planet.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_planet.$_bore_diameter\n");
             fprintf(new_ID, "   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet\n");
             fprintf(new_ID, "   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring\n");
-            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width')                  ! $SVG_stage_01.$SVG_ring.$_flank_width_ref\n");
+            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_01.$SVG_ring.$_flank_width_ref\n");
             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_01.$SVG_ring.$_bore_diameter_ref\n");
             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_01.$SVG_ring.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_ring.$_flank_width\n");
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_ring.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_ring.$_bore_diameter\n");
@@ -669,13 +670,13 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_sun.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_sun.$_bore_diameter\n");
             fprintf(new_ID, "   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun\n");
             fprintf(new_ID, "   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet\n");
-            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width')                  ! $SVG_stage_02.$SVG_planet.$_flank_width_ref\n");
+            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_02.$SVG_planet.$_flank_width_ref\n");
             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '380.0 mm')                                            ! $SVG_stage_02.$SVG_planet.$_bore_diameter_ref\n");
             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_02.$SVG_planet.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_planet.$_flank_width\n");
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_planet.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_planet.$_bore_diameter\n");
             fprintf(new_ID, "   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet\n");
             fprintf(new_ID, "   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring\n");
-            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width')                  ! $SVG_stage_02.$SVG_ring.$_flank_width_ref\n");
+            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_02.$SVG_ring.$_flank_width_ref\n");
             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_02.$SVG_ring.$_bore_diameter_ref\n");
             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_02.$SVG_ring.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_ring.$_flank_width\n");
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_ring.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_ring.$_bore_diameter\n");
@@ -707,7 +708,7 @@ classdef NREL_5MW < Drivetrain
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_03.$SVG_pinion.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$SVG_pinion.$_bore_diameter\n");
             fprintf(new_ID, "   subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion\n");
             fprintf(new_ID, "   subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel\n");
-            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_03.$SVG_pinion.$_flank_width')               ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref\n");
+            fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_03.$SVG_pinion.$_flank_width_ref')           ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref\n");
             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_03.$SVG_wheel.$_bore_diameter_ref\n");
             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_03.$SVG_wheel.$_flank_width_ref*$SVG_stage_03.$_gamma_b') ! $SVG_stage_03.$SVG_wheel.$_flank_width\n");
             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_03.$SVG_wheel.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$SVG_wheel.$_bore_diameter\n");

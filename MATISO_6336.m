@@ -793,7 +793,7 @@ classdef MATISO_6336 < ISO_6336
                     if(M(idx) > 1.0)
                         val(idx) = M(idx);
                     else
-                        val(1) = 1.0;
+                        val(idx) = 1.0;
                     end
                 end
             elseif((obj.eps_alpha > 1.0) && (obj.eps_beta >= 1.0))

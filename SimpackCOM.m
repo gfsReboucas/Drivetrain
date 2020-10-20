@@ -7,6 +7,7 @@ classdef SimpackCOM
     % [1] https://www.3ds.com/products-services/simulia/products/simpack/
     % [2] https://mathworks.com/help/matlab/ref/methodsview.html
     %
+    %
     
     properties(Access = private)
         COM;
@@ -86,6 +87,24 @@ classdef SimpackCOM
             obj.post.Spck.quit;
             obj.COM.Spck.Quit;
         end
+        
+%         function set_states_to_zero(obj)
+%             Spck.currentModel.setStatesToZero(StateSet.JOINT_POS_STATE +
+%             StateSet.JOINT_VEL_STATE +
+%             StateSet.FLEXBODY_POS_STATE +
+%             StateSet.FLEXBODY_VEL_STATE +
+%             StateSet.CONSTR_FORCE_STATE +
+%             StateSet.MARKER_ALG_STATE +
+%             StateSet.FORCECONTR_ALG_STATE +
+%             StateSet.FORCECONTR_DYN_STATE +
+%             StateSet.FORCECONTR_DISC_STATE +
+%             StateSet.FORCECONTR_DESCR_STATE +
+%             StateSet.FORCECONTR_ROOT_STATE +
+%             StateSet.BODY_POS_STATE +
+%             StateSet.BODY_VEL_STATE +
+%             StateSet.CONNECTION_POS_STATE +
+%             StateSet.CONNECTION_VEL_STATE);
+%         end
         
     end
     

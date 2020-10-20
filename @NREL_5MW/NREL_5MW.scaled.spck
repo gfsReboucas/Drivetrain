@@ -24,6 +24,8 @@ time                                                                = 0.00000000
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
 glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
+subvarset.file (          1                                       ) = './NREL_5MW.scaled.subvar' ! subvarset filename
+subvarset.role (          1                                       ) = 1                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -68,18 +70,18 @@ substr.attr.2d.height (             $S_reference                  ) = 2.00000000
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 7.51039600372314453E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -7.86534786224365234E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 5.58263397216796875E+00 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 4.95588064193725586E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 1.44202709197998047E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.32620894908905029E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 8.24309170246124268E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 1.52742147445678711E-01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -2.13938140869140625E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.32225465774536133E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.42113959789276123E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 1.39096051454544067E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 2.51997232437133789E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.89469480514526367E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.56029583886265755E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.56029577255249023E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 3.70295286178588867E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -212,329 +214,57 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar.str (                        $_simulation_time             ) = '1000 s'                ! Definition
-
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
-   subvar.str (                     $_gamma_Power                 ) = '1.0'                   ! $SVG_loading.$_gamma_Power, Definition
-
-   subvar.str (                     $_gamma_Speed                 ) = '1.0'                   ! $SVG_loading.$_gamma_Speed, Definition
-
-   subvar.str (                     $_gamma_Torque                ) = '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed' ! $SVG_loading.$_gamma_Torque, Definition
-
-   subvar.str (                     $_gamma_Force                 ) = 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed' ! $SVG_loading.$_gamma_Force, Definition
-
-   subvar.str (                     $_rated_power_ref             ) = '5.0e3 kW'              ! $SVG_loading.$_rated_power_ref, Definition
-
-   subvar.str (                     $_rated_power                 ) = '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power' ! $SVG_loading.$_rated_power, Definition
-
-   subvar.str (                     $_inertia_flag                ) = '1'                     ! $SVG_loading.$_inertia_flag, Definition
-   subvar.discr.desc (    1 ,       $_inertia_flag                ) = 'yes (value)'           ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_inertia_flag                ) = 'no (unit)'             ! Description of discrete values
-   subvar.discr.str (     1 ,       $_inertia_flag                ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_inertia_flag                ) = '0'                     ! Discrete values
-
-   subvar.str (                     $_base_excitation_flag        ) = '1'                     ! $SVG_loading.$_base_excitation_flag, Definition
-   subvar.discr.desc (    1 ,       $_base_excitation_flag        ) = 'ON'                    ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_base_excitation_flag        ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.str (     1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_base_excitation_flag        ) = '0'                     ! Discrete values
-
-   subvar.str (                     $_generator_flag              ) = '2'                     ! $SVG_loading.$_generator_flag, Definition
-   subvar.discr.desc (    1 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
-   subvar.discr.str (     1 ,       $_generator_flag              ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_generator_flag              ) = '2'                     ! Discrete values
-   subvar.discr.str (     3 ,       $_generator_flag              ) = '3'                     ! Discrete values
-
-   subvar.str (                     $_mesh_flag                   ) = '225'                   ! $SVG_loading.$_mesh_flag, Definition
-   subvar.discr.desc (    1 ,       $_mesh_flag                   ) = 'advanced'              ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_mesh_flag                   ) = 'basic'                 ! Description of discrete values
-   subvar.discr.str (     1 ,       $_mesh_flag                   ) = '225'                   ! Discrete values
-   subvar.discr.str (     2 ,       $_mesh_flag                   ) = '204'                   ! Discrete values
-
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-   subvar.str (                     $_gamma_m                     ) = '1.0'                   ! $SVG_rotor.$_gamma_m, Definition
+   subvar.str (                     $_diameter_ref                ) = '1.2*$SVG_main_shaft.$_diameter_ref' ! $SVG_rotor.$_diameter_ref, Definition
 
-   subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_rotor.$_gamma_J, Definition
-
-   subvar.str (                     $_mass_ref                    ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_rotor.$_mass_ref, Definition
-
-   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_rotor.$_mass_mom_inertia_ref, Definition
-
-   subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_rotor.$_length_ref, Definition
-
-   subvar.str (                     $_mass                        ) = '$SVG_rotor.$_mass_ref*$SVG_rotor.$_gamma_m' ! $SVG_rotor.$_mass, Definition
-
-   subvar.str (                     $_mass_mom_inertia            ) = '$SVG_rotor.$_mass_mom_inertia_ref*$SVG_rotor.$_gamma_J' ! $SVG_rotor.$_mass_mom_inertia, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_rotor.$_length_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_rotor.$_length, Definition
-
-   subvar.str (                     $_rated_speed                 ) = '12.1 rpm'              ! $SVG_rotor.$_rated_speed, Definition
+   subvar.str (                     $_diameter                    ) = '$SVG_rotor.$_diameter_ref*$SVG_main_shaft.$_gamma_d' ! $SVG_rotor.$_diameter, Definition
 
 subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor
 
 subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_main_shaft.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_main_shaft.$_gamma_d, Definition
-
-   subvar.str (                     $_length_ref                  ) = '2000.0 mm'             ! $SVG_main_shaft.$_length_ref, Definition
-
-   subvar.str (                     $_diameter_ref                ) = '700.0 mm'              ! $SVG_main_shaft.$_diameter_ref, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_main_shaft.$_length_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_main_shaft.$_length, Definition
-
-   subvar.str (                     $_diameter                    ) = '$SVG_main_shaft.$_diameter_ref*$SVG_main_shaft.$_gamma_d' ! $SVG_main_shaft.$_diameter, Definition
-
 subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
 
 subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
-   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_01.$_gamma_mn, Definition
-
-   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_b, Definition
-
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_d, Definition
-
-   subvar.str (                     $_k_SP                        ) = '1.0e9 N/m'             ! $SVG_stage_01.$_k_SP, Definition
-
-   subvar.str (                     $_k_RP                        ) = '1.0e9 N/m'             ! $SVG_stage_01.$_k_RP, Definition
-
-   subvar.str (                     $_normal_module_ref           ) = '45 mm'                 ! $SVG_stage_01.$_normal_module_ref, Definition
-
-   subvar.str (                     $_center_distance_ref         ) = '863.0 mm'              ! $SVG_stage_01.$_center_distance_ref, Definition
-
-   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_01.$_normal_backlash_ref, Definition
-
-   subvar.str (                     $_normal_module               ) = '$SVG_stage_01.$_normal_module_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_normal_module, Definition
-
-   subvar.str (                     $_center_distance             ) = '$SVG_stage_01.$_center_distance_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_center_distance, Definition
-
-   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_01.$_normal_backlash_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_normal_backlash, Definition
-
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
-      subvar.str (                  $_flank_width_ref             ) = '491.0 mm'              ! $SVG_stage_01.$SVG_sun.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_sun.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_sun.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_sun.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_sun.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_sun.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_01.$SVG_sun.$_flank_width' ! $SVG_stage_01.$SVG_planet.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_planet.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_planet.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_planet.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_planet.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_planet.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_01.$SVG_sun.$_flank_width' ! $SVG_stage_01.$SVG_ring.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_ring.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_ring.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_ring.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_ring.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_ring.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
-      subvar.str (                  $_length_ref                  ) = '500.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_length_ref, Definition
-
-      subvar.str (                  $_diameter_ref                ) = '533.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_diameter_ref, Definition
-
-      subvar.str (                  $_length                      ) = '$SVG_stage_01.$SVG_shaft.$_length_ref*$SVG_stage_01.$_gamma_L' ! $SVG_stage_01.$SVG_shaft.$_length, Definition
-
-      subvar.str (                  $_diameter                    ) = '$SVG_stage_01.$SVG_shaft.$_diameter_ref*$SVG_stage_01.$_gamma_d' ! $SVG_stage_01.$SVG_shaft.$_diameter, Definition
-
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
 subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
 
 subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
-   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_02.$_gamma_mn, Definition
-
-   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_b, Definition
-
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_d, Definition
-
-   subvar.str (                     $_k_SP                        ) = '1.0e9 N/m'             ! $SVG_stage_02.$_k_SP, Definition
-
-   subvar.str (                     $_k_RP                        ) = '1.0e9 N/m'             ! $SVG_stage_02.$_k_RP, Definition
-
-   subvar.str (                     $_normal_module_ref           ) = '21.0 mm'               ! $SVG_stage_02.$_normal_module_ref, Definition
-
-   subvar.str (                     $_center_distance_ref         ) = '584.0 mm'              ! $SVG_stage_02.$_center_distance_ref, Definition
-
-   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_02.$_normal_backlash_ref, Definition
-
-   subvar.str (                     $_normal_module               ) = '$SVG_stage_02.$_normal_module_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_normal_module, Definition
-
-   subvar.str (                     $_center_distance             ) = '$SVG_stage_02.$_center_distance_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_center_distance, Definition
-
-   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_02.$_normal_backlash_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_normal_backlash, Definition
-
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
-      subvar.str (                  $_flank_width_ref             ) = '550.0 mm'              ! $SVG_stage_02.$SVG_sun.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '200.0 mm'              ! $SVG_stage_02.$SVG_sun.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_sun.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_sun.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_sun.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_sun.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_02.$SVG_sun.$_flank_width' ! $SVG_stage_02.$SVG_planet.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '380.0 mm'              ! $SVG_stage_02.$SVG_planet.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_planet.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_planet.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_planet.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_planet.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_02.$SVG_sun.$_flank_width' ! $SVG_stage_02.$SVG_ring.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_02.$SVG_ring.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_ring.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_ring.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_ring.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_ring.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
-      subvar.str (                  $_length_ref                  ) = '666.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_length_ref, Definition
-
-      subvar.str (                  $_diameter_ref                ) = '333.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_diameter_ref, Definition
-
-      subvar.str (                  $_length                      ) = '$SVG_stage_02.$SVG_shaft.$_length_ref*$SVG_stage_02.$_gamma_L' ! $SVG_stage_02.$SVG_shaft.$_length, Definition
-
-      subvar.str (                  $_diameter                    ) = '$SVG_stage_02.$SVG_shaft.$_diameter_ref*$SVG_stage_02.$_gamma_d' ! $SVG_stage_02.$SVG_shaft.$_diameter, Definition
-
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
 subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
 
 subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
-   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_03.$_gamma_mn, Definition
-
-   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_b, Definition
-
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_d, Definition
-
-   subvar.str (                     $_normal_module_ref           ) = '14 mm'                 ! $SVG_stage_03.$_normal_module_ref, Definition
-
-   subvar.str (                     $_center_distance_ref         ) = '861.0 mm'              ! $SVG_stage_03.$_center_distance_ref, Definition
-
-   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_03.$_normal_backlash_ref, Definition
-
-   subvar.str (                     $_normal_module               ) = '$SVG_stage_03.$_normal_module_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_normal_module, Definition
-
-   subvar.str (                     $_center_distance             ) = '$SVG_stage_03.$_center_distance_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_center_distance, Definition
-
-   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_03.$_normal_backlash_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_normal_backlash, Definition
-
-   subvar.str (                     $_k_PW                        ) = '1.0e9 N/m'             ! $SVG_stage_03.$_k_PW, Definition
-
    subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
-      subvar.str (                  $_flank_width_ref             ) = '360.0 mm'              ! $SVG_stage_03.$SVG_pinion.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '200.0 mm'              ! $SVG_stage_03.$SVG_pinion.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_03.$SVG_pinion.$_flank_width_ref*$SVG_stage_03.$_gamma_b' ! $SVG_stage_03.$SVG_pinion.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_03.$SVG_pinion.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$SVG_pinion.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
    subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_03.$SVG_pinion.$_flank_width' ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_03.$SVG_wheel.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_03.$SVG_wheel.$_flank_width_ref*$SVG_stage_03.$_gamma_b' ! $SVG_stage_03.$SVG_wheel.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_03.$SVG_wheel.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$SVG_wheel.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
-      subvar.str (                  $_length_ref                  ) = '1000.0 mm'             ! $SVG_stage_03.$SVG_shaft.$_length_ref, Definition
-
-      subvar.str (                  $_diameter_ref                ) = '333.0 mm'              ! $SVG_stage_03.$SVG_shaft.$_diameter_ref, Definition
-
-      subvar.str (                  $_length                      ) = '$SVG_stage_03.$SVG_shaft.$_length_ref*$SVG_stage_03.$_gamma_L' ! $SVG_stage_03.$SVG_shaft.$_length, Definition
-
-      subvar.str (                  $_diameter                    ) = '$SVG_stage_03.$SVG_shaft.$_diameter_ref*$SVG_stage_03.$_gamma_d' ! $SVG_stage_03.$SVG_shaft.$_diameter, Definition
-
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-   subvar.str (                     $_gamma_m                     ) = '1.0'                   ! $SVG_generator.$_gamma_m, Definition
-
-   subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_generator.$_gamma_J, Definition
-
-   subvar.str (                     $_mass_ref                    ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n1900.0 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_generator.$_mass_ref, Definition
-
-   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n534.116 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_generator.$_mass_mom_inertia_ref, Definition
-
-   subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_generator.$_length_ref, Definition
-
-   subvar.str (                     $_K_P_ref                     ) = '2200.0'                ! $SVG_generator.$_K_P_ref, Definition
-   subvar.desc (          1 ,       $_K_P_ref                     ) = 'Proportional gain'     ! Description
-
-   subvar.str (                     $_K_I_ref                     ) = '220.0'                 ! $SVG_generator.$_K_I_ref, Definition
-   subvar.desc (          1 ,       $_K_I_ref                     ) = 'Integral gain'         ! Description
-
-   subvar.str (                     $_mass                        ) = '$SVG_generator.$_mass_ref*$SVG_generator.$_gamma_m' ! $SVG_generator.$_mass, Definition
-
-   subvar.str (                     $_mass_mom_inertia            ) = '$SVG_generator.$_mass_mom_inertia_ref*$SVG_generator.$_gamma_J' ! $SVG_generator.$_mass_mom_inertia, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_generator.$_length_ref*$SVG_stage_03.$_gamma_L' ! $SVG_generator.$_length, Definition
-
-   subvar.str (                     $_K_P                         ) = '$SVG_generator.$_K_P_ref*$SVG_loading.$_gamma_Torque' ! $SVG_generator.$_K_P, Definition
-   subvar.desc (          1 ,       $_K_P                         ) = 'Proportional gain'     ! Description
-
-   subvar.str (                     $_K_I                         ) = '$SVG_generator.$_K_I_ref*$SVG_loading.$_gamma_Torque' ! $SVG_generator.$_K_I, Definition
-   subvar.desc (          1 ,       $_K_I                         ) = 'Integral gain'         ! Description
-
 subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
 
 subvargroup.begin (                 $SVG_housing                  )                           ! $SVG_housing
-   subvar.str (                     $_length_ref                  ) = '4500.0 mm'             ! $SVG_housing.$_length_ref, Definition
-
-   subvar.str (                     $_width_ref                   ) = '3000.0 mm'             ! $SVG_housing.$_width_ref, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_housing.$_length_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_housing.$_length, Definition
-
-   subvar.str (                     $_width                       ) = '$SVG_housing.$_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_housing.$_width, Definition
-
 subvargroup.end (                   $SVG_housing                  )                           ! $SVG_housing
 
 subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
-   subvar.str (                     $_length_ref                  ) = '8000.0 mm'             ! $SVG_bed_plate.$_length_ref, Definition
-
-   subvar.str (                     $_width_ref                   ) = '4000.0 mm'             ! $SVG_bed_plate.$_width_ref, Definition
-
-   subvar.str (                     $_z0_ref                      ) = '1750 mm'               ! $SVG_bed_plate.$_z0_ref, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_bed_plate.$_length_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_length, Definition
-
-   subvar.str (                     $_width                       ) = '$SVG_bed_plate.$_width_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_width, Definition
-
-   subvar.str (                     $_z0                          ) = '$SVG_bed_plate.$_z0_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_z0, Definition
-
 subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
 
 !**********************************************************************
@@ -589,14 +319,17 @@ sendergroup.begin (                 $SG_rotor                     )             
    sender.ref (                     $COM_length                   ) = $SVG_rotor.$_length     ! Source object
    sender.alias (                   $COM_length                   ) = '$COM_length_rotor'     ! Alias
 
+   sender.ref (                     $COM_diameter                 ) = $SVG_rotor.$_diameter   ! Source object
+   sender.alias (                   $COM_diameter                 ) = '$COM_rotor_diameter'   ! Alias
+
 sendergroup.end (                   $SG_rotor                     )                           ! $SG_rotor
 
 sendergroup.begin (                 $SG_main_shaft                )                           ! $SG_main_shaft
    sender.ref (                     $COM_length                   ) = $SVG_main_shaft.$_length ! Source object
-   sender.alias (                   $COM_length                   ) = '$COM_main_shaft_length' ! Alias
+   sender.alias (                   $COM_length                   ) = '$COM_shaft_length'     ! Alias
 
    sender.ref (                     $COM_diameter                 ) = $SVG_main_shaft.$_diameter ! Source object
-   sender.alias (                   $COM_diameter                 ) = '$COM_main_shaft_diameter' ! Alias
+   sender.alias (                   $COM_diameter                 ) = '$COM_shaft_diameter'   ! Alias
 
 sendergroup.end (                   $SG_main_shaft                )                           ! $SG_main_shaft
 
@@ -759,25 +492,586 @@ sendergroup.end (                   $SG_generator                 )             
 
 sendergroup.begin (                 $SG_housing                   )                           ! $SG_housing
    sender.ref (                     $COM_length                   ) = $SVG_housing.$_length   ! Source object
-   sender.alias (                   $COM_length                   ) = '$COM_length_housing'   ! Alias
+   sender.alias (                   $COM_length                   ) = '$COM_housing_length'   ! Alias
 
    sender.ref (                     $COM_width                    ) = $SVG_housing.$_width    ! Source object
-   sender.alias (                   $COM_width                    ) = '$COM_width_housing'    ! Alias
+   sender.alias (                   $COM_width                    ) = '$COM_housing_width'    ! Alias
 
 sendergroup.end (                   $SG_housing                   )                           ! $SG_housing
 
 sendergroup.begin (                 $SG_bed_plate                 )                           ! $SG_bed_plate
    sender.ref (                     $COM_length                   ) = $SVG_bed_plate.$_length ! Source object
-   sender.alias (                   $COM_length                   ) = '$COM_length_bed_plate' ! Alias
+   sender.alias (                   $COM_length                   ) = '$COM_bed_plate_length' ! Alias
 
    sender.ref (                     $COM_width                    ) = $SVG_bed_plate.$_width  ! Source object
-   sender.alias (                   $COM_width                    ) = '$COM_width_bed_plate'  ! Alias
+   sender.alias (                   $COM_width                    ) = '$COM_bed_plate_width'  ! Alias
 
    sender.ref (                     $COM_z0                       ) = $SVG_bed_plate.$_z0     ! Source object
-   sender.alias (                   $COM_z0                       ) = '$COM_z0_bed_plate'     ! Alias
+   sender.alias (                   $COM_z0                       ) = '$COM_bed_plate_z0'     ! Alias
 
 sendergroup.end (                   $SG_bed_plate                 )                           ! $SG_bed_plate
 
 
 ! Overwritten substructure values
-                                                                                                                               
+view.fclip.value (                  $S_reference.$V_WorkingView   ) = 1.51781011372804642E-02 ! Front clipping plane value
+view.bclip.value (                  $S_reference.$V_WorkingView   ) = 1.51781005859375000E+01 ! Back clipping plane value
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$B_rotor  ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$B_generator) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+control.st.dyn (          1 ,       $S_reference.$S_TPL.$C_PI     ) = 0.00000000000000000E+00 ! Dynamic States
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_reference.$S_TPL.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+                                       
