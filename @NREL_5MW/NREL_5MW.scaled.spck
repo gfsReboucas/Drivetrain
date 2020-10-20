@@ -1,11 +1,11 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.5! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20210000
 version.desc   = ''
-version.build  = 82
+version.build  = 101
 
 !**********************************************************************
 !  Global parameters
@@ -23,6 +23,7 @@ rw.linear                                                           = 0         
 time                                                                = 0.00000000000000000E+00 ! Time
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -201,8 +202,11 @@ slv.meas.result (                   $SLV_SolverSettings           ) = 1         
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
 slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
 slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
+slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
 slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
 !**********************************************************************
@@ -256,9 +260,9 @@ subvargroup.begin (                 $SVG_rotor                    )             
 
    subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_rotor.$_gamma_J, Definition
 
-   subvar.str (                     $_mass_ref                    ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_rotor.$_mass_ref, Definition
+   subvar.str (                     $_mass_ref                    ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_rotor.$_mass_ref, Definition
 
-   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_rotor.$_mass_mom_inertia_ref, Definition
+   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_rotor.$_mass_mom_inertia_ref, Definition
 
    subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_rotor.$_length_ref, Definition
 
@@ -481,9 +485,9 @@ subvargroup.begin (                 $SVG_generator                )             
 
    subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_generator.$_gamma_J, Definition
 
-   subvar.str (                     $_mass_ref                    ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n1900.0 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_generator.$_mass_ref, Definition
+   subvar.str (                     $_mass_ref                    ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n1900.0 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_generator.$_mass_ref, Definition
 
-   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($S_reference.$S_TPL.$_inertia_flag == 1)\n{\n534.116 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_generator.$_mass_mom_inertia_ref, Definition
+   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n534.116 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_generator.$_mass_mom_inertia_ref, Definition
 
    subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_generator.$_length_ref, Definition
 
@@ -774,4 +778,6 @@ sendergroup.begin (                 $SG_bed_plate                 )             
 
 sendergroup.end (                   $SG_bed_plate                 )                           ! $SG_bed_plate
 
-                                                                                                                                                                    
+
+! Overwritten substructure values
+                                                                                                                               

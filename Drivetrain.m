@@ -1433,7 +1433,7 @@ classdef (Abstract) Drivetrain
 
             while ~feof(old_ID)
                 old_line = fgetl(old_ID);
-                fprintf(new_ID, 'fprintf(new_ID, ''%s\\n'');\n', old_line);
+                fprintf(new_ID, "fprintf(new_ID, ""%s\\n"");\n", old_line);
             end
             fclose(old_ID);
             fclose(new_ID);
