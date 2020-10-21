@@ -70,18 +70,18 @@ substr.attr.2d.height (             $S_reference                  ) = 2.00000000
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 1.52742147445678711E-01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -2.13938140869140625E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 1.32225465774536133E+00 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 5.42113959789276123E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 1.39096051454544067E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.51997232437133789E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 7.89469480514526367E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 1.74862975170253776E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.04267759094364010E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 7.50796781645476585E-01 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.26814103126525879E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 1.78622215986251831E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 2.81575649976730347E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.81841576099395752E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 3.70295286178588867E+00 ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 2.66071796417236328E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -348,6 +348,8 @@ sendergroup.begin (                 $SG_stage_01                  )             
 
    sender.ref (                     $COM_k_RP                     ) = $SVG_stage_01.$_k_RP    ! Source object
    sender.alias (                   $COM_k_RP                     ) = '$COM_stage_01_k_RP'    ! Alias
+
+   sender.ref (                     $COM_gamma_mn1                ) = $SVG_stage_01.$_gamma_mn ! Source object
 
    sendergroup.begin (              $SG_sun                       )                           ! $SG_stage_01.$SG_sun
       sender.ref (                  $COM_flank_width              ) = $SVG_stage_01.$SVG_sun.$_flank_width ! Source object

@@ -2595,7 +2595,7 @@ receivergroup.begin (               $RG_rotor                     )             
    receiver.priolist (    1 ,       $COM_mass_mom_inertia         ) = '$COM_rotor_mass_mom_inertia' ! Sender priority list
 
    receiver.ref (                   $COM_length                   ) = $SVG_rotor.$_length     ! Destination object
-   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_rotor_length'     ! Sender priority list
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_length_rotor'     ! Sender priority list
 
    receiver.ref (                   $COM_diameter                 ) = $SVG_rotor.$_diameter   ! Destination object
    receiver.priolist (    1 ,       $COM_diameter                 ) = '$COM_rotor_diameter'   ! Sender priority list
