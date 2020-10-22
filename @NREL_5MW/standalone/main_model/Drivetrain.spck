@@ -88,18 +88,18 @@ substr.attr.2d.height (             $S_stage_03                   ) = 5.00000000
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 5.30241060256958008E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -8.36734485626220703E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 5.91840457916259766E+00 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 5.00578582286834717E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = -1.63600016385316849E-02 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 1.88090875744819641E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 8.44852149486541748E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 5.96200823783874512E-01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -8.70907688140869141E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 7.99818229675292969E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 3.96975725889205933E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.98693498969078064E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 8.30487459897994995E-02 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 8.92207443714141846E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.62876117974519730E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.62876110076904297E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.70460045337677002E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.70460033416748047E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -977,7 +977,7 @@ subvargroup.begin (                 $SVG_generator                )             
 subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
 
 subvargroup.begin (                 $SVG_housing                  )                           ! $SVG_housing
-   subvar.str (                     $_x0                          ) = '($SVG_main_shaft.$_length - $SVG_main_shaft.$SVG_bearing_B.$_x)/2.0 + $SVG_main_shaft.$SVG_bearing_B.$_x' ! $SVG_housing.$_x0, Definition
+   subvar.str (                     $_x0                          ) = '$SVG_housing.$_length/2' ! $SVG_housing.$_x0, Definition
 
    subvar.str (                     $_length                      ) = '4500.0 mm'             ! $SVG_housing.$_length, Definition
 
@@ -1299,21 +1299,21 @@ joint.par (               4 ,       $J_generator                  ) = 0.00000000
 joint.par (               5 ,       $J_generator                  ) = 0.00000000000000000E+00 ! [m] Translation in y
 joint.par (               6 ,       $J_generator                  ) = 0.00000000000000000E+00 ! [m] Translation in z
 joint.par (               7 ,       $J_generator                  ) = 0.00000000000000000E+00 ! [-] Rotation sequence
-joint.attr.2d.substr (    1 ,       $J_generator                  ) = $S_stage_03.$S_TPL
-joint.attr.2d.pos.x (     1 ,       $J_generator                  ) = 190
-joint.attr.2d.pos.y (     1 ,       $J_generator                  ) = -50
-joint.attr.2d.ori (       1 ,       $J_generator                  ) = 180
-joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_generator ) = 620, 610, 610, 605.51171875, 592.046875, 574.09375, 538.1875, 466.375, 418.5, 227, 227, 227, 227, 227, 227, 227, 227, 227, 217, 207
-joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_generator ) = -110, -110, -170, -170, -170, -170, -170, -170, -170, -170, -150, -130, -120, -110, -100, -90, -80, -50, -50, -50
-joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_generator   ) = 150, 141.0625, 141.0625, 141.0625, 154.75, 173
-joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_generator   ) = 30, 30, 0, -50, -50, -50
-joint.attr.2d.pos.x (     2 ,       $J_generator                  ) = 1490
-joint.attr.2d.pos.y (     2 ,       $J_generator                  ) = 50
-joint.attr.2d.ori (       2 ,       $J_generator                  ) = 0
-joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $J_generator ) = 1440, 1473
-joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $J_generator ) = 50, 50
-joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $J_generator   ) = 1560, 1507
-joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $J_generator   ) = 50, 50
+joint.attr.2d.pos.x (     1 ,       $J_generator                  ) = 1490
+joint.attr.2d.pos.y (     1 ,       $J_generator                  ) = 50
+joint.attr.2d.ori (       1 ,       $J_generator                  ) = 0
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_generator ) = 1440, 1473
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_generator ) = 50, 50
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_generator   ) = 1560, 1507
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_generator   ) = 50, 50
+joint.attr.2d.substr (    2 ,       $J_generator                  ) = $S_stage_03.$S_TPL
+joint.attr.2d.pos.x (     2 ,       $J_generator                  ) = 190
+joint.attr.2d.pos.y (     2 ,       $J_generator                  ) = -50
+joint.attr.2d.ori (       2 ,       $J_generator                  ) = 180
+joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $J_generator ) = 620, 610, 610, 605.51171875, 592.046875, 574.09375, 538.1875, 466.375, 418.5, 227, 227, 227, 227, 227, 227, 227, 227, 227, 217, 207
+joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $J_generator ) = -110, -110, -170, -170, -170, -170, -170, -170, -170, -170, -150, -130, -120, -110, -100, -90, -80, -50, -50, -50
+joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $J_generator   ) = 150, 141.0625, 141.0625, 141.0625, 154.75, 173
+joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $J_generator   ) = 30, 30, 0, -50, -50, -50
 
 prim.type (                         $P_generator                  ) = 2                       ! Type
 prim.ref (                          $P_generator                  ) = $M_generator_BRF        ! Reference Marker
@@ -2556,7 +2556,7 @@ joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_housing     ) = 210, 210, 
 
 prim.type (                         $P_housing                    ) = 1                       ! Type
 prim.ref (                          $P_housing                    ) = $M_housing_BRF          ! Reference Marker
-prim.pos (                1 ,       $P_housing                    ) = { (5 m)/2 }             ! Position
+prim.pos (                1 ,       $P_housing                    ) = $SVG_housing.$_x0       ! Position
 prim.pos (                2 ,       $P_housing                    ) = 0.00000000000000000E+00 ! Position
 prim.pos (                3 ,       $P_housing                    ) = 0.00000000000000000E+00 ! Position
 prim.ang (                1 ,       $P_housing                    ) = 0.00000000000000000E+00 ! Angles
@@ -2589,9 +2589,9 @@ prim.mp.incl (                      $P_housing                    ) = 1         
 prim.mp.geo (                       $P_housing                    ) = 1                       ! Treat Primitive for computation as
 prim.mp.dens.solid (                $P_housing                    ) = 7.85000000000000000E+03 ! Density
 prim.txt (                          $P_housing                    ) = ''                      ! Comment
-prim.par (                2 ,       $P_housing                    ) = { 5.00000000000000000E+00 m } ! [m] Length in X
-prim.par (                3 ,       $P_housing                    ) = { 3.00000000000000000E+00 m } ! [m] Length in Y
-prim.par (                4 ,       $P_housing                    ) = { 3.00000000000000000E+00 m } ! [m] Length in Z
+prim.par (                2 ,       $P_housing                    ) = $SVG_housing.$_length   ! [m] Length in X
+prim.par (                3 ,       $P_housing                    ) = $SVG_housing.$_width    ! [m] Length in Y
+prim.par (                4 ,       $P_housing                    ) = $SVG_housing.$_width    ! [m] Length in Z
 
 
 !**********************************************************************
@@ -2627,19 +2627,19 @@ force.par (               4 ,       $F_gen_Prop                   ) = 0.00000000
 force.par (               5 ,       $F_gen_Prop                   ) = 2.00000000000000000E+00 ! [-] Output type
 force.par (               7 ,       $F_gen_Prop                   ) = 1.00000000000000000E+00 ! [-] Axis of torque
 force.par (               8 ,       $F_gen_Prop                   ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
-force.attr.2d.substr (    1 ,       $F_gen_Prop                   ) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $F_gen_Prop                   ) = 850
-force.attr.2d.pos.y (     1 ,       $F_gen_Prop                   ) = 30
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 670, 913.75, 913.75, 867
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = -100, -100, 30, 30
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 150, 140, 140, 833
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 40, 40, 30, 30
-force.attr.2d.pos.x (     2 ,       $F_gen_Prop                   ) = 530
-force.attr.2d.pos.y (     2 ,       $F_gen_Prop                   ) = -110
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 1320, 1320, 547
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 30, -110, -110
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 520, 520, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 670, 720, 720, 680, 600, 560, 540, 530, 520, 510, 503, 503, 503, 503, 503, 513
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 180, 170, 170, 165.77301025390625, 153.092041015625, 136.18408203125, 124.912109375, 109.8828125, 89.84375, 63.125, 27.5, -20, -20, -20, -10, -10, -10, -10, -10, -10, -10, -10, -10, -20, -30, -40, -110, -110
+force.attr.2d.pos.x (     1 ,       $F_gen_Prop                   ) = 530
+force.attr.2d.pos.y (     1 ,       $F_gen_Prop                   ) = -110
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 1320, 1320, 547
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 30, -110, -110
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 520, 520, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 670, 720, 720, 680, 600, 560, 540, 530, 520, 510, 503, 503, 503, 503, 503, 513
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 180, 170, 170, 165.77301025390625, 153.092041015625, 136.18408203125, 124.912109375, 109.8828125, 89.84375, 63.125, 27.5, -20, -20, -20, -10, -10, -10, -10, -10, -10, -10, -10, -10, -20, -30, -40, -110, -110
+force.attr.2d.substr (    2 ,       $F_gen_Prop                   ) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $F_gen_Prop                   ) = 850
+force.attr.2d.pos.y (     2 ,       $F_gen_Prop                   ) = 30
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 670, 913.75, 913.75, 867
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = -100, -100, 30, 30
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 150, 140, 140, 833
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 40, 40, 30, 30
 
 force.type (                        $F_gen_PI                     ) = 110                     ! Type
 force.from (                        $F_gen_PI                     ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
@@ -2654,21 +2654,21 @@ force.par (               5 ,       $F_gen_PI                     ) = 2.00000000
 force.par (               7 ,       $F_gen_PI                     ) = 1.00000000000000000E+00 ! [-] Axis of torque
 force.par (               8 ,       $F_gen_PI                     ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
 force.par (               9 ,       $F_gen_PI                     ) = null                    ! [m⁻¹] P: Drive constant F=P*L
-force.attr.2d.substr (    1 ,       $F_gen_PI                     ) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $F_gen_PI                     ) = 50
-force.attr.2d.pos.y (     1 ,       $F_gen_PI                     ) = -30
+force.attr.2d.pos.x (     1 ,       $F_gen_PI                     ) = 1250
+force.attr.2d.pos.y (     1 ,       $F_gen_PI                     ) = 120
 force.attr.2d.ori (       1 ,       $F_gen_PI                     ) = 180
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 640, 640, 630, 97, 97, 97, 97, 97, 97, 87, 77, 67
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_PI    ) = -120, -140, -140, -140, -120, -100, -90, -80, -30, -30, -30, -30
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 40, 40, 30, 30, 33
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_PI      ) = -10, -7.5, -7.5, -30, -30
-force.attr.2d.pos.x (     2 ,       $F_gen_PI                     ) = 1250
-force.attr.2d.pos.y (     2 ,       $F_gen_PI                     ) = 120
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 1330, 1330, 1267
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 80, 120, 120
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 500, 494.375, 494.375, 507.5, 560, 1233
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 200, 200, 120, 120, 120, 120
+force.attr.2d.substr (    2 ,       $F_gen_PI                     ) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $F_gen_PI                     ) = 50
+force.attr.2d.pos.y (     2 ,       $F_gen_PI                     ) = -30
 force.attr.2d.ori (       2 ,       $F_gen_PI                     ) = 180
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 1330, 1330, 1267
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 80, 120, 120
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 500, 494.375, 494.375, 507.5, 560, 1233
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 200, 200, 120, 120, 120, 120
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 640, 640, 630, 97, 97, 97, 97, 97, 97, 87, 77, 67
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_PI    ) = -120, -140, -140, -140, -120, -100, -90, -80, -30, -30, -30, -30
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 40, 40, 30, 30, 33
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_PI      ) = -10, -7.5, -7.5, -30, -30
 
 force.type (                        $F_gen_time_series            ) = 93                      ! Type
 force.from (                        $F_gen_time_series            ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
@@ -2680,21 +2680,21 @@ force.par (               3 ,       $F_gen_time_series            ) = null      
 force.par (               4 ,       $F_gen_time_series            ) = $UE_T_gen               ! [-] u-Vector Element torque x
 force.par (               5 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element torque y
 force.par (               6 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element torque z
-force.attr.2d.substr (    1 ,       $F_gen_time_series            ) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $F_gen_time_series            ) = 120
-force.attr.2d.pos.y (     1 ,       $F_gen_time_series            ) = -40
-force.attr.2d.ori (       1 ,       $F_gen_time_series            ) = 90
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 620, 610, 610, 605.91205596923828, 593.64822387695313, 577.29644775390625, 566.395263671875, 551.8603515625, 532.48046875, 506.640625, 472.1875, 426.25, 242.5, 120, 120, 120, 120, 120, 120, 120, 120
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = -100, -100, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -140, -120, -110, -100, -90, -80, -57
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 100, 100, 120, 120
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = -10, -5.75, -5.75, -23
-force.attr.2d.pos.x (     2 ,       $F_gen_time_series            ) = 220
-force.attr.2d.pos.y (     2 ,       $F_gen_time_series            ) = -30
-force.attr.2d.ori (       2 ,       $F_gen_time_series            ) = 180
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 1310, 1250.796875, 1250.796875, 1103.1875, 512.75, 512.75, 502.75, 237
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 40, 40, -12.5, -12.5, -12.5, -30, -30, -30
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 500, 193, 193, 193, 193, 193, 193, 203
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 230, 230, 220, 210, 200, 190, -30, -30
+force.attr.2d.pos.x (     1 ,       $F_gen_time_series            ) = 220
+force.attr.2d.pos.y (     1 ,       $F_gen_time_series            ) = -30
+force.attr.2d.ori (       1 ,       $F_gen_time_series            ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 1310, 1250.796875, 1250.796875, 1103.1875, 512.75, 512.75, 502.75, 237
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 40, 40, -12.5, -12.5, -12.5, -30, -30, -30
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 500, 193, 193, 193, 193, 193, 193, 203
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 230, 230, 220, 210, 200, 190, -30, -30
+force.attr.2d.substr (    2 ,       $F_gen_time_series            ) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $F_gen_time_series            ) = 120
+force.attr.2d.pos.y (     2 ,       $F_gen_time_series            ) = -40
+force.attr.2d.ori (       2 ,       $F_gen_time_series            ) = 90
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 620, 610, 610, 605.91205596923828, 593.64822387695313, 577.29644775390625, 566.395263671875, 551.8603515625, 532.48046875, 506.640625, 472.1875, 426.25, 242.5, 120, 120, 120, 120, 120, 120, 120, 120
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = -100, -100, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -140, -120, -110, -100, -90, -80, -57
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 100, 100, 120, 120
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = -10, -5.75, -5.75, -23
 
 !**********************************************************************
 ! Control Elements
@@ -4700,13 +4700,24 @@ receiver.ref (                      $COM_main_shaft_x_A           ) = $SVG_main_
 
 receiver.ref (                      $COM_main_shaft_x_B           ) = $SVG_main_shaft.$SVG_bearing_B.$_x ! Destination object
 
+receiver.ref (                      $COM_main_shaft_length        ) = $SVG_main_shaft.$_length ! Destination object
+receiver.priolist (       1 ,       $COM_main_shaft_length        ) = '$COM_shaft_length'     ! Sender priority list
+receiver.override (                 $COM_main_shaft_length        ) = 0                       ! Override index
+
+receiver.ref (                      $COM_main_shaft_diameter      ) = $SVG_main_shaft.$_diameter ! Destination object
+receiver.priolist (       1 ,       $COM_main_shaft_diameter      ) = '$COM_shaft_diameter'   ! Sender priority list
+
 receiver.ref (                      $COM_base_excitation_flag     ) = $SVG_loading.$_base_excitation_flag ! Destination object
 
-receiver.ref (                      $COM_gamma_Torque) = $SVG_loading.$_gamma_Torque ! Destination object
+receiver.ref (                      $COM_gamma_Torque             ) = $SVG_loading.$_gamma_Torque ! Destination object
 
-receiver.ref (                      $COM_gamma_Force ) = $SVG_loading.$_gamma_Force ! Destination object
+receiver.ref (                      $COM_gamma_Force              ) = $SVG_loading.$_gamma_Force ! Destination object
 
-receiver.ref (                      $COM_gamma_Disp  ) = $SVG_loading.$_gamma_Disp ! Destination object
+receiver.ref (                      $COM_gamma_Disp               ) = $SVG_loading.$_gamma_Disp ! Destination object
+
+receiver.ref (                      $COM_stage_01_planet_flank_width) = $SVG_stage_01.$SVG_planet.$_flank_width ! Destination object
+
+receiver.ref (                      $COM_stage_02_planet_flank_width) = $SVG_stage_02.$SVG_planet.$_flank_width ! Destination object
 
 
 ! Overwritten substructure values
@@ -4870,21 +4881,21 @@ body.attr.2d.width (                $S_stage_03.$S_TPL.$B_shaft   ) = 5.00000000
 body.attr.2d.height (               $S_stage_03.$S_TPL.$B_shaft   ) = 3.00000000000000000E+01
 
 joint.from (                        $S_stage_03.$S_TPL.$J_shaft   ) = $M_housing_S03_shaft    ! From Marker
-joint.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$J_shaft   ) = $S_stage_03.$S_TPL
-joint.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 460
-joint.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$J_shaft   ) = -90
+joint.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 1380
+joint.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 230
 joint.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 0
-joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 120, 120, 130, 140, 413, 413, 413, 423, 433, 443
-joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = -10, 10, 10, 10, 10, 0, -90, -90, -90, -90
-joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 630, 630, 487, 487, 477
-joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = -90, -80, -80, -90, -90
-joint.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 1380
-joint.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 230
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 580, 590, 590, 1363
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 220, 220, 230, 230
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 1400, 1400, 1397
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 80, 230, 230
+joint.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$J_shaft   ) = $S_stage_03.$S_TPL
+joint.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 460
+joint.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$J_shaft   ) = -90
 joint.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$J_shaft   ) = 0
-joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 580, 590, 590, 1363
-joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 220, 220, 230, 230
-joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 1400, 1400, 1397
-joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 80, 230, 230
+joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 120, 120, 130, 140, 413, 413, 413, 423, 433, 443
+joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = -10, 10, 10, 10, 10, 0, -90, -90, -90, -90
+joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = 630, 630, 487, 487, 477
+joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$J_shaft) = -90, -80, -80, -90, -90
 
 
 body.attr.2d.pos.x (                $S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 5.20000000000000000E+02
@@ -4960,101 +4971,101 @@ force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$F_pinio
 force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$F_pinion_wheel_basic) = 550, 550, 773, 773, 773, 773, 773, 773, 783
 force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$F_pinion_wheel_basic) = -10, -20, -20, -24.21875, -36.875, -53.75, -65, -80, -80
 
-force.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 250
-force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = -60
+force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1370
+force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 460
 force.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 140, 140, 209.75, 209.75, 209.75, 209.75, 233
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = -10, -8.4375, -8.4375, -33.75, -45, -60, -60
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 530, 530, 267
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = -90, -60, -60
-force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1370
-force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 460
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 520, 520, 480, 480, 480, 480, 480, 500, 510, 520, 530, 550, 570, 580, 590, 1353
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 240, 294.296875, 294.296875, 338.59375, 368.125, 407.5, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1390, 1390, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1390, 1387
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 80, 106.4630126953125, 106.4630126953125, 122.926025390625, 133.9013671875, 148.53515625, 207.0703125, 246.09375, 298.125, 367.5, 460, 460, 460
+force.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 250
+force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = -60
 force.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 520, 520, 480, 480, 480, 480, 480, 500, 510, 520, 530, 550, 570, 580, 590, 1353
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 240, 294.296875, 294.296875, 338.59375, 368.125, 407.5, 460, 460, 460, 460, 460, 460, 460, 460, 460, 460
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1390, 1390, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1390, 1387
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 80, 106.4630126953125, 106.4630126953125, 122.926025390625, 133.9013671875, 148.53515625, 207.0703125, 246.09375, 298.125, 367.5, 460, 460, 460
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 140, 140, 209.75, 209.75, 209.75, 209.75, 233
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = -10, -8.4375, -8.4375, -33.75, -45, -60, -60
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 530, 530, 267
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = -90, -60, -60
 
-force.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 320
-force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = -80
+force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1370
+force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 410
 force.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 150, 140.8125, 140.8125, 173.25, 303
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0, 0, -80, -80, -80
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 520, 367, 367, 367, 367, 357, 347, 337
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = -110, -110, -100, -90, -80, -80, -80, -80
-force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1370
-force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 410
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 510, 510, 480, 480, 480, 480, 480, 480, 480, 490, 500, 510, 520, 530, 540, 550, 570, 580, 590, 1353
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 240, 254.21875, 254.21875, 266.875, 283.75, 295, 310, 370, 410, 410, 410, 410, 410, 410, 410, 410, 410, 410, 410, 410
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1410, 1410, 1400, 1390, 1387
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 80, 410, 410, 410, 410
+force.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 320
+force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = -80
 force.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 510, 510, 480, 480, 480, 480, 480, 480, 480, 490, 500, 510, 520, 530, 540, 550, 570, 580, 590, 1353
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 240, 254.21875, 254.21875, 266.875, 283.75, 295, 310, 370, 410, 410, 410, 410, 410, 410, 410, 410, 410, 410, 410, 410
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1410, 1410, 1400, 1390, 1387
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 80, 410, 410, 410, 410
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 150, 140.8125, 140.8125, 173.25, 303
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0, 0, -80, -80, -80
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 520, 367, 367, 367, 367, 357, 347, 337
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = -110, -110, -100, -90, -80, -80, -80, -80
 
-force.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 390
-force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = -90
+force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1440
+force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 370
 force.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 110, 110, 130, 140, 343, 343, 343, 353, 363, 373
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = -10, 10, 10, 10, 10, 0, -90, -90, -90, -90
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 540, 540, 440.25, 440.25, 440.25, 407
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = -90, -70, -70, -80, -90, -90
-force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1440
-force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 370
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 540, 540, 662.5, 662.5, 662.5, 662.5, 610, 580, 560, 550, 540, 540, 1423
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 240, 253.4375, 253.4375, 263.75, 277.5, 360, 360, 360, 360, 360, 360, 370, 370
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1440, 1467, 1467, 1457
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 60, 60, 370, 370
+force.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 390
+force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = -90
 force.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 540, 540, 662.5, 662.5, 662.5, 662.5, 610, 580, 560, 550, 540, 540, 1423
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 240, 253.4375, 253.4375, 263.75, 277.5, 360, 360, 360, 360, 360, 360, 370, 370
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1440, 1467, 1467, 1457
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 60, 60, 370, 370
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 110, 110, 130, 140, 343, 343, 343, 353, 363, 373
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = -10, 10, 10, 10, 10, 0, -90, -90, -90, -90
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 540, 540, 440.25, 440.25, 440.25, 407
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = -90, -70, -70, -80, -90, -90
 
-force.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 260
-force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = -10
+force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1430
+force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 330
 force.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 130, 130, 243
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = -10, -10, -10
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 60, 60, 297, 297, 297, 297, 287, 277
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 30, 20, 20, 16.25, 5, -10, -10, -10
-force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1430
-force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 330
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 570, 570, 639.03125, 639.03125, 649.03125, 675.375, 780.75, 1413
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 240, 270, 270, 330, 330, 330, 330, 330
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1440, 1450, 1450, 1447
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 70, 70, 330, 330
+force.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 260
+force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = -10
 force.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 570, 570, 639.03125, 639.03125, 649.03125, 675.375, 780.75, 1413
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 240, 270, 270, 330, 330, 330, 330, 330
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1440, 1450, 1450, 1447
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 70, 70, 330, 330
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 130, 130, 243
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = -10, -10, -10
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 60, 60, 297, 297, 297, 297, 287, 277
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 30, 20, 20, 16.25, 5, -10, -10, -10
 
-force.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 320
-force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = -10
+force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1340
+force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 140
 force.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 150, 149.5625, 149.5625, 178.25, 293, 293, 293, 303
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 19.999999999999996, 19.999999999999996, 20, 20, 20, 10, -10, -10
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 80, 347, 347, 337
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 40, 40, -10, -10
-force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1340
-force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 140
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 500, 493.75, 493.75, 505, 550, 560, 1323
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 220, 220, 140, 140, 140, 140, 140
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1360, 1360, 1357
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 80, 140, 140
+force.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 320
+force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = -10
 force.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 500, 493.75, 493.75, 505, 550, 560, 1323
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 220, 220, 140, 140, 140, 140, 140
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1360, 1360, 1357
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 80, 140, 140
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 150, 149.5625, 149.5625, 178.25, 293, 293, 293, 303
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 19.999999999999996, 19.999999999999996, 20, 20, 20, 10, -10, -10
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 80, 347, 347, 337
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 40, 40, -10, -10
 
-force.attr.2d.substr (    1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 390
-force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = -10
+force.attr.2d.pos.x (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1350
+force.attr.2d.pos.y (     1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 180
 force.attr.2d.ori (       1 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 150, 149.515625, 149.515625, 178.0625, 190.75, 343, 343, 343, 353, 363, 373
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 10, 10, 20, 20, 20, 20, 10, -10, -10, -10, -10
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 50, 50, 437, 437, 437, 437, 427, 417, 407
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 30, 20, 20, 16.25, 5, -10, -10, -10, -10
-force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1350
-force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 550, 550, 598.9375, 598.9375, 598.9375, 745.75, 1333
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 240, 245.625, 245.625, 232.5, 180, 180, 180
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1370, 1370, 1367
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 80, 180, 180
+force.attr.2d.substr (    2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = $S_stage_03.$S_TPL
+force.attr.2d.pos.x (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 390
+force.attr.2d.pos.y (     2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = -10
 force.attr.2d.ori (       2 ,       $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 550, 550, 598.9375, 598.9375, 598.9375, 745.75, 1333
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 240, 245.625, 245.625, 232.5, 180, 180, 180
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1370, 1370, 1367
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 80, 180, 180
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 150, 149.515625, 149.515625, 178.0625, 190.75, 343, 343, 343, 353, 363, 373
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 10, 10, 20, 20, 20, 20, 10, -10, -10, -10, -10
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 50, 50, 437, 437, 437, 437, 427, 417, 407
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 30, 20, 20, 16.25, 5, -10, -10, -10, -10
 
 sender.alias (                      $S_stage_03.$S_TPL.$COM_stage_ratio) = '$COM_stage_03_ratio' ! Alias
 

@@ -23,6 +23,8 @@ rw.linear                                                           = 0         
 time                                                                = 0.00000000000000000E+00 ! Time
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
+subvarset.file (          1                                       ) = './NREL_5MW.scaled.subvar' ! subvarset filename
+subvarset.role (          1                                       ) = 1                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -63,9 +65,9 @@ substr.id (                         $S_reference                  ) = '1'       
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 1.21585512161254883E+01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -1.28904170989990234E+01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 1.04676170349121094E+01 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 1.20026502609252930E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.27237138748168945E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.03234329223632813E+01 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 4.53581929206848145E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = 1.65004238486289978E-01 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 3.43495577573776245E-01 ! Orientation
@@ -73,8 +75,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.05635035
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 2.34735943377017975E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 2.34735927581787109E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 2.25915927439928055E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 2.25915908813476563E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -204,334 +206,52 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 ! SubVars
 !**********************************************************************
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
-   subvar.str (                     $_gamma_Power                 ) = '1.0'                   ! $SVG_loading.$_gamma_Power, Definition
-
-   subvar.str (                     $_gamma_Speed                 ) = '1.0'                   ! $SVG_loading.$_gamma_Speed, Definition
-
-   subvar.str (                     $_gamma_Torque                ) = '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed' ! $SVG_loading.$_gamma_Torque, Definition
-
-   subvar.str (                     $_gamma_Force                 ) = 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed' ! $SVG_loading.$_gamma_Force, Definition
-
-   subvar.str (                     $_rated_power_ref             ) = '5.0e3 kW'              ! $SVG_loading.$_rated_power_ref, Definition
-
-   subvar.str (                     $_rated_power                 ) = '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power' ! $SVG_loading.$_rated_power, Definition
-
-   subvar.str (                     $_inertia_flag                ) = '1'                     ! $SVG_loading.$_inertia_flag, Definition
-   subvar.discr.desc (    1 ,       $_inertia_flag                ) = 'yes (value)'           ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_inertia_flag                ) = 'no (unit)'             ! Description of discrete values
-   subvar.discr.str (     1 ,       $_inertia_flag                ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_inertia_flag                ) = '0'                     ! Discrete values
-
-   subvar.str (                     $_base_excitation_flag        ) = '1'                     ! $SVG_loading.$_base_excitation_flag, Definition
-   subvar.discr.desc (    1 ,       $_base_excitation_flag        ) = 'ON'                    ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_base_excitation_flag        ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.str (     1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_base_excitation_flag        ) = '0'                     ! Discrete values
-
-   subvar.str (                     $_generator_flag              ) = '2'                     ! $SVG_loading.$_generator_flag, Definition
-   subvar.discr.desc (    1 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
-   subvar.discr.str (     1 ,       $_generator_flag              ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_generator_flag              ) = '2'                     ! Discrete values
-   subvar.discr.str (     3 ,       $_generator_flag              ) = '3'                     ! Discrete values
-
-   subvar.str (                     $_mesh_flag                   ) = '225'                   ! $SVG_loading.$_mesh_flag, Definition
-   subvar.discr.desc (    1 ,       $_mesh_flag                   ) = 'advanced'              ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_mesh_flag                   ) = 'basic'                 ! Description of discrete values
-   subvar.discr.str (     1 ,       $_mesh_flag                   ) = '225'                   ! Discrete values
-   subvar.discr.str (     2 ,       $_mesh_flag                   ) = '204'                   ! Discrete values
-
-   subvar.str (                     $_simulation_time             ) = '1000 s'                ! $SVG_loading.$_simulation_time, Definition
-
-   subvar.str (                     $_gamma_Disp                  ) = '1.0'                   ! $SVG_loading.$_gamma_Disp, Definition
-
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-   subvar.str (                     $_gamma_m                     ) = '1.0'                   ! $SVG_rotor.$_gamma_m, Definition
-
-   subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_rotor.$_gamma_J, Definition
-
-   subvar.str (                     $_mass_ref                    ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_rotor.$_mass_ref, Definition
-
-   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($SVG_loading.$_inertia_flag== 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_rotor.$_mass_mom_inertia_ref, Definition
-
-   subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_rotor.$_length_ref, Definition
-
-   subvar.str (                     $_mass                        ) = '$SVG_rotor.$_mass_ref*$SVG_rotor.$_gamma_m' ! $SVG_rotor.$_mass, Definition
-
-   subvar.str (                     $_mass_mom_inertia            ) = '$SVG_rotor.$_mass_mom_inertia_ref*$SVG_rotor.$_gamma_J' ! $SVG_rotor.$_mass_mom_inertia, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_rotor.$_length_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_rotor.$_length, Definition
-
-   subvar.str (                     $_rated_speed                 ) = '12.1 rpm'              ! $SVG_rotor.$_rated_speed, Definition
-
 subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor
 
 subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_main_shaft.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_main_shaft.$_gamma_d, Definition
-
-   subvar.str (                     $_length_ref                  ) = '2000.0 mm'             ! $SVG_main_shaft.$_length_ref, Definition
-
-   subvar.str (                     $_diameter_ref                ) = '700.0 mm'              ! $SVG_main_shaft.$_diameter_ref, Definition
-
-   subvar.str (                     $_x_A_ref                     ) = '333.0 mm'              ! $SVG_main_shaft.$_x_A_ref, Definition
-
-   subvar.str (                     $_x_B_ref                     ) = '1166.0 mm'             ! $SVG_main_shaft.$_x_B_ref, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_main_shaft.$_length_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_main_shaft.$_length, Definition
-
-   subvar.str (                     $_diameter                    ) = '$SVG_main_shaft.$_diameter_ref*$SVG_main_shaft.$_gamma_d' ! $SVG_main_shaft.$_diameter, Definition
-
-   subvar.str (                     $_x_A                         ) = '$SVG_main_shaft.$_x_A_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_main_shaft.$_x_A, Definition
-
-   subvar.str (                     $_x_B                         ) = '$SVG_main_shaft.$_x_B_ref*$SVG_main_shaft.$_gamma_L' ! $SVG_main_shaft.$_x_B, Definition
-
 subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
 
 subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
-   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_01.$_gamma_mn, Definition
-
-   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_b, Definition
-
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_01.$_gamma_d, Definition
-
-   subvar.str (                     $_k_SP                        ) = '1.0e9 N/m'             ! $SVG_stage_01.$_k_SP, Definition
-
-   subvar.str (                     $_k_RP                        ) = '1.0e9 N/m'             ! $SVG_stage_01.$_k_RP, Definition
-
-   subvar.str (                     $_normal_module_ref           ) = '45 mm'                 ! $SVG_stage_01.$_normal_module_ref, Definition
-
-   subvar.str (                     $_center_distance_ref         ) = '863.0 mm'              ! $SVG_stage_01.$_center_distance_ref, Definition
-
-   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_01.$_normal_backlash_ref, Definition
-
-   subvar.str (                     $_normal_module               ) = '$SVG_stage_01.$_normal_module_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_normal_module, Definition
-
-   subvar.str (                     $_center_distance             ) = '$SVG_stage_01.$_center_distance_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_center_distance, Definition
-
-   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_01.$_normal_backlash_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$_normal_backlash, Definition
-
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
-      subvar.str (                  $_flank_width_ref             ) = '491.0 mm'              ! $SVG_stage_01.$SVG_sun.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_sun.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_sun.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_sun.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_sun.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_sun.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_01.$SVG_sun.$_flank_width' ! $SVG_stage_01.$SVG_planet.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_planet.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_planet.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_planet.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_planet.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_planet.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_01.$SVG_sun.$_flank_width' ! $SVG_stage_01.$SVG_ring.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_01.$SVG_ring.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_01.$SVG_ring.$_flank_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_stage_01.$SVG_ring.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_01.$SVG_ring.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_stage_01.$SVG_ring.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
-      subvar.str (                  $_length_ref                  ) = '500.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_length_ref, Definition
-
-      subvar.str (                  $_diameter_ref                ) = '533.0 mm'              ! $SVG_stage_01.$SVG_shaft.$_diameter_ref, Definition
-
-      subvar.str (                  $_length                      ) = '$SVG_stage_01.$SVG_shaft.$_length_ref*$SVG_stage_01.$_gamma_L' ! $SVG_stage_01.$SVG_shaft.$_length, Definition
-
-      subvar.str (                  $_diameter                    ) = '$SVG_stage_01.$SVG_shaft.$_diameter_ref*$SVG_stage_01.$_gamma_d' ! $SVG_stage_01.$SVG_shaft.$_diameter, Definition
-
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
 subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
 
 subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
-   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_02.$_gamma_mn, Definition
-
-   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_b, Definition
-
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_02.$_gamma_d, Definition
-
-   subvar.str (                     $_k_SP                        ) = '1.0e9 N/m'             ! $SVG_stage_02.$_k_SP, Definition
-
-   subvar.str (                     $_k_RP                        ) = '1.0e9 N/m'             ! $SVG_stage_02.$_k_RP, Definition
-
-   subvar.str (                     $_normal_module_ref           ) = '21.0 mm'               ! $SVG_stage_02.$_normal_module_ref, Definition
-
-   subvar.str (                     $_center_distance_ref         ) = '584.0 mm'              ! $SVG_stage_02.$_center_distance_ref, Definition
-
-   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_02.$_normal_backlash_ref, Definition
-
-   subvar.str (                     $_normal_module               ) = '$SVG_stage_02.$_normal_module_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_normal_module, Definition
-
-   subvar.str (                     $_center_distance             ) = '$SVG_stage_02.$_center_distance_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_center_distance, Definition
-
-   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_02.$_normal_backlash_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$_normal_backlash, Definition
-
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
-      subvar.str (                  $_flank_width_ref             ) = '550.0 mm'              ! $SVG_stage_02.$SVG_sun.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '200.0 mm'              ! $SVG_stage_02.$SVG_sun.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_sun.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_sun.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_sun.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_sun.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_02.$SVG_sun.$_flank_width' ! $SVG_stage_02.$SVG_planet.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '380.0 mm'              ! $SVG_stage_02.$SVG_planet.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_planet.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_planet.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_planet.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_planet.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_02.$SVG_sun.$_flank_width' ! $SVG_stage_02.$SVG_ring.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_02.$SVG_ring.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_02.$SVG_ring.$_flank_width_ref*$SVG_stage_02.$_gamma_b' ! $SVG_stage_02.$SVG_ring.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_02.$SVG_ring.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn' ! $SVG_stage_02.$SVG_ring.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
-      subvar.str (                  $_length_ref                  ) = '666.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_length_ref, Definition
-
-      subvar.str (                  $_diameter_ref                ) = '333.0 mm'              ! $SVG_stage_02.$SVG_shaft.$_diameter_ref, Definition
-
-      subvar.str (                  $_length                      ) = '$SVG_stage_02.$SVG_shaft.$_length_ref*$SVG_stage_02.$_gamma_L' ! $SVG_stage_02.$SVG_shaft.$_length, Definition
-
-      subvar.str (                  $_diameter                    ) = '$SVG_stage_02.$SVG_shaft.$_diameter_ref*$SVG_stage_02.$_gamma_d' ! $SVG_stage_02.$SVG_shaft.$_diameter, Definition
-
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
 subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
 
 subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
-   subvar.str (                     $_gamma_mn                    ) = '1.0'                   ! $SVG_stage_03.$_gamma_mn, Definition
-
-   subvar.str (                     $_gamma_b                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_b, Definition
-
-   subvar.str (                     $_gamma_L                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_L, Definition
-
-   subvar.str (                     $_gamma_d                     ) = '1.0'                   ! $SVG_stage_03.$_gamma_d, Definition
-
-   subvar.str (                     $_normal_module_ref           ) = '14 mm'                 ! $SVG_stage_03.$_normal_module_ref, Definition
-
-   subvar.str (                     $_center_distance_ref         ) = '861.0 mm'              ! $SVG_stage_03.$_center_distance_ref, Definition
-
-   subvar.str (                     $_normal_backlash_ref         ) = '0.40 mm'               ! $SVG_stage_03.$_normal_backlash_ref, Definition
-
-   subvar.str (                     $_normal_module               ) = '$SVG_stage_03.$_normal_module_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_normal_module, Definition
-
-   subvar.str (                     $_center_distance             ) = '$SVG_stage_03.$_center_distance_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_center_distance, Definition
-
-   subvar.str (                     $_normal_backlash             ) = '$SVG_stage_03.$_normal_backlash_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$_normal_backlash, Definition
-
-   subvar.str (                     $_k_PW                        ) = '1.0e9 N/m'             ! $SVG_stage_03.$_k_PW, Definition
-
    subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
-      subvar.str (                  $_flank_width_ref             ) = '360.0 mm'              ! $SVG_stage_03.$SVG_pinion.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '200.0 mm'              ! $SVG_stage_03.$SVG_pinion.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_03.$SVG_pinion.$_flank_width_ref*$SVG_stage_03.$_gamma_b' ! $SVG_stage_03.$SVG_pinion.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_03.$SVG_pinion.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$SVG_pinion.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
    subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
-      subvar.str (                  $_flank_width_ref             ) = '$SVG_stage_03.$SVG_pinion.$_flank_width' ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref, Definition
-
-      subvar.str (                  $_bore_diameter_ref           ) = '400.0 mm'              ! $SVG_stage_03.$SVG_wheel.$_bore_diameter_ref, Definition
-
-      subvar.str (                  $_flank_width                 ) = '$SVG_stage_03.$SVG_wheel.$_flank_width_ref*$SVG_stage_03.$_gamma_b' ! $SVG_stage_03.$SVG_wheel.$_flank_width, Definition
-
-      subvar.str (                  $_bore_diameter               ) = '$SVG_stage_03.$SVG_wheel.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn' ! $SVG_stage_03.$SVG_wheel.$_bore_diameter, Definition
-
    subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
-      subvar.str (                  $_length_ref                  ) = '1000.0 mm'             ! $SVG_stage_03.$SVG_shaft.$_length_ref, Definition
-
-      subvar.str (                  $_diameter_ref                ) = '333.0 mm'              ! $SVG_stage_03.$SVG_shaft.$_diameter_ref, Definition
-
-      subvar.str (                  $_length                      ) = '$SVG_stage_03.$SVG_shaft.$_length_ref*$SVG_stage_03.$_gamma_L' ! $SVG_stage_03.$SVG_shaft.$_length, Definition
-
-      subvar.str (                  $_diameter                    ) = '$SVG_stage_03.$SVG_shaft.$_diameter_ref*$SVG_stage_03.$_gamma_d' ! $SVG_stage_03.$SVG_shaft.$_diameter, Definition
-
    subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-   subvar.str (                     $_gamma_m                     ) = '1.0'                   ! $SVG_generator.$_gamma_m, Definition
-
-   subvar.str (                     $_gamma_J                     ) = '1.0'                   ! $SVG_generator.$_gamma_J, Definition
-
-   subvar.str (                     $_mass_ref                    ) = 'IF($SVG_loading.$_inertia_flag == 1)\n{\n1900.0 kg\n}\nELSE\n{\n1.0 kg\n}' ! $SVG_generator.$_mass_ref, Definition
-
-   subvar.str (                     $_mass_mom_inertia_ref        ) = 'IF($SVG_loading.$_inertia_flag  == 1)\n{\n534.116 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}' ! $SVG_generator.$_mass_mom_inertia_ref, Definition
-
-   subvar.str (                     $_length_ref                  ) = '250.0 mm'              ! $SVG_generator.$_length_ref, Definition
-
-   subvar.str (                     $_K_P_ref                     ) = '2200.0'                ! $SVG_generator.$_K_P_ref, Definition
-   subvar.desc (          1 ,       $_K_P_ref                     ) = 'Proportional gain'     ! Description
-
-   subvar.str (                     $_K_I_ref                     ) = '220.0'                 ! $SVG_generator.$_K_I_ref, Definition
-   subvar.desc (          1 ,       $_K_I_ref                     ) = 'Integral gain'         ! Description
-
-   subvar.str (                     $_mass                        ) = '$SVG_generator.$_mass_ref*$SVG_generator.$_gamma_m' ! $SVG_generator.$_mass, Definition
-
-   subvar.str (                     $_mass_mom_inertia            ) = '$SVG_generator.$_mass_mom_inertia_ref*$SVG_generator.$_gamma_J' ! $SVG_generator.$_mass_mom_inertia, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_generator.$_length_ref*$SVG_stage_03.$_gamma_L' ! $SVG_generator.$_length, Definition
-
-   subvar.str (                     $_K_P                         ) = '$SVG_generator.$_K_P_ref*$SVG_loading.$_gamma_Torque' ! $SVG_generator.$_K_P, Definition
-   subvar.desc (          1 ,       $_K_P                         ) = 'Proportional gain'     ! Description
-
-   subvar.str (                     $_K_I                         ) = '$SVG_generator.$_K_I_ref*$SVG_loading.$_gamma_Torque' ! $SVG_generator.$_K_I, Definition
-   subvar.desc (          1 ,       $_K_I                         ) = 'Integral gain'         ! Description
-
 subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator
 
 subvargroup.begin (                 $SVG_housing                  )                           ! $SVG_housing
-   subvar.str (                     $_length_ref                  ) = '4500.0 mm'             ! $SVG_housing.$_length_ref, Definition
-
-   subvar.str (                     $_width_ref                   ) = '3000.0 mm'             ! $SVG_housing.$_width_ref, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_housing.$_length_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_housing.$_length, Definition
-
-   subvar.str (                     $_width                       ) = '$SVG_housing.$_width_ref*$SVG_stage_01.$_gamma_b' ! $SVG_housing.$_width, Definition
-
 subvargroup.end (                   $SVG_housing                  )                           ! $SVG_housing
 
 subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
-   subvar.str (                     $_length_ref                  ) = '8000.0 mm'             ! $SVG_bed_plate.$_length_ref, Definition
-
-   subvar.str (                     $_width_ref                   ) = '4000.0 mm'             ! $SVG_bed_plate.$_width_ref, Definition
-
-   subvar.str (                     $_length                      ) = '$SVG_bed_plate.$_length_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_length, Definition
-
-   subvar.str (                     $_width                       ) = '$SVG_bed_plate.$_width_ref*$SVG_stage_01.$_gamma_mn' ! $SVG_bed_plate.$_width, Definition
-
 subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
 
 !**********************************************************************
