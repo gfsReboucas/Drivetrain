@@ -19,13 +19,8 @@ subvargroup.begin (                 $SVG_loading                  )             
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-<<<<<<< HEAD
    subvar($_gamma_m, str= '1.0')                                                              ! $SVG_rotor.$_gamma_m
    subvar($_gamma_J, str= '1.68936e-05')                                                              ! $SVG_rotor.$_gamma_J
-=======
-   subvar($_gamma_m, str= '1')                                                              ! $SVG_rotor.$_gamma_m
-   subvar($_gamma_J, str= '1.12351e-06')                                                              ! $SVG_rotor.$_gamma_J
->>>>>>> parent of bcb9df6... added scaling at the base excitation
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
 110.0e3 kg
@@ -173,13 +168,8 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-<<<<<<< HEAD
    subvar($_gamma_m, str= '1.0')                                                              ! $SVG_generator.$_gamma_m
    subvar($_gamma_J, str= '1.68936e-05')                                                              ! $SVG_generator.$_gamma_J
-=======
-   subvar($_gamma_m, str= '1')                                                              ! $SVG_generator.$_gamma_m
-   subvar($_gamma_J, str= '1.12351e-06')                                                              ! $SVG_generator.$_gamma_J
->>>>>>> parent of bcb9df6... added scaling at the base excitation
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
 1900.0 kg
