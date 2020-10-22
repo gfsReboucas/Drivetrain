@@ -4,7 +4,7 @@
 ! SubVars
 !**********************************************************************
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
-   subvar($_gamma_Power, str= '1.00000e-03')                                                          ! $SVG_loading.$_gamma_Power
+   subvar($_gamma_Power, str= '1.00000e-04')                                                          ! $SVG_loading.$_gamma_Power
    subvar($_gamma_Speed, str= '1.00000e+00')                                                          ! $SVG_loading.$_gamma_Speed
    subvar($_gamma_Torque, str= '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed')       ! $SVG_loading.$_gamma_Torque
    subvar($_gamma_Force, str= 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed') ! $SVG_loading.$_gamma_Force
@@ -19,8 +19,13 @@ subvargroup.begin (                 $SVG_loading                  )             
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
+<<<<<<< HEAD
    subvar($_gamma_m, str= '1.0')                                                              ! $SVG_rotor.$_gamma_m
    subvar($_gamma_J, str= '1.68936e-05')                                                              ! $SVG_rotor.$_gamma_J
+=======
+   subvar($_gamma_m, str= '1')                                                              ! $SVG_rotor.$_gamma_m
+   subvar($_gamma_J, str= '1.12351e-06')                                                              ! $SVG_rotor.$_gamma_J
+>>>>>>> parent of bcb9df6... added scaling at the base excitation
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
 110.0e3 kg
@@ -45,8 +50,8 @@ ELSE
 subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor
 
 subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
-   subvar($_gamma_L, str= '6.74410e-02')                                                              ! $SVG_main_shaft.$_gamma_L
-   subvar($_gamma_d, str= '1.00000e-01')                                                              ! $SVG_main_shaft.$_gamma_d
+   subvar($_gamma_L, str= '8.87625e-03')                                                              ! $SVG_main_shaft.$_gamma_L
+   subvar($_gamma_d, str= '4.64159e-02')                                                              ! $SVG_main_shaft.$_gamma_d
    subvar($_length_ref, str= '2000.0 mm')                                                     ! $SVG_main_shaft.$_length_ref
    subvar($_diameter_ref, str= '700.0 mm')                                                    ! $SVG_main_shaft.$_diameter_ref
    subvar($_x_A_ref, str= '333.0 mm')                                                         ! $SVG_main_shaft.$_x_A_ref
@@ -58,12 +63,12 @@ subvargroup.begin (                 $SVG_main_shaft               )             
 subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
 
 subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
-   subvar($_gamma_mn, str= '1.16667e-01')                                                             ! $SVG_stage_01.$_gamma_mn
-   subvar($_gamma_b, str= '9.62619e-02')                                                              ! $SVG_stage_01.$_gamma_b
-   subvar($_gamma_L, str= '6.22111e-02')                                                              ! $SVG_stage_01.$_gamma_L
-   subvar($_gamma_d, str= '1.00000e-01')                                                              ! $SVG_stage_01.$_gamma_d
-   subvar($_k_SP, str= '1.29908e+09 N/m')                                                           ! $SVG_stage_01.$_k_SP
-   subvar($_k_RP, str= '1.60248e+09 N/m')                                                           ! $SVG_stage_01.$_k_RP
+   subvar($_gamma_mn, str= '4.87380e-02')                                                             ! $SVG_stage_01.$_gamma_mn
+   subvar($_gamma_b, str= '4.87380e-02')                                                              ! $SVG_stage_01.$_gamma_b
+   subvar($_gamma_L, str= '4.08854e-02')                                                              ! $SVG_stage_01.$_gamma_L
+   subvar($_gamma_d, str= '4.64159e-02')                                                              ! $SVG_stage_01.$_gamma_d
+   subvar($_k_SP, str= '6.57732e+08 N/m')                                                           ! $SVG_stage_01.$_k_SP
+   subvar($_k_RP, str= '8.11346e+08 N/m')                                                           ! $SVG_stage_01.$_k_RP
    subvar($_normal_module_ref, str= '45 mm')                                                  ! $SVG_stage_01.$_normal_module_ref
    subvar($_center_distance_ref, str= '863.0 mm')                                             ! $SVG_stage_01.$_center_distance_ref
    subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_01.$_normal_backlash_ref
@@ -97,12 +102,12 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
 
 subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
-   subvar($_gamma_mn, str= '1.13095e-01')                                                             ! $SVG_stage_02.$_gamma_mn
-   subvar($_gamma_b, str= '1.56479e-01')                                                              ! $SVG_stage_02.$_gamma_b
-   subvar($_gamma_L, str= '6.22111e-02')                                                              ! $SVG_stage_02.$_gamma_L
-   subvar($_gamma_d, str= '1.00000e-01')                                                              ! $SVG_stage_02.$_gamma_d
-   subvar($_k_SP, str= '2.67490e+09 N/m')                                                           ! $SVG_stage_02.$_k_SP
-   subvar($_k_RP, str= '1.14008e+10 N/m')                                                           ! $SVG_stage_02.$_k_RP
+   subvar($_gamma_mn, str= '5.65476e-02')                                                             ! $SVG_stage_02.$_gamma_mn
+   subvar($_gamma_b, str= '4.31656e-02')                                                              ! $SVG_stage_02.$_gamma_b
+   subvar($_gamma_L, str= '4.08854e-02')                                                              ! $SVG_stage_02.$_gamma_L
+   subvar($_gamma_d, str= '4.64159e-02')                                                              ! $SVG_stage_02.$_gamma_d
+   subvar($_k_SP, str= '7.37888e+08 N/m')                                                           ! $SVG_stage_02.$_k_SP
+   subvar($_k_RP, str= '3.14500e+09 N/m')                                                           ! $SVG_stage_02.$_k_RP
    subvar($_normal_module_ref, str= '21.0 mm')                                                ! $SVG_stage_02.$_normal_module_ref
    subvar($_center_distance_ref, str= '584.0 mm')                                             ! $SVG_stage_02.$_center_distance_ref
    subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_02.$_normal_backlash_ref
@@ -136,11 +141,11 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
 
 subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
-   subvar($_gamma_mn, str= '1.33783e-01')                                                             ! $SVG_stage_03.$_gamma_mn
-   subvar($_gamma_b, str= '9.70770e-02')                                                              ! $SVG_stage_03.$_gamma_b
-   subvar($_gamma_L, str= '6.74410e-02')                                                              ! $SVG_stage_03.$_gamma_L
-   subvar($_gamma_d, str= '1.00000e-01')                                                              ! $SVG_stage_03.$_gamma_d
-   subvar($_k_PW, str= '1.24810e+09 N/m')                                                           ! $SVG_stage_03.$_k_PW
+   subvar($_gamma_mn, str= '4.42487e-02')                                                             ! $SVG_stage_03.$_gamma_mn
+   subvar($_gamma_b, str= '4.42487e-02')                                                              ! $SVG_stage_03.$_gamma_b
+   subvar($_gamma_L, str= '8.87625e-03')                                                              ! $SVG_stage_03.$_gamma_L
+   subvar($_gamma_d, str= '4.64159e-02')                                                              ! $SVG_stage_03.$_gamma_d
+   subvar($_k_PW, str= '5.68897e+08 N/m')                                                           ! $SVG_stage_03.$_k_PW
    subvar($_normal_module_ref, str= '14 mm')                                                  ! $SVG_stage_03.$_normal_module_ref
    subvar($_center_distance_ref, str= '861.0 mm')                                             ! $SVG_stage_03.$_center_distance_ref
    subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_03.$_normal_backlash_ref
@@ -168,8 +173,13 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
+<<<<<<< HEAD
    subvar($_gamma_m, str= '1.0')                                                              ! $SVG_generator.$_gamma_m
    subvar($_gamma_J, str= '1.68936e-05')                                                              ! $SVG_generator.$_gamma_J
+=======
+   subvar($_gamma_m, str= '1')                                                              ! $SVG_generator.$_gamma_m
+   subvar($_gamma_J, str= '1.12351e-06')                                                              ! $SVG_generator.$_gamma_J
+>>>>>>> parent of bcb9df6... added scaling at the base excitation
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
 1900.0 kg
