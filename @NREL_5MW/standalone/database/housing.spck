@@ -1,11 +1,11 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.5! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20210000
 version.desc   = ''
-version.build  = 82
+version.build  = 101
 
 !**********************************************************************
 !  Global parameters
@@ -22,6 +22,7 @@ rw.linear                                                           = 0         
 time                                                                = 0.00000000000000000E+00 ! Time
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -56,9 +57,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 1.75636613368988037E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -1.19406957626342773E+01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 4.39825963973999023E+00 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 1.59603357315063477E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.08342247009277344E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.98844361305236816E+00 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.72478830814361572E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = -1.37023981660604477E-02 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 1.36945649981498718E-01 ! Orientation
@@ -66,8 +67,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.08285892
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.68202929198741913E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.68202915191650391E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.48549927398562431E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.48549919128417969E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -189,16 +190,18 @@ slv.meas.yout (                     $SLV_SolverSettings           ) = 1         
 slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
-slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar.str (                        $_length                      ) = '5.0 m'                 ! Definition
+subvar.str (                        $_length                      ) = '$SVG_stage_01.$_x_ring + $SVG_stage_01.$_length+ $SVG_stage_02.$_length + $SVG_stage_03.$_length - $SVG_stage_03.$_shaft_length/2.0' ! Definition
 
-subvar.str (                        $_width                       ) = '3.0 m'                 ! Definition
+subvar.str (                        $_width                       ) = '1.2*$SVG_stage_01.$_ring_bore_diam' ! Definition
 
 subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
    subvar.str (                     $_length                      ) = '2000.0 mm'             ! $SVG_main_shaft.$_length, Definition
@@ -208,9 +211,17 @@ subvargroup.begin (                 $SVG_main_shaft               )             
 subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
 
 subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
+   subvar.str (                     $_normal_module               ) = '45.0 mm'               ! $SVG_stage_01.$_normal_module, Definition
+
    subvar.str (                     $_planet_width                ) = '491.0 mm'              ! $SVG_stage_01.$_planet_width, Definition
 
+   subvar.str (                     $_ring_num_teeth              ) = '56'                    ! $SVG_stage_01.$_ring_num_teeth, Definition
+
+   subvar.str (                     $_carrier_width               ) = '1.8*$SVG_stage_01.$_planet_width' ! $SVG_stage_01.$_carrier_width, Definition
+
    subvar.str (                     $_shaft_length                ) = '500.0 mm'              ! $SVG_stage_01.$_shaft_length, Definition
+
+   subvar.str (                     $_length                      ) = '1.0 m'                 ! $SVG_stage_01.$_length, Definition
 
    subvar.str (                     $_x_ring                      ) = '($SVG_main_shaft.$_length - $SVG_main_shaft.$_x_B)/2.0' ! $SVG_stage_01.$_x_ring, Definition
 
@@ -220,14 +231,18 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 
    subvar.str (                     $_x_shaft                     ) = '$SVG_stage_01.$_x_PLC_B' ! $SVG_stage_01.$_x_shaft, Definition
 
-   subvar.str (                     $_carrier_width               ) = '1.8*$SVG_stage_01.$_planet_width' ! $SVG_stage_01.$_carrier_width, Definition
+   subvar.str (                     $_ring_bore_diam              ) = '$SVG_stage_01.$_normal_module*$SVG_stage_01.$_ring_num_teeth*1.2' ! $SVG_stage_01.$_ring_bore_diam, Definition
 
 subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
 
 subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
    subvar.str (                     $_planet_width                ) = '550.0 mm'              ! $SVG_stage_02.$_planet_width, Definition
 
+   subvar.str (                     $_carrier_width               ) = '1.8*$SVG_stage_02.$_planet_width' ! $SVG_stage_02.$_carrier_width, Definition
+
    subvar.str (                     $_shaft_length                ) = '500.0 mm'              ! $SVG_stage_02.$_shaft_length, Definition
+
+   subvar.str (                     $_length                      ) = '1.0 m'                 ! $SVG_stage_02.$_length, Definition
 
    subvar.str (                     $_x_ring                      ) = '$SVG_stage_01.$_x_shaft + $SVG_stage_01.$_shaft_length' ! $SVG_stage_02.$_x_ring, Definition
 
@@ -236,8 +251,6 @@ subvargroup.begin (                 $SVG_stage_02                 )             
    subvar.str (                     $_x_PLC_B                     ) = '$SVG_stage_02.$_carrier_width + $SVG_stage_02.$_x_PLC_A' ! $SVG_stage_02.$_x_PLC_B, Definition
 
    subvar.str (                     $_x_shaft                     ) = '$SVG_stage_02.$_x_PLC_B' ! $SVG_stage_02.$_x_shaft, Definition
-
-   subvar.str (                     $_carrier_width               ) = '1.8*$SVG_stage_02.$_planet_width' ! $SVG_stage_02.$_carrier_width, Definition
 
 subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
 
@@ -249,6 +262,8 @@ subvargroup.begin (                 $SVG_stage_03                 )             
    subvar.str (                     $_wheel_width                 ) = '360.0 mm'              ! $SVG_stage_03.$_wheel_width, Definition
 
    subvar.str (                     $_shaft_length                ) = '1000.0 mm'             ! $SVG_stage_03.$_shaft_length, Definition
+
+   subvar.str (                     $_length                      ) = '1.0 m'                 ! $SVG_stage_03.$_length, Definition
 
    subvar.str (                     $_x_shaft                     ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 1.8*$SVG_stage_03.$_wheel_width' ! $SVG_stage_03.$_x_shaft, Definition
 
@@ -425,6 +440,9 @@ prim.par (                4 ,       $P_housing                    ) = $_width   
 !**********************************************************************
 ! Senders
 !**********************************************************************
+sender.ref (                        $COM_width                    ) = $_width                 ! Source object
+sender.alias (                      $COM_width                    ) = '$COM_housing_width'    ! Alias
+
 sendergroup.begin (                 $SG_stage_01                  )                           ! $SG_stage_01
    sender.ref (                     $COM_stage_01_ring            ) = $M_housing_S01_ring     ! Source object
 
@@ -473,6 +491,7 @@ receiver.priolist (       1 ,       $COM_input                    ) = '$COM_bed_
 receivergroup.begin (               $RG_housing                   )                           ! $RG_housing
    receiver.ref (                   $COM_length                   ) = $_length                ! Destination object
    receiver.priolist (    1 ,       $COM_length                   ) = '$COM_housing_length'   ! Sender priority list
+   receiver.disabled (              $COM_length                   ) = 0                       ! Disabled
 
    receiver.ref (                   $COM_width                    ) = $_width                 ! Destination object
    receiver.priolist (    1 ,       $COM_width                    ) = '$COM_housing_width'    ! Sender priority list
@@ -489,12 +508,22 @@ receivergroup.begin (               $RG_main_shaft                )             
 receivergroup.end (                 $RG_main_shaft                )                           ! $RG_main_shaft
 
 receivergroup.begin (               $RG_stage_01                  )                           ! $RG_stage_01
+   receiver.ref (                   $COM_normal_module            ) = $SVG_stage_01.$_normal_module ! Destination object
+   receiver.priolist (    1 ,       $COM_normal_module            ) = '$COM_stage_01_normal_module' ! Sender priority list
+
    receiver.ref (                   $COM_planet_width             ) = $SVG_stage_01.$_planet_width ! Destination object
    receiver.priolist (    1 ,       $COM_planet_width             ) = '$COM_stage_01_planet_flank_width' ! Sender priority list
 
    receiver.ref (                   $COM_shaft_length             ) = $SVG_stage_01.$_shaft_length ! Destination object
    receiver.priolist (    1 ,       $COM_shaft_length             ) = '$COM_stage_01_shaft_length' ! Sender priority list
    receiver.override (              $COM_shaft_length             ) = 0                       ! Override index
+
+   receiver.ref (                   $COM_ring_num_teeth           ) = $SVG_stage_01.$_ring_num_teeth ! Destination object
+   receiver.priolist (    1 ,       $COM_ring_num_teeth           ) = '$COM_stage_01_ring_num_teeth' ! Sender priority list
+
+   receiver.ref (                   $COM_length                   ) = $SVG_stage_01.$_length  ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_stage_01_length'  ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
 
 receivergroup.end (                 $RG_stage_01                  )                           ! $RG_stage_01
 
@@ -505,6 +534,10 @@ receivergroup.begin (               $RG_stage_02                  )             
    receiver.ref (                   $COM_shaft_length             ) = $SVG_stage_02.$_shaft_length ! Destination object
    receiver.priolist (    1 ,       $COM_shaft_length             ) = '$COM_stage_02_shaft_length' ! Sender priority list
    receiver.override (              $COM_shaft_length             ) = 0                       ! Override index
+
+   receiver.ref (                   $COM_length                   ) = $SVG_stage_02.$_length  ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_stage_02_length'  ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
 
 receivergroup.end (                 $RG_stage_02                  )                           ! $RG_stage_02
 
@@ -517,6 +550,13 @@ receivergroup.begin (               $RG_stage_03                  )             
 
    receiver.ref (                   $COM_wheel_width              ) = $SVG_stage_03.$_wheel_width ! Destination object
    receiver.priolist (    1 ,       $COM_wheel_width              ) = '$COM_stage_03_wheel_flank_width' ! Sender priority list
+
+   receiver.ref (                   $COM_shaft_length             ) = $SVG_stage_03.$_shaft_length ! Destination object
+   receiver.priolist (    1 ,       $COM_shaft_length             ) = '$COM_stage_03_shaft_length' ! Sender priority list
+
+   receiver.ref (                   $COM_length                   ) = $SVG_stage_03.$_length  ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_stage_03_length'  ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
 
 receivergroup.end (                 $RG_stage_03                  )                           ! $RG_stage_03
 

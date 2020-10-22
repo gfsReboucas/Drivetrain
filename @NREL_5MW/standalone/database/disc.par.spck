@@ -58,25 +58,25 @@ prop2d.proj.dir                                                     = 2         
 !**********************************************************************
 ! Substructures
 !**********************************************************************
-substr.file (                       $S_TPL                        ) = 'shaft.spck'            ! Filename
+substr.file (                       $S_TPL                        ) = 'disc.spck'             ! Filename
 substr.id (                         $S_TPL                        ) = '1'                     ! Substructure Id
 
 !**********************************************************************
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 4.88235139846801758E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -5.30754470825195313E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 2.75404119491577148E+00 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 5.24405717849731445E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 2.11789414286613464E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.88275688886642456E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 7.72684276103973389E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 1.13156776428222656E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = 4.72069412469863892E-01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 6.32904148101806641E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 2.65533983707427979E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 4.29323434829711914E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 4.79115664958953857E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.18067765235900879E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 8.06056022644042969E+00 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.38934105634689331E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.38934097290039063E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -226,7 +226,7 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 
 
 ! Overwritten substructure values
-view.fclip.value (                  $S_TPL.$V_WorkingView         ) = 1.30699183791875839E-02 ! Front clipping plane value
-view.bclip.value (                  $S_TPL.$V_WorkingView         ) = 1.30699176788330078E+01 ! Back clipping plane value
+view.fclip.value (                  $S_TPL.$V_WorkingView         ) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $S_TPL.$V_WorkingView         ) = 5.31139945983886719E+00 ! Back clipping plane value
 
                                        

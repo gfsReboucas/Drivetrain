@@ -68,8 +68,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.34087431
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.82323623448610306E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.82323608398437500E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.81364696472883224E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.81364688873291016E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -191,7 +191,8 @@ slv.meas.yout (                     $SLV_SolverSettings           ) = 1         
 slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
-slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
 slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
@@ -205,12 +206,14 @@ subvar.str (                        $_excitation_ON               ) = 'IF($_base
 
 subvar.str (                        $_excitation_OFF              ) = 'IF($_base_excitation_flag== 0)\n{\n0\n}\nELSE\n{\n1\n}' ! Definition
 
-subvar.str (                        $_gamma_disp                  ) = '1.0'                   ! Definition
+subvar.str (                        $_housing_width               ) = '3.0 m'                 ! Definition
+
+subvar.str (                        $_gamma_Disp                  ) = '1.0'                   ! Definition
 
 subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
    subvar.str (                     $_length                      ) = '7.0 m'                 ! $SVG_bed_plate.$_length, Definition
 
-   subvar.str (                     $_width                       ) = '5.0 m'                 ! $SVG_bed_plate.$_width, Definition
+   subvar.str (                     $_width                       ) = '1.2*$_housing_width'   ! $SVG_bed_plate.$_width, Definition
 
    subvar.str (                     $_thickness                   ) = '$SVG_bed_plate.$_width/10.0' ! $SVG_bed_plate.$_thickness, Definition
 
@@ -220,7 +223,7 @@ subvargroup.begin (                 $SVG_bed_plate                )             
 
    subvar.str (                     $_x0_housing                  ) = '2.0*$SVG_rotor.$_length + ($SVG_main_shaft.$_length + $SVG_main_shaft.$_x_B)/2.0' ! $SVG_bed_plate.$_x0_housing, Definition
 
-   subvar.str (                     $_z0                          ) = '$SVG_bed_plate.$_width/2.0' ! $SVG_bed_plate.$_z0, Definition
+   subvar.str (                     $_z0                          ) = '($_housing_width + $SVG_bed_plate.$_thickness)/2.0' ! $SVG_bed_plate.$_z0, Definition
 
 subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
 
@@ -377,7 +380,11 @@ connect.par (             3 ,   9 , $CTN_fixed                    ) = 0.00000000
 ! Input Functions
 !**********************************************************************
 ifctn.file (                        $I_x                          ) = '../ref_files/EC4_s01_X.if2' ! File or URI
-ifctn.scal.z (                      $I_x                          ) = $_gamma_disp            ! Scaling factor
+ifctn.x (                 1 ,       $I_x                          ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_x                          ) = 1.00000000000000000E+00 ! X values
+ifctn.y (                 1 ,       $I_x                          ) = 0.00000000000000000E+00 ! Y values
+ifctn.y (                 2 ,       $I_x                          ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.z (                      $I_x                          ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_x                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_x                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_x                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -392,7 +399,11 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_x                    ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_x                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_y                          ) = '../ref_files/EC4_s01_Y.if2' ! File or URI
-ifctn.scal.z (                      $I_y                          ) = $_gamma_disp            ! Scaling factor
+ifctn.x (                 1 ,       $I_y                          ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_y                          ) = 1.00000000000000000E+00 ! X values
+ifctn.y (                 1 ,       $I_y                          ) = 0.00000000000000000E+00 ! Y values
+ifctn.y (                 2 ,       $I_y                          ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.z (                      $I_y                          ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_y                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_y                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_y                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -407,7 +418,11 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_y                    ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_y                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_z                          ) = '../ref_files/EC4_s01_Z.if2' ! File or URI
-ifctn.scal.z (                      $I_z                          ) = $_gamma_disp            ! Scaling factor
+ifctn.x (                 1 ,       $I_z                          ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_z                          ) = 1.00000000000000000E+00 ! X values
+ifctn.y (                 1 ,       $I_z                          ) = 0.00000000000000000E+00 ! Y values
+ifctn.y (                 2 ,       $I_z                          ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.z (                      $I_z                          ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_z                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_z                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_z                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -464,7 +479,11 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_gamma                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_gamma                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_x_dot                      ) = '../ref_files/EC4_s01_XD.if2' ! File or URI
-ifctn.scal.z (                      $I_x_dot                      ) = $_gamma_disp            ! Scaling factor
+ifctn.x (                 1 ,       $I_x_dot                      ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_x_dot                      ) = 1.00000000000000000E+00 ! X values
+ifctn.y (                 1 ,       $I_x_dot                      ) = 0.00000000000000000E+00 ! Y values
+ifctn.y (                 2 ,       $I_x_dot                      ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.z (                      $I_x_dot                      ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_x_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_x_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_x_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -479,7 +498,11 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_x_dot                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_x_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_y_dot                      ) = '../ref_files/EC4_s01_YD.if2' ! File or URI
-ifctn.scal.z (                      $I_y_dot                      ) = $_gamma_disp            ! Scaling factor
+ifctn.x (                 1 ,       $I_y_dot                      ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_y_dot                      ) = 1.00000000000000000E+00 ! X values
+ifctn.y (                 1 ,       $I_y_dot                      ) = 0.00000000000000000E+00 ! Y values
+ifctn.y (                 2 ,       $I_y_dot                      ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.z (                      $I_y_dot                      ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_y_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_y_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_y_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -494,7 +517,11 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_y_dot                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_y_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_z_dot                      ) = '../ref_files/EC4_s01_ZD.if2' ! File or URI
-ifctn.scal.z (                      $I_z_dot                      ) = $_gamma_disp            ! Scaling factor
+ifctn.x (                 1 ,       $I_z_dot                      ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_z_dot                      ) = 1.00000000000000000E+00 ! X values
+ifctn.y (                 1 ,       $I_z_dot                      ) = 0.00000000000000000E+00 ! Y values
+ifctn.y (                 2 ,       $I_z_dot                      ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.z (                      $I_z_dot                      ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_z_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_z_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_z_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -555,7 +582,7 @@ ifctn.x (                 1 ,       $I_x_ddot                     ) = 0.00000000
 ifctn.x (                 2 ,       $I_x_ddot                     ) = 1.00000000000000000E+00 ! X values
 ifctn.y (                 1 ,       $I_x_ddot                     ) = 0.00000000000000000E+00 ! Y values
 ifctn.y (                 2 ,       $I_x_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_x_ddot                     ) = $_gamma_disp            ! Scaling factor
+ifctn.scal.z (                      $I_x_ddot                     ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_x_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_x_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_x_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -574,7 +601,7 @@ ifctn.x (                 1 ,       $I_y_ddot                     ) = 0.00000000
 ifctn.x (                 2 ,       $I_y_ddot                     ) = 1.00000000000000000E+00 ! X values
 ifctn.y (                 1 ,       $I_y_ddot                     ) = 0.00000000000000000E+00 ! Y values
 ifctn.y (                 2 ,       $I_y_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_y_ddot                     ) = $_gamma_disp            ! Scaling factor
+ifctn.scal.z (                      $I_y_ddot                     ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_y_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_y_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_y_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -593,7 +620,7 @@ ifctn.x (                 1 ,       $I_z_ddot                     ) = 0.00000000
 ifctn.x (                 2 ,       $I_z_ddot                     ) = 1.00000000000000000E+00 ! X values
 ifctn.y (                 1 ,       $I_z_ddot                     ) = 0.00000000000000000E+00 ! Y values
 ifctn.y (                 2 ,       $I_z_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_z_ddot                     ) = $_gamma_disp            ! Scaling factor
+ifctn.scal.z (                      $I_z_ddot                     ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_z_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_z_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_z_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -673,18 +700,14 @@ receiver.ref (                      $COM_base_excitation_flag     ) = $_base_exc
 
 receiver.ref (                      $COM_rotor_length             ) = $SVG_rotor.$_length     ! Destination object
 receiver.priolist (       1 ,       $COM_rotor_length             ) = '$COM_rotor_length'     ! Sender priority list
-receiver.override (                 $COM_rotor_length             ) = 0                       ! Override index
-receiver.disabled (                 $COM_rotor_length             ) = 0                       ! Disabled
 
-receiver.ref (                      $COM_gamma_disp               ) = $_gamma_disp            ! Destination object
-receiver.priolist (       1 ,       $COM_gamma_disp               ) = '$COM_gamma_mn1'        ! Sender priority list
+receiver.ref (                      $COM_housing_width            ) = $_housing_width         ! Destination object
+
+receiver.ref (                      $COM_gamma_Disp               ) = $_gamma_Disp            ! Destination object
 
 receivergroup.begin (               $RG_bed_plate                 )                           ! $RG_bed_plate
    receiver.ref (                   $COM_length                   ) = $SVG_bed_plate.$_length ! Destination object
    receiver.priolist (    1 ,       $COM_length                   ) = '$COM_bed_plate_length' ! Sender priority list
-
-   receiver.ref (                   $COM_width                    ) = $SVG_bed_plate.$_width  ! Destination object
-   receiver.priolist (    1 ,       $COM_width                    ) = '$COM_bed_plate_width'  ! Sender priority list
 
    receiver.ref (                   $COM_z0                       ) = $SVG_bed_plate.$_z0     ! Destination object
    receiver.priolist (    1 ,       $COM_z0                       ) = '$COM_bed_plate_z0'     ! Sender priority list
@@ -694,11 +717,7 @@ receivergroup.end (                 $RG_bed_plate                 )             
 receivergroup.begin (               $RG_main_shaft                )                           ! $RG_main_shaft
    receiver.ref (                   $COM_length                   ) = $SVG_main_shaft.$_length ! Destination object
    receiver.priolist (    1 ,       $COM_length                   ) = '$COM_shaft_length'     ! Sender priority list
-   receiver.override (              $COM_length                   ) = 0                       ! Override index
-
-   receiver.ref (                   $COM_x0                       ) = $SVG_main_shaft.$_x0    ! Destination object
-   receiver.priolist (    1 ,       $COM_x0                       ) = '$COM_main_shaft_x0'    ! Sender priority list
-   receiver.override (              $COM_x0                       ) = 0                       ! Override index
+   receiver.override (              $COM_length                   ) = { SUBSTR_ID(1) }        ! Override index
 
    receiver.ref (                   $COM_x_A                      ) = $SVG_main_shaft.$_x_A   ! Destination object
    receiver.priolist (    1 ,       $COM_x_A                      ) = '$COM_shaft_bearing_A_x' ! Sender priority list

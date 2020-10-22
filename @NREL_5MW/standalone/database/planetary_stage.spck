@@ -1,11 +1,11 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.5! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20210000
 version.desc   = ''
-version.build  = 82
+version.build  = 101
 
 !**********************************************************************
 !  Global parameters
@@ -23,6 +23,7 @@ rw.linear                                                           = 0         
 time                                                                = 0.00000000000000000E+00 ! Time
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -89,7 +90,7 @@ view.angle (                        $V_WorkingView                ) = 7.85398185
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 8.16635513305664063E+00 ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 8.26154994964599609E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -216,8 +217,10 @@ slv.meas.yout (                     $SLV_SolverSettings           ) = 1         
 slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
-slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
 !**********************************************************************
@@ -348,7 +351,7 @@ subvargroup.begin (                 $SVG_ring                     )             
 
    subvar.str (                     $_shift_factor                ) = '-0.501'                ! $SVG_ring.$_shift_factor, Definition
 
-   subvar.str (                     $_bore_diameter               ) = '400.0 mm'              ! $SVG_ring.$_bore_diameter, Definition
+   subvar.str (                     $_bore_diameter               ) = '$_normal_module*$SVG_ring.$_num_teeth*1.2' ! $SVG_ring.$_bore_diameter, Definition
 
    subvar.str (                     $_helix_sign                  ) = '+1'                    ! $SVG_ring.$_helix_sign, Definition
 
@@ -544,8 +547,8 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_sun_planet_01              ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_sun_planet_01              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_sun_planet_01              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            3 ,       $F_sun_planet_01              ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            4 ,       $F_sun_planet_01              ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Friction model
    force.par (            8 ,       $F_sun_planet_01              ) = 5.00000000000000000E+00 ! [-] Number of slices
@@ -590,8 +593,8 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_sun_planet_02              ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_sun_planet_02              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_sun_planet_02              ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_sun_planet_02              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            3 ,       $F_sun_planet_02              ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            4 ,       $F_sun_planet_02              ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Friction model
    force.par (            8 ,       $F_sun_planet_02              ) = 5.00000000000000000E+00 ! [-] Number of slices
@@ -636,8 +639,8 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_sun_planet_03              ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_sun_planet_03              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_sun_planet_03              ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_sun_planet_03              ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            3 ,       $F_sun_planet_03              ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            4 ,       $F_sun_planet_03              ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Friction model
    force.par (            8 ,       $F_sun_planet_03              ) = 5.00000000000000000E+00 ! [-] Number of slices
@@ -682,8 +685,8 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_ring_planet_01             ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_ring_planet_01             ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_ring_planet_01             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_ring_planet_01             ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            3 ,       $F_ring_planet_01             ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            4 ,       $F_ring_planet_01             ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Friction model
    force.par (            8 ,       $F_ring_planet_01             ) = 5.00000000000000000E+00 ! [-] Number of slices
@@ -728,8 +731,8 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_ring_planet_02             ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_ring_planet_02             ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_ring_planet_02             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_ring_planet_02             ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            3 ,       $F_ring_planet_02             ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            4 ,       $F_ring_planet_02             ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Friction model
    force.par (            8 ,       $F_ring_planet_02             ) = 5.00000000000000000E+00 ! [-] Number of slices
@@ -762,8 +765,8 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_ring_planet_03             ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_ring_planet_03             ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_ring_planet_03             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-   force.par (            4 ,       $F_ring_planet_03             ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+   force.par (            3 ,       $F_ring_planet_03             ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            4 ,       $F_ring_planet_03             ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Friction model
    force.par (            8 ,       $F_ring_planet_03             ) = 5.00000000000000000E+00 ! [-] Number of slices

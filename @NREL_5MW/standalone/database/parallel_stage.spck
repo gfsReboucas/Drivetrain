@@ -1,11 +1,11 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.5! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20210000
 version.desc   = ''
-version.build  = 82
+version.build  = 101
 
 !**********************************************************************
 !  Global parameters
@@ -23,6 +23,7 @@ rw.linear                                                           = 0         
 time                                                                = 0.00000000000000000E+00 ! Time
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -195,8 +196,10 @@ slv.meas.yout (                     $SLV_SolverSettings           ) = 1         
 slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
-slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
 
 !**********************************************************************
@@ -1011,8 +1014,8 @@ force.to (                          $F_pinion_wheel               ) = $M_Isys   
 force.disabled (                    $F_pinion_wheel               ) = $_use_advanced          ! Disabled
 force.par (               1 ,       $F_pinion_wheel               ) = $BG_pinion.$P_gear      ! [-] Geometry (Gear 1)
 force.par (               2 ,       $F_pinion_wheel               ) = $BG_wheel.$P_gear       ! [-] Geometry (Gear 2)
-force.par (               3 ,       $F_pinion_wheel               ) = 1.00000000000000000E+00 ! [-] Basic Output Values
-force.par (               4 ,       $F_pinion_wheel               ) = 7.00000000000000000E+00 ! [-] Advanced Output Values
+force.par (               3 ,       $F_pinion_wheel               ) = 3.00000000000000000E+00 ! [-] Output
+force.par (               4 ,       $F_pinion_wheel               ) = 7.00000000000000000E+00 ! [-] Advanced Output
 force.par (               6 ,       $F_pinion_wheel               ) = 1.00000000000000000E+00 ! [-] Damping model
 force.par (               7 ,       $F_pinion_wheel               ) = 1.00000000000000000E+00 ! [-] Friction model
 force.par (               8 ,       $F_pinion_wheel               ) = 5.00000000000000000E+00 ! [-] Number of slices
@@ -1401,6 +1404,8 @@ sender.ref (                        $COM_M_Isys_shaft             ) = $M_Isys_sh
 
 sender.ref (                        $COM_stage_ratio              ) = $_stage_ratio           ! Source object
 
+sender.ref (                        $COM_length                   ) = $_stage_length          ! Source object
+
 !**********************************************************************
 ! Receivers
 !**********************************************************************
@@ -1435,13 +1440,16 @@ receiver.priolist (       3 ,       $COM_tooth_damping            ) = '$COM_stag
 receiver.override (                 $COM_tooth_damping            ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_tooth_stiffness_ratio    ) = $_tooth_stiffness_ratio ! Destination object
+receiver.override (                 $COM_tooth_stiffness_ratio    ) = { 0 }                   ! Override index
 
 receiver.ref (                      $COM_x0_full_damping          ) = $_x0_full_damping       ! Destination object
-receiver.override (                 $COM_x0_full_damping          ) = 0                       ! Override index
+receiver.override (                 $COM_x0_full_damping          ) = { 0 }                   ! Override index
 
 receiver.ref (                      $COM_regularization_vel       ) = $_regularization_vel    ! Destination object
+receiver.override (                 $COM_regularization_vel       ) = { 0 }                   ! Override index
 
 receiver.ref (                      $COM_mesh_flag                ) = $_mesh_flag             ! Destination object
+receiver.override (                 $COM_mesh_flag                ) = { 0 }                   ! Override index
 
 receiver.ref (                      $COM_k_PW                     ) = $_k_PW                  ! Destination object
 receiver.priolist (       1 ,       $COM_k_PW                     ) = '$COM_stage_01_k_PW'    ! Sender priority list

@@ -1,11 +1,11 @@
-!file.version=3.4! Removing this line will make the file unreadable
+!file.version=3.5! Removing this line will make the file unreadable
 
 !**********************************************************************
 ! Simpack Version Information
 !**********************************************************************
-version.number = 20200100
+version.number = 20210000
 version.desc   = ''
-version.build  = 82
+version.build  = 101
 
 !**********************************************************************
 !  Global parameters
@@ -41,6 +41,7 @@ time                                                                = 0.00000000
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
 glob.ifctn.bounds                                                   = 1                       ! Cubic spline boundary conditions
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
 prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
@@ -219,6 +220,7 @@ slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1         
 slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
 slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
 slv.equi.fallback.enable (          $SLV_SolverSettings           ) = 0                       ! Enable fallbacks
 slv.init.tol (                      $SLV_SolverSettings           ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
