@@ -3,23 +3,22 @@
 !**********************************************************************
 ! SubVars
 !**********************************************************************
+subvar($_simulation_time, str= '2.00000e+02 s')                                                      ! $_simulation_time
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
    subvar($_gamma_Power, str= '1.00000e-03')                                                          ! $SVG_loading.$_gamma_Power
    subvar($_gamma_Speed, str= '1.00000e+00')                                                          ! $SVG_loading.$_gamma_Speed
-   subvar($_gamma_Torque, str= '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed')       ! $SVG_loading.$_gamma_Torque
-   subvar($_gamma_Force, str= 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed') ! $SVG_loading.$_gamma_Force
-   subvar($_rated_power_ref, str= '5.0e3 kW')                                                 ! $SVG_loading.$_rated_power_ref
-   subvar($_rated_power, str= '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power')    ! $SVG_loading.$_rated_power
    subvar($_inertia_flag, str= '1', discr.desc (   1) = 'yes (value)', discr.desc (   2) = 'no (unit)', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_loading.$_inertia_flag
    subvar($_base_excitation_flag, str= '1', discr.desc (   1) = 'ON', discr.desc (   2) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_loading.$_base_excitation_flag
    subvar($_generator_flag, str= '2', discr.desc (   1) = 'Prop. control', discr.desc (   2) = 'PI control', discr.desc (   3) = 'Time series, omega_gen', discr.str (   1) = '1', discr.str (   2) = '2', discr.str (   3) = '3') ! $SVG_loading.$_generator_flag
    subvar($_mesh_flag, str= '225', discr.desc (   1) = 'advanced', discr.desc (   2) = 'basic', discr.str (   1) = '225', discr.str (   2) = '204') ! $SVG_loading.$_mesh_flag
-   subvar($_simulation_time, str= '2.00000e+02 s')                                                   ! $SVG_loading.$_simulation_time
-   subvar($_gamma_Disp, str= '1.16667e-01')                                                           ! $SVG_loading.$_gamma_Disp
+   subvar($_gamma_Torque, str= '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed')       ! $SVG_loading.$_gamma_Torque
+   subvar($_gamma_Force, str= 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed') ! $SVG_loading.$_gamma_Force
+   subvar($_rated_power_ref, str= '5.0e3 kW')                                                 ! $SVG_loading.$_rated_power_ref
+   subvar($_rated_power, str= '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power')    ! $SVG_loading.$_rated_power
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-   subvar($_gamma_m, str= '1.0')                                                              ! $SVG_rotor.$_gamma_m
+   subvar($_gamma_m, str= '1')                                                              ! $SVG_rotor.$_gamma_m
    subvar($_gamma_J, str= '1.68936e-05')                                                              ! $SVG_rotor.$_gamma_J
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
@@ -29,7 +28,7 @@ ELSE
 {
 1.0 kg
 }') ! $SVG_rotor.$_mass_ref
-   subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag== 1)
+   subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
 57231535.0 kg m^2
 }
@@ -49,12 +48,8 @@ subvargroup.begin (                 $SVG_main_shaft               )             
    subvar($_gamma_d, str= '1.00000e-01')                                                              ! $SVG_main_shaft.$_gamma_d
    subvar($_length_ref, str= '2000.0 mm')                                                     ! $SVG_main_shaft.$_length_ref
    subvar($_diameter_ref, str= '700.0 mm')                                                    ! $SVG_main_shaft.$_diameter_ref
-   subvar($_x_A_ref, str= '333.0 mm')                                                         ! $SVG_main_shaft.$_x_A_ref
-   subvar($_x_B_ref, str= '1166.0 mm')                                                        ! $SVG_main_shaft.$_x_B_ref
    subvar($_length, str= '$SVG_main_shaft.$_length_ref*$SVG_main_shaft.$_gamma_L')            ! $SVG_main_shaft.$_length
    subvar($_diameter, str= '$SVG_main_shaft.$_diameter_ref*$SVG_main_shaft.$_gamma_d')        ! $SVG_main_shaft.$_diameter
-   subvar($_x_A, str= '$SVG_main_shaft.$_x_A_ref*$SVG_main_shaft.$_gamma_L')                  ! $SVG_main_shaft.$_x_A
-   subvar($_x_B, str= '$SVG_main_shaft.$_x_B_ref*$SVG_main_shaft.$_gamma_L')                  ! $SVG_main_shaft.$_x_B
 subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
 
 subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
@@ -77,13 +72,13 @@ subvargroup.begin (                 $SVG_stage_01                 )             
       subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_sun.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_sun.$_bore_diameter
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
-      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width')                  ! $SVG_stage_01.$SVG_planet.$_flank_width_ref
+      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_01.$SVG_planet.$_flank_width_ref
       subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_01.$SVG_planet.$_bore_diameter_ref
       subvar($_flank_width, str= '$SVG_stage_01.$SVG_planet.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_planet.$_flank_width
       subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_planet.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_planet.$_bore_diameter
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
-      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width')                  ! $SVG_stage_01.$SVG_ring.$_flank_width_ref
+      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_01.$SVG_ring.$_flank_width_ref
       subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_01.$SVG_ring.$_bore_diameter_ref
       subvar($_flank_width, str= '$SVG_stage_01.$SVG_ring.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_ring.$_flank_width
       subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_ring.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_ring.$_bore_diameter
@@ -116,13 +111,13 @@ subvargroup.begin (                 $SVG_stage_02                 )             
       subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_sun.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_sun.$_bore_diameter
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
-      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width')                  ! $SVG_stage_02.$SVG_planet.$_flank_width_ref
+      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_02.$SVG_planet.$_flank_width_ref
       subvar($_bore_diameter_ref, str= '380.0 mm')                                            ! $SVG_stage_02.$SVG_planet.$_bore_diameter_ref
       subvar($_flank_width, str= '$SVG_stage_02.$SVG_planet.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_planet.$_flank_width
       subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_planet.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_planet.$_bore_diameter
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
-      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width')                  ! $SVG_stage_02.$SVG_ring.$_flank_width_ref
+      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_02.$SVG_ring.$_flank_width_ref
       subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_02.$SVG_ring.$_bore_diameter_ref
       subvar($_flank_width, str= '$SVG_stage_02.$SVG_ring.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_ring.$_flank_width
       subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_ring.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_ring.$_bore_diameter
@@ -154,7 +149,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
       subvar($_bore_diameter, str= '$SVG_stage_03.$SVG_pinion.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$SVG_pinion.$_bore_diameter
    subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
    subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
-      subvar($_flank_width_ref, str= '$SVG_stage_03.$SVG_pinion.$_flank_width')               ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref
+      subvar($_flank_width_ref, str= '$SVG_stage_03.$SVG_pinion.$_flank_width_ref')           ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref
       subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_03.$SVG_wheel.$_bore_diameter_ref
       subvar($_flank_width, str= '$SVG_stage_03.$SVG_wheel.$_flank_width_ref*$SVG_stage_03.$_gamma_b') ! $SVG_stage_03.$SVG_wheel.$_flank_width
       subvar($_bore_diameter, str= '$SVG_stage_03.$SVG_wheel.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$SVG_wheel.$_bore_diameter
@@ -168,7 +163,7 @@ subvargroup.begin (                 $SVG_stage_03                 )             
 subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
 
 subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator
-   subvar($_gamma_m, str= '1.0')                                                              ! $SVG_generator.$_gamma_m
+   subvar($_gamma_m, str= '1')                                                              ! $SVG_generator.$_gamma_m
    subvar($_gamma_J, str= '1.68936e-05')                                                              ! $SVG_generator.$_gamma_J
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
@@ -178,7 +173,7 @@ ELSE
 {
 1.0 kg
 }') ! $SVG_generator.$_mass_ref
-   subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag  == 1)
+   subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)
 {
 534.116 kg m^2
 }
@@ -200,14 +195,16 @@ subvargroup.begin (                 $SVG_housing                  )             
    subvar($_length_ref, str= '4500.0 mm')                                                     ! $SVG_housing.$_length_ref
    subvar($_width_ref, str= '3000.0 mm')                                                      ! $SVG_housing.$_width_ref
    subvar($_length, str= '$SVG_housing.$_length_ref*$SVG_stage_01.$_gamma_mn')                ! $SVG_housing.$_length
-   subvar($_width, str= '$SVG_housing.$_width_ref*$SVG_stage_01.$_gamma_mn')                   ! $SVG_housing.$_width
+   subvar($_width, str= '$SVG_housing.$_width_ref*$SVG_stage_01.$_gamma_b')                   ! $SVG_housing.$_width
 subvargroup.end (                   $SVG_housing                  )                           ! $SVG_housing
 
 subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
    subvar($_length_ref, str= '8000.0 mm')                                                     ! $SVG_bed_plate.$_length_ref
    subvar($_width_ref, str= '4000.0 mm')                                                      ! $SVG_bed_plate.$_width_ref
+   subvar($_z0_ref, str= '1750 mm')                                                           ! $SVG_bed_plate.$_z0_ref
    subvar($_length, str= '$SVG_bed_plate.$_length_ref*$SVG_stage_01.$_gamma_mn')              ! $SVG_bed_plate.$_length
    subvar($_width, str= '$SVG_bed_plate.$_width_ref*$SVG_stage_01.$_gamma_mn')                ! $SVG_bed_plate.$_width
+   subvar($_z0, str= '$SVG_bed_plate.$_z0_ref*$SVG_stage_01.$_gamma_mn')                      ! $SVG_bed_plate.$_z0
 subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate
 
-
+                                                                                                                                                                                                                                                                                                                                                                                                    
