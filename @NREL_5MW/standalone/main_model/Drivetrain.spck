@@ -4686,7 +4686,12 @@ receiver.ref (                      $COM_generator_mass_mom_inertia) = $SVG_gene
 
 receiver.ref (                      $COM_generator_K_P            ) = $SVG_generator.$_K_P    ! Destination object
 
+<<<<<<< HEAD:@NREL_5MW/standalone/main_model/Drivetrain.spck
 receiver.ref (                      $COM_generator_K_I            ) = $SVG_generator.$_K_I    ! Destination object
+=======
+   receiver.ref (                   $COM_length                   ) = $SVG_rotor.$_length     ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_rotor_length'     ! Sender priority list
+>>>>>>> parent of bcb9df6... added scaling at the base excitation:@NREL_5MW/standalone/database/NREL_5MW.spck
 
 receiver.ref (                      $COM_housing_length           ) = $SVG_housing.$_length   ! Destination object
 
