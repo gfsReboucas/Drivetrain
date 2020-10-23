@@ -34,20 +34,20 @@ classdef SimpackCOM
             default = scaling_factor.process_varargin(default, varargin);
             
             if(flag)
-                obj.post   = actxserver(sprintf('Simpack.Post%s', default.version));
+                obj.post   = actxserver(sprintf('Simpack.Post.%s', default.version));
             else
                 error(msg.identifier, "%s", msg.message);
             end
             
             if(strcmpi(default.mode, 'solver'))
-                obj.COM = actxserver(sprintf('Simpack.SLV%s' , default.version));
+                obj.COM = actxserver(sprintf('Simpack.Slv.%s' , default.version));
             elseif(strcmpi(default.mode, 'GUI'))
-                obj.COM = actxserver(sprintf('Simpack.GUI%s' , default.version));
+                obj.COM = actxserver(sprintf('Simpack.GUI.%s' , default.version));
             else
                 error('SimpackCOM:mode', 'Valid modes are [SoLVer] and [GUI].');
             end
             
-            file = dir(sprintf('@%s\\*.Nejad.spck', default.model_name));
+            file = dir(sprintf('@%s\\*.scaled.spck', default.model_name));
             file_name = sprintf('%s\\%s', file.folder, file.name);
             obj.model = obj.open_model(file_name);
             
@@ -59,26 +59,15 @@ classdef SimpackCOM
             mdl = obj.COM.Spck.openModel(file);
         end
         
-        function result = time_integration(obj, varargin)
-            if(isempty(varargin))
-                time_span = 1000.0;
-            else
-                time_span = varargin{1};
-            end
+        function result = time_integration(obj)
             
-            % Sets model time as 0
-            obj.model.time.val = 0.0;
-            obj.model.slv_active.val.integ_tend_duration.val = time_span;
-
-%             tic;
             % time integration with measurements
-            if(contains(obj.version, '2020'))
-                result = obj.COM.Spck.Slv.integMeas(obj.current_model);
-            elseif(contains(obj.version, '2018'))
+            if(contains(obj.version, '2018'))
                 result = obj.COM.Spck.Slv.integ(obj.current_model);
                 obj.COM.Spck.Slv.meas(obj.current_model, 1);
+            else
+                result = obj.COM.Spck.Slv.integMeas(obj.current_model);
             end
-%             disp(toc);
         end
         
         function delete(obj)
@@ -88,23 +77,9 @@ classdef SimpackCOM
             obj.COM.Spck.Quit;
         end
         
-%         function set_states_to_zero(obj)
-%             Spck.currentModel.setStatesToZero(StateSet.JOINT_POS_STATE +
-%             StateSet.JOINT_VEL_STATE +
-%             StateSet.FLEXBODY_POS_STATE +
-%             StateSet.FLEXBODY_VEL_STATE +
-%             StateSet.CONSTR_FORCE_STATE +
-%             StateSet.MARKER_ALG_STATE +
-%             StateSet.FORCECONTR_ALG_STATE +
-%             StateSet.FORCECONTR_DYN_STATE +
-%             StateSet.FORCECONTR_DISC_STATE +
-%             StateSet.FORCECONTR_DESCR_STATE +
-%             StateSet.FORCECONTR_ROOT_STATE +
-%             StateSet.BODY_POS_STATE +
-%             StateSet.BODY_VEL_STATE +
-%             StateSet.CONNECTION_POS_STATE +
-%             StateSet.CONNECTION_VEL_STATE);
-%         end
+        function set_states_to_zero(obj)
+            obj.model.setStatesToZero();
+        end
         
     end
     

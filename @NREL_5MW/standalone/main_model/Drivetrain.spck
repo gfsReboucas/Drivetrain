@@ -1040,7 +1040,7 @@ subvargroup.begin (                 $SVG_gear_params              )             
 
    subvar.str (                     $_tooth_stiffness_ratio       ) = '0.8'                   ! $SVG_gear_params.$_tooth_stiffness_ratio, Definition
 
-   subvar.str (                     $_x0_full_damping             ) = '0.0 m'                 ! $SVG_gear_params.$_x0_full_damping, Definition
+   subvar.str (                     $_x0_full_damping             ) = '10.0e-6 m'             ! $SVG_gear_params.$_x0_full_damping, Definition
 
    subvar.str (                     $_regularization_vel          ) = '1.0e-3 m/s'            ! $SVG_gear_params.$_regularization_vel, Definition
 
