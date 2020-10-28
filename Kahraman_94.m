@@ -13,10 +13,12 @@ classdef Kahraman_94 < Dynamic_Formulation
         
         function desc = explain_DOF(obj)
             N = obj.n_DOF(end);
-            desc = cell(2*N, 1);
+            desc = cell(2*N, 2);
             jdx = 1;
-            desc{jdx} = 'Rotor angular displacement, [rad/s]';
-            desc{N} = 'Generator angular displacement, [rad/s]';
+            desc{jdx, 1} = 'Rotor angular displacement, [rad]';
+            desc{jdx, 2} = 'theta_R';
+            desc{N  , 1} = 'Generator angular displacement, [rad]';
+            desc{N  , 2} = 'theta_G';
             
             DT = obj.drive_train;
             
@@ -24,23 +26,30 @@ classdef Kahraman_94 < Dynamic_Formulation
                 stage_idx = DT.stage(idx);
                 if(strcmp(stage_idx.configuration, 'parallel'))
                     jdx = jdx + 1;
-                    desc{jdx} = sprintf('Stage %d: Wheel angular displacement, [rad/s]', idx);
+                    desc{jdx, 1} = sprintf('Stage %d: Wheel angular displacement, [rad]', idx);
+                    desc{jdx, 2} = sprintf('theta_W%d', idx);
                     jdx = jdx + 1;
-                    desc{jdx} = sprintf('Stage %d: Pinion angular displacement, [rad/s]', idx);
+                    desc{jdx, 1} = sprintf('Stage %d: Pinion angular displacement, [rad]', idx);
+                    desc{jdx, 2} = sprintf('theta_P%d', idx);
                 elseif(strcmp(stage_idx.configuration, 'planetary'))
                     jdx = jdx + 1;
-                    desc{jdx} = sprintf('Stage %d: Carrier angular displacement, [rad/s]', idx);
+                    desc{jdx, 1} = sprintf('Stage %d: Carrier angular displacement, [rad]', idx);
+                    desc{jdx, 2} = sprintf('theta_c%d', idx);
                     for kdx = 1:stage_idx.N_p
-                        desc{jdx + kdx} = sprintf('Stage %d: Planet %d angular displacement, [rad/s]', idx, kdx);
+                        desc{jdx + kdx, 1} = sprintf('Stage %d: Planet %d angular displacement, [rad]', idx, kdx);
+                        desc{jdx + kdx, 2} = sprintf('theta_p%d%d', idx, kdx);
                     end
                     jdx = jdx + kdx + 1;
-                    desc{jdx} = sprintf('Stage %d: Sun angular displacement, [rad/s]', idx);
+                    desc{jdx, 1} = sprintf('Stage %d: Sun angular displacement, [rad]', idx);
+                    desc{jdx, 2} = sprintf('theta_s%d', idx);
                 end
             end
             
             for idx = 1:N
-                desc{N + idx} = strrep(desc{idx}, 'displacement, [rad/s]', ...
-                                                  'speed, [1/min]');
+                desc{N + idx, 1} = strrep(desc{idx, 1}, 'displacement, [rad]', ...
+                                                        'speed, [1/min]');
+                desc{N + idx, 2} = strrep(desc{idx, 2}, 'theta', ...
+                                                        'omega');
             end
         end
         

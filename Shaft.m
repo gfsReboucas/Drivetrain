@@ -44,20 +44,19 @@ classdef Shaft
     end
     
     methods
-        function obj = Shaft(dd, LL, brg, mat)
-            if(nargin == 0) % LSS
-                dd = 700.0;
-                LL = 2.0e3;
-                brg = Bearing();
-                mat = Material();
-            end
+        function obj = Shaft(varargin)
             
-            obj.d = dd;
-            obj.L = LL;
-            obj.bearing = brg;
-            obj.material = mat;
-%             obj.F = FF;
-%             obj.M = MM;
+            default = {'d'  , 700.0, ...
+                       'L'  , 2.0e3, ...
+                       'brg', Bearing(), ...
+                       'mat', Material()};
+                   
+            default = scaling_factor.process_varargin(default, varargin);
+
+            obj.d        = default.d;
+            obj.L        = default.L;
+            obj.bearing  = default.brg;
+            obj.material = default.mat;
         end
         
         function tab = disp(obj)
@@ -350,6 +349,22 @@ classdef Shaft
                     
                     M = R' * M * R;
                     
+                case 'LP_99:main_shaft'
+                    M = zeros(12);
+                    
+                    len = diff([0.0 ...
+                                obj.bearing(1).x ...
+                                obj.bearing(2).x ...
+                                obj.L]);
+                            
+                    for idx = 1:3
+                        sha = Shaft('d', obj.d, ...
+                                    'L', len(idx));
+                        range = 3*idx + (-2:3);
+                        M(range, range) = M(range, range) + ...
+                                            sha.inertia_matrix('Lin_Parker_99');
+                    end
+                    
                 otherwise
                     error('prog:input', 'Option [%s] is NOT valid.', option);
             end
@@ -389,7 +404,6 @@ classdef Shaft
                     K = K*(E*obj.I_y/LL^3);
                     
                 case 'full'
-                    
                     K_a = obj.stiffness_matrix('axial');     % [x_1 x_2]
                     K_t = obj.stiffness_matrix('torsional'); % [alpha_1 alpha_2]
                     K_b = obj.stiffness_matrix('bending');   % [y_1 beta_1 y_2 beta_2]
@@ -408,7 +422,6 @@ classdef Shaft
                     K = R' * K * R;
 
                 case 'Lin_Parker_99'
-                    
                     K = obj.stiffness_matrix('full');
                     
                     R = zeros(12, 6);
@@ -417,13 +430,91 @@ classdef Shaft
                     
                     K = R' * K * R;
                     
+                case 'LP_99:main_shaft'
+                    % +-----------------+-----------------+-----------------+-----------------+
+                    % |      Rotor      |    Bearing A    |    Bearing B    |     Carrier     |
+                    % +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % | y_R | z_R | a_R | y_A | z_A | a_A | y_B | z_B | a_B | y_C | z_C | a_C |
+                    % +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % Initial: M u'' + K u = f
+                    % Coordinate transformation: u = R v
+                    % main_shaft: (R^T M R) v'' + (R^T K R) v = R^T f
+                    %
+
+                    % for the bearing matrix:
+                    R = zeros(6, 3);
+                    R(2, 1) = 1.0;     R(3, 2) = 1.0;     R(4, 3) = 1.0;
+                    
+                    Kb1 = R' * obj.bearing(1).stiffness_matrix() * R;
+                    Kb2 = R' * obj.bearing(2).stiffness_matrix() * R;
+                    
+                    K = blkdiag(zeros(3), ...
+                        Kb1, Kb2, ...
+                        zeros(3));
+                    
+                    len = diff([0.0 ...
+                                obj.bearing(1).x ...
+                                obj.bearing(2).x ...
+                                obj.L]);
+                    for idx = 1:3
+                        sha = Shaft('d', obj.d, ...
+                                    'L', len(idx));
+                        range = 3*idx + (-2:3);
+                        K(range, range) = K(range, range) + ...
+                                            sha.stiffness_matrix('Lin_Parker_99');
+                    end
+                    
                 otherwise
                     error('prog:input', 'Option [%s] is NOT valid.', option);
             end
         end
         
         function D = damping_matrix(obj, option)
-            D = 0.01*obj.stiffness_matrix(option);
+            beta = 0.01;
+            switch option
+                case 'axial'
+                case 'torsional'
+                case 'bending'
+                case 'full'
+                case 'Lin_Parker_99'
+                    D = beta*obj.stiffness_matrix(option);
+                    
+                case 'LP_99:main_shaft'
+                    % +-----------------+-----------------+-----------------+-----------------+
+                    % |      Rotor      |    Bearing A    |    Bearing B    |     Carrier     |
+                    % +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % | y_R | z_R | a_R | y_A | z_A | a_A | y_B | z_B | a_B | y_C | z_C | a_C |
+                    % +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+                    % Initial: M u'' + K u = f
+                    % Coordinate transformation: u = R v
+                    % main_shaft: (R^T M R) v'' + (R^T K R) v = R^T f
+                    %
+
+                    % for the bearing matrix:
+                    R = zeros(6, 3);
+                    R(2, 1) = 1.0;     R(3, 2) = 1.0;     R(4, 3) = 1.0;
+                    
+                    Db1 = R' * obj.bearing(1).damping_matrix() * R;
+                    Db2 = R' * obj.bearing(2).damping_matrix() * R;
+                    
+                    D = blkdiag(zeros(3), ...
+                        Db1, Db2, ...
+                        zeros(3));
+                    
+                    len = diff([0.0 ...
+                                obj.bearing(1).x ...
+                                obj.bearing(2).x ...
+                                obj.L]);
+                    for idx = 1:3
+                        sha = Shaft('d', obj.d, ...
+                                    'L', len(idx));
+                        range = 3*idx + (-2:3);
+                        D(range, range) = D(range, range) + ...
+                                            beta*sha.stiffness_matrix('Lin_Parker_99');
+                    end
+                otherwise
+                    error('prog:input', 'Option [%s] is NOT valid.', option);
+            end
         end
         
     end

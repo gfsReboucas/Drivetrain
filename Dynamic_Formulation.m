@@ -171,11 +171,9 @@ classdef Dynamic_Formulation
                        'time_range', [    0.0 , ...  % initial time instant, [s]
                                         100.0], ... % final time instant, [s]
                        'IC'        ,    IC    , ... % [rad, 1/min]
-                       'ref_speed' ,   1165.9 , ... % [1/min]
                        'K_p'       ,   2200.0 , ...
                        'K_I'       ,    220.0 , ...
                        'modal_red' ,    false , ...
-                       'N_modes'   , obj.n_DOF(end), ...
                        'f_sample'  , 1.0e3};
             
             default = scaling_factor.process_varargin(default, varargin);
@@ -183,37 +181,26 @@ classdef Dynamic_Formulation
             solver     = default.solver;
             time_range = default.time_range;
             IC         = default.IC;
-            ref_speed  = default.ref_speed;
             K_p        = default.K_p;
             K_I        = default.K_I;
             modal_red  = default.modal_red;
-            N_modes    = default.N_modes;
             T_sample   = 1.0/default.f_sample;
             
             warning('off', 'Dynamic_Formulation:RB');
             
-            % x_red = MS_r * x:
-            % Modal reduction, changing coordinates from physical to modal.
-            if(modal_red)
-                [MM, DD, Km, Kb, bb, Phi] = obj.modal_reduction(1:N_modes, 3);
-            else
-                MM = obj.M;
-                DD = obj.D;
-                Km = obj.K_m;
-                Kb = obj.K_b;
-                bb = obj.b;
-%                 cc = obj.c;
-
-                N_modes = length(MM);
-                Phi     = eye(N_modes);
-            end
-            
-%             DD = 0.0*DD;
+            MM = obj.M;
+            DD = obj.D*0.0;
+            Km = obj.K_m;
+            Kb = obj.K_b;
+            bb = obj.b;
             
             KK = Km + Kb;
             
+            N_modes = obj.n_DOF(end);
+            I_n     = eye(N_modes);
+
             % rad/s to 1/min:
-            Phi_v = Phi*30.0/pi;
+            I_nv = I_n*30.0/pi;
             
             AA = blkdiag(MM, MM);
             BB = [zeros(N_modes),  MM;
@@ -224,12 +211,9 @@ classdef Dynamic_Formulation
             b_A = b_GA(:, 1);
             b_G = b_GA(:, 2);
             
-            % Back to physical coordinates:
-            C = [zeros(1, N_modes), Phi_v(end, :)];
+            % To get the generator speed:
+            C = [zeros(1, N_modes), I_nv(end, :)];
 
-            % IC from physical to modal coordinates:
-            IC = pinv(blkdiag(Phi, Phi))*IC;
-            
             % checking controllability using staircase form to avoid
             % problems with ill-conditioned systems.
             [~, ~, ~, ~, k] = ctrbf(AA\BB, b_G, C);
@@ -240,21 +224,19 @@ classdef Dynamic_Formulation
             % coupling PI control:
             A_bar = blkdiag(AA, 1.0);
             B_bar = [BB - K_p*b_G*C, b_G;
-                          - K_I    *C, 0.0];
-            B_A_bar = [b_A;
+                        - K_I    *C, 0.0];
+            c_A_bar = [b_A;
                        0.0];
-            B_r_bar = [K_p*b_G;
+            c_r_bar = [K_p*b_G;
                        K_I];
-            IC_bar = [IC;
-                      ref_speed];
-            
+
             A_bar   = sparse(A_bar);
             B_bar   = sparse(B_bar);
-            B_A_bar = sparse(B_A_bar);
-            B_r_bar = sparse(B_r_bar);
+            c_A_bar = sparse(c_A_bar);
+            c_r_bar = sparse(c_r_bar);
             
             % Smallest natural period:
-            [f_n, ~, f_nd, ~, ~] = obj.modal_analysis();
+            [f_n, ~, f_nd] = obj.modal_analysis();
             
             T_n = 1.0/max(f_n);   % undamped
             T_nd = 1.0/max(f_nd); % damped
@@ -282,22 +264,28 @@ classdef Dynamic_Formulation
 %             T_aero = T_aero.*transient;
             T_A = @(t)interp1(t_load, T_aero, t, 'linear');
             ref_gen_speed = @(t)interp1(t_load, gen_speed, t, 'linear');
-%             T_A = @(t) T_aero;
-            
+
+            IC_bar = [IC;
+                      gen_speed(1)];
+
 %             RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
-            RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_gen_speed(t));
+            RHS = @(t, x)(B_bar*x + c_A_bar*T_A(t) + c_r_bar*ref_gen_speed(t));
             
             sol_tmp = solver(@(t, x)RHS(t, x), time_range, IC_bar, opt_ODE);
             
             t_sample = time_range(1):T_sample:time_range(end);
             x_sample = deval(sol_tmp, t_sample);
             
+            nn = obj.n_DOF(end);
+            range = 1:nn;
+            
+            vel_acc = A_bar\RHS(t_sample, x_sample);
+            
             sol           = sol_tmp;
             sol.t         = t_sample;
             sol.x_red     = x_sample(1:end - 1, :);
-            sol.x         = blkdiag(Phi, Phi_v)*sol.x_red;
+            sol.x         = blkdiag(I_n, I_nv)*sol.x_red;
             sol.gen_speed = C*sol.x_red;
-%             sol.ref_speed = ref_speed*ones(size(sol.t));
             sol.ref_speed = ref_gen_speed(sol.t);
             sol.error     = sol.ref_speed - sol.gen_speed;
             sol.T_gen     = K_p*sol.error + x_sample(end, :);
@@ -308,7 +296,9 @@ classdef Dynamic_Formulation
             sol.b         = bb;
             sol.K_p       = K_p;
             sol.K_I       = K_I;
-            
+            sol.pos       = sol.x  (range     , :);
+            sol.vel       = sol.x  (range + nn, :);
+            sol.acc       = vel_acc(range + nn, :);
             sol.DOF_description = obj.DOF_description;
             
             field_name = {'y'};
@@ -319,14 +309,8 @@ classdef Dynamic_Formulation
             sol = rmfield(sol, field_name);
             
 %             function x_dot = RHS(t, x)
-% %                 for idx = 1:N_red
-% %                     while(abs(x(idx)) > 2.0*pi)
-% %                         x(idx) = sign(x(idx))*4.0*pi - x(idx);
-% %                     end
-% %                 end
-%                 
-%                 x_dot = A_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed;
-% %                 x_dot = A*x + B_A*T_A(t) + B_G*TG;
+%                 %   A_bar *
+%                 x_dot = B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_gen_speed(t);
 %             end
         end
         
