@@ -32,47 +32,49 @@ classdef (Abstract) Drivetrain
     % see also NREL_5MW, DTU_10MW.
     
     properties(Access = public)
-        stage         (1, :) Gear_Set;                                                                    % [class],  gearbox stages
-        P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 5.0e3;              % [kW],     Rated power
-        n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 12.1;               % [1/min.], Rated rotor speed
-        main_shaft    (1, :) Shaft                                                     = Shaft;              % [class],  Input Shaft
-        m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 110.0e3;            % [kg],     Rotor mass according to [3]
-        J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 57231535.0;         % [kg-m^2], Rotor mass moment of inertia according to [6]
-        m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 1900.0;             % [kg],     Generator mass according to [4]
-        J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 534.116;            % [kg-m^2], Generator mass moment of inertia [4]
-        N_stage       (1, 1)          {mustBeInteger, mustBeFinite, mustBeNonnegative} = 3;                  % [-],      Number of stages
-        dynamic_model (1, :)                                                           = @Dynamic_Formulation; % which dynamic model should be used to perform modal analysis on the Drivetrain.
-        gamma                scaling_factor;                                                              % Scaling factors
-        S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
-        S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
-        M; % Inertia matrix
-        K; % Stiffness matrix
-        D; % Damping matrix
-        A; % State matrix
-        load; % Load vector
-        f_n; % natural frequencies
-        f_nd; % damped natural frequencies
-        mode_shape; % mode shapes
-        mode_shape_d; % damped mode shapes
-        zeta; % damping ratio
+        stage         (1, :) Gear_Set;                                                                         % [class] , gearbox stages
+        P_rated       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 5.0e3;                % [kW]    , Rated power
+        n_rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 12.1;                 % [1/min.], Rated rotor speed
+        main_shaft    (1, :) Shaft                                                     = Shaft;                % [class] , Input Shaft
+        m_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 110.0e3;              % [kg]    , Rotor mass according to [3]
+        J_Rotor       (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 57231535.0;           % [kg-m^2], Rotor mass moment of inertia according to [6]
+        m_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 1900.0;               % [kg]    , Generator mass according to [4]
+        J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 534.116;              % [kg-m^2], Generator mass moment of inertia [4]
+        N_stage       (1, 1)          {mustBeInteger, mustBeFinite, mustBeNonnegative} = 3;                    % [-]     , Number of stages
+        gamma                scaling_factor;                                                                   % [class] , Scaling factors
+        %% Structural parameters:
+        gear_calc; % [-], Gear calculation
+        S_Hmin;    % [-], Minimum required safety factor for surface durability (pitting)
+        S_Fmin;    % [-], Minimum required safety factor for tooth bending strength
+        S_H;       % [-], Gear Safety factor for surface durability (against pitting)
+        S_F;       % [-], Gear Safety factor for bending strength
+        S_shaft;   % [-], Shaft Safety factor against fatigue and yield
+        
+        %% Dynamic parameters:
+        dynamic_model = @Dynamic_Formulation; % [class], specify which model formulation should be used to obtain the Drivetrain's dynamic response
+        M;                                    % [*]    , Inertia matrix
+        K;                                    % [*]    , Stiffness matrix
+        D;                                    % [*]    , Damping matrix
+        A;                                    % [*]    , State matrix
+        load;                                 % [*]    , Load vector
+        f_n;          % [Hz], natural frequencies
+        f_nd;         % [Hz], damped natural frequencies
+        mode_shape;   % [-],  mode shapes
+        mode_shape_d; % [-],  damped mode shapes
+        zeta;         % [-],  damping ratio
     end
     
     properties(Dependent)
-        T_out;   % [N-m],    Output torque for each stage
+        T_out;   % [N-m]   , Output torque for each stage
         n_out;   % [1/min.], Output speed  for each stage
-        u;       % [-],      Cumulative gear ratio
-        S_H;     % [-],      Gear Safety factor for surface durability (against pitting)
-        S_F;     % [-],      Gear Safety factor for bending strength
-        S_shaft; % [-],      Shaft Safety factor against fatigue and yield
-        S_G;     % [-],      Full safety factor for gear stages
+        u;       % [-]     , Cumulative gear ratio
+        S_G;     % [-]     , Full safety factor for gear stages
     end
     
     properties(SetAccess = protected)
         % to store the values of some dependent variables:
-%         S_H_val     (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-%         S_F_val     (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.56;   % [-],      Safety factor for bending strength
         S_H_val     (1, :) {mustBeNumeric} = 1.25;   % [-],      Safety factor for surface durability (against pitting)
-        S_F_val     (1, :) {mustBeNumeric} = 1.56;   % [-],      Safety factor for surface durability (against pitting)
+        S_F_val     (1, :) {mustBeNumeric} = 1.56;   % [-],      Safety factor for bending strength
         S_shaft_val (1, :) {mustBeNumeric, mustBeFinite, mustBePositive} = 1.0;    % [-],      Safey factor for the shafts
     end
     
@@ -123,6 +125,8 @@ classdef (Abstract) Drivetrain
             
             obj.S_Hmin = default.S_Hmin;
             obj.S_Fmin = default.S_Fmin;
+            
+            [obj.S_H, obj.S_F, obj.S_shaft, obj.gear_calc] = obj.safety_factors();
             
             obj.dynamic_model = default.dynamic_model(obj);
             
@@ -522,14 +526,12 @@ classdef (Abstract) Drivetrain
             SShaft_vec = zeros(obj.N_stage + 1, 1);
             
             SShaft_vec(1) = obj.main_shaft.safety_factors(K_f, K_fs, T_m);
+            calc = cell(1, obj.N_stage);
 
             jdx = 0;
             for idx = 1:obj.N_stage
-                [SH, SF, SShaft_vec(idx + 1), calc] = obj.safety_factor_stage(idx);
+                [SH, SF, SShaft_vec(idx + 1), calc{idx}] = obj.safety_factor_stage(idx);
                 
-%                 calc.save_KS(sprintf('%s\\@%s\\test_0%d', pwd, class(obj), idx));
-                clear('calc');
-
                 kdx = jdx + (1:length(SH));
                 jdx = kdx(end);
                 

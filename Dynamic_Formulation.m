@@ -77,33 +77,23 @@ classdef Dynamic_Formulation
             %
             
             %% Undamped analysis:
-            [MS, EV] = eig(obj.K_m + obj.K_b, obj.M);
+            L = chol(obj.M, 'lower');
+            K_tilde = L\(obj.K_m + obj.K_b)/(L');
+            [MS, EV] = eig(K_tilde);
+            MS = (L')\MS;
             
             EV = diag(EV); % matrix to vector
             omega_n = sqrt(EV); % lambda to omega
-            f_n = omega_n./(2.0*pi); % rad/s to Hz
             
             % sorting in ascending order:
-            [f_n, idx] = sort(f_n);
+            [omega_n, idx] = sort(omega_n);
             MS = MS(:, idx);
             
             % Normalizing the mode shapes so that the maximum is always +1:
-            for idx = 1:length(f_n)
+            for idx = 1:length(omega_n)
                 [~, n] = max(abs(MS(:, idx)));
 
                 MS(:, idx) = MS(:, idx)./MS(n, idx);
-            end
-            
-            flag_RB = any(abs(f_n) < 1.0e-2);
-            if(flag_RB)
-                warning('Dynamic_Formulation:RB', 'Rigid body behavior.');
-                idx = (abs(f_n) < 1.0e-2);
-                f_n(idx) = 0.0;
-                
-                f_n = [f_n(~idx);
-                       f_n(idx)];
-                   
-                MS = [MS(:, ~idx), MS(:, idx)];
             end
             
             %% Damped case:
@@ -116,28 +106,36 @@ classdef Dynamic_Formulation
             imag_part = diag(imag_part);
             
             omega_n = sqrt(real_part.^2 + imag_part.^2); % lambda to omega_n
-            f_nd = omega_n./(2.0*pi); % rad/s to Hz
+            f_n = omega_n./(2.0*pi); % rad/s to Hz
             zeta = -real_part./omega_n;
             
             % sorting in ascending order:
-            [f_nd, idx] = sort(f_nd);
+            [f_n, idx] = sort(f_n);
             zeta = zeta(idx);
             MS_d = MS_d(:, idx);
             
             % eliminating repeated values:
-            f_nd = f_nd(1:2:end);
+            f_n = f_n(1:2:end);
             zeta = zeta(1:2:end);
+            f_nd = f_n.*sqrt(1.0 - zeta.^2);
             n = obj.n_DOF(end);
             MS_d = MS_d(1:n, 1:2:end);
             
-            flag_RB = any(abs(f_nd) < 1.0e-2);
+            % Normalizing the mode shapes so that the maximum is always +1:
+            for idx = 1:length(f_n)
+                [~, n] = max(abs(MS_d(:, idx)));
+
+                MS_d(:, idx) = MS_d(:, idx)./MS_d(n, idx);
+            end
+            
+            flag_RB = any(abs(f_n) < 1.0e-2);
             if(flag_RB)
                 warning('Dynamic_Formulation:RB', 'Rigid body behavior.');
-                idx = (abs(f_nd) < 1.0e-2);
-                f_nd(idx) = 0.0;
+                idx = (abs(f_n) < 1.0e-2);
+                f_n(idx) = 0.0;
                 
-                f_nd = [f_nd(~idx);
-                        f_nd(idx)];
+                f_n = [f_n(~idx);
+                        f_n(idx)];
                    
                 MS_d = [MS_d(:, ~idx), MS_d(:, idx)];
             end
@@ -151,7 +149,7 @@ classdef Dynamic_Formulation
             
         end
         
-        function [sol, t_sample, x_sample] = time_response(obj, varargin)
+        function sol = time_response(obj, varargin)
             %TIME_RESPONSE calculates the time response of the drivetrain.
             % The optional parameters are:
             % - solver: one of MATLAB's ODE solvers. These are recommended
@@ -174,7 +172,7 @@ classdef Dynamic_Formulation
                        'K_p'       ,   2200.0 , ...
                        'K_I'       ,    220.0 , ...
                        'modal_red' ,    false , ...
-                       'f_sample'  , 1.0e3};
+                       'f_sample'  ,    200.0};
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -183,13 +181,14 @@ classdef Dynamic_Formulation
             IC         = default.IC;
             K_p        = default.K_p;
             K_I        = default.K_I;
-            modal_red  = default.modal_red;
             T_sample   = 1.0/default.f_sample;
+            
+            time = time_range(1):T_sample:time_range(end);
             
             warning('off', 'Dynamic_Formulation:RB');
             
             MM = obj.M;
-            DD = obj.D*0.0;
+            DD = obj.D;
             Km = obj.K_m;
             Kb = obj.K_b;
             bb = obj.b;
@@ -256,8 +255,6 @@ classdef Dynamic_Formulation
             t_load = data.time;
             T_aero = data.Mx*1.0e3;
             gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
-%             T_aero = mean(T_aero);
-
 %             k = find(t_load >= 0.2*time_range(end), 1, 'first');
 %             transient = [linspace(0.0, 1.0, k), ...
 %                          ones(1, length(t_load) - k)]';
@@ -268,27 +265,24 @@ classdef Dynamic_Formulation
             IC_bar = [IC;
                       gen_speed(1)];
 
-%             RHS = @(t, x)(B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_speed);
             RHS = @(t, x)(B_bar*x + c_A_bar*T_A(t) + c_r_bar*ref_gen_speed(t));
             
-            sol_tmp = solver(@(t, x)RHS(t, x), time_range, IC_bar, opt_ODE);
-            
-            t_sample = time_range(1):T_sample:time_range(end);
-            x_sample = deval(sol_tmp, t_sample);
-            
+            [~, x_solver] = solver(@(t, x)RHS(t, x), time, IC_bar, opt_ODE);
+            x_solver = x_solver';
             nn = obj.n_DOF(end);
             range = 1:nn;
             
-            vel_acc = A_bar\RHS(t_sample, x_sample);
+            vel_acc = A_bar\RHS(time, x_solver);
             
-            sol           = sol_tmp;
-            sol.t         = t_sample;
-            sol.x_red     = x_sample(1:end - 1, :);
-            sol.x         = blkdiag(I_n, I_nv)*sol.x_red;
-            sol.gen_speed = C*sol.x_red;
+            sol           = struct;
+            sol.solver    = solver; 
+            sol.t         = time;
+            sol.x_solver  = x_solver; 
+            sol.x         = blkdiag(I_n, I_nv)*sol.x_solver(1:end - 1, :);
+            sol.gen_speed = C*sol.x_solver(1:end - 1, :);
             sol.ref_speed = ref_gen_speed(sol.t);
             sol.error     = sol.ref_speed - sol.gen_speed;
-            sol.T_gen     = K_p*sol.error + x_sample(end, :);
+            sol.T_gen     = K_p*sol.error + x_solver(end, :);
             sol.T_aero    = T_A(sol.t);
             sol.M         = MM;
             sol.D         = DD;
@@ -299,19 +293,127 @@ classdef Dynamic_Formulation
             sol.pos       = sol.x  (range     , :);
             sol.vel       = sol.x  (range + nn, :);
             sol.acc       = vel_acc(range + nn, :);
+            sol.load      = sol.K*sol.pos + ...
+                            sol.D*sol.vel;
             sol.DOF_description = obj.DOF_description;
-            
-            field_name = {'y'};
-            if(~modal_red)
-                field_name = [field_name(:)', {'x_red'}];
-            end
-            
-            sol = rmfield(sol, field_name);
             
 %             function x_dot = RHS(t, x)
 %                 %   A_bar *
 %                 x_dot = B_bar*x + B_A_bar*T_A(t) + B_r_bar*ref_gen_speed(t);
 %             end
+        end
+        
+        function sol = Newmark_integration(obj,varargin)
+            
+            x_0 = zeros(obj.n_DOF(end), 1);
+            
+            default = {'time_range', [    0.0 , ...  % initial time instant, [s]
+                                        100.0], ... % final time instant, [s]
+                       'x_0'       ,    x_0   , ... % initial position
+                       'v_0'       ,    x_0   , ... % initial velocity
+                       'K_p'       ,   2200.0 , ...
+                       'K_I'       ,    220.0 , ...
+                       'f_sample'  ,      1.0e3, ...
+                       'option'    , 'average'};
+            
+            default = scaling_factor.process_varargin(default, varargin);
+            
+            time_range = default.time_range;
+            x_0        = default.x_0;
+            v_0        = default.v_0;
+            K_p        = default.K_p;
+            K_I        = default.K_I;
+            T_sample   = 1.0/default.f_sample;
+            option     = default.option;
+            
+            delta = 1.0/2.0;
+            if(strcmpi(option, 'average')) % unconditionally stable
+                alpha = 1.0/4.0;
+            elseif(strcmpi(option, 'linear'))
+                alpha = 1.0/6.0;
+            end
+            
+            time = time_range(1):T_sample:time_range(2);
+            
+            n = length(x_0);     nt = length(time);
+            
+            data = load('input_load.mat');
+            t_load = data.time;
+            T_aero = data.Mx*1.0e3;
+            gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
+
+            T_A = interp1(t_load, T_aero, time, 'linear');
+            ref_gen_speed = interp1(t_load, gen_speed, time, 'linear');
+
+            warning('off', 'Dynamic_Formulation:RB');
+            
+            C = zeros(1, n);
+            C(end) = 30.0/pi;
+            
+            output = zeros(1, nt);
+            error = zeros(1, nt);
+            T_G = zeros(1, nt);
+            
+            pos = zeros(n, nt);
+            vel = zeros(n, nt);
+            acc = zeros(n, nt);
+            
+            a_1 = 1.0/(alpha*T_sample^2);
+            a_2 = delta/(alpha*T_sample);
+            a_3 = 1.0/(alpha*T_sample);
+            a_4 = 1.0/(2.0*alpha) - 1.0;
+            a_5 = delta/alpha - 1.0;
+            a_6 = (T_sample/2.0)*(delta/alpha - 2.0);
+            a_7 = T_sample*(1 - delta);
+            a_8 = delta*T_sample;
+            
+            KK = obj.K_b + obj.K_m;
+            K_hat = a_1*obj.M + a_2*obj.D + KK;
+            
+            %% Initial calculation:
+            idx = 1;
+
+            pos(:, idx) = x_0;
+            vel(:, idx) = v_0;
+            
+            output(:, idx) = C*vel(:, idx);
+            error(:, idx) = ref_gen_speed(:, idx) - output(:, idx);
+            sum_error = error(:, idx);
+            T_G(:, idx) = K_p*error(:, idx) + K_I*T_sample*sum_error;
+            T_AG = [T_A(:, idx);
+                    T_G(:, idx)];
+
+            acc(:, idx) = obj.M\(obj.b*T_AG - obj.D*vel(:, idx) - KK*pos(:, idx));
+            
+            %% for each time step:
+            nt = nt - 1;
+            
+            for idx = 1:nt
+                Delta_R_hat = obj.b*T_AG + obj.M*(a_1*pos(:, idx) + a_3*vel(:, idx) + a_4*acc(:, idx)) + ...
+                                           obj.D*(a_2*pos(:, idx) + a_5*vel(:, idx) + a_6*acc(:, idx));
+                
+                pos(:, idx + 1) = K_hat\Delta_R_hat;
+                acc(:, idx + 1) = a_1*(pos(:, idx + 1) - pos(:, idx)) - a_3*vel(:, idx) - a_4*acc(:, idx);
+                vel(:, idx + 1) = vel(:, idx) + a_7*acc(:, idx) + a_8*acc(:, idx + 1);
+                
+                output(:, idx + 1) = C*vel(:, idx + 1);
+                error (:, idx + 1) = ref_gen_speed(:, idx + 1) - output(:, idx + 1);
+                sum_error = sum_error + error(:, idx + 1);
+                T_G(:, idx + 1) = K_p*error(:, idx + 1) + K_I*T_sample*sum_error;
+                T_AG = [T_A(:, idx + 1);
+                        T_G(:, idx + 1)];
+                            
+            end
+            
+            sol = struct;
+            sol.solver = 'Newmark';
+            sol.delta = delta;
+            sol.alpha = alpha;
+            sol.t = time;
+            sol.x = pos;
+            sol.v = vel;
+            sol.a = acc;
+
         end
         
         function [Hx, Hv, Ha] = FRF(obj, freq)

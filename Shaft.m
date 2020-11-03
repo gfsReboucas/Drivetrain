@@ -46,17 +46,17 @@ classdef Shaft
     methods
         function obj = Shaft(varargin)
             
-            default = {'d'  , 700.0, ...
-                       'L'  , 2.0e3, ...
-                       'brg', Bearing(), ...
-                       'mat', Material()};
+            default = {'d'       , 700.0, ...
+                       'L'       , 2.0e3, ...
+                       'bearing' , Bearing(), ...
+                       'material', Material()};
                    
             default = scaling_factor.process_varargin(default, varargin);
 
             obj.d        = default.d;
             obj.L        = default.L;
-            obj.bearing  = default.brg;
-            obj.material = default.mat;
+            obj.bearing  = default.bearing;
+            obj.material = default.material;
         end
         
         function tab = disp(obj)
@@ -472,11 +472,7 @@ classdef Shaft
         function D = damping_matrix(obj, option)
             beta = 0.01;
             switch option
-                case 'axial'
-                case 'torsional'
-                case 'bending'
-                case 'full'
-                case 'Lin_Parker_99'
+                case {'axial', 'torsional', 'bending', 'full', 'Lin_Parker_99'}
                     D = beta*obj.stiffness_matrix(option);
                     
                 case 'LP_99:main_shaft'

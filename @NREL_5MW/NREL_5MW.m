@@ -65,10 +65,10 @@ classdef NREL_5MW < Drivetrain
             
             LSS = NREL_5MW.shaft(0);
             
-            inp_shaft = Shaft(LSS.d*gamma('d_S'), ...
-                              LSS.L*gamma('L_S'), ...
-                              LSS.bearing, ...
-                              LSS.material);
+            inp_shaft = Shaft('d'       , LSS.d*gamma('d_S'), ...
+                              'L'       , LSS.L*gamma('L_S'), ...
+                              'bearing' , LSS.bearing, ...
+                              'material', LSS.material);
             
             m_R =      110.0e3*gamma('M_R');
             J_R = 57231535.0  *gamma('J_R'); % according to [1, 3]
@@ -90,8 +90,6 @@ classdef NREL_5MW < Drivetrain
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);
 
-            [obj.S_H_val, obj.S_F_val, ...
-                obj.S_shaft_val] = obj.safety_factors();
         end
     end
     
@@ -354,7 +352,9 @@ classdef NREL_5MW < Drivetrain
                     error('NREL_5MW:shaft', 'Option [%d] is NOT valid.', idx);
             end
             
-            sft = Shaft(d, L, bearing, Material());
+            sft = Shaft('d'      , d, ...
+                        'L'      , L, ...
+                        'bearing', bearing);
         end
         
         function g_set = gear_stage(idx)

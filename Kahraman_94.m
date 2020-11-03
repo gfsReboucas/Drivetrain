@@ -283,6 +283,54 @@ classdef Kahraman_94 < Dynamic_Formulation
             
         end
         
+        function flag = test()
+            g_set = NREL_5MW.gear_stage(1);
+            MM       = Kahraman_94.stage_inertia_matrix(g_set);
+            [Kb] = Kahraman_94.stage_stiffness_matrix(g_set);
+            
+            import matlab.mock.TestCase;
+            dyn_for_TC = TestCase.forInteractiveUse;
+            id = ["ISO_6336:KV", ...
+                  "ISO_6336:SF", ...
+                  "ISO_6336:KS", ...
+                  "Dynamic_Formulation:imag", ...
+                  "Dynamic_Formulation:RB"];
+            
+            for idx = 1:length(id)
+                warning("off", id(idx));
+            end
+            
+            [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, 'ConstructorInputs', {NREL_5MW()});
+            dyn_for_mock.K_b = Kb;
+            dyn_for_mock.K_m = Kb*0.0;
+            dyn_for_mock.M = MM;
+            dyn_for_mock.A = [zeros(length(MM)),   eye(length(MM));
+                                       -MM\Kb  , zeros(length(MM))]; 
+            
+            fn_test = dyn_for_mock.modal_analysis();
+            fn_test = sort(fn_test);
+            
+            m_s = g_set.mass(1);    m_p = g_set.mass(2);    m_c = g_set.carrier.mass;
+            n = g_set.N_p;
+            k_1 = g_set.sub_set('planet_ring').k_mesh;
+            k_2 = g_set.sub_set('sun_planet' ).k_mesh;
+            
+            % Fixed ring:
+            Lambda_1 = m_p*m_c*m_s;
+            Lambda_2 = -(n*k_2*m_p*m_c + (k_1 + k_2)*m_c*m_s + n*(k_1 + k_2)*m_p*m_s);
+            Lambda_3 =   n*k_1*k_2*(n*m_p + m_c + 4.0*m_s);
+            
+            eig_val_1 = (-Lambda_2 - sqrt(Lambda_2^2 - 4.0*Lambda_1*Lambda_3))/(2.0*Lambda_1);
+            eig_val_2 = (-Lambda_2 + sqrt(Lambda_2^2 - 4.0*Lambda_1*Lambda_3))/(2.0*Lambda_1);
+            
+            omega = [0.0;
+                     repmat(sqrt((k_1 + k_2)/m_p), n - 1, 1);
+                     sqrt(eig_val_1);
+                     sqrt(eig_val_2)];
+            fn_ana = omega./(2.0*pi);
+            
+        end
+        
     end
 end
 

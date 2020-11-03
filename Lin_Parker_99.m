@@ -661,23 +661,23 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             % [1], Table 2 and;
             % [2], Table 3.1;
             %
-            % +---------------------------+-------+-------+---------+--------+
-            % |                           |  Sun  |  Ring | Carrier | Planet |
-            % +---------------------------+-------+-------+---------+--------+
-            % |         Mass (kg)         |  0.4  |  2.35 |   5.43  |  0.66  |
-            % +---------------------------+-------+-------+---------+--------+
-            % |         I/r^2 (kg)        |  0.39 |  3.00 |   6.29  |  0.61  |
-            % +---------------------------+-------+-------+---------+--------+
-            % |     Base diameter (mm)    | 77.4  | 275.0 |  176.8  |  100.3 |
-            % +---------------------------+-------+-------+---------+--------+
-            % |    Mesh stiffness (N/m)   |               5.0e8              |
-            % +---------------------------+-------+-------+---------+--------+
-            % |  Bearing stiffness (N/m)  | 1.0e8 | 1.0e8 |  1.0e8  |  1.0e8 |
-            % +---------------------------+-------+-------+---------+--------+
-            % | Torsional stiffness (N/m) |  0.0  | 1.0e9 |   0.0   |    ?   |
-            % +---------------------------+-------+-------+---------+--------+
-            % |   Pressure angle (deg.)   |               24.6               |
-            % +---------------------------+----------------------------------+
+            % +-----------------------------+-------+-------+---------+--------+
+            % |                             |  Sun  |  Ring | Carrier | Planet |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |         Mass (kg)           |  0.4  |  2.35 |   5.43  |  0.66  |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |         I/r^2 (kg)          |  0.39 |  3.00 |   6.29  |  0.61  |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |     Base diameter (mm)      | 77.4  | 275.0 |  176.8  |  100.3 |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |    Mesh stiffness (N/m)     |               5.0e8              |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |  Bearing stiffness (N/m)    | 1.0e8 | 1.0e8 |  1.0e8  |  1.0e8 |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |  Torsional stiffness (N/m)  |  0.0  | 1.0e9 |   0.0   |    ?   |
+            % +-----------------------------+-------+-------+---------+--------+
+            % |    Pressure angle (deg.)    |               24.6               |
+            % +-----------------------------+----------------------------------+
             % 
             % Assumptions:
             % - Isotropic bearings;
@@ -801,7 +801,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             gset_TC.assignOutputsWhen(gset_behavior.sub_set('planet_ring'), tmp);
             
             MM = Lin_Parker_99.stage_inertia_matrix(gset_mock);
-            [Kb, Km] = Lin_Parker_99.stage_stiffness_matrix(gset_mock);
+            [Km, Kb] = Lin_Parker_99.stage_stiffness_matrix(gset_mock);
             KK = Kb + Km;
             
             dyn_for_TC = TestCase.forInteractiveUse;
@@ -815,9 +815,14 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 warning("off", id(idx));
             end
             
-            [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, 'ConstructorInputs', {NREL_5MW()});
-            dyn_for_mock.K = KK;
+            [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, ...
+                                                       'ConstructorInputs', {NREL_5MW('M_R' , 0.0, 'J_R' , 0.0, ...
+                                                                                      'M_G' , 0.0, 'J_G' , 0.0)});
+            dyn_for_mock.K_m = Km;
+            dyn_for_mock.K_b = Kb;
             dyn_for_mock.M = MM;
+            dyn_for_mock.A = [zeros(length(MM)),   eye(length(MM));
+                                       -MM\KK  , zeros(length(MM))]; 
             
             fn_test = dyn_for_mock.modal_analysis();
             fn_test = sort(fn_test);
@@ -991,7 +996,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             gset_TC.assignOutputsWhen(gset_behavior.sub_set('planet_ring'), mesh_stiff);
             
             MM       = Lin_Parker_99.stage_inertia_matrix(gset_mock);
-            [Kb, Km] = Lin_Parker_99.stage_stiffness_matrix(gset_mock);
+            [Km, Kb] = Lin_Parker_99.stage_stiffness_matrix(gset_mock);
             KK = Kb + Km;
             
             dyn_for_TC = TestCase.forInteractiveUse;
@@ -1006,8 +1011,11 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             end
             
             [dyn_for_mock, ~] = createMock(dyn_for_TC, ?Dynamic_Formulation, 'ConstructorInputs', {NREL_5MW()});
-            dyn_for_mock.K = KK;
+            dyn_for_mock.K_b = Kb;
+            dyn_for_mock.K_m = Km;
             dyn_for_mock.M = MM;
+            dyn_for_mock.A = [zeros(length(MM)),   eye(length(MM));
+                                       -MM\KK  , zeros(length(MM))]; 
             
             fn_test = dyn_for_mock.modal_analysis();
             fn_test = sort(fn_test);
