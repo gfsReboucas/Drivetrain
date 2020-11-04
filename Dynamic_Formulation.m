@@ -293,8 +293,9 @@ classdef Dynamic_Formulation
             sol.pos       = sol.x  (range     , :);
             sol.vel       = sol.x  (range + nn, :);
             sol.acc       = vel_acc(range + nn, :);
-            sol.load      = sol.K*sol.pos + ...
-                            sol.D*sol.vel;
+%             sol.load      = sol.K*sol.pos + ...
+%                             sol.D*sol.vel + ...
+%                             sol.M*sol.acc;
             sol.DOF_description = obj.DOF_description;
             
 %             function x_dot = RHS(t, x)
