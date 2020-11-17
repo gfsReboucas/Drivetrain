@@ -187,7 +187,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
             % References:
             % [1] A. R. Nejad, Z. Gao, and T. Moan, “On long-term fatigue 
             % damage and reliability analysis of gears under wind loads in 
-            % offshore wind turbine drivetrains,” Int. J. Fatigue, vol. 61,
+            % offshore wind turbine drivetrains,�? Int. J. Fatigue, vol. 61,
             % pp. 116–128, Apr. 2014. 10.1016/j.ijfatigue.2013.11.023
             %
 
@@ -208,9 +208,11 @@ classdef (Abstract) ISO_6336 < Gear_Set
             
             speed_Max = zeros(1, num_bins - 1);
             for idx = 1:(num_bins - 1)
-                range = (load_signal >= load_edges(idx)) & ...
-                        (load_signal <= load_edges(idx + 1));
-                speed_Max(idx) = max(load_speed(range));
+                if(N(idx) ~= 0.0)
+                    range = (load_signal >= load_edges(idx)) & ...
+                            (load_signal <= load_edges(idx + 1));
+                    speed_Max(idx) = max(load_speed(range));
+                end
             end
             
             % descending order:

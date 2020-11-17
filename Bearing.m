@@ -294,14 +294,25 @@ classdef Bearing
             % at the Bearing, which rotates with velocity speed in [1/min.].
             %
             
-            [N_R, F_R_edges] = ISO_6336.LDD(F_R, speed, time_step);
-            [N_A, F_A_edges] = ISO_6336.LDD(F_A, speed, time_step);
-            
             % Dynamic equivalent load:
-            P = obj.dynamic_equiv_load(F_R_edges, F_A_edges);
-            P = abs(P);
-            sum_term = mean([N_R; N_A]).*power(P, obj.a);
+            P = obj.dynamic_equiv_load(F_R, F_A);
+            [N, P_edges] = ISO_6336.LDD(P, speed, time_step);
+            
+            sum_term = N.*power(P_edges, obj.a);
             D = power(obj.L_10*obj.C, -obj.a)*sum(sum_term);
+            
+        end
+        
+        function D = Simpack_damage_analysis(obj, data)
+            F_A = data.load.ov_001.values;
+            F_y = data.load.ov_002.values;
+            F_z = data.load.ov_003.values;
+            F_R = sqrt(F_y.^2 + F_z.^2);
+            
+            % [rad/s] to [1/min.]:
+            speed = data.load.ov_017.values.*30.0/pi;
+            
+            D = obj.damage_calculation(F_R, F_A, speed, data.time_step);
             
         end
     end

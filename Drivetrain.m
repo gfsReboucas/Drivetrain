@@ -1322,7 +1322,7 @@ classdef (Abstract) Drivetrain
         end
         
         %% Data analysis:
-        function Simpack_data_analysis(obj, model_name, t_transient)
+        function Simpack_damage_analysis(obj, model_name, t_transient)
             % read folder:
             folder_name = sprintf('@%s\\%s.%s.output\\*.mat', class(obj), class(obj), model_name);
             MAT_file = dir(folder_name);
@@ -1337,13 +1337,12 @@ classdef (Abstract) Drivetrain
             data.load  = timeInt.forceOv;
             data.speed = timeInt.bodyVelRot;
             clear('timeInt', 'time');
-
             
             % get load field names:
             field_name = fieldnames(data.load);
             
             % removing irrelevant fields:
-            data.load = rmfield(data.load, field_name{end-3:end});
+            data.load = rmfield(data.load, field_name(end-3:end));
             field_name = fieldnames(data.load);
             
             % remove transient data:
@@ -1360,33 +1359,41 @@ classdef (Abstract) Drivetrain
             field_name = fieldnames(data.speed);
             
             % removing irrelevant fields:
-            idx = find(contains(field_name, 'R_I'), 1, 'last');
-            data.speed = rmfield(data.speed, field_name(1:idx));
             data.speed = rmfield(data.speed, field_name(end-3:end));
+            % inertial frames:
+            idx = find((contains(field_name, 'R_I')), 1, 'last');
+            data.speed = rmfield(data.speed, field_name(1:idx));
             field_name = fieldnames(data.speed);
-
-            % remove transient data:
-            for idx = 1:length(field_name)
-                sub_field = fieldnames(data.speed.(field_name{idx}));
-                sub_field = sub_field(1:end-4);
-                for jdx = 1:length(sub_field)
-                    data.speed.(field_name{idx}).(sub_field{jdx}).values = ...
-                        data.speed.(field_name{idx}).(sub_field{jdx}).values(idx_TRS:end);
-                end
+            % those who are not gear related:
+%             idx = find(~contains(field_name, 'stage_0'));
+            idx = ~contains(field_name, {'B_sun', 'B_ge'});
+            data.speed = rmfield(data.speed, field_name(idx));
+            
+            field_name  = fieldnames(data.load);
+            
+            damage = zeros(size(obj.f_n));
+            
+            %% Main shaft:
+            data_idx = data;
+%             data_idx = rmfield(data_idx, 'speed');
+            idx_MS = find(contains(field_name, 'main_shaft'));
+            for idx = 1:length(obj.main_shaft.bearing)
+                jdx = idx_MS(idx);
+                data_idx.load = data.load.(field_name{jdx});
+                damage(idx) = obj.main_shaft.bearing(idx).Simpack_damage_analysis(data_idx);
             end
             
-            data.speed.(field_name{idx}) = data.speed.(field_name{idx})(idx_TRS:end);
-            data_idx.time = data.time(idx:end);
-            
+            %% Gear stages:
             for idx = 1:obj.N_stage
                 % send only fields related to the current stage:
+                field_name  = fieldnames(data.load);
                 jdx = ~contains(field_name, sprintf('stage_0%d', idx));
-                
                 data_idx.load  = rmfield(data.load , field_name(jdx));
-                data_idx.speed = rmfield(data.speed, field_name(jdx));
-
-                obj.stage(idx).Simpack_data_analysis(data_idx);
                 
+                field_name  = fieldnames(data.speed);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.speed = rmfield(data.speed, field_name(jdx));
+                obj.stage(idx).Simpack_damage_analysis(data_idx);
             end
 
 %             % Force outputs:
