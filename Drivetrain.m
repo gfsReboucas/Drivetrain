@@ -56,7 +56,7 @@ classdef (Abstract) Drivetrain
         K;                                    % [*]    , Stiffness matrix
         D;                                    % [*]    , Damping matrix
         A;                                    % [*]    , State matrix
-        load;                                 % [*]    , Load vector
+%         load;                                 % [*]    , Load vector
         f_n;          % [Hz], natural frequencies
         f_nd;         % [Hz], damped natural frequencies
         mode_shape;   % [-],  mode shapes
@@ -1321,6 +1321,48 @@ classdef (Abstract) Drivetrain
 
         end
         
+        %% Data analysis:
+        function Simpack_data_analysis(obj, model_name)
+            % read folder:
+            folder_name = sprintf('@%s\\%s.%s.output\\*.mat', class(obj), class(obj), model_name);
+            MAT_file = dir(folder_name);
+            
+            load([MAT_file.folder, '\', ...
+                  MAT_file.name], 'timeInt');
+            
+            data = timeInt.forceOv;
+            data.time = timeInt.time;
+            clear('timeInt');
+            
+            % get field names:
+            field_name = fieldnames(data);
+            
+            for idx = 1:obj.N_stage
+                % send only fields related to the current stage:
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                struct_idx = rmfield(data, field_name(jdx));
+
+                obj.stage(idx).Simpack_data_analysis(struct_idx);
+                
+            end
+
+%             % Force outputs:
+%             timeInt.forceOv;
+%             
+%             % Bearing:
+%             F_a = timeInt.forceOv.(field_name{idx_BRG}).ov_001.values;
+%             F_y = timeInt.forceOv.(field_name{idx_BRG}).ov_002.values;
+%             F_z = timeInt.forceOv.(field_name{idx_BRG}).ov_003.values;
+%             F_r = sqrt(F_y.^2 + F_z.^2);
+%             
+%             % Gear
+%             sigma_H = timeInt.forceOv.(field_name{idx_}).ov_020.values;
+%             
+%             % Angular speed:
+%             timeInt.bodyVelRot;
+            
+        end
+        
     end
     
     %% Set methods:
@@ -1435,5 +1477,6 @@ classdef (Abstract) Drivetrain
             fclose(old_ID);
             fclose(new_ID);
         end
+        
     end
 end

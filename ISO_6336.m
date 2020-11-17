@@ -102,13 +102,13 @@ classdef (Abstract) ISO_6336 < Gear_Set
                 obj.idx_fixed, obj.idx_input] = obj.set_gear_speed(default.n_nominal);
         end
         
-        function [N, sigma] = Pitting_SN_curve(obj)
-            N = logspace(4, 10, 100);
-            ZN = zeros(2, length(N));
+        function [N, sigma] = Pitting_SN_curve(obj, varargin)
+            N = logspace(1, 10, 100);
+            default = {'N', N};
+            default = scaling_factor.process_varargin(default, varargin);
+            N = default.N;
             
-            for idx = 1:length(N)
-                ZN(:, idx) = obj.life_factor(N(idx));
-            end
+            ZN = obj.life_factor(N);
             
             sigma = diag(obj.sigma_HP_ref)*ZN;
         end
@@ -121,99 +121,6 @@ classdef (Abstract) ISO_6336 < Gear_Set
     
     %% Calculation methods:
     methods
-%         function variable_load(obj, input_torque, fs)
-%             torque = obj.torque_ratio'.*input_torque;
-%             
-%             torque = torque(:, obj.idx_input);
-%             
-%             [~, edge_torque, ~] = histcounts(torque);
-%             diff_torque = mean(diff(edge_torque));
-%             torque_0   = edge_torque(1)   - diff_torque;
-%             torque_end = edge_torque(end) + diff_torque;
-%             edge_torque = [torque_0, edge_torque, torque_end];
-%             
-%             [bin_torque, edge_torque, ~] = histcounts(torque, edge_torque);
-%             bin_torque = fliplr(bin_torque);
-%             edge_torque = fliplr(edge_torque);
-%             bin_number = length(bin_torque);
-%             
-%             edge_speed = obj.P_rated*1.0e3./edge_torque;
-%             edge_speed = edge_speed*(30.0/pi);
-%             
-%             if(strcmp(obj.configuration, 'parallel'))
-%                 n_nom = NaN(2, 1);
-%             elseif(strcmp(obj.configuration, 'planetary'))
-%                 n_nom = NaN(4, 1);
-%                 n_nom(obj.idx_fixed) = 0.0;
-%             end
-%             
-%             id = ["ISO_6336:KV", ...
-%                   "ISO_6336:SF", ...
-%                   "ISO_6336:KS", ...
-%                   "MATLAB:COM:InvalidProgid", ...
-%                   "CVX:Renamed"];
-% 
-%             for idx = 1:length(id)
-%                 warning("off", id(idx));
-%             end
-%             
-%             gset = obj.gear_set;
-%             
-%             sig_H = zeros(2, bin_number + 1);
-%             SH = zeros(2, bin_number + 1);
-%             ZNT = zeros(2, bin_number + 1);
-%             N_fail = zeros(2, bin_number + 1);
-%             for idx = 1:(bin_number + 1)
-%                 n_nom(obj.idx_input) = edge_speed(idx);
-%                 copy_obj = ISO_6336(gset, 'P_rated'    , obj.P_rated    , ...
-%                                           'S_Hmin'     , obj.S_Hmin     , ...
-%                                           'S_Fmin'     , obj.S_Fmin     , ...
-%                                           'L_h'        , obj.L_h        , ...
-%                                           'K_A'        , obj.K_A        , ...
-%                                           'nu_40'      , obj.nu_40      , ...
-%                                           'n_nominal'  , n_nom);
-% 
-%                 sig_H(:, idx) = copy_obj.sigma_H;
-%                 SH(:, idx)    = copy_obj.S_H;
-%                 ZNT(:, idx)   = copy_obj.Z_NT;
-%                 N_fail(:, idx) = copy_obj.num_cycles_failure();
-%             end
-%             
-% %             sig_H = diag(obj.S_H)*sig_H;
-%             
-%             n = 60.0*obj.L_h*edge_speed*obj.u;
-%             
-%             for idx = 1:length(id)
-%                 warning('on', id(idx));
-%             end
-%             
-%             [N_x, sig_y] = obj.Pitting_SN_curve();
-%             
-%             for idx = 1:2
-%                 aa = find(sig_y(idx, :) <= min(sig_H(idx, :)), 1, 'last')
-%                 bb = find(sig_y(idx, :) >= max(sig_H(idx, :)), 1, 'first')
-%                 range = aa:bb
-%                 N_x = N_x(range);
-%                 sig_y = sig_y(:, range);
-%             end
-%             
-%             figure;
-%             for idx = 1:2
-%                 subplot(1,2,idx)
-%                 semilogx(N_x, sig_y(idx, :), 'r');
-%                 hold on;
-%                 semilogx(n, sigS(idx, :), 'b');
-%             end
-%             
-%             n1 = interp1(sig_y(1, :), log(N_x), log(sig_H(1, :)));
-%             n2 = interp1(sig_y(2, :), log(N_x), log(sig_H(2, :)));
-%             
-%             one2N = 1:bin_number;
-%             
-%             tab = table(one2N', edge_torque(1:end-1)', edge_torque(2:end)', bin_torque', ...
-%                 'variableNames', ["Bin_no", "min_Torque", "Max_Torque", "Load_Cycles"]);
-%         end
-%         
         function N_star = num_cycles_failure(obj)
             N_star = zeros(1, 2);
             sig_HPR = obj.sigma_HP_ref;
@@ -225,216 +132,122 @@ classdef (Abstract) ISO_6336 < Gear_Set
             end
         end
         
-        function sigH = sigma_H_spectra(obj, torque)
-            equiv_force = abs((2.0e3*torque*(obj.u + 1.0))/(obj.u*obj.b*obj.d(1)^2));
+        function [num_cycle, sigmaH, torque_edges, speed_Max] = pitting_stress_bins(obj, torque, speed, time_step)
+            %PITTING_STRESS_BINS performs LDD on the torque signal,
+            % calculating the values of the pitting stress sigmaH for each
+            % torque bin. The num_cycles is expanded to the required life
+            % span L_h of the Gear_Set.
             
-            sigH = obj.Z_H   .* ...
-                   obj.Z_E   .* ...
-                   obj.Z_eps .* ...
-                   obj.Z_beta.* ...
-                   obj.Z_BD' .* ...
-                   sqrt(equiv_force.*obj.K_gamma.* ...
-                                     obj.K_v    .* ...
-                                     obj.K_Hbeta.* ...
-                                     obj.K_Halpha);
+            [num_cycle, torque_edges, speed_Max] = ISO_6336.LDD(torque, speed, time_step);
+            
+            Max_power = torque_edges(2:end).*1.0e-3 .* ... % [kN-m]
+                        speed_Max.*(pi/30.0);     % [rad/s] = [kW]
+            
+            obj_tmp = obj;
+            obj_tmp.K_A = 1.0;
+            
+            sigmaH = zeros(2, length(speed_Max));
+            
+            for idx = 1:length(speed_Max)
+                obj_tmp.P_rated = Max_power(idx);
+                obj_tmp.n_nominal = obj_tmp.speed_ratio*abs(speed_Max(idx));
+                sigmaH(:, idx) = obj_tmp.sigma_H';
+            end
+            
+            time_duration = time_step*length(torque);
+            num_cycle = num_cycle.*obj.L_h./time_duration;
+            
+            %% Example of plotting:
+%             figure;
+%             subplot(211)
+%             histogram('binEdges' , num_cycle, ...
+%                       'binCounts', sigmaH(1, :));
+%             ylabel('\sigma_{H1}, [N/mm^2]');
+%             
+%             subplot(212)
+%             histogram('binEdges' , num_cycle, ...
+%                       'binCounts', sigmaH(2, :));
+%             xlabel('N, [-]');
+%             ylabel('\sigma_{H2}, [N/mm^2]');
+%             
+%             fig_axes = findobj(gcf, 'Type', 'Axes');
+%             set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xscale', 'log');
+% 
         end
+        
     end
     
     methods(Static)
-        function calc = example_01()
-            %EXAMPLE_01 runs the first calculation example from 
-            %                      Parameter                         Symbol         Problem       Reference         Calculated         Rel_Error_pc
-            %     ___________________________________________    _______________    _______    _______________    _______________    ________________
-            %     'Minimum safety factor (pitting)'              'S_Hmin'            ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Pitting safety factor for pinion'             'S_H1'              "YES"     [  1.0285e+000]    [  1.0157e+000]    [   1.2505e+000]
-            %     'Pitting safety factor for wheel'              'S_H2'              "YES"     [  1.0870e+000]    [  1.0724e+000]    [   1.3390e+000]
-            %     'Permissible contact stress for pinion'        'sigma_HP1'         ""        [  1.3385e+003]    [  1.3428e+003]    [-324.6952e-003]
-            %     'Permissible contact stress for wheel'         'sigma_HP2'         ""        [  1.4145e+003]    [  1.4178e+003]    [-234.2749e-003]
-            %     'Nominal contact stress'                       'sigma_H0'          ""        [  1.2066e+003]    [  1.2065e+003]    [   8.1404e-003]
-            %     'Contact stress for pinion'                    'sigma_H1'          "YES"     [  1.3014e+003]    [  1.3221e+003]    [  -1.5951e+000]
-            %     'Contact stress for wheel'                     'sigma_H2'          "YES"     [  1.3014e+003]    [  1.3221e+003]    [  -1.5951e+000]
-            %     'Nominal tangential load, [N]'                 'F_t'               ""        [127.3520e+003]    [127.3524e+003]    [-299.5607e-006]
-            %     'Pitch line velocity, [m/s]'                   'v'                 ""        [  2.6640e+000]    [  2.6642e+000]    [  -7.4461e-003]
-            %     'Dynamic factor'                               'K_v'               ""        [  1.0030e+000]    [  1.0005e+000]    [ 246.6092e-003]
-            %     'Transverse load factor (root stress)'         'K_Falpha'          ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Transverse load factor (contact stress)'      'K_Halpha'          ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Face load factor (root stress)'               'K_Fbeta'           "YES"     [  1.1280e+000]    [  1.1601e+000]    [  -2.8446e+000]
-            %     'Face load factor (contact stress)'            'K_Hbeta'           "YES"     [  1.1600e+000]    [  1.2002e+000]    [  -3.4681e+000]
-            %     'Virtual number of teeth for pinion'           'z_n1'              ""        [ 18.9050e+000]    [ 18.9051e+000]    [-650.6211e-006]
-            %     'Virtual number of teeth for wheel'            'z_n2'              ""        [114.5430e+000]    [114.5428e+000]    [ 171.0638e-006]
-            %     'Number of load cycles for pinion'             'N_L1'              ""        [  1.0800e+009]    [  1.0800e+009]    [   0.0000e+000]
-            %     'Number of load cycles for wheel'              'N_L2'              ""        [178.3000e+006]    [178.2524e+006]    [  26.6813e-003]
-            %     'Life factor for pinion'                       'Z_NT1'             ""        [910.0000e-003]    [913.0094e-003]    [-330.6993e-003]
-            %     'Life factor for wheel'                        'Z_NT2'             ""        [962.0000e-003]    [964.0118e-003]    [-209.1318e-003]
-            %     'Size factor'                                  'Z_X'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Work hardening factor'                        'Z_W'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Roughness factor'                             'Z_R'               ""        [965.9900e-003]    [965.9878e-003]    [ 232.3318e-006]
-            %     'Velocity factor'                              'Z_v'               ""        [969.1100e-003]    [969.1142e-003]    [-434.0740e-006]
-            %     'Lubricant factor'                             'Z_L'               ""        [  1.0474e+000]    [  1.0474e+000]    [ 368.0474e-006]
-            %     'Helix angle factor'                           'Z_beta'            ""        [  1.0194e+000]    [  1.0194e+000]    [-366.7828e-006]
-            %     'Contact ratio factor'                         'Z_eps'             ""        [803.0000e-003]    [803.3898e-003]    [ -48.5416e-003]
-            %     'Elasticity factor'                            'Z_E'               ""        [189.8117e+000]    [189.8117e+000]    [-230.5266e-009]
-            %     'Single pair tooth contact factor'             'Z_B'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Single pair tooth contact factor'             'Z_D'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Zone factor'                                  'Z_H'               ""        [  2.3953e+000]    [  2.3953e+000]    [-179.4571e-006]
-            %     'Single stiffness, [N/(mm-um)]'                'c''                ""        [ 12.3705e+000]    [ 12.3620e+000]    [  68.2642e-003]
-            %     'Theoretical single stiffness, [N/(mm-um)]'    'c_th''             ""        [ 17.8558e+000]    [ 17.8436e+000]    [  68.2770e-003]
-            %     'Mesh stiffness, [N/(mm-um)]'                  'c_gamma_alpha'     ""        [ 17.4648e+000]    [ 17.4553e+000]    [  54.8918e-003]
-            %     'Mesh stiffness, [N/(mm-um)]'                  'c_gamma_beta'      ""        [ 14.8451e+000]    [ 14.8370e+000]    [  54.8750e-003]
+        function [num_cycle, load_edges, speed_Max, bin] = LDD(load_signal, load_speed, time_step)
+            %LDD produces the load duration distribution of a load_signal
+            % with rotational speed load_speed in [1/min.]. time_step is 
+            % the inverse of the sampling frequency of both signals.
             %
-            
-            mat = Material('row', 2);
-            mat = repmat(mat, 1, 2);
-            
-            gset = Gear_Set('configuration', 'parallel', ...   % configuration
-                            'm_n'          , 8.0, ...          % normal module
-                            'alpha_n'      , 20.0, ...         % pressure angle
-                            'z'            , [17 103], ...     % number of teeth
-                            'b'            , 100.0, ...        % face width
-                            'x'            , [0.145 0.0], ...  % profile shift coefficient
-                            'beta'         , 15.8, ...         % helix angle
-                            'k'            , [1 1]*0, ...      % k
-                            'bore_ratio'   , [1 1]*0.5, ...    % bore ratio
-                            'N_p'          , 1, ...            % number of planets
-                            'a_w'          , 500.0, ...        % center distance
-                            'rack_type'    , 'D', ...          % rack type
-                            'bearing'      , Bearing(), ...    %
-                            'shaft'        , Shaft(), ...      %
-                            'Q'            , 5.0, ...          % ISO accuracy grade
-                            'R_a'          , 1.0, ...          % surface roughness flank
-                            'material'     , mat);
-            
-            T_1 = 9.0e3;
-            n_1 = 360.0;
-            P_r = 1.0e-3*T_1*n_1*pi/30.0;
-            
-            calc = ISO_6336(gset, 'P_rated'    , P_r, ...
-                                  'S_Hmin'     , 1.0, ...
-                                  'S_Fmin'     , 1.0, ...
-                                  'L_h'        , 50.0e3, ...
-                                  'K_A'        , 1.0, ...
-                                  'n_nominal'  , [n_1 NaN], ...
-                                  'nu_40'      , 320.0, ...
-                                  'C_a'        , 70.0);
-
-            tab_set = {'Minimum safety factor (pitting)'          , 'S_Hmin'       , calc.S_Hmin       , 1.0;
-                       'Pitting safety factor for pinion'         , 'S_H1'         , calc.S_H(1)       , 1.02853;
-                       'Pitting safety factor for wheel'          , 'S_H2'         , calc.S_H(2)       , 1.08696;
-                       'Permissible contact stress for pinion'    , 'sigma_HP1'    , calc.sigma_HP(1)  , 1338.48050;
-                       'Permissible contact stress for wheel'     , 'sigma_HP2'    , calc.sigma_HP(2)  , 1414.52551;
-                       'Nominal contact stress'                   , 'sigma_H0'     , calc.sigma_H0     , 1206.58207;
-                       'Contact stress for pinion'                , 'sigma_H1'     , calc.sigma_H(1)   , 1301.35343;
-                       'Contact stress for wheel'                 , 'sigma_H2'     , calc.sigma_H(2)   , 1301.35343;
-                       'Nominal tangential load, [N]'             , 'F_t'          , calc.F_t          , 127352.0;
-                       'Pitch line velocity, [m/s]'               , 'v'            , calc.v_pitch_line , 2.664;
-                       'Dynamic factor'                           , 'K_v'          , calc.K_v          , 1.003;
-                       'Transverse load factor (root stress)'     , 'K_Falpha'     , calc.K_Falpha     , 1.0;
-                       'Transverse load factor (contact stress)'  , 'K_Halpha'     , calc.K_Halpha     , 1.0;
-                       'Face load factor (root stress)'           , 'K_Fbeta'      , calc.K_Fbeta      , 1.12803;
-                       'Face load factor (contact stress)'        , 'K_Hbeta'      , calc.K_Hbeta      , 1.16;
-                       'Virtual number of teeth for pinion'       , 'z_n1'         , calc.z_n(1)       , 18.905;
-                       'Virtual number of teeth for wheel'        , 'z_n2'         , calc.z_n(2)       , 114.543;
-                       'Number of load cycles for pinion'         , 'N_L1'         , calc.N_L(1)       , 1.080e9;
-                       'Number of load cycles for wheel'          , 'N_L2'         , calc.N_L(2)       , 1.783e8;
-                       'Life factor for pinion'                   , 'Z_NT1'        , calc.Z_NT(1)      , 0.91;
-                       'Life factor for wheel'                    , 'Z_NT2'        , calc.Z_NT(2)      , 0.962;
-                       'Size factor'                              , 'Z_X'          , calc.Z_X          , 1.0;
-                       'Work hardening factor'                    , 'Z_W'          , calc.Z_W          , 1.0;
-                       'Roughness factor'                         , 'Z_R'          , calc.Z_R          , 0.96599;
-                       'Velocity factor'                          , 'Z_v'          , calc.Z_v          , 0.96911;
-                       'Lubricant factor'                         , 'Z_L'          , calc.Z_L          , 1.04739;
-                       'Helix angle factor'                       , 'Z_beta'       , calc.Z_beta       , 1.01944;
-                       'Contact ratio factor'                     , 'Z_eps'        , calc.Z_eps        , 0.803;
-                       'Elasticity factor'                        , 'Z_E'          , calc.Z_E          , 189.81170;
-                       'Single pair tooth contact factor'         , 'Z_B'          , calc.Z_BD(1)      , 1.0;
-                       'Single pair tooth contact factor'         , 'Z_D'          , calc.Z_BD(2)      , 1.0;
-                       'Zone factor'                              , 'Z_H'          , calc.Z_H          , 2.39533;
-                       'Single stiffness, [N/(mm-um)]'            , 'c'''          , calc.cprime       , 12.37047;
-                       'Theoretical single stiffness, [N/(mm-um)]', 'c_th'''       , calc.cprime_th    , 17.85584;
-                       'Mesh stiffness, [N/(mm-um)]'              , 'c_gamma_alpha', calc.c_gamma_alpha, 17.46485;
-                       'Mesh stiffness, [N/(mm-um)]'              , 'c_gamma_beta' , calc.c_gamma_beta , 14.84512;
-                       };
-
-            Parameter = tab_set(:, 1);
-            Symbol    = tab_set(:, 2);
-            val_calc  = tab_set(:, 3);
-            val_ref   = tab_set(:, 4);
-            rel_err   = (1.0 - cell2mat(val_calc)./cell2mat(val_ref))*100.0;
-            big_err = repmat("", length(rel_err), 1);
-            big_err(abs(rel_err) > 1.0) = 'YES';
-            rel_err = mat2cell(rel_err, ones(length(rel_err),1));
-            
-            tab = table(Parameter, Symbol, big_err, val_ref, val_calc, rel_err, ...
-                'variableNames', ["Parameter", "Symbol", "Problem", "Reference", "Calculated", "Rel_Error_pc"]);
-            disp(tab)
-        end
-        
-        function calc = example_02()
-            mat = Material('row', 2);
-            mat = repmat(mat, 1, 2);
-
-            gset = Gear_Set('configuration', 'parallel'             , ... % configuration
-                            'm_n'          , 8.467                  , ... % normal module
-                            'alpha_n'      , 25.0                   , ... % pressure angle
-                            'z'            , [17 60]                , ... % number of teeth
-                            'b'            , 152.4                  , ... % face width
-                            'x'            , [0.172 0.0015]         , ... % profile shift coefficient
-                            'beta'         , 15.5                   , ... % helix angle
-                            'k'            , [1 1]*0                , ... % k
-                            'bore_ratio'   , [1 1]*0.5              , ... % bore ratio
-                            'N_p'          , 1                      , ... % number of planets
-                            'a_w'          , 339.727                , ... % center distance
-                            'rack_type'    , 'D'                    , ... % rack type
-                            'bearing'      , repmat(Bearing(), 1, 6), ... %
-                            'shaft'        , Shaft()                , ... %
-                            'Q'            , 6.0                    , ... % ISO accuracy grade
-                            'R_a'          , 1.0                    , ... % surface roughness flank
-                            'material'     , mat);
-
-            T_1 = mean([25347 25423]); % [N-m], from [6], Table 4, bin 3
-            n_1 = 35.2;                % [1.0/min.]
-            P_r = 1.0e-3*T_1*n_1*pi/30.0;
-            
-            calc = ISO_6336(gset, 'P_rated'    , P_r      , ...
-                                  'S_Hmin'     , 1.0      , ...
-                                  'S_Fmin'     , 1.0         , ...
-                                  'L_h'        , 1.0e3, ...
-                                  'K_A'        , 1.0      , ...
-                                  'n_nominal'  , [n_1 NaN], ...
-                                  'nu_40'      , 320.0    , ...
-                                  'C_a'        , 70.0);
-
-        end
-        
-        function [N, edges, bin] = LDD(signal, varargin)
-            % adapted from Simpack's Load Calculation Tool [1], script 
-            % SC_ldd.qs
+            % References:
+            % [1] A. R. Nejad, Z. Gao, and T. Moan, “On long-term fatigue 
+            % damage and reliability analysis of gears under wind loads in 
+            % offshore wind turbine drivetrains,” Int. J. Fatigue, vol. 61,
+            % pp. 116–128, Apr. 2014. 10.1016/j.ijfatigue.2013.11.023
             %
-            % [1] Simpack Wind. Access on 28.08.2020. 
-            % https://www.3ds.com/products-services/simulia/training/course-descriptions/simpack-wind/
-            %
+
+            load_signal = abs(load_signal);
+            load_speed = abs(load_speed);
             
-            num_bins = 40;
-            LDD_data = zeros(1, num_bins);
-            for idx = 1:length(signal)
-                delta = signal(idx) - bin_min;
-                act_test = floor(delta/bin_step);
-                
-                if(act_test == -1)
-                    bin_test = 1;
-%                 elseif(bin_test == num_bins)
-%                     bin_test = num_bins - 1;
-                end
-                % oc is the occurrence?
-                LDD_data(bin_test) = LDD_data(bin_test) + time_step*oc;
+            [load_min, load_Max] = bounds(load_signal);
+            num_bins = 101; % according to [1], 4.6
+            bin_size = (load_Max - load_min)/num_bins;
+            if(load_min > bin_size)
+                load_min = load_min - bin_size;
+            end
+            load_Max = load_Max + bin_size;
+            load_edges = linspace(load_min, load_Max, num_bins);
+            
+            % [N, edges, bin] = histcounts(signal, nbins OR edges)
+            [N, load_edges, bin] = histcounts(load_signal, load_edges);
+            
+            speed_Max = zeros(1, num_bins - 1);
+            for idx = 1:(num_bins - 1)
+                range = (load_signal >= load_edges(idx)) & ...
+                        (load_signal <= load_edges(idx + 1));
+                speed_Max(idx) = max(load_speed(range));
             end
             
-%             [x_min, x_Max] = bounds(signal);
+            % descending order:
+            load_edges = fliplr(load_edges);
+            speed_Max  = fliplr(speed_Max);
+            N          = fliplr(N);
             
-%             edges = linspace(x_min, x_Max, 200);
-%             default = {};
-            [N,edges,bin] = histcounts(signal);
+            % Assuming that each load is constant during a time step:
+            load_time = N*time_step;
+            
+            % according to [1], (10):
+            num_cycle = load_time.*speed_Max/60.0;
+            num_cycle = [0.0, cumsum(num_cycle)];
+            
+            %% Example of plotting:
+%             figure;
+%             subplot(211)
+%             histogram('binEdges', fliplr(load_edges), ...
+%                       'binCounts', fliplr(N));
+%             title('Histogram');
+%             xlabel('Load, [NA]');
+%             ylabel('Num. cycles, [-]');
+%             
+%             subplot(212)
+%             histogram('binEdges' , num_cycle, ...
+%                       'binCounts', load_edges(2:end));    ...
+%             title('Load duration distribution - LDD');
+%             xlabel('Cum. num. cycles, [-]');
+%             ylabel('Load, [NA]');
+%             set(gca, 'xscale', 'log')
+%             
+%             fig_axes = findobj(gcf, 'Type', 'Axes');
+%             set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xscale', 'log');
+% 
         end
+        
     end
 
     methods(Access = private)
@@ -446,60 +259,6 @@ classdef (Abstract) ISO_6336 < Gear_Set
         function val = F_tH_spectra(obj, torque)
             val = 2.0e3*(torque/obj.d(1))/obj.N_p;
             val = abs(val);
-        end
-        
-        function [n_new, idx_zero, idx_inp] = set_gear_speed(obj, n_old)
-            %SET_GEAR_SPEED sets the speeds of a Gear_Set. The array n_old
-            % should specify only the fixed element (if a planetary
-            % Gear_Set) and the input element. The other speeds are
-            % calculated in this method and should be defined as NaN in
-            % n_old.
-            %
-            
-            if(strcmpi(obj.configuration, 'parallel'))
-                idx_zero = nan;
-                
-                U = diag([1.0/obj.u, obj.u]);
-                U = flip(U);
-            elseif(strcmpi(obj.configuration, 'planetary'))
-                idx_zero = find(n_old == 0);
-                n_old(idx_zero) = nan;
-                zc = num2cell(obj.z);
-                [s, p, r] = deal(zc{:});
-                r = abs(r);
-                U = zeros(4);
-
-                switch(idx_zero)
-                    case 1 % fixed: sun
-                           % input: ring*
-                           % output: carrier* (* or vice-versa)
-                        U(:, 4) = [0.0, (r + s)/p, (1.0 + s/r), 1.0]';
-                    case 2
-                        error('ISO_6336:speed', 'Direct drive not implemented yet.');
-                    case 3 % fixed: ring
-                           % input: sun*
-                           % output: carrier*
-                        U(:, 4) = [(1.0 + r/s), (r + s)/p, 0.0, 1.0]';
-                    case 4 % fixed: carrier
-                           % input: sun*
-                           % output: ring*
-                        U(:, 3) = [-r/s, r/p, 1.0, 0.0];
-                    otherwise
-                        if(isempty(idx_zero))
-                            error('ISO_6336:speed', 'There are no fixed elements or the size.');
-                        elseif(idx_zero > 4)
-                            error('ISO_6336:speed', 'There should be a maximum of 4 velocities.');
-                        end
-                end
-                
-            end
-            
-            A = eye(length(U)) - U;
-            x = null(A);
-            
-            idx_inp = find(~isnan(n_old));
-            x = x./x(idx_inp);
-            n_new = x*n_old(idx_inp);
         end
         
         function val = dynamic_factor(obj)
@@ -648,70 +407,6 @@ classdef (Abstract) ISO_6336 < Gear_Set
             % Velocity factor:
             C_Zv = C_ZL + 0.02;
             Z_v = C_Zv + 2.0*(1.0 - C_Zv)/sqrt(0.8 + 32.0/obj.v_pitch_line);
-        end
-        
-        function ZN = life_factor(obj, N)
-            
-            ZN = zeros(1, 2);
-            
-            for idx = 1:2
-                line = obj.material(idx).row;
-                ratio = obj.Z_NT(idx); % obj.sigma_HP_stat(idx)/obj.sigma_HP_ref(idx);
-                
-                switch line
-                    case 1
-                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
-                        if(N < 6.0e5)
-                            val = power(3.0e8/6.0e5, ...
-                                0.3705*log(ratio));
-                        elseif((6.0e5 < N) && (N <= 1.0e7))
-                            val = power(3.0e8/N, ...
-                                0.3705*log(ratio));
-                        elseif((1.0e7 < N) && (N <= 1.0e9))
-                            val = power(1.0e9/N, ...
-                                0.2791*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    case 2
-                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
-                        if(N < 1.0e5)
-                            val = power(5.0e7/1.0e5, ...
-                                0.3705*log(ratio));
-                        elseif((1.0e5 < N) && (N <= 5.0e7))
-                            val = power(5.0e7/N, ...
-                                0.3705*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    case 3
-                        % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
-                        if(N < 1.0e5)
-                            val = power(2.0e6/1.0e5, ...
-                                0.7686*log(ratio));
-                        elseif((1.0e5 < N) && (N <= 2.0e6))
-                            val = power(2.0e6/N, ...
-                                0.7686*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    case 4
-                        % NV (nitrocar.)
-                        if(N < 1.0e5)
-                            val = power(2.0e6/1.0e5, ...
-                                0.7686*log(ratio));
-                        elseif((1.0e5 < N) && (N <= 2.0e6))
-                            val = power(2.0e6/N, ...
-                                0.7686*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    otherwise
-                        error("ISO_6336:ZN", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
-                end
-                ZN(idx) = val;
-            end
-            
         end
         
     end

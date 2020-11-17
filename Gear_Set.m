@@ -538,6 +538,74 @@ classdef Gear_Set < Gear
             obj_sca = obj_ref.scale_aspect(gamma, aspect);
         end
         
+        function [n_new, idx_zero, idx_inp] = set_gear_speed(obj, n_old)
+            %SET_GEAR_SPEED sets the speeds of a Gear_Set. The array n_old
+            % should specify only the fixed element (if a planetary
+            % Gear_Set) and the input element. The other speeds are
+            % calculated in this method and should be defined as NaN in
+            % n_old.
+            %
+            
+            if(strcmpi(obj.configuration, 'parallel'))
+                idx_zero = nan;
+                
+                U = diag([1.0/obj.u, obj.u]);
+                U = flip(U);
+            elseif(strcmpi(obj.configuration, 'planetary'))
+                idx_zero = find(n_old == 0);
+                n_old(idx_zero) = nan;
+                zc = num2cell(obj.z);
+                [s, p, r] = deal(zc{:});
+                r = abs(r);
+                U = zeros(4);
+
+                switch(idx_zero)
+                    case 1 % fixed: sun
+                           % input: ring*
+                           % output: carrier* (* or vice-versa)
+                        U(:, 4) = [0.0, (r + s)/p, (1.0 + s/r), 1.0]';
+                    case 2
+                        error('Gear_Set:speed', 'Direct drive not implemented yet.');
+                    case 3 % fixed: ring
+                           % input: sun*
+                           % output: carrier*
+                        U(:, 4) = [(1.0 + r/s), (r + s)/p, 0.0, 1.0]';
+                    case 4 % fixed: carrier
+                           % input: sun*
+                           % output: ring*
+                        U(:, 3) = [-r/s, r/p, 1.0, 0.0];
+                    otherwise
+                        if(isempty(idx_zero))
+                            error('Gear_Set:speed', 'There are no fixed elements or the size.');
+                        elseif(idx_zero > 4)
+                            error('Gear_Set:speed', 'There should be a maximum of 4 velocities.');
+                        end
+                end
+                
+            end
+            
+            A = eye(length(U)) - U;
+            x = null(A);
+            
+            idx_inp = find(~isnan(n_old));
+            x = x./x(idx_inp);
+            n_new = x*n_old(idx_inp);
+        end
+        
+        %%
+        function Simpack_data_analysis(obj, struc)
+            field_name = fieldnames(struc);
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                idx_SP = find(contains(field_name, '_sun_planet_'));
+                idx_RP = find(contains(field_name, '_ring_planet_'));
+                
+            else
+                idx_PW = find(contains(field_name, '_pinion_wheel'));
+            end
+            
+        end
+        
         %% Misc.:
         function k_hat = mesh_stiffness(obj, varargin)
             %MESH_STIFFNESS Calculates the mesh stiffness for a Gear_Set

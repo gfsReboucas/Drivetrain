@@ -3,17 +3,18 @@ classdef MATISO_6336 < ISO_6336
     % see also: ISO_6336, KSISO_6336, Gear_Set
     %
     % References:
-    %   [1] ISO 6336-1:2006 Calculation of load capacity of spur and 
-    % helical gears -- Part 1: Basic principles, introduction and general 
-    % influence factors.
-    %   [2] ISO 6336-2:2006 Calculation of load capacity of spur and 
-    % helical gears -- Part 2: Calculation of surface durability (pitting).
-    %   [3] ISO 6336-6:2019 Calculation of load capacity of spur and 
-    % helical gears -- Part 6: Calculation of service life under variable 
-    % load
-    %   [4] ISO/TR 6336-30:2017 Calculation of load capacity of spur and 
-    % helical gears -- Calculation examples for the application of ISO 6336 
-    % parts 1, 2, 3, 5
+    %   [1] Calculation of load capacity of spur and helical gears -- 
+    % Part 1: Basic principles, introduction and general influence factors,
+    % ISO 6336-1:2019, 2019.
+    %   [2] Calculation of load capacity of spur and helical gears -- 
+    % Part 2: Calculation of surface durability (pitting), 
+    % ISO 6336-2:2019, 2019. 
+    %   [3] Calculation of load capacity of spur and helical gears -- 
+    % Part 6: Calculation of service life under variable load, 
+    % ISO 6336-6:2019, 2019.
+    %   [4] Calculation of load capacity of spur and helical gears -- 
+    % Calculation examples for the application of ISO 6336 parts 1, 2, 3, 5,
+    % ISO/TR 6336-30:2017, 2017.
     %   [5] Arnaudov, K., Karaivanov, D. (2019). Planetary Gear Trains. 
     % Boca Raton: CRC Press, https://doi.org/10.1201/9780429458521
     %
@@ -120,49 +121,94 @@ classdef MATISO_6336 < ISO_6336
 %         function SF = tooth_bending(obj, varargin)
 %             % to do...
 %         end
+
+        function ZN = life_factor(obj, N)
+            
+            ZN = zeros(2, length(N));
+            
+            for idx = 1:2
+                line = obj.material(idx).row;
+                ratio = obj.Z_NT(idx); % obj.sigma_HP_stat(idx)/obj.sigma_HP_ref(idx);
+                
+                switch line
+                    case 1
+                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
+                        val = power(3.0e8./6.0e5, 0.3705*log(ratio)).*(               (N <  6.0e5)) + ... % if 1
+                              power(3.0e8./N    , 0.3705*log(ratio)).*((6.0e5 <  N) & (N <= 1.0e7)) + ... if 2
+                              power(1.0e9./N    , 0.2791*log(ratio)).*((1.0e7 <  N) & (N <= 1.0e9)) + ...
+                              1.0                                   .*((1.0e9 <  N));
+                        
+                    case 2
+                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
+                        val = power(5.0e7./1.0e5, 0.3705*log(ratio)).*(               (N <  1.0e5)) + ... % if 1
+                              power(5.0e7./N    , 0.3705*log(ratio)).*((1.0e5 <  N) & (N <= 5.0e7)) + ... if 2
+                              1.0                                   .*((5.0e7 <  N));
+                        
+                    case {3, 4}
+                        % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
+                        % NV (nitrocar.)
+                        val = power(2.0e6./1.0e5, 0.7686*log(ratio)).*(               (N <  1.0e5)) + ... % if 1
+                              power(2.0e6./N    , 0.7686*log(ratio)).*((1.0e5 <  N) & (N <= 2.0e6)) + ... if 2
+                              1.0                                   .*((2.0e6 <  N));
+                        
+                    otherwise
+                        error("MATISO_6336:ZN", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
+                end
+                ZN(idx, :) = val;
+            end
+            
+        end
+        
     end
     
     methods(Static)
         function calc = example_01()
-            %EXAMPLE_01 runs the first calculation example from 
-            %                      Parameter                         Symbol         Problem       Reference         Calculated         Rel_Error_pc
-            %     ___________________________________________    _______________    _______    _______________    _______________    ________________
-            %     'Minimum safety factor (pitting)'              'S_Hmin'            ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Pitting safety factor for pinion'             'S_H1'              "YES"     [  1.0285e+000]    [  1.0157e+000]    [   1.2505e+000]
-            %     'Pitting safety factor for wheel'              'S_H2'              "YES"     [  1.0870e+000]    [  1.0724e+000]    [   1.3390e+000]
-            %     'Permissible contact stress for pinion'        'sigma_HP1'         ""        [  1.3385e+003]    [  1.3428e+003]    [-324.6952e-003]
-            %     'Permissible contact stress for wheel'         'sigma_HP2'         ""        [  1.4145e+003]    [  1.4178e+003]    [-234.2749e-003]
-            %     'Nominal contact stress'                       'sigma_H0'          ""        [  1.2066e+003]    [  1.2065e+003]    [   8.1404e-003]
-            %     'Contact stress for pinion'                    'sigma_H1'          "YES"     [  1.3014e+003]    [  1.3221e+003]    [  -1.5951e+000]
-            %     'Contact stress for wheel'                     'sigma_H2'          "YES"     [  1.3014e+003]    [  1.3221e+003]    [  -1.5951e+000]
-            %     'Nominal tangential load, [N]'                 'F_t'               ""        [127.3520e+003]    [127.3524e+003]    [-299.5607e-006]
-            %     'Pitch line velocity, [m/s]'                   'v'                 ""        [  2.6640e+000]    [  2.6642e+000]    [  -7.4461e-003]
-            %     'Dynamic factor'                               'K_v'               ""        [  1.0030e+000]    [  1.0005e+000]    [ 246.6092e-003]
-            %     'Transverse load factor (root stress)'         'K_Falpha'          ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Transverse load factor (contact stress)'      'K_Halpha'          ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Face load factor (root stress)'               'K_Fbeta'           "YES"     [  1.1280e+000]    [  1.1601e+000]    [  -2.8446e+000]
-            %     'Face load factor (contact stress)'            'K_Hbeta'           "YES"     [  1.1600e+000]    [  1.2002e+000]    [  -3.4681e+000]
-            %     'Virtual number of teeth for pinion'           'z_n1'              ""        [ 18.9050e+000]    [ 18.9051e+000]    [-650.6211e-006]
-            %     'Virtual number of teeth for wheel'            'z_n2'              ""        [114.5430e+000]    [114.5428e+000]    [ 171.0638e-006]
-            %     'Number of load cycles for pinion'             'N_L1'              ""        [  1.0800e+009]    [  1.0800e+009]    [   0.0000e+000]
-            %     'Number of load cycles for wheel'              'N_L2'              ""        [178.3000e+006]    [178.2524e+006]    [  26.6813e-003]
-            %     'Life factor for pinion'                       'Z_NT1'             ""        [910.0000e-003]    [913.0094e-003]    [-330.6993e-003]
-            %     'Life factor for wheel'                        'Z_NT2'             ""        [962.0000e-003]    [964.0118e-003]    [-209.1318e-003]
-            %     'Size factor'                                  'Z_X'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Work hardening factor'                        'Z_W'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Roughness factor'                             'Z_R'               ""        [965.9900e-003]    [965.9878e-003]    [ 232.3318e-006]
-            %     'Velocity factor'                              'Z_v'               ""        [969.1100e-003]    [969.1142e-003]    [-434.0740e-006]
-            %     'Lubricant factor'                             'Z_L'               ""        [  1.0474e+000]    [  1.0474e+000]    [ 368.0474e-006]
-            %     'Helix angle factor'                           'Z_beta'            ""        [  1.0194e+000]    [  1.0194e+000]    [-366.7828e-006]
-            %     'Contact ratio factor'                         'Z_eps'             ""        [803.0000e-003]    [803.3898e-003]    [ -48.5416e-003]
-            %     'Elasticity factor'                            'Z_E'               ""        [189.8117e+000]    [189.8117e+000]    [-230.5266e-009]
-            %     'Single pair tooth contact factor'             'Z_B'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Single pair tooth contact factor'             'Z_D'               ""        [  1.0000e+000]    [  1.0000e+000]    [   0.0000e+000]
-            %     'Zone factor'                                  'Z_H'               ""        [  2.3953e+000]    [  2.3953e+000]    [-179.4571e-006]
-            %     'Single stiffness, [N/(mm-um)]'                'c''                ""        [ 12.3705e+000]    [ 12.3620e+000]    [  68.2642e-003]
-            %     'Theoretical single stiffness, [N/(mm-um)]'    'c_th''             ""        [ 17.8558e+000]    [ 17.8436e+000]    [  68.2770e-003]
-            %     'Mesh stiffness, [N/(mm-um)]'                  'c_gamma_alpha'     ""        [ 17.4648e+000]    [ 17.4553e+000]    [  54.8918e-003]
-            %     'Mesh stiffness, [N/(mm-um)]'                  'c_gamma_beta'      ""        [ 14.8451e+000]    [ 14.8370e+000]    [  54.8750e-003]
+            %EXAMPLE_01 runs the worked example 01 from [4], entitled 
+            % 'Single helical case carburized gear pair', and compares the 
+            % results against the values found in [4], Annex A.
+            %
+            % Results from 13.11.2020:
+            % - Z_NT was obtained using y_lim = 0.85, which is not the case
+            % for other systems.
+            %                       Parameter                           Symbol          Problem        Reference           Calculated           Rel_Error_pc   
+            %     _____________________________________________    _________________    _______    _________________    _________________    __________________
+            % 
+            %     {'Minimum safety factor (pitting)'          }    {'S_Hmin'       }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Pitting safety factor for pinion'         }    {'S_H1'         }      ""       {[  1.0285e+000]}    {[  1.0299e+000]}    {[-137.6429e-003]}
+            %     {'Pitting safety factor for wheel'          }    {'S_H2'         }      ""       {[  1.0870e+000]}    {[  1.0885e+000]}    {[-138.1352e-003]}
+            %     {'Permissible contact stress for pinion'    }    {'sigma_HP1'    }      ""       {[  1.3385e+003]}    {[  1.3385e+003]}    {[ -30.2347e-009]}
+            %     {'Permissible contact stress for wheel'     }    {'sigma_HP2'    }      ""       {[  1.4145e+003]}    {[  1.4145e+003]}    {[ 328.5801e-009]}
+            %     {'Nominal contact stress'                   }    {'sigma_H0'     }      ""       {[  1.2066e+003]}    {[  1.2065e+003]}    {[   8.1404e-003]}
+            %     {'Contact stress for pinion'                }    {'sigma_H1'     }      ""       {[  1.3014e+003]}    {[  1.2996e+003]}    {[ 137.4942e-003]}
+            %     {'Contact stress for wheel'                 }    {'sigma_H2'     }      ""       {[  1.3014e+003]}    {[  1.2996e+003]}    {[ 137.4942e-003]}
+            %     {'Nominal tangential load, [N]'             }    {'F_t'          }      ""       {[127.3520e+003]}    {[127.3524e+003]}    {[-299.5607e-006]}
+            %     {'Pitch line velocity, [m/s]'               }    {'v'            }      ""       {[  2.6640e+000]}    {[  2.6642e+000]}    {[  -7.4461e-003]}
+            %     {'Dynamic factor'                           }    {'K_v'          }      ""       {[  1.0030e+000]}    {[  1.0005e+000]}    {[ 246.6092e-003]}
+            %     {'Transverse load factor (root stress)'     }    {'K_Falpha'     }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Transverse load factor (contact stress)'  }    {'K_Halpha'     }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Face load factor (root stress)'           }    {'K_Fbeta'      }      ""       {[  1.1280e+000]}    {[  1.1281e+000]}    {[  -5.4065e-003]}
+            %     {'Face load factor (contact stress)'        }    {'K_Hbeta'      }      ""       {[  1.1600e+000]}    {[  1.1596e+000]}    {[  30.8898e-003]}
+            %     {'Virtual number of teeth for pinion'       }    {'z_n1'         }      ""       {[ 18.9050e+000]}    {[ 18.9051e+000]}    {[-650.6211e-006]}
+            %     {'Virtual number of teeth for wheel'        }    {'z_n2'         }      ""       {[114.5430e+000]}    {[114.5428e+000]}    {[ 171.0638e-006]}
+            %     {'Number of load cycles for pinion'         }    {'N_L1'         }      ""       {[  1.0800e+009]}    {[  1.0800e+009]}    {[   0.0000e+000]}
+            %     {'Number of load cycles for wheel'          }    {'N_L2'         }      ""       {[178.3000e+006]}    {[178.2524e+006]}    {[  26.6813e-003]}
+            %     {'Life factor for pinion'                   }    {'Z_NT1'        }      ""       {[910.0000e-003]}    {[910.0545e-003]}    {[  -5.9848e-003]}
+            %     {'Life factor for wheel'                    }    {'Z_NT2'        }      ""       {[962.0000e-003]}    {[961.7587e-003]}    {[  25.0846e-003]}
+            %     {'Size factor'                              }    {'Z_X'          }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Work hardening factor'                    }    {'Z_W'          }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Roughness factor'                         }    {'Z_R'          }      ""       {[965.9900e-003]}    {[965.9878e-003]}    {[ 232.3318e-006]}
+            %     {'Velocity factor'                          }    {'Z_v'          }      ""       {[969.1100e-003]}    {[969.1142e-003]}    {[-434.0740e-006]}
+            %     {'Lubricant factor'                         }    {'Z_L'          }      ""       {[  1.0474e+000]}    {[  1.0474e+000]}    {[ 368.0474e-006]}
+            %     {'Helix angle factor'                       }    {'Z_beta'       }      ""       {[  1.0194e+000]}    {[  1.0194e+000]}    {[-366.7828e-006]}
+            %     {'Contact ratio factor'                     }    {'Z_eps'        }      ""       {[803.0000e-003]}    {[803.3898e-003]}    {[ -48.5416e-003]}
+            %     {'Elasticity factor'                        }    {'Z_E'          }      ""       {[189.8117e+000]}    {[189.8117e+000]}    {[-230.5266e-009]}
+            %     {'Single pair tooth contact factor'         }    {'Z_B'          }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Single pair tooth contact factor'         }    {'Z_D'          }      ""       {[  1.0000e+000]}    {[  1.0000e+000]}    {[   0.0000e+000]}
+            %     {'Zone factor'                              }    {'Z_H'          }      ""       {[  2.3953e+000]}    {[  2.3953e+000]}    {[-179.4571e-006]}
+            %     {'Single stiffness, [N/(mm-um)]'            }    {'c''           }      ""       {[ 12.3705e+000]}    {[ 12.3620e+000]}    {[  68.2642e-003]}
+            %     {'Theoretical single stiffness, [N/(mm-um)]'}    {'c_th''        }      ""       {[ 17.8558e+000]}    {[ 17.8436e+000]}    {[  68.2770e-003]}
+            %     {'Mesh stiffness, [N/(mm-um)]'              }    {'c_gamma_alpha'}      ""       {[ 17.4648e+000]}    {[ 17.4553e+000]}    {[  54.8918e-003]}
+            %     {'Mesh stiffness, [N/(mm-um)]'              }    {'c_gamma_beta' }      ""       {[ 14.8451e+000]}    {[ 14.8370e+000]}    {[  54.8750e-003]}
             %
             
             mat = Material('row', 2);
@@ -190,14 +236,14 @@ classdef MATISO_6336 < ISO_6336
             n_1 = 360.0;
             P_r = 1.0e-3*T_1*n_1*pi/30.0;
             
-            calc = ISO_6336(gset, 'P_rated'    , P_r, ...
-                                  'S_Hmin'     , 1.0, ...
-                                  'S_Fmin'     , 1.0, ...
-                                  'L_h'        , 50.0e3, ...
-                                  'K_A'        , 1.0, ...
-                                  'n_nominal'  , [n_1 NaN], ...
-                                  'nu_40'      , 320.0, ...
-                                  'C_a'        , 70.0);
+            calc = MATISO_6336(gset, 'P_rated'    , P_r, ...
+                                     'S_Hmin'     , 1.0, ...
+                                     'S_Fmin'     , 1.0, ...
+                                     'L_h'        , 50.0e3, ...
+                                     'K_A'        , 1.0, ...
+                                     'n_nominal'  , [n_1 NaN], ...
+                                     'nu_40'      , 320.0, ...
+                                     'C_a'        , 70.0);
 
             tab_set = {'Minimum safety factor (pitting)'          , 'S_Hmin'       , calc.S_Hmin       , 1.0;
                        'Pitting safety factor for pinion'         , 'S_H1'         , calc.S_H(1)       , 1.02853;
@@ -251,7 +297,37 @@ classdef MATISO_6336 < ISO_6336
             disp(tab)
         end
         
-        function calc = example_02()
+        function calc = example_load_spectra()
+            %EXAMPLE_LOAD_SPECTRA runs the example in [3], Annex C,
+            % entitled 'Example calculation for safety factor from given
+            % load spectrum', and compares the results against the values
+            % found in [3], Annex A.
+            %
+            
+%
+%                        'Dynamic factor'                           , 'K_v'          , calc.K_v          , 1.003;
+%                        'Nominal tangential load, [N]'             , 'F_t'          , calc.F_t          , 127352.0;
+%                        'Pitch line velocity, [m/s]'               , 'v'            , calc.v_pitch_line , 2.664;
+%                        'Transverse load factor (root stress)'     , 'K_Falpha'     , calc.K_Falpha     , 1.0;
+%                        'Transverse load factor (contact stress)'  , 'K_Halpha'     , calc.K_Halpha     , 1.0;
+%                        'Face load factor (root stress)'           , 'K_Fbeta'      , calc.K_Fbeta      , 1.12803;
+%                        'Face load factor (contact stress)'        , 'K_Hbeta'      , calc.K_Hbeta      , 1.16;
+%                        'Virtual number of teeth for pinion'       , 'z_n1'         , calc.z_n(1)       , 18.905;
+%                        'Virtual number of teeth for wheel'        , 'z_n2'         , calc.z_n(2)       , 114.543;
+%                        'Number of load cycles for pinion'         , 'N_L1'         , calc.N_L(1)       , 1.080e9;
+%                        'Number of load cycles for wheel'          , 'N_L2'         , calc.N_L(2)       , 1.783e8;
+%                        'Helix angle factor'                       , 'Z_beta'       , calc.Z_beta       , 1.01944;
+%                        'Contact ratio factor'                     , 'Z_eps'        , calc.Z_eps        , 0.803;
+%                        'Elasticity factor'                        , 'Z_E'          , calc.Z_E          , 189.81170;
+%                        'Single pair tooth contact factor'         , 'Z_B'          , calc.Z_BD(1)      , 1.0;
+%                        'Single pair tooth contact factor'         , 'Z_D'          , calc.Z_BD(2)      , 1.0;
+%                        'Zone factor'                              , 'Z_H'          , calc.Z_H          , 2.39533;
+%                        'Single stiffness, [N/(mm-um)]'            , 'c'''          , calc.cprime       , 12.37047;
+%                        'Theoretical single stiffness, [N/(mm-um)]', 'c_th'''       , calc.cprime_th    , 17.85584;
+%                        'Mesh stiffness, [N/(mm-um)]'              , 'c_gamma_alpha', calc.c_gamma_alpha, 17.46485;
+%                        'Mesh stiffness, [N/(mm-um)]'              , 'c_gamma_beta' , calc.c_gamma_beta , 14.84512;
+%
+
             mat = Material('row', 2);
             mat = repmat(mat, 1, 2);
 
@@ -273,28 +349,144 @@ classdef MATISO_6336 < ISO_6336
                             'R_a'          , 1.0                    , ... % surface roughness flank
                             'material'     , mat);
 
-            T_1 = mean([25347 25423]); % [N-m], from [6], Table 4, bin 3
-            n_1 = 35.2;                % [1.0/min.]
+            T_1 = 25423.0; % [N-m], from [6], Table 4, bin 3
+            n_1 = 35.2;    % [1.0/min.]
             P_r = 1.0e-3*T_1*n_1*pi/30.0;
             
-            calc = ISO_6336(gset, 'P_rated'    , P_r      , ...
-                                  'S_Hmin'     , 1.0      , ...
-                                  'S_Fmin'     , 1.0         , ...
-                                  'L_h'        , 1.0e3, ...
-                                  'K_A'        , 1.0      , ...
-                                  'n_nominal'  , [n_1 NaN], ...
-                                  'nu_40'      , 320.0    , ...
-                                  'C_a'        , 70.0);
+            calc = MATISO_6336(gset, 'P_rated'    , P_r      , ...
+                                     'S_Hmin'     , 1.0      , ...
+                                     'S_Fmin'     , 1.0      , ...
+                                     'L_h'        , 1.0e3    , ...
+                                     'K_A'        , 1.0      , ...
+                                     'n_nominal'  , [n_1 NaN], ...
+                                     'C_a'        , 70.0);
+            
+            tab_set = {'Minimum safety factor (pitting)'          , 'S_Hmin'       , calc.S_Hmin       , 1.0;
+                       'Pitting safety factor for pinion'         , 'S_H1'         , calc.S_H(1)       , 1.374;
+                       'Permissible contact stress for pinion'    , 'sigma_HP1'    , calc.sigma_HP(1)  , 2400.0;
+                       'Nominal contact stress'                   , 'sigma_H0'     , calc.sigma_H0     , 1206.58207;
+                       'Contact stress for pinion'                , 'sigma_H1'     , calc.sigma_H(1)   , 1747.0;
+                       'Life factor for pinion'                   , 'Z_NT1'        , calc.Z_NT(1)      , 0.91;
+                       'Size factor'                              , 'Z_X'          , calc.Z_X          , 1.0;
+                       'Work hardening factor'                    , 'Z_W'          , calc.Z_W          , 1.0;
+                       'Roughness factor'                         , 'Z_R'          , calc.Z_R          , 1.01;
+                       'Velocity factor'                          , 'Z_v'          , calc.Z_v          , 0.943;
+                       'Lubricant factor'                         , 'Z_L'          , calc.Z_L          , 1.02;
+                       };
 
+            tab_04 = readtable('table_04.csv');
+            torque_edges = tab_04.Torque_Max_Nm;
+            speed_Max = n_1*ones(size(torque_edges));
+            Max_power = torque_edges.*1.0e-3 .* ... % [kN-m]
+                        speed_Max.*(pi/30.0);     % [rad/s] = [kW]
+
+            L_h30y = 30.0*365.25*24.0;
+
+            n_30y = tab_04.load_cycles*L_h30y/sum(tab_04.time_h);
+
+            calc_tmp = calc;
+            calc_tmp.K_A = 1.0;
+
+            Khb    = zeros(size(speed_Max));
+            SH     = zeros(size(speed_Max));
+            ZNT    = zeros(size(speed_Max));
+            sigmaH = zeros(2, size(speed_Max, 1));
+
+            range = 3:44; % Non-zero values
+            for idx = range %1:length(speed_Max)
+                calc_tmp.P_rated = Max_power(idx);
+                calc_tmp.n_nominal = calc_tmp.speed_ratio*abs(speed_Max(idx));
+                calc_tmp.L_h = sum(n_30y(1:idx));
+
+                sigmaH(:, idx) = calc_tmp.sigma_H';
+                Khb(idx)       = calc_tmp.K_Hbeta;
+                SH(idx)        = calc_tmp.S_H(1);
+                ZNT(idx)       = calc_tmp.Z_NT(1);
+            end
+            
+            sigmaHG = sigmaH.*1.275;
+            
+%             Ni = nan(size(SH));
+%             Ui = Ni;
+
+%             tab_C2_calc = table(tab_04.num_bin, torque_edges*1.0e-3, tab_04.time_s       , speed_Max         , n_30y       , Khb      , sigmaH.*SH   , ZNT   , Ni   , Ui, ...
+%               'variableNames', {'Bin_No'      , 'Pinion_Torque'    , 'Operating_time_70d', 'Pinion_speed_rpm', 'Cycles_30y', 'K_Hbeta', 'sigma_HxS_H', 'Z_NT', 'N_i', 'U_i'});
+
+            num_cycle = [0.0; cumsum(n_30y)]';
+
+            [NN, sigHH] = calc.Pitting_SN_curve();
+
+            %% Plotting LDD:
+            torque_hist = [torque_edges; tab_04.Torque_min_Nm(end)];
+            torque_hist = flipud(torque_hist)*1.0e-3;
+            zdx = num_cycle == 0.0;
+            cycle_num = num_cycle;
+            cycle_num(zdx) = 1;
+
+            figure('unit', 'centimeters', 'position', [5, 5, 23, 16]);
+            subplot(211)
+            histogram('binEdges' , torque_hist', ...
+                      'binCounts', flipud(tab_04.load_cycles));
+            title('ISO 6336-6:2019, Table 4 -- Histogram')
+            xlabel('T, [kN-m]');
+            ylabel('N, [-]');
+
+            subplot(212)
+            histogram('binEdges' , cycle_num, ...
+                      'binCounts', torque_edges*1.0e-3);
+            title('ISO 6336-6:2019, Table 4 -- LDD');
+            set(gca, 'xScale', 'log')
+            xlabel('N, [-]');
+            ylabel('T, [kN-m]');
+            xlim([1e2 1e6]);
+
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'fontName', 'Times');
+            set(fig_axes, 'fontSize', 12);
+            set(fig_axes, 'box', 'on');
+
+            %% Figure C.1: Load Spectra and S-N Curve
+            fig_C1 = readtable('data_Fig_C1.csv');
+            
+            figure('unit', 'centimeters', 'position', [5, 5, 23, 16]);
+            subplot(211)
+            hold on;
+            plot(NN, sigHH(1, :), 'k', 'lineWidth', 2.0);
+            histogram('binEdges' , cycle_num, ...
+                      'binCounts', sigmaH(1, :)*1.275, ...
+                      'displayStyle', 'stairs', ...
+                      'edgeColor', 'r', ...
+                      'lineWidth', 2.0);
+            histogram('binEdges' , cycle_num, ...
+                      'binCounts', sigmaH(2, :), ...
+                      'displayStyle', 'stairs', ...
+                      'edgeColor', 'b', ...
+                      'lineWidth', 2.0);
+            title('ISO 6336-6:2019, Fig. C.1 -- Load Spectra and S-N Curve (Obtained)')
+            ylabel('\sigma_H, [N/mm^2]');
+
+            subplot(212)
+            hold on;
+            plot(fig_C1.N_SN, fig_C1.sigma_SN, 'k-', 'lineWidth', 2.0);
+            plot(fig_C1.N_H1, fig_C1.sigma_H1, 'r', 'lineWidth', 2.0);
+            plot(fig_C1.N_H2, fig_C1.sigma_H2, 'b', 'lineWidth', 2.0);
+            xlabel('N, [-]');
+            ylabel('\sigma_H, [N/mm^2]');
+            title('ISO 6336-6:2019, Fig. C.1 -- Load Spectra and S-N Curve (Ref.)')
+            
+            legend({'SN', '\sigma_{HG}', '\sigma_{H1}'}, 'location', 'best');
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'fontName', 'Times');
+            set(fig_axes, 'fontSize', 12);
+            set(fig_axes, 'box', 'on');
+            set(fig_axes, 'xScale', 'log');
+            set(fig_axes, 'yScale', 'log');
+            set(fig_axes, 'xlim', [1e2 1e10]);
+            set(fig_axes, 'ylim', [800.0 3.0e3]);
+            
         end
         
-        function [N, edges, bin] = LDD(signal, varargin)
-%             [x_min, x_Max] = bounds(signal);
-            
-%             edges = linspace(x_min, x_Max, 200);
-%             default = {};
-            [N,edges,bin] = histcounts(signal);
-        end
     end
 
     methods(Access = private)
@@ -306,60 +498,6 @@ classdef MATISO_6336 < ISO_6336
         function val = F_tH_spectra(obj, torque)
             val = 2.0e3*(torque/obj.d(1))/obj.N_p;
             val = abs(val);
-        end
-        
-        function [n_new, idx_zero, idx_inp] = set_gear_speed(obj, n_old)
-            %SET_GEAR_SPEED sets the speeds of a Gear_Set. The array n_old
-            % should specify only the fixed element (if a planetary
-            % Gear_Set) and the input element. The other speeds are
-            % calculated in this method and should be defined as NaN in
-            % n_old.
-            %
-            
-            if(strcmpi(obj.configuration, 'parallel'))
-                idx_zero = nan;
-                
-                U = diag([1.0/obj.u, obj.u]);
-                U = flip(U);
-            elseif(strcmpi(obj.configuration, 'planetary'))
-                idx_zero = find(n_old == 0);
-                n_old(idx_zero) = nan;
-                zc = num2cell(obj.z);
-                [s, p, r] = deal(zc{:});
-                r = abs(r);
-                U = zeros(4);
-
-                switch(idx_zero)
-                    case 1 % fixed: sun
-                           % input: ring*
-                           % output: carrier* (* or vice-versa)
-                        U(:, 4) = [0.0, (r + s)/p, (1.0 + s/r), 1.0]';
-                    case 2
-                        error('MATISO_6336:speed', 'Direct drive not implemented yet.');
-                    case 3 % fixed: ring
-                           % input: sun*
-                           % output: carrier*
-                        U(:, 4) = [(1.0 + r/s), (r + s)/p, 0.0, 1.0]';
-                    case 4 % fixed: carrier
-                           % input: sun*
-                           % output: ring*
-                        U(:, 3) = [-r/s, r/p, 1.0, 0.0];
-                    otherwise
-                        if(isempty(idx_zero))
-                            error('MATISO_6336:speed', 'There are no fixed elements or the size.');
-                        elseif(idx_zero > 4)
-                            error('MATISO_6336:speed', 'There should be a maximum of 4 velocities.');
-                        end
-                end
-                
-            end
-            
-            A = eye(length(U)) - U;
-            x = null(A);
-            
-            idx_inp = find(~isnan(n_old));
-            x = x./x(idx_inp);
-            n_new = x*n_old(idx_inp);
         end
         
         function val = dynamic_factor(obj)
@@ -489,70 +627,6 @@ classdef MATISO_6336 < ISO_6336
             end
         end
         
-        function ZN = life_factor(obj, N)
-            
-            ZN = zeros(1, 2);
-            
-            for idx = 1:2
-                line = obj.material(idx).row;
-                ratio = obj.Z_NT(idx); % obj.sigma_HP_stat(idx)/obj.sigma_HP_ref(idx);
-                
-                switch line
-                    case 1
-                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
-                        if(N < 6.0e5)
-                            val = power(3.0e8/6.0e5, ...
-                                0.3705*log(ratio));
-                        elseif((6.0e5 < N) && (N <= 1.0e7))
-                            val = power(3.0e8/N, ...
-                                0.3705*log(ratio));
-                        elseif((1.0e7 < N) && (N <= 1.0e9))
-                            val = power(1.0e9/N, ...
-                                0.2791*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    case 2
-                        % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
-                        if(N < 1.0e5)
-                            val = power(5.0e7/1.0e5, ...
-                                0.3705*log(ratio));
-                        elseif((1.0e5 < N) && (N <= 5.0e7))
-                            val = power(5.0e7/N, ...
-                                0.3705*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    case 3
-                        % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
-                        if(N < 1.0e5)
-                            val = power(2.0e6/1.0e5, ...
-                                0.7686*log(ratio));
-                        elseif((1.0e5 < N) && (N <= 2.0e6))
-                            val = power(2.0e6/N, ...
-                                0.7686*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    case 4
-                        % NV (nitrocar.)
-                        if(N < 1.0e5)
-                            val = power(2.0e6/1.0e5, ...
-                                0.7686*log(ratio));
-                        elseif((1.0e5 < N) && (N <= 2.0e6))
-                            val = power(2.0e6/N, ...
-                                0.7686*log(ratio));
-                        else
-                            val = 1.0;
-                        end
-                    otherwise
-                        error("MATISO_6336:ZN", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
-                end
-                ZN(idx) = val;
-            end
-            
-        end
-        
     end
     
     %% Set methods:
@@ -610,6 +684,9 @@ classdef MATISO_6336 < ISO_6336
         
         function val = get.Z_NT(obj)
             val = zeros(1, 2);
+            % assuming optimum lubrification, material, manufacturing and experience
+%             y_lim = 1.0;
+            y_lim = 0.85;
             
             for idx = 1:2
                 line = obj.material(idx).row;
@@ -618,19 +695,19 @@ classdef MATISO_6336 < ISO_6336
                     case 1
                         % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
                         x = [6.0e5 1.0e7 1.0e9 1.0e10];
-                        y = [1.6   1.3   1.0   0.85];
+                        y = [1.6   1.3   1.0   y_lim]; 
                     case 2
                         % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
-                        x = [1.0e5 5.0e7 1.0e9 1.0e10];
-                        y = [1.6   1.0   1.0   0.85];
+                        x = [1.0e5 5.0e7 1.0e10];
+                        y = [1.6   1.0   y_lim];
                     case 3
                         % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
                         x = [1.0e5 2.0e6 1.0e10];
-                        y = [1.3   1.0   0.85];
+                        y = [1.3   1.0   y_lim];
                     case 4
                         % NV (nitrocar.)
                         x = [1.0e5 2.0e6 1.0e10];
-                        y = [1.1   1.0   0.85];
+                        y = [1.1   1.0   y_lim];
                     otherwise
                         error("MATISO_6336:ZNT", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
                 end
@@ -649,7 +726,7 @@ classdef MATISO_6336 < ISO_6336
                         x = x([jdx end]);
                         y = y([jdx end]);
                     end
-                    val(idx) = interp1(log(x), y, log(N));
+                    val(idx) = exp(interp1(log(x), log(y), log(N)));
                 end
             end
             
@@ -716,9 +793,40 @@ classdef MATISO_6336 < ISO_6336
         end
         
         function val = get.K_Hbeta(obj)
-            % The face load factor (contact stress) is not calculated from
-            % ISO 6336 [1], but according to [4], Eq.(17.14):
-            val = 1.0 + 0.4*(obj.b/obj.d(1))^2;
+            % Alternative: according to [5], Eq.(17.14):
+            % val = 1.0 + 0.4*(obj.b/obj.d(1))^2;
+            
+            % Mean transverse tangential load at the reference circle:
+            F_m = obj.F_t*obj.K_A*obj.K_gamma*obj.K_v;
+            
+            k_unit = 0.023; % [mm-um/N]
+            B_star = 1.0 + 2.0*(obj.N_p - 1.0);
+            
+            % Component of equivalent misalignment due to deformations of
+            % pinion and wheel shafts. 
+            % Assumption made: Pinion offset is null, s = 0.
+            f_sh = (F_m/mean(obj.b))*k_unit*(abs(B_star - 0.3) + 0.3)*(mean(obj.b)/obj.d(1))^2;
+            
+            % mesh misalignment due to manufacturing deviations:
+            f_ma = norm(obj.f_Hbeta);
+            
+            % Initial equivalent misalignment (before running-in), assuming
+            % that no helix modification was applied:
+            F_betax = 1.33*f_sh + f_ma;
+            
+            % Running-in allowance:
+            y_beta = 0.15*F_betax;
+            
+            F_betay = F_betax - y_beta;
+            
+            cond = (F_betay*obj.c_gamma_beta)/(2.0*F_m/mean(obj.b));
+            
+            if(cond >= 1.0)
+                val = 2.0*sqrt(cond);
+            else
+                val = 1.0 + cond;
+            end
+            
         end
         
         function val = get.K_Fbeta(obj)

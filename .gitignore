@@ -56,3 +56,5 @@ new.subvar
 @NREL_5MW/NREL_5MW.0005.0kW.spck
 @NREL_5MW/NREL_5MW.0000.5kW.subvar
 @NREL_5MW/NREL_5MW.0000.5kW.spck
+@NREL_5MW/gearbox
+*.dat

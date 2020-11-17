@@ -171,7 +171,6 @@ classdef Dynamic_Formulation
                        'IC'        ,    IC    , ... % [rad, 1/min]
                        'K_p'       ,   2200.0 , ...
                        'K_I'       ,    220.0 , ...
-                       'modal_red' ,    false , ...
                        'f_sample'  ,    200.0};
             
             default = scaling_factor.process_varargin(default, varargin);
@@ -263,7 +262,7 @@ classdef Dynamic_Formulation
             ref_gen_speed = @(t)interp1(t_load, gen_speed, t, 'linear');
 
             IC_bar = [IC;
-                      gen_speed(1)];
+                      0.0];
 
             RHS = @(t, x)(B_bar*x + c_A_bar*T_A(t) + c_r_bar*ref_gen_speed(t));
             
@@ -314,7 +313,7 @@ classdef Dynamic_Formulation
                        'v_0'       ,    x_0   , ... % initial velocity
                        'K_p'       ,   2200.0 , ...
                        'K_I'       ,    220.0 , ...
-                       'f_sample'  ,      1.0e3, ...
+                       'f_sample'  ,    200.0 , ...
                        'option'    , 'average'};
             
             default = scaling_factor.process_varargin(default, varargin);
@@ -407,13 +406,20 @@ classdef Dynamic_Formulation
             end
             
             sol = struct;
-            sol.solver = 'Newmark';
-            sol.delta = delta;
-            sol.alpha = alpha;
-            sol.t = time;
-            sol.x = pos;
-            sol.v = vel;
-            sol.a = acc;
+            sol.solver = 'Dynamic_Formulation.Newmark';
+            sol.delta  = delta;
+            sol.alpha  = alpha;
+            sol.t      = time;
+            sol.pos    = pos;
+            sol.vel    = vel*C(end);
+            sol.acc    = acc;
+            sol.M      = obj.M;
+            sol.D      = obj.D;
+            sol.K      = KK;
+            sol.C      = C;
+            sol.b      = obj.b;
+            sol.K_p    = K_p;
+            sol.K_I    = K_I;
 
         end
         
@@ -507,7 +513,7 @@ classdef Dynamic_Formulation
             
         end
                 
-        function [sol, time, pos, vel, acc] = Newmark(time, x0, v0, M, C, K, R, option)
+        function [sol, time, pos, vel, acc] = Newmark(time, x0, v0, M, D, K, R, option)
             %NEWMARK solution of linear mechanical systems using Newmark's
             % method according to [1] Table 9.3.
             %
@@ -549,20 +555,20 @@ classdef Dynamic_Formulation
             a_7 = Delta_t*(1 - delta);
             a_8 = delta*Delta_t;
             
-            K_hat = a_1*M + a_2*C + K;
+            K_hat = a_1*M + a_2*D + K;
             
             %% Initial calculation:
             idx = 1;
             pos(:, idx) = x0;
             vel(:, idx) = v0;
-            acc(:, idx) = M\(R(:, idx) - C*vel(:, idx) - K*pos(:, idx));
+            acc(:, idx) = M\(R(:, idx) - D*vel(:, idx) - K*pos(:, idx));
             
             %% for each time step:
             nt = nt - 1;
             
             for idx = 1:nt
                 Delta_R_hat = R(:, idx + 1) + M*(a_1*pos(:, idx) + a_3*vel(:, idx) + a_4*acc(:, idx)) + ...
-                                              C*(a_2*pos(:, idx) + a_5*vel(:, idx) + a_6*acc(:, idx));
+                                              D*(a_2*pos(:, idx) + a_5*vel(:, idx) + a_6*acc(:, idx));
                 
                 pos(:, idx + 1) = K_hat\Delta_R_hat;
                 acc(:, idx + 1) = a_1*(pos(:, idx + 1) - pos(:, idx)) - a_3*vel(:, idx) - a_4*acc(:, idx);
@@ -639,7 +645,7 @@ classdef Dynamic_Formulation
 
         end
         
-        function [sol, time, pos, vel, acc] = Bathe(time, x0, v0, M, C, K, R)
+        function [sol, time, pos, vel, acc] = Bathe(time, x0, v0, M, D, K, R)
             %BATHE solution of linear mechanical systems using Bathe's
             % method according to [1] Table 9.4.
             %
@@ -648,7 +654,7 @@ classdef Dynamic_Formulation
             % x0: initial position
             % v0: initial velocity
             % M: Inertia matrix
-            % C: Damping matrix
+            % D: Damping matrix
             % K: Stiffness matrix
             % R: vector of externally applied loads
             %
@@ -673,8 +679,8 @@ classdef Dynamic_Formulation
             a_7 = -3.0/(Delta_t^2);
             a_8 = -1.0/ Delta_t;
             
-            K_hat1 = K + a_1*M + a_2*C;
-            K_hat2 = K + a_3*M + a_4*C;
+            K_hat1 = K + a_1*M + a_2*D;
+            K_hat2 = K + a_3*M + a_4*D;
             
             R_mid = (R(:, 1:end-1) + R(:, 2:end))/2.0;
             
@@ -682,7 +688,7 @@ classdef Dynamic_Formulation
             idx = 1;
             pos(:, idx) = x0;
             vel(:, idx) = v0;
-            acc(:, idx) = M\(R(:, idx) - C*vel(:, idx) - K*pos(:, idx));
+            acc(:, idx) = M\(R(:, idx) - D*vel(:, idx) - K*pos(:, idx));
             
             %% for each time step:
             nt = nt - 1;
@@ -690,14 +696,14 @@ classdef Dynamic_Formulation
             for idx = 1:nt
                 % First sub-step:
                 R_hat1 = R_mid(:, idx) + M*(a_1*pos(:, idx) + a_5*vel(:, idx) + acc(:, idx)) + ...
-                                         C*(a_2*pos(:, idx) +     vel(:, idx));
+                                         D*(a_2*pos(:, idx) +     vel(:, idx));
                 pos_1 = K_hat1\R_hat1;
                 vel_1 = a_2*(pos_1 - pos(:, idx)) - vel(:, idx);
 %                 acc_1 = a_2*(vel_1 - vel(:, idx)) - acc(:, idx);
                 
                 % Second sub-step:
                 R_hat2 = R(:, idx + 1) + M*(a_6*pos_1 + a_7*pos(:, idx) + a_2*vel_1 + a_8*vel(:, idx)) + ...
-                                         C*(a_2*pos_1 + a_8*pos(:, idx));
+                                         D*(a_2*pos_1 + a_8*pos(:, idx));
                 pos(:, idx + 1) = K_hat2\R_hat2;
                 vel(:, idx + 1) = -a_8*pos(:, idx) - a_2*pos_1 + a_4*pos(:, idx + 1);
                 acc(:, idx + 1) = -a_8*vel(:, idx) - a_2*vel_1 + a_4*vel(:, idx + 1);
@@ -739,7 +745,7 @@ classdef Dynamic_Formulation
             K = diag([6.0, 4.0]);
             K(1, 2) = -2.0;     K(2, 1) = K(1, 2);
             
-            C = zeros(n);
+            D = zeros(n);
             
             r = [0.0, 10.0]';
             
@@ -751,7 +757,7 @@ classdef Dynamic_Formulation
             R = repmat(r, 1, length(t));
             
             option = 'average';
-            [~, time, pos, ~, ~] = Dynamic_Formulation.Newmark(t, x0, v0, M, C, K, R, option);
+            [~, time, pos, ~, ~] = Dynamic_Formulation.Newmark(t, x0, v0, M, D, K, R, option);
             rel_diff = 100*(ex_93'-pos')./ex_93';
             tab = [(0:12)', ...
                    time', ...
@@ -821,7 +827,7 @@ classdef Dynamic_Formulation
 %             ana_sol = @(t) (MS*[(5.0/sqrt(3.0)    )*( 1.0 - cos(t*sqrt(2.0)));
 %                                 (2.0*sqrt(2.0/3.0))*(-1.0 + cos(t*sqrt(5.0)))]);
             
-            C = zeros(n);
+            D = zeros(n);
             
             r = [0.0, 10.0]';
             
@@ -832,7 +838,7 @@ classdef Dynamic_Formulation
             
             R = repmat(r, 1, length(t));
             
-            [~, time, pos, ~, ~] = Dynamic_Formulation.Bathe(t, x0, v0, M, C, K, R);
+            [~, time, pos, ~, ~] = Dynamic_Formulation.Bathe(t, x0, v0, M, D, K, R);
             
             rel_diff = 100*(ex_94'-pos')./ex_94';
             tab = [(0:12)', ...

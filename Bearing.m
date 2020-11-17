@@ -14,9 +14,13 @@ classdef Bearing
     %
     
     properties
-%         X;
-%         Y;
-%         a;
+        X; % [-], Radial load factor
+        Y; % [-], Axial load factor
+        a; % [-], Exponent of the life equation
+        C; % [N], Basic dynamic load rating
+        e; % [-], Force ratio factor
+        L_10; % [M], Basic rating life
+        
         name(1, :) string;    % [-],       Bearing designation
         type(1, :) string {mustBeMember(type, ["CARB", "CRB", "SRB", "TRB", "none"])} = "none";
                                               % CARB: CARB toroidal roller bearing
@@ -38,8 +42,8 @@ classdef Bearing
         C_beta;  % [N-m-s/rad], Torsional damping, y axis
         C_gamma; % [N-m-s/rad], Torsional damping, z axis
 
-        OD;      % [mm],      Outer diameter
-        ID;      % [mm],      Inner diameter
+        D;       % [mm],      Outer diameter
+        d;       % [mm],      Inner diameter
         B;       % [mm],      Thickness
     end
     
@@ -48,9 +52,15 @@ classdef Bearing
             default = {'name'  , 'no_name', ...
                       'type'   , 'none', ...
                       'x'      , 0.0, ...
-                      'OD'     , 0.0, ...
-                      'ID'     , 0.0, ...
+                      'D'      , 0.0, ...
+                      'd'      , 0.0, ...
                       'B'      , 0.0, ...
+                      'a'      , 3.0, ...
+                      'C'      , 0.0, ...
+                      'e'      , 0.0, ...
+                      'X'      , 0.0, ...
+                      'Y'      , 0.0, ...
+                      'L_10'   , 1.0, ...
                       'K_x'    , 0.0, ...
                       'K_y'    , 0.0, ...
                       'K_z'    , 0.0, ...
@@ -68,9 +78,16 @@ classdef Bearing
             
             obj.name    = default.name;
             obj.type    = default.type;
-            obj.OD      = default.OD;
-            obj.ID      = default.ID;
+            obj.D       = default.D;
+            obj.d       = default.d;
             obj.B       = default.B;
+            
+            obj.a       = default.a;
+            obj.C       = default.C;
+            obj.e       = default.e;
+            obj.X       = default.X;
+            obj.Y       = default.Y;
+            obj.L_10    = default.L_10;
             
             obj.x       = default.x;
             obj.K_x     = default.K_x;
@@ -105,9 +122,11 @@ classdef Bearing
                            "Rotational Damping (rot. axis)",   "C_alpha", "N-m-s/rad", obj.C_alpha;
                            "Rotational Damping",               "C_beta",  "N-m-s/rad", obj.C_beta;
                            "Rotational Damping",               "C_gamma", "N-m-s/rad", obj.C_gamma;
-                           "Outer diameter",                   "OD",      "mm",        obj.OD;
-                           "Inner diameter",                   "ID",      "mm",        obj.ID;
+                           "Inner diameter",                   "d",       "mm",        obj.d;
+                           "Outer diameter",                   "D",       "mm",        obj.D;
                            "Width",                            "B",       "mm",        obj.B;
+                           "Exponent of the life equation",    "a",        "-",        obj.a;
+                           "Basic dynamic load rating"    ,    "C",       "N",         obj.C;
                            };
 
                 Parameter = tab_set(:, 1);
@@ -190,7 +209,7 @@ classdef Bearing
                               'K_alpha', ka       , 'K_beta', kb         , 'K_gamma', kg, ...
                               'C_x'    , cx       , 'C_y'   , cy         , 'C_z'    , cz,...
                               'C_alpha', ca       , 'C_beta', cb         , 'C_gamma', cg, ...
-                              'OD'     , obj(1).OD, 'ID'    , obj(1).ID  , 'B'      , obj(1).B);
+                              'D'     , obj(1).D, 'd'    , obj(1).d  , 'B'      , obj(1).B);
             end
         end
         
@@ -231,7 +250,7 @@ classdef Bearing
                               'K_alpha', ka       , 'K_beta', kb         , 'K_gamma', kg, ...
                               'C_x'    , cx       , 'C_y'   , cy         , 'C_z'    , cz,...
                               'C_alpha', ca       , 'C_beta', cb         , 'C_gamma', cg, ...
-                              'OD'     , obj(1).OD, 'ID'    , obj(1).ID  , 'B'      , obj(1).B);
+                              'D'      , obj(1).D , 'd'     , obj(1).d   , 'B'      , obj(1).B);
             end
         end
         
@@ -263,6 +282,28 @@ classdef Bearing
             end
         end
         
+        function P = dynamic_equiv_load(obj, F_R, F_A)
+            cond = F_R./F_A <= obj.e;
+            P = (F_R.*obj.X(1) + F_A.*obj.Y(1)).*( cond) + ...
+                (F_R.*obj.X(2) + F_A.*obj.Y(2)).*(~cond);
+        end
+        
+        function D = damage_calculation(obj, F_R, F_A, speed, time_step)
+            %DAMAGE_CALCULATION performs fatigue damage calculation for a
+            % Bearing object. F_R and F_A are the radial and axial forces
+            % at the Bearing, which rotates with velocity speed in [1/min.].
+            %
+            
+            [N_R, F_R_edges] = ISO_6336.LDD(F_R, speed, time_step);
+            [N_A, F_A_edges] = ISO_6336.LDD(F_A, speed, time_step);
+            
+            % Dynamic equivalent load:
+            P = obj.dynamic_equiv_load(F_R_edges, F_A_edges);
+            P = abs(P);
+            sum_term = mean([N_R; N_A]).*power(P, obj.a);
+            D = power(obj.L_10*obj.C, -obj.a)*sum(sum_term);
+            
+        end
     end
     
 end
