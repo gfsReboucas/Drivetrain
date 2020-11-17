@@ -1322,7 +1322,7 @@ classdef (Abstract) Drivetrain
         end
         
         %% Data analysis:
-        function Simpack_data_analysis(obj, model_name)
+        function Simpack_data_analysis(obj, model_name, t_transient)
             % read folder:
             folder_name = sprintf('@%s\\%s.%s.output\\*.mat', class(obj), class(obj), model_name);
             MAT_file = dir(folder_name);
@@ -1330,19 +1330,62 @@ classdef (Abstract) Drivetrain
             load([MAT_file.folder, '\', ...
                   MAT_file.name], 'timeInt');
             
-            data = timeInt.forceOv;
-            data.time = timeInt.time;
-            clear('timeInt');
+            time  = timeInt.time.values;
+            data.time_step = time(2) - time(1);
+            idx_TRS = find(time > t_transient, 1, 'first');
             
-            % get field names:
-            field_name = fieldnames(data);
+            data.load  = timeInt.forceOv;
+            data.speed = timeInt.bodyVelRot;
+            clear('timeInt', 'time');
+
+            
+            % get load field names:
+            field_name = fieldnames(data.load);
+            
+            % removing irrelevant fields:
+            data.load = rmfield(data.load, field_name{end-3:end});
+            field_name = fieldnames(data.load);
+            
+            % remove transient data:
+            for idx = 1:length(field_name)
+                sub_field = fieldnames(data.load.(field_name{idx}));
+                sub_field = sub_field(1:end-4);
+                for jdx = 1:length(sub_field)
+                    data.load.(field_name{idx}).(sub_field{jdx}).values = ...
+                        data.load.(field_name{idx}).(sub_field{jdx}).values(idx_TRS:end);
+                end
+            end
+            
+            % get speed field names:
+            field_name = fieldnames(data.speed);
+            
+            % removing irrelevant fields:
+            idx = find(contains(field_name, 'R_I'), 1, 'last');
+            data.speed = rmfield(data.speed, field_name(1:idx));
+            data.speed = rmfield(data.speed, field_name(end-3:end));
+            field_name = fieldnames(data.speed);
+
+            % remove transient data:
+            for idx = 1:length(field_name)
+                sub_field = fieldnames(data.speed.(field_name{idx}));
+                sub_field = sub_field(1:end-4);
+                for jdx = 1:length(sub_field)
+                    data.speed.(field_name{idx}).(sub_field{jdx}).values = ...
+                        data.speed.(field_name{idx}).(sub_field{jdx}).values(idx_TRS:end);
+                end
+            end
+            
+            data.speed.(field_name{idx}) = data.speed.(field_name{idx})(idx_TRS:end);
+            data_idx.time = data.time(idx:end);
             
             for idx = 1:obj.N_stage
                 % send only fields related to the current stage:
                 jdx = ~contains(field_name, sprintf('stage_0%d', idx));
-                struct_idx = rmfield(data, field_name(jdx));
+                
+                data_idx.load  = rmfield(data.load , field_name(jdx));
+                data_idx.speed = rmfield(data.speed, field_name(jdx));
 
-                obj.stage(idx).Simpack_data_analysis(struct_idx);
+                obj.stage(idx).Simpack_data_analysis(data_idx);
                 
             end
 

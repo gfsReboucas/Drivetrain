@@ -593,12 +593,20 @@ classdef Gear_Set < Gear
         end
         
         %%
-        function Simpack_data_analysis(obj, struc)
-            field_name = fieldnames(struc);
+        function Simpack_data_analysis(obj, data)
+            field_name = fieldnames(data.load);
             
             if(strcmp(obj.configuration, 'planetary'))
                 idx_SP = find(contains(field_name, '_sun_planet_'));
+                for idx = idx_SP
+                    ISO_6336.LDD(data.load.(field_name{idx}), ...
+                                 data.speed.(field_name{idx}), ...
+                                 data.time_step);
+                end
                 idx_RP = find(contains(field_name, '_ring_planet_'));
+                
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                idx_PLC = find(contains(field_name, 'S_carrier'));
                 
             else
                 idx_PW = find(contains(field_name, '_pinion_wheel'));
