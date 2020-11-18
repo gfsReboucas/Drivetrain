@@ -315,6 +315,27 @@ classdef Bearing
             D = obj.damage_calculation(F_R, F_A, speed, data.time_step);
             
         end
+        
+        function show_LDD(obj, data)
+            F_A = data.load.ov_001.values;
+            F_y = data.load.ov_002.values;
+            F_z = data.load.ov_003.values;
+            F_R = sqrt(F_y.^2 + F_z.^2);
+            
+            % [rad/s] to [1/min.]:
+            speed = data.load.ov_017.values.*30.0/pi;
+            
+            % Dynamic equivalent load:
+            P = obj.dynamic_equiv_load(F_R, F_A);
+            [N, P_edges] = ISO_6336.LDD(P, speed, data.time_step);
+            time_duration = length(speed)*data.time_step;
+
+            histogram('binEdges' , N*obj.L_10*3.6e3/time_duration, ...
+                      'binCounts', P_edges(2:end)*1.0e-3);
+            box on;
+            set(gca, 'xscale', 'log');
+        end
+        
     end
     
 end

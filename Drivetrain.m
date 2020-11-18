@@ -1322,7 +1322,11 @@ classdef (Abstract) Drivetrain
         end
         
         %% Data analysis:
-        function Simpack_damage_analysis(obj, model_name, t_transient)
+        function data = Simpack_clean_data(obj, model_name, t_transient)
+            %SIMPACK_CLEAN_DATA cleans the data set called model_name,
+            % neglecting the first t_transient seconds.
+            %
+            
             % read folder:
             folder_name = sprintf('@%s\\%s.%s.output\\*.mat', class(obj), class(obj), model_name);
             MAT_file = dir(folder_name);
@@ -1365,17 +1369,24 @@ classdef (Abstract) Drivetrain
             data.speed = rmfield(data.speed, field_name(1:idx));
             field_name = fieldnames(data.speed);
             % those who are not gear related:
-%             idx = find(~contains(field_name, 'stage_0'));
             idx = ~contains(field_name, {'B_sun', 'B_ge'});
             data.speed = rmfield(data.speed, field_name(idx));
             
+        end
+        
+        function Simpack_damage_analysis(obj, model_name, t_transient)
+            %SIMPACK_DAMAGE_ANALYSIS performs damage calculations on the
+            % data set called model_name, neglecting the first t_transient 
+            % seconds.
+            %
+            
+            data = obj.Simpack_clean_data(model_name, t_transient);
             field_name  = fieldnames(data.load);
             
             damage = zeros(size(obj.f_n));
             
             %% Main shaft:
             data_idx = data;
-%             data_idx = rmfield(data_idx, 'speed');
             idx_MS = find(contains(field_name, 'main_shaft'));
             for idx = 1:length(obj.main_shaft.bearing)
                 jdx = idx_MS(idx);
@@ -1399,17 +1410,46 @@ classdef (Abstract) Drivetrain
 %             % Force outputs:
 %             timeInt.forceOv;
 %             
-%             % Bearing:
-%             F_a = timeInt.forceOv.(field_name{idx_BRG}).ov_001.values;
-%             F_y = timeInt.forceOv.(field_name{idx_BRG}).ov_002.values;
-%             F_z = timeInt.forceOv.(field_name{idx_BRG}).ov_003.values;
-%             F_r = sqrt(F_y.^2 + F_z.^2);
-%             
 %             % Gear
 %             sigma_H = timeInt.forceOv.(field_name{idx_}).ov_020.values;
 %             
 %             % Angular speed:
 %             timeInt.bodyVelRot;
+            
+        end
+        
+        function Simpack_show_LDD(obj, model_name, t_transient)
+            
+            data = obj.Simpack_clean_data(model_name, t_transient);
+            field_name  = fieldnames(data.load);
+            
+            %% Main shaft:
+            data_idx = data;
+            idx_MS = find(contains(field_name, 'main_shaft'));
+            n = length(obj.main_shaft.bearing);
+            for idx = 1:n
+                jdx = idx_MS(idx);
+                data_idx.load = data.load.(field_name{jdx});
+                
+                subplot(n, 1, idx)
+                obj.main_shaft.bearing(idx).show_LDD(data_idx);
+                title(sprintf('LDD - %s', obj.main_shaft.bearing(idx).name));
+            end
+            xlabel('N, [-]');
+            
+            %% Gear stages:
+            for idx = 1:obj.N_stage
+                % send only fields related to the current stage:
+                field_name  = fieldnames(data.load);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.load  = rmfield(data.load , field_name(jdx));
+                
+                field_name  = fieldnames(data.speed);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.speed = rmfield(data.speed, field_name(jdx));
+                obj.gear_calc{idx}.show_LDD(data_idx);
+            end
+
             
         end
         

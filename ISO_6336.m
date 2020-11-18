@@ -176,6 +176,230 @@ classdef (Abstract) ISO_6336 < Gear_Set
 % 
         end
         
+        %%
+        function D = Simpack_damage_analysis(obj, data)
+            field_name = fieldnames(data.load);
+            
+            data_tmp = data;
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                D_PL_A = zeros(1, obj.N_p);
+                D_PL_B = D_PL_A;
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    D_PL_A(idx) = obj.bearing(1).Simpack_damage_analysis(data_tmp);
+                    
+                    jdx = idx_PL(2*idx);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    D_PL_B(idx) = obj.bearing(2).Simpack_damage_analysis(data_tmp);
+                end
+                
+                D_PL = [D_PL_A; D_PL_B];
+                D_PL = reshape(D_PL, 1, 2*obj.N_p);
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                jdx = idx_PLC(1);
+                data_tmp.load = data.load.(field_name{jdx});
+                D_PLC(1) = obj.bearing(3).Simpack_damage_analysis(data_tmp);
+                
+                jdx = idx_PLC(2);
+                data_tmp.load = data.load.(field_name{jdx});
+                D_PLC(2) = obj.bearing(4).Simpack_damage_analysis(data_tmp);
+                
+                D = [D_PL, D_PLC];
+                
+%                 idx_SP = find(contains(field_name, 'sun_planet'));
+%                 name_field = fieldnames(data.speed);
+%                 D_SP = zeros(1, obj.N_p);
+%                 for idx = 1:obj.N_p
+%                     jdx = idx_SP(idx);
+%                     data_tmp.load = data.load.(field_name{jdx});
+%                     
+%                     [n, sigma_H, speed] = ...
+%                     ISO_6336.LDD(data_tmp.load.ov_020.values, ...
+%                                  data_tmp.speed.(name_field{1}).x.values, ...
+%                                  data_tmp.time_step);
+%                 end
+                
+%                 for idx = idx_SP
+%                     ISO_6336.LDD(data.load.(field_name{idx}), ...
+%                                  data.speed.(field_name{idx}), ...
+%                                  data.time_step);
+%                 end
+%                 idx_RP = find(contains(field_name, '_ring_planet_'));
+                
+            else
+                % Pinion bearings:
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                D_pin = zeros(1, length(idx_PIN));
+                for idx = 1:length(D_pin)
+                    jdx = idx_PIN(idx);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    D_pin(idx) = obj.bearing(idx).Simpack_damage_analysis(data_tmp);
+                end
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                D_whe = zeros(1, length(idx_WHE));
+                for idx = 1:length(D_whe)
+                    jdx = idx_WHE(idx);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    kdx = length(D_pin) + idx;
+                    D_whe(idx) = obj.bearing(kdx).Simpack_damage_analysis(data_tmp);
+                end
+                
+                D = [D_pin, D_whe];
+                
+%                 idx_PW = find(contains(field_name, 'pinion_wheel'));
+%                 ISO_6336.LDD(data.load.(field_name{idx_PW}), ...
+%                              data.speed.(field_name{idx_PW}), ...
+%                              data.time_step);
+            end
+            
+        end
+        
+        function show_LDD(obj, data)
+            field_name = fieldnames(data.load);
+            name_field = fieldnames(data.speed);
+            
+            data_idx = data;
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                figure;
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 2, 1);
+                    hold on;
+                    obj.bearing(1).show_LDD(data_idx);
+                    
+                    jdx = idx_PL(2*idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 2, 3);
+                    hold on;
+                    obj.bearing(2).show_LDD(data_idx);
+                end
+                
+                subplot(3, 2, 1);
+                title('Planet bearing A');
+                legend({'A', 'B', 'C'}, 'location', 'best');
+                
+                subplot(3, 2, 3);
+                title('Planet bearing B');
+                
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                for idx = 1:length(idx_PLC)
+                    jdx = idx_PLC(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 2, 5);
+                    hold on;
+                    obj.bearing(idx + 2).show_LDD(data_idx);
+                end
+                title('Planet carrier bearing');
+                
+                % Sun-planet gear contact:
+                jdx_SP = find(contains(field_name, 'sun_planet'));
+                kdx_SP = find(contains(name_field, 'planet'));
+                subplot(3, 2, 2)
+                hold on;
+                for idx = 1:obj.N_p
+                    jdx = jdx_SP(idx);
+                    kdx = kdx_SP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    
+                    histogram('binEdges' , N, ...
+                              'binCounts', sigma_H(2:end)*1.0e-6);
+                    box on;
+                end
+                title('Max. Sun-Planet contact stress');
+                
+                % Ring-planet gear contact:
+                jdx_RP = find(contains(field_name, 'ring_planet'));
+                kdx_RP = find(contains(name_field, 'planet'));
+                subplot(3, 2, 4)
+                hold on;
+                for idx = 1:obj.N_p
+                    jdx = jdx_RP(idx);
+                    kdx = kdx_RP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    
+                    histogram('binEdges' , N, ...
+                              'binCounts', sigma_H(2:end)*1.0e-6);
+                end
+                title('Max. Ring-Planet contact stress');
+                
+            else
+                % Pinion bearings:
+                figure;
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                n = length(idx_PIN);
+                subplot(3, 1, 1)
+                hold on;
+                for idx = 1:n
+                    jdx = idx_PIN(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    obj.bearing(idx).show_LDD(data_idx);
+                end
+                title('Pinion bearing');
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                n = length(idx_WHE);
+                subplot(3, 1, 2)
+                hold on;
+                for idx = 1:n
+                    jdx = idx_WHE(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    kdx = n + idx;
+                    
+                    obj.bearing(kdx).show_LDD(data_idx);
+                end
+                title('Wheel bearing');
+                
+                % Pinion-Wheel gear contact:
+                jdx_PW = contains(field_name, 'pinion_wheel');
+                kdx_PW = contains(name_field, 'pinion');
+                name_field = fieldnames(data.speed);
+                
+                [N, sigma_H] = ISO_6336.LDD(data.load. (field_name{jdx_PW}).ov_020.values, ...
+                                            data.speed.(name_field{kdx_PW}).x.values, ...
+                                            data.time_step);
+
+%                 figure;
+                subplot(3, 1, 3)
+                hold on;
+                histogram('binEdges' , N, ...
+                          'binCounts', sigma_H(2:end)*1.0e-6);
+                title('Max. Pinion-Wheel contact stress');
+                                        
+            end
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'box', 'on');
+            set(fig_axes, 'xScale', 'log');
+
+        end
+        
     end
     
     methods(Static)
@@ -185,10 +409,10 @@ classdef (Abstract) ISO_6336 < Gear_Set
             % the inverse of the sampling frequency of both signals.
             %
             % References:
-            % [1] A. R. Nejad, Z. Gao, and T. Moan, “On long-term fatigue 
+            % [1] A. R. Nejad, Z. Gao, and T. Moan, "On long-term fatigue 
             % damage and reliability analysis of gears under wind loads in 
-            % offshore wind turbine drivetrains,�? Int. J. Fatigue, vol. 61,
-            % pp. 116–128, Apr. 2014. 10.1016/j.ijfatigue.2013.11.023
+            % offshore wind turbine drivetrains" Int. J. Fatigue, vol. 61,
+            % pp. 116-128, Apr. 2014. 10.1016/j.ijfatigue.2013.11.023
             %
 
             load_signal = abs(load_signal);
