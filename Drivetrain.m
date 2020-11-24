@@ -126,7 +126,7 @@ classdef (Abstract) Drivetrain
             obj.S_Hmin = default.S_Hmin;
             obj.S_Fmin = default.S_Fmin;
             
-            [obj.S_H, obj.S_F, obj.S_shaft, obj.gear_calc] = obj.safety_factors();
+            [obj.S_H_val, obj.S_F_val, obj.S_shaft_val, obj.gear_calc] = obj.safety_factors();
             
             obj.dynamic_model = default.dynamic_model(obj);
             
@@ -505,7 +505,7 @@ classdef (Abstract) Drivetrain
         %% Pitting:
         [SH, SF, SShaft, calc] = safety_factor_stage(obj, idx)
         
-        function [SH_vec, SF_vec, SShaft_vec, calc] = safety_factors(obj)
+        function [SH_all, SF_all, SShaft_all, calc] = safety_factors(obj)
             %SAFETY_FACTORS returns the safety factors of the shafts and
             % gear stages from a Drivetrain object. The shafts' safety
             % factor is calculated against fatigue and yield according to
@@ -519,28 +519,28 @@ classdef (Abstract) Drivetrain
             
             T_m  = obj.T_out(1)*obj.stage(1).u;
 
-            max_Np = max([obj.stage.N_p]) + 1;
+            SH_all     = cell(obj.N_stage, 1);
+            SF_all     = cell(obj.N_stage, 1);
+            SShaft_all = zeros(obj.N_stage + 1, 1);
             
-            SH_vec     = zeros(obj.N_stage    , max_Np);
-            SF_vec     = zeros(obj.N_stage    , max_Np);
-            SShaft_vec = zeros(obj.N_stage + 1, 1);
-            
-            SShaft_vec(1) = obj.main_shaft.safety_factors(K_f, K_fs, T_m);
+            SShaft_all(1) = obj.main_shaft.safety_factors(K_f, K_fs, T_m);
             calc = cell(1, obj.N_stage);
 
-            jdx = 0;
             for idx = 1:obj.N_stage
-                [SH, SF, SShaft_vec(idx + 1), calc{idx}] = obj.safety_factor_stage(idx);
+                [SH, SF, SShaft_all(idx + 1), calc{idx}] = obj.safety_factor_stage(idx);
                 
-                kdx = jdx + (1:length(SH));
-                jdx = kdx(end);
-                
-                SH_vec(kdx) = SH;
-                SF_vec(kdx) = SF;
+                SH_all{idx} = SH;
+                SF_all{idx} = SF;
             end
             
-            SH_vec(SH_vec == 0) = [];
-            SF_vec(SF_vec == 0) = [];
+            SH_all = cell2mat(SH_all);
+            SH_all(SH_all == 0) = [];
+            SH_all(isnan(SH_all)) = [];
+            
+            SF_all = cell2mat(SF_all);
+            SF_all(SF_all == 0) = [];
+            SF_all(isnan(SF_all)) = [];
+            
         end
         
         %% Scaling:

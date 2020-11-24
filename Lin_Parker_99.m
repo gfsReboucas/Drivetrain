@@ -540,18 +540,14 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                 K_r_row = K_c_row;
                 K_s_row = K_c_row;
                 
-                sum_Kc1 = zeros(3);
-                sum_Kr1 = zeros(3);
-                sum_Ks1 = zeros(3);
+                sum_Kc1 = eye(3)*stage_idx.N_p;
+                sum_Kr1 = diag([1.0/2.0, 1.0/2.0, 1.0])*stage_idx.N_p;
+                sum_Ks1 = diag([1.0/2.0, 1.0/2.0, 1.0])*stage_idx.N_p;
                 for idx = 1:stage_idx.N_p
                     rng = (-2:0) + 3*idx;
                     K_c_row(:, rng) = K_c2(idx);
                     K_r_row(:, rng) = K_r2(idx);
                     K_s_row(:, rng) = K_s2(idx);
-                    
-                    sum_Kc1 = sum_Kc1 + K_c1(idx);
-                    sum_Kr1 = sum_Kr1 + K_r1(idx);
-                    sum_Ks1 = sum_Ks1 + K_s1(idx);
                 end
                 
                 K_c_row = diag([k_px, k_py, k_pu])*K_c_row;
@@ -566,7 +562,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
                            K_r_row;
                            K_s_row];
 
-                K_pp = diag([k_px, k_py, k_pu]) + k_pr*K_r3 + k_sp*K_s3;
+                K_pp = diag([k_px, k_py, 0.0]) + k_pr*K_r3 + k_sp*K_s3;
                 KppCell = repmat({K_pp}, 1, stage_idx.N_p);
                 diag_02 = blkdiag(KppCell{:});
                 
@@ -674,7 +670,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             % +-----------------------------+-------+-------+---------+--------+
             % |  Bearing stiffness (N/m)    | 1.0e8 | 1.0e8 |  1.0e8  |  1.0e8 |
             % +-----------------------------+-------+-------+---------+--------+
-            % |  Torsional stiffness (N/m)  |  0.0  | 1.0e9 |   0.0   |    ?   |
+            % |  Torsional stiffness (N/m)  |  0.0  | 1.0e9 |   0.0   |  1.0e8 |
             % +-----------------------------+-------+-------+---------+--------+
             % |    Pressure angle (deg.)    |               24.6               |
             % +-----------------------------+----------------------------------+
@@ -683,30 +679,37 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             % - Isotropic bearings;
             %
             % Results:
-            %     Reference_4p    Calculated     Rel_Diff      has_Problem
+            %     Reference_5p    Calculated     Rel_Diff      has_Problem
             %     ____________    __________    ___________    ___________
-            %
-            %             0              0              NaN       "no"
-            %           727         727.27        -0.036768       "no"
-            %           727         727.27        -0.036768       "no"
-            %          1091         1091.2        -0.014987       "no"
-            %          1091         1091.2        -0.014987       "no"
-            %        1536.6         1536.5        0.0041977       "no"
-            %        1808.2         1808.2        0.0010573       "no"
-            %        1892.8         1892.8      -0.00092796       "no"
-            %        1892.8         1892.8      -0.00092796       "no"
-            %        1970.6         1970.6        0.0003858       "no"
-            %        2342.5         2342.5      -0.00014872       "no"
-            %        2342.5         2342.5      -0.00014872       "no"
-            %        2625.7         2625.7         0.001897       "no"
-            %        5963.8         5963.8       0.00067035       "no"
-            %        6981.7         6981.7      -7.4008e-05       "no"
-            %        7189.9         7189.9      -0.00063114       "no"
-            %        7189.9         7189.9      -0.00063114       "no"
-            %        7773.6         7773.6       0.00062621       "no"
-            %         10438          10438       0.00036635       "no"
-            %         10438          10438       0.00036635       "no"
-            %         13071          13071      -7.8332e-05       "no"
+            % 
+            %             0              0              NaN       "no"    
+            %           710         710.05       -0.0063653       "no"    
+            %           710         710.05       -0.0063653       "no"    
+            %          1072           1072        -0.001156       "no"    
+            %          1072           1072        -0.001156       "no"    
+            %        1567.4         1567.4       0.00014933       "no"    
+            %        1808.2         1808.2        0.0010573       "no"    
+            %        1808.2         1808.2        0.0010573       "no"    
+            %        1888.1         1888.1        0.0012111       "no"    
+            %        1888.1         1888.1        0.0012111       "no"    
+            %        2006.1         2006.1         0.001073       "no"    
+            %        2425.3         2425.3       0.00019097       "no"    
+            %        2425.3         2425.3       0.00019097       "no"    
+            %        2614.8         2614.8       0.00016489       "no"    
+            %        5963.8         5963.8       0.00067035       "no"    
+            %        5963.8         5963.8       0.00067035       "no"    
+            %        6981.7         6981.7      -7.4008e-05       "no"    
+            %        6981.7         6981.7      -7.4008e-05       "no"    
+            %        7382.4         7382.4       0.00027184       "no"    
+            %        7382.4         7382.4       0.00027184       "no"    
+            %        8065.4         8065.4       0.00012466       "no"    
+            %         11172          11172       -7.746e-05       "no"    
+            %         11172          11172       -7.746e-05       "no"    
+            %         14253          14253       5.3642e-05       "no"    
+            % 
+            % Test 01
+            % 	Performed on: 24-Nov-2020.
+            % 	Number of problematic resonances: 0.
             %
 
             m_s =  0.4;    m_r =   2.35;   m_c =   5.43;    m_p =   0.66; % [kg]
@@ -724,7 +727,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             
             k_sp = 5.0e8;    % k_rp = k_sp; % [N/m]
             k_s  = 1.0e8;   k_r  = k_s;     k_c  = k_s;     k_p  = k_s;  % [N/m]
-            k_su = 0.0;     k_ru = 1.0e9;   k_cu = k_su;    k_pu = k_su; % [N/m]
+            k_su = 0.0;     k_ru = 1.0e9;   k_cu = k_su;    k_pu = k_p; % [N/m]
             
             k_st = k_su*r_s^2; % [N-m/rad]
             k_rt = k_ru*r_r^2;
@@ -840,7 +843,9 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             has_problem(idx) = "[YES]";
             table(fn_ref, fn_test, diff_fn, has_problem, 'variableNames', ...
                     {ref_str, 'Calculated', 'Rel_Diff', 'has_Problem'})
-
+            fprintf('Test 01\n');
+            fprintf('\tPerformed on: %s.\n', datetime('today'));
+            fprintf('\tNumber of problematic resonances: %d.\n', sum(idx));
             flag = any(idx);
         end
         
@@ -875,30 +880,37 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             % assumed to be zero.
             %
             % Results:
-            %     Reference_4p    Calculated     Rel_Diff     has_Problem
+            %     Reference_5p    Calculated     Rel_Diff     has_Problem
             %     ____________    __________    __________    ___________
             %
-            %        265.67         265.68      -0.0046336       "no"
-            %        265.67         265.68      -0.0046336       "no"
-            %        334.97         334.99      -0.0048744       "no"
+            %        258.03         258.04      -0.0062309       "no"
+            %        258.03         258.04      -0.0062309       "no"
+            %        324.82         324.84      -0.0045065       "no"
             %         354.9         354.91      -0.0046635       "no"
-            %         369.4         369.37       0.0084399       "no"
-            %         369.4         369.37       0.0084399       "no"
-            %        386.01         385.82        0.048122       "no"
-            %        486.01         485.94        0.015318       "no"
-            %        486.01         485.94        0.015318       "no"
-            %        486.01         486.07       -0.011602       "no"
-            %        546.54         546.69       -0.028987       "no"
-            %        546.54         546.69       -0.028987       "no"
-            %        742.86         742.67        0.025115       "no"
+            %         354.9         354.91      -0.0046635       "no"
+            %        363.98         363.99      -0.0040313       "no"
+            %        363.98         363.99      -0.0040313       "no"
+            %        376.04         375.94        0.028082       "no"
+            %        472.73         472.53        0.042164       "no"
+            %        495.98         496.05       -0.013471       "no"
+            %        495.98         496.05       -0.013471       "no"
+            %        552.07         552.14       -0.012343       "no"
+            %        552.07         552.14       -0.012343       "no"
+            %        771.28         771.18        0.013105       "no"
             %        1594.2         1594.1       0.0052395       "no"
-            %        1901.6         1901.8      -0.0081091       "no"
-            %        1901.6         1901.8      -0.0081091       "no"
+            %        1594.2         1594.1       0.0052395       "no"
+            %        1962.1         1962.1       0.0043046       "no"
+            %        1962.1         1962.1       0.0043046       "no"
             %        2093.1         2093.2       -0.004691       "no"
-            %        2143.7         2143.7        0.001807       "no"
-            %        2394.3         2394.2       0.0022819       "no"
-            %        2394.3         2394.2       0.0022819       "no"
-            %        3093.6         3093.7      -0.0035906       "no"
+            %        2093.1         2093.2       -0.004691       "no"
+            %        2225.3         2225.4      -0.0053724       "no"
+            %        2469.9         2469.9      0.00062585       "no"
+            %        2469.9         2469.9      0.00062585       "no"
+            %        3316.1           3316       0.0036004       "no"
+            %
+            % Test 02
+            % 	Performed on: 24-Nov-2020.
+            % 	Number of problematic resonances: 0.
             %
 
             switch(num_planet)
@@ -932,7 +944,7 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             
             k_sp = 100.0e6;    % k_rp = k_sp; % [N/m]
             k_s  = 20.0e6;  k_r  = 100.0e6;	k_c  = 50.0e6;	k_p  = 10.0e6;
-            k_su = 20.0e6;  k_ru = 100.0e6; k_cu = k_ru;    k_pu = 0.0;
+            k_su = 20.0e6;  k_ru = 100.0e6; k_cu = k_ru;    k_pu = k_p;
             
             k_st = k_su*r_s^2; % [N-m/rad]
             k_rt = k_ru*r_r^2;
@@ -1033,7 +1045,9 @@ classdef Lin_Parker_99 < Dynamic_Formulation
             has_problem(idx) = "[YES]";
             table(fn_ref, fn_test, diff_fn, has_problem, 'variableNames', ...
                     {ref_str, 'Calculated', 'Rel_Diff', 'has_Problem'})
-
+            fprintf('Test 02\n');
+            fprintf('\tPerformed on: %s.\n', datetime('today'));
+            fprintf('\tNumber of problematic resonances: %d.\n', sum(idx));
             flag = any(idx);
         end
         
