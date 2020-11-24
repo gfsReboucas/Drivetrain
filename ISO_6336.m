@@ -161,12 +161,16 @@ classdef (Abstract) ISO_6336 < Gear_Set
 %             figure;
 %             subplot(211)
 %             histogram('binEdges' , num_cycle, ...
-%                       'binCounts', sigmaH(1, :));
+%                       'binCounts', sigmaH(1, :), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 2.0);
 %             ylabel('\sigma_{H1}, [N/mm^2]');
 %             
 %             subplot(212)
 %             histogram('binEdges' , num_cycle, ...
-%                       'binCounts', sigmaH(2, :));
+%                       'binCounts', sigmaH(2, :), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 3);
 %             xlabel('N, [-]');
 %             ylabel('\sigma_{H2}, [N/mm^2]');
 %             
@@ -262,7 +266,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
             
         end
         
-        function show_LDD(obj, data)
+        function show_LDD(obj, data, name)
             field_name = fieldnames(data.load);
             name_field = fieldnames(data.speed);
             
@@ -270,29 +274,28 @@ classdef (Abstract) ISO_6336 < Gear_Set
             
             if(strcmp(obj.configuration, 'planetary'))
                 % Planet bearings:
-                figure;
+                figure('units', 'centimeters', 'position', [5.0, 5.0, 75.0 15.0]);
                 idx_PL  = find(contains(field_name, 'S_planet'));
                 for idx = 1:obj.N_p
                     jdx = idx_PL(2*idx - 1);
                     data_idx.load = data.load.(field_name{jdx});
-                    subplot(3, 2, 1);
-                    hold on;
+                    subplot(3, 5, 5*idx - 4);
                     obj.bearing(1).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(1).name, idx));
                     
                     jdx = idx_PL(2*idx);
                     data_idx.load = data.load.(field_name{jdx});
-                    subplot(3, 2, 3);
-                    hold on;
+                    subplot(3, 5, 5*idx - 3);
                     obj.bearing(2).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(2).name, idx));
                 end
+                subplot(3, 5, 11)
+                xlabel('N, [-]')
                 
-                subplot(3, 2, 1);
-                title('Planet bearing A');
-                legend({'A', 'B', 'C'}, 'location', 'best');
-                
-                subplot(3, 2, 3);
-                title('Planet bearing B');
-                
+                subplot(3, 5, 12)
+                xlabel('N, [-]')
                 
                 % Planet carrier bearings:
                 idx_PLC = find(contains(field_name, 'S_carrier'));
@@ -300,17 +303,17 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     jdx = idx_PLC(idx);
                     data_idx.load = data.load.(field_name{jdx});
                     
-                    subplot(3, 2, 5);
+                    subplot(3, 5, 5*idx - 2);
                     hold on;
                     obj.bearing(idx + 2).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(idx + 2).name, idx));
                 end
-                title('Planet carrier bearing');
+                xlabel('N, [-]')
                 
                 % Sun-planet gear contact:
                 jdx_SP = find(contains(field_name, 'sun_planet'));
                 kdx_SP = find(contains(name_field, 'planet'));
-                subplot(3, 2, 2)
-                hold on;
                 for idx = 1:obj.N_p
                     jdx = jdx_SP(idx);
                     kdx = kdx_SP(idx);
@@ -320,18 +323,21 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     ISO_6336.LDD(data_idx.load.ov_020.values, ...
                                  data_idx.speed.(name_field{kdx}).x.values, ...
                                  data_idx.time_step);
-                    
-                    histogram('binEdges' , N, ...
-                              'binCounts', sigma_H(2:end)*1.0e-6);
-                    box on;
+                             
+                    subplot(3, 5, 5*idx - 1)
+                    histogram('binEdges'    , N, ...
+                              'binCounts'   , sigma_H(2:end)*1.0e-6, ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('\sigma_H, [N/mm^2]')
                 end
+                xlabel('N, [-]')
+                subplot(3, 5, 4)
                 title('Max. Sun-Planet contact stress');
                 
                 % Ring-planet gear contact:
                 jdx_RP = find(contains(field_name, 'ring_planet'));
                 kdx_RP = find(contains(name_field, 'planet'));
-                subplot(3, 2, 4)
-                hold on;
                 for idx = 1:obj.N_p
                     jdx = jdx_RP(idx);
                     kdx = kdx_RP(idx);
@@ -342,39 +348,45 @@ classdef (Abstract) ISO_6336 < Gear_Set
                                  data_idx.speed.(name_field{kdx}).x.values, ...
                                  data_idx.time_step);
                     
-                    histogram('binEdges' , N, ...
-                              'binCounts', sigma_H(2:end)*1.0e-6);
+                    subplot(3, 5, 5*idx)
+                    histogram('binEdges'    , N, ...
+                              'binCounts'   , sigma_H(2:end)*1.0e-6, ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('\sigma_H, [N/mm^2]')
                 end
+                xlabel('N, [-]')
+                subplot(3, 5, 5)
                 title('Max. Ring-Planet contact stress');
                 
             else
                 % Pinion bearings:
-                figure;
+                figure('units', 'centimeters', 'position', [5.0, 5.0, 45.0 15.0]);
                 idx_PIN  = find(contains(field_name, 'pinion_b'));
-                n = length(idx_PIN);
-                subplot(3, 1, 1)
-                hold on;
-                for idx = 1:n
+                n_PIN = length(idx_PIN);
+                for idx = 1:n_PIN
                     jdx = idx_PIN(idx);
                     data_idx.load = data.load.(field_name{jdx});
                     
+                    subplot(3, 3, 3*idx - 2)
                     obj.bearing(idx).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(idx).name, idx));
                 end
-                title('Pinion bearing');
                 
                 % Wheel bearings:
                 idx_WHE  = find(contains(field_name, 'wheel_b'));
-                n = length(idx_WHE);
-                subplot(3, 1, 2)
-                hold on;
-                for idx = 1:n
+                n_WHE = length(idx_WHE);
+                for idx = 1:n_WHE
                     jdx = idx_WHE(idx);
                     data_idx.load = data.load.(field_name{jdx});
-                    kdx = n + idx;
+                    kdx = n_PIN + idx;
                     
+                    subplot(3, 3, 3*idx - 1)
                     obj.bearing(kdx).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(kdx).name, idx));
                 end
-                title('Wheel bearing');
                 
                 % Pinion-Wheel gear contact:
                 jdx_PW = contains(field_name, 'pinion_wheel');
@@ -385,11 +397,11 @@ classdef (Abstract) ISO_6336 < Gear_Set
                                             data.speed.(name_field{kdx_PW}).x.values, ...
                                             data.time_step);
 
-%                 figure;
-                subplot(3, 1, 3)
-                hold on;
-                histogram('binEdges' , N, ...
-                          'binCounts', sigma_H(2:end)*1.0e-6);
+                subplot(3, 3, 3:3:9)
+                histogram('binEdges'    , N, ...
+                          'binCounts'   , sigma_H(2:end)*1.0e-6, ...
+                          'displayStyle', 'stairs', ...
+                          'lineWidth'   , 2.0);
                 title('Max. Pinion-Wheel contact stress');
                                         
             end
@@ -397,13 +409,311 @@ classdef (Abstract) ISO_6336 < Gear_Set
             fig_axes = findobj(gcf, 'Type', 'Axes');
             set(fig_axes, 'box', 'on');
             set(fig_axes, 'xScale', 'log');
+            
+            fig_axes(end).Title.String = [name, ' - ', fig_axes(end).Title.String];
 
+        end
+        
+        function show_histogram(obj, data, name)
+            field_name = fieldnames(data.load);
+            name_field = fieldnames(data.speed);
+            
+            data_idx = data;
+            
+            figure('units', 'centimeters', 'position', [5.0, 5.0, 50.0 20.0]);
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 5, 5*idx - 4);
+                    obj.bearing(1).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(1).name, idx));
+                    
+                    jdx = idx_PL(2*idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 5, 5*idx - 3);
+                    obj.bearing(2).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(2).name, idx));
+                end
+                subplot(3, 5, 11)
+                xlabel('P, [N]')
+                
+                subplot(3, 5, 12)
+                xlabel('P, [N]')
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                for idx = 1:length(idx_PLC)
+                    jdx = idx_PLC(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 5, 5*idx - 2);
+                    hold on;
+                    obj.bearing(idx + 2).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(idx + 2).name, idx));
+                end
+                xlabel('P, [N]')
+                
+                % Sun-planet gear contact:
+                jdx_SP = find(contains(field_name, 'sun_planet'));
+                kdx_SP = find(contains(name_field, 'planet'));
+                for idx = 1:obj.N_p
+                    jdx = jdx_SP(idx);
+                    kdx = kdx_SP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H, speed] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    N = diff(N)*60.0./(speed.*data.time_step);
+                    N(isnan(N)) = 0;
+            
+                    subplot(3, 5, 5*idx - 1)
+                    histogram('binEdges'    , fliplr(sigma_H)*1.0e-6, ...
+                              'binCounts'   , fliplr(N), ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('N, [-]')
+                end
+                xlabel('\sigma_H, [N/mm^2]');
+
+                subplot(3, 5, 4)
+                title('Max. Sun-Planet contact stress');
+                
+                % Ring-planet gear contact:
+                jdx_RP = find(contains(field_name, 'ring_planet'));
+                kdx_RP = find(contains(name_field, 'planet'));
+                for idx = 1:obj.N_p
+                    jdx = jdx_RP(idx);
+                    kdx = kdx_RP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H, speed] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    N = diff(N)*60.0./(speed.*data.time_step);
+                    N(isnan(N)) = 0;
+
+                    subplot(3, 5, 5*idx)
+                    histogram('binEdges'    , fliplr(sigma_H)*1.0e-6, ...
+                              'binCounts'   , fliplr(N), ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('N, [-]')
+                end
+                xlabel('\sigma_H, [N/mm^2]');
+                
+                subplot(3, 5, 5)
+                title('Max. Ring-Planet contact stress');
+                
+            else
+                % Pinion bearings:
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                n_PIN = length(idx_PIN);
+                for idx = 1:n_PIN
+                    jdx = idx_PIN(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 3, 3*idx - 2)
+                    obj.bearing(idx).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(idx).name, idx));
+                end
+                xlabel('P, [N]');
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                n_WHE = length(idx_WHE);
+                for idx = 1:n_WHE
+                    jdx = idx_WHE(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    kdx = n_PIN + idx;
+                    
+                    subplot(3, 3, 3*idx - 1)
+                    obj.bearing(kdx).show_histogram(data_idx);
+                    title(sprintf('%s.%d', obj.bearing(kdx).name, idx));
+                end
+                xlabel('P, [N]');
+                
+                % Pinion-Wheel gear contact:
+                jdx_PW = contains(field_name, 'pinion_wheel');
+                kdx_PW = contains(name_field, 'pinion');
+                name_field = fieldnames(data.speed);
+                
+                [N, sigma_H, speed] = ISO_6336.LDD(data.load. (field_name{jdx_PW}).ov_020.values, ...
+                                                   data.speed.(name_field{kdx_PW}).x.values, ...
+                                                   data.time_step);
+                N = diff(N)*60.0./(speed.*data.time_step);
+                N(isnan(N)) = 0;
+
+                subplot(3, 3, 3:3:9)
+                histogram('binEdges'    , fliplr(sigma_H)*1.0e-6, ...
+                          'binCounts'   , fliplr(N), ...
+                          'displayStyle', 'stairs', ...
+                          'lineWidth'   , 2.0);
+                ylabel('N, [-]')
+                title('Max. Pinion-Wheel contact stress');
+            end
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xScale', 'log');
+            
+            fig_axes(end).Title.String = [name, ' - ', fig_axes(end).Title.String];
+
+        end
+        
+        function [a, b] = Weibull(obj, data, name)
+            field_name = fieldnames(data.load);
+            
+            data_idx = data;
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                a_PL = zeros(size(idx_PL));
+                b_PL = zeros(size(idx_PL));
+                
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_idx.load = data.load.(field_name{jdx});
+
+                    [a, b] = obj.bearing(1).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(1).name, ...
+                                                        idx, a, b);
+
+                    a_PL(2*idx - 1) = a;
+                    b_PL(2*idx - 1) = b;
+                    
+                    jdx = idx_PL(2*idx);
+                    data_idx.load = data.load.(field_name{jdx});
+
+                    [a, b] = obj.bearing(2).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(2).name, ...
+                                                        idx, a, b);
+
+                    a_PL(2*idx) = a;
+                    b_PL(2*idx) = b;
+                end
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                a_PLC = zeros(size(idx_PLC));
+                b_PLC = zeros(size(idx_PLC));
+                for idx = 1:length(idx_PLC)
+                    jdx = idx_PLC(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+
+                    [a, b] = obj.bearing(idx + 2).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx + 2).name, ...
+                                                        idx, a, b);
+
+                    a_PLC(idx) = a;
+                    b_PLC(idx) = b;
+                end
+                
+                % Sun-planet gear contact:
+                jdx_SP = find(contains(field_name, 'sun_planet'));
+                a_SP = zeros(obj.N_p, 1);
+                b_SP = zeros(obj.N_p, 1);
+                for idx = 1:obj.N_p
+                    jdx = jdx_SP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                                 
+                    wbull = fitdist(data_idx.load.ov_020.values + eps, 'weibull');
+                    
+                    a = wbull.a; % scale param.
+                    b = wbull.b; % shape param.
+                    
+                    fprintf('%s:\tSP%d\ta = %e\tb = %e\n', name, idx, a, b);
+                    a_SP(idx) = a;
+                    b_SP(idx) = b;
+                end
+                
+                % Ring-planet gear contact:
+                jdx_RP = find(contains(field_name, 'ring_planet'));
+                a_RP = zeros(obj.N_p, 1);
+                b_RP = zeros(obj.N_p, 1);
+                for idx = 1:obj.N_p
+                    jdx = jdx_RP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    wbull = fitdist(data_idx.load.ov_020.values + eps, 'weibull');
+                    
+                    a = wbull.a; % scale param.
+                    b = wbull.b; % shape param.
+                    
+                    fprintf('%s:\tRP%d\ta = %e\tb = %e\n', name, idx, a, b);
+                    a_RP(idx) = a;
+                    b_RP(idx) = b;
+                end
+                
+                a = [a_PL; a_PLC; a_SP; a_RP];
+                b = [b_PL; b_PLC; b_SP; b_RP];
+                
+            else
+                % Pinion bearings:
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                n_PIN = length(idx_PIN);
+                a_PIN = zeros(size(idx_PIN));
+                b_PIN = zeros(size(idx_PIN));
+                for idx = 1:n_PIN
+                    jdx = idx_PIN(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [a, b] = obj.bearing(idx).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx).name, ...
+                                                        idx, a, b);
+
+                    a_PIN(idx) = a;
+                    b_PIN(idx) = b;
+                end
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                n_WHE = length(idx_WHE);
+                a_WHE = zeros(size(idx_WHE));
+                b_WHE = zeros(size(idx_WHE));
+                for idx = 1:n_WHE
+                    jdx = idx_WHE(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    kdx = n_PIN + idx;
+                    
+                    [a, b] = obj.bearing(kdx).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(kdx).name, ...
+                                                        idx, a, b);
+
+                    a_WHE(idx) = a;
+                    b_WHE(idx) = b;
+                end
+                
+                % Pinion-Wheel gear contact:
+                jdx_PW = contains(field_name, 'pinion_wheel');
+                
+                wbull = fitdist(data.load.(field_name{jdx_PW}).ov_020.values + eps, 'weibull');
+                
+                a = wbull.a; % scale param.
+                b = wbull.b; % shape param.
+                
+                fprintf('%s:\tPW\ta = %e\tb = %e\n', name, a, b);
+                
+                a = [a_PIN; a_WHE; a];
+                b = [b_PIN; b_WHE; b];
+            end
+            
         end
         
     end
     
     methods(Static)
-        function [num_cycle, load_edges, speed_Max, bin] = LDD(load_signal, load_speed, time_step)
+        function [num_cycle, load_edges, speed_mean, bin] = LDD(load_signal, load_speed, time_step)
             %LDD produces the load duration distribution of a load_signal
             % with rotational speed load_speed in [1/min.]. time_step is 
             % the inverse of the sampling frequency of both signals.
@@ -430,39 +740,43 @@ classdef (Abstract) ISO_6336 < Gear_Set
             % [N, edges, bin] = histcounts(signal, nbins OR edges)
             [N, load_edges, bin] = histcounts(load_signal, load_edges);
             
-            speed_Max = zeros(1, num_bins - 1);
+            speed_mean = zeros(1, num_bins - 1);
             for idx = 1:(num_bins - 1)
                 if(N(idx) ~= 0.0)
                     range = (load_signal >= load_edges(idx)) & ...
                             (load_signal <= load_edges(idx + 1));
-                    speed_Max(idx) = max(load_speed(range));
+                    speed_mean(idx) = mean(load_speed(range));
                 end
             end
             
             % descending order:
             load_edges = fliplr(load_edges);
-            speed_Max  = fliplr(speed_Max);
+            speed_mean  = fliplr(speed_mean);
             N          = fliplr(N);
             
             % Assuming that each load is constant during a time step:
             load_time = N*time_step;
             
             % according to [1], (10):
-            num_cycle = load_time.*speed_Max/60.0;
+            num_cycle = load_time.*speed_mean/60.0;
             num_cycle = [0.0, cumsum(num_cycle)];
             
             %% Example of plotting:
 %             figure;
 %             subplot(211)
 %             histogram('binEdges', fliplr(load_edges), ...
-%                       'binCounts', fliplr(N));
+%                       'binCounts', fliplr(N), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 2.0);
 %             title('Histogram');
 %             xlabel('Load, [NA]');
 %             ylabel('Num. cycles, [-]');
 %             
 %             subplot(212)
 %             histogram('binEdges' , num_cycle, ...
-%                       'binCounts', load_edges(2:end));    ...
+%                       'binCounts', load_edges(2:end), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 2.0);
 %             title('Load duration distribution - LDD');
 %             xlabel('Cum. num. cycles, [-]');
 %             ylabel('Load, [NA]');

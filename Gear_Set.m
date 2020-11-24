@@ -64,6 +64,7 @@ classdef Gear_Set < Gear
         d_Na;          % [mm],        Active tip diameter
         f_pb;          % [um],        Transverse base pitch deviation
         y_alpha;       % [um],        Running-in allowance
+        J_eq;          % [kg-m^2],    Equivalent mass moment of inertia
     end
     
     methods
@@ -757,6 +758,29 @@ classdef Gear_Set < Gear
     
     %% Get methods:
     methods
+        function val = get.J_eq(obj)
+            % based on: 
+            % Borders, J. (2009), Planetary Geartrain Analysis.
+            % Accesed on 23.11.2020.
+            % http://www.bordersengineering.com/tech_ref/planetary/planetary_analysis.pdf
+            %
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                val = obj.z(2)/obj.z(1);
+            elseif(strcmp(obj.configuration, 'planetary'))
+                r_s = obj.d(1)*1.0e-3/2.0;
+                r_p = obj.d(2)*1.0e-3/2.0;
+                r_r = obj.d(3)*1.0e-3/2.0;
+                aw  = obj.a_w*1.0e-3;
+                
+                k_c = (r_s^2)/(2.0*aw*(r_s + r_r));
+                k_p = (r_s + r_p)/(r_s + r_r);
+                val = obj.J_x(1) + obj.carrier.J_x*k_c + (obj.J_x(2)/(r_p^2) + obj.mass(2)*k_p)*(obj.N_p*r_s^2)/2.0;
+            else
+                error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
+            end
+        end
+        
         function val = get.k_mesh(obj)
             val = obj.c_gamma.*obj.b.*(1.0e6);
         end

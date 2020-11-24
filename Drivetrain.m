@@ -1355,7 +1355,7 @@ classdef (Abstract) Drivetrain
                 sub_field = sub_field(1:end-4);
                 for jdx = 1:length(sub_field)
                     data.load.(field_name{idx}).(sub_field{jdx}).values = ...
-                        data.load.(field_name{idx}).(sub_field{jdx}).values(idx_TRS:end);
+                        double(data.load.(field_name{idx}).(sub_field{jdx}).values(idx_TRS:end));
                 end
             end
             
@@ -1374,24 +1374,23 @@ classdef (Abstract) Drivetrain
             
         end
         
-        function Simpack_damage_analysis(obj, model_name, t_transient)
-            %SIMPACK_DAMAGE_ANALYSIS performs damage calculations on the
-            % data set called model_name, neglecting the first t_transient 
+        function damage_analysis(obj, model_name, t_transient)
+            %DAMAGE_ANALYSIS performs damage calculations on the data set 
+            % called model_name, neglecting the first t_transient 
             % seconds.
             %
             
             data = obj.Simpack_clean_data(model_name, t_transient);
             field_name  = fieldnames(data.load);
             
-            damage = zeros(size(obj.f_n));
-            
             %% Main shaft:
             data_idx = data;
             idx_MS = find(contains(field_name, 'main_shaft'));
+            D_MS = zeros(size(idx_MS));
             for idx = 1:length(obj.main_shaft.bearing)
                 jdx = idx_MS(idx);
                 data_idx.load = data.load.(field_name{jdx});
-                damage(idx) = obj.main_shaft.bearing(idx).Simpack_damage_analysis(data_idx);
+                D_MS(idx) = obj.main_shaft.bearing(idx).Simpack_damage_analysis(data_idx);
             end
             
             %% Gear stages:
@@ -1427,15 +1426,22 @@ classdef (Abstract) Drivetrain
             data_idx = data;
             idx_MS = find(contains(field_name, 'main_shaft'));
             n = length(obj.main_shaft.bearing);
+            figure('units', 'centimeters', 'position', [5.0, 5.0, 15.0 15.0]);
             for idx = 1:n
                 jdx = idx_MS(idx);
                 data_idx.load = data.load.(field_name{jdx});
                 
                 subplot(n, 1, idx)
                 obj.main_shaft.bearing(idx).show_LDD(data_idx);
-                title(sprintf('LDD - %s', obj.main_shaft.bearing(idx).name));
+                title(sprintf('%s', obj.main_shaft.bearing(idx).name));
             end
             xlabel('N, [-]');
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'box', 'on');
+            set(fig_axes, 'xScale', 'log');
+            
+            fig_axes(end).Title.String = [model_name, ' - ', fig_axes(end).Title.String];
             
             %% Gear stages:
             for idx = 1:obj.N_stage
@@ -1447,10 +1453,101 @@ classdef (Abstract) Drivetrain
                 field_name  = fieldnames(data.speed);
                 jdx = ~contains(field_name, sprintf('stage_0%d', idx));
                 data_idx.speed = rmfield(data.speed, field_name(jdx));
-                obj.gear_calc{idx}.show_LDD(data_idx);
+                obj.gear_calc{idx}.show_LDD(data_idx, model_name);
             end
-
             
+        end
+        
+        function Simpack_show_histogram(obj, model_name, t_transient)
+            
+            data = obj.Simpack_clean_data(model_name, t_transient);
+            field_name  = fieldnames(data.load);
+            
+            %% Main shaft:
+            data_idx = data;
+            idx_MS = find(contains(field_name, 'main_shaft'));
+            n = length(obj.main_shaft.bearing);
+            figure('units', 'centimeters', 'position', [5.0, 5.0, 20.0 20.0]);
+            for idx = 1:n
+                jdx = idx_MS(idx);
+                data_idx.load = data.load.(field_name{jdx});
+                
+                subplot(n, 1, idx)
+                obj.main_shaft.bearing(idx).show_histogram(data_idx);
+                title(sprintf('%s', obj.main_shaft.bearing(idx).name));
+                ylabel('N, [-]');
+            end
+            xlabel('P, [N]');
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xScale', 'log');
+            
+            fig_axes(end).Title.String = [model_name, ' - ', fig_axes(end).Title.String];
+            
+            %% Gear stages:
+            for idx = 1:obj.N_stage
+                % send only fields related to the current stage:
+                field_name  = fieldnames(data.load);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.load  = rmfield(data.load , field_name(jdx));
+                
+                field_name  = fieldnames(data.speed);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.speed = rmfield(data.speed, field_name(jdx));
+                obj.gear_calc{idx}.show_histogram(data_idx, model_name);
+            end
+            
+        end
+        
+        function [a, b] = Simpack_Weibull(obj, model_name, t_transient)
+            
+            data = obj.Simpack_clean_data(model_name, t_transient);
+            field_name  = fieldnames(data.load);
+            
+            %% Main shaft:
+            data_idx = data;
+            idx_MS = find(contains(field_name, 'main_shaft'));
+            n = length(obj.main_shaft.bearing);
+            
+            a = cell(obj.N_stage + 1, 1);
+            b = cell(obj.N_stage + 1, 1);
+            
+            a_MS = zeros(size(idx_MS));
+            b_MS = zeros(size(idx_MS));
+            for idx = 1:n
+                jdx = idx_MS(idx);
+                data_idx.load = data.load.(field_name{jdx});
+                
+                [a_idx, b_idx] = obj.main_shaft.bearing(idx).Weibull(data_idx);
+                fprintf('%s:\t%s\ta = %e\tb = %e\n', model_name, ...
+                                                     obj.main_shaft.bearing(idx).name, ...
+                                                     a_idx, b_idx);
+
+                a_MS(idx) = a_idx;
+                b_MS(idx) = b_idx;
+            end
+            a{1} = a_MS;
+            b{1} = b_MS;
+            
+            %% Gear stages:
+            for idx = 1:obj.N_stage
+                % send only fields related to the current stage:
+                field_name  = fieldnames(data.load);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.load  = rmfield(data.load , field_name(jdx));
+                
+                field_name  = fieldnames(data.speed);
+                jdx = ~contains(field_name, sprintf('stage_0%d', idx));
+                data_idx.speed = rmfield(data.speed, field_name(jdx));
+                
+                [a_idx, b_idx] = obj.gear_calc{idx}.Weibull(data_idx, model_name);
+                a{idx + 1} = a_idx;
+                b{idx + 1} = b_idx;
+            end
+            
+            a = cell2mat(a);
+            b = cell2mat(b);
         end
         
     end

@@ -134,21 +134,21 @@ classdef MATISO_6336 < ISO_6336
                     case 1
                         % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
                         val = power(3.0e8./6.0e5, 0.3705*log(ratio)).*(               (N <  6.0e5)) + ... % if 1
-                              power(3.0e8./N    , 0.3705*log(ratio)).*((6.0e5 <  N) & (N <= 1.0e7)) + ... if 2
+                              power(3.0e8./N    , 0.3705*log(ratio)).*((6.0e5 <  N) & (N <= 1.0e7)) + ... % if 2
                               power(1.0e9./N    , 0.2791*log(ratio)).*((1.0e7 <  N) & (N <= 1.0e9)) + ...
                               1.0                                   .*((1.0e9 <  N));
                         
                     case 2
                         % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
                         val = power(5.0e7./1.0e5, 0.3705*log(ratio)).*(               (N <  1.0e5)) + ... % if 1
-                              power(5.0e7./N    , 0.3705*log(ratio)).*((1.0e5 <  N) & (N <= 5.0e7)) + ... if 2
+                              power(5.0e7./N    , 0.3705*log(ratio)).*((1.0e5 <  N) & (N <= 5.0e7)) + ... % if 2
                               1.0                                   .*((5.0e7 <  N));
                         
                     case {3, 4}
                         % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
                         % NV (nitrocar.)
                         val = power(2.0e6./1.0e5, 0.7686*log(ratio)).*(               (N <  1.0e5)) + ... % if 1
-                              power(2.0e6./N    , 0.7686*log(ratio)).*((1.0e5 <  N) & (N <= 2.0e6)) + ... if 2
+                              power(2.0e6./N    , 0.7686*log(ratio)).*((1.0e5 <  N) & (N <= 2.0e6)) + ... % if 2
                               1.0                                   .*((2.0e6 <  N));
                         
                     otherwise
