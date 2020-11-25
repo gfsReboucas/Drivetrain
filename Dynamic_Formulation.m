@@ -29,22 +29,38 @@ classdef Dynamic_Formulation
         c;       % Centripetal force vector
         b;       % External load vector
         A;       % State matrix
-        DOF_description; 
+        DOF_description; %
+        fault_type;  % [-], Indicates whether the fault affects the M or K matrix of the model
+        fault_val;   % [%], how much does the parameter change
     end
-    
+    properties(Dependent)
+        has_fault;   % [-], Indicates the presence (or lack) of faults
+        fault_stage; % [-], Indicates in which gear stage does the fault occur
+    end
+        
     methods
-        function obj = Dynamic_Formulation(DT)
+        function obj = Dynamic_Formulation(DT, varargin)
             if(~isa(DT, 'Drivetrain') || ~strcmp(superclasses(DT), 'Drivetrain'))
                 error('DT should be a Drivetrain object.');
             end
             
+            default = {'fault_type',  '', ...
+                       'fault_val' , 0.0};
+            
+            default = scaling_factor.process_varargin(default, varargin);
+            
+%             obj.has_fault   = default.has_fault;
+            obj.fault_type  = default.fault_type;
+%             obj.fault_stage = default.fault_stage;
+            obj.fault_val   = default.fault_val;
+
             obj.drive_train = DT;
             
             obj.n_DOF = obj.calculate_DOF();
             
             [obj.M, ...
              obj.G]       = obj.inertia_matrix();
-            obj.D         = obj.damping_matrix();
+            obj.D         = obj.damping_matrix()*0;
             [obj.K_m, ...
              obj.K_b, ...
              obj.K_Omega] = obj.stiffness_matrix();
@@ -492,6 +508,17 @@ classdef Dynamic_Formulation
             
             AA = [ zeros(n),  eye(n);
                   -obj.M\KK, -obj.M\obj.D];
+        end
+    end
+    
+    %% Get methods:
+    methods
+        function val = get.has_fault(obj)
+            val = any(obj.fault_val);
+        end
+        
+        function val = get.fault_stage(obj)
+            val = find(obj.fault_val);
         end
     end
     

@@ -41,13 +41,20 @@ classdef NREL_5MW < Drivetrain
                      'M_R' , 1.0, 'J_R' , 1.0, ...
                      'M_G' , 1.0, 'J_G' , 1.0, ...
                      'd_S' , 1.0, 'L_S' , 1.0, ...
+                     'fault_type'   ,  '', ...
+                     'fault_val'    , 0.0, ...
                      'dynamic_model', @Kahraman_94};
 %                      'dynamic_model', @Lin_Parker_99};
 %                      'dynamic_model', @Dynamic_Formulation};
             
             gamma = scaling_factor.process_varargin(gamma, varargin);
+            
+%             dynamic_model = gamma.dynamic_model; % No fault
             dynamic_model = gamma.dynamic_model;
-            gamma = rmfield(gamma, 'dynamic_model');
+            fault_type    = gamma.fault_type;
+            fault_val     = gamma.fault_val;
+            
+            gamma = rmfield(gamma, {'dynamic_model', 'fault_type', 'fault_val'});
             gamma = scaling_factor(gamma);
 
             N_st = 3;
@@ -86,7 +93,9 @@ classdef NREL_5MW < Drivetrain
                            'J_Gen'        , J_G, ...
                            'S_Hmin'       , 1.25, ...
                            'S_Fmin'       , 1.56, ...
-                           'dynamic_model', dynamic_model);
+                           'dynamic_model', dynamic_model, ...
+                           'fault_type'   , fault_type, ...
+                           'fault_val'    , fault_val);
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);
 
@@ -109,7 +118,7 @@ classdef NREL_5MW < Drivetrain
                 case 3
                     n_idx = [obj.n_out(3), nan];
                 otherwise
-                    error();
+                    error('NREL_5MW:safety_factor', 'Index out of range.');
             end
             
             calc = MATISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
