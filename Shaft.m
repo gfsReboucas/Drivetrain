@@ -107,6 +107,24 @@ classdef Shaft
             axis equal;
             box on;
         end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+            
+            data = rmfield(data, 'bearing');
+            for idx = 1:length(obj.bearing)
+                data.bearing(idx) = obj.bearing(idx).export2struct();
+            end
+            
+            data = rmfield(data, 'material');
+            for idx = 1:length(obj.material)
+                data.material(idx) = obj.material(idx).export2struct();
+            end
+            
+        end
+        
     end
     
     %% Calculations:

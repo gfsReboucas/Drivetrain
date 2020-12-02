@@ -30,7 +30,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
     properties(Access = private)
         idx_fixed; % [-],        Index of the fixed element (if planetary)
         idx_input; % [-],        Index of the input element
-        gear_set;
+%         gear_set;
     end
     
     properties(Dependent, Access = public)
@@ -45,6 +45,8 @@ classdef (Abstract) ISO_6336 < Gear_Set
         sigma_HP_stat; % [N/mm^2], Permissive contact stress (static)
         K_gamma;       % [-],      Mesh load factor
         F_tH;          % [N],      Determinant tangential load in a transverse plane for K_Halpha and K_Falpha
+        J_eq;          % [kg-m^2], Equivalent mass moment of inertia
+        k_T;           % [-],      Scaling factor for the input torque 
     end
     
     properties(Dependent, Access = private)
@@ -89,8 +91,6 @@ classdef (Abstract) ISO_6336 < Gear_Set
                          'Q'            , gset.Q, ...
                          'R_a'          , gset.R_a, ...
                          'material'     , gset.material);
-            
-            obj.gear_set = gset;
             
             obj.P_rated = default.P_rated;
             obj.S_Hmin  = default.S_Hmin;
@@ -710,6 +710,10 @@ classdef (Abstract) ISO_6336 < Gear_Set
             
         end
         
+        function save_params(obj, name)
+            save(obj.export2struct(), name);
+        end
+        
     end
     
     methods(Static)
@@ -1048,5 +1052,41 @@ classdef (Abstract) ISO_6336 < Gear_Set
             end
         end
         
+        function val = get.J_eq(obj)
+            % based on: 
+            % Borders, J. (2009), Planetary Geartrain Analysis.
+            % Accesed on 23.11.2020.
+            % http://www.bordersengineering.com/tech_ref/planetary/planetary_analysis.pdf
+            %
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                val = obj.J_x(2) + obj.J_x(1)*obj.u^2;
+            elseif(strcmp(obj.configuration, 'planetary'))
+                r_s = (obj.d(1)*1.0e-3)/2.0;
+                r_p = (obj.d(2)*1.0e-3)/2.0;
+                r_r = (obj.d(3)*1.0e-3)/2.0;
+                aw  =  obj.a_w*1.0e-3;
+                
+                val = obj.J_x(1) + ...
+                      obj.carrier.J_x*(r_s^2)/(2.0*aw*(r_s + r_r)) + ...
+                     (obj.J_x(2)/(r_p^2) + obj.mass(2)*aw/(r_s + r_r))*(obj.N_p*r_s^2)/2.0;
+            else
+                error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
+            end
+        end
+        
+        function val = get.k_T(obj)
+            % based on: 
+            % Borders, J. (2009), Planetary Geartrain Analysis.
+            % Accesed on 23.11.2020.
+            % http://www.bordersengineering.com/tech_ref/planetary/planetary_analysis.pdf
+            %
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                val = -obj.z(2)/obj.z(1);
+            elseif(strcmp(obj.configuration, 'planetary'))
+                val = obj.d(1)/(4.0*obj.a_w);
+            end
+        end
     end
 end

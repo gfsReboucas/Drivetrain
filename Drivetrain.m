@@ -42,6 +42,7 @@ classdef (Abstract) Drivetrain
         J_Gen         (1, :)          {mustBeNumeric, mustBeFinite, mustBeNonnegative} = 534.116;              % [kg-m^2], Generator mass moment of inertia [4]
         N_stage       (1, 1)          {mustBeInteger, mustBeFinite, mustBeNonnegative} = 3;                    % [-]     , Number of stages
         gamma                scaling_factor;                                                                   % [class] , Scaling factors
+        
         %% Structural parameters:
         gear_calc; % [-], Gear calculation
         S_Hmin;    % [-], Minimum required safety factor for surface durability (pitting)
@@ -505,6 +506,20 @@ classdef (Abstract) Drivetrain
             
         end
         
+        function save_matrices(obj, file_name)
+            matrix = struct;
+            matrix.M = obj.dynamic_model.M;
+            matrix.D = obj.dynamic_model.D;
+            matrix.K = obj.dynamic_model.K_b + ...
+                       obj.dynamic_model.K_m;
+            matrix.b = obj.dynamic_model.b;
+            
+            matrix.fault_type = obj.dynamic_model.fault_type;
+            matrix.fault_val  = obj.dynamic_model.fault_val;
+
+            save(file_name, 'matrix');
+        end
+        
         %% Pitting:
         [SH, SF, SShaft, calc] = safety_factor_stage(obj, idx)
         
@@ -544,6 +559,35 @@ classdef (Abstract) Drivetrain
             SF_all(SF_all == 0) = [];
             SF_all(isnan(SF_all)) = [];
             
+        end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+            
+            data = rmfield(data, 'main_shaft');
+            data.main_shaft = obj.main_shaft.export2struct();
+            
+            data = rmfield(data, 'stage');
+            for idx = 1:obj.N_stage
+                data.stage{idx} = obj.stage(idx).export2struct();
+            end
+            
+            data = rmfield(data, 'gear_calc');
+            for idx = 1:length(obj.gear_calc)
+                data.gear_calc{idx} = obj.gear_calc{idx}.export2struct();
+            end
+            
+            data = rmfield(data, 'dynamic_model');
+            data.dynamic_model = obj.dynamic_model.export2struct();
+            data.dynamic_model = rmfield(data.dynamic_model, 'drive_train');
+            
+        end
+        
+        function save_as_struct(obj, file_name)
+            data = obj.export2struct();
+            save(file_name, 'data');
         end
         
         %% Scaling:

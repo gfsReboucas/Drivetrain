@@ -33,6 +33,7 @@ classdef Dynamic_Formulation
         fault_type;  % [-], Indicates whether the fault affects the M or K matrix of the model
         fault_val;   % [%], how much does the parameter change
     end
+    
     properties(Dependent)
         has_fault;   % [-], Indicates the presence (or lack) of faults
         fault_stage; % [-], Indicates in which gear stage does the fault occur
@@ -60,7 +61,7 @@ classdef Dynamic_Formulation
             
             [obj.M, ...
              obj.G]       = obj.inertia_matrix();
-            obj.D         = obj.damping_matrix()*0;
+            obj.D         = obj.damping_matrix();
             [obj.K_m, ...
              obj.K_b, ...
              obj.K_Omega] = obj.stiffness_matrix();
@@ -69,6 +70,12 @@ classdef Dynamic_Formulation
             obj.A         = obj.state_matrix();
             
             obj.DOF_description = obj.explain_DOF();
+        end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
         end
         
         function tab = disp(obj)
@@ -418,7 +425,6 @@ classdef Dynamic_Formulation
                 T_G(:, idx + 1) = K_p*error(:, idx + 1) + K_I*T_sample*sum_error;
                 T_AG = [T_A(:, idx + 1);
                         T_G(:, idx + 1)];
-                            
             end
             
             sol = struct;
@@ -436,7 +442,9 @@ classdef Dynamic_Formulation
             sol.b      = obj.b;
             sol.K_p    = K_p;
             sol.K_I    = K_I;
-
+            sol.T_gen  = T_G;
+            sol.T_aero = T_A;
+            
         end
         
         function [Hx, Hv, Ha] = FRF(obj, freq)

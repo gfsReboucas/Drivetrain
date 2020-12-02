@@ -383,8 +383,8 @@ classdef Kahraman_94 < Dynamic_Formulation
                 
                 for jdx = 2:(n - 2)
                     
-                    k_rp_idx = k_rp*(1.0 - vec(jdx - 1));
-                    k_sp_idx = k_sp*(1.0 - vec(jdx - 1));
+                    k_rp_idx = k_rp*vec(jdx - 1);
+                    k_sp_idx = k_sp*vec(jdx - 1);
                     
                     KK(    1,   jdx) = r_c*r_p*(k_rp_idx - k_sp_idx);
                     KK(jdx  ,     1) = KK(1, jdx);

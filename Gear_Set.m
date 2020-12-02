@@ -64,7 +64,6 @@ classdef Gear_Set < Gear
         d_Na;          % [mm],        Active tip diameter
         f_pb;          % [um],        Transverse base pitch deviation
         y_alpha;       % [um],        Running-in allowance
-        J_eq;          % [kg-m^2],    Equivalent mass moment of inertia
     end
     
     methods
@@ -322,6 +321,30 @@ classdef Gear_Set < Gear
             ylabel('x');
             zlabel('z');
             
+        end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+            
+            data = rmfield(data, 'output_shaft');
+            data.output_shaft = obj.output_shaft.export2struct();
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                data = rmfield(data, 'carrier');
+                data.carrier = obj.carrier.export2struct();
+            end
+            
+            data = rmfield(data, 'bearing');
+            for idx = 1:length(obj.bearing)
+                data.bearing(idx) = obj.bearing(idx).export2struct();
+            end
+            
+            data = rmfield(data, 'material');
+            for idx = 1:length(obj.material)
+                data.material(idx) = obj.material(idx).export2struct();
+            end
         end
         
         function rectangle(obj, varargin)
@@ -758,29 +781,6 @@ classdef Gear_Set < Gear
     
     %% Get methods:
     methods
-        function val = get.J_eq(obj)
-            % based on: 
-            % Borders, J. (2009), Planetary Geartrain Analysis.
-            % Accesed on 23.11.2020.
-            % http://www.bordersengineering.com/tech_ref/planetary/planetary_analysis.pdf
-            %
-            
-            if(strcmp(obj.configuration, 'parallel'))
-                val = obj.z(2)/obj.z(1);
-            elseif(strcmp(obj.configuration, 'planetary'))
-                r_s = obj.d(1)*1.0e-3/2.0;
-                r_p = obj.d(2)*1.0e-3/2.0;
-                r_r = obj.d(3)*1.0e-3/2.0;
-                aw  = obj.a_w*1.0e-3;
-                
-                k_c = (r_s^2)/(2.0*aw*(r_s + r_r));
-                k_p = (r_s + r_p)/(r_s + r_r);
-                val = obj.J_x(1) + obj.carrier.J_x*k_c + (obj.J_x(2)/(r_p^2) + obj.mass(2)*k_p)*(obj.N_p*r_s^2)/2.0;
-            else
-                error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
-            end
-        end
-        
         function val = get.k_mesh(obj)
             val = obj.c_gamma.*obj.b.*(1.0e6);
         end

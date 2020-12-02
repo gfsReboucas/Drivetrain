@@ -84,6 +84,13 @@ classdef Material
                 clear tab;
             end
         end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+        end
+        
     end
     
     %% Get methods:

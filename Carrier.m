@@ -35,6 +35,12 @@ classdef Carrier
             obj.b_g = bg;
         end
         
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+        end
+        
         function h = plot(obj, varargin)
             if(nargin == 1)
                 C = zeros(2, 1);
