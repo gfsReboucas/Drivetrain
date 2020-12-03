@@ -24,7 +24,7 @@ time                                                                = 0.00000000
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
 subvarset.file (          1                                       ) = './NREL_5MW.scaled.subvar' ! subvarset filename
-subvarset.role (          1                                       ) = 1                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.role (          1                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -211,12 +211,6 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 ! SubVars
 !**********************************************************************
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
-   subvar.str (                     $_switch_AIC                  ) = '1'                     ! $SVG_loading.$_switch_AIC, Definition
-   subvar.discr.desc (    1 ,       $_switch_AIC                  ) = 'enabled'               ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_switch_AIC                  ) = 'disabled'              ! Description of discrete values
-   subvar.discr.str (     1 ,       $_switch_AIC                  ) = '0'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_switch_AIC                  ) = '1'                     ! Discrete values
-
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
@@ -560,13 +554,35 @@ body.brf.st.vel (         4 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) 
 body.brf.st.vel (         5 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 9.46884128115357826E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 5.47533458737777718E-14 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.10062271333498143E-13 ! Position
-joint.st.vel (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 4.82254992311603750E-18 ! Velocity
-joint.st.vel (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -5.35334883568845076E-19 ! Velocity
-joint.st.vel (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 1.39883893195942136E-18 ! Velocity
+joint.st.pos (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 9.46884128115352136E-02 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 3.45013810649398098E-18 ! Velocity
 
+
+force.preld.calc (        1 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 1       ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 1       ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 1       ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 1       ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 1       ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 1       ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 1       ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 1       ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 1       ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 1       ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 1       ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 1       ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -581,16 +597,8 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 4.90579032993007022E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 7.88671109788039563E-14 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -8.21549571538291867E-16 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.42690286971427397E-16 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -3.41504037555818250E-14 ! Position
-joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.55035024135668366E-17 ! Velocity
-joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.15396437916963244E-17 ! Velocity
-joint.st.vel (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -1.95337967278426833E-18 ! Velocity
-joint.st.vel (            5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.38032542272660601E-18 ! Velocity
-joint.st.vel (            6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.03460964340141505E-17 ! Velocity
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 4.90579032993010561E-02 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.50917101167941281E-17 ! Velocity
 
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -659,6 +667,32 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -676,13 +710,13 @@ joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02
 joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 7.11512951023218904E-02 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 7.11512951026981449E-02 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.19292113112947688E-17 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.50571169072292357E-17 ! Velocity
 joint.st.vel (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 
 
@@ -698,6 +732,32 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -739,6 +799,32 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         3 ,       $S_reference.$S_stage_01.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -765,6 +851,32 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         3 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -779,13 +891,7 @@ body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
 joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.65346981767881263E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.85861650316000482E-17 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -9.97665760764026329E-17 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.83003033812821601E-17 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 1.02935474337885075E-17 ! Velocity
-joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 6.59947155042333527E-18 ! Velocity
-joint.st.vel (            5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 1.72212886349160853E-18 ! Velocity
-joint.st.vel (            6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.54786619576444940E-18 ! Velocity
 
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_02.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -854,6 +960,32 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -894,6 +1026,32 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -911,13 +1069,13 @@ joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03
 joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 4.68445181506219610E-02 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 4.68445181508182415E-02 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
-joint.st.vel (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -2.47746384707680700E-17 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -5.42997200218357287E-17 ! Velocity
 joint.st.vel (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 
 
@@ -933,6 +1091,32 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -959,6 +1143,32 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -1028,6 +1238,84 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_pinion_bearing.$F_C) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_A) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+force.preld.calc (        1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1 ! Select Preload cal.
+force.preld.calc (        6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 1 ! Select Preload cal.
+force.par (               1 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $S_reference.$S_stage_03.$S_TPL.$FEG_wheel_bearing.$F_C) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
 
 body.brf.st.pos (         1 ,       $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga

@@ -4,7 +4,7 @@
 ! SubVars
 !**********************************************************************
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
-   subvar($_switch_AIC, str= '1', discr.desc (   1) = 'enabled', discr.desc (   2) = 'disabled', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_loading.$_switch_AIC
+   subvar($_switch_AIC, str= '0', discr.desc (   1) = 'enabled', discr.desc (   2) = 'disabled', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_loading.$_switch_AIC
    subvar($_gamma_Power, str= '1.00000e+00')                                                  ! $SVG_loading.$_gamma_Power
    subvar($_gamma_Speed, str= '1.0')                                                          ! $SVG_loading.$_gamma_Speed
    subvar($_gamma_Torque, str= '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed')       ! $SVG_loading.$_gamma_Torque

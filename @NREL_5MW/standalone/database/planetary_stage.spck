@@ -553,7 +553,7 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_sun_planet_01              ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_sun_planet_01              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_01              ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            3 ,       $F_sun_planet_01              ) = 2.00000000000000000E+00 ! [-] Output
    force.par (            4 ,       $F_sun_planet_01              ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_sun_planet_01              ) = 1.00000000000000000E+00 ! [-] Friction model
@@ -599,7 +599,7 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_sun_planet_02              ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_sun_planet_02              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_sun_planet_02              ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_02              ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            3 ,       $F_sun_planet_02              ) = 2.00000000000000000E+00 ! [-] Output
    force.par (            4 ,       $F_sun_planet_02              ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_sun_planet_02              ) = 1.00000000000000000E+00 ! [-] Friction model
@@ -645,7 +645,7 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_sun_planet_03              ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_sun_planet_03              ) = $S_sun.$S_TPL.$P_sun    ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_sun_planet_03              ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_sun_planet_03              ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            3 ,       $F_sun_planet_03              ) = 2.00000000000000000E+00 ! [-] Output
    force.par (            4 ,       $F_sun_planet_03              ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_sun_planet_03              ) = 1.00000000000000000E+00 ! [-] Friction model
@@ -691,7 +691,7 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_ring_planet_01             ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_ring_planet_01             ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_ring_planet_01             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_ring_planet_01             ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            3 ,       $F_ring_planet_01             ) = 2.00000000000000000E+00 ! [-] Output
    force.par (            4 ,       $F_ring_planet_01             ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Friction model
@@ -737,7 +737,7 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_ring_planet_02             ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_ring_planet_02             ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_ring_planet_02             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_ring_planet_02             ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            3 ,       $F_ring_planet_02             ) = 2.00000000000000000E+00 ! [-] Output
    force.par (            4 ,       $F_ring_planet_02             ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Friction model
@@ -771,7 +771,7 @@ forcegroup.begin (                  $FEG_mesh                     )             
    force.disabled (                 $F_ring_planet_03             ) = $_use_advanced          ! Disabled
    force.par (            1 ,       $F_ring_planet_03             ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry (Gear 1)
    force.par (            2 ,       $F_ring_planet_03             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry (Gear 2)
-   force.par (            3 ,       $F_ring_planet_03             ) = 3.00000000000000000E+00 ! [-] Output
+   force.par (            3 ,       $F_ring_planet_03             ) = 2.00000000000000000E+00 ! [-] Output
    force.par (            4 ,       $F_ring_planet_03             ) = 7.00000000000000000E+00 ! [-] Advanced Output
    force.par (            6 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Damping model
    force.par (            7 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Friction model
