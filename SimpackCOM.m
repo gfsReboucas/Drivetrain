@@ -61,6 +61,17 @@ classdef SimpackCOM
         
         function result = time_integration(obj)
             
+            % disabling translation and tilting for shafts:
+            svar = obj.find_element('$_switch_AIC');
+            svar.str.src = '1';
+
+            obj.set_states_to_zero();
+            obj.apply_ICs();
+            
+            % enabling it again:
+            svar.str.src = '0';
+            obj.COM.Spck.Slv.equi(obj.current_model);
+            
             % time integration with measurements
             if(contains(obj.version, '2018'))
                 result = obj.COM.Spck.Slv.integ(obj.current_model);
@@ -79,6 +90,18 @@ classdef SimpackCOM
         
         function set_states_to_zero(obj)
             obj.model.setStatesToZero();
+        end
+        
+        function apply_ICs(obj)
+            obj.COM.Spck.Slv.applyInitialConditions(obj.current_model);
+        end
+        
+        function pre_load(obj)
+            obj.COM.Spck.Slv.preld(obj.current_model);
+        end
+        
+        function elem = find_element(obj, name)
+            elem = obj.current_model.findElement(name);
         end
         
     end
