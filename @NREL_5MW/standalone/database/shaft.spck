@@ -230,6 +230,12 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 !**********************************************************************
 subvar.str (                        $_x_output                    ) = '$SVG_shaft.$_length'   ! Definition
 
+subvar.str (                        $_switch_AIC                  ) = '0'                     ! Definition
+subvar.discr.desc (       1 ,       $_switch_AIC                  ) = 'enabled'               ! Description of discrete values
+subvar.discr.desc (       2 ,       $_switch_AIC                  ) = 'disabled'              ! Description of discrete values
+subvar.discr.str (        1 ,       $_switch_AIC                  ) = '0'                     ! Discrete values
+subvar.discr.str (        2 ,       $_switch_AIC                  ) = '1'                     ! Discrete values
+
 subvargroup.begin (                 $SVG_shaft                    )                           ! $SVG_shaft
    subvar.str (                     $_length                      ) = '500.0 mm'              ! $SVG_shaft.$_length, Definition
 
@@ -383,10 +389,10 @@ joint.from (                        $J_shaft                      ) = $M_Isys_in
 joint.to (                          $J_shaft                      ) = $M_shaft_input          ! To Marker
 joint.type (                        $J_shaft                      ) = 15                      ! Type
 joint.par (               2 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Rotation axis
-joint.par (               3 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Tilting
-joint.par (               4 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Translation in x
-joint.par (               5 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Translation in y
-joint.par (               6 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Translation in z
+joint.par (               3 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Tilting
+joint.par (               4 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in x
+joint.par (               5 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in y
+joint.par (               6 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in z
 
 prim.type (                         $P_shaft                      ) = 2                       ! Type
 prim.ref (                          $P_shaft                      ) = $M_shaft_BRF            ! Reference Marker
@@ -400,6 +406,7 @@ prim.color.b (            1 ,       $P_shaft                      ) = 1.10000000
 prim.color.b (            2 ,       $P_shaft                      ) = 1.97000000000000000E+02 ! Colors (blue component)
 prim.color.t (            1 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
 prim.color.t (            2 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.mp.dens.solid (                $P_shaft                      ) = $SVG_material.$_density ! Density
 prim.par (                2 ,       $P_shaft                      ) = $SVG_shaft.$_length     ! [m] Height
 prim.par (                3 ,       $P_shaft                      ) = $SVG_shaft.$_diameter   ! [m] Outer diameter
 prim.par (                4 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [m] Inner diameter
@@ -525,6 +532,8 @@ sender.ref (                        $COM_shaft_sun                ) = $M_shaft_s
 !**********************************************************************
 ! Receivers
 !**********************************************************************
+receiver.ref (                      $COM_switch_AIC               ) = $_switch_AIC            ! Destination object
+
 receivergroup.begin (               $RG_marker                    )                           ! $RG_marker
    receiver.ref (                   $COM_input                    ) = $M_Isys_input           ! Destination object
    receiver.priolist (    1 ,       $COM_input                    ) = '$COM_shaft_input'      ! Sender priority list
