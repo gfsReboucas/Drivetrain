@@ -214,7 +214,7 @@ slv.meas.yout (                     $SLV_SolverSettings           ) = 1         
 slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
-slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
 slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
 slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
 slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
@@ -521,6 +521,47 @@ force.par (              43 ,       $F_bearing_B                  ) = 0.00000000
 force.par (              44 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in be
 force.par (              45 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in ga
 force.par (              46 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [-] Output force in To Marker
+
+!**********************************************************************
+! Y Output
+!**********************************************************************
+youtgroup.begin (                   $YOG_bearing_A                )                           ! $YOG_bearing_A
+   yout.type (                      $Y_x                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_x                          ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_y                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_y                          ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_y                          ) = 2.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_z                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_z                          ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_z                          ) = 3.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_speed                      ) = 12                      ! Type
+   yout.par (             1 ,       $Y_speed                      ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_speed                      ) = 1.70000000000000000E+01 ! [-] Output Value
+
+youtgroup.end (                     $YOG_bearing_A                )                           ! $YOG_bearing_A
+
+youtgroup.begin (                   $YOG_bearing_B                )                           ! $YOG_bearing_B
+   yout.type (                      $Y_x                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_x                          ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_y                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_y                          ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_y                          ) = 2.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_z                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_z                          ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_z                          ) = 3.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_speed                      ) = 12                      ! Type
+   yout.par (             1 ,       $Y_speed                      ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_speed                      ) = 1.70000000000000000E+01 ! [-] Output Value
+
+youtgroup.end (                     $YOG_bearing_B                )                           ! $YOG_bearing_B
 
 !**********************************************************************
 ! Senders

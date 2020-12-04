@@ -58,7 +58,7 @@ prop2d.proj.dir                                                     = 2         
 !**********************************************************************
 ! Substructures
 !**********************************************************************
-substr.file (                       $S_TPL                        ) = 'housing.spck'          ! Filename
+substr.file (                       $S_TPL                        ) = 'planetary_stage_flex.spck' ! Filename
 substr.id (                         $S_TPL                        ) = '1'                     ! Substructure Id
 
 !**********************************************************************
@@ -76,7 +76,7 @@ view.angle (                        $V_WorkingView                ) = 7.85398185
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 5.90335845947265625E+00 ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 5.57951641082763672E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -229,5 +229,37 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 ! Overwritten substructure values
 view.fclip.value (                  $S_TPL.$V_WorkingView         ) = 9.99999977648258209E-03 ! Front clipping plane value
 view.bclip.value (                  $S_TPL.$V_WorkingView         ) = 5.31139945983886719E+00 ! Back clipping plane value
+
+subvar.str (                        $S_TPL.$_num_planets          ) = '3'                     ! Definition
+
+
+force.plot.par (          1 ,       $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   2 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   3 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   4 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   5 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   6 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   7 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   8 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   2 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_02) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+force.plot.par (          1 ,       $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   2 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   3 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   4 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   5 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   6 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   7 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   1 ,   8 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+force.plot.par (          1 ,   1 ,   2 ,   1 , $S_TPL.$FEG_mesh.$F_ring_planet_03) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+view.fclip.value (                  $S_TPL.$S_carrier.$S_TPL.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $S_TPL.$S_carrier.$S_TPL.$V_WorkingView) = 4.78616714477539063E+00 ! Back clipping plane value
 
                                        

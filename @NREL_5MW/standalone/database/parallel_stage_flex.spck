@@ -58,18 +58,18 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 1.69511640071868896E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -1.21339952945709229E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 7.23535001277923584E-01 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 5.49259781837463379E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 1.42501920461654663E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.40029186010360718E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 7.87650227546691895E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 2.87603116035461426E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.39693212509155273E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.21007335186004639E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 4.91629481315612793E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 2.47829467058181763E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 3.23840260505676270E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.69420921802520752E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 3.62775492668151855E+00 ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 4.56077909469604492E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -562,12 +562,99 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 !**********************************************************************
 ! Bodies
 !**********************************************************************
+body.sb.node.id (         1 ,       $B_shaft                      ) = 1                       ! Node ID
+body.sb.node.pos (        1 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
+body.sb.node.pos (        2 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
+body.sb.node.pos (        3 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
+body.sb.node.id (         2 ,       $B_shaft                      ) = 2                       ! Node ID
+body.sb.node.pos (        1 ,   2 , $B_shaft                      ) = $SVG_shaft.$_length     ! Node Position
+body.sb.node.pos (        2 ,   2 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
+body.sb.node.pos (        3 ,   2 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
+body.sb.ele.from (        1 ,       $B_shaft                      ) = 1                       ! From Node
+body.sb.ele.to (          1 ,       $B_shaft                      ) = 2                       ! To Node
+body.sb.ele.type (        1 ,       $B_shaft                      ) = 4                       ! Type
+body.sb.ele.xsec (        1 ,   1 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
+body.sb.ele.xsec (        2 ,   1 , $B_shaft                      ) = null                    ! Cross Section
+body.sb.ele.ori.vec (     1 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
+body.sb.ele.ori.vec (     2 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
+body.sb.ele.ori.vec (     3 ,   1 , $B_shaft                      ) = 1.00000000000000000E+00 ! Orientation Vector
+body.sb.ele.nodes.num (   1 ,       $B_shaft                      ) = 2                       ! Number of intermediate nodes along element axis
+body.sb.ele.dmp.par (     1 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Damping
+body.sb.ele.dmp.par (     2 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Damping
+body.sb.ele.active (      1 ,       $B_shaft                      ) = 1                       ! Active
+body.sb.ele.scal.len (    1 ,       $B_shaft                      ) = 1.00000000000000000E+00 ! Length Scaling
 body.m (                            $B_shaft                      ) = 1.00000000000000000E+00 ! Mass of the Body
 body.mp (                           $B_shaft                      ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
 body.I.tens (             1 ,   1 , $B_shaft                      ) = 1.00000000000000000E+00 ! Moments of inertia
 body.I.tens (             2 ,   2 , $B_shaft                      ) = 1.00000000000000000E+00 ! Moments of inertia
 body.I.tens (             3 ,   3 , $B_shaft                      ) = 1.00000000000000000E+00 ! Moments of inertia
 body.I.kind (                       $B_shaft                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.type (                         $B_shaft                      ) = 2                       ! Body type: 0=rigid; 1=linear flex; 2=linear SIMBEAM; 4=nonlinear SIMBEAM; 6=nonlinear flex; 7=Abq Co-Sim; 8=flextrack
+body.flx.st.pos (         1 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         2 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         3 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         4 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         5 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         6 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         7 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         8 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (         9 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.pos (        10 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Flexible position
+body.flx.st.vel (         1 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         2 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         3 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         4 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         5 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         6 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         7 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         8 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (         9 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.vel (        10 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Velocity state
+body.flx.st.dep (         1 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         2 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         3 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         4 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         5 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         6 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         7 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         8 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (         9 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.dep (        10 ,       $B_shaft                      ) = 2                       ! State dependency
+body.flx.st.scal.stiff (   1 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   2 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   3 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   4 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   5 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   6 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   7 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   8 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (   9 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.scal.stiff (  10 ,      $B_shaft                      ) = 1.00000000000000000E+00 ! Frequency scaling factor
+body.flx.st.prestress (   1 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   2 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   3 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   4 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   5 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   6 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   7 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   8 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (   9 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.st.prestress (  10 ,       $B_shaft                      ) = 0.00000000000000000E+00 ! Pre-Stress Forces
+body.flx.massprops (                $B_shaft                      ) = 0                       ! Mass properties on deformation: 0=constant; 1=dependent (default); 2=constant manual
+body.flx.merge0dof (                $B_shaft                      ) = 1                       ! 0=do not merge 0-DOF bodies; 1=merge 0-DOF bodies
+body.flx.eigenmodes.kind (          $B_shaft                      ) = 1                       ! Eigenmode frequency range: 0=none; 1=f-min,f-max; 2=f-min,n-modes; 3=f-min,all modes
+body.flx.eigenmodes.freqrange.min ( $B_shaft                      ) = 1.00000000000000006E-01 ! Eigenmode minimum frequency
+body.flx.eigenmodes.freqrange.max ( $B_shaft                      ) = 5.00000000000000000E+02 ! Eigenmode maximum frequency
+body.flx.st.active (      1 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      2 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      3 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      4 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      5 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      6 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      7 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      8 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (      9 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
+body.flx.st.active (     10 ,       $B_shaft                      ) = 1                       ! User defined selection of the mode vectors
 
 marker.type (                       $M_shaft_BRF                  ) = 1                       ! Type
 marker.parent (                     $M_shaft_BRF                  ) = $B_shaft                ! Body
@@ -601,29 +688,18 @@ joint.par (               4 ,       $J_shaft                      ) = $_switch_A
 joint.par (               5 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in y
 joint.par (               6 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in z
 
-prim.type (                         $P_shaft                      ) = 2                       ! Type
-prim.ref (                          $P_shaft                      ) = $M_shaft_BRF            ! Reference Marker
-prim.pos (                1 ,       $P_shaft                      ) = $SVG_shaft.$_x0         ! Position
-prim.ang (                3 ,       $P_shaft                      ) = { 90.0 deg }            ! Angles
-prim.color.r (            1 ,       $P_shaft                      ) = 2.21000000000000000E+02 ! Colors (red component)
-prim.color.r (            2 ,       $P_shaft                      ) = 2.48000000000000000E+02 ! Colors (red component)
-prim.color.g (            1 ,       $P_shaft                      ) = 2.07000000000000000E+02 ! Colors (green component)
-prim.color.g (            2 ,       $P_shaft                      ) = 1.42000000000000000E+02 ! Colors (green component)
-prim.color.b (            1 ,       $P_shaft                      ) = 1.10000000000000000E+02 ! Colors (blue component)
-prim.color.b (            2 ,       $P_shaft                      ) = 1.97000000000000000E+02 ! Colors (blue component)
-prim.color.t (            1 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.color.t (            2 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
-prim.mp.dens.solid (                $P_shaft                      ) = $SVG_pinion.$SVG_material.$_density ! Density
-prim.par (                2 ,       $P_shaft                      ) = $SVG_shaft.$_length     ! [m] Height
-prim.par (                3 ,       $P_shaft                      ) = $SVG_shaft.$_diameter   ! [m] Outer diameter
-prim.par (                4 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [m] Inner diameter
-prim.par (                5 ,       $P_shaft                      ) = $SVG_pinion.$_num_teeth ! [-] Number of planes
-prim.par (                6 ,       $P_shaft                      ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
-prim.par (                7 ,       $P_shaft                      ) = 1.00000000000000000E+00 ! [-] Show bottom cap
-prim.par (                8 ,       $P_shaft                      ) = 1.00000000000000000E+00 ! [-] Show top cap
-prim.par (                9 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [rad] Start angle
-prim.par (               10 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [rad] Delta angle
-prim.par (               11 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [-] Close geometry with
+prim.type (                         $P_shaft_Flex                 ) = 28                      ! Type
+prim.ref (                          $P_shaft_Flex                 ) = $M_shaft_BRF            ! Reference Marker
+prim.color.r (            1 ,       $P_shaft_Flex                 ) = 2.21000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_shaft_Flex                 ) = 2.07000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_shaft_Flex                 ) = 1.10000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_shaft_Flex                 ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.mp.incl (                      $P_shaft_Flex                 ) = 0                       ! Include Primitive in computation
+prim.par (                3 ,       $P_shaft_Flex                 ) = 1.00000000000000000E+00 ! [-] Deformation
+prim.par (                4 ,       $P_shaft_Flex                 ) = 1.00000000000000000E+00 ! [-] Deformation scaling factor
+prim.par (               11 ,       $P_shaft_Flex                 ) = 0.00000000000000000E+00 ! [-] Interpolation type
+prim.par (               12 ,       $P_shaft_Flex                 ) = 0.00000000000000000E+00 ! [-] Num. master nodes for interpol
+prim.par (               21 ,       $P_shaft_Flex                 ) = 0.00000000000000000E+00 ! [-] Graphics mode
 
 
 bodygroup.begin (                   $BG_pinion                    )                           ! $BG_pinion
@@ -2214,4 +2290,15 @@ material.par (            4 ,       $Mat_wheel                    ) = $SVG_wheel
 material.par (            5 ,       $Mat_wheel                    ) = $SVG_wheel.$SVG_material.$_poissons_ratio ! [-] Poisson's ratio
 material.par (            6 ,       $Mat_wheel                    ) = 8.07692307692307739E+10 ! [Pa] Shear modulus
 
-                                                                                                                                                                    
+!**********************************************************************
+! Cross Sections
+!**********************************************************************
+xsection.type (                     $XSc_shaft                    ) = 1                       ! Type
+xsection.par (            1 ,       $XSc_shaft                    ) = $Mat_pinion             ! [-] Material
+xsection.par (            3 ,       $XSc_shaft                    ) = $SVG_shaft.$_diameter   ! [m] Diameter
+xsection.par (            4 ,       $XSc_shaft                    ) = 3.60000000000000000E+01 ! [-] Number of cross section nodes
+xsection.plot.par (       1 ,       $XSc_shaft                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   1 ,   1 , $XSc_shaft              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   2 ,   1 , $XSc_shaft              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+                                                                                                                                                            
