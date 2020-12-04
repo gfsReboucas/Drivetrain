@@ -119,8 +119,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.56237232
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.61782875657081604E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.61782875061035156E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.57387517392635345E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.57387514114379883E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -1009,13 +1009,27 @@ subvargroup.begin (                 $SVG_loading                  )             
    subvar.discr.str (     1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
    subvar.discr.str (     2 ,       $_base_excitation_flag        ) = '0'                     ! Discrete values
 
-   subvar.str (                     $_generator_flag              ) = '1'                     ! $SVG_loading.$_generator_flag, Definition
-   subvar.discr.desc (    1 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
-   subvar.discr.str (     1 ,       $_generator_flag              ) = '1'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_generator_flag              ) = '2'                     ! Discrete values
-   subvar.discr.str (     3 ,       $_generator_flag              ) = '3'                     ! Discrete values
+   subvar.str (                     $_aero_flag                   ) = '0'                     ! $SVG_loading.$_aero_flag, Definition
+   subvar.discr.desc (    1 ,       $_aero_flag                   ) = 'OFF'                   ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_aero_flag                   ) = 'DLC'                   ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_aero_flag                   ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.str (     1 ,       $_aero_flag                   ) = '0'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_aero_flag                   ) = '1'                     ! Discrete values
+   subvar.discr.str (     3 ,       $_aero_flag                   ) = '2'                     ! Discrete values
+
+   subvar.str (                     $_use_aero_DLC                ) = 'IF($SVG_loading.$_aero_flag== 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_DLC, Definition
+
+   subvar.str (                     $_use_aero_nominal            ) = 'IF($SVG_loading.$_aero_flag== 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_nominal, Definition
+
+   subvar.str (                     $_generator_flag              ) = '2'                     ! $SVG_loading.$_generator_flag, Definition
+   subvar.discr.desc (    1 ,       $_generator_flag              ) = 'OFF'                   ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
+   subvar.discr.desc (    4 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
+   subvar.discr.str (     1 ,       $_generator_flag              ) = '0'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_generator_flag              ) = '1'                     ! Discrete values
+   subvar.discr.str (     3 ,       $_generator_flag              ) = '2'                     ! Discrete values
+   subvar.discr.str (     4 ,       $_generator_flag              ) = '3'                     ! Discrete values
 
    subvar.str (                     $_use_Prop                    ) = 'IF($SVG_loading.$_generator_flag == 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_Prop, Definition
 
@@ -1024,6 +1038,8 @@ subvargroup.begin (                 $SVG_loading                  )             
    subvar.str (                     $_use_time_series             ) = 'IF($SVG_loading.$_generator_flag == 3)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_time_series, Definition
 
    subvar.str (                     $_rated_power                 ) = '5.0e3 kW'              ! $SVG_loading.$_rated_power, Definition
+
+   subvar.str (                     $_T_aero_nominal              ) = '$SVG_loading.$_rated_power/$SVG_rotor.$_rated_speed' ! $SVG_loading.$_T_aero_nominal, Definition
 
    subvar.str (                     $_gamma_Torque                ) = '1.0'                   ! $SVG_loading.$_gamma_Torque, Definition
 
@@ -1070,104 +1086,121 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 !**********************************************************************
 ! Force Elements
 !**********************************************************************
-force.type (                        $F_aero                       ) = 93                      ! Type
-force.from (                        $F_aero                       ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
-force.to (                          $F_aero                       ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
-force.disabled (                    $F_aero                       ) = 0                       ! Disabled
-force.par (               1 ,       $F_aero                       ) = $UE_F_x                 ! [-] u-Vector Element force x
-force.par (               2 ,       $F_aero                       ) = $UE_F_y                 ! [-] u-Vector Element force y
-force.par (               3 ,       $F_aero                       ) = $UE_F_z                 ! [-] u-Vector Element force z
-force.par (               4 ,       $F_aero                       ) = $UE_M_x                 ! [-] u-Vector Element torque x
-force.par (               5 ,       $F_aero                       ) = $UE_M_y                 ! [-] u-Vector Element torque y
-force.par (               6 ,       $F_aero                       ) = $UE_M_z                 ! [-] u-Vector Element torque z
-force.attr.2d.pos.x (     1 ,       $F_aero                       ) = 60
-force.attr.2d.pos.y (     1 ,       $F_aero                       ) = 50
-force.attr.2d.ori (       1 ,       $F_aero                       ) = 0
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_aero      ) = 490, -66.25, -66.25, 43
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_aero      ) = 330, 330, 50, 50
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_aero        ) = 310, 244.25, 244.25, 77
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_aero        ) = 200, 200, 50, 50
+forcegroup.begin (                  $FEG_aero                     )                           ! $FEG_aero
+   force.type (                     $F_DLC                        ) = 93                      ! Type
+   force.from (                     $F_DLC                        ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
+   force.to (                       $F_DLC                        ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
+   force.disabled (                 $F_DLC                        ) = $SVG_loading.$_use_aero_DLC ! Disabled
+   force.par (            1 ,       $F_DLC                        ) = $UE_F_x                 ! [-] u-Vector Element force x
+   force.par (            2 ,       $F_DLC                        ) = $UE_F_y                 ! [-] u-Vector Element force y
+   force.par (            3 ,       $F_DLC                        ) = $UE_F_z                 ! [-] u-Vector Element force z
+   force.par (            4 ,       $F_DLC                        ) = $UE_M_x                 ! [-] u-Vector Element torque x
+   force.par (            5 ,       $F_DLC                        ) = $UE_M_y                 ! [-] u-Vector Element torque y
+   force.par (            6 ,       $F_DLC                        ) = $UE_M_z                 ! [-] u-Vector Element torque z
+   force.attr.2d.pos.x (   1 ,      $F_DLC                        ) = 60
+   force.attr.2d.pos.y (   1 ,      $F_DLC                        ) = 50
+   force.attr.2d.ori (    1 ,       $F_DLC                        ) = 0
+   force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_DLC    ) = 490, -66.25, -66.25, 43
+   force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_DLC    ) = 330, 330, 50, 50
+   force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_DLC      ) = 310, 244.25, 244.25, 77
+   force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_DLC      ) = 200, 200, 50, 50
 
-force.type (                        $F_gen_Prop                   ) = 110                     ! Type
-force.from (                        $F_gen_Prop                   ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
-force.to (                          $F_gen_Prop                   ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
-force.st.equi (           1 ,       $F_gen_Prop                   ) = 0                       ! Equilibrium
-force.disabled (                    $F_gen_Prop                   ) = $SVG_loading.$_use_Prop ! Disabled
-force.par (               1 ,       $F_gen_Prop                   ) = $C_Prop                 ! [-] Input Control Element 1
-force.par (               2 ,       $F_gen_Prop                   ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
-force.par (               3 ,       $F_gen_Prop                   ) = null                    ! [-] Input Control Element 2
-force.par (               4 ,       $F_gen_Prop                   ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
-force.par (               5 ,       $F_gen_Prop                   ) = 2.00000000000000000E+00 ! [-] Output type
-force.par (               7 ,       $F_gen_Prop                   ) = 1.00000000000000000E+00 ! [-] Axis of torque
-force.par (               8 ,       $F_gen_Prop                   ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
-force.attr.2d.pos.x (     1 ,       $F_gen_Prop                   ) = 530
-force.attr.2d.pos.y (     1 ,       $F_gen_Prop                   ) = -110
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 1320, 1320, 547
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 30, -110, -110
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 520, 520, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 670, 720, 720, 680, 600, 560, 540, 530, 520, 510, 503, 503, 503, 503, 503, 513
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 180, 170, 170, 165.77301025390625, 153.092041015625, 136.18408203125, 124.912109375, 109.8828125, 89.84375, 63.125, 27.5, -20, -20, -20, -10, -10, -10, -10, -10, -10, -10, -10, -10, -20, -30, -40, -110, -110
-force.attr.2d.substr (    2 ,       $F_gen_Prop                   ) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     2 ,       $F_gen_Prop                   ) = 850
-force.attr.2d.pos.y (     2 ,       $F_gen_Prop                   ) = 30
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = 670, 913.75, 913.75, 867
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_Prop  ) = -100, -100, 30, 30
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 150, 140, 140, 833
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_Prop    ) = 40, 40, 30, 30
+   force.type (                     $F_nominal                    ) = 93                      ! Type
+   force.from (                     $F_nominal                    ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
+   force.to (                       $F_nominal                    ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
+   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_aero_nominal ! Disabled
+   force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
+   force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
+   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
+   force.par (            4 ,       $F_nominal                    ) = $UE_T_aero_nominal      ! [-] u-Vector Element torque x
+   force.par (            5 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque y
+   force.par (            6 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque z
 
-force.type (                        $F_gen_PI                     ) = 110                     ! Type
-force.from (                        $F_gen_PI                     ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
-force.to (                          $F_gen_PI                     ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
-force.st.equi (           1 ,       $F_gen_PI                     ) = 0                       ! Equilibrium
-force.disabled (                    $F_gen_PI                     ) = $SVG_loading.$_use_PI   ! Disabled
-force.par (               1 ,       $F_gen_PI                     ) = $C_PI                   ! [-] Input Control Element 1
-force.par (               2 ,       $F_gen_PI                     ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
-force.par (               3 ,       $F_gen_PI                     ) = null                    ! [-] Input Control Element 2
-force.par (               4 ,       $F_gen_PI                     ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
-force.par (               5 ,       $F_gen_PI                     ) = 2.00000000000000000E+00 ! [-] Output type
-force.par (               7 ,       $F_gen_PI                     ) = 1.00000000000000000E+00 ! [-] Axis of torque
-force.par (               8 ,       $F_gen_PI                     ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
-force.par (               9 ,       $F_gen_PI                     ) = null                    ! [m⁻¹] P: Drive constant F=P*L
-force.attr.2d.pos.x (     1 ,       $F_gen_PI                     ) = 1250
-force.attr.2d.pos.y (     1 ,       $F_gen_PI                     ) = 120
-force.attr.2d.ori (       1 ,       $F_gen_PI                     ) = 180
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 1330, 1330, 1267
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 80, 120, 120
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 500, 494.375, 494.375, 507.5, 560, 1233
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 200, 200, 120, 120, 120, 120
-force.attr.2d.substr (    2 ,       $F_gen_PI                     ) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     2 ,       $F_gen_PI                     ) = 50
-force.attr.2d.pos.y (     2 ,       $F_gen_PI                     ) = -30
-force.attr.2d.ori (       2 ,       $F_gen_PI                     ) = 180
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_PI    ) = 640, 640, 630, 97, 97, 97, 97, 97, 97, 87, 77, 67
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_PI    ) = -120, -140, -140, -140, -120, -100, -90, -80, -30, -30, -30, -30
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_PI      ) = 40, 40, 30, 30, 33
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_PI      ) = -10, -7.5, -7.5, -30, -30
+forcegroup.end (                    $FEG_aero                     )                           ! $FEG_aero
 
-force.type (                        $F_gen_time_series            ) = 93                      ! Type
-force.from (                        $F_gen_time_series            ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
-force.to (                          $F_gen_time_series            ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
-force.disabled (                    $F_gen_time_series            ) = $SVG_loading.$_use_time_series ! Disabled
-force.par (               1 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element force x
-force.par (               2 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element force y
-force.par (               3 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element force z
-force.par (               4 ,       $F_gen_time_series            ) = $UE_T_gen               ! [-] u-Vector Element torque x
-force.par (               5 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element torque y
-force.par (               6 ,       $F_gen_time_series            ) = null                    ! [-] u-Vector Element torque z
-force.attr.2d.pos.x (     1 ,       $F_gen_time_series            ) = 220
-force.attr.2d.pos.y (     1 ,       $F_gen_time_series            ) = -30
-force.attr.2d.ori (       1 ,       $F_gen_time_series            ) = 180
-force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 1310, 1250.796875, 1250.796875, 1103.1875, 512.75, 512.75, 502.75, 237
-force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 40, 40, -12.5, -12.5, -12.5, -30, -30, -30
-force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 500, 193, 193, 193, 193, 193, 193, 203
-force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_gen_time_series) = 230, 230, 220, 210, 200, 190, -30, -30
-force.attr.2d.substr (    2 ,       $F_gen_time_series            ) = $S_stage_03.$S_TPL
-force.attr.2d.pos.x (     2 ,       $F_gen_time_series            ) = 120
-force.attr.2d.pos.y (     2 ,       $F_gen_time_series            ) = -40
-force.attr.2d.ori (       2 ,       $F_gen_time_series            ) = 90
-force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 620, 610, 610, 605.91205596923828, 593.64822387695313, 577.29644775390625, 566.395263671875, 551.8603515625, 532.48046875, 506.640625, 472.1875, 426.25, 242.5, 120, 120, 120, 120, 120, 120, 120, 120
-force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = -100, -100, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -140, -120, -110, -100, -90, -80, -57
-force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = 100, 100, 120, 120
-force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_gen_time_series) = -10, -5.75, -5.75, -23
+forcegroup.begin (                  $FEG_gen                      )                           ! $FEG_gen
+   force.type (                     $F_Prop                       ) = 110                     ! Type
+   force.from (                     $F_Prop                       ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_Prop                       ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.st.equi (        1 ,       $F_Prop                       ) = 0                       ! Equilibrium
+   force.disabled (                 $F_Prop                       ) = $SVG_loading.$_use_Prop ! Disabled
+   force.par (            1 ,       $F_Prop                       ) = $C_Prop                 ! [-] Input Control Element 1
+   force.par (            2 ,       $F_Prop                       ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
+   force.par (            3 ,       $F_Prop                       ) = null                    ! [-] Input Control Element 2
+   force.par (            4 ,       $F_Prop                       ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
+   force.par (            5 ,       $F_Prop                       ) = 2.00000000000000000E+00 ! [-] Output type
+   force.par (            7 ,       $F_Prop                       ) = 1.00000000000000000E+00 ! [-] Axis of torque
+   force.par (            8 ,       $F_Prop                       ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
+   force.attr.2d.pos.x (   1 ,      $F_Prop                       ) = 530
+   force.attr.2d.pos.y (   1 ,      $F_Prop                       ) = -110
+   force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_Prop   ) = 1320, 1320, 547
+   force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_Prop   ) = 30, -110, -110
+   force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_Prop     ) = 520, 520, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 670, 720, 720, 680, 600, 560, 540, 530, 520, 510, 503, 503, 503, 503, 503, 513
+   force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_Prop     ) = 180, 170, 170, 165.77301025390625, 153.092041015625, 136.18408203125, 124.912109375, 109.8828125, 89.84375, 63.125, 27.5, -20, -20, -20, -10, -10, -10, -10, -10, -10, -10, -10, -10, -20, -30, -40, -110, -110
+   force.attr.2d.substr (   2 ,     $F_Prop                       ) = $S_stage_03.$S_TPL
+   force.attr.2d.pos.x (   2 ,      $F_Prop                       ) = 850
+   force.attr.2d.pos.y (   2 ,      $F_Prop                       ) = 30
+   force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_Prop   ) = 670, 913.75, 913.75, 867
+   force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_Prop   ) = -100, -100, 30, 30
+   force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_Prop     ) = 150, 140, 140, 833
+   force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_Prop     ) = 40, 40, 30, 30
+
+   force.type (                     $F_PI                         ) = 110                     ! Type
+   force.from (                     $F_PI                         ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_PI                         ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.st.equi (        1 ,       $F_PI                         ) = 0                       ! Equilibrium
+   force.disabled (                 $F_PI                         ) = $SVG_loading.$_use_PI   ! Disabled
+   force.par (            1 ,       $F_PI                         ) = $C_PI                   ! [-] Input Control Element 1
+   force.par (            2 ,       $F_PI                         ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
+   force.par (            3 ,       $F_PI                         ) = null                    ! [-] Input Control Element 2
+   force.par (            4 ,       $F_PI                         ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
+   force.par (            5 ,       $F_PI                         ) = 2.00000000000000000E+00 ! [-] Output type
+   force.par (            7 ,       $F_PI                         ) = 1.00000000000000000E+00 ! [-] Axis of torque
+   force.par (            8 ,       $F_PI                         ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
+   force.par (            9 ,       $F_PI                         ) = null                    ! [m⁻¹] P: Drive constant F=P*L
+   force.attr.2d.pos.x (   1 ,      $F_PI                         ) = 1250
+   force.attr.2d.pos.y (   1 ,      $F_PI                         ) = 120
+   force.attr.2d.ori (    1 ,       $F_PI                         ) = 180
+   force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_PI     ) = 1330, 1330, 1267
+   force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_PI     ) = 80, 120, 120
+   force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_PI       ) = 500, 494.375, 494.375, 507.5, 560, 1233
+   force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_PI       ) = 200, 200, 120, 120, 120, 120
+   force.attr.2d.substr (   2 ,     $F_PI                         ) = $S_stage_03.$S_TPL
+   force.attr.2d.pos.x (   2 ,      $F_PI                         ) = 50
+   force.attr.2d.pos.y (   2 ,      $F_PI                         ) = -30
+   force.attr.2d.ori (    2 ,       $F_PI                         ) = 180
+   force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_PI     ) = 640, 640, 630, 97, 97, 97, 97, 97, 97, 87, 77, 67
+   force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_PI     ) = -120, -140, -140, -140, -120, -100, -90, -80, -30, -30, -30, -30
+   force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_PI       ) = 40, 40, 30, 30, 33
+   force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_PI       ) = -10, -7.5, -7.5, -30, -30
+
+   force.type (                     $F_time_series                ) = 93                      ! Type
+   force.from (                     $F_time_series                ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_time_series                ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.disabled (                 $F_time_series                ) = $SVG_loading.$_use_time_series ! Disabled
+   force.par (            1 ,       $F_time_series                ) = null                    ! [-] u-Vector Element force x
+   force.par (            2 ,       $F_time_series                ) = null                    ! [-] u-Vector Element force y
+   force.par (            3 ,       $F_time_series                ) = null                    ! [-] u-Vector Element force z
+   force.par (            4 ,       $F_time_series                ) = $UE_T_gen               ! [-] u-Vector Element torque x
+   force.par (            5 ,       $F_time_series                ) = null                    ! [-] u-Vector Element torque y
+   force.par (            6 ,       $F_time_series                ) = null                    ! [-] u-Vector Element torque z
+   force.attr.2d.pos.x (   1 ,      $F_time_series                ) = 220
+   force.attr.2d.pos.y (   1 ,      $F_time_series                ) = -30
+   force.attr.2d.ori (    1 ,       $F_time_series                ) = 180
+   force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_time_series) = 1310, 1250.796875, 1250.796875, 1103.1875, 512.75, 512.75, 502.75, 237
+   force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_time_series) = 40, 40, -12.5, -12.5, -12.5, -30, -30, -30
+   force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_time_series) = 500, 193, 193, 193, 193, 193, 193, 203
+   force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_time_series) = 230, 230, 220, 210, 200, 190, -30, -30
+   force.attr.2d.substr (   2 ,     $F_time_series                ) = $S_stage_03.$S_TPL
+   force.attr.2d.pos.x (   2 ,      $F_time_series                ) = 120
+   force.attr.2d.pos.y (   2 ,      $F_time_series                ) = -40
+   force.attr.2d.ori (    2 ,       $F_time_series                ) = 90
+   force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_time_series) = 620, 610, 610, 605.91205596923828, 593.64822387695313, 577.29644775390625, 566.395263671875, 551.8603515625, 532.48046875, 506.640625, 472.1875, 426.25, 242.5, 120, 120, 120, 120, 120, 120, 120, 120
+   force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_time_series) = -100, -100, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -160, -140, -120, -110, -100, -90, -80, -57
+   force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_time_series) = 100, 100, 120, 120
+   force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_time_series) = -10, -5.75, -5.75, -23
+
+forcegroup.end (                    $FEG_gen                      )                           ! $FEG_gen
 
 !**********************************************************************
 ! Control Elements
@@ -1504,6 +1537,19 @@ excit.plot.par (          1 ,   6 ,   1 , $E_T_gen                ) = 1.00000000
 excit.plot.par (          1 ,   7 ,   1 , $E_T_gen                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   8 ,   1 , $E_T_gen                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
+excit.type (                        $E_T_aero_nom                 ) = 14                      ! Type
+excit.par (               1 ,       $E_T_aero_nom                 ) = $SVG_loading.$_T_aero_nominal ! [-] Constant value
+excit.par (               2 ,       $E_T_aero_nom                 ) = 0.00000000000000000E+00 ! [-] Constant value for
+excit.plot.par (          1 ,       $E_T_aero_nom                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_T_aero_nom                 ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_T_aero_nom                 ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_T_aero_nom                 ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_T_aero_nom                 ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_T_aero_nom                 ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_T_aero_nom           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_T_aero_nom           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_T_aero_nom           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
 !**********************************************************************
 ! u-Vector
 !**********************************************************************
@@ -1528,10 +1574,14 @@ uele.excit (                        $UE_M_z                       ) = $E_M_z    
 uele.type (                         $UE_T_gen                     ) = 1                       ! Type
 uele.excit (                        $UE_T_gen                     ) = $E_T_gen                ! Referenced Excitation
 
+uele.type (                         $UE_T_aero_nominal            ) = 1                       ! Type
+uele.excit (                        $UE_T_aero_nominal            ) = $E_T_aero_nom           ! Referenced Excitation
+
 !**********************************************************************
 ! Senders
 !**********************************************************************
 sender.ref (                        $COM_base_excitation_flag     ) = $SVG_loading.$_base_excitation_flag ! Source object
+sender.disabled (                   $COM_base_excitation_flag     ) = 1                       ! Disabled
 
 sendergroup.begin (                 $SG_rotor                     )                           ! $SG_rotor
    sender.ref (                     $COM_mass                     ) = $SVG_rotor.$_mass       ! Source object
@@ -2479,6 +2529,8 @@ receiver.ref (                      $COM_generator_flag           ) = $SVG_loadi
 receiver.ref (                      $COM_gamma_Torque             ) = $SVG_loading.$_gamma_Torque ! Destination object
 
 receiver.ref (                      $COM_gamma_Force              ) = $SVG_loading.$_gamma_Force ! Destination object
+
+receiver.ref (                      $COM_aero_excitation_flag     ) = $SVG_loading.$_aero_flag ! Destination object
 
 
 ! Overwritten substructure values

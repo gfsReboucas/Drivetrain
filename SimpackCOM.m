@@ -8,6 +8,16 @@ classdef SimpackCOM
     % [2] https://mathworks.com/help/matlab/ref/methodsview.html
     %
     %
+
+% Apply state set to model:
+% var obj1 = Spck.currentModel.findElement("$ST_all_zero");
+% obj1.copyToModel();
+% Spck.currentModel.save();
+
+% Update state set from model:
+% var obj2 = Spck.currentModel.findElement("$ST_AIC");
+% obj2.copyFromModel();
+
     
     properties(Access = private)
         COM;
