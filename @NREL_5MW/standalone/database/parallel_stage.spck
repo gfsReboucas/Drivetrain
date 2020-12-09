@@ -1404,7 +1404,7 @@ inicon.par (              2 ,   2 , $IC_pinion_wheel              ) = 1.00000000
 !**********************************************************************
 yout.type (                         $Y_sigma_H_PW                 ) = 12                      ! Type
 yout.par (                1 ,       $Y_sigma_H_PW                 ) = $F_pinion_wheel         ! [-] Force/Control Element
-yout.par (                2 ,       $Y_sigma_H_PW                 ) = 6.70000000000000000E+01 ! [-] Output Value
+yout.par (                2 ,       $Y_sigma_H_PW                 ) = 6.00000000000000000E+01 ! [-] Output Value
 
 yout.type (                         $Y_speed_PW                   ) = 14                      ! Type
 yout.par (                1 ,       $Y_speed_PW                   ) = $J_shaft                ! [-] Connection/Joint
@@ -1413,6 +1413,7 @@ yout.par (                2 ,       $Y_speed_PW                   ) = 0.00000000
 youtgroup.begin (                   $YOG_pinion_bearing           )                           ! $YOG_pinion_bearing
    youtgroup.begin (                $YOG_A                        )                           ! $YOG_pinion_bearing.$YOG_A
       yout.type (                   $Y_x                          ) = 12                      ! Type
+      yout.disabled (               $Y_x                          ) = 0                       ! Disabled
       yout.par (          1 ,       $Y_x                          ) = $FEG_pinion_bearing.$F_A ! [-] Force/Control Element
       yout.par (          2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 
@@ -1431,6 +1432,7 @@ youtgroup.begin (                   $YOG_pinion_bearing           )             
    youtgroup.end (                  $YOG_A                        )                           ! $YOG_pinion_bearing.$YOG_A
    youtgroup.begin (                $YOG_B                        )                           ! $YOG_pinion_bearing.$YOG_B
       yout.type (                   $Y_x                          ) = 12                      ! Type
+      yout.disabled (               $Y_x                          ) = 0                       ! Disabled
       yout.par (          1 ,       $Y_x                          ) = $FEG_pinion_bearing.$F_B ! [-] Force/Control Element
       yout.par (          2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 
@@ -1449,6 +1451,7 @@ youtgroup.begin (                   $YOG_pinion_bearing           )             
    youtgroup.end (                  $YOG_B                        )                           ! $YOG_pinion_bearing.$YOG_B
    youtgroup.begin (                $YOG_C                        )                           ! $YOG_pinion_bearing.$YOG_C
       yout.type (                   $Y_x                          ) = 12                      ! Type
+      yout.disabled (               $Y_x                          ) = 0                       ! Disabled
       yout.par (          1 ,       $Y_x                          ) = $FEG_pinion_bearing.$F_C ! [-] Force/Control Element
       yout.par (          2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 
@@ -1470,6 +1473,7 @@ youtgroup.end (                     $YOG_pinion_bearing           )             
 youtgroup.begin (                   $YOG_wheel_bearing            )                           ! $YOG_wheel_bearing
    youtgroup.begin (                $YOG_A                        )                           ! $YOG_wheel_bearing.$YOG_A
       yout.type (                   $Y_x                          ) = 12                      ! Type
+      yout.disabled (               $Y_x                          ) = 0                       ! Disabled
       yout.par (          1 ,       $Y_x                          ) = $FEG_wheel_bearing.$F_A ! [-] Force/Control Element
       yout.par (          2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 
@@ -1488,6 +1492,7 @@ youtgroup.begin (                   $YOG_wheel_bearing            )             
    youtgroup.end (                  $YOG_A                        )                           ! $YOG_wheel_bearing.$YOG_A
    youtgroup.begin (                $YOG_B                        )                           ! $YOG_wheel_bearing.$YOG_B
       yout.type (                   $Y_x                          ) = 12                      ! Type
+      yout.disabled (               $Y_x                          ) = 0                       ! Disabled
       yout.par (          1 ,       $Y_x                          ) = $FEG_wheel_bearing.$F_B ! [-] Force/Control Element
       yout.par (          2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 
@@ -1506,6 +1511,7 @@ youtgroup.begin (                   $YOG_wheel_bearing            )             
    youtgroup.end (                  $YOG_B                        )                           ! $YOG_wheel_bearing.$YOG_B
    youtgroup.begin (                $YOG_C                        )                           ! $YOG_wheel_bearing.$YOG_C
       yout.type (                   $Y_x                          ) = 12                      ! Type
+      yout.disabled (               $Y_x                          ) = 0                       ! Disabled
       yout.par (          1 ,       $Y_x                          ) = $FEG_wheel_bearing.$F_C ! [-] Force/Control Element
       yout.par (          2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 

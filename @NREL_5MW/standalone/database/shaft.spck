@@ -527,6 +527,7 @@ force.par (              46 ,       $F_bearing_B                  ) = 0.00000000
 !**********************************************************************
 youtgroup.begin (                   $YOG_bearing_A                )                           ! $YOG_bearing_A
    yout.type (                      $Y_x                          ) = 12                      ! Type
+   yout.disabled (                  $Y_x                          ) = 0                       ! Disabled
    yout.par (             1 ,       $Y_x                          ) = $F_bearing_A            ! [-] Force/Control Element
    yout.par (             2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 
@@ -546,6 +547,7 @@ youtgroup.end (                     $YOG_bearing_A                )             
 
 youtgroup.begin (                   $YOG_bearing_B                )                           ! $YOG_bearing_B
    yout.type (                      $Y_x                          ) = 12                      ! Type
+   yout.disabled (                  $Y_x                          ) = 0                       ! Disabled
    yout.par (             1 ,       $Y_x                          ) = $F_bearing_B            ! [-] Force/Control Element
    yout.par (             2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
 

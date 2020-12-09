@@ -119,8 +119,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.56237232
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.57387517392635345E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.57387514114379883E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.57387498766183853E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.57387485504150391E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -1009,37 +1009,43 @@ subvargroup.begin (                 $SVG_loading                  )             
    subvar.discr.str (     1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
    subvar.discr.str (     2 ,       $_base_excitation_flag        ) = '0'                     ! Discrete values
 
-   subvar.str (                     $_aero_flag                   ) = '0'                     ! $SVG_loading.$_aero_flag, Definition
+   subvar.str (                     $_aero_flag                   ) = '1'                     ! $SVG_loading.$_aero_flag, Definition
    subvar.discr.desc (    1 ,       $_aero_flag                   ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_aero_flag                   ) = 'DLC'                   ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_aero_flag                   ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_aero_flag                   ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_aero_flag                   ) = 'DLC'                   ! Description of discrete values
    subvar.discr.str (     1 ,       $_aero_flag                   ) = '0'                     ! Discrete values
    subvar.discr.str (     2 ,       $_aero_flag                   ) = '1'                     ! Discrete values
    subvar.discr.str (     3 ,       $_aero_flag                   ) = '2'                     ! Discrete values
 
-   subvar.str (                     $_use_aero_DLC                ) = 'IF($SVG_loading.$_aero_flag== 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_DLC, Definition
+   subvar.str (                     $_use_aero_DLC                ) = 'IF($SVG_loading.$_aero_flag== 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_DLC, Definition
 
-   subvar.str (                     $_use_aero_nominal            ) = 'IF($SVG_loading.$_aero_flag== 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_nominal, Definition
+   subvar.str (                     $_use_aero_nominal            ) = 'IF($SVG_loading.$_aero_flag== 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_nominal, Definition
 
-   subvar.str (                     $_generator_flag              ) = '2'                     ! $SVG_loading.$_generator_flag, Definition
+   subvar.str (                     $_generator_flag              ) = '1'                     ! $SVG_loading.$_generator_flag, Definition
    subvar.discr.desc (    1 ,       $_generator_flag              ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
-   subvar.discr.desc (    4 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
+   subvar.discr.desc (    4 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
+   subvar.discr.desc (    5 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
    subvar.discr.str (     1 ,       $_generator_flag              ) = '0'                     ! Discrete values
    subvar.discr.str (     2 ,       $_generator_flag              ) = '1'                     ! Discrete values
    subvar.discr.str (     3 ,       $_generator_flag              ) = '2'                     ! Discrete values
    subvar.discr.str (     4 ,       $_generator_flag              ) = '3'                     ! Discrete values
+   subvar.discr.str (     5 ,       $_generator_flag              ) = '4'                     ! Discrete values
 
-   subvar.str (                     $_use_Prop                    ) = 'IF($SVG_loading.$_generator_flag == 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_Prop, Definition
+   subvar.str (                     $_use_gen_nominal             ) = 'IF($SVG_loading.$_generator_flag == 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_gen_nominal, Definition
 
-   subvar.str (                     $_use_PI                      ) = 'IF($SVG_loading.$_generator_flag == 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_PI, Definition
+   subvar.str (                     $_use_Prop                    ) = 'IF($SVG_loading.$_generator_flag == 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_Prop, Definition
 
-   subvar.str (                     $_use_time_series             ) = 'IF($SVG_loading.$_generator_flag == 3)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_time_series, Definition
+   subvar.str (                     $_use_PI                      ) = 'IF($SVG_loading.$_generator_flag == 3)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_PI, Definition
+
+   subvar.str (                     $_use_time_series             ) = 'IF($SVG_loading.$_generator_flag == 4)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_time_series, Definition
 
    subvar.str (                     $_rated_power                 ) = '5.0e3 kW'              ! $SVG_loading.$_rated_power, Definition
 
-   subvar.str (                     $_T_aero_nominal              ) = '$SVG_loading.$_rated_power/$SVG_rotor.$_rated_speed' ! $SVG_loading.$_T_aero_nominal, Definition
+   subvar.str (                     $_T_aero_nominal              ) = '(1.0 rad)*$SVG_loading.$_rated_power/$SVG_rotor.$_rated_speed' ! $SVG_loading.$_T_aero_nominal, Definition
+
+   subvar.str (                     $_T_gen_nominal               ) = '$SVG_loading.$_T_aero_nominal/$_drive_ratio' ! $SVG_loading.$_T_gen_nominal, Definition
 
    subvar.str (                     $_gamma_Torque                ) = '1.0'                   ! $SVG_loading.$_gamma_Torque, Definition
 
@@ -1087,6 +1093,17 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 ! Force Elements
 !**********************************************************************
 forcegroup.begin (                  $FEG_aero                     )                           ! $FEG_aero
+   force.type (                     $F_nominal                    ) = 93                      ! Type
+   force.from (                     $F_nominal                    ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
+   force.to (                       $F_nominal                    ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
+   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_aero_nominal ! Disabled
+   force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
+   force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
+   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
+   force.par (            4 ,       $F_nominal                    ) = $UE_T_aero_nom          ! [-] u-Vector Element torque x
+   force.par (            5 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque y
+   force.par (            6 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque z
+
    force.type (                     $F_DLC                        ) = 93                      ! Type
    force.from (                     $F_DLC                        ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
    force.to (                       $F_DLC                        ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
@@ -1105,20 +1122,21 @@ forcegroup.begin (                  $FEG_aero                     )             
    force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_DLC      ) = 310, 244.25, 244.25, 77
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_DLC      ) = 200, 200, 50, 50
 
-   force.type (                     $F_nominal                    ) = 93                      ! Type
-   force.from (                     $F_nominal                    ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
-   force.to (                       $F_nominal                    ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
-   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_aero_nominal ! Disabled
-   force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
-   force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
-   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
-   force.par (            4 ,       $F_nominal                    ) = $UE_T_aero_nominal      ! [-] u-Vector Element torque x
-   force.par (            5 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque y
-   force.par (            6 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque z
-
 forcegroup.end (                    $FEG_aero                     )                           ! $FEG_aero
 
 forcegroup.begin (                  $FEG_gen                      )                           ! $FEG_gen
+   force.type (                     $F_nominal                    ) = 93                      ! Type
+   force.from (                     $F_nominal                    ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_nominal                    ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.st.equi (        1 ,       $F_nominal                    ) = 0                       ! Equilibrium
+   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
+   force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
+   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
+   force.par (            4 ,       $F_nominal                    ) = $UE_T_gen_nom           ! [-] u-Vector Element torque x
+   force.par (            5 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque y
+   force.par (            6 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque z
+
    force.type (                     $F_Prop                       ) = 110                     ! Type
    force.from (                     $F_Prop                       ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
    force.to (                       $F_Prop                       ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
@@ -1217,6 +1235,7 @@ control.par (            15 ,       $C_Prop                       ) = $SVG_gener
 control.type (                      $C_PI                         ) = 129                     ! Type
 control.st.dyn (          1 ,       $C_PI                         ) = 0.00000000000000000E+00 ! Dynamic States
 control.st.equi (         1 ,       $C_PI                         ) = 0                       ! Equilibrium
+control.disabled (                  $C_PI                         ) = $SVG_loading.$_use_PI   ! Disabled
 control.par (             7 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Number of input channels
 control.par (             8 ,       $C_PI                         ) = $C_error_speed          ! [-] Input Element ch. 1
 control.par (             9 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
@@ -1400,6 +1419,10 @@ express.str (                       $X_T_gen_ref                  ) = '$SVG_load
 express.desc (            1 ,       $X_T_gen_ref                  ) = 'Reference generator torque in [Nm]. Obtained from time series manipulation' ! Description
 express.txt (                       $X_T_gen_ref                  ) = ''                      ! Comment
 
+express.str (                       $X_T_gen_nominal              ) = '0'                     ! Definition
+
+express.str (                       $X_T_gen_nominal_Copy_1       ) = '0'                     ! Definition
+
 !**********************************************************************
 ! Excitations
 !**********************************************************************
@@ -1538,7 +1561,7 @@ excit.plot.par (          1 ,   7 ,   1 , $E_T_gen                ) = 1.00000000
 excit.plot.par (          1 ,   8 ,   1 , $E_T_gen                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 excit.type (                        $E_T_aero_nom                 ) = 14                      ! Type
-excit.par (               1 ,       $E_T_aero_nom                 ) = $SVG_loading.$_T_aero_nominal ! [-] Constant value
+excit.par (               1 ,       $E_T_aero_nom                 ) = { DIMLESS($SVG_loading.$_T_aero_nominal) } ! [-] Constant value
 excit.par (               2 ,       $E_T_aero_nom                 ) = 0.00000000000000000E+00 ! [-] Constant value for
 excit.plot.par (          1 ,       $E_T_aero_nom                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   1 , $E_T_aero_nom                 ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -1549,6 +1572,19 @@ excit.plot.par (          1 ,   5 , $E_T_aero_nom                 ) = 1.00000000
 excit.plot.par (          1 ,   6 ,   1 , $E_T_aero_nom           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   7 ,   1 , $E_T_aero_nom           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 excit.plot.par (          1 ,   8 ,   1 , $E_T_aero_nom           ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_T_gen_nom                  ) = 14                      ! Type
+excit.par (               1 ,       $E_T_gen_nom                  ) = { DIMLESS($SVG_loading.$_T_gen_nominal) } ! [-] Constant value
+excit.par (               2 ,       $E_T_gen_nom                  ) = 0.00000000000000000E+00 ! [-] Constant value for
+excit.plot.par (          1 ,       $E_T_gen_nom                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_T_gen_nom                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_T_gen_nom                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_T_gen_nom                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_T_gen_nom                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_T_gen_nom                  ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_T_gen_nom            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_T_gen_nom            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_T_gen_nom            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 !**********************************************************************
 ! u-Vector
@@ -1574,8 +1610,11 @@ uele.excit (                        $UE_M_z                       ) = $E_M_z    
 uele.type (                         $UE_T_gen                     ) = 1                       ! Type
 uele.excit (                        $UE_T_gen                     ) = $E_T_gen                ! Referenced Excitation
 
-uele.type (                         $UE_T_aero_nominal            ) = 1                       ! Type
-uele.excit (                        $UE_T_aero_nominal            ) = $E_T_aero_nom           ! Referenced Excitation
+uele.type (                         $UE_T_aero_nom                ) = 1                       ! Type
+uele.excit (                        $UE_T_aero_nom                ) = $E_T_aero_nom           ! Referenced Excitation
+
+uele.type (                         $UE_T_gen_nom                 ) = 1                       ! Type
+uele.excit (                        $UE_T_gen_nom                 ) = $E_T_gen_nom            ! Referenced Excitation
 
 !**********************************************************************
 ! Senders

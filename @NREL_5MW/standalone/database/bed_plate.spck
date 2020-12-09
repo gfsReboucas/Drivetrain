@@ -68,8 +68,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.34087431
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.76997445523738861E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.76997432708740234E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.76997426897287369E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.76997413635253906E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -200,7 +200,7 @@ slv.txt (                           $SLV_SolverSettings           ) = ''        
 !**********************************************************************
 ! SubVars
 !**********************************************************************
-subvar.str (                        $_base_excitation_flag        ) = '0'                     ! Definition
+subvar.str (                        $_base_excitation_flag        ) = '1'                     ! Definition
 subvar.discr.desc (       1 ,       $_base_excitation_flag        ) = 'ON'                    ! Description of discrete values
 subvar.discr.desc (       2 ,       $_base_excitation_flag        ) = 'OFF'                   ! Description of discrete values
 subvar.discr.str (        1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
@@ -385,7 +385,7 @@ connect.par (             3 ,   9 , $CTN_fixed                    ) = 0.00000000
 !**********************************************************************
 ifctn.file (                        $I_x                          ) = '../ref_files/EC4_s01_X.if2' ! File or URI
 ifctn.scal.z (                      $I_x                          ) = $_gamma_Disp            ! Scaling factor
-ifctn.offset.z (                    $I_x                          ) = { $_gamma_Disp*1.427315 } ! Offset value
+ifctn.offset.z (                    $I_x                          ) = 0.00000000000000000E+00 ! Offset value
 ifctn.range.handling (              $I_x                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_x                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_x                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -401,7 +401,7 @@ ifctn.plot.par (          1 ,  10 ,   1 , $I_x                    ) = 0.00000000
 
 ifctn.file (                        $I_y                          ) = '../ref_files/EC4_s01_Y.if2' ! File or URI
 ifctn.scal.z (                      $I_y                          ) = $_gamma_Disp            ! Scaling factor
-ifctn.offset.z (                    $I_y                          ) = { -$_gamma_Disp*0.118345 } ! Offset value
+ifctn.offset.z (                    $I_y                          ) = 0.00000000000000000E+00 ! Offset value
 ifctn.range.handling (              $I_y                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_y                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_y                          ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -795,15 +795,19 @@ uele.excit (                        $UE_x                         ) = $E_x      
 
 uele.type (                         $UE_y                         ) = 1                       ! Type
 uele.excit (                        $UE_y                         ) = $E_y                    ! Referenced Excitation
+uele.index (                        $UE_y                         ) = 0                       ! Index
 
 uele.type (                         $UE_z                         ) = 1                       ! Type
 uele.excit (                        $UE_z                         ) = $E_z                    ! Referenced Excitation
+uele.index (                        $UE_z                         ) = 0                       ! Index
 
 uele.type (                         $UE_alpha                     ) = 1                       ! Type
 uele.excit (                        $UE_alpha                     ) = $E_alpha                ! Referenced Excitation
+uele.index (                        $UE_alpha                     ) = 0                       ! Index
 
 uele.type (                         $UE_beta                      ) = 1                       ! Type
 uele.excit (                        $UE_beta                      ) = $E_beta                 ! Referenced Excitation
+uele.index (                        $UE_beta                      ) = 0                       ! Index
 
 uele.type (                         $UE_gamma                     ) = 1                       ! Type
 uele.excit (                        $UE_gamma                     ) = $E_gamma                ! Referenced Excitation
