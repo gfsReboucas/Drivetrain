@@ -181,6 +181,22 @@ classdef (Abstract) ISO_6336 < Gear_Set
         end
         
         %%
+        function load_spectrum_KISSsoft(obj, file_name, torque_signal, load_speed, time_step)
+            [~, torque_edges, speed_edges, N] = ISO_6336.LDD(torque_signal, load_speed, time_step);
+            
+            power_edges = torque_edges(2:end).*1.0e-3 .* ... % [kN-m]
+                           speed_edges.*(pi/30.0);    % [rad/s] = [kW]
+
+            freq_factor  = N./sum(N);
+            power_factor = power_edges./obj.P_rated;
+            speed_factor = speed_edges./obj.n_input;
+
+            tab = table(freq_factor',  power_factor',  speed_factor', 'variableNames', ...
+                     {'#frequency'  , 'power'       , 'speed'});
+            
+            writetable(tab, sprintf('%s.dat', file_name));
+        end
+        
         function D = Simpack_damage_analysis(obj, data)
             field_name = fieldnames(data.load);
             
@@ -717,10 +733,21 @@ classdef (Abstract) ISO_6336 < Gear_Set
     end
     
     methods(Static)
-        function [num_cycle, load_edges, speed_mean, bin] = LDD(load_signal, load_speed, time_step)
+        function [num_cycle, load_edges, speed_mean, N] = LDD(load_signal, load_speed, time_step)
             %LDD produces the load duration distribution of a load_signal
             % with rotational speed load_speed in [1/min.]. time_step is 
             % the inverse of the sampling frequency of both signals.
+            % Inputs:
+            % - load_signal: load signal to be processed.
+            % - load_speed: rotational speed of the element being loaded.
+            % - time_step: inverse of the sampling frequency of load and
+            % speed signals, given in seconds.
+            %
+            % Outputs:
+            % - num_cycle: cumulative number of cycles
+            % - load_edges: edges of the load bins
+            % - speed_mean: mean speed at each load bin
+            % - N: Number of cycles at each bin
             %
             % References:
             % [1] A. R. Nejad, Z. Gao, and T. Moan, "On long-term fatigue 
@@ -742,7 +769,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
             load_edges = linspace(load_min, load_Max, num_bins);
             
             % [N, edges, bin] = histcounts(signal, nbins OR edges)
-            [N, load_edges, bin] = histcounts(load_signal, load_edges);
+            [N, load_edges] = histcounts(load_signal, load_edges);
             
             speed_mean = zeros(1, num_bins - 1);
             for idx = 1:(num_bins - 1)
