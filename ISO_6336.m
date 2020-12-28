@@ -121,6 +121,62 @@ classdef (Abstract) ISO_6336 < Gear_Set
     
     %% Calculation methods:
     methods
+        function obj_sca = scale_by(obj_ref, gamma)
+            if(~isa(gamma, 'scaling_factor'))
+                error('gamma should be a [SCALING_FACTOR] object.');
+            end
+                                                        % Scaling factors for:
+            gamma_one = scaling_factor({'m_n', 1.0, ... % normal module,         [mm]
+                                        'b'  , 1.0, ... % face width,            [mm]
+                                        'd'  , 1.0, ... % output shaft diameter, [mm]
+                                        'L'  , 1.0});   % output shaft length,   [mm]
+
+            gamma = gamma_one.update(gamma);
+            
+            m_n_sca = Rack.module(obj_ref.m_n*gamma('m_n'), 'round_0125', '');
+            
+            gamma('m_n') = m_n_sca/obj_ref.m_n;
+            
+            ref_shaft = obj_ref.output_shaft;
+            shaft_sca = Shaft('d'       , ref_shaft.d*gamma('d'), ...
+                              'L'       , ref_shaft.L*gamma('L'), ...
+                              'bearing' , ref_shaft.bearing, ...
+                              'material', ref_shaft.material);
+                          
+            gset = Gear_Set('configuration', obj_ref.configuration, ...
+                            'm_n'          , obj_ref.m_n*gamma('m_n'), ...
+                            'alpha_n'      , obj_ref.alpha_n, ...
+                            'z'            , obj_ref.z, ...
+                            'b'            , obj_ref.b*gamma('b'), ...
+                            'x'            , obj_ref.x, ...
+                            'beta'         , obj_ref.beta, ...
+                            'k'            , obj_ref.k, ...
+                            'bore_ratio'   , obj_ref.bore_ratio, ...
+                            'N_p'          , obj_ref.N_p, ...
+                            'a_w'          , obj_ref.a_w*gamma('m_n'), ...
+                            'rack_type'    , obj_ref.type, ...
+                            'bearing'      , obj_ref.bearing, ...
+                            'shaft'        , shaft_sca, ...
+                            'Q'            , obj_ref.Q, ...
+                            'R_a'          , obj_ref.R_a, ...
+                            'material'     , obj_ref.material);
+            
+            if(strcmpi(obj_ref.configuration, 'parallel'))
+                n_nom = [1.0, nan];
+            elseif(strcmpi(obj_ref.configuration, 'planetary'))
+                n_nom = [nan, nan, 0.0, 1.0];
+            end
+            n_nom = n_nom*obj_ref.n_input;
+            
+            constructor = str2func(class(obj_ref));
+            obj_sca = constructor(gset, 'P_rated'  , obj_ref.P_rated, ...
+                                        'S_Hmin'   , obj_ref.S_Hmin, ...
+                                        'S_Fmin'   , obj_ref.S_Fmin, ...
+                                        'L_h'      , obj_ref.L_h, ...
+                                        'K_A'      , obj_ref.K_A, ...
+                                        'n_nominal', n_nom);
+        end
+        
         function N_star = num_cycles_failure(obj)
             N_star = zeros(1, 2);
             sig_HPR = obj.sigma_HP_ref;
@@ -195,6 +251,35 @@ classdef (Abstract) ISO_6336 < Gear_Set
                      {'#frequency'  , 'power'       , 'speed'});
             
             writetable(tab, sprintf('%s.dat', file_name));
+        end
+        
+        function [NL, sigH, sigF] = read_Woehler_KS(obj)
+            if(strcmpi(obj.configuration, 'planetary'))
+                format_spec = '  -        %f     %f N/mm²    %f N/mm²    %f N/mm²      %f N/mm² (3)  (3)     %f N/mm² (4)  (4)     %f N/mm² (5)  (5)  ';
+                idx_F = 2:4;
+                idx_H = idx_F + 3;
+            elseif(strcmpi(obj.configuration, 'parallel'))
+                format_spec = '  -        %f     %f N/mm²    %f N/mm²    %f N/mm²      %f N/mm² (3)  (3)     %f N/mm² (4)  (4)     %f N/mm² (5)  (5)  ';
+                idx_F = 2:3;
+                idx_H = idx_F + 2;
+            end
+            
+            name = tempdir;
+            name = strrep(name, ':', '');
+            idx = find(ismember(name, 'Temp'), 1, 'last') + 1;
+            name = ['\\tsclient\', name(1:idx), 'KISS_*\Z01-H1.TMP'];
+            file = dir(name);
+            file_full = [file.folder, '\', file.name];
+            file_ID = fopen(file_full, 'r');
+            
+            line_start = 7;
+            line_start = line_start - 1;
+            
+            C = textscan(file_ID, format_spec, 1000, 'delimiter', '\n', 'headerlines', line_start);
+            NL = C{1};
+            sigH = cell2mat(C(idx_H));
+            sigF = cell2mat(C(idx_F));
+            
         end
         
         function D = Simpack_damage_analysis(obj, data)
@@ -984,6 +1069,9 @@ classdef (Abstract) ISO_6336 < Gear_Set
     
     %% Set methods:
     methods
+        function obj = set.P_rated(obj, val)
+            obj.P_rated = val;
+        end
     end
     
     %% Get methods:

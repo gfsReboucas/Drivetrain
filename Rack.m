@@ -56,7 +56,7 @@ classdef Rack
             default = scaling_factor.process_varargin(default, varargin);
             
             % fit the module to [2]:
-            m = Rack.module(default.m, "calc", "nearest");
+            m = Rack.module(default.m, "round_0125", "nearest");
             
             obj.type     = default.type;
             obj.m        = m;
@@ -130,13 +130,17 @@ classdef Rack
                 case "calc_2"
                     m_2(9) = 21.0; % removing the value 6.5 which should be avoided according to ISO 54:1996
                     x = m_2;
+                case 'round_0125'
+                    
                 otherwise
                     error("prog:input", "Option [%s] is NOT valid.", upper(option));
             end
             
             m = zeros(size(m_x));
             
-            if(~strcmp(option, "show"))
+            if(strcmp(option, 'round_0125'))
+                m = round(m_x*8)/8;
+            elseif(contains(option, 'calc', 'IgnoreCase', true))
                 idx = interp1(x, 1:length(x), m_x, round_opt);
                 
                 for jdx = 1:length(m_x)
@@ -153,6 +157,9 @@ classdef Rack
                 
             end
             
+            if(nargout == 0)
+                clear m;
+            end
         end
         
     end

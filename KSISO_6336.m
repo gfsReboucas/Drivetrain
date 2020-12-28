@@ -56,6 +56,19 @@ classdef KSISO_6336 < ISO_6336
         Z_v;        % [-],        Velocity factor (circumferential velocity at pitch line)
         Z_W;        % [-],        Work hardening factor
         Z_X;        % [-],        Size factor (pitting)
+        sigma_F;
+        sigma_F0;
+        sigma_FP;
+        sigma_Flim;
+        Y_B;
+        Y_DT;
+        Y_F;
+        Y_NT;
+        Y_RrelT;
+        Y_S;
+        Y_ST;
+        Y_X;
+        Y_beta;
     end
     
     methods
@@ -80,9 +93,11 @@ classdef KSISO_6336 < ISO_6336
                        'L_h'         , 50.0e3, ...
                        'K_A'         , 1.0, ...
                        'lubricant_ID', 11170, ...
-                       'n_nominal'   , [n_1, NaN]};
+                       'n_nominal'   , [n_1, NaN], ...
+                       'KS_file'     , '\example_30.Z12'};
             
             default = scaling_factor.process_varargin(default, varargin);
+            KS_file = [pwd, default.KS_file];
             
             obj@ISO_6336(gset, 'P_rated'    , default.P_rated, ...
                                'S_Hmin'     , default.S_Hmin, ...
@@ -91,13 +106,7 @@ classdef KSISO_6336 < ISO_6336
                                'K_A'        , default.K_A, ...
                                'n_nominal'  , default.n_nominal);
             
-            if(strcmpi(obj.configuration, 'parallel'))
-                module = 'Z012';
-                std_file = 'CylGearPair 1 (spur gear).Z12';
-            elseif(strcmpi(obj.configuration, 'planetary'))
-                module = 'Z014';
-                std_file = 'PlanetarySet 1 (ISO6336).Z14';
-            end
+            ksCOM = KISSsoftCOM(KS_file);
             
             switch(obj.type)
                 case 'A'
@@ -112,20 +121,7 @@ classdef KSISO_6336 < ISO_6336
                     error('Reference profile [%s] not supported.', obj.type);
             end
             
-            ksCOM = KISSsoftCOM(module);
-            version = ksCOM.get_version();
-            version = strrep(version, '/', '-');
-
-            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft %s\\example\\%s', version, std_file);
-
-            try
-                ksCOM.load_file(file_name);
-            catch err
-                delete(ksCOM);
-                error(err.identifier, '%s', err.message);
-            end
-            
-            ksCOM.set_var('RechSt.RechenMethID' , 10030); % calculation method: ISO 6336:2006 Method B
+%             ksCOM.set_var('RechSt.RechenMethID' , 10029); % calculation method: ISO 6336:2006 Method B
 %             ksCOM.set_var('RechSt.GeometrieMeth', true);  % tooth geometry according to ISO 21771:2007
             
             ksCOM.set_var('ZS.AnzahlZwi',         obj.N_p     ); % number of planets
@@ -178,10 +174,10 @@ classdef KSISO_6336 < ISO_6336
             ksCOM.set_var('ZS.Kgam', obj.K_gamma);
             ksCOM.set_var('ZS.Oil.SchmierTypID', default.lubricant_ID);
             
-            if(~ksCOM.check_calculations())
-                delete(ksCOM);
-                error('Problem with KISSsoft calculation.');
-            end
+%             if(~ksCOM.check_calculations())
+%                 delete(ksCOM);
+%                 error('Problem with KISSsoft calculation.');
+%             end
             
             obj.ks = ksCOM;
             obj.ks.show_UI();
@@ -194,6 +190,129 @@ classdef KSISO_6336 < ISO_6336
     
     %% Calculation methods:
     methods
+        function sweep(obj, par_name, par_range)
+            if(strcmpi(obj.configuration, 'parallel'))
+                n = 55;
+                var_names = ['S_H1,S_H2,S_F1,S_F2,Z_BD1,Z_BD2,Z_beta,Z_E1,Z_E2,', ...
+                             'Z_eps1,Z_eps2,Z_H1,Z_H2,Z_L1,Z_L2,Z_NT1,Z_NT2,', ...
+                             'Z_R1,Z_R2,Z_v1,Z_v2,Z_W1,Z_W2,Z_X1,Z_X2,K_A,', ...
+                             'K_Falpha1,K_Falpha2,K_Fbeta1,K_Fbeta2,K_gamma,', ...
+                             'K_Halpha1,K_Halpha2,K_Hbeta1,K_Hbeta2,K_v,', ...
+                             'Y_B1,Y_B2,Y_DT1,Y_DT2,Y_F1,Y_F2,Y_NT1,Y_NT2,', ...
+                             'Y_RrelT1,Y_RrelT2,Y_S1,Y_S2,Y_ST1,Y_ST2,', ...
+                             'Y_X1,Y_X2,Y_beta1,Y_beta2'];
+            elseif(strcmpi(obj.configuration, 'planetary'))
+                n = 77;
+                var_names = ['S_H1,S_H2,S_H3,S_F1,S_F2,S_F3,Z_BD1,Z_BD2,Z_BD3,Z_beta,Z_E1,Z_E2,', ...
+                             'Z_eps1,Z_eps2,Z_eps3,Z_H1,Z_H2,Z_H3,Z_L1,Z_L2,Z_L3,Z_NT1,Z_NT2,Z_NT3,', ...
+                             'Z_R1,Z_R2,Z_R3,Z_v1,Z_v2,Z_v3,Z_W1,Z_W2,Z_W3,Z_X1,Z_X2,Z_X3,K_A,', ...
+                             'K_Falpha1,K_Falpha2,K_Falpha3,K_Fbeta1,K_Fbeta2,K_Fbeta3,K_gamma,', ...
+                             'K_Halpha1,K_Halpha2,K_Halpha3,K_Hbeta1,K_Hbeta2,K_Hbeta3,K_v,', ...
+                             'Y_B1,Y_B2,Y_B3,Y_DT1,Y_DT2,Y_DT3,Y_F1,Y_F2,Y_F3,Y_NT1,Y_NT2,Y_NT3,', ...
+                             'Y_RrelT1,Y_RrelT2,Y_RrelT3,Y_S1,Y_S2,Y_S3,Y_ST1,Y_ST2,Y_ST3,', ...
+                             'Y_X1,Y_X2,Y_X3,Y_beta1,Y_beta2,Y_beta3'];
+            end
+            
+            warning('off', 'KISSsoftCOM:wrong_calc');
+            ref_val = obj.get_var(par_name);
+            
+            fileID = fopen(sprintf('sweep_KS_%s.dat', par_name), 'w');
+            fprintf(fileID, 'idx,%s,%s\n', par_name, var_names);
+            
+            format_spec = ['%d,', repmat('%.10e,', 1, n), '\n'];
+            for idx = 1:numel(par_range)
+                obj.set_var(par_name, par_range(idx));
+                val = [idx, par_range(idx), ...
+                       obj.S_H, obj.S_F, ...
+                       obj.Z_BD, ...
+                       obj.Z_beta, obj.Z_E, ...
+                       obj.Z_eps, obj.Z_H, ...
+                       obj.Z_L, obj.Z_NT, ...
+                       obj.Z_R, obj.Z_v, ...
+                       obj.Z_W, obj.Z_X, ...
+                       obj.K_A, obj.K_Falpha, ...
+                       obj.K_Fbeta, obj.K_gamma, ...
+                       obj.K_Halpha, obj.K_Hbeta, ...
+                       obj.K_v, ...
+                       obj.Y_B, obj.Y_DT, ...
+                       obj.Y_F, obj.Y_NT, ...
+                       obj.Y_RrelT, obj.Y_S, ...
+                       obj.Y_ST, obj.Y_X, ...
+                       obj.Y_beta];
+
+                fprintf(fileID, format_spec, val);
+            end
+            obj.set_var(par_name, ref_val);
+            warning('on', 'KISSsoftCOM:wrong_calc');
+        end
+        
+        function sweep_mat(obj, par_name, par_range, tag)
+            
+            N = numel(par_range);
+            
+            if(strcmpi(obj.configuration, 'parallel'))
+                n = 2;
+            elseif(strcmpi(obj.configuration, 'planetary'))
+                n = 3;
+            end
+            
+            SH  = zeros(N, n);           SF      = zeros(N, n);
+            ZBD     = zeros(N, n);       YDT     = zeros(N, n);
+            Zbeta   = zeros(N, n);       Ybeta   = zeros(N, n);
+            ZE      = zeros(N, n);       ZR      = zeros(N, n);
+            Zeps    = zeros(N, n);       YRrelT  = zeros(N, n);
+            ZH      = zeros(N, n);       Ft      = zeros(N, n);
+            ZL      = zeros(N, n);       Zv      = zeros(N, n);
+            ZNT     = zeros(N, n);       YNT     = zeros(N, n);
+            ZW      = zeros(N, n);       Kv      = zeros(N, 1);
+            ZX      = zeros(N, n);       YX      = zeros(N, n);
+            KFa     = zeros(N, n);       KHa     = zeros(N, n);
+            KFb     = zeros(N, n);       KHb     = zeros(N, n);
+            YB      = zeros(N, n);       YF      = zeros(N, n);
+            YS      = zeros(N, n);       YST     = zeros(N, 1);
+            sigH    = zeros(N, n);       sigF    = zeros(N, n);
+            sigH0   = zeros(N, n);       sigF0   = zeros(N, n);
+            sigHP   = zeros(N, n);       sigFP   = zeros(N, n);
+            sigHlim = zeros(N, n);       sigFlim = zeros(N, n);
+            vp      = zeros(N, n);       NL      = zeros(N, n);
+            
+            for idx = 1:N
+                obj.set_var(par_name, par_range(idx));
+                
+                SH(idx, :)      = obj.S_H;           SF(idx, :)      = obj.S_F;
+                ZBD(idx, :)     = obj.Z_BD;          YDT(idx, :)     = obj.Y_DT;
+                Zbeta(idx, :)   = obj.Z_beta;        Ybeta(idx, :)   = obj.Y_beta;
+                ZE(idx, :)      = obj.Z_E;           ZR(idx, :)      = obj.Z_R;
+                Zeps(idx, :)    = obj.Z_eps;         YRrelT(idx, :)  = obj.Y_RrelT;
+                ZH(idx, :)      = obj.Z_H;           Ft(idx, :)      = obj.F_t;
+                ZL(idx, :)      = obj.Z_L;           Zv(idx, :)      = obj.Z_v;
+                ZNT(idx, :)     = obj.Z_NT;          YNT(idx, :)     = obj.Y_NT;
+                ZW(idx, :)      = obj.Z_W;           Kv(idx, :)      = obj.K_v;
+                ZX(idx, :)      = obj.Z_X;           YX(idx, :)      = obj.Y_X;
+                KFa(idx, :)     = obj.K_Falpha;      KHa(idx, :)     = obj.K_Halpha;
+                KFb(idx, :)     = obj.K_Fbeta;       KHb(idx, :)     = obj.K_Hbeta;
+                YB(idx, :)      = obj.Y_B;           YF(idx, :)      = obj.Y_F;
+                YS(idx, :)      = obj.Y_S;           YST(idx, :)     = obj.Y_ST;
+                sigH(idx, :)    = obj.sigma_H;       sigF(idx, :)    = obj.sigma_F;
+                sigH0(idx, :)   = obj.sigma_H0;      sigF0(idx, :)   = obj.sigma_F0;
+                sigHP(idx, :)   = obj.sigma_HP;      sigFP(idx, :)   = obj.sigma_FP;
+                sigHlim(idx, :) = obj.sigma_Hlim;    sigFlim(idx, :) = obj.sigma_Flim;
+                vp(idx, :)      = obj.v_pitch_line;  NL(idx, :)      = obj.N_L;
+            end
+            
+            save(sprintf('data_sweep_KS_%s_%s', par_name, tag), ...
+                                  'SH', 'SF', 'ZBD', 'YDT', ...
+                                  'Zbeta', 'Ybeta', 'ZE', 'ZR', ...
+                                  'Zeps', 'YRrelT', 'ZH', 'Ft', ...
+                                  'ZL', 'Zv', 'ZNT', 'YNT', ...
+                                  'ZW', 'Kv', 'ZX', 'YX', ...
+                                  'KFa', 'KHa', 'KFb', 'KHb', ...
+                                  'YB', 'YF', 'YS', 'YST', ...
+                                  'sigH', 'sigF', 'sigH0', 'sigF0', ...
+                                  'sigHP', 'sigFP', 'sigHlim', 'sigFlim', ...
+                                  'vp', 'NL', '-v7.3');
+        end
+        
         function [SH, SF] = safety_factors(obj, varargin)
             SH = obj.S_H;
             SF = obj.S_F;
@@ -327,7 +446,7 @@ classdef KSISO_6336 < ISO_6336
                 
                 ksCOM.save_file(file_name);
                 version = ksCOM.get_version;
-                template = sprintf("C:\\Program Files (x86)\\KISSsoft %s\\rpt\\Z0%dLe0.RPT", version, template_code);
+                template = sprintf("C:\\Program Files\\KISSsoft %s\\rpt\\Z0%dLe0.RPT", version, template_code);
                 
                 ksCOM.write_report(template, ... % template file
                     report_name, default.show_report, 0); % output format
@@ -415,7 +534,7 @@ classdef KSISO_6336 < ISO_6336
             n_1 = 360.0;
             P_r = 1.0e-3*T_1*n_1*pi/30.0;
             
-            calc = ISO_6336_KS(gset, 'calculation', 'default', ...
+            calc = KSISO_6336(gset, 'calculation', 'default', ...
                                      'P_rated'    , P_r, ...
                                      'S_Hmin'     , 1.0, ...
                                      'S_Fmin'     , 1.0, ...
@@ -433,7 +552,8 @@ classdef KSISO_6336 < ISO_6336
                        'Nominal contact stress'                   , 'sigma_H0'     , calc.sigma_H0(1)  , 1206.58207;
                        'Contact stress for pinion'                , 'sigma_H1'     , calc.sigma_H(1)   , 1301.35343;
                        'Contact stress for wheel'                 , 'sigma_H2'     , calc.sigma_H(2)   , 1301.35343;
-                       'Nominal tangential load, [N]'             , 'F_t'          , calc.F_t          , 127352.0;
+                       'Nominal tangential load, [N]'             , 'F_t'          , calc.F_t(1)       , 127352.0;
+                       'Nominal tangential load, [N]'             , 'F_t'          , calc.F_t(2)       , 127352.0;
                        'Pitch line velocity, [m/s]'               , 'v'            , calc.v_pitch_line , 2.664;
                        'Dynamic factor'                           , 'K_v'          , calc.K_v          , 1.003;
                        'Transverse load factor (root stress)'     , 'K_Falpha'     , calc.K_Falpha(1)  , 1.0;
@@ -446,11 +566,15 @@ classdef KSISO_6336 < ISO_6336
                        'Number of load cycles for wheel'          , 'N_L2'         , calc.N_L(2)       , 1.783e8;
                        'Life factor for pinion'                   , 'Z_NT1'        , calc.Z_NT(1)      , 0.91;
                        'Life factor for wheel'                    , 'Z_NT2'        , calc.Z_NT(2)      , 0.962;
-                       'Size factor'                              , 'Z_X'          , calc.Z_X          , 1.0;
-                       'Work hardening factor'                    , 'Z_W'          , calc.Z_W          , 1.0;
+                       'Size factor for pinion'                   , 'Z_X'          , calc.Z_X(1)       , 1.0;
+                       'Size factor for wheel'                    , 'Z_X'          , calc.Z_X(2)       , 1.0;
+                       'Work hardening factor for pinion'         , 'Z_W'          , calc.Z_W(1)       , 1.0;
+                       'Work hardening factor for wheel'          , 'Z_W'          , calc.Z_W(2)       , 1.0;
                        'Roughness factor'                         , 'Z_R'          , calc.Z_R(1)       , 0.96599;
-                       'Velocity factor'                          , 'Z_v'          , calc.Z_v          , 0.96911;
-                       'Lubricant factor'                         , 'Z_L'          , calc.Z_L          , 1.04739;
+                       'Velocity factor for pinion'               , 'Z_v'          , calc.Z_v(1)       , 0.96911;
+                       'Velocity factor for wheel'                , 'Z_v'          , calc.Z_v(2)       , 0.96911;
+                       'Lubricant factor for pinion'              , 'Z_L'          , calc.Z_L(1)       , 1.04739;
+                       'Lubricant factor for wheel'               , 'Z_L'          , calc.Z_L(2)       , 1.04739;
                        'Helix angle factor'                       , 'Z_beta'       , calc.Z_beta(1)    , 1.01944;
                        'Contact ratio factor'                     , 'Z_eps'        , calc.Z_eps(1)     , 0.803;
                        'Elasticity factor'                        , 'Z_E'          , calc.Z_E(1)       , 189.81170;
@@ -519,10 +643,55 @@ classdef KSISO_6336 < ISO_6336
 
     %% Set methods:
     methods
+        function set_var(obj, name, val)
+            if(strcmpi(name, 'm_n'))
+                obj.ks.set_var('ZS.Geo.mn', val); % normal module
+                obj.m = val;
+                as = obj.a_w*(val/obj.m_n);
+                obj.ks.set_var('ZP[0].a', as); % center distance
+                obj.a_w = as;
+            elseif(strcmpi(name, 'a_w'))
+                obj.ks.set_var('ZP[0].a', val); % center distance
+                obj.a_w = val;
+                ms = obj.m_n*(val/obj.a_w);
+                obj.ks.set_var('ZS.Geo.mn', ms); % normal module
+                obj.m = ms;
+            elseif(strcmpi(name, 'x'))
+                for idx = 1:numel(obj.z)
+                    obj.ks.set_var(sprintf('ZR[%d].x.nul', idx - 1), val); % profile shift coefficient
+                end
+                obj.x = val;
+            elseif(strcmpi(name, 'b'))
+                for idx = 1:numel(obj.z)
+                    obj.ks.set_var(sprintf('ZR[%d].b', idx - 1), val); % face width
+                end
+                obj.b = val;
+            elseif(strcmpi(name, 'P'))
+                obj.ks.set_var('ZS.P', val); % normal module
+                obj.P_rated = val;
+            end
+        end
     end
     
     %% Get methods:
     methods
+        function val = get_var(obj, name)
+            ks_name = name;
+            if(strcmpi(name, 'm_n'))
+                ks_name = 'ZS.Geo.mn'; % normal module
+            elseif(strcmpi(name, 'a_w'))
+                ks_name = 'ZP[0].a'; % center distance
+            elseif(strcmpi(name, 'x'))
+                ks_name = 'ZR[0].x.nul'; % profile shift coefficient
+            elseif(strcmpi(name, 'b'))
+                ks_name = 'ZR[0].b'; % face width
+            elseif(strcmpi(name, 'P'))
+                ks_name = 'ZS.P';
+            end
+            
+            val = obj.ks.get_var(ks_name); % face width
+        end
+        
         function val = get.S_H(obj)
             n = length(obj.z);
             val = zeros(1, n);
@@ -659,6 +828,118 @@ classdef KSISO_6336 < ISO_6336
                 val(idx) = obj.ks.get_var(sprintf('ZP[%d].KFb', idx - 1));
             end
         end
+
+        function val = get.sigma_F(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZPP[%d].Fuss.sigF', idx - 1));
+            end
+        end
+        
+        function val = get.sigma_F0(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZPP[%d].Fuss.sigF0', idx - 1));
+            end
+        end
+        
+        function val = get.sigma_FP(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZPP[%d].Fuss.sigFP', idx - 1));
+            end
+        end
+        
+        function val = get.sigma_Flim(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZR[%d].mat.limf', idx - 1));
+            end
+        end
+        
+        function val = get.Y_B(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZR[%d].Fuss.YB', idx - 1));
+            end
+        end
+        
+        function val = get.Y_DT(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZP[%d].Fuss.YDT', idx - 1));
+            end
+        end
+        
+        function val = get.Y_F(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZPP[%d].Fuss.YF', idx - 1));
+            end
+        end
+        
+        function val = get.Y_NT(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZR[%d].Fuss.YNT', idx - 1));
+            end
+        end
+        
+        function val = get.Y_RrelT(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZR[%d].Fuss.YR', idx - 1));
+            end
+        end
+        
+        function val = get.Y_S(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZPP[%d].Fuss.YS', idx - 1));
+            end
+        end
+        
+        function val = get.Y_ST(obj)
+                val = obj.ks.get_var('notchFactorYst');
+        end
+        
+        function val = get.Y_X(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZR[%d].Fuss.YX', idx - 1));
+            end
+        end
+        
+        function val = get.Y_beta(obj)
+            n = length(obj.z);
+            val = zeros(1, n);
+
+            for idx = 1:n
+                val(idx) = obj.ks.get_var(sprintf('ZP[%d].Fuss.Ybet', idx - 1));
+            end
+        end
         
         function val = get.Z_eps(obj)
             n = length(obj.z);
@@ -670,6 +951,7 @@ classdef KSISO_6336 < ISO_6336
         end
         
         function val = get.Z_beta(obj)
+%             val = obj.ks.get_var(sprintf('ZP[%d].Flanke.Zbet', 0));
             n = length(obj.z);
             val = zeros(1, n);
 
@@ -746,7 +1028,7 @@ classdef KSISO_6336 < ISO_6336
             val = zeros(1, n);
 
             for idx = 1:n
-                val(idx) = obj.ks.get_var(sprintf('ZPP[%d].Flanke.ZX', idx - 1));
+                val(idx) = obj.ks.get_var(sprintf('ZR[%d].Flanke.ZX', idx - 1));
             end
         end
         

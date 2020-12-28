@@ -11,14 +11,16 @@ classdef KISSsoftCOM
     
     properties(Access = private)
         COM;
+        folder;
     end
     
     properties
+        file_name;
         module;
     end
     
     methods
-        function obj = KISSsoftCOM(mod)
+        function obj = KISSsoftCOM(name_file)
             [flag, msg] = KISSsoftCOM.is_installed();
             if(flag)
                 obj.COM = actxserver('KISSsoftCOM.KISSsoft');
@@ -26,10 +28,35 @@ classdef KISSsoftCOM
                 error(msg.identifier, "%s", msg.message);
             end
             
-            obj.module = mod;
-
+            [obj.folder, ...
+             obj.file_name, ...
+             mod] = fileparts(name_file);
+            obj.module = strrep(mod, '.Z', 'Z0');
+%             erase(mod, '.');
+            
+            obj.load_file(name_file);
+            
             obj.COM.SetSilentMode(false);
             obj.COM.GetModule(obj.module, false);
+        end
+        
+        function val = calculate(obj)
+            val = true;
+            if(~obj.is_module_loaded())
+                warning('No module loaded');
+                val = false;
+            end
+            
+            if(~obj.COM.CalculateRetVal())
+                warning('Error(s) in the calculations');
+                val = false;
+            end
+            
+        end
+        
+        function val = is_module_loaded(obj)
+            % checks if a module is loaded.
+            val = obj.COM.isActive();
         end
         
         function show_UI(obj)
@@ -43,6 +70,7 @@ classdef KISSsoftCOM
             end
             
             obj.COM.SetVar(name, num2str(val, 10));
+            obj.check_calculations();
         end
         
         function val = get_var(obj, name)
@@ -50,6 +78,7 @@ classdef KISSsoftCOM
                 warning('No module loaded');
             end
             
+            obj.check_calculations();
             val = obj.COM.GetVar(name);
             if(isnan(val))
                 error('Variable [%s] does not exist or cannot be accessed.', upper(name));
@@ -61,17 +90,13 @@ classdef KISSsoftCOM
             val = obj.COM.GetKsoftVersion();
         end
         
-        function calculate(obj)
-            obj.COM.Calculate();
-        end
-        
         function val = check_calculations(obj)
             flag_mod = obj.is_module_loaded();
             flag_calc = obj.COM.CalculateRetVal();
             
             if(flag_mod == false)
                 val = false;
-                warning('No module loaded');
+                warning('KISSsoftCOM:no_module', 'No module loaded');
             else
                 val = true;
             end
@@ -79,14 +104,25 @@ classdef KISSsoftCOM
             
             if(flag_calc == false)
                 val = false;
-                warning('Error(s) during calculation');
+                warning('KISSsoftCOM:wrong_calc', 'Error(s) during calculation');
             else
                 val = true;
             end
         end
                 
-        function load_file(obj, file_name)
-            obj.COM.LoadFile(file_name);
+        function val = load_file(obj, name_file)
+            val = false;
+            if(~isfile(name_file))
+                error('File [%s] does not exist', upper(name_file));
+            else
+                obj.COM.LoadFile(name_file);
+                val = true;
+            end
+            
+        end
+        
+        function val = load_example_file(obj, file_name)
+            val = obj.load_file([obj.folder, '\example\', file_name]);
         end
         
         function val = check_variable(obj, name)
@@ -98,18 +134,12 @@ classdef KISSsoftCOM
                 val = false;
             end
             
-            try
-                obj.COM.GetVar(name);
-            catch err
+            if(isempty(obj.COM.GetVar(name)))
+                warning('KISSsoftCOM:check_var', ...
+                        'Variable [%s] undefined.', upper(name));
                 val = false;
-                warning(err.identifier, '%sVariable [%s] undefined.', err.message, upper(name));
             end
             
-        end
-        
-        function val = is_module_loaded(obj)
-            % checks if a module is loaded.
-            val = obj.COM.isActive();
         end
         
         function save_file(obj, file_name)
@@ -154,17 +184,15 @@ classdef KISSsoftCOM
         end
         
         function example_02()
-            %EXAMPLE_02 from KUM
+            %EXAMPLE_02 from KISSsoft's Users Meeting - KUM.
             %
             
             ex02 = KISSsoftCOM('Z012');
-            version = ex02.get_version();
-            version = strrep(version, '/', '-');            
             
             std_file = 'CylGearPair 1 (spur gear).Z12';
-            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft %s\\example\\%s', version, std_file);
+%             file_name = sprintf('C:\\Program Files\\KISSsoft %s\\example\\%s', version, std_file);
             
-            ex02.load_file(file_name);
+            ex02.load_example_file(std_file);
             
             ex02.check_calculations();
             ex02.calculate();
@@ -177,18 +205,14 @@ classdef KISSsoftCOM
             %
             
             ex03 = KISSsoftCOM('Z012');
-            version = ex03.get_version();
-            version = strrep(version, '/', '-');            
             
             std_file = 'CylGearPair 1 (spur gear).Z12';
-            file_name = sprintf('C:\\Program Files (x86)\\KISSsoft %s\\example\\%s', version, std_file);
+%             file_name = sprintf('C:\\Program Files\\KISSsoft %s\\example\\%s', version, std_file);
             
-            ex03.load_file(file_name);
+            ex03.load_example_file(std_file);
             
             ex03.check_calculations();
             ex03.calculate();
-            
-%             fprintf('ZF_original = %.3f\n', ex03.get_var("c"));
             
             fprintf('Current profile shift gear 1 : %.3f\n', ex03.get_var("ZR[0].x.nul"));
             fprintf('Current tooth root safety gear 1: %.3f\n', ex03.get_var("ZPP[0].Fuss.SFnorm"));
@@ -203,7 +227,27 @@ classdef KISSsoftCOM
 
         end
         
-        
+        function example_04()
+            %EXAMPLE_04 from KUM
+            %
+            
+            std_file = 'CylGearPair 1 (spur gear).Z12';
+            ex04 = KISSsoftCOM('Z012');
+            ex04.load_example_file(std_file);
+            
+            x = linspace(0.0, 1.0, 21);
+            SF = zeros(size(x));
+            
+            for idx = 1:numel(x)
+                ex04.set_var('ZR[0].x.nul', x(idx));
+                SF(idx) = ex04.get_var('ZPP[0].Fuss.SFnorm');
+            end
+            
+            figure;
+            plot(x, SF, 'ko');
+            xlabel('x, [-]');
+            ylabel('S_F, [-]');
+        end
         
     end
 end

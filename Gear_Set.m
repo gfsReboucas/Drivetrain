@@ -64,6 +64,7 @@ classdef Gear_Set < Gear
         d_Na;          % [mm],        Active tip diameter
         f_pb;          % [um],        Transverse base pitch deviation
         y_alpha;       % [um],        Running-in allowance
+        g_alpha;       % [mm],        Length of path of contact
     end
     
     methods
@@ -965,6 +966,10 @@ classdef Gear_Set < Gear
             else
                 val = obj.f_pb*75.0e-3;
             end
+        end
+        
+        function val = get.g_alpha(obj)
+            val = (sqrt(obj.d_Na(1)^2 - obj.d_b(1)^2) + sign(obj.z(2))*(sqrt(obj.d_Na(1)^2 - obj.d_b(1)^2) - 2.0*obj.a_w*sind(obj.alpha_wt)))/2.0;
         end
         
     end

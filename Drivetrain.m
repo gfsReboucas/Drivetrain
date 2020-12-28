@@ -551,11 +551,11 @@ classdef (Abstract) Drivetrain
                 SF_all{idx} = SF;
             end
             
-            SH_all = cell2mat(SH_all);
+            SH_all = cell2mat(SH_all');
             SH_all(SH_all == 0) = [];
             SH_all(isnan(SH_all)) = [];
             
-            SF_all = cell2mat(SF_all);
+            SF_all = cell2mat(SF_all');
             SF_all(SF_all == 0) = [];
             SF_all(isnan(SF_all)) = [];
             
@@ -599,9 +599,10 @@ classdef (Abstract) Drivetrain
             
             Smin = [~isnan(SHref)*obj.S_Hmin, ~isnan(SFref)*obj.S_Fmin];
             Smin = Smin(Smin ~= 0.0);
-            obj_tmp = obj;
-            obj_tmp.P_rated = gamma_P*obj.P_rated;
-            obj_tmp.n_rotor = gamma_n*obj.n_rotor;
+            
+            scale_func = str2func(class(obj));
+            obj_tmp = scale_func('P'  , gamma_P, ...
+                                 'n_R', gamma_n);
             
             vec = [gamma_idx('m_n') gamma_idx('b')]';
             if(strcmp(aspect, 'integrity'))
@@ -647,12 +648,12 @@ classdef (Abstract) Drivetrain
                 gm('m_n') = gamma_val(1);
                 gm('b')   = gamma_val(2);
             end
-                
-            obj.stage(idx) = obj.stage(idx).scale_by(gm);
             
-            [SH, SF] = obj.safety_factor_stage(idx);
-            SG = [SH SF];
-            SG(SG == 0) = [];
+            calc_sca = obj.gear_calc{idx}.scale_by(gm);
+            
+            SG = [calc_sca.S_H, ...
+                  calc_sca.S_F];
+%             SG(SG == 0) = [];
             SG(isnan(SG)) = [];
             
             S_diff = SG - SGref;
@@ -1141,7 +1142,7 @@ classdef (Abstract) Drivetrain
             %
             
             default = {'aspect_set', 'DA', ...
-                'n_scale', obj_ref.n_rotor};
+                       'n_scale', obj_ref.n_rotor};
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -1236,7 +1237,7 @@ classdef (Abstract) Drivetrain
             obj_array = cell(n_P + 1, 1);
             obj_array{1} = obj_ref;
             
-            for idx = 1:n_P
+            for idx = 2:n_P
                 [obj_sca, gamma_0, res_idx, gamma_idx] = obj_ref.scaled_version(P_scale(idx), ...
                     'gamma_0'   , gamma_0, ...
                     'n_scale'   , default.n_scale, ...

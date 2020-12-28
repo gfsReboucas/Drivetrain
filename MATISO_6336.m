@@ -56,6 +56,19 @@ classdef MATISO_6336 < ISO_6336
         Z_v;        % [-],        Velocity factor (circumferential velocity at pitch line)
         Z_W;        % [-],        Work hardening factor
         Z_X;        % [-],        Size factor (pitting)
+        sigma_F;
+        sigma_F0;
+        sigma_FP;
+        sigma_Flim;
+        Y_B;
+        Y_DT;
+        Y_F;
+        Y_NT;
+        Y_RrelT;
+        Y_S;
+        Y_ST;
+        Y_X;
+        Y_beta;
     end
     
     methods
@@ -97,9 +110,9 @@ classdef MATISO_6336 < ISO_6336
             obj.K_v_val = obj.dynamic_factor();
         end
         
-        function save_KS(obj, name)
-            % do nothing...
-        end
+%         function save_KS(obj, name)
+%             % do nothing...
+%         end
     end
     
     %% Calculation methods:
@@ -112,10 +125,6 @@ classdef MATISO_6336 < ISO_6336
         function SH = Pitting(obj, varargin)
             % Safety factor for surface durability (against pitting):
             SH = obj.S_Hmin*obj.sigma_HP./obj.sigma_H; % pinion/planet
-            
-            if(isrow(SH))
-                SH = SH';
-            end
         end
         
 %         function SF = tooth_bending(obj, varargin)
@@ -576,6 +585,11 @@ classdef MATISO_6336 < ISO_6336
             C_v1 = 0.32;
             C_v5 = 0.47;
             
+            % default values:
+            C_v2 = -1.0;     C_v3 = -1.0;
+            C_v4 = -1.0;     C_v6 = -1.0;
+            C_v7 = -1.0;
+            
             eps_g = obj.eps_gamma;
             if((1.0 < eps_g) && (eps_g <= 2.0))
                 C_v2 = 0.34;
@@ -637,6 +651,12 @@ classdef MATISO_6336 < ISO_6336
     methods
         function val = get.S_H(obj)
             val = obj.S_Hmin.*obj.sigma_HP./obj.sigma_H;
+            
+            if(all(isnan(val)))
+                val = -10.0*ones(size(val));
+            elseif(any(isnan(val)))
+                val(isnan(val)) = -10.0;
+            end
         end
         
         function val = get.S_F(obj)
@@ -848,6 +868,59 @@ classdef MATISO_6336 < ISO_6336
             val = power(obj.K_Hbeta, N_F);
         end
         
+
+        function val = get.sigma_F(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.sigma_F0(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.sigma_FP(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.sigma_Flim(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_B(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_DT(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_F(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_NT(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_RrelT(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_S(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_ST(~)
+            val = nan;
+        end
+        
+        function val = get.Y_X(obj)
+            val = nan(size(obj.z));
+        end
+        
+        function val = get.Y_beta(obj)
+            val = nan(size(obj.z));
+        end
+        
         function val = get.Z_E(obj)
             % [N/mm^2], Young's modulus:
             E = [obj.material.E];
@@ -907,7 +980,13 @@ classdef MATISO_6336 < ISO_6336
             elseif((obj.eps_alpha > 1.0) && (obj.eps_beta >= 1.0))
                 val = ones(1, 2);
             elseif((obj.eps_alpha > 1.0) && (obj.eps_beta <  1.0))
-                val = M - obj.eps_beta*(M - 1.0);
+                for idx = 1:2
+                    if(M(idx) > 1.0)
+                        val(idx) = M(idx) + obj.eps_beta*(1.0 - M(idx));
+                    else
+                        val(idx) = 1.0;
+                    end
+                end
             end
         end
         
