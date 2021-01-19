@@ -65,18 +65,18 @@ substr.id (                         $S_reference                  ) = '1'       
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 1.35128803253173828E+01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -1.19913330078125000E+01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 1.22533388137817383E+01 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 3.86437714099884033E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 2.98853516578674316E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.49468028545379639E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 8.36132884025573730E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 1.07021160125732422E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -6.23138952255249023E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 7.60279464721679688E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 3.94403129816055298E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 2.65448719263076782E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 2.00021177530288696E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 8.56723248958587646E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 2.41354424506425858E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 2.41354408264160156E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.62810757756233215E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.62810745239257813E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -220,11 +220,10 @@ stateset.begin (                    $ST_AIC )
    stset.body.flx.internal.data (   $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = ''          ! Body flexible internal data
    stset.body.flx.internal.data (   $S_reference.$S_stage_01.$S_TPL.$B_shaft) = ''            ! Body flexible internal data
    stset.body.flx.internal.data (   $S_reference.$S_stage_03.$S_TPL.$B_shaft) = ''            ! Body flexible internal data
-   stset.body.brf.st.pos (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -246,17 +245,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   2 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   2 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -278,17 +277,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   3 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   3 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -310,17 +309,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   4 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   4 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -342,17 +341,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   5 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   5 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -374,17 +373,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   6 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   6 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -406,17 +405,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.vel (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -438,17 +437,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   2 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   2 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -470,17 +469,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   3 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   3 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -502,17 +501,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   4 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   4 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -534,17 +533,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   5 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   5 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -566,17 +565,17 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   6 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   6 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -598,31 +597,41 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.constr.f (       1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.31648695950636466E+05 ! Constraint forces
+   stset.constr.f (       2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -6.68943345142790768E+06 ! Constraint forces
+   stset.constr.f (       3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.77332788619710656E+05 ! Constraint forces
+   stset.constr.f (       4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 1.51722005204865872E+06 ! Constraint forces
+   stset.constr.f (       5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 1.26703200731341767E+04 ! Constraint forces
+   stset.constr.f (       6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.47673325931179570E+06 ! Constraint forces
    stset.control.st.dyn (   1 ,     $S_reference.$C_Prop          ) = 0.00000000000000000E+00 ! Control dynamic states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -2.60439751338932164E-02 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 4.48125078214767145E-02 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -3.03025049939426632E-17 ! Joint position states
+   stset.control.st.dyn (   1 ,     $S_reference.$C_PI            ) = 0.00000000000000000E+00 ! Control dynamic states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.23199711905482345E-01 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.23199711905482165E-01 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -2.95559399943977686E-16 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -3.80701647763250430E-16 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.07792473269913220E-17 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
@@ -633,6 +642,7 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
@@ -643,6 +653,7 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.42731499999999989E+00 ! Joint position states
    stset.joint.st.pos (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
@@ -653,16 +664,18 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.18342000000000003E-01 ! Joint position states
    stset.joint.st.pos (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -3.22882128049056250E-02 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -3.22882128049048686E-02 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -3.22882128049060621E-02 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 4.27754949008620211E-02 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.27754949008618962E-02 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 4.27754949008619725E-02 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
@@ -673,25 +686,27 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.87870522827295106E-17 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.48971828336946829E-18 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 6.19272707929874884E-18 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.90000000000000010E-05 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_housing.$S_TPL.$J_housing) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -5.83229180518499260E-18 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 5.96336881386398204E-17 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 8.44796379764651499E-18 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 2.04332441766661358E-19 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_housing.$S_TPL.$J_housing) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.34800000000000030E-03 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -702,6 +717,7 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.11999999999999998E-04 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -712,6 +728,7 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 5.48513254303999997E-01 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -722,16 +739,18 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.31985927999999943E-03 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -1.42823660215772671E-17 ! Joint velocity states
-   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.95427382491051157E-18 ! Joint velocity states
-   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.98305382026384533E-17 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 7.06711600863298080E-18 ! Joint velocity states
-   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.67651030881860799E-17 ! Joint velocity states
-   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -2.40078065185257915E-17 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171220000030E-02 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -744,6 +763,8 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
 stateset.end (                      $ST_AIC )
 stset.time (                        $ST_AIC                       ) = 0.00000000000000000E+00 ! Time
+stset.model.data.redundancy (       $ST_AIC                       ) = 'eJxjYCANWCSbm5mmJiYaG6SZWCYlG5oampskJyVZpJkYJZkmJycDAJUHCU1QAAAAAAAAAA==' ! Constraint redundancy data
+stset.model.data.dependency (       $ST_AIC                       ) = 'eJxjY2BgYKQSZkCiGXDwYYAVhzgpYLCYAQOjfsUEFsnmZqapiYnGBmkmlknJhqaG5ibJSUkWaSZGSabJyckA/XsJh4ACAAAAAAAA' ! Solver state dependency data
 
 stateset.begin (                    $ST_all_zero )
    stset.body.flx.st.pos (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Flexible body position states
@@ -1455,10 +1476,11 @@ stateset.begin (                    $ST_static_eq )
    stset.body.flx.internal.data (   $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = ''          ! Body flexible internal data
    stset.body.flx.internal.data (   $S_reference.$S_stage_01.$S_TPL.$B_shaft) = ''            ! Body flexible internal data
    stset.body.flx.internal.data (   $S_reference.$S_stage_03.$S_TPL.$B_shaft) = ''            ! Body flexible internal data
-   stset.body.brf.st.pos (   1 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   1 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   1 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   1 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -1480,17 +1502,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   1 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   2 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   2 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   2 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   2 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -1512,17 +1534,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   2 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   3 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   3 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   3 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   3 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -1544,17 +1566,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   3 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   4 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   4 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   4 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   4 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -1576,17 +1598,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   4 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   5 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   5 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   5 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   5 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -1608,17 +1630,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   5 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   6 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   6 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   6 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF position states
+   stset.body.brf.st.pos (   6 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
@@ -1640,17 +1662,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
    stset.body.brf.st.pos (   6 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF position states
-   stset.body.brf.st.vel (   1 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   1 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   1 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   1 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -1672,17 +1694,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   1 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   2 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   2 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   2 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   2 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -1704,17 +1726,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   2 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   3 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   3 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   3 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   3 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -1736,17 +1758,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   3 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   4 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   4 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   4 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   4 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -1768,17 +1790,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   4 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   5 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   5 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   5 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   5 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -1800,17 +1822,17 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   5 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   6 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   6 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   6 ,    $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.body.brf.st.vel (   6 ,    $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_sun) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_sun.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
@@ -1832,84 +1854,95 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_ring.$S_TPL.$B_ring) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_pinion.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_pin) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
+   stset.constr.f (       1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.42895291581647471E+05 ! Constraint forces
+   stset.constr.f (       2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.05727181158926226E+07 ! Constraint forces
+   stset.constr.f (       3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90199994192735403E+02 ! Constraint forces
+   stset.constr.f (       4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.29859483996091942E+01 ! Constraint forces
+   stset.constr.f (       5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.66783070566036029E-01 ! Constraint forces
+   stset.constr.f (       6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.68944093282001512E+06 ! Constraint forces
    stset.control.st.dyn (   1 ,     $S_reference.$C_Prop          ) = 0.00000000000000000E+00 ! Control dynamic states
-   stset.control.st.dyn (   1 ,     $S_reference.$C_PI            ) = 0.00000000000000000E+00 ! Control dynamic states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.control.st.dyn (   1 ,     $S_reference.$C_PI            ) = -1.95236731816785074E+01 ! Control dynamic states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.96630568837160955E-19 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.10369493207440397E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.18671924174131918E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.54068797081307438E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.58305131346588190E-01 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.73519734603796782E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -2.94955067626256652E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 9.38516544874484215E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 9.36751260409934006E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 9.41835898371262692E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -2.26523761773259184E-05 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 2.25963995245251657E-20 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 1.03543376205174673E-04 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -1.58035552988198663E-04 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -2.39707575098559812E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -3.82790583589590199E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -6.79089246419838385E-08 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -3.50608458869661779E-05 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.99256473851916576E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.09651569897195558E-08 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.41120316279796599E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -8.80129046118726299E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.63466129721530838E-20 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 1.98815189600399311E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 2.88115710376551930E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.42496230460380696E-07 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -7.22578067734180873E-07 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -7.14885951632196693E-07 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 9.43852713233661979E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -5.08573344100125863E-06 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -3.15442319884812436E-07 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.39082985754539761E-06 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.18750353060918676E-04 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.42731499999999989E+00 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.87529009928202655E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 6.61103882920340430E-08 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -8.67744030433139669E-05 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.04732501548350239E-05 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.48672844271104303E-05 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.92106384075694519E-04 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.90517802941998777E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.98046451697927058E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.90093777903470498E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -2.04878979817429421E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.18342000000000003E-01 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.85515943066345266E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -5.07292025235700527E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 2.65374179727141926E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.99214211330667858E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.16309090222758471E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -3.37020928724507342E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.31702582684809102E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.18233876163329014E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.17204213472979974E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.28282047135781270E-05 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -8.26882375139551660E-21 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 9.60629467624148341E-05 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.24736552764691480E-04 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.83871047087197777E-04 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.13658335554744777E-02 ! Joint position states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_housing.$S_TPL.$J_housing) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 2.55910155629574963E-04 ! Joint position states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.90000000000000044E-05 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1927,7 +1960,9 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.20549499999999995E+02 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_housing.$S_TPL.$J_housing) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.34800000000000030E-03 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1938,6 +1973,7 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.12000000000000012E-04 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1948,6 +1984,7 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 5.48513254303999997E-01 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1958,6 +1995,7 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.31985928000000029E-03 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1968,6 +2006,7 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
+   stset.joint.st.vel (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171219999891E-02 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1980,6 +2019,8 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
 stateset.end (                      $ST_static_eq )
 stset.time (                        $ST_static_eq                 ) = 0.00000000000000000E+00 ! Time
+stset.model.data.redundancy (       $ST_static_eq                 ) = 'eJxjYCANJBmYG6daGiUnGZkYpVkYJVqkGpsZGxknJlomGRlYGBsAAI17CFNQAAAAAAAAAA==' ! Constraint redundancy data
+stset.model.data.dependency (       $ST_static_eq                 ) = 'eJxjY2BgYKQSBgE2BuoBapoFA6zDyAwYGA0n4gAtwgkdJBmYG6daGiUnGZkYpVkYJVqkGpsZGxknJlomGRlYGBsAAEMGCKFwAwAAAAAAAA==' ! Solver state dependency data
 
 !**********************************************************************
 ! Solver Settings
@@ -2053,20 +2094,203 @@ slv.meas.yout (                     $SLV_SolverSettings           ) = 1         
 slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
 slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
 slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
-slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
 slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
 slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
 slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.cond (                     $SLV_SolverSettings           ) = 1                       ! Convergence condition
+slv.equi.st.meth (                  $SLV_SolverSettings           ) = 0                       ! EQUI_STATIC_INTPAR_METHOD
+slv.equi.st.integ.tend.mode (       $SLV_SolverSettings           ) = 0                       ! EQUI_STATIC_INTPAR_TEND_MODE
+slv.equi.st.integ.tend.duration (   $SLV_SolverSettings           ) = 1.00000000000000000E+02 ! EQUI_STATIC_TIMEPAR_TEND_DURATION
+slv.equi.convergence.history (      $SLV_SolverSettings           ) = 1                       ! Output convergence history
 slv.lsa.type (                      $SLV_SolverSettings           ) = 0                       ! Analysis type: 0 = Frequency Response; 1 = System Response; 2 = Power Response
-slv.lsa.freq.num (                  $SLV_SolverSettings           ) = 100000                  ! Number of frequencies
+slv.lsa.freq.num (                  $SLV_SolverSettings           ) = 10000                   ! Number of frequencies
 slv.lsa.freq.distrib (              $SLV_SolverSettings           ) = 1                       ! Frequency distribution: 0 = linear; 1 = logarithmical
 slv.lsa.plot.ampl.type (            $SLV_SolverSettings           ) = 1                       ! Amplitude axis type: 0 = linear; 1 = logarithmical
 slv.lsa.plot.phase.visible (        $SLV_SolverSettings           ) = 1                       ! Phase plot
 slv.lsa.freq.min (                  $SLV_SolverSettings           ) = 1.00000000000000002E-02 ! Lower frequency bound
-slv.lsa.freq.max (                  $SLV_SolverSettings           ) = 2.00000000000000000E+03 ! Upper frequency bound
+slv.lsa.freq.max (                  $SLV_SolverSettings           ) = 6.00000000000000000E+02 ! Upper frequency bound
 slv.lsa.plot.freq.min (             $SLV_SolverSettings           ) = 1.00000000000000006E-01 ! Frequency min
 slv.lsa.plot.freq.max (             $SLV_SolverSettings           ) = 2.00000000000000000E+03 ! Frequency max
 slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+slv.kin.task (                      $SLV_static_eq_time_integ     ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_static_eq_time_integ     ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_static_eq_time_integ     ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_static_eq_time_integ     ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_static_eq_time_integ     ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_static_eq_time_integ     ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_static_eq_time_integ     ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_static_eq_time_integ     ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_static_eq_time_integ     ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_static_eq_time_integ     ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_static_eq_time_integ     ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_static_eq_time_integ     ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_static_eq_time_integ     ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_static_eq_time_integ     ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_static_eq_time_integ     ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_static_eq_time_integ     ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_static_eq_time_integ     ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_static_eq_time_integ     ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_static_eq_time_integ     ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_static_eq_time_integ     ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_static_eq_time_integ     ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_static_eq_time_integ     ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_static_eq_time_integ     ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_static_eq_time_integ     ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_static_eq_time_integ     ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_static_eq_time_integ     ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_static_eq_time_integ     ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_static_eq_time_integ     ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_static_eq_time_integ     ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_static_eq_time_integ     ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_static_eq_time_integ     ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_static_eq_time_integ     ) = $SVG_loading.$_simulation_time ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_static_eq_time_integ     ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_static_eq_time_integ     ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_static_eq_time_integ     ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_static_eq_time_integ     ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_static_eq_time_integ     ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_static_eq_time_integ     ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_static_eq_time_integ     ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_static_eq_time_integ     ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_static_eq_time_integ     ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_static_eq_time_integ     ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_static_eq_time_integ     ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_static_eq_time_integ     ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_static_eq_time_integ     ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_static_eq_time_integ     ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_static_eq_time_integ     ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_static_eq_time_integ     ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_static_eq_time_integ     ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_static_eq_time_integ     ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_static_eq_time_integ     ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_static_eq_time_integ     ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_static_eq_time_integ     ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_static_eq_time_integ     ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_static_eq_time_integ     ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_static_eq_time_integ     ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_static_eq_time_integ     ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_static_eq_time_integ     ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_static_eq_time_integ     ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_static_eq_time_integ     ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_static_eq_time_integ     ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_static_eq_time_integ     ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $SLV_static_eq_time_integ     ) = ''                      ! Description written to the output file if supported
+slv.compat.solver (                 $SLV_static_eq_time_integ     ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.cond (                     $SLV_static_eq_time_integ     ) = 0                       ! Convergence condition
+slv.equi.st.meth (                  $SLV_static_eq_time_integ     ) = 1                       ! EQUI_STATIC_INTPAR_METHOD
+slv.equi.st.integ.tend.mode (       $SLV_static_eq_time_integ     ) = 0                       ! EQUI_STATIC_INTPAR_TEND_MODE
+slv.equi.st.integ.tend.duration (   $SLV_static_eq_time_integ     ) = 5.00000000000000000E+01 ! EQUI_STATIC_TIMEPAR_TEND_DURATION
+slv.equi.convergence.history (      $SLV_static_eq_time_integ     ) = 1                       ! Output convergence history
+slv.lsa.type (                      $SLV_static_eq_time_integ     ) = 0                       ! Analysis type: 0 = Frequency Response; 1 = System Response; 2 = Power Response
+slv.lsa.freq.num (                  $SLV_static_eq_time_integ     ) = 100000                  ! Number of frequencies
+slv.lsa.freq.distrib (              $SLV_static_eq_time_integ     ) = 1                       ! Frequency distribution: 0 = linear; 1 = logarithmical
+slv.lsa.plot.ampl.type (            $SLV_static_eq_time_integ     ) = 1                       ! Amplitude axis type: 0 = linear; 1 = logarithmical
+slv.lsa.plot.phase.visible (        $SLV_static_eq_time_integ     ) = 1                       ! Phase plot
+slv.lsa.freq.min (                  $SLV_static_eq_time_integ     ) = 1.00000000000000002E-02 ! Lower frequency bound
+slv.lsa.freq.max (                  $SLV_static_eq_time_integ     ) = 2.00000000000000000E+03 ! Upper frequency bound
+slv.lsa.plot.freq.min (             $SLV_static_eq_time_integ     ) = 1.00000000000000006E-01 ! Frequency min
+slv.lsa.plot.freq.max (             $SLV_static_eq_time_integ     ) = 2.00000000000000000E+03 ! Frequency max
+slv.txt (                           $SLV_static_eq_time_integ     ) = ''                      ! Comment
+
+slv.kin.task (                      $SLV_static_eq_Newton_acc     ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_static_eq_Newton_acc     ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_static_eq_Newton_acc     ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_static_eq_Newton_acc     ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_static_eq_Newton_acc     ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_static_eq_Newton_acc     ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_static_eq_Newton_acc     ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_static_eq_Newton_acc     ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_static_eq_Newton_acc     ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_static_eq_Newton_acc     ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_static_eq_Newton_acc     ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_static_eq_Newton_acc     ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_static_eq_Newton_acc     ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_static_eq_Newton_acc     ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_static_eq_Newton_acc     ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_static_eq_Newton_acc     ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_static_eq_Newton_acc     ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_static_eq_Newton_acc     ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_static_eq_Newton_acc     ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_static_eq_Newton_acc     ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_static_eq_Newton_acc     ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_static_eq_Newton_acc     ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_static_eq_Newton_acc     ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_static_eq_Newton_acc     ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_static_eq_Newton_acc     ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_static_eq_Newton_acc     ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_static_eq_Newton_acc     ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_static_eq_Newton_acc     ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_static_eq_Newton_acc     ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_static_eq_Newton_acc     ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_static_eq_Newton_acc     ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_static_eq_Newton_acc     ) = $SVG_loading.$_simulation_time ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_static_eq_Newton_acc     ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_static_eq_Newton_acc     ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_static_eq_Newton_acc     ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_static_eq_Newton_acc     ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_static_eq_Newton_acc     ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_static_eq_Newton_acc     ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_static_eq_Newton_acc     ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_static_eq_Newton_acc     ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_static_eq_Newton_acc     ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_static_eq_Newton_acc     ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_static_eq_Newton_acc     ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_static_eq_Newton_acc     ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_static_eq_Newton_acc     ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_static_eq_Newton_acc     ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_static_eq_Newton_acc     ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_static_eq_Newton_acc     ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_static_eq_Newton_acc     ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_static_eq_Newton_acc     ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_static_eq_Newton_acc     ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_static_eq_Newton_acc     ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_static_eq_Newton_acc     ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_static_eq_Newton_acc     ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_static_eq_Newton_acc     ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_static_eq_Newton_acc     ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_static_eq_Newton_acc     ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_static_eq_Newton_acc     ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_static_eq_Newton_acc     ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_static_eq_Newton_acc     ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_static_eq_Newton_acc     ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_static_eq_Newton_acc     ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $SLV_static_eq_Newton_acc     ) = ''                      ! Description written to the output file if supported
+slv.compat.solver (                 $SLV_static_eq_Newton_acc     ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.cond (                     $SLV_static_eq_Newton_acc     ) = 1                       ! Convergence condition
+slv.equi.st.meth (                  $SLV_static_eq_Newton_acc     ) = 0                       ! EQUI_STATIC_INTPAR_METHOD
+slv.equi.st.integ.tend.mode (       $SLV_static_eq_Newton_acc     ) = 0                       ! EQUI_STATIC_INTPAR_TEND_MODE
+slv.equi.st.integ.tend.duration (   $SLV_static_eq_Newton_acc     ) = 5.00000000000000000E+01 ! EQUI_STATIC_TIMEPAR_TEND_DURATION
+slv.equi.convergence.history (      $SLV_static_eq_Newton_acc     ) = 1                       ! Output convergence history
+slv.lsa.type (                      $SLV_static_eq_Newton_acc     ) = 0                       ! Analysis type: 0 = Frequency Response; 1 = System Response; 2 = Power Response
+slv.lsa.freq.num (                  $SLV_static_eq_Newton_acc     ) = 10000                   ! Number of frequencies
+slv.lsa.freq.distrib (              $SLV_static_eq_Newton_acc     ) = 1                       ! Frequency distribution: 0 = linear; 1 = logarithmical
+slv.lsa.plot.ampl.type (            $SLV_static_eq_Newton_acc     ) = 1                       ! Amplitude axis type: 0 = linear; 1 = logarithmical
+slv.lsa.plot.phase.visible (        $SLV_static_eq_Newton_acc     ) = 1                       ! Phase plot
+slv.lsa.freq.min (                  $SLV_static_eq_Newton_acc     ) = 1.00000000000000002E-02 ! Lower frequency bound
+slv.lsa.freq.max (                  $SLV_static_eq_Newton_acc     ) = 1.00000000000000000E+03 ! Upper frequency bound
+slv.lsa.plot.freq.min (             $SLV_static_eq_Newton_acc     ) = 1.00000000000000006E-01 ! Frequency min
+slv.lsa.plot.freq.max (             $SLV_static_eq_Newton_acc     ) = 2.00000000000000000E+03 ! Frequency max
+slv.txt (                           $SLV_static_eq_Newton_acc     ) = ''                      ! Comment
 
 !**********************************************************************
 ! SubVars
@@ -2375,7 +2599,9 @@ sendergroup.end (                   $SG_bed_plate                 )             
 
 
 ! Overwritten substructure values
-control.st.dyn (          1 ,       $S_reference.$C_PI            ) = 0.00000000000000000E+00 ! Dynamic States
+control.st.dyn (          1 ,       $S_reference.$C_Prop          ) = 0.00000000000000000E+00 ! Dynamic States
+
+control.st.dyn (          1 ,       $S_reference.$C_PI            ) = -1.95236731816785074E+01 ! Dynamic States
 
 sender.disabled (                   $S_reference.$COM_base_excitation_flag) = 1               ! Disabled
 
@@ -2383,6 +2609,9 @@ sender.disabled (                   $S_reference.$SG_stage_01.$SG_ring.$COM_num_
 
 view.fclip.value (                  $S_reference.$S_bed_plate.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
 view.bclip.value (                  $S_reference.$S_bed_plate.$V_WorkingView) = 9.44684028625488281E+00 ! Back clipping plane value
+
+view.fclip.value (                  $S_reference.$S_bed_plate.$S_TPL.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $S_reference.$S_bed_plate.$S_TPL.$V_WorkingView) = 5.31139945983886719E+00 ! Back clipping plane value
 
 body.brf.st.pos (         1 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -2396,6 +2625,27 @@ body.brf.st.vel (         3 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plat
 body.brf.st.vel (         4 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.96630568837160955E-19 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 2.25963995245251657E-20 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.63466129721530838E-20 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.42731499999999989E+00 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.18342000000000003E-01 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -8.26882375139551660E-21 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.90000000000000044E-05 ! Velocity
+joint.st.vel (            2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.34800000000000030E-03 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.12000000000000012E-04 ! Velocity
+joint.st.vel (            4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 5.48513254303999997E-01 ! Velocity
+joint.st.vel (            5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.31985928000000029E-03 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171219999891E-02 ! Velocity
+
+
+constr.f (                1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.42895291581647471E+05 ! Forces
+constr.f (                2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.05727181158926226E+07 ! Forces
+constr.f (                3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90199994192735403E+02 ! Forces
+constr.f (                4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.29859483996091942E+01 ! Forces
+constr.f (                5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.66783070566036029E-01 ! Forces
+constr.f (                6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.68944093282001512E+06 ! Forces
 
 connect.st.force (        1 ,       $S_reference.$S_bed_plate.$S_TPL.$CTN_fixed) = -0.00000000000000000E+00 ! Constraint forces (locked directions)
 connect.st.force (        2 ,       $S_reference.$S_bed_plate.$S_TPL.$CTN_fixed) = -0.00000000000000000E+00 ! Constraint forces (locked directions)
@@ -2417,6 +2667,9 @@ body.brf.st.vel (         3 ,       $S_reference.$S_housing.$S_TPL.$B_housing) =
 body.brf.st.vel (         4 ,       $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_housing.$S_TPL.$B_housing) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.vel (            1 ,       $S_reference.$S_housing.$S_TPL.$J_housing) = 0.00000000000000000E+00 ! Velocity
+
 
 receiver.disabled (                 $S_reference.$S_housing.$S_TPL.$RG_stage_02.$COM_shaft_length) = 0 ! Disabled
 
@@ -2481,12 +2734,12 @@ body.flx.st.vel (        21 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) 
 body.flx.st.vel (        22 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity state
 body.flx.internal.data (            $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = ''          ! Internal flexible Body data
 
-joint.st.pos (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.10369493207440397E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 1.03543376205174673E-04 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 1.98815189600399311E-05 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.87529009928202655E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.85515943066345266E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 9.60629467624148341E-05 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -2520,6 +2773,9 @@ force.par (               3 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing
 force.par (               4 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
 force.par (               5 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
 force.par (               6 ,       $S_reference.$S_main_shaft.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+
+view.fclip.value (                  $S_reference.$S_stage_01.$S_TPL.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $S_reference.$S_stage_01.$S_TPL.$V_WorkingView) = 5.31139945983886719E+00 ! Back clipping plane value
 
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -2555,12 +2811,12 @@ body.flx.st.vel (         9 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 
 body.flx.st.vel (        10 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity state
 body.flx.internal.data (            $S_reference.$S_stage_01.$S_TPL.$B_shaft) = ''            ! Internal flexible Body data
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.18671924174131918E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -1.58035552988198663E-04 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 2.88115710376551930E-05 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 6.61103882920340430E-08 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -5.07292025235700527E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.24736552764691480E-04 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -2608,11 +2864,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.54068797081307438E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -2.39707575098559812E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.42496230460380696E-07 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -8.67744030433139669E-05 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 2.65374179727141926E-05 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -2634,6 +2890,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -2674,11 +2934,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.58305131346588190E-01 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -3.82790583589590199E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -7.22578067734180873E-07 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.04732501548350239E-05 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.99214211330667858E-05 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -2700,6 +2960,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -2740,11 +3004,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.73519734603796782E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -6.79089246419838385E-08 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -7.14885951632196693E-07 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.48672844271104303E-05 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.16309090222758471E-05 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -2766,6 +3030,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -2819,6 +3087,10 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = 0.00000000000000000E+00 ! Velocity
+
+
 force.preld.calc (        1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        3 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -2845,6 +3117,9 @@ force.par (               4 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$
 force.par (               5 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
 force.par (               6 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$F_bearing_B) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
 
+view.fclip.value (                  $S_reference.$S_stage_02.$S_TPL.$V_WorkingView) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $S_reference.$S_stage_02.$S_TPL.$V_WorkingView) = 5.31139945983886719E+00 ! Back clipping plane value
+
 body.brf.st.pos (         1 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         2 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
 body.brf.st.pos (         3 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
@@ -2858,12 +3133,12 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -2.94955067626256652E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -3.50608458869661779E-05 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 9.43852713233661979E-05 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.92106384075694519E-04 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -3.37020928724507342E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.83871047087197777E-04 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -2911,11 +3186,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 9.38516544874484215E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.99256473851916576E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -5.08573344100125863E-06 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.90517802941998777E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.31702582684809102E-04 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -2937,6 +3212,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -2977,11 +3256,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 9.36751260409934006E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.09651569897195558E-08 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -3.15442319884812436E-07 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.98046451697927058E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.18233876163329014E-04 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -3003,6 +3282,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -3043,11 +3326,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 9.41835898371262692E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.41120316279796599E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.39082985754539761E-06 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.90093777903470498E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.17204213472979974E-04 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -3069,6 +3352,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_gear) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -3121,6 +3408,10 @@ body.brf.st.vel (         3 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$
 body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$B_carrier) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = 0.00000000000000000E+00 ! Velocity
+
 
 force.preld.calc (        1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
 force.preld.calc (        2 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$F_bearing_A) = 1 ! Select Preload cal.
@@ -3182,13 +3473,13 @@ body.flx.st.vel (         9 ,       $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 
 body.flx.st.vel (        10 ,       $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity state
 body.flx.internal.data (            $S_reference.$S_stage_03.$S_TPL.$B_shaft) = ''            ! Internal flexible Body data
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.13658335554744777E-02 ! Position
-joint.st.vel (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
+joint.st.pos (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -2.26523761773259184E-05 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -8.80129046118726299E-05 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.18750353060918676E-04 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -2.04878979817429421E-04 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.28282047135781270E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 2.55910155629574963E-04 ! Position
+joint.st.vel (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.20549499999999995E+02 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -3352,4 +3643,5 @@ body.brf.st.vel (         4 ,       $S_reference.$S_generator.$S_TPL.$B_disc) = 
 body.brf.st.vel (         5 ,       $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-                                       
+model.data.redundancy                                               = 'eJxjYCANJBmYG6daGiUnGZkYpVkYJVqkGpsZGxknJlomGRlYGBsAAI17CFNQAAAAAAAAAA==' ! Constraint redundancy data
+model.data.dependency                                               = 'eJxjY2BgYKQSBgE2BuoBapoFA6zDyAwYGA0n4gAtwgkdJBmYG6daGiUnGZkYpVkYJVqkGpsZGxknJlomGRlYGBsAAEMGCKFwAwAAAAAAAA==' ! Solver state dependency data

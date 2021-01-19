@@ -360,7 +360,7 @@ classdef Dynamic_Formulation
             
             n = length(x_0);     nt = length(time);
             
-            data = load('input_load.mat');
+            data = load('data/input_load.mat');
             t_load = data.time;
             T_aero = data.Mx*1.0e3;
             gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]

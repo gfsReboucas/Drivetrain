@@ -25,19 +25,12 @@ classdef KISSsoftCOM
             if(flag)
                 obj.COM = actxserver('KISSsoftCOM.KISSsoft');
             else
-                error(msg.identifier, "%s", msg.message);
+                error(msg.identifier, '%s', msg.message);
             end
-            
-            [obj.folder, ...
-             obj.file_name, ...
-             mod] = fileparts(name_file);
-            obj.module = strrep(mod, '.Z', 'Z0');
-%             erase(mod, '.');
             
             obj.load_file(name_file);
             
             obj.COM.SetSilentMode(false);
-            obj.COM.GetModule(obj.module, false);
         end
         
         function val = calculate(obj)
@@ -70,7 +63,7 @@ classdef KISSsoftCOM
             end
             
             obj.COM.SetVar(name, num2str(val, 10));
-            obj.check_calculations();
+%             obj.check_calculations();
         end
         
         function val = get_var(obj, name)
@@ -78,7 +71,7 @@ classdef KISSsoftCOM
                 warning('No module loaded');
             end
             
-            obj.check_calculations();
+%             obj.check_calculations();
             val = obj.COM.GetVar(name);
             if(isnan(val))
                 error('Variable [%s] does not exist or cannot be accessed.', upper(name));
@@ -86,17 +79,14 @@ classdef KISSsoftCOM
             val = str2double(val);
         end
         
-        function val = get_version(obj)
-            val = obj.COM.GetKsoftVersion();
-        end
-        
         function val = check_calculations(obj)
             flag_mod = obj.is_module_loaded();
             flag_calc = obj.COM.CalculateRetVal();
+            KS_msg = obj.message();
             
             if(flag_mod == false)
                 val = false;
-                warning('KISSsoftCOM:no_module', 'No module loaded');
+                warning('KISSsoftCOM:no_module', 'No module loaded.\n\tKISSsofts''s message:\n%s', KS_msg);
             else
                 val = true;
             end
@@ -104,21 +94,27 @@ classdef KISSsoftCOM
             
             if(flag_calc == false)
                 val = false;
-                warning('KISSsoftCOM:wrong_calc', 'Error(s) during calculation');
+                warning('KISSsoftCOM:wrong_calc', 'Problem(s) during calculation.\n\tKISSsofts''s message:\n%s', KS_msg);
             else
                 val = true;
             end
         end
                 
         function val = load_file(obj, name_file)
-            val = false;
-            if(~isfile(name_file))
-                error('File [%s] does not exist', upper(name_file));
-            else
-                obj.COM.LoadFile(name_file);
-                val = true;
+            
+            if(~obj.is_module_loaded())
+                obj.set_module(name_file);
             end
             
+            % Compare messages before and after loading file
+            msg_bef = obj.message();
+            obj.COM.LoadFile(name_file);
+            msg_aft = obj.message();
+            
+            if(~strcmpi(msg_bef, msg_aft))
+                error('Could not load file [%s].\n\tKISSsoft''s message:\n%s', upper(name_file), msg_aft);
+            end
+            val = true;
         end
         
         function val = load_example_file(obj, file_name)
@@ -161,9 +157,42 @@ classdef KISSsoftCOM
         function delete(obj)
             obj.COM.ReleaseModule();
         end
+        
+        function [fold, fname, mod] = set_module(obj, name_file)
+%             if(~isfile(name_file))
+%                 error('File [%s] does not exist', upper(name_file));
+%             end
+%             
+            % Get folder, file name, and module from file:
+            [fold, ...
+             fname, ...
+             mod] = fileparts(name_file);
+            number = mod(3:end);
+            if(isnan(str2double(number)))
+                error('KISSsoftCOM:set_module', 'Wrong file extension [%s]', upper(mod));
+            end
+            mod = sprintf('%s0%s', mod(2), number);
+            obj.COM.GetModule(mod, false);
+        end
+        
+        function msg = message(obj)
+            msg = obj.COM.Message();
+            msg = cell2mat(msg');
+            if(isempty(msg))
+                msg = '';
+            end
+        end
+        
     end
     
     methods(Static)
+        function val = get_version()
+            val = nan;
+            if(KISSsoftCOM.is_installed())
+                val = actxserver('KISSsoftCOM.KISSsoft').GetKsoftVersion();
+            end
+        end
+        
         function [val, msg] = is_installed()
             val = true;
             msg = [];
@@ -179,7 +208,7 @@ classdef KISSsoftCOM
             if(flag)
                 methodsview(actxserver('KISSsoftCOM.KISSsoft'));
             else
-                warning(msg.identifier, "%s", msg.message);
+                warning(msg.identifier, '%s', msg.message);
             end
         end
         
@@ -214,16 +243,16 @@ classdef KISSsoftCOM
             ex03.check_calculations();
             ex03.calculate();
             
-            fprintf('Current profile shift gear 1 : %.3f\n', ex03.get_var("ZR[0].x.nul"));
-            fprintf('Current tooth root safety gear 1: %.3f\n', ex03.get_var("ZPP[0].Fuss.SFnorm"));
+            fprintf('Current profile shift gear 1 : %.3f\n', ex03.get_var('ZR[0].x.nul'));
+            fprintf('Current tooth root safety gear 1: %.3f\n', ex03.get_var('ZPP[0].Fuss.SFnorm'));
             
             ex03.set_var('ZR[0].x.nul', 0.1);
             
             ex03.check_calculations();
             ex03.calculate();
             
-            fprintf('New profile shift gear 1 : %.3f\n', ex03.get_var("ZR[0].x.nul"));
-            fprintf('New tooth root safety gear 1: %.3f\n', ex03.get_var("ZPP[0].Fuss.SFnorm"));
+            fprintf('New profile shift gear 1 : %.3f\n', ex03.get_var('ZR[0].x.nul'));
+            fprintf('New tooth root safety gear 1: %.3f\n', ex03.get_var('ZPP[0].Fuss.SFnorm'));
 
         end
         

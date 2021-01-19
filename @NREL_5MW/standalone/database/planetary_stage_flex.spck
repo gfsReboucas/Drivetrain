@@ -604,6 +604,12 @@ marker.pos (              1 ,       $M_shaft_output               ) = $SVG_shaft
 joint.from (                        $J_shaft                      ) = $M_Isys_shaft           ! From Marker
 joint.to (                          $J_shaft                      ) = $M_shaft_input          ! To Marker
 joint.type (                        $J_shaft                      ) = 15                      ! Type
+joint.st.dep (            2 ,       $J_shaft                      ) = 0                       ! Dependency state
+joint.st.dep (            3 ,       $J_shaft                      ) = 0                       ! Dependency state
+joint.st.dep (            4 ,       $J_shaft                      ) = 0                       ! Dependency state
+joint.st.dep (            5 ,       $J_shaft                      ) = 0                       ! Dependency state
+joint.st.dep (            6 ,       $J_shaft                      ) = 0                       ! Dependency state
+joint.st.equi (           1 ,       $J_shaft                      ) = 0                       ! Equilibrium
 joint.par (               2 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Rotation axis
 joint.par (               3 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Tilting
 joint.par (               4 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in x
@@ -1063,24 +1069,6 @@ inicongroup.begin (                 $ICG_mesh                     )             
    inicon.par (           2 ,   1 , $IC_sun_planet_01             ) = 0.00000000000000000E+00 ! [-] Condition
    inicon.par (           2 ,   2 , $IC_sun_planet_01             ) = 0.00000000000000000E+00 ! [-] Tooth matching
 
-   inicon.type (                    $IC_sun_planet_02             ) = 12                      ! Type
-   inicon.disabled (                $IC_sun_planet_02             ) = $_use_advanced          ! Disabled
-   inicon.par (           1 ,       $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] General
-   inicon.par (           1 ,   1 ,   1 , $IC_sun_planet_02       ) = 0.00000000000000000E+00 ! [-] Interface type
-   inicon.par (           1 ,   1 ,   2 , $IC_sun_planet_02       ) = $FEG_mesh.$F_sun_planet_02 ! [-] Gear Force Element
-   inicon.par (           2 ,       $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] Configuration
-   inicon.par (           2 ,   1 , $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] Condition
-   inicon.par (           2 ,   2 , $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] Tooth matching
-
-   inicon.type (                    $IC_sun_planet_03             ) = 12                      ! Type
-   inicon.disabled (                $IC_sun_planet_03             ) = $_use_advanced          ! Disabled
-   inicon.par (           1 ,       $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] General
-   inicon.par (           1 ,   1 ,   1 , $IC_sun_planet_03       ) = 0.00000000000000000E+00 ! [-] Interface type
-   inicon.par (           1 ,   1 ,   2 , $IC_sun_planet_03       ) = $FEG_mesh.$F_sun_planet_03 ! [-] Gear Force Element
-   inicon.par (           2 ,       $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] Configuration
-   inicon.par (           2 ,   1 , $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] Condition
-   inicon.par (           2 ,   2 , $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] Tooth matching
-
 inicongroup.end (                   $ICG_mesh                     )                           ! $ICG_mesh
 
 inicongroup.begin (                 $ICG_mesh_basic               )                           ! $ICG_mesh_basic
@@ -1119,24 +1107,6 @@ inicongroup.begin (                 $ICG_mesh_basic               )             
    inicon.par (           2 ,       $IC_sun_planet_01             ) = 0.00000000000000000E+00 ! [-] Configuration
    inicon.par (           2 ,   1 , $IC_sun_planet_01             ) = 0.00000000000000000E+00 ! [-] Condition
    inicon.par (           2 ,   2 , $IC_sun_planet_01             ) = 0.00000000000000000E+00 ! [-] Tooth matching
-
-   inicon.type (                    $IC_sun_planet_02             ) = 12                      ! Type
-   inicon.disabled (                $IC_sun_planet_02             ) = $_use_basic             ! Disabled
-   inicon.par (           1 ,       $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] General
-   inicon.par (           1 ,   1 ,   1 , $IC_sun_planet_02       ) = 0.00000000000000000E+00 ! [-] Interface type
-   inicon.par (           1 ,   1 ,   2 , $IC_sun_planet_02       ) = $FEG_mesh_basic.$F_sun_planet_02 ! [-] Gear Force Element
-   inicon.par (           2 ,       $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] Configuration
-   inicon.par (           2 ,   1 , $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] Condition
-   inicon.par (           2 ,   2 , $IC_sun_planet_02             ) = 0.00000000000000000E+00 ! [-] Tooth matching
-
-   inicon.type (                    $IC_sun_planet_03             ) = 12                      ! Type
-   inicon.disabled (                $IC_sun_planet_03             ) = $_use_basic             ! Disabled
-   inicon.par (           1 ,       $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] General
-   inicon.par (           1 ,   1 ,   1 , $IC_sun_planet_03       ) = 0.00000000000000000E+00 ! [-] Interface type
-   inicon.par (           1 ,   1 ,   2 , $IC_sun_planet_03       ) = $FEG_mesh_basic.$F_sun_planet_03 ! [-] Gear Force Element
-   inicon.par (           2 ,       $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] Configuration
-   inicon.par (           2 ,   1 , $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] Condition
-   inicon.par (           2 ,   2 , $IC_sun_planet_03             ) = 0.00000000000000000E+00 ! [-] Tooth matching
 
 inicongroup.end (                   $ICG_mesh_basic               )                           ! $ICG_mesh_basic
 
