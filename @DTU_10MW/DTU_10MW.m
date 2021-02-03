@@ -37,7 +37,7 @@ classdef DTU_10MW < Drivetrain
                      'J_R' , 1.0, 'J_G' , 1.0, ...
                      'd_S' , 1.0, 'L_S' , 1.0};
             
-            gamma = process_varargin(gamma, varargin);
+            gamma = scaling_factor.process_varargin(gamma, varargin);
             gamma = scaling_factor(gamma);
                         
             N_st = 3;

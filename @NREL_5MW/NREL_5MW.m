@@ -34,16 +34,30 @@ classdef NREL_5MW < Drivetrain
     
     methods
         function obj = NREL_5MW(varargin)
-            gamma = {'P'   , 1.0, 'n'   , 1.0, ...
+            gamma = {'P'   , 1.0, 'n_R' , 1.0, ...
                      'm_n1', 1.0, 'b_1' , 1.0, 'd_1' , 1.0, 'L_1' , 1.0, ...
                      'm_n2', 1.0, 'b_2' , 1.0, 'd_2' , 1.0, 'L_2' , 1.0, ...
                      'm_n3', 1.0, 'b_3' , 1.0, 'd_3' , 1.0, 'L_3' , 1.0, ...
-                     'J_R' , 1.0, 'J_G' , 1.0, ...
-                     'd_S' , 1.0, 'L_S' , 1.0};
+                     'M_R' , 1.0, 'J_R' , 1.0, ...
+                     'M_G' , 1.0, 'J_G' , 1.0, ...
+                     'd_s' , 1.0, 'L_s' , 1.0, ...
+                     'd_S' , 1.0, 'L_S' , 1.0, ...
+                     'fault_type'   ,  '', ...
+                     'fault_val'    , 0.0, ...
+                     'dynamic_model', @Kahraman_94};
+%                      'dynamic_model', @Lin_Parker_99};
+%                      'dynamic_model', @Dynamic_Formulation};
             
-            gamma = process_varargin(gamma, varargin);
+            gamma = scaling_factor.process_varargin(gamma, varargin);
+            
+%             dynamic_model = gamma.dynamic_model; % No fault
+            dynamic_model = gamma.dynamic_model;
+            fault_type    = gamma.fault_type;
+            fault_val     = gamma.fault_val;
+            
+            gamma = rmfield(gamma, {'dynamic_model', 'fault_type', 'fault_val'});
             gamma = scaling_factor(gamma);
-                        
+
             N_st = 3;
             stage = repmat(Gear_Set(), 1, N_st);
             
@@ -54,19 +68,19 @@ classdef NREL_5MW < Drivetrain
                 stage(idx) = stg.scale_by(gamma_idx);
             end
             
-            P_r = gamma('P')* 5.0e3; % [kW], Rated power
-            n_r = gamma('n')*12.1;   % [1/min.], Input speed
+            P_r = gamma('P')* 5.0e3; % [kW]    , Rated power
+            n_r = gamma('n_R')*12.1; % [1/min.], Input speed
             
             LSS = NREL_5MW.shaft(0);
             
-            inp_shaft = Shaft(LSS.d*gamma('d_S'), ...
-                              LSS.L*gamma('L_S'), ...
-                              LSS.bearing, ...
-                              LSS.material);
+            inp_shaft = Shaft('d'       , LSS.d*gamma('d_s'), ...
+                              'L'       , LSS.L*gamma('L_s'), ...
+                              'bearing' , LSS.bearing, ...
+                              'material', LSS.material);
             
-            m_R = 110.0e3;
+            m_R =      110.0e3*gamma('M_R');
             J_R = 57231535.0  *gamma('J_R'); % according to [1, 3]
-            m_G =     1900.0;
+            m_G =     1900.0  *gamma('M_G');
             J_G =      534.116*gamma('J_G');
             
             obj@Drivetrain('N_stage'      , N_st, ...
@@ -80,44 +94,51 @@ classdef NREL_5MW < Drivetrain
                            'J_Gen'        , J_G, ...
                            'S_Hmin'       , 1.25, ...
                            'S_Fmin'       , 1.56, ...
-                           'dynamic_model', @Kahraman_94);
-%                            'dynamic_model', @Lin_Parker_99);
+                           'dynamic_model', dynamic_model, ...
+                           'fault_type'   , fault_type, ...
+                           'fault_val'    , fault_val);
 
             obj.gamma = scaling_factor(gamma.name, gamma.value);
 
-            [obj.S_H_val, obj.S_F_val, ...
-                obj.S_shaft_val] = obj.safety_factors();
         end
     end
     
     %% Calculation:
     methods
         function [SH, SF, SShaft, calc] = safety_factor_stage(obj, idx)
-            L_h    = 20*365*24;
+            L_h    =  20.0  * ... % year
+                     365.25 * ... % day/year
+                      24.0;       % hours/day
             K_A    = 1.25;
             
             switch(idx)
                 case 1
                     n_idx = [nan, nan, 0.0, obj.n_rotor];
+                    extension = 'Z14';
                 case 2
                     n_idx = [nan, nan, 0.0, obj.n_out(1)];
+                    extension = 'Z14';
                 case 3
                     n_idx = [obj.n_out(3), nan];
+                    extension = 'Z12';
                 otherwise
-                    error();
+                    error('NREL_5MW:safety_factor', 'Index out of range.');
             end
             
-            calc = KSISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
-                                              'n_out'       , obj.n_out(idx), ...
-                                              'S_Hmin'      , obj.S_Hmin, ...
-                                              'S_Fmin'      , obj.S_Fmin, ...
-                                              'L_h'         , L_h, ... % [h], Required life
-                                              'K_A'         , K_A, ... % [-], Application factor
-                                              'lubricant_ID', 11170, ...
-                                              'nu_40'       , 220.0, ... % [], lubricant viscosity
-                                              'n_nominal'   , n_idx);
-            [SH, SF] = calc.safety_factors('lubricant_ID', 11220, ...
-                                           'nu_40'       , 220.0, ...
+            KS_file = sprintf('\\@%s\\stage_%02d.%s', class(obj), idx, extension);
+            
+%             calc = KSISO_6336(obj.stage(idx),  'P_rated'     , obj.P_rated, ...
+            calc = MATISO_6336(obj.stage(idx), 'P_rated'     , obj.P_rated, ...
+                                               'n_out'       , obj.n_out(idx), ...
+                                               'S_Hmin'      , obj.S_Hmin, ...
+                                               'S_Fmin'      , obj.S_Fmin, ...
+                                               'L_h'         , L_h, ... % [h], Required life
+                                               'K_A'         , K_A, ... % [-], Application factor
+                                               'lubricant_ID', 11170, ...
+                                               'nu_40'       , 220.0, ... % [], lubricant viscosity
+                                               'n_nominal'   , n_idx, ...
+                                               'KS_file'     , KS_file);
+            [SH, SF] = calc.safety_factors('nu_40'       , 220.0, ...
                                            'stage_idx'   ,   idx, ...
                                            'save_report' , false, ...
                                            'show_report' , false);
@@ -140,46 +161,46 @@ classdef NREL_5MW < Drivetrain
             % table.
             %
             % References: (access on 16.07.2020)
+            % - https://www.skf.com/group/products/rolling-bearings
             % - http://bearingsize.info/
             % - https://simplybearings.co.uk/shop/
-            % - https://www.skf.com/group/products/rolling-bearings
             %
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |    Name   |           Label          | K_x (N/m) | K_y (N/m) | K_z (N/m) | K_beta (Nm/rad) | K_gamma (Nm/rad) | Type |  OD  |  ID  |  B  |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   INP-A   |     SKF C 30/1250 MB*    |    0.0    |   1.5e10  |   1.5e10  |       5e6       |        5e6       | CARB | 1750 | 1250 | 375 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   INP-B   |    SKF 231/750 CA/W33    |   4.06e8  |  1.54e10  |  1.54e10  |        0        |         0        |  SRB | 1220 |  750 | 365 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   PLC-A   |    SKF 240/710 ECA/W33   |   6.6e4   |   1.7e9   |   1.1e9   |      5.6e5      |       1.3e5      |  SRB | 1030 |  710 | 315 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   PLC-B   | SKF NF 28/1000 ECMP/HA1+ |   6.6e7   |   1.7e9   |   1.1e9   |      5.6e5      |       1.3e5      |  CRB | 1220 | 1000 | 128 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |    PL-A   |     SKF NNCF 5080 CV     |   9.1e4   |   9.4e9   |   3.2e9   |      1.4e6      |       4.5e6      |  CRB |  600 |  400 | 272 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |    PL-B   |     SKF NNCF 5080 CV     |   9.1e4   |   9.4e9   |   3.2e9   |      1.4e6      |       4.5e6      |  CRB |  600 |  400 | 272 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % | IMS-PLC-A |       SKF C30/710M       |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      | CARB | 1030 |  710 | 236 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % | IMS-PLC-B |    SKF NU 20/600 ECMA    |   9.1e7   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  870 |  600 | 155 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |  IMS-PL-A |     SKF NNCF 4976 CV+    |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  520 |  380 | 140 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |  IMS-PL-B |     SKF NNCF 4976 CV+    |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  520 |  380 | 140 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   IMS-A   |     SKF NNCF 4880 CV+    |     0     |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  500 |  400 | 100 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   IMS-B   |  Timken M667948/M667911& |   7.4e7   |    5e8    |    5e8    |      1.6e6      |       1.8e6      |  TRB |  550 |  410 |  86 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |   IMS-C   |  Timken M667948/M667911& |   7.8e7   |   7.4e8   |   3.3e8   |      1.1e6      |       2.5e6      |  TRB |  550 |  410 |  86 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |    HS-A   |     SKF NCF 2240 ECJB    |   1.3e8   |   8.2e8   |   8.2e8   |      1.7e5      |        1e6       |  CRB |  360 |  200 |  98 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |    HS-B   |        SKF 32060 X       |   6.7e7   |    8e8    |   1.3e8   |      1.7e5      |        1e6       |  TRB |  460 | 200? | 100 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % |    HS-C   |        SKF 32060 X       |    8e7    |    1e9    |   7.3e7   |      1.7e5      |        1e6       |  TRB |  460 | 200? | 100 |
-            % +-----------+--------------------------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
-            % *: not found on SKF website (access 16.07.2020)
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    Name   |           Label          | a [-] | C [kN] | e [-] |  X [-] |  Y [-]  | K_x (N/m) | K_y (N/m) | K_z (N/m) | K_beta (Nm/rad) | K_gamma (Nm/rad) | Type |   D  |   d  |  B  |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   INP-A   |     SKF C 30/1250 MB*    |  10/3 |  22000 |   -   |    1   |    0    |    0.0    |   1.5e10  |   1.5e10  |      5.0e6      |       5.0e6      | CARB | 1750 | 1250 | 375 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   INP-B   |    SKF 231/750 CA/W33    |  10/3 |  16518 |  0.28 | 1/0.67 | 2.4/3.6 |   4.06e8  |  1.54e10  |  1.54e10  |       0.0       |        0.0       |  SRB | 1220 |  750 | 365 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   PLC-A   |    SKF 240/710 ECA/W33   |  10/3 |  11164 |  0.27 | 1/0.67 | 2.5/3.7 |   6.6e4   |   1.7e9   |   1.1e9   |      5.6e5      |       1.3e5      |  SRB | 1030 |  710 | 315 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   PLC-B   | SKF NF 28/1000 ECMP/HA1+ |  10/3 |  3690  |  0.3  | 1/0.92 |  0/0.4  |   6.6e7   |   1.7e9   |   1.1e9   |      5.6e5      |       1.3e5      |  CRB | 1220 | 1000 | 128 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    PL-A   |     SKF NNCF 5080 CV     |  10/3 |  5500  |  0.15 | 1/0.92 |  0/0.4  |   9.1e4   |   9.4e9   |   3.2e9   |      1.4e6      |       4.5e6      |  CRB |  600 |  400 | 272 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    PL-B   |     SKF NNCF 5080 CV     |  10/3 |  5500  |  0.15 | 1/0.92 |  0/0.4  |   9.1e4   |   9.4e9   |   3.2e9   |      1.4e6      |       4.5e6      |  CRB |  600 |  400 | 272 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % | IMS-PLC-A |       SKF C30/710M       |  10/3 |  8800  |   -   |    1   |    0    |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      | CARB | 1030 |  710 | 236 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % | IMS-PLC-B |    SKF NU 20/600 ECMA    |  10/3 |  4180  |  0.3  | 1/0.92 |  0/0.4  |   9.1e7   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  870 |  600 | 155 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |  IMS-PL-A |     SKF NNCF 4976 CV+    |  10/3 |  2380  |  0.15 | 1/0.92 |  0/0.4  |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  520 |  380 | 140 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |  IMS-PL-B |     SKF NNCF 4976 CV+    |  10/3 |  2380  |  0.15 | 1/0.92 |  0/0.4  |   9.1e4   |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  520 |  380 | 140 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   IMS-A   |     SKF NNCF 4880 CV+    |  10/3 |  1420  |  0.15 | 1/0.92 |  0/0.4  |     0     |    6e7    |   1.2e9   |      7.5e4      |       7.5e4      |  CRB |  500 |  400 | 100 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   IMS-B   |  SKF LM 567949/910/HA1 & |  10/3 |  1467  |  0.4  |  1/0.4 |  0/1.5  |   7.8e7   |   7.4e8   |   3.3e8   |      1.1e6      |       2.5e6      |  TRB |  550 |  410 |  86 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |   IMS-C   |  SKF LM 567949/910/HA1 & |  10/3 |  1467  |  0.4  |  1/0.4 |  0/1.5  |   7.8e7   |   7.4e8   |   3.3e8   |      1.1e6      |       2.5e6      |  TRB |  550 |  410 |  86 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    HS-A   |     SKF NCF 2240 ECJB    |  10/3 |  1460  |  0.3  | 1/0.92 |  0/0.4  |   1.3e8   |   8.2e8   |   8.2e8   |      1.7e5      |        1e6       |  CRB |  360 |  200 |  98 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    HS-B   |        SKF 32060 X ?     |  10/3 |  1644  |  0.43 |  1/0.4 |  0/1.4  |   6.7e7   |    8e8    |   1.3e8   |      1.7e5      |        1e6       |  TRB |  460 | 200? | 100 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % |    HS-C   |        SKF 32060 X ?     |  10/3 |  1644  |  0.43 |  1/0.4 |  0/1.4  |    8e7    |    1e9    |   7.3e7   |      1.7e5      |        1e6       |  TRB |  460 | 200? | 100 |
+            % +-----------+--------------------------+-------+--------+-------+--------+---------+-----------+-----------+-----------+-----------------+------------------+------+------+------+-----+
+            % *: not found on SKF's website (access 12.11.2020)
             % +: multiple bearings with the same geometric parameters
             % &: in imperial units and rounded values in mm
             % ?: suspect of a typo, the correct would be 300 instead of 200
@@ -187,47 +208,64 @@ classdef NREL_5MW < Drivetrain
             
             cx = 453.0;         cy = 42.0e3;            cz = 30600.0;
                                 cb = 34.3;              cg = 47.8;
+            
+            a = 10.0/3.0;       L_10 =  20.0  * ... % year
+                                       365.25 * ... % day/year
+                                        24.0;       % hours/day
+                  
             switch(idx)
                 case 0 % Main shaft
-                    INP_A     = Bearing('name', 'INP_A', 'type'  ,  'CARB', ...
+                    INP_A     = Bearing('name', 'INP-A', 'type'  ,  'CARB', 'x'      , 333.0, ...
+                                        'a'   ,       a, 'C'     ,    2200.0e3, 'e'      , +inf, ...
+                                        'X'   , [1.0 0.0], 'Y'     , [0.0 0.0], 'L_10'   , L_10, ...
                                         'K_x' ,   0.0e4, 'K_y'   ,  1.5e10, 'K_z'    , 1.5e10, ...
                                                          'K_beta',   5.0e6, 'K_gamma',  5.0e6, ...
                                         'C_x' ,  0.0*cx, 'C_y'   ,      cy, 'C_z'    ,     cz, ...
                                                          'C_beta',      cb, 'C_gamma',     cg, ...
-                                        'OD'  ,  1750.0, 'ID'    ,  1250.0, 'B'      ,  375.0);
-                    INP_B     = Bearing('name', 'INP_B', 'type'  , 'SRB'  , ...
+                                        'D'   ,  1750.0, 'd'     ,  1250.0, 'B'      ,  375.0);
+                    INP_B     = Bearing('name', 'INP-B', 'type'  , 'SRB'  , 'x'      , 1166.0, ...
+                                        'a'   ,       a, 'C'     , 16518.0e3, 'e'      , 0.28, ...
+                                        'X'   , [1.0 0.67], 'Y'  , [2.4 3.6], 'L_10'   , L_10, ...
                                         'K_x' ,  4.06e8, 'K_y'   , 1.54e10, 'K_z'    , 1.54e10, ...
                                         'C_x' ,      cx, 'C_y'   ,      cy, 'C_z'    ,     cz, ...
                                                          'C_beta',      cb, 'C_gamma',     cg, ...
-                                        'OD'  ,  1220.0, 'ID'    ,   750.0, 'B'      ,   365.0);
+                                        'D'   ,  1220.0, 'd'     ,   750.0, 'B'      ,   365.0);
                     
                     brg = [INP_A, INP_B];
                     
                 case 1
-                    PL_A      = Bearing('name',  'PL_A', 'type'  ,  'CRB', ...
+                    PL_A      = Bearing('name',  'PL-A', 'type'  ,  'CRB', ...
+                                        'a'   ,       a, 'C'     , 5500.0e3, 'e'      , 0.15, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x' ,   9.1e4, 'K_y'   ,  9.4e9, 'K_z'    , 3.2e9, ...
                                                          'K_beta',  1.4e6, 'K_gamma', 4.5e6, ...
                                         'C_x' ,      cx, 'C_y'   ,      cy, 'C_z'    ,     cz, ...
                                                          'C_beta',      cb, 'C_gamma',     cg, ...
-                                        'OD'  ,   600.0, 'ID'    ,  400.0, 'B'      , 272.0);
-                    PL_B      = Bearing('name',  'PL_B', 'type'  ,  'CRB', ...
+                                        'D'   ,   600.0, 'd'     ,  400.0, 'B'      , 272.0);
+                    PL_B      = Bearing('name',  'PL-B', 'type'  ,  'CRB', ...
+                                        'a'   ,       a, 'C'     , 5500.0e3, 'e'      , 0.15, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x',    9.1e4, 'K_y'   ,  9.4e9, 'K_z'    , 3.2e9, ...
                                                          'K_beta',  1.4e6, 'K_gamma', 4.5e6, ...
                                         'C_x' ,      cx, 'C_y'   ,      cy, 'C_z'    ,     cz, ...
                                                          'C_beta',      cb, 'C_gamma',     cg, ...
-                                        'OD' ,    600.0, 'ID'    ,  400.0, 'B'      , 272.0);
-                    PLC_A     = Bearing('name', 'PLC_A', 'type'  ,  'SRB', ...
+                                        'D'  ,    600.0, 'd'     ,  400.0, 'B'      , 272.0);
+                    PLC_A     = Bearing('name', 'PLC-A', 'type'  ,  'SRB', ...
+                                        'a'   ,       a, 'C'     , 11164.0e3, 'e'      , 0.27, ...
+                                        'X'   , [1.0 0.67], 'Y'  , [2.5 3.7], 'L_10'   , L_10, ...
                                         'K_x',    6.6e4, 'K_y'   ,  1.7e9, 'K_z'    , 1.1e9, ...
                                                          'K_beta',  5.6e5, 'K_gamma', 1.3e5, ...
                                         'C_x' ,      cx, 'C_y'   ,      cy, 'C_z'    ,     cz, ...
                                                          'C_beta',      cb, 'C_gamma',     cg, ...
-                                        'OD' ,   1030.0, 'ID'    ,  710.0, 'B'      , 315.0);
-                    PLC_B     = Bearing('name', 'PLC_B', 'type'  ,  'CRB', ...
+                                        'D'  ,   1030.0, 'd'     ,  710.0, 'B'      , 315.0);
+                    PLC_B     = Bearing('name', 'PLC-B', 'type'  ,  'CRB', ...
+                                        'a'   ,       a, 'C'     , 3690.0e3, 'e'      , 0.3, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x',    6.6e7, 'K_y'   ,  1.7e9, 'K_z'    , 1.1e9, ...
                                                          'K_beta',  5.6e5, 'K_gamma', 1.3e5, ...
                                         'C_x' ,      cx, 'C_y'   ,      cy, 'C_z'    ,     cz, ...
                                                          'C_beta',      cb, 'C_gamma',     cg, ...
-                                        'OD' ,   1220.0, 'ID'    , 1000.0, 'B'      , 128.0);
+                                        'D'  ,   1220.0, 'd'     , 1000.0, 'B'      , 128.0);
                     
                     brg = [PL_A,  PL_B,            ... % Planet
                            PLC_A, PLC_B,           ... % Carrier
@@ -235,30 +273,38 @@ classdef NREL_5MW < Drivetrain
                            Bearing('name', 'ring')];   % Ring
                            
                 case 2
-                    IMS_PL_A  = Bearing('name',  'IMS_PL_A', 'type'  , 'CRB' , ...
+                    IMS_PL_A  = Bearing('name',  'IMS-PL-A', 'type'  , 'CRB' , ...
+                                        'a'   ,       a, 'C'     , 2380.0e3, 'e'      , 0.15, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
-                                        'OD'  ,       520.0, 'ID'    ,  380.0, 'B'      , 140.0);
-                    IMS_PL_B  = Bearing('name',  'IMS_PL_B', 'type'  , 'CRB' , ...
+                                        'D'   ,       520.0, 'd'     ,  380.0, 'B'      , 140.0);
+                    IMS_PL_B  = Bearing('name',  'IMS-PL-B', 'type'  , 'CRB' , ...
+                                        'a'   ,       a, 'C'     , 2380.0e3, 'e'      , 0.15, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
-                                        'OD'  ,       520.0, 'ID'    ,  380.0, 'B'      , 140.0);
-                    IMS_PLC_A = Bearing('name', 'IMS_PLC_A', 'type'  , 'CARB', ...
+                                        'D'   ,       520.0, 'd'     ,  380.0, 'B'      , 140.0);
+                    IMS_PLC_A = Bearing('name', 'IMS-PLC-A', 'type'  , 'CARB', ...
+                                        'a'   ,       a, 'C'     , 8800.0e3, 'e'      , +inf, ...
+                                        'X'   ,   [1.0 0.0], 'Y'  , [0.0 0.0], 'L_10'   , L_10, ...
                                         'K_x' ,       9.1e4, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
-                                        'OD'  ,      1030.0, 'ID'    ,  710.0, 'B'      , 236.0);
-                    IMS_PLC_B = Bearing('name', 'IMS_PLC_B', 'type'  , 'CRB' , ...
+                                        'D'   ,      1030.0, 'd'     ,  710.0, 'B'      , 236.0);
+                    IMS_PLC_B = Bearing('name', 'IMS-PLC-B', 'type'  , 'CRB' , ...
+                                        'a'   ,       a, 'C'     , 4180.0e3, 'e'      , 0.3, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x' ,       9.1e7, 'K_y'   ,  6.0e7, 'K_z'    , 1.2e9, ...
                                                              'K_beta',  7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,          cx, 'C_y'   ,     cy, 'C_z'    ,    cz, ...
                                                              'C_beta',     cb, 'C_gamma',    cg, ...
-                                        'OD'  ,       870.0, 'ID'    ,  600.0, 'B'      , 155.0);
+                                        'D'   ,       870.0, 'd'     ,  600.0, 'B'      , 155.0);
                     
                     brg = [IMS_PL_A,  IMS_PL_B,    ... % Planet
                            IMS_PLC_A, IMS_PLC_B,   ... % Carrier
@@ -266,42 +312,54 @@ classdef NREL_5MW < Drivetrain
                            Bearing('name', 'ring')];   % Ring
                     
                 case 3
-                    IMS_A     = Bearing('name', 'IMS_A', 'type'  , 'CRB', ...
+                    IMS_A     = Bearing('name', 'IMS-A', 'type'  , 'CRB', ...
+                                        'a'   ,       a, 'C'     , 1420.0e3, 'e'      , 0.15, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x' ,     0.0, 'K_y'   , 6.0e7, 'K_z'    , 1.2e9, ...
                                                          'K_beta', 7.5e4, 'K_gamma', 7.5e4, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
-                                        'OD'  ,   360.0, 'ID'    , 200.0, 'B'      ,  98.0);
-                    IMS_B     = Bearing('name', 'IMS_B', 'type'  , 'TRB', ...
+                                        'D'   ,   360.0, 'd'     , 200.0, 'B'      ,  98.0);
+                    IMS_B     = Bearing('name', 'IMS-B', 'type'  , 'TRB', ...
+                                        'a'   ,       a, 'C'     , 1467.0e3, 'e'      , 0.4, ...
+                                        'X'   , [1.0 0.4], 'Y'  , [0.0 1.5], 'L_10'   , L_10, ...
                                         'K_x' ,   7.4e7, 'K_y'   , 5.0e8, 'K_z'    , 5.0e8, ...
                                                          'K_beta', 1.6e6, 'K_gamma', 1.8e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
-                                        'OD'  ,   460.0, 'ID'    , 200.0, 'B'      , 100.0);
-                    IMS_C     = Bearing('name', 'IMS_C', 'type'  , 'TRB', ...
+                                        'D'   ,   460.0, 'd'     , 200.0, 'B'      , 100.0);
+                    IMS_C     = Bearing('name', 'IMS-C', 'type'  , 'TRB', ...
+                                        'a'   ,       a, 'C'     , 1467.0e3, 'e'      , 0.4, ...
+                                        'X'   , [1.0 0.4], 'Y'  , [0.0 1.5], 'L_10'   , L_10, ...
                                         'K_x' ,   7.8e7, 'K_y'   , 7.4e8, 'K_z'    , 3.3e8, ...
                                                          'K_beta', 1.1e6, 'K_gamma', 2.5e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
-                                        'OD'  ,   460.0, 'ID'    , 200.0, 'B'      , 100.0);
-                    HS_A      = Bearing('name',  'HS_A', 'type'  , 'CRB', ...
+                                        'D'   ,   460.0, 'd'     , 200.0, 'B'      , 100.0);
+                    HS_A      = Bearing('name',  'HS-A', 'type'  , 'CRB', ...
+                                        'a'   ,       a, 'C'     , 1460.0e3, 'e'      , 0.3, ...
+                                        'X'   , [1.0 0.92], 'Y'  , [0.0 0.4], 'L_10'   , L_10, ...
                                         'K_x' ,   1.3e8, 'K_y'   , 8.2e8, 'K_z'    , 8.2e8, ...
                                                          'K_beta', 1.7e5, 'K_gamma', 1.0e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
-                                        'OD'  ,   500.0, 'ID'    , 400.0, 'B'      , 100.0);
-                    HS_B      = Bearing('name',  'HS_B', 'type'  , 'TRB', ...
+                                        'D'   ,   500.0, 'd'     , 400.0, 'B'      , 100.0);
+                    HS_B      = Bearing('name',  'HS-B', 'type'  , 'TRB', ...
+                                        'a'   ,       a, 'C'     , 1644.0e3, 'e'      , 0.43, ...
+                                        'X'   , [1.0 0.4], 'Y'  , [0.0 1.4], 'L_10'   , L_10, ...
                                         'K_x' ,   6.7e7, 'K_y'   , 8.0e8, 'K_z'    , 1.3e8, ...
                                                          'K_beta', 1.7e5, 'K_gamma', 1.0e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
-                                        'OD'  ,   550.0, 'ID'    , 410.0, 'B'      ,  86.0);
-                    HS_C      = Bearing('name',  'HS_C', 'type'  , 'TRB', ...
+                                        'D'   ,   550.0, 'd'     , 410.0, 'B'      ,  86.0);
+                    HS_C      = Bearing('name',  'HS-C', 'type'  , 'TRB', ...
+                                        'a'   ,       a, 'C'     , 1644.0e3, 'e'      , 0.43, ...
+                                        'X'   , [1.0 0.4], 'Y'  , [0.0 1.4], 'L_10'   , L_10, ...
                                         'K_x' ,   8.0e7, 'K_y'   , 1.0e9, 'K_z'    , 7.3e7, ...
                                                          'K_beta', 1.7e5, 'K_gamma', 1.0e6, ...
                                         'C_x' ,      cx, 'C_y'   ,    cy, 'C_z'    ,    cz, ...
                                                          'C_beta',    cb, 'C_gamma',    cg, ...
-                                        'OD'  ,   550.0, 'ID'    , 410.0, 'B'      ,  86.0);
+                                        'D'   ,   550.0, 'd'     , 410.0, 'B'      ,  86.0);
                     
                     brg = [HS_A,  HS_B,  HS_C, ... % Pinion
                            IMS_A, IMS_B, IMS_C];   % Wheel
@@ -349,7 +407,9 @@ classdef NREL_5MW < Drivetrain
                     error('NREL_5MW:shaft', 'Option [%d] is NOT valid.', idx);
             end
             
-            sft = Shaft(d, L, bearing, Material());
+            sft = Shaft('d'      , d, ...
+                        'L'      , L, ...
+                        'bearing', bearing);
         end
         
         function g_set = gear_stage(idx)
@@ -507,13 +567,14 @@ classdef NREL_5MW < Drivetrain
         end
         
         function property_estimation()
-            u = 97.0;
-            m_r = 110.0e3; % [kg], according to [2], Table 1-1
-            J_g = 534.116; % [kg-m^2], according to [2], Table 5-1
+            u    =     97.0;
+            m_r  =    110.0e3; % [kg]     , according to [2], Table 1-1
+            J_g  =    534.116; % [kg-m^2] , according to [2], Table 5-1
             k_eq = 867637.0e3; % [N-m/rad], taken from [2], Table 5-1
             
             freq_free = 2.18; % [Hz], taken from [3], p. 45
-            freq_fix  = mean([0.6205 0.6094]); % [Hz], taken from [2], Table 9-1. Mean of the results obtained using FAST and ADAMS, respectively.
+            % Mean of the results obtained using FAST and ADAMS, respectively.
+            freq_fix  = mean([0.6205 0.6094]); % [Hz], taken from [2], Table 9-1. 
             
             rho = Material().rho*1.0e9;
             
@@ -526,810 +587,244 @@ classdef NREL_5MW < Drivetrain
             
             f = @(x)([(pi*rho/m_r)            .*x(1, :).*(1.0 - x(3, :).^2).*x(2, :)^2 - 1.0; ...
                       (pi*rho/(2.0*J_r_ratio)).*x(1, :).*(1.0 - x(3, :).^4).*x(2, :)^4 - 1.0]);
-            x = fmincon(@(x)(norm(f(x)))^2, rand*ones(3,1), [], [], [], [], zeros(3, 1), [Inf, Inf, 1.0]');
+%             x0 = [2.0*h_cyl;
+%                   0.5*R_cyl;
+%                   0.5];
+            x0 = rand(3,1);
+            x = fmincon(@(x)(norm(f(x)))^2, x0, [], [], [], [], zeros(3, 1), [Inf, Inf, 1.0]');
             r_ext = x(2);           r_int = x(3)*r_ext;           h = x(1);
 
-            fprintf("Rotor mass moment of inertia using:\n");
-            fprintf("\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_fix, J_r_fix);
-            fprintf("\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n", freq_free, J_r_free);
-            fprintf("\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n", J_r_ratio);
-            fprintf("Rotor dimensions assuming:\n");
-            fprintf("\t Cylindric geometry: R = %.3f \t h = %.3f [m]\n", R_cyl, h_cyl);
-            fprintf("\t Cylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n", r_ext, r_int, h);
+            fprintf('Rotor mass moment of inertia using:\n');
+            fprintf('\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n', freq_fix, J_r_fix);
+            fprintf('\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n', freq_free, J_r_free);
+            fprintf('\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n', J_r_ratio);
+            fprintf('Rotor dimensions assuming:\n');
+            fprintf('\t Cylindric geometry: R = %.3f \t h = %.3f [m]\n', R_cyl, h_cyl);
+            fprintf('\t Cylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n', r_ext, r_int, h);
         end
     end
     
     methods
-        function update_subvar_rigid(obj, varargin)
-            %UPDATE_SUBVAR update some values of the .Rigid.SubVar file 
-            % from the SIMPACK model of the NREL_5MW Drivetrain.
-            %
-            % Kinematic Tree:
-            % ================================================================================
-            %     $R_Isys
-            %      ---->$B_bed_plate................................................... [0 dof]  Joint $J_bed_plate of type 35
-            %           ---->$B_main_shaft............................................. [6 dof]  Joint $J_main_shaft of type 20
-            %                ---->$BG_stage_01.$B_carrier.............................. [0 dof]  Joint $BG_stage_01.$J_carrier of type 0
-            %                     ---->$BG_stage_01.$BG_planet_01.$B_pin............... [6 dof]  Joint $BG_stage_01.$BG_planet_01.$J_pin of type 20
-            %                          ---->$BG_stage_01.$BG_planet_01.$B_gear......... [0 dof]  Joint $BG_stage_01.$BG_planet_01.$J_gear of type 0
-            %
-            %                     ---->$BG_stage_01.$BG_planet_02.$B_pin............... [6 dof]  Joint $BG_stage_01.$BG_planet_02.$J_pin of type 20
-            %                          ---->$BG_stage_01.$BG_planet_02.$B_gear......... [0 dof]  Joint $BG_stage_01.$BG_planet_02.$J_gear of type 0
-            %
-            %                     ---->$BG_stage_01.$BG_planet_03.$B_pin............... [6 dof]  Joint $BG_stage_01.$BG_planet_03.$J_pin of type 20
-            %                          ---->$BG_stage_01.$BG_planet_03.$B_gear......... [0 dof]  Joint $BG_stage_01.$BG_planet_03.$J_gear of type 0
-            %
-            % --        ---->$B_GB_frame............................................... [0 dof]  Joint $J_GB_frame of type 0
-            % |              ---->$BG_stage_01.$B_ring................................. [0 dof]  Joint $BG_stage_01.$J_ring of type 0
-            % |              ---->$BG_stage_01.$B_shaft................................ [6 dof]  Joint $BG_stage_01.$J_shaft of type 20
-            % |                   ---->$BG_stage_01.$B_sun............................. [0 dof]  Joint $BG_stage_01.$J_sun of type 0
-            % |                   ---->$BG_stage_02.$B_carrier......................... [0 dof]  Joint $BG_stage_02.$J_carrier of type 0
-            % |                        ---->$BG_stage_02.$BG_planet_01.$B_pin.......... [6 dof]  Joint $BG_stage_02.$BG_planet_01.$J_pin of type 20
-            % |                             ---->$BG_stage_02.$BG_planet_01.$B_gear.... [0 dof]  Joint $BG_stage_02.$BG_planet_01.$J_gear of type 0
-            % |
-            % |                        ---->$BG_stage_02.$BG_planet_02.$B_pin.......... [6 dof]  Joint $BG_stage_02.$BG_planet_02.$J_pin of type 20
-            % |                             ---->$BG_stage_02.$BG_planet_02.$B_gear.... [0 dof]  Joint $BG_stage_02.$BG_planet_02.$J_gear of type 0
-            % |
-            % |                        ---->$BG_stage_02.$BG_planet_03.$B_pin.......... [6 dof]  Joint $BG_stage_02.$BG_planet_03.$J_pin of type 20
-            % |                             ---->$BG_stage_02.$BG_planet_03.$B_gear.... [0 dof]  Joint $BG_stage_02.$BG_planet_03.$J_gear of type 0
-            % |
-            % |              ---->$BG_stage_02.$B_ring................................. [0 dof]  Joint $BG_stage_02.$J_ring of type 0
-            % |              ---->$BG_stage_02.$B_shaft................................ [6 dof]  Joint $BG_stage_02.$J_shaft of type 20
-            % |                   ---->$BG_stage_02.$B_sun............................. [0 dof]  Joint $BG_stage_02.$J_sun of type 0
-            % |                   ---->$BG_stage_03.$BG_wheel.$B_pin................... [0 dof]  Joint $BG_stage_03.$BG_wheel.$J_pin of type 0
-            % |                        ---->$BG_stage_03.$BG_wheel.$B_gear............. [0 dof]  Joint $BG_stage_03.$BG_wheel.$J_gear of type 0
-            % |
-            % --             ---->$BG_stage_03.$B_shaft................................ [6 dof]  Joint $BG_stage_03.$J_shaft of type 20
-            % .
-            % $L_output_shaft.......................................................... [1 cft]  Constraint of type 25
-            %                     ---->$BG_stage_03.$BG_pinion.$B_pin.................. [0 dof]  Joint $BG_stage_03.$BG_pinion.$J_pin of type 0
-            %                          ---->$BG_stage_03.$BG_pinion.$B_gear............ [0 dof]  Joint $BG_stage_03.$BG_pinion.$J_gear of type 0
-            %
-            
-            if(isempty(varargin{:}))
-                mesh_flag = false;
-            else
-                mesh_flag = varargin{1};
-            end
-            
-            gamma_x = max([obj.gamma('m_n1') obj.gamma('m_n2') obj.gamma('m_n3')]);
-            gamma_load = gamma_x^2;
-            
-            k_sp = zeros(2, 1);
-            k_rp = k_sp;
-            for idx = 1:2
-                k_sp(idx) = obj.stage(idx).sub_set('sun_planet').k_mesh;
-                k_rp(idx) = obj.stage(idx).sub_set('planet_ring').k_mesh;
-            end
-            
-            k_3 = obj.stage(idx + 1).k_mesh;
-            
-            new_ID = fopen('@NREL_5MW\NREL_5MW.rigid.subvar', 'w');
-            
-            fprintf(new_ID, "!file.version=3.4! Removing this line will make the file unreadable\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "!**********************************************************************\n");
-            fprintf(new_ID, "! SubVars\n");
-            fprintf(new_ID, "!**********************************************************************\n");
-            fprintf(new_ID, "subvar($_rated_speed, str = '%e rpm')                                                        ! $_rated_speed\n", obj.n_rotor);
-            fprintf(new_ID, "subvar($_damping_coeff, str = '10e-6 m')                                                       ! $_damping_coeff\n");
-            fprintf(new_ID, "subvar($_addendum_coeff, str = '1.0')                                                          ! $_addendum_coeff\n");
-            fprintf(new_ID, "subvar($_dedendum_coeff, str = '1.25')                                                         ! $_dedendum_coeff\n");
-            fprintf(new_ID, "subvar($_regularization_vel, str = '1.0e-3')                                                   ! $_regularization_vel\n");
-            fprintf(new_ID, "subvar($_tooth_damping, str = '5.0e8 N/(m/s)')                                                 ! $_tooth_damping\n");
-            fprintf(new_ID, "subvar($_tooth_stiff_ratio, str = '0.8')                                                       ! $_tooth_stiff_ratio\n");
-            fprintf(new_ID, "subvar($_height, str = '1.75 * %e m')                                                               ! $_height\n", gamma_x);
-            fprintf(new_ID, "subvar($_gamma_load, str = '%e')                                                                ! $_gamma_load\n", gamma_load);
-            fprintf(new_ID, "subvar($_gamma_x, str = '%e')                                                                   ! $_gamma_x\n", gamma_x);
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_material                 )                           ! $SVG_material\n");
-            fprintf(new_ID, "   subvar($_E, str = '206.0e9 Pa', desc (   1) = 'Young\\'s modulus')                          ! $SVG_material.$_E\n");
-            fprintf(new_ID, "   subvar($_nu, str = '0.3', desc (   1) = 'Poisson\\'s ratio')                                ! $SVG_material.$_nu\n");
-            fprintf(new_ID, "   subvar($_rho, str = '7.83e3 kg/m^3', desc (   1) = 'Density')                               ! $SVG_material.$_rho\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_material                 )                           ! $SVG_material\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate\n");
-            fprintf(new_ID, "   subvar($_length, str = 'anint($SVG_bed_plate.$_x_gen) m')                                   ! $SVG_bed_plate.$_length\n");
-            fprintf(new_ID, "   subvar($_width, str = '$SVG_bed_plate.$_length')                                            ! $SVG_bed_plate.$_width\n");
-            fprintf(new_ID, "   subvar($_thickness, str = '0.5 * %e m')                                                          ! $SVG_bed_plate.$_thickness\n", gamma_x);
-            fprintf(new_ID, "   subvar($_x_gen, str = '$SVG_stage_03.$SVG_wheel.$SVG_C.$_x_GB + $SVG_stage_03.$SVG_shaft.$_length') ! $SVG_bed_plate.$_x_gen\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft\n");
-            fprintf(new_ID, "   subvar($_diameter, str = '%e mm')                                                        ! $SVG_main_shaft.$_diameter\n", obj.main_shaft.d);
-            fprintf(new_ID, "   subvar($_length, str = '%e mm')                                                         ! $SVG_main_shaft.$_length\n", obj.main_shaft.L);
-            fprintf(new_ID, "subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_GB_frame                 )                           ! $SVG_GB_frame\n");
-            fprintf(new_ID, "   subvar($_length, str = '3.5 * %e m')                                                             ! $SVG_GB_frame.$_length\n", gamma_x);
-            fprintf(new_ID, "   subvar($_width, str = '2.0*$_height')                                                       ! $SVG_GB_frame.$_width\n");
-            fprintf(new_ID, "   subvar($_x, str = '($SVG_main_shaft.$_length*7/4 - $SVG_bed_plate.$_length + $SVG_GB_frame.$_length)/2.0') ! $SVG_GB_frame.$_x\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_GB_frame                 )                           ! $SVG_GB_frame\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_INP_A                    )                           ! $SVG_INP_A\n");
-            fprintf(new_ID, "   subvar($_x, str = '$SVG_main_shaft.$_length/6.0')                                           ! $SVG_INP_A.$_x\n");
-            fprintf(new_ID, "   subvar($_K_x, str = '0.0 N/m')                                                              ! $SVG_INP_A.$_K_x\n");
-            fprintf(new_ID, "   subvar($_K_y, str = '%e N/m')                                                          ! $SVG_INP_A.$_K_y\n", obj.main_shaft.bearing(1).K_y);
-            fprintf(new_ID, "   subvar($_K_z, str = '$SVG_INP_A.$_K_y')                                                     ! $SVG_INP_A.$_K_z\n");
-            fprintf(new_ID, "   subvar($_K_alpha, str = '0.0 Nm/rad')                                                       ! $SVG_INP_A.$_K_alpha\n");
-            fprintf(new_ID, "   subvar($_K_beta, str = '%e Nm/rad')                                                      ! $SVG_INP_A.$_K_beta\n", obj.main_shaft.bearing(1).K_beta);
-            fprintf(new_ID, "   subvar($_K_gamma, str = '$SVG_INP_A.$_K_beta')                                              ! $SVG_INP_A.$_K_gamma\n");
-            fprintf(new_ID, "   subvar($_D_x, str = '0.0 N/(m/s)')                                                          ! $SVG_INP_A.$_D_x\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_INP_A                    )                           ! $SVG_INP_A\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_INP_B                    )                           ! $SVG_INP_B\n");
-            fprintf(new_ID, "   subvar($_x, str = '$SVG_main_shaft.$_length*3.0/4.0')                                       ! $SVG_INP_B.$_x\n");
-            fprintf(new_ID, "   subvar($_K_x, str = '%e N/m')                                                           ! $SVG_INP_B.$_K_x\n", obj.main_shaft.bearing(2).K_x);
-            fprintf(new_ID, "   subvar($_K_y, str = '%e N/m')                                                          ! $SVG_INP_B.$_K_y\n", obj.main_shaft.bearing(2).K_y);
-            fprintf(new_ID, "   subvar($_K_z, str = '$SVG_INP_B.$_K_y')                                                     ! $SVG_INP_B.$_K_z\n");
-            fprintf(new_ID, "   subvar($_K_alpha, str = '0.0 Nm/rad')                                                       ! $SVG_INP_B.$_K_alpha\n");
-            fprintf(new_ID, "   subvar($_K_beta, str = '0.0 Nm/rad')                                                        ! $SVG_INP_B.$_K_beta\n");
-            fprintf(new_ID, "   subvar($_K_gamma, str = '$SVG_INP_B.$_K_beta')                                              ! $SVG_INP_B.$_K_gamma\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_INP_B                    )                           ! $SVG_INP_B\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01\n");
-            fprintf(new_ID, "   subvar($_ring_planet_stiffness, str = '%e N/m')                                          ! $SVG_stage_01.$_ring_planet_stiffness\n", k_rp(1));
-            fprintf(new_ID, "   subvar($_sun_planet_stiffness, str = '%e N/m')                                           ! $SVG_stage_01.$_sun_planet_stiffness\n", k_sp(1));
-            fprintf(new_ID, "   subvar($_normal_module, str = '%e mm')                                                    ! $SVG_stage_01.$_normal_module\n", obj.stage(1).m_n);
-            fprintf(new_ID, "   subvar($_face_width, str = '%e mm')                                                      ! $SVG_stage_01.$_face_width\n", obj.stage(1).b);
-            fprintf(new_ID, "   subvar($_center_distance, str = '%e mm')                                                 ! $SVG_stage_01.$_center_distance\n", obj.stage(1).a_w);
-            fprintf(new_ID, "   subvar($_pressure_angle, str = '20.0 deg')                                                  ! $SVG_stage_01.$_pressure_angle\n");
-            fprintf(new_ID, "   subvar($_helix_angle, str = '0.0 deg')                                                      ! $SVG_stage_01.$_helix_angle\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '19')                                                          ! $SVG_stage_01.$SVG_sun.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.617')                                                ! $SVG_stage_01.$SVG_sun.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_01.$SVG_sun.$_diam_bore\n", obj.stage(1).d_b(1) * ...
-                obj.stage(1).bore_ratio(1));
-            fprintf(new_ID, "      subvar($_angle, str = '11.5*(180deg)/$SVG_stage_01.$SVG_sun.$_num_teeth')                ! $SVG_stage_01.$SVG_sun.$_angle\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '17')                                                          ! $SVG_stage_01.$SVG_planet.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.802')                                                ! $SVG_stage_01.$SVG_planet.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_01.$SVG_planet.$_diam_bore\n", obj.stage(1).d_b(2) * ...
-                obj.stage(1).bore_ratio(2));
-            fprintf(new_ID, "      subvar($_pin_width, str = '1.4*$SVG_stage_01.$_face_width')                              ! $SVG_stage_01.$SVG_planet.$_pin_width\n");
-            fprintf(new_ID, "      subvar($_angle, str = '5.25*(360deg)/$SVG_stage_01.$SVG_planet.$_num_teeth')             ! $SVG_stage_01.$SVG_planet.$_angle\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_01.$SVG_planet.$SVG_A.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_x\n", obj.stage(1).bearing(1).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_y\n", obj.stage(1).bearing(1).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_z\n", obj.stage(1).bearing(1).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_beta\n", obj.stage(1).bearing(1).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '%e Nm/rad')                                               ! $SVG_stage_01.$SVG_planet.$SVG_A.$_K_gamma\n", obj.stage(1).bearing(1).K_gamma);
-            fprintf(new_ID, "      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_planet.$SVG_A\n");
-            fprintf(new_ID, "      subvargroup.desc (   1 ,      $SVG_A                        ) = 'PL_A, PL_B, and PL_C'  ! Description\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '56')                                                          ! $SVG_stage_01.$SVG_ring.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '-0.501')                                               ! $SVG_stage_01.$SVG_ring.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_01.$SVG_ring.$_diam_bore\n", obj.stage(1).d_b(3) * ...
-                obj.stage(1).bore_ratio(3));
-            fprintf(new_ID, "      subvar($_angle, str = '27*(180 deg)/$SVG_stage_01.$SVG_ring.$_num_teeth')                ! $SVG_stage_01.$SVG_ring.$_angle\n");
-            fprintf(new_ID, "      subvar($_x, str = '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width/2.0')   ! $SVG_stage_01.$SVG_ring.$_x\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier\n");
-            fprintf(new_ID, "      subvar($_diameter_in, str = '1.4*$SVG_stage_01.$_center_distance	')                      ! $SVG_stage_01.$SVG_carrier.$_diameter_in\n");
-            fprintf(new_ID, "      subvar($_diameter_out, str = '2.6*$SVG_stage_01.$_center_distance	')                     ! $SVG_stage_01.$SVG_carrier.$_diameter_out\n");
-            fprintf(new_ID, "      subvar($_width, str = '1.2*$SVG_stage_01.$_face_width')                                  ! $SVG_stage_01.$SVG_carrier.$_width\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_x\n", obj.stage(1).bearing(3).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y\n", obj.stage(1).bearing(3).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z\n", obj.stage(1).bearing(3).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta\n", obj.stage(1).bearing(3).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '%e Nm/rad')                                               ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma\n", obj.stage(1).bearing(3).K_gamma);
-            fprintf(new_ID, "      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A\n");
-            fprintf(new_ID, "      subvargroup.desc (   1 ,      $SVG_A                        ) = 'PLC_A'                 ! Description\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_main_shaft.$_length+$SVG_stage_01.$SVG_carrier.$_width')      ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_x\n", obj.stage(1).bearing(4).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_y')                        ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_y\n");
-            fprintf(new_ID, "         subvar($_K_z, str = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_z')                        ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_z\n");
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_beta')                  ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_beta\n");
-            fprintf(new_ID, "         subvar($_K_gamma, str = '$SVG_stage_01.$SVG_carrier.$SVG_A.$_K_gamma')                ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_K_gamma\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B\n");
-            fprintf(new_ID, "      subvargroup.desc (   1 ,      $SVG_B                        ) = 'PLC_B'                 ! Description\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier\n");
-            fprintf(new_ID, "   subvargroup.desc (     1 ,       $SVG_carrier                  ) = 'PLC_A and PLC_B'       ! Description\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft\n");
-            fprintf(new_ID, "      subvar($_diameter, str = '%e mm')                                                     ! $SVG_stage_01.$SVG_shaft.$_diameter\n", obj.stage(1).output_shaft.d);
-            fprintf(new_ID, "      subvar($_length, str = '%e mm')                                                       ! $SVG_stage_01.$SVG_shaft.$_length\n", obj.stage(1).output_shaft.L);
-            fprintf(new_ID, "   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02\n");
-            fprintf(new_ID, "   subvar($_ring_planet_stiffness, str = '%e N/m')                                          ! $SVG_stage_01.$_ring_planet_stiffness\n", k_rp(2));
-            fprintf(new_ID, "   subvar($_sun_planet_stiffness, str = '%e N/m')                                           ! $SVG_stage_01.$_sun_planet_stiffness\n", k_sp(2));
-            fprintf(new_ID, "   subvar($_normal_module, str = '%e mm')                                                    ! $SVG_stage_02.$_normal_module\n", obj.stage(2).m_n);
-            fprintf(new_ID, "   subvar($_face_width, str = '%e mm')                                                      ! $SVG_stage_02.$_face_width\n", obj.stage(2).b);
-            fprintf(new_ID, "   subvar($_center_distance, str = '%e mm')                                                 ! $SVG_stage_02.$_center_distance\n", obj.stage(2).a_w);
-            fprintf(new_ID, "   subvar($_pressure_angle, str = '20.0 deg')                                                  ! $SVG_stage_02.$_pressure_angle\n");
-            fprintf(new_ID, "   subvar($_helix_angle, str = '0.0 deg')                                                      ! $SVG_stage_02.$_helix_angle\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '18')                                                          ! $SVG_stage_02.$SVG_sun.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.389')                                                ! $SVG_stage_02.$SVG_sun.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_02.$SVG_sun.$_diam_bore\n", obj.stage(2).d_b(1) * ...
-                obj.stage(2).bore_ratio(1));
-            fprintf(new_ID, "      subvar($_angle, str = '12*(180deg)/$SVG_stage_02.$SVG_sun.$_num_teeth')                  ! $SVG_stage_02.$SVG_sun.$_angle\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '36')                                                          ! $SVG_stage_02.$SVG_planet.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.504')                                                ! $SVG_stage_02.$SVG_planet.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_02.$SVG_planet.$_diam_bore\n", obj.stage(2).d_b(2) * ...
-                obj.stage(2).bore_ratio(2));
-            fprintf(new_ID, "      subvar($_pin_width, str = '1.4*$SVG_stage_02.$_face_width')                              ! $SVG_stage_02.$SVG_planet.$_pin_width\n");
-            fprintf(new_ID, "      subvar($_angle, str = '20*(180 deg)/$SVG_stage_02.$SVG_planet.$_num_teeth')              ! $SVG_stage_02.$SVG_planet.$_angle\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_02.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_02.$SVG_planet.$SVG_A.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_x\n", obj.stage(2).bearing(1).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_y\n", obj.stage(2).bearing(1).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_z\n", obj.stage(2).bearing(1).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_beta\n", obj.stage(2).bearing(1).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '%e Nm/rad')                                               ! $SVG_stage_02.$SVG_planet.$SVG_A.$_K_gamma\n", obj.stage(2).bearing(1).K_gamma);
-            fprintf(new_ID, "      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_planet.$SVG_A\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '93')                                                          ! $SVG_stage_02.$SVG_ring.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.117')                                                ! $SVG_stage_02.$SVG_ring.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_02.$SVG_ring.$_diam_bore\n", obj.stage(2).d_b(3) * ...
-                obj.stage(2).bore_ratio(3));
-            fprintf(new_ID, "      subvar($_angle, str = '45.5*(180 deg)/$SVG_stage_02.$SVG_ring.$_num_teeth')              ! $SVG_stage_02.$SVG_ring.$_angle\n");
-            fprintf(new_ID, "      subvar($_x, str = '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width + $SVG_stage_01.$SVG_shaft.$_length + $SVG_stage_02.$SVG_carrier.$_width/2.0') ! $SVG_stage_02.$SVG_ring.$_x\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier\n");
-            fprintf(new_ID, "      subvar($_diameter_in, str = '1.4*$SVG_stage_02.$_center_distance	')                      ! $SVG_stage_02.$SVG_carrier.$_diameter_in\n");
-            fprintf(new_ID, "      subvar($_diameter_out, str = '2.6*$SVG_stage_02.$_center_distance	')                     ! $SVG_stage_02.$SVG_carrier.$_diameter_out\n");
-            fprintf(new_ID, "      subvar($_width, str = '1.2*$SVG_stage_02.$_face_width')                                  ! $SVG_stage_02.$SVG_carrier.$_width\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_main_shaft.$_length + $SVG_stage_01.$SVG_carrier.$_width + $SVG_stage_01.$SVG_shaft.$_length') ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_x\n", obj.stage(2).bearing(3).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y\n", obj.stage(2).bearing(3).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z\n", obj.stage(2).bearing(3).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta\n", obj.stage(2).bearing(3).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta')                 ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_K_gamma\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_x + $SVG_stage_02.$SVG_carrier.$_width') ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_x\n", obj.stage(2).bearing(4).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_y')                        ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_y\n");
-            fprintf(new_ID, "         subvar($_K_z, str = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_z')                        ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_z\n");
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta')                  ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_beta\n");
-            fprintf(new_ID, "         subvar($_K_gamma, str = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_K_beta')                 ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_K_gamma\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft\n");
-            fprintf(new_ID, "      subvar($_diameter, str = '%e mm')                                                     ! $SVG_stage_02.$SVG_shaft.$_diameter\n", obj.stage(2).output_shaft.d);
-            fprintf(new_ID, "      subvar($_length, str = '%e mm')                                                       ! $SVG_stage_02.$SVG_shaft.$_length\n", obj.stage(2).output_shaft.L);
-            fprintf(new_ID, "   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03\n");
-            fprintf(new_ID, "   subvar($_mesh_stiffness, str = '%e N/m')                                                 ! $SVG_stage_03.$_mesh_stiffness\n", k_3);
-            fprintf(new_ID, "   subvar($_normal_module, str = '%e mm')                                                    ! $SVG_stage_03.$_normal_module\n", obj.stage(3).m_n);
-            fprintf(new_ID, "   subvar($_face_width, str = '%e mm')                                                      ! $SVG_stage_03.$_face_width\n", obj.stage(3).b);
-            fprintf(new_ID, "   subvar($_center_distance, str = '%e mm')                                                 ! $SVG_stage_03.$_center_distance\n", obj.stage(3).a_w);
-            fprintf(new_ID, "   subvar($_pressure_angle, str = '20.0 deg')                                                  ! $SVG_stage_03.$_pressure_angle\n");
-            fprintf(new_ID, "   subvar($_helix_angle, str = '10.0 deg')                                                     ! $SVG_stage_03.$_helix_angle\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '24')                                                          ! $SVG_stage_03.$SVG_pinion.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.480')                                                ! $SVG_stage_03.$SVG_pinion.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_03.$SVG_pinion.$_diam_bore\n", obj.stage(3).d_b(1) * ...
-                obj.stage(3).bore_ratio(1));
-            fprintf(new_ID, "      subvar($_pin_width, str = '1.4*$SVG_stage_03.$_face_width')                              ! $SVG_stage_03.$SVG_pinion.$_pin_width\n");
-            fprintf(new_ID, "      subvar($_angle, str = '12.5*(180.0 deg)/$SVG_stage_03.$SVG_pinion.$_num_teeth')          ! $SVG_stage_03.$SVG_pinion.$_angle\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_x\n", obj.stage(3).bearing(1).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y\n", obj.stage(3).bearing(1).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_y')                         ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_z\n");
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta\n", obj.stage(3).bearing(1).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '%e Nm/rad')                                               ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma\n", obj.stage(3).bearing(1).K_gamma);
-            fprintf(new_ID, "         subvar($_y, str = '-$SVG_stage_03.$_center_distance + $SVG_bed_plate.$_width/2.0')    ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_y\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_x\n", obj.stage(3).bearing(2).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_y\n", obj.stage(3).bearing(2).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_z\n", obj.stage(3).bearing(2).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta')                   ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_beta\n");
-            fprintf(new_ID, "         subvar($_K_gamma, str = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma')                 ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_K_gamma\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_01.$SVG_carrier.$_width/2.0')                           ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_x\n", obj.stage(3).bearing(3).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_y\n", obj.stage(3).bearing(3).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_z\n", obj.stage(3).bearing(3).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_beta')                   ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_beta\n");
-            fprintf(new_ID, "         subvar($_K_gamma, str = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_K_gamma')                 ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_K_gamma\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel\n");
-            fprintf(new_ID, "      subvar($_num_teeth, str = '95')                                                          ! $SVG_stage_03.$SVG_wheel.$_num_teeth\n");
-            fprintf(new_ID, "      subvar($_prof_shift_coeff, str = '0.669')                                                ! $SVG_stage_03.$SVG_wheel.$_prof_shift_coeff\n");
-            fprintf(new_ID, "      subvar($_diam_bore, str = '%e mm')                                                    ! $SVG_stage_03.$SVG_wheel.$_diam_bore\n", obj.stage(3).d_b(2) * ...
-                obj.stage(3).bore_ratio(2));
-            fprintf(new_ID, "      subvar($_pin_width, str = '1.4*$SVG_stage_03.$_face_width')                              ! $SVG_stage_03.$SVG_wheel.$_pin_width\n");
-            fprintf(new_ID, "      subvar($_angle, str = '51*(180 deg)/$SVG_stage_03.$SVG_wheel.$_num_teeth')               ! $SVG_stage_03.$SVG_wheel.$_angle\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_03.$SVG_wheel.$_pin_width/2.0')                         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '0.0 N/m')                                                        ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_x\n");
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_y\n", obj.stage(3).bearing(4).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_z\n", obj.stage(3).bearing(4).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta\n", obj.stage(3).bearing(4).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_K_beta')                   ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_K_gamma\n");
-            fprintf(new_ID, "         subvar($_x_GB, str = '$SVG_stage_02.$SVG_carrier.$SVG_B.$_x + $SVG_stage_02.$SVG_shaft.$_length') ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x*6.0/7.0')                      ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_x\n", obj.stage(3).bearing(5).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y\n", obj.stage(3).bearing(5).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '$SVG_stage_03.$SVG_wheel.$SVG_B.$_K_y')                          ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_z\n");
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_beta\n", obj.stage(3).bearing(5).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '%e Nm/rad')                                               ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_K_gamma\n", obj.stage(3).bearing(5).K_gamma);
-            fprintf(new_ID, "         subvar($_x_GB, str = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB + $SVG_stage_03.$SVG_wheel.$SVG_A.$_x + $SVG_stage_03.$SVG_wheel.$SVG_B.$_x') ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_x_GB\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B\n");
-            fprintf(new_ID, "      subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C\n");
-            fprintf(new_ID, "         subvar($_x, str = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x*6.0/7.0')                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_x\n");
-            fprintf(new_ID, "         subvar($_K_x, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_x\n", obj.stage(3).bearing(6).K_x);
-            fprintf(new_ID, "         subvar($_K_y, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_y\n", obj.stage(3).bearing(6).K_y);
-            fprintf(new_ID, "         subvar($_K_z, str = '%e N/m')                                                      ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_z\n", obj.stage(3).bearing(6).K_z);
-            fprintf(new_ID, "         subvar($_K_alpha, str = '0.0 Nm/rad')                                                 ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_alpha\n");
-            fprintf(new_ID, "         subvar($_K_beta, str = '%e Nm/rad')                                                ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_beta\n", obj.stage(3).bearing(6).K_beta);
-            fprintf(new_ID, "         subvar($_K_gamma, str = '%e Nm/rad')                                               ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_K_gamma\n", obj.stage(3).bearing(6).K_gamma);
-            fprintf(new_ID, "         subvar($_x_GB, str = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_x_GB + $SVG_stage_03.$SVG_wheel.$_pin_width') ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_x_GB\n");
-            fprintf(new_ID, "      subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C\n");
-            fprintf(new_ID, "   subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel\n");
-            fprintf(new_ID, "   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft\n");
-            fprintf(new_ID, "      subvar($_diameter, str = '%e mm')                                                     ! $SVG_stage_03.$SVG_shaft.$_diameter\n", obj.stage(3).output_shaft.d);
-            fprintf(new_ID, "      subvar($_length, str = '%e mm')                                                      ! $SVG_stage_03.$SVG_shaft.$_length\n", obj.stage(3).output_shaft.L);
-            fprintf(new_ID, "   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_bearing_damping          )                           ! $SVG_bearing_damping\n");
-            fprintf(new_ID, "   subvar($_D_x, str = '%e N/(m/s)')                                                        ! $SVG_bearing_damping.$_D_x\n", obj.stage(1).bearing(1).C_x);
-            fprintf(new_ID, "   subvar($_D_y, str = '%e N/(m/s)')                                                        ! $SVG_bearing_damping.$_D_y\n", obj.stage(1).bearing(1).C_y);
-            fprintf(new_ID, "   subvar($_D_z, str = '%e N/(m/s)')                                                       ! $SVG_bearing_damping.$_D_z\n", obj.stage(1).bearing(1).C_z);
-            fprintf(new_ID, "   subvar($_D_alpha, str = '0.0 Nm/(rad/s)')                                                   ! $SVG_bearing_damping.$_D_alpha\n");
-            fprintf(new_ID, "   subvar($_D_beta, str = '%e Nm/(rad/s)')                                                   ! $SVG_bearing_damping.$_D_beta\n", obj.stage(1).bearing(1).C_beta);
-            fprintf(new_ID, "   subvar($_D_gamma, str = '%e Nm/(rad/s)')                                                  ! $SVG_bearing_damping.$_D_gamma\n", obj.stage(1).bearing(1).C_gamma);
-            fprintf(new_ID, "subvargroup.end (                   $SVG_bearing_damping          )                           ! $SVG_bearing_damping\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin (                 $SVG_mesh_stiffness           )                           ! $SVG_mesh_stiffness\n");
-            fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc (   1) = 'Basic Gear Pair (FE204)', discr.desc (   2) = 'Gear Pair (FE225)', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_mesh_stiffness.$_flag\n", mesh_flag);
-            fprintf(new_ID, "   subvar($_linear, str = 'SWITCH($SVG_mesh_stiffness.$_flag)\n{\n   CASE 1: 0;\n   CASE 0: 1;\n   DEFAULT: 0;\n}') ! $SVG_mesh_stiffness.$_linear\n");
-            fprintf(new_ID, "   subvar($_advanced, str = 'SWITCH($SVG_mesh_stiffness.$_flag)\n{\n   CASE 1: 1;\n   CASE 0: 0;\n   DEFAULT: 1;\n}') ! $SVG_mesh_stiffness.$_advanced\n");
-            fprintf(new_ID, "subvargroup.end (                   $SVG_mesh_stiffness           )                           ! $SVG_mesh_stiffness\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "\n");
-            
-            fclose(new_ID);
-            
-        end
-        
-        function update_subvar_Nejad(obj, varargin)
-            %UPDATE_SUBVAR update some values of the .Nejad.SubVar file 
-            % from the SIMPACK model of the NREL_5MW Drivetrain.
-            %
-            % Kinematic Tree:
-            % ================================================================================
-            %
-            % --  $R_Isys
-            % --   ---->$B_Bed_Plate.................................... [6 dof]  Joint $J_Bed_Plate of type 20
-            % .
-            % $CTN_bed_plate_motion..................................... [6 cft]  Connection of type 61 (Constraint type 20)
-            % OR (see $SVG_base_input.$_flag)
-            % .
-            % $CTN_bed_plate_fixed...................................... [6 cft]  Connection of type 2 (Constraint type 0)
-            %           ---->$Gearbox_Frame............................. [0 dof]  Joint $J_Gearbox_Frame of type 0
-            %                ---->$B_ISShaft............................ [6 dof]  Joint $J_ISShaft of type 20
-            %                     ---->$BG_stage_01.$B_Sun.............. [0 dof]  Joint $BG_stage_01.$J_Sun of type 0
-            %                     ---->$BG_stage_02.$B_PLC.............. [0 dof]  Joint $BG_stage_02.$J_PLC of type 0
-            %                          ---->$BG_stage_02.$B_Pin1........ [6 dof]  Joint $BG_stage_02.$J_Pin1 of type 20
-            %                               ---->$BG_stage_02.$B_PL1.... [0 dof]  Joint $BG_stage_02.$J_PL1 of type 0
-            %
-            %                          ---->$BG_stage_02.$B_Pin2........ [6 dof]  Joint $BG_stage_02.$J_Pin2 of type 20
-            %                               ---->$BG_stage_02.$B_PL2.... [0 dof]  Joint $BG_stage_02.$J_PL2 of type 0
-            %
-            %                          ---->$BG_stage_02.$B_Pin3........ [6 dof]  Joint $BG_stage_02.$J_Pin3 of type 20
-            %                               ---->$BG_stage_02.$B_PL3.... [0 dof]  Joint $BG_stage_02.$J_PL3 of type 0
-            %
-            %                ---->$B_HSIShaft........................... [6 dof]  Joint $J_HSIShaft of type 20
-            %                     ---->$BG_stage_02.$B_Sun.............. [0 dof]  Joint $BG_stage_02.$J_Sun of type 0
-            %                     ---->$BG_stage_03.$B_Gear............. [0 dof]  Joint $BG_stage_03.$J_Gear of type 0
-            %
-            %                ---->$B_HSShaft............................ [6 dof]  Joint $J_HSShaft of type 20
-            %                     ---->$BG_stage_03.$B_Pinion........... [0 dof]  Joint $BG_stage_03.$J_Pinion of type 0
-            %
-            %                ---->$BG_stage_01.$B_Ring.................. [0 dof]  Joint $BG_stage_01.$J_Ring of type 0
-            %                ---->$BG_stage_02.$B_Ring.................. [0 dof]  Joint $BG_stage_02.$J_Ring of type 0
-            %
-            %           ---->$B_main_shaft_LSS.......................... [6 dof]  Joint $J_main_shaft_LSS of type 20
-            %                ---->$BG_stage_01.$B_PLC................... [0 dof]  Joint $BG_stage_01.$J_PLC of type 0
-            %                     ---->$BG_stage_01.$B_Pin1............. [6 dof]  Joint $BG_stage_01.$J_Pin1 of type 20
-            %                          ---->$BG_stage_01.$B_PL1......... [0 dof]  Joint $BG_stage_01.$J_PL1 of type 0
-            %
-            %                     ---->$BG_stage_01.$B_Pin2............. [6 dof]  Joint $BG_stage_01.$J_Pin2 of type 20
-            %                          ---->$BG_stage_01.$B_PL2......... [0 dof]  Joint $BG_stage_01.$J_PL2 of type 0
-            %
-            %                     ---->$BG_stage_01.$B_Pin3............. [6 dof]  Joint $BG_stage_01.$J_Pin3 of type 20
-            %                          ---->$BG_stage_01.$B_PL3......... [0 dof]  Joint $BG_stage_01.$J_PL3 of type 0
-            %
-            % color for the different elements in SIMPACK:
-            % sun / pinion  : 231-049-051
-            % planet / wheel: 075-139-191
-            % ring          : 095-183-092
-            % carrier       : 255-140-025
-            % shaft         : 221-207-110
-            % bearing       : 175-103-061
-            % highlight     : 248-142-197
-            %
-            
-            default = {'linear_mesh', false, ...
-                       'gen_mode'   , 1, ...
-                       'bed_plate'  , true};
-            
-            default = process_varargin(default, varargin);
-            
-            gamma_x = mean([obj.gamma('m_n1') obj.gamma('m_n2') obj.gamma('m_n3')]);
-            gamma_load = power(gamma_x, 2.0);
-            gamma_Nm = power(gamma_x, 3.0);
-            
-%             k_sp = zeros(2, 1);
-%             k_rp = k_sp;
+%         function update_subvar(obj, varargin)
+%             default = {'simulation_time'     , 200.0, ... % [s]
+%                        'inertia_flag'        , true, ...
+%                        'base_excitation_flag', true, ...
+%                        'generator_flag'      , 2, ... % PI control
+%                        'mesh_flag'           , 225};
+%             
+%             default = scaling_factor.process_varargin(default, varargin);
+%             
+%             gamma_module = mean([obj.gamma('m_n1') obj.gamma('m_n2') obj.gamma('m_n3')]);
+%             gamma_load = power(gamma_module, 2.0);
+%             gamma_Torque = power(gamma_module, 3.0);
+%             
+%             k_SP = zeros(2, 1);
+%             k_RP = k_SP;
 %             for idx = 1:2
-%                 k_sp(idx) = obj.stage(idx).sub_set('sun_planet').k_mesh;
-%                 k_rp(idx) = obj.stage(idx).sub_set('planet_ring').k_mesh;
+%                 k_SP(idx) = obj.stage(idx).sub_set('sun_planet').k_mesh;
+%                 k_RP(idx) = obj.stage(idx).sub_set('planet_ring').k_mesh;
 %             end
 %             
-%             k_3 = obj.stage(idx + 1).k_mesh;
-            
-            k_sp = [8.8807 5.6255]*1.0e9;
-            k_rp = [1.006 2.88]*1.0e10;
-            k_3 = 8.06e9;
-
-            new_ID = fopen('@NREL_5MW\NREL_5MW.Nejad.subvar', 'w');
-            
-            fprintf(new_ID, "!file.version=3.3! Removing this line will make the file unreadable\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "!**********************************************************************\n");
-            fprintf(new_ID, "! SubVars\n");
-            fprintf(new_ID, "!**********************************************************************\n");
-            fprintf(new_ID, "subvar($_gamma_Nm, str = '%g')                                        ! $_gamma_Nm\n", gamma_Nm);
-            fprintf(new_ID, "subvar($_gamma_load, str = '%g')                                      ! $_gamma_load\n", gamma_load);
-            fprintf(new_ID, "subvar($_rated_power, str = '%g kW')                                  ! $_rated_power\n", obj.P_rated);
-            fprintf(new_ID, "subvar($_rotor_speed, str = '%g rpm')                                 ! $_rotor_speed\n", obj.n_rotor);
-            fprintf(new_ID, "subvar($_GB_ratio, str = '%g')                                        ! $_GB_ratio\n", obj.u);
-            fprintf(new_ID, "subvargroup.begin($SVG_main_shaft_LSS)                                ! $SVG_main_shaft_LSS\n");
-            fprintf(new_ID, "   subvar($_gamma_d, str = '%g')                                      ! $SVG_main_shaft_LSS.$_gamma_d\n", obj.gamma('d_S'));
-            fprintf(new_ID, "   subvar($_gamma_L, str = '%g')                                      ! $SVG_main_shaft_LSS.$_gamma_L\n", obj.gamma('L_S'));
-            fprintf(new_ID, "   subvargroup.begin($SVG_INP_A)                                      ! $SVG_main_shaft_LSS.$SVG_INP_A\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '0 N/m')                                 ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '1.54e+10 N/m')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '15400000000 N/m')                       ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                             ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '5e+6 Nm/rad')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '5e+6 Nm/rad')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '0 Ns/m')                                ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 N m s/rad')                          ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_A.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_INP_A)                                        ! $SVG_main_shaft_LSS.$SVG_INP_A\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_INP_B)                                      ! $SVG_main_shaft_LSS.$SVG_INP_B\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '4.06e+8 N/m')                           ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '1.54e+10 N/m')                          ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '15400000000 N/m')                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                             ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '97637.5 Nm/rad')                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '97637.5 Nm/rad')                       ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                        ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                            ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                    ! $SVG_main_shaft_LSS.$SVG_INP_B.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_INP_B)                                        ! $SVG_main_shaft_LSS.$SVG_INP_B\n");
-            fprintf(new_ID, "subvargroup.end($SVG_main_shaft_LSS)                                  ! $SVG_main_shaft_LSS\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_stage_01)  ! $SVG_stage_01\n");
-            fprintf(new_ID, "   subvar($_gamma_m_n, str = '%g')                                    ! $SVG_stage_01.$_gamma_m_n\n", obj.gamma('m_n1'));
-            fprintf(new_ID, "   subvar($_gamma_b, str = '%g')                                      ! $SVG_stage_01.$_gamma_b\n", obj.gamma('b_1'));
-            fprintf(new_ID, "   subvar($_gamma_d, str = '%g')                                      ! $SVG_stage_01.$_gamma_d\n", obj.gamma('d_1'));
-            fprintf(new_ID, "   subvar($_gamma_L, str = '%g')                                      ! $SVG_stage_01.$_gamma_L\n", obj.gamma('L_1'));
-            fprintf(new_ID, "   subvar($_m_n, str = '%g mm')                                       ! $SVG_stage_01.$_m_n\n", obj.stage(1).m_n);
-            fprintf(new_ID, "   subvar($_b, str = '%g mm')                                         ! $SVG_stage_01.$_b\n", obj.stage(1).b);
-            fprintf(new_ID, "   subvar($_a_w, str = '%g mm')                                       ! $SVG_stage_01.$_a_w\n", obj.stage(1).a_w);
-            fprintf(new_ID, "   subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_01.$_alpha\n");
-            fprintf(new_ID, "   subvar($_x_sun, str = '0.617')                                     ! $SVG_stage_01.$_x_sun\n");
-            fprintf(new_ID, "   subvar($_x_planet, str = '0.802')                                  ! $SVG_stage_01.$_x_planet\n");
-            fprintf(new_ID, "   subvar($_x_ring, str = '-0.501')                                   ! $SVG_stage_01.$_x_ring\n");
-            fprintf(new_ID, "   subvar($_z_sun, str = '19')                                        ! $SVG_stage_01.$_z_sun\n");
-            fprintf(new_ID, "   subvar($_z_planet, str = '17')                                     ! $SVG_stage_01.$_z_planet\n");
-            fprintf(new_ID, "   subvar($_z_ring, str = '56')                                       ! $SVG_stage_01.$_z_ring\n");
-            fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_01.$_gamma_m_n mm') ! $SVG_stage_01.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_01.$_Tooth_Stiff_ratio\n");
-            fprintf(new_ID, "   subvar($_k_SP, str = '%g N/m')                                     ! $SVG_stage_01.$_k_SP\n", k_sp(1));
-            fprintf(new_ID, "   subvar($_k_RP, str = '%g N/m')                                     ! $SVG_stage_01.$_k_RP\n", k_rp(1));
-            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_01.$_mesh_damping\n");
-            fprintf(new_ID, "   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_01.$_transition_depth\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_PLC_A)                                      ! $SVG_stage_01.$SVG_PLC_A\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '6.6e+4 N/m')                            ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '1770000000 N/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1770000000 N/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                             ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1390000 Nm/rad')                       ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '1.39e+6 Nm/rad')                       ! $SVG_stage_01.$SVG_PLC_A.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                        ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                            ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                    ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                    ! $SVG_stage_01.$SVG_PLC_A.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_PLC_A)                                        ! $SVG_stage_01.$SVG_PLC_A\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_PLC_B)  ! $SVG_stage_01.$SVG_PLC_B\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '6.6e+7 N/m')                                ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '1770000000 N/m')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1770000000 N/m')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1390000 Nm/rad')                              ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '1.39e+6 Nm/rad')                              ! $SVG_stage_01.$SVG_PLC_B.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PLC_B.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_PLC_B)  ! $SVG_stage_01.$SVG_PLC_B\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_PL_AB)  ! $SVG_stage_01.$SVG_PL_AB\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '91016 N/m')                                 ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '9.37E+9 N/m')                               ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '3.20E+9 N/m')                               ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1.39E+6 Nm/rad')                              ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '4.45E+6 Nm/rad')                              ! $SVG_stage_01.$SVG_PL_AB.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_01.$SVG_PL_AB.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_PL_AB)  ! $SVG_stage_01.$SVG_PL_AB\n");
-            fprintf(new_ID, "subvargroup.end($SVG_stage_01)  ! $SVG_stage_01\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_stage_02)  ! $SVG_stage_02\n");
-            fprintf(new_ID, "   subvar($_gamma_m_n, str = '%g')                                     ! $SVG_stage_02.$_gamma_m_n\n", obj.gamma('m_n2'));
-            fprintf(new_ID, "   subvar($_gamma_b, str = '%g')                                       ! $SVG_stage_02.$_gamma_b\n", obj.gamma('b_2'));
-            fprintf(new_ID, "   subvar($_gamma_d, str = '%g')                                       ! $SVG_stage_02.$_gamma_d\n", obj.gamma('d_2'));
-            fprintf(new_ID, "   subvar($_gamma_L, str = '%g')                                       ! $SVG_stage_02.$_gamma_L\n", obj.gamma('L_2'));
-            fprintf(new_ID, "   subvar($_m_n, str = '%g mm')                                       ! $SVG_stage_02.$_m_n\n", obj.stage(2).m_n);
-            fprintf(new_ID, "   subvar($_b, str = '%g mm')                                        ! $SVG_stage_02.$_b\n", obj.stage(2).b);
-            fprintf(new_ID, "   subvar($_a_w, str = '%g mm')                                      ! $SVG_stage_02.$_a_w\n", obj.stage(2).a_w);
-            fprintf(new_ID, "   subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_02.$_alpha\n");
-            fprintf(new_ID, "   subvar($_x_sun, str = '0.389')                                     ! $SVG_stage_02.$_x_sun\n");
-            fprintf(new_ID, "   subvar($_x_planet, str = '0.504')                                  ! $SVG_stage_02.$_x_planet\n");
-            fprintf(new_ID, "   subvar($_x_ring, str = '0.117')                                    ! $SVG_stage_02.$_x_ring\n");
-            fprintf(new_ID, "   subvar($_z_sun, str = '18')                                        ! $SVG_stage_02.$_z_sun\n");
-            fprintf(new_ID, "   subvar($_z_planet, str = '36')                                     ! $SVG_stage_02.$_z_planet\n");
-            fprintf(new_ID, "   subvar($_z_ring, str = '93')                                       ! $SVG_stage_02.$_z_ring\n");
-            fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_02.$_gamma_m_n mm') ! $SVG_stage_02.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_02.$_Tooth_Stiff_ratio\n");
-            fprintf(new_ID, "   subvar($_k_SP, str = '%g N/m')                                  ! $SVG_stage_02.$_k_SP\n", k_sp(2));
-            fprintf(new_ID, "   subvar($_k_RP, str = '%g N/m')                                  ! $SVG_stage_02.$_k_RP\n", k_rp(2));
-            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_02.$_mesh_damping\n");
-            fprintf(new_ID, "   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_02.$_transition_depth\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_IMS_PLC_A)  ! $SVG_stage_02.$SVG_IMS_PLC_A\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '9.1e+4 N/m')                                ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '6.12e+7 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1.16e+9 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '74428 Nm/rad')                                ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '3239.8 Nm/rad')                               ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_A.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_IMS_PLC_A)  ! $SVG_stage_02.$SVG_IMS_PLC_A\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_IMS_PLC_B)  ! $SVG_stage_02.$SVG_IMS_PLC_B\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '9.1e+7 N/m')                                ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '6.12e+7 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1.16e+9 N/m')                               ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '74428 Nm/rad')                                ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '3239.8 Nm/rad')                               ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_IMS_PLC_B.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_IMS_PLC_B)  ! $SVG_stage_02.$SVG_IMS_PLC_B\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_PL_AB)  ! $SVG_stage_02.$SVG_PL_AB\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '91016 N/m')                                 ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '6.12E+7 N/m')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1.16E+9 N/m')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '7.5e+4 Nm/rad')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '7.5e+4 Nm/rad')                               ! $SVG_stage_02.$SVG_PL_AB.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_02.$SVG_PL_AB.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_PL_AB)  ! $SVG_stage_02.$SVG_PL_AB\n");
-            fprintf(new_ID, "subvargroup.end($SVG_stage_02)  ! $SVG_stage_02\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_stage_03)  ! $SVG_stage_03\n");
-            fprintf(new_ID, "   subvar($_gamma_m_n, str = '%g')                                     ! $SVG_stage_03.$_gamma_m_n\n", obj.gamma('m_n3'));
-            fprintf(new_ID, "   subvar($_gamma_b, str = '%g')                                       ! $SVG_stage_03.$_gamma_b\n", obj.gamma('b_3'));
-            fprintf(new_ID, "   subvar($_gamma_d, str = '%g')                                       ! $SVG_stage_03.$_gamma_d\n", obj.gamma('d_3'));
-            fprintf(new_ID, "   subvar($_gamma_L, str = '%g')                                       ! $SVG_stage_03.$_gamma_L\n", obj.gamma('L_3'));
-            fprintf(new_ID, "   subvar($_m_n, str = '%g mm')                                       ! $SVG_stage_03.$_m_n\n", obj.stage(3).m_n);
-            fprintf(new_ID, "   subvar($_b, str = '%g mm')                                        ! $SVG_stage_03.$_b\n", obj.stage(3).b);
-            fprintf(new_ID, "   subvar($_a_w, str = '%g mm')                                      ! $SVG_stage_03.$_a_w\n", obj.stage(3).a_w);
-            fprintf(new_ID, "   subvar($_alpha, str = '20 deg')                                    ! $SVG_stage_03.$_alpha\n");
-            fprintf(new_ID, "   subvar($_helix, str = '10 deg')                                    ! $SVG_stage_03.$_helix\n");
-            fprintf(new_ID, "   subvar($_x_pinion, str = '0.480')                                  ! $SVG_stage_03.$_x_pinion\n");
-            fprintf(new_ID, "   subvar($_x_gear, str = '0.669')                                    ! $SVG_stage_03.$_x_gear\n");
-            fprintf(new_ID, "   subvar($_z_pinion, str = '24')                                     ! $SVG_stage_03.$_z_pinion\n");
-            fprintf(new_ID, "   subvar($_z_gear, str = '95')                                       ! $SVG_stage_03.$_z_gear\n");
-            fprintf(new_ID, "   subvar($_Norm_Backlash, str = '0.40*$SVG_stage_03.$_gamma_m_n mm') ! $SVG_stage_03.$_Norm_Backlash\n");
-            fprintf(new_ID, "   subvar($_Tooth_Stiff_ratio, str = '0.8')                           ! $SVG_stage_03.$_Tooth_Stiff_ratio\n");
-            fprintf(new_ID, "   subvar($_k_mesh, str = '%g N/m')                                ! $SVG_stage_03.$_k_mesh\n", k_3);
-            fprintf(new_ID, "   subvar($_mesh_damping, str = '5.0e8 Ns/m')                         ! $SVG_stage_03.$_mesh_damping\n");
-            fprintf(new_ID, "   subvar($_transition_depth, str = '$SVG_mesh.$_full_damping')       ! $SVG_stage_03.$_transition_depth\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_IMS_A)  ! $SVG_stage_03.$SVG_IMS_A\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '0 N/m')                                     ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '6.12E+7 N/m')                               ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1.16E+9 N/m')                               ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '74428 Nm/rad')                                ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '3239.8 Nm/rad')                               ! $SVG_stage_03.$SVG_IMS_A.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_A.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_IMS_A)  ! $SVG_stage_03.$SVG_IMS_A\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_IMS_B)  ! $SVG_stage_03.$SVG_IMS_B\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '7.41e+7 N/m')                               ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '5.17E+8 N/m')                               ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '484000000 N/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1.67e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '1.78e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_B.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_B.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_IMS_B)  ! $SVG_stage_03.$SVG_IMS_B\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_IMS_C)  ! $SVG_stage_03.$SVG_IMS_C\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '78723000 N/m')                              ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '7.3708E+8 N/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '3.2612e+8 N/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1123400 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '2539000 Nm/rad')                              ! $SVG_stage_03.$SVG_IMS_C.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_IMS_C.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_IMS_C)  ! $SVG_stage_03.$SVG_IMS_C\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_HS_A )  ! $SVG_stage_03.$SVG_HS_A\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '1.26e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_A.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '8.21e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_A.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '821000000 N/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_HS_A.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1123400 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_A.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '2539000 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_A.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_A.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_HS_A.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_A.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_A.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_HS_A )  ! $SVG_stage_03.$SVG_HS_A\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_HS_B )  ! $SVG_stage_03.$SVG_HS_B\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '6.7e+7 N/m')                                ! $SVG_stage_03.$SVG_HS_B.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '8.09e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_B.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '1.33e+8 N/m')                               ! $SVG_stage_03.$SVG_HS_B.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_HS_B.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '1.71e+5 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_B.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '1.04e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_B.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_B.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_HS_B.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_B.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_B.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_HS_B)  ! $SVG_stage_03.$SVG_HS_B\n");
-            fprintf(new_ID, "   subvargroup.begin($SVG_HS_C)  ! $SVG_stage_03.$SVG_HS_C\n");
-            fprintf(new_ID, "      subvar($_PL_c_x, str = '7.93e+7 N/m')                               ! $SVG_stage_03.$SVG_HS_C.$_PL_c_x\n");
-            fprintf(new_ID, "      subvar($_PL_c_y, str = '1.04e+9 N/m')                               ! $SVG_stage_03.$SVG_HS_C.$_PL_c_y\n");
-            fprintf(new_ID, "      subvar($_PL_c_z, str = '7.29e+7 N/m')                               ! $SVG_stage_03.$SVG_HS_C.$_PL_c_z\n");
-            fprintf(new_ID, "      subvar($_PL_c_al, str = '0 Nm/rad')                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_c_al\n");
-            fprintf(new_ID, "      subvar($_PL_c_be, str = '97637.5 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_C.$_PL_c_be\n");
-            fprintf(new_ID, "      subvar($_PL_c_ga, str = '1.39e+6 Nm/rad')                              ! $SVG_stage_03.$SVG_HS_C.$_PL_c_ga\n");
-            fprintf(new_ID, "      subvar($_PL_d_x, str = '4.53e+002 Ns/m')                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_x\n");
-            fprintf(new_ID, "      subvar($_PL_d_y, str = '4.20e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_y\n");
-            fprintf(new_ID, "      subvar($_PL_d_z, str = '3.06e+004 Ns/m')                             ! $SVG_stage_03.$SVG_HS_C.$_PL_d_z\n");
-            fprintf(new_ID, "      subvar($_PL_d_al, str = '0 Nms/rad')                                    ! $SVG_stage_03.$SVG_HS_C.$_PL_d_al\n");
-            fprintf(new_ID, "      subvar($_PL_d_be, str = '3.43e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_C.$_PL_d_be\n");
-            fprintf(new_ID, "      subvar($_PL_d_ga, str = '4.78e+001 Nms/rad')                            ! $SVG_stage_03.$SVG_HS_C.$_PL_d_ga\n");
-            fprintf(new_ID, "   subvargroup.end($SVG_HS_C)  ! $SVG_stage_03.$SVG_HS_C\n");
-            fprintf(new_ID, "subvargroup.end($SVG_stage_03)  ! $SVG_stage_03\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_mesh)                           ! $SVG_mesh\n");
-            fprintf(new_ID, "   subvar($_full_damping, str= '10e-6 m')                                                     ! $SVG_mesh.$_full_damping\n");
-            fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'detailed (FE225)', discr.desc(2) = 'linear (FE204)', discr.str (   1) = '0', discr.str (   2) = '1') ! $SVG_mesh.$_flag\n", default.linear_mesh);
-            fprintf(new_ID, "   subvar($_use_detailed, str= 'IF($SVG_mesh.$_flag == 1)\n{\n\t1\n}\nELSE\n{\n\t0\n}')                      ! $SVG_mesh.$_use_detailed\n");
-            fprintf(new_ID, "   subvar($_use_linear,   str= 'IF($SVG_mesh.$_flag == 1)\n{\n\t0\n}\nELSE\n{\n\t1\n}')                      ! $SVG_mesh.$_use_linear\n");
-            fprintf(new_ID, "subvargroup.end($SVG_mesh)                           ! $SVG_mesh\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_generator)                           ! $SVG_generator\n");
-            fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'torque from speed, T(omega)', discr.desc(2) = 'PI control (CE129)', discr.desc(3) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '2', discr.str(3) = '0') ! $SVG_generator.$_flag\n", default.gen_mode);
-            fprintf(new_ID, "   subvar($_use_torque,  str = 'IF($SVG_generator.$_flag == 1)\n{\n\t0\n}\nELSE\n{\n\t1\n}') ! $SVG_generator.$_use_torque\n");
-            fprintf(new_ID, "   subvar($_use_control, str = 'IF($SVG_generator.$_flag == 2)\n{\n\t0\n}\nELSE\n{\n\t1\n}') ! $SVG_generator.$_use_control\n");
-            fprintf(new_ID, "subvargroup.end($SVG_generator)                           ! $SVG_generator\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "subvargroup.begin($SVG_base_input)                           ! $SVG_base_input\n");
-            fprintf(new_ID, "   subvar($_flag, str = '%i', discr.desc(1) = 'ON', discr.desc(2) = 'OFF', discr.str(1) = '1', discr.str(2) = '0') ! $SVG_base_input.$_flag\n", default.bed_plate);
-            fprintf(new_ID, "   subvar($_ON,  str= 'IF($SVG_base_input.$_flag == 1)\n{\n\t1\n}\nELSE\n{\n\t0\n}')                       ! $SVG_base_input.$_ON\n");
-            fprintf(new_ID, "   subvar($_OFF, str= 'IF($SVG_base_input.$_flag == 1)\n{\n\t0\n}\nELSE\n{\n\t1\n}')                       ! $SVG_base_input.$_OFF\n");
-            fprintf(new_ID, "subvargroup.end($SVG_base_input)                           ! $SVG_base_input\n");
-            fprintf(new_ID, "\n");
-            fprintf(new_ID, "\n");
-            
-            fclose(new_ID);
-            
-        end
-        
-        function update_subvar_WTDB(obj, varargin)
-            %UPDATE_SUBVAR_WTDB updates some parameters from Simpack's Wind
-            % Turbine database gearbox.
-            % 
-            % Kinematic Tree:
-            % ================================================================================
-            %   $R_Isys
-            %    ---->$B_HSG................... [6 dof]  Connection $G_SHAFT.$CTN_HSG of type 63 (Joint type 15)
-            %         ---->$B_LSS_PLC.......... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLC of type 63 (Joint type 15)
-            %              ---->$B_LSS_PLT1.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT1 of type 63 (Joint type 15)
-            %              ---->$B_LSS_PLT2.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT2 of type 63 (Joint type 15)
-            %              ---->$B_LSS_PLT3.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT3 of type 63 (Joint type 15)
-            %              ---->$B_LSS_PLT4.... [6 dof]  Connection $G_SHAFT.$CTN_LSS_PLT4 of type 63 (Joint type 15)
-            % 
-            %         ---->$B_IMS_PLC.......... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLC of type 63 (Joint type 15)
-            %              ---->$B_LSS_SUN..... [6 dof]  Connection $G_SHAFT.$CTN_LSS_SUN of type 63 (Joint type 15)
-            %              ---->$B_IMS_PLT1.... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLT1 of type 63 (Joint type 15)
-            %              ---->$B_IMS_PLT2.... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLT2 of type 63 (Joint type 15)
-            %              ---->$B_IMS_PLT3.... [6 dof]  Connection $G_SHAFT.$CTN_IMS_PLT3 of type 63 (Joint type 15)
-            % 
-            %         ---->$B_HSS_BGR.......... [6 dof]  Connection $G_SHAFT.$CTN_HSS_BGR of type 63 (Joint type 15)
-            %              ---->$B_IMS_SUN..... [6 dof]  Connection $G_SHAFT.$CTN_IMS_SUN of type 63 (Joint type 15)
-            % 
-            %         ---->$B_HSS_HSH.......... [6 dof]  Connection $G_SHAFT.$CTN_HSS_HSH of type 63 (Joint type 15)
-            %
-            
-        end
-        
+%             k_PW = obj.stage(idx + 1).k_mesh;
+% 
+%             new_ID = fopen('@NREL_5MW\NREL_5MW.scaled.subvar', 'w');
+%             
+%             fprintf(new_ID, "!file.version=3.5! Removing this line will make the file unreadable\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "!**********************************************************************\n");
+%             fprintf(new_ID, "! SubVars\n");
+%             fprintf(new_ID, "!**********************************************************************\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading\n");
+%             fprintf(new_ID, "   subvar($_gamma_Power, str= '%.5e')                                                          ! $SVG_loading.$_gamma_Power\n", obj.gamma('P'));
+%             fprintf(new_ID, "   subvar($_gamma_Speed, str= '1.0')                                                          ! $SVG_loading.$_gamma_Speed\n");
+%             fprintf(new_ID, "   subvar($_gamma_Torque, str= '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed')       ! $SVG_loading.$_gamma_Torque\n");
+%             fprintf(new_ID, "   subvar($_gamma_Force, str= 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed') ! $SVG_loading.$_gamma_Force\n");
+%             fprintf(new_ID, "   subvar($_rated_power_ref, str= '5.0e3 kW')                                                 ! $SVG_loading.$_rated_power_ref\n");
+%             fprintf(new_ID, "   subvar($_rated_power, str= '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power')    ! $SVG_loading.$_rated_power\n");
+%             fprintf(new_ID, "   subvar($_inertia_flag, str= '%d', discr.desc (   1) = 'yes (value)', discr.desc (   2) = 'no (unit)', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_loading.$_inertia_flag\n", default.inertia_flag);
+%             fprintf(new_ID, "   subvar($_base_excitation_flag, str= '%d', discr.desc (   1) = 'ON', discr.desc (   2) = 'OFF', discr.str (   1) = '1', discr.str (   2) = '0') ! $SVG_loading.$_base_excitation_flag\n", default.base_excitation_flag);
+%             fprintf(new_ID, "   subvar($_generator_flag, str= '%d', discr.desc (   1) = 'Prop. control', discr.desc (   2) = 'PI control', discr.desc (   3) = 'Time series, omega_gen', discr.str (   1) = '1', discr.str (   2) = '2', discr.str (   3) = '3') ! $SVG_loading.$_generator_flag\n", default.generator_flag);
+%             fprintf(new_ID, "   subvar($_mesh_flag, str= '%d', discr.desc (   1) = 'advanced', discr.desc (   2) = 'basic', discr.str (   1) = '225', discr.str (   2) = '204') ! $SVG_loading.$_mesh_flag\n", default.mesh_flag);
+%             fprintf(new_ID, "   subvar($_simulation_time, str= '%.5e s')                                                   ! $SVG_loading.$_simulation_time\n", default.simulation_time);
+%             fprintf(new_ID, "   subvar($_gamma_Disp, str= '%.5e')                                                           ! $SVG_loading.$_gamma_Disp\n", obj.gamma('m_n1'));
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor\n");
+%             fprintf(new_ID, "   subvar($_gamma_M, str= '1.0')                                                              ! $SVG_rotor.$_gamma_M\n");
+%             fprintf(new_ID, "   subvar($_gamma_J, str= '%.5e')                                                                ! $SVG_rotor.$_gamma_J\n", obj.gamma('J_R'));
+%             fprintf(new_ID, "   subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)\n{\n110.0e3 kg\n}\nELSE\n{\n1.0 kg\n}') ! $SVG_rotor.$_mass_ref\n");
+%             fprintf(new_ID, "   subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag== 1)\n{\n57231535.0 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}') ! $SVG_rotor.$_mass_mom_inertia_ref\n");
+%             fprintf(new_ID, "   subvar($_length_ref, str= '250.0 mm')                                                      ! $SVG_rotor.$_length_ref\n");
+%             fprintf(new_ID, "   subvar($_diameter_ref, str= '840.0 mm')                                                    ! $SVG_rotor.$_diameter_ref\n");
+%             fprintf(new_ID, "   subvar($_mass, str= '$SVG_rotor.$_mass_ref*$SVG_rotor.$_gamma_M')                          ! $SVG_rotor.$_mass\n");
+%             fprintf(new_ID, "   subvar($_mass_mom_inertia, str= '$SVG_rotor.$_mass_mom_inertia_ref*$SVG_rotor.$_gamma_J')  ! $SVG_rotor.$_mass_mom_inertia\n");
+%             fprintf(new_ID, "   subvar($_length, str= '$SVG_rotor.$_length_ref*$SVG_main_shaft.$_gamma_L')                 ! $SVG_rotor.$_length\n");
+%             fprintf(new_ID, "   subvar($_diameter, str= '$SVG_rotor.$_diameter_ref*$SVG_main_shaft.$_gamma_d')             ! $SVG_rotor.$_diameter\n");
+%             fprintf(new_ID, "   subvar($_rated_speed, str= '12.1 rpm')                                                     ! $SVG_rotor.$_rated_speed\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft\n");
+%             fprintf(new_ID, "   subvar($_gamma_L, str= '%.5e')                                                                ! $SVG_main_shaft.$_gamma_L\n", obj.gamma('L_S'));
+%             fprintf(new_ID, "   subvar($_gamma_d, str= '%.5e')                                                                ! $SVG_main_shaft.$_gamma_d\n", obj.gamma('d_S'));
+%             fprintf(new_ID, "   subvar($_length_ref, str= '2000.0 mm')                                                     ! $SVG_main_shaft.$_length_ref\n");
+%             fprintf(new_ID, "   subvar($_diameter_ref, str= '700.0 mm')                                                    ! $SVG_main_shaft.$_diameter_ref\n");
+%             fprintf(new_ID, "   subvar($_x_A_ref, str= '333.0 mm')                                                         ! $SVG_main_shaft.$_x_A_ref\n");
+%             fprintf(new_ID, "   subvar($_x_B_ref, str= '1166.0 mm')                                                        ! $SVG_main_shaft.$_x_B_ref\n");
+%             fprintf(new_ID, "   subvar($_length, str= '$SVG_main_shaft.$_length_ref*$SVG_main_shaft.$_gamma_L')            ! $SVG_main_shaft.$_length\n");
+%             fprintf(new_ID, "   subvar($_diameter, str= '$SVG_main_shaft.$_diameter_ref*$SVG_main_shaft.$_gamma_d')        ! $SVG_main_shaft.$_diameter\n");
+%             fprintf(new_ID, "   subvar($_x_A, str= '$SVG_main_shaft.$_x_A_ref*$SVG_main_shaft.$_gamma_L')                  ! $SVG_main_shaft.$_x_A\n");
+%             fprintf(new_ID, "   subvar($_x_B, str= '$SVG_main_shaft.$_x_B_ref*$SVG_main_shaft.$_gamma_L')                  ! $SVG_main_shaft.$_x_B\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01\n");
+%             fprintf(new_ID, "   subvar($_gamma_mn, str= '%.5e')                                                               ! $SVG_stage_01.$_gamma_mn\n", obj.gamma('m_n1'));
+%             fprintf(new_ID, "   subvar($_gamma_b, str= '%.5e')                                                                ! $SVG_stage_01.$_gamma_b\n", obj.gamma('b_1'));
+%             fprintf(new_ID, "   subvar($_gamma_L, str= '%.5e')                                                                ! $SVG_stage_01.$_gamma_L\n", obj.gamma('L_1'));
+%             fprintf(new_ID, "   subvar($_gamma_d, str= '%.5e')                                                                ! $SVG_stage_01.$_gamma_d\n", obj.gamma('d_1'));
+%             fprintf(new_ID, "   subvar($_k_SP, str= '%.5e N/m')                                                           ! $SVG_stage_01.$_k_SP\n", k_SP(1));
+%             fprintf(new_ID, "   subvar($_k_RP, str= '%.5e N/m')                                                           ! $SVG_stage_01.$_k_RP\n", k_RP(1));
+%             fprintf(new_ID, "   subvar($_normal_module_ref, str= '45 mm')                                                  ! $SVG_stage_01.$_normal_module_ref\n");
+%             fprintf(new_ID, "   subvar($_center_distance_ref, str= '863.0 mm')                                             ! $SVG_stage_01.$_center_distance_ref\n");
+%             fprintf(new_ID, "   subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_01.$_normal_backlash_ref\n");
+% %             fprintf(new_ID, "   subvar($_normal_module, str= '$SVG_stage_01.$_normal_module_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$_normal_module\n");
+% %             fprintf(new_ID, "   subvar($_center_distance, str= '$SVG_stage_01.$_center_distance_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$_center_distance\n");
+%             fprintf(new_ID, "   subvar($_normal_module, str= '%.5e mm') ! $SVG_stage_01.$_normal_module\n", obj.stage(1).m_n);
+%             fprintf(new_ID, "   subvar($_center_distance, str= '%.5e mm') ! $SVG_stage_01.$_center_distance\n", obj.stage(1).a_w);
+%             fprintf(new_ID, "   subvar($_normal_backlash, str= '$SVG_stage_01.$_normal_backlash_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$_normal_backlash\n");
+%             fprintf(new_ID, "   subvar($_length, str= '1.8*$SVG_stage_01.$SVG_planet.$_flank_width + $SVG_stage_01.$SVG_shaft.$_length') ! $SVG_stage_01.$_length\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '491.0 mm')                                              ! $SVG_stage_01.$SVG_sun.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_01.$SVG_sun.$_bore_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_sun.$_flank_width\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_sun.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_sun.$_bore_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_01.$SVG_planet.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_01.$SVG_planet.$_bore_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_01.$SVG_planet.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_planet.$_flank_width\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_01.$SVG_planet.$_bore_diameter_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$SVG_planet.$_bore_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_01.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_01.$SVG_ring.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_01.$SVG_ring.$_flank_width_ref*$SVG_stage_01.$_gamma_b') ! $SVG_stage_01.$SVG_ring.$_flank_width\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft\n");
+%             fprintf(new_ID, "      subvar($_length_ref, str= '500.0 mm')                                                   ! $SVG_stage_01.$SVG_shaft.$_length_ref\n");
+%             fprintf(new_ID, "      subvar($_diameter_ref, str= '533.0 mm')                                                 ! $SVG_stage_01.$SVG_shaft.$_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_length, str= '$SVG_stage_01.$SVG_shaft.$_length_ref*$SVG_stage_01.$_gamma_L')  ! $SVG_stage_01.$SVG_shaft.$_length\n");
+%             fprintf(new_ID, "      subvar($_diameter, str= '$SVG_stage_01.$SVG_shaft.$_diameter_ref*$SVG_stage_01.$_gamma_d') ! $SVG_stage_01.$SVG_shaft.$_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02\n");
+%             fprintf(new_ID, "   subvar($_gamma_mn, str= '%.5e')                                                               ! $SVG_stage_02.$_gamma_mn\n", obj.gamma('m_n2'));
+%             fprintf(new_ID, "   subvar($_gamma_b, str= '%.5e')                                                                ! $SVG_stage_02.$_gamma_b\n", obj.gamma('b_2'));
+%             fprintf(new_ID, "   subvar($_gamma_L, str= '%.5e')                                                                ! $SVG_stage_02.$_gamma_L\n", obj.gamma('L_2'));
+%             fprintf(new_ID, "   subvar($_gamma_d, str= '%.5e')                                                                ! $SVG_stage_02.$_gamma_d\n", obj.gamma('d_2'));
+%             fprintf(new_ID, "   subvar($_k_SP, str= '%.5e N/m')                                                           ! $SVG_stage_02.$_k_SP\n", k_SP(2));
+%             fprintf(new_ID, "   subvar($_k_RP, str= '%.5e N/m')                                                           ! $SVG_stage_02.$_k_RP\n", k_RP(2));
+%             fprintf(new_ID, "   subvar($_normal_module_ref, str= '21.0 mm')                                                ! $SVG_stage_02.$_normal_module_ref\n");
+%             fprintf(new_ID, "   subvar($_center_distance_ref, str= '584.0 mm')                                             ! $SVG_stage_02.$_center_distance_ref\n");
+%             fprintf(new_ID, "   subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_02.$_normal_backlash_ref\n");
+% %             fprintf(new_ID, "   subvar($_normal_module, str= '$SVG_stage_02.$_normal_module_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$_normal_module\n");
+% %             fprintf(new_ID, "   subvar($_center_distance, str= '$SVG_stage_02.$_center_distance_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$_center_distance\n");
+%             fprintf(new_ID, "   subvar($_normal_module, str= '%.5e mm') ! $SVG_stage_02.$_normal_module\n", obj.stage(2).m_n);
+%             fprintf(new_ID, "   subvar($_center_distance, str= '%.5e mm') ! $SVG_stage_02.$_center_distance\n", obj.stage(2).a_w);
+%             fprintf(new_ID, "   subvar($_normal_backlash, str= '$SVG_stage_02.$_normal_backlash_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$_normal_backlash\n");
+%             fprintf(new_ID, "   subvar($_length, str= '1.8*$SVG_stage_02.$SVG_planet.$_flank_width + $SVG_stage_02.$SVG_shaft.$_length') ! $SVG_stage_02.$_length\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '550.0 mm')                                              ! $SVG_stage_02.$SVG_sun.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '200.0 mm')                                            ! $SVG_stage_02.$SVG_sun.$_bore_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_sun.$_flank_width\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_sun.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_sun.$_bore_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_02.$SVG_planet.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '380.0 mm')                                            ! $SVG_stage_02.$SVG_planet.$_bore_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_02.$SVG_planet.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_planet.$_flank_width\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_02.$SVG_planet.$_bore_diameter_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$SVG_planet.$_bore_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_02.$SVG_sun.$_flank_width_ref')              ! $SVG_stage_02.$SVG_ring.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_02.$SVG_ring.$_flank_width_ref*$SVG_stage_02.$_gamma_b') ! $SVG_stage_02.$SVG_ring.$_flank_width\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft\n");
+%             fprintf(new_ID, "      subvar($_length_ref, str= '666.0 mm')                                                   ! $SVG_stage_02.$SVG_shaft.$_length_ref\n");
+%             fprintf(new_ID, "      subvar($_diameter_ref, str= '333.0 mm')                                                 ! $SVG_stage_02.$SVG_shaft.$_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_length, str= '$SVG_stage_02.$SVG_shaft.$_length_ref*$SVG_stage_02.$_gamma_L')  ! $SVG_stage_02.$SVG_shaft.$_length\n");
+%             fprintf(new_ID, "      subvar($_diameter, str= '$SVG_stage_02.$SVG_shaft.$_diameter_ref*$SVG_stage_02.$_gamma_d') ! $SVG_stage_02.$SVG_shaft.$_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03\n");
+%             fprintf(new_ID, "   subvar($_gamma_mn, str= '%.5e')                                                               ! $SVG_stage_03.$_gamma_mn\n", obj.gamma('m_n3'));
+%             fprintf(new_ID, "   subvar($_gamma_b, str= '%.5e')                                                                ! $SVG_stage_03.$_gamma_b\n", obj.gamma('b_3'));
+%             fprintf(new_ID, "   subvar($_gamma_L, str= '%.5e')                                                                ! $SVG_stage_03.$_gamma_L\n", obj.gamma('L_3'));
+%             fprintf(new_ID, "   subvar($_gamma_d, str= '%.5e')                                                                ! $SVG_stage_03.$_gamma_d\n", obj.gamma('d_3'));
+%             fprintf(new_ID, "   subvar($_k_PW, str= '%.5e N/m')                                                           ! $SVG_stage_03.$_k_PW\n", k_PW);
+%             fprintf(new_ID, "   subvar($_normal_module_ref, str= '14 mm')                                                  ! $SVG_stage_03.$_normal_module_ref\n");
+%             fprintf(new_ID, "   subvar($_center_distance_ref, str= '861.0 mm')                                             ! $SVG_stage_03.$_center_distance_ref\n");
+%             fprintf(new_ID, "   subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_03.$_normal_backlash_ref\n");
+% %             fprintf(new_ID, "   subvar($_normal_module, str= '$SVG_stage_03.$_normal_module_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$_normal_module\n");
+% %             fprintf(new_ID, "   subvar($_center_distance, str= '$SVG_stage_03.$_center_distance_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$_center_distance\n");
+%             fprintf(new_ID, "   subvar($_normal_module, str= '%.5e mm') ! $SVG_stage_03.$_normal_module\n", obj.stage(3).m_n);
+%             fprintf(new_ID, "   subvar($_center_distance, str= '%.5e mm') ! $SVG_stage_03.$_center_distance\n", obj.stage(3).a_w);
+%             fprintf(new_ID, "   subvar($_normal_backlash, str= '$SVG_stage_03.$_normal_backlash_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$_normal_backlash\n");
+%             fprintf(new_ID, "   subvar($_length, str= '1.8*$SVG_stage_03.$SVG_pinion.$_flank_width + $SVG_stage_03.$SVG_shaft.$_length') ! $SVG_stage_03.$_length\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '360.0 mm')                                              ! $SVG_stage_03.$SVG_pinion.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '200.0 mm')                                            ! $SVG_stage_03.$SVG_pinion.$_bore_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_03.$SVG_pinion.$_flank_width_ref*$SVG_stage_03.$_gamma_b') ! $SVG_stage_03.$SVG_pinion.$_flank_width\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_03.$SVG_pinion.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$SVG_pinion.$_bore_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel\n");
+%             fprintf(new_ID, "      subvar($_flank_width_ref, str= '$SVG_stage_03.$SVG_pinion.$_flank_width_ref')           ! $SVG_stage_03.$SVG_wheel.$_flank_width_ref\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter_ref, str= '400.0 mm')                                            ! $SVG_stage_03.$SVG_wheel.$_bore_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_flank_width, str= '$SVG_stage_03.$SVG_wheel.$_flank_width_ref*$SVG_stage_03.$_gamma_b') ! $SVG_stage_03.$SVG_wheel.$_flank_width\n");
+%             fprintf(new_ID, "      subvar($_bore_diameter, str= '$SVG_stage_03.$SVG_wheel.$_bore_diameter_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$SVG_wheel.$_bore_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel\n");
+%             fprintf(new_ID, "   subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft\n");
+%             fprintf(new_ID, "      subvar($_length_ref, str= '1000.0 mm')                                                  ! $SVG_stage_03.$SVG_shaft.$_length_ref\n");
+%             fprintf(new_ID, "      subvar($_diameter_ref, str= '333.0 mm')                                                 ! $SVG_stage_03.$SVG_shaft.$_diameter_ref\n");
+%             fprintf(new_ID, "      subvar($_length, str= '$SVG_stage_03.$SVG_shaft.$_length_ref*$SVG_stage_03.$_gamma_L')  ! $SVG_stage_03.$SVG_shaft.$_length\n");
+%             fprintf(new_ID, "      subvar($_diameter, str= '$SVG_stage_03.$SVG_shaft.$_diameter_ref*$SVG_stage_03.$_gamma_d') ! $SVG_stage_03.$SVG_shaft.$_diameter\n");
+%             fprintf(new_ID, "   subvargroup.end (                $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_generator                )                           ! $SVG_generator\n");
+%             fprintf(new_ID, "   subvar($_gamma_M, str= '1.0')                                                              ! $SVG_generator.$_gamma_M\n");
+%             fprintf(new_ID, "   subvar($_gamma_J, str= '1.0')                                                              ! $SVG_generator.$_gamma_J\n");
+%             fprintf(new_ID, "   subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1)\n{\n1900.0 kg\n}\nELSE\n{\n1.0 kg\n}') ! $SVG_generator.$_mass_ref\n");
+%             fprintf(new_ID, "   subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag  == 1)\n{\n534.116 kg m^2\n}\nELSE\n{\n1.0 kg m^2\n}') ! $SVG_generator.$_mass_mom_inertia_ref\n");
+%             fprintf(new_ID, "   subvar($_length_ref, str= '$SVG_rotor.$_length_ref')                                       ! $SVG_generator.$_length_ref\n");
+%             fprintf(new_ID, "   subvar($_diameter_ref, str= '$SVG_rotor.$_diameter_ref')                                   ! $SVG_generator.$_diameter_ref\n");
+%             fprintf(new_ID, "   subvar($_K_P_ref, str= '2200.0', desc (   1) = 'Proportional gain')                        ! $SVG_generator.$_K_P_ref\n");
+%             fprintf(new_ID, "   subvar($_K_I_ref, str= '220.0', desc (   1) = 'Integral gain')                             ! $SVG_generator.$_K_I_ref\n");
+%             fprintf(new_ID, "   subvar($_mass, str= '$SVG_generator.$_mass_ref*$SVG_generator.$_gamma_M')                  ! $SVG_generator.$_mass\n");
+%             fprintf(new_ID, "   subvar($_mass_mom_inertia, str= '$SVG_generator.$_mass_mom_inertia_ref*$SVG_generator.$_gamma_J') ! $SVG_generator.$_mass_mom_inertia\n");
+%             fprintf(new_ID, "   subvar($_length, str= '$SVG_generator.$_length_ref*$SVG_stage_03.$_gamma_L')               ! $SVG_generator.$_length\n");
+%             fprintf(new_ID, "   subvar($_diameter, str= '$SVG_generator.$_diameter_ref*$SVG_main_shaft.$_gamma_d')         ! $SVG_generator.$_diameter\n");
+%             fprintf(new_ID, "   subvar($_K_P, str= '$SVG_generator.$_K_P_ref*$SVG_loading.$_gamma_Torque', desc (   1) = 'Proportional gain') ! $SVG_generator.$_K_P\n");
+%             fprintf(new_ID, "   subvar($_K_I, str= '$SVG_generator.$_K_I_ref*$SVG_loading.$_gamma_Torque', desc (   1) = 'Integral gain') ! $SVG_generator.$_K_I\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_generator                )                           ! $SVG_generator\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_housing                  )                           ! $SVG_housing\n");
+%             fprintf(new_ID, "   subvar($_length, str= '$SVG_stage_01.$_length + $SVG_stage_02.$_length + $SVG_stage_03.$_length') ! $SVG_housing.$_length\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_housing                  )                           ! $SVG_housing\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate\n");
+%             fprintf(new_ID, "   subvar($_length_ref, str= '8000.0 mm')                                                     ! $SVG_bed_plate.$_length_ref\n");
+%             fprintf(new_ID, "   subvar($_width_ref, str= '4000.0 mm')                                                      ! $SVG_bed_plate.$_width_ref\n");
+%             fprintf(new_ID, "   subvar($_length, str= '1.75*$SVG_housing.$_length')                                        ! $SVG_bed_plate.$_length\n");
+%             fprintf(new_ID, "   subvar($_width, str= '$SVG_bed_plate.$_width_ref*$SVG_stage_01.$_gamma_mn')                ! $SVG_bed_plate.$_width\n");
+%             fprintf(new_ID, "subvargroup.end (                   $SVG_bed_plate                )                           ! $SVG_bed_plate\n");
+%             fprintf(new_ID, "\n");
+%             fprintf(new_ID, "                                                                                                                                                                                                                                                                                                                                                                                                    \n");
+%             
+%             fclose(new_ID);
+%             
+%         end
+%         
     end
     
 end

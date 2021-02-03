@@ -1,0 +1,1600 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '.'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
+glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   3                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   4                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   5                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   6                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   7                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   8                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   9                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  10                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  11                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  12                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  13                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  14                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  15                                       ) = 1                       ! Formalism Tuning Flags
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+model.txt                                                           = 'Coupling#Coupling consisting of 4 rigid sections.[br]Switchable between use of a rigid connection or use of a force element for the connection to the gear box.[br]De-/Activation of an eccentricity for all sections.' ! Comment
+glob.ifctn.bounds                                                   = 1                       ! Cubic spline boundary conditions
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -2.40749127906747162E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -6.28763450495898724E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.87231745343888178E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo offset
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -2.40749127906747162E+00 ! Position
+view.pos (                2 ,       $V_perspective                ) = -6.28763450495898724E+00 ! Position
+view.pos (                3 ,       $V_perspective                ) = 1.87231745343888178E+00 ! Position
+view.orient (             1 ,       $V_perspective                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 2 s }                 ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
+slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.init.tol (                      $SLV_SolverSettings           ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvargroup.begin (                 $G_PA                         )                           ! $G_PA
+   subvar.str (                     $_CONNECT_TYPE                ) = '1'                     ! $G_PA.$_CONNECT_TYPE, Definition
+   subvar.status (                  $_CONNECT_TYPE                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+   subvar.discr.desc (    1 ,       $_CONNECT_TYPE                ) = 'Force Element'         ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_CONNECT_TYPE                ) = 'Rigid'                 ! Description of discrete values
+   subvar.discr.str (     1 ,       $_CONNECT_TYPE                ) = '0'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_CONNECT_TYPE                ) = '1'                     ! Discrete values
+   subvar.txt (                     $_CONNECT_TYPE                ) = 'CONNECTion TYPE: 0/1 --- 0:Force Element, 1:Rigid' ! Comment
+
+   subvargroup.begin (              $G_SCN                        )                           ! $G_PA.$G_SCN
+      subvar.str (                  $_GBX_2_CPL_X                 ) = '-0.15 m\n'             ! $G_PA.$G_SCN.$_GBX_2_CPL_X, Definition
+      subvar.status (               $_GBX_2_CPL_X                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_GBX_2_CPL_X                 ) = 'x-pos. of connection GearBoX to CouPLing (wrt. CouPLing reference frame)' ! Comment
+
+      subvar.str (                  $_CPL_2_GEN_X                 ) = '0.79 m'                ! $G_PA.$G_SCN.$_CPL_2_GEN_X, Definition
+      subvar.status (               $_CPL_2_GEN_X                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CPL_2_GEN_X                 ) = 'x-pos. of connection GENerator to CouPLing (wrt. CouPLing reference frame)' ! Comment
+
+      subvar.str (                  $_SEC_1_X                     ) = '0 m'                   ! $G_PA.$G_SCN.$_SEC_1_X, Definition
+      subvar.status (               $_SEC_1_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_1_X                     ) = 'x-pos. of SECtion 1 reference marker (wrt. CouPLing reference frame)' ! Comment
+
+      subvar.str (                  $_SEC_2_X                     ) = '0.15 m'                ! $G_PA.$G_SCN.$_SEC_2_X, Definition
+      subvar.status (               $_SEC_2_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_2_X                     ) = 'x-pos. of SECtion 2 reference marker (wrt. CouPLing reference frame)' ! Comment
+
+      subvar.str (                  $_SEC_3_X                     ) = '0.37 m'                ! $G_PA.$G_SCN.$_SEC_3_X, Definition
+      subvar.status (               $_SEC_3_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_3_X                     ) = 'x-pos. of SECtion 3 reference marker (wrt. CouPLing reference frame)' ! Comment
+
+      subvar.str (                  $_SEC_4_X                     ) = '0.59 m'                ! $G_PA.$G_SCN.$_SEC_4_X, Definition
+      subvar.status (               $_SEC_4_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_4_X                     ) = 'x-pos. of SECtion 4 reference marker (wrt. CouPLing reference frame)' ! Comment
+
+   subvargroup.end (                $G_SCN                        )                           ! $G_PA.$G_SCN
+   subvargroup.txt (                $G_SCN                        ) = 'Shaft CoNnections'     ! Comment
+   subvargroup.begin (              $G_ECC                        )                           ! $G_PA.$G_ECC
+      subvar.str (                  $_SWITCH                      ) = '0'                     ! $G_PA.$G_ECC.$_SWITCH, Definition
+      subvar.status (               $_SWITCH                      ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.discr.desc (   1 ,     $_SWITCH                      ) = 'Off'                   ! Description of discrete values
+      subvar.discr.desc (   2 ,     $_SWITCH                      ) = 'On'                    ! Description of discrete values
+      subvar.discr.str (   1 ,      $_SWITCH                      ) = '0'                     ! Discrete values
+      subvar.discr.str (   2 ,      $_SWITCH                      ) = '1'                     ! Discrete values
+      subvar.txt (                  $_SWITCH                      ) = 'ECCentricity switch: 0:off / 1:on; If on, the center of gravity of each section has an eccenctric position.' ! Comment
+
+      subvar.str (                  $_R                           ) = '1e-5 m'                ! $G_PA.$G_ECC.$_R, Definition
+      subvar.status (               $_R                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_R                           ) = 'ECCentricity Radius'   ! Comment
+
+   subvargroup.end (                $G_ECC                        )                           ! $G_PA.$G_ECC
+   subvargroup.txt (                $G_ECC                        ) = 'Eccentricity'          ! Comment
+subvargroup.end (                   $G_PA                         )                           ! $G_PA
+subvargroup.txt (                   $G_PA                         ) = 'PArameter'             ! Comment
+
+subvargroup.begin (                 $G_KP                         )                           ! $G_KP
+   subvargroup.begin (              $G_SEC_1                      )                           ! $G_KP.$G_SEC_1
+      subvar.str (                  $_SEC_2_X                     ) = '$G_PA.$G_SCN.$_SEC_2_X - $G_PA.$G_SCN.$_SEC_1_X' ! $G_KP.$G_SEC_1.$_SEC_2_X, Definition
+      subvar.intent (               $_SEC_2_X                     ) = 2                       ! Intent
+      subvar.status (               $_SEC_2_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_2_X                     ) = 'x-pos. of connection SECtion 2 to SECtion 1 (wrt. SEC 1 reference frame)' ! Comment
+
+      subvar.str (                  $_GBX_X                       ) = '$G_PA.$G_SCN.$_GBX_2_CPL_X\n- $G_PA.$G_SCN.$_SEC_1_X' ! $G_KP.$G_SEC_1.$_GBX_X, Definition
+      subvar.intent (               $_GBX_X                       ) = 2                       ! Intent
+      subvar.status (               $_GBX_X                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_GBX_X                       ) = 'x-pos. of connection GearBoX to SECtion 1 (wrt. SEC 1 reference frame)' ! Comment
+
+   subvargroup.end (                $G_SEC_1                      )                           ! $G_KP.$G_SEC_1
+   subvargroup.txt (                $G_SEC_1                      ) = 'coupling SECtion 1'    ! Comment
+   subvargroup.begin (              $G_SEC_2                      )                           ! $G_KP.$G_SEC_2
+      subvar.str (                  $_SEC_1_X                     ) = '0 m'                   ! $G_KP.$G_SEC_2.$_SEC_1_X, Definition
+      subvar.intent (               $_SEC_1_X                     ) = 2                       ! Intent
+      subvar.status (               $_SEC_1_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_1_X                     ) = 'x-pos. of connection SECtion 2 to SECtion 1 (wrt. SECtion 2 reference frame)' ! Comment
+
+      subvar.str (                  $_SEC_3_X                     ) = '$G_PA.$G_SCN.$_SEC_3_X - $G_PA.$G_SCN.$_SEC_2_X' ! $G_KP.$G_SEC_2.$_SEC_3_X, Definition
+      subvar.intent (               $_SEC_3_X                     ) = 2                       ! Intent
+      subvar.status (               $_SEC_3_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_3_X                     ) = 'x-pos. of connection SECtion 3 to SECtion 2 (wrt. SECtion 2 reference frame)' ! Comment
+
+   subvargroup.end (                $G_SEC_2                      )                           ! $G_KP.$G_SEC_2
+   subvargroup.txt (                $G_SEC_2                      ) = 'coupling SECtion 2'    ! Comment
+   subvargroup.begin (              $G_SEC_3                      )                           ! $G_KP.$G_SEC_3
+      subvar.str (                  $_SEC_2_X                     ) = '0 m'                   ! $G_KP.$G_SEC_3.$_SEC_2_X, Definition
+      subvar.intent (               $_SEC_2_X                     ) = 2                       ! Intent
+      subvar.status (               $_SEC_2_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_2_X                     ) = 'x-pos. of connection SECtion 3 to SECtion 2 (wrt. SECtion 3 reference frame)' ! Comment
+
+      subvar.str (                  $_SEC_4_X                     ) = '$G_PA.$G_SCN.$_SEC_4_X - $G_PA.$G_SCN.$_SEC_3_X' ! $G_KP.$G_SEC_3.$_SEC_4_X, Definition
+      subvar.intent (               $_SEC_4_X                     ) = 2                       ! Intent
+      subvar.status (               $_SEC_4_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_4_X                     ) = 'x-pos. of connection SECtion 4 to SECtion 3 (wrt. SECtion 3 reference frame)' ! Comment
+
+   subvargroup.end (                $G_SEC_3                      )                           ! $G_KP.$G_SEC_3
+   subvargroup.txt (                $G_SEC_3                      ) = 'coupling SECtion 3'    ! Comment
+   subvargroup.begin (              $G_SEC_4                      )                           ! $G_KP.$G_SEC_4
+      subvar.str (                  $_SEC_3_X                     ) = '0 m'                   ! $G_KP.$G_SEC_4.$_SEC_3_X, Definition
+      subvar.intent (               $_SEC_3_X                     ) = 2                       ! Intent
+      subvar.status (               $_SEC_3_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_SEC_3_X                     ) = 'x-pos. of connection SECtion 4 to SECtion 3 (wrt. SECtion 4 reference frame)' ! Comment
+
+      subvar.str (                  $_GEN_X                       ) = '$G_PA.$G_SCN.$_CPL_2_GEN_X - $G_PA.$G_SCN.$_SEC_4_X' ! $G_KP.$G_SEC_4.$_GEN_X, Definition
+      subvar.intent (               $_GEN_X                       ) = 2                       ! Intent
+      subvar.status (               $_GEN_X                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_GEN_X                       ) = 'x-pos. of connection GENerator to SECtion 4 (wrt. SECtion 4 reference frame)' ! Comment
+
+   subvargroup.end (                $G_SEC_4                      )                           ! $G_KP.$G_SEC_4
+   subvargroup.txt (                $G_SEC_4                      ) = 'coupling SECtion 4'    ! Comment
+subvargroup.end (                   $G_KP                         )                           ! $G_KP
+subvargroup.txt (                   $G_KP                         ) = 'Kinematic Points'      ! Comment
+
+subvargroup.begin (                 $G_BP                         )                           ! $G_BP
+   subvargroup.begin (              $G_SEC_1                      )                           ! $G_BP.$G_SEC_1
+      subvar.str (                  $_M                           ) = '300 kg'                ! $G_BP.$G_SEC_1.$_M, Definition
+      subvar.status (               $_M                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_M                           ) = 'Mass'                  ! Comment
+
+      subvar.str (                  $_CM_X                        ) = '0.04 m'                ! $G_BP.$G_SEC_1.$_CM_X, Definition
+      subvar.status (               $_CM_X                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_X                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Y                        ) = '0 m'                   ! $G_BP.$G_SEC_1.$_CM_Y, Definition
+      subvar.status (               $_CM_Y                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Y                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Z                        ) = '0 m'                   ! $G_BP.$G_SEC_1.$_CM_Z, Definition
+      subvar.status (               $_CM_Z                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Z                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_IXX                         ) = '30 kgm^2'              ! $G_BP.$G_SEC_1.$_IXX, Definition
+      subvar.status (               $_IXX                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IXX                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IYY                         ) = '15 kgm^2'              ! $G_BP.$G_SEC_1.$_IYY, Definition
+      subvar.status (               $_IYY                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IYY                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IZZ                         ) = '15 kgm^2'              ! $G_BP.$G_SEC_1.$_IZZ, Definition
+      subvar.status (               $_IZZ                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IZZ                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_ECC                         ) = '$G_PA.$G_ECC.$_R'      ! $G_BP.$G_SEC_1.$_ECC, Definition
+      subvar.intent (               $_ECC                         ) = 2                       ! Intent
+      subvar.status (               $_ECC                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC                         ) = 'ECCentricity'          ! Comment
+
+      subvar.str (                  $_ECC_SWITCH                  ) = '$G_PA.$G_ECC.$_SWITCH' ! $G_BP.$G_SEC_1.$_ECC_SWITCH, Definition
+      subvar.intent (               $_ECC_SWITCH                  ) = 2                       ! Intent
+      subvar.status (               $_ECC_SWITCH                  ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC_SWITCH                  ) = 'ECCentricity switch: 0 = off 1 = on' ! Comment
+
+   subvargroup.end (                $G_SEC_1                      )                           ! $G_BP.$G_SEC_1
+   subvargroup.txt (                $G_SEC_1                      ) = 'coupling SECtion 1'    ! Comment
+   subvargroup.begin (              $G_SEC_2                      )                           ! $G_BP.$G_SEC_2
+      subvar.str (                  $_M                           ) = '70 kg'                 ! $G_BP.$G_SEC_2.$_M, Definition
+      subvar.status (               $_M                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_M                           ) = 'Mass'                  ! Comment
+
+      subvar.str (                  $_CM_X                        ) = '0.1 m'                 ! $G_BP.$G_SEC_2.$_CM_X, Definition
+      subvar.status (               $_CM_X                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_X                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Y                        ) = '0 m'                   ! $G_BP.$G_SEC_2.$_CM_Y, Definition
+      subvar.status (               $_CM_Y                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Y                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Z                        ) = '0 m'                   ! $G_BP.$G_SEC_2.$_CM_Z, Definition
+      subvar.status (               $_CM_Z                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Z                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_IXX                         ) = '2.75 kgm^2'            ! $G_BP.$G_SEC_2.$_IXX, Definition
+      subvar.status (               $_IXX                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IXX                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IYY                         ) = '1.8 kgm^2'             ! $G_BP.$G_SEC_2.$_IYY, Definition
+      subvar.status (               $_IYY                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IYY                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IZZ                         ) = '1.8 kgm^2'             ! $G_BP.$G_SEC_2.$_IZZ, Definition
+      subvar.status (               $_IZZ                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IZZ                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_ECC                         ) = '$G_PA.$G_ECC.$_R'      ! $G_BP.$G_SEC_2.$_ECC, Definition
+      subvar.intent (               $_ECC                         ) = 2                       ! Intent
+      subvar.status (               $_ECC                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC                         ) = 'ECCentricity'          ! Comment
+
+      subvar.str (                  $_ECC_SWITCH                  ) = '$G_PA.$G_ECC.$_SWITCH' ! $G_BP.$G_SEC_2.$_ECC_SWITCH, Definition
+      subvar.intent (               $_ECC_SWITCH                  ) = 2                       ! Intent
+      subvar.status (               $_ECC_SWITCH                  ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC_SWITCH                  ) = 'ECCentricity  switch:\n0 = off\n1 = on' ! Comment
+
+   subvargroup.end (                $G_SEC_2                      )                           ! $G_BP.$G_SEC_2
+   subvargroup.txt (                $G_SEC_2                      ) = 'coupling SECtion 2'    ! Comment
+   subvargroup.begin (              $G_SEC_3                      )                           ! $G_BP.$G_SEC_3
+      subvar.str (                  $_M                           ) = '70 kg'                 ! $G_BP.$G_SEC_3.$_M, Definition
+      subvar.status (               $_M                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_M                           ) = 'Mass'                  ! Comment
+
+      subvar.str (                  $_CM_X                        ) = '0.1 m'                 ! $G_BP.$G_SEC_3.$_CM_X, Definition
+      subvar.status (               $_CM_X                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_X                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Y                        ) = '0 m'                   ! $G_BP.$G_SEC_3.$_CM_Y, Definition
+      subvar.status (               $_CM_Y                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Y                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Z                        ) = '0 m'                   ! $G_BP.$G_SEC_3.$_CM_Z, Definition
+      subvar.status (               $_CM_Z                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Z                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_IXX                         ) = '2.75 kgm^2'            ! $G_BP.$G_SEC_3.$_IXX, Definition
+      subvar.status (               $_IXX                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IXX                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IYY                         ) = '1.8 kgm^2'             ! $G_BP.$G_SEC_3.$_IYY, Definition
+      subvar.status (               $_IYY                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IYY                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IZZ                         ) = '1.8 kgm^2'             ! $G_BP.$G_SEC_3.$_IZZ, Definition
+      subvar.status (               $_IZZ                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IZZ                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_ECC                         ) = '$G_PA.$G_ECC.$_R'      ! $G_BP.$G_SEC_3.$_ECC, Definition
+      subvar.intent (               $_ECC                         ) = 2                       ! Intent
+      subvar.status (               $_ECC                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC                         ) = 'ECCentricity'          ! Comment
+
+      subvar.str (                  $_ECC_SWITCH                  ) = '$G_PA.$G_ECC.$_SWITCH' ! $G_BP.$G_SEC_3.$_ECC_SWITCH, Definition
+      subvar.intent (               $_ECC_SWITCH                  ) = 2                       ! Intent
+      subvar.status (               $_ECC_SWITCH                  ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC_SWITCH                  ) = 'ECCentricity  switch:\n0 = off\n1 = on' ! Comment
+
+   subvargroup.end (                $G_SEC_3                      )                           ! $G_BP.$G_SEC_3
+   subvargroup.txt (                $G_SEC_3                      ) = 'coupling SECtion 3'    ! Comment
+   subvargroup.begin (              $G_SEC_4                      )                           ! $G_BP.$G_SEC_4
+      subvar.str (                  $_M                           ) = '75 kg'                 ! $G_BP.$G_SEC_4.$_M, Definition
+      subvar.status (               $_M                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_M                           ) = 'Mass'                  ! Comment
+
+      subvar.str (                  $_CM_X                        ) = '0.075 m'               ! $G_BP.$G_SEC_4.$_CM_X, Definition
+      subvar.status (               $_CM_X                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_X                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Y                        ) = '0 m'                   ! $G_BP.$G_SEC_4.$_CM_Y, Definition
+      subvar.status (               $_CM_Y                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Y                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Z                        ) = '0 m'                   ! $G_BP.$G_SEC_4.$_CM_Z, Definition
+      subvar.status (               $_CM_Z                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Z                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_IXX                         ) = '1.7 kgm^2'             ! $G_BP.$G_SEC_4.$_IXX, Definition
+      subvar.status (               $_IXX                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IXX                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IYY                         ) = '1.2 kgm^2'             ! $G_BP.$G_SEC_4.$_IYY, Definition
+      subvar.status (               $_IYY                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IYY                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IZZ                         ) = '1.2 kgm^2'             ! $G_BP.$G_SEC_4.$_IZZ, Definition
+      subvar.status (               $_IZZ                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IZZ                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_ECC                         ) = '$G_PA.$G_ECC.$_R'      ! $G_BP.$G_SEC_4.$_ECC, Definition
+      subvar.intent (               $_ECC                         ) = 2                       ! Intent
+      subvar.status (               $_ECC                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC                         ) = 'ECCentricity'          ! Comment
+
+      subvar.str (                  $_ECC_SWITCH                  ) = '$G_PA.$G_ECC.$_SWITCH' ! $G_BP.$G_SEC_4.$_ECC_SWITCH, Definition
+      subvar.intent (               $_ECC_SWITCH                  ) = 2                       ! Intent
+      subvar.status (               $_ECC_SWITCH                  ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_ECC_SWITCH                  ) = 'ECCentricity  switch:\n0 = off\n1 = on' ! Comment
+
+   subvargroup.end (                $G_SEC_4                      )                           ! $G_BP.$G_SEC_4
+   subvargroup.txt (                $G_SEC_4                      ) = 'coupling SECtion 4'    ! Comment
+subvargroup.end (                   $G_BP                         )                           ! $G_BP
+subvargroup.txt (                   $G_BP                         ) = 'Body Properties'       ! Comment
+
+subvargroup.begin (                 $G_FE                         )                           ! $G_FE
+   subvargroup.begin (              $G_SCN_1_2                    )                           ! $G_FE.$G_SCN_1_2
+      subvar.str (                  $_C_TLT                       ) = '200000 Nm/rad'         ! $G_FE.$G_SCN_1_2.$_C_TLT, Definition
+      subvar.status (               $_C_TLT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_TLT                       ) = 'tilting stiffness (about beta and gamma)' ! Comment
+
+      subvar.str (                  $_D_TLT                       ) = '10000 Nms/rad'         ! $G_FE.$G_SCN_1_2.$_D_TLT, Definition
+      subvar.status (               $_D_TLT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_TLT                       ) = 'tilting damping (about beta and gamma)' ! Comment
+
+   subvargroup.end (                $G_SCN_1_2                    )                           ! $G_FE.$G_SCN_1_2
+   subvargroup.txt (                $G_SCN_1_2                    ) = 'Shaft CoNnection Section 1 to Section 2' ! Comment
+   subvargroup.begin (              $G_SCN_2_3                    )                           ! $G_FE.$G_SCN_2_3
+      subvar.str (                  $_C_ROT                       ) = '20000000 Nm/rad'       ! $G_FE.$G_SCN_2_3.$_C_ROT, Definition
+      subvar.status (               $_C_ROT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_ROT                       ) = 'rotational stiffness (about alpha)' ! Comment
+
+      subvar.str (                  $_D_ROT                       ) = '55000 Nms/rad'         ! $G_FE.$G_SCN_2_3.$_D_ROT, Definition
+      subvar.status (               $_D_ROT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_ROT                       ) = 'rotational damping (about alpha)' ! Comment
+
+   subvargroup.end (                $G_SCN_2_3                    )                           ! $G_FE.$G_SCN_2_3
+   subvargroup.txt (                $G_SCN_2_3                    ) = 'Shaft CoNnection Section 2 to Section 3' ! Comment
+   subvargroup.begin (              $G_SCN_3_4                    )                           ! $G_FE.$G_SCN_3_4
+      subvar.str (                  $_C_TLT                       ) = '200000 Nm/rad'         ! $G_FE.$G_SCN_3_4.$_C_TLT, Definition
+      subvar.status (               $_C_TLT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_TLT                       ) = 'tilting stiffness (about beta and gamma)' ! Comment
+
+      subvar.str (                  $_D_TLT                       ) = '10000 Nms/rad'         ! $G_FE.$G_SCN_3_4.$_D_TLT, Definition
+      subvar.status (               $_D_TLT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_TLT                       ) = 'tilting damping (about beta and gamma)' ! Comment
+
+   subvargroup.end (                $G_SCN_3_4                    )                           ! $G_FE.$G_SCN_3_4
+   subvargroup.txt (                $G_SCN_3_4                    ) = 'Shaft CoNnection Section 3 to Section 4' ! Comment
+   subvargroup.begin (              $G_GBX_connect                )                           ! $G_FE.$G_GBX_connect
+      subvar.str (                  $_C_A                         ) = '650000000000 N/m'      ! $G_FE.$G_GBX_connect.$_C_A, Definition
+      subvar.status (               $_C_A                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_A                         ) = 'axial stiffness (in x-direction)' ! Comment
+
+      subvar.str (                  $_C_R                         ) = '380000000000 N/m'      ! $G_FE.$G_GBX_connect.$_C_R, Definition
+      subvar.status (               $_C_R                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_R                         ) = 'radial stiffness (in y- and z-direction)' ! Comment
+
+      subvar.str (                  $_C_ROT                       ) = '2100000000 Nm/rad'     ! $G_FE.$G_GBX_connect.$_C_ROT, Definition
+      subvar.status (               $_C_ROT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_ROT                       ) = 'rotational stiffness (about alpha)' ! Comment
+
+      subvar.str (                  $_C_TLT                       ) = '6800000000 Nm/rad'     ! $G_FE.$G_GBX_connect.$_C_TLT, Definition
+      subvar.status (               $_C_TLT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_TLT                       ) = 'tilting stiffness (about beta and gamma)' ! Comment
+
+      subvar.str (                  $_D_A                         ) = '11000000 Ns/m'         ! $G_FE.$G_GBX_connect.$_D_A, Definition
+      subvar.status (               $_D_A                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_A                         ) = 'axial damping (in x-direction)' ! Comment
+
+      subvar.str (                  $_D_R                         ) = '6000000 Ns/m'          ! $G_FE.$G_GBX_connect.$_D_R, Definition
+      subvar.status (               $_D_R                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_R                         ) = 'radial damping (in y- and z-direction)' ! Comment
+
+      subvar.str (                  $_D_ROT                       ) = '35000 Nms/rad'         ! $G_FE.$G_GBX_connect.$_D_ROT, Definition
+      subvar.status (               $_D_ROT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_ROT                       ) = 'rotational damping (about alpha)' ! Comment
+
+      subvar.str (                  $_D_TLT                       ) = '110000 Nms/rad'        ! $G_FE.$G_GBX_connect.$_D_TLT, Definition
+      subvar.status (               $_D_TLT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_TLT                       ) = 'tilting damping (about beta and gamma)' ! Comment
+
+      subvar.str (                  $_ACTIVE                      ) = 'SWITCH($G_PA.$_CONNECT_TYPE)\n{\n   CASE 0:    0;\n   CASE 1:    1;\n   DEFAULT:  1;\n}' ! $G_FE.$G_GBX_connect.$_ACTIVE, Definition
+      subvar.intent (               $_ACTIVE                      ) = 2                       ! Intent
+      subvar.status (               $_ACTIVE                      ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvargroup.end (                $G_GBX_connect                )                           ! $G_FE.$G_GBX_connect
+   subvargroup.txt (                $G_GBX_connect                ) = 'Gearbox connection'    ! Comment
+subvargroup.end (                   $G_FE                         )                           ! $G_FE
+subvargroup.txt (                   $G_FE                         ) = 'Force Elements'        ! Comment
+
+subvargroup.begin (                 $G_3D                         )                           ! $G_3D
+   subvargroup.begin (              $G_SEC_1                      )                           ! $G_3D.$G_SEC_1
+      subvar.str (                  $_TRANSPARENCY                ) = '0'                     ! $G_3D.$G_SEC_1.$_TRANSPARENCY, Definition
+      subvar.intent (               $_TRANSPARENCY                ) = 1                       ! Intent
+      subvar.status (               $_TRANSPARENCY                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_TRANSPARENCY                ) = 'Transparency'          ! Comment
+
+      subvargroup.begin (           $G_CYL_1                      )                           ! $G_3D.$G_SEC_1.$G_CYL_1
+         subvar.str (               $_L                           ) = '0.3 m'                 ! $G_3D.$G_SEC_1.$G_CYL_1.$_L, Definition
+         subvar.intent (            $_L                           ) = 0                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'CYLinder 1 Length'     ! Comment
+
+         subvar.str (               $_D_O                         ) = '0.31 m'                ! $G_3D.$G_SEC_1.$G_CYL_1.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'CYLinder 1 Diameter Out' ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.17 m'                ! $G_3D.$G_SEC_1.$G_CYL_1.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'CYLinder 1 Diameter In' ! Comment
+
+      subvargroup.end (             $G_CYL_1                      )                           ! $G_3D.$G_SEC_1.$G_CYL_1
+      subvargroup.txt (             $G_CYL_1                      ) = 'Cylinder '             ! Comment
+      subvargroup.begin (           $G_CYL_2                      )                           ! $G_3D.$G_SEC_1.$G_CYL_2
+         subvar.str (               $_L                           ) = '0.1 m'                 ! $G_3D.$G_SEC_1.$G_CYL_2.$_L, Definition
+         subvar.intent (            $_L                           ) = 0                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'CYLinder 2 Length'     ! Comment
+
+         subvar.str (               $_D_O                         ) = '0.5 m'                 ! $G_3D.$G_SEC_1.$G_CYL_2.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'CYLinder 2 Diameter Out' ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.17 m'                ! $G_3D.$G_SEC_1.$G_CYL_2.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'CYLinder 2 Diameter In' ! Comment
+
+      subvargroup.end (             $G_CYL_2                      )                           ! $G_3D.$G_SEC_1.$G_CYL_2
+      subvargroup.txt (             $G_CYL_2                      ) = 'CYLinder 2'            ! Comment
+      subvargroup.begin (           $G_DSC                        )                           ! $G_3D.$G_SEC_1.$G_DSC
+         subvar.str (               $_L                           ) = '0.05 m'                ! $G_3D.$G_SEC_1.$G_DSC.$_L, Definition
+         subvar.intent (            $_L                           ) = 0                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'DiSC Length'           ! Comment
+
+         subvar.str (               $_D_O                         ) = '1.5 m'                 ! $G_3D.$G_SEC_1.$G_DSC.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'DiSC Diameter Out'     ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.17 m'                ! $G_3D.$G_SEC_1.$G_DSC.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'DiSC Diameter In'      ! Comment
+
+      subvargroup.end (             $G_DSC                        )                           ! $G_3D.$G_SEC_1.$G_DSC
+      subvargroup.txt (             $G_DSC                        ) = 'DiSC'                  ! Comment
+   subvargroup.end (                $G_SEC_1                      )                           ! $G_3D.$G_SEC_1
+   subvargroup.txt (                $G_SEC_1                      ) = 'coupling SECtion 1'    ! Comment
+   subvargroup.begin (              $G_SEC_2                      )                           ! $G_3D.$G_SEC_2
+      subvar.str (                  $_TRANSPARENCY                ) = '0'                     ! $G_3D.$G_SEC_2.$_TRANSPARENCY, Definition
+      subvar.intent (               $_TRANSPARENCY                ) = 1                       ! Intent
+      subvar.status (               $_TRANSPARENCY                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_TRANSPARENCY                ) = 'Transparency'          ! Comment
+
+      subvargroup.begin (           $G_CYL                        )                           ! $G_3D.$G_SEC_2.$G_CYL
+         subvar.str (               $_D_O                         ) = '0.31 m'                ! $G_3D.$G_SEC_2.$G_CYL.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'Diameter Out'          ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.26 m'                ! $G_3D.$G_SEC_2.$G_CYL.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'Diameter In'           ! Comment
+
+         subvar.str (               $_L                           ) = '$G_PA.$G_SCN.$_SEC_3_X - $G_PA.$G_SCN.$_SEC_2_X' ! $G_3D.$G_SEC_2.$G_CYL.$_L, Definition
+         subvar.intent (            $_L                           ) = 1                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'Length'                ! Comment
+
+      subvargroup.end (             $G_CYL                        )                           ! $G_3D.$G_SEC_2.$G_CYL
+      subvargroup.txt (             $G_CYL                        ) = 'CYLinder'              ! Comment
+   subvargroup.end (                $G_SEC_2                      )                           ! $G_3D.$G_SEC_2
+   subvargroup.txt (                $G_SEC_2                      ) = 'coupling SECtion 2'    ! Comment
+   subvargroup.begin (              $G_SEC_3                      )                           ! $G_3D.$G_SEC_3
+      subvar.str (                  $_TRANSPARENCY                ) = '0'                     ! $G_3D.$G_SEC_3.$_TRANSPARENCY, Definition
+      subvar.intent (               $_TRANSPARENCY                ) = 1                       ! Intent
+      subvar.status (               $_TRANSPARENCY                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_TRANSPARENCY                ) = 'Transparency'          ! Comment
+
+      subvargroup.begin (           $G_CYL                        )                           ! $G_3D.$G_SEC_3.$G_CYL
+         subvar.str (               $_D_O                         ) = '0.31 m'                ! $G_3D.$G_SEC_3.$G_CYL.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'Diameter Out'          ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.26 m'                ! $G_3D.$G_SEC_3.$G_CYL.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'Diameter In'           ! Comment
+
+         subvar.str (               $_L                           ) = '$G_PA.$G_SCN.$_SEC_4_X - $G_PA.$G_SCN.$_SEC_3_X' ! $G_3D.$G_SEC_3.$G_CYL.$_L, Definition
+         subvar.intent (            $_L                           ) = 1                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'Length'                ! Comment
+
+      subvargroup.end (             $G_CYL                        )                           ! $G_3D.$G_SEC_3.$G_CYL
+      subvargroup.txt (             $G_CYL                        ) = 'CYLinder'              ! Comment
+   subvargroup.end (                $G_SEC_3                      )                           ! $G_3D.$G_SEC_3
+   subvargroup.txt (                $G_SEC_3                      ) = 'coupling SECtion 3'    ! Comment
+   subvargroup.begin (              $G_SEC_4                      )                           ! $G_3D.$G_SEC_4
+      subvar.str (                  $_TRANSPARENCY                ) = '0'                     ! $G_3D.$G_SEC_4.$_TRANSPARENCY, Definition
+      subvar.intent (               $_TRANSPARENCY                ) = 1                       ! Intent
+      subvar.status (               $_TRANSPARENCY                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_TRANSPARENCY                ) = 'Transparency'          ! Comment
+
+      subvargroup.begin (           $G_CYL_1                      )                           ! $G_3D.$G_SEC_4.$G_CYL_1
+         subvar.str (               $_L                           ) = '0.1 m'                 ! $G_3D.$G_SEC_4.$G_CYL_1.$_L, Definition
+         subvar.intent (            $_L                           ) = 0                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'CYLinder 1 Length'     ! Comment
+
+         subvar.str (               $_D_O                         ) = '0.5 m'                 ! $G_3D.$G_SEC_4.$G_CYL_1.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'CYLinder 1 Diameter Out' ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.17 m'                ! $G_3D.$G_SEC_4.$G_CYL_1.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'CYLinder 1 Diameter In' ! Comment
+
+      subvargroup.end (             $G_CYL_1                      )                           ! $G_3D.$G_SEC_4.$G_CYL_1
+      subvargroup.txt (             $G_CYL_1                      ) = 'CYLinder 1'            ! Comment
+      subvargroup.begin (           $G_CYL_2                      )                           ! $G_3D.$G_SEC_4.$G_CYL_2
+         subvar.str (               $_L                           ) = '0.21 m'                ! $G_3D.$G_SEC_4.$G_CYL_2.$_L, Definition
+         subvar.intent (            $_L                           ) = 0                       ! Intent
+         subvar.status (            $_L                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_L                           ) = 'CYLinder 2 Length'     ! Comment
+
+         subvar.str (               $_D_O                         ) = '0.31 m'                ! $G_3D.$G_SEC_4.$G_CYL_2.$_D_O, Definition
+         subvar.intent (            $_D_O                         ) = 0                       ! Intent
+         subvar.status (            $_D_O                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_O                         ) = 'CYLinder 2 Diameter Out' ! Comment
+
+         subvar.str (               $_D_I                         ) = '0.17 m'                ! $G_3D.$G_SEC_4.$G_CYL_2.$_D_I, Definition
+         subvar.intent (            $_D_I                         ) = 0                       ! Intent
+         subvar.status (            $_D_I                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_D_I                         ) = 'CYLinder 2 Diameter In' ! Comment
+
+      subvargroup.end (             $G_CYL_2                      )                           ! $G_3D.$G_SEC_4.$G_CYL_2
+      subvargroup.txt (             $G_CYL_2                      ) = 'CYLinder 2'            ! Comment
+   subvargroup.end (                $G_SEC_4                      )                           ! $G_3D.$G_SEC_4
+   subvargroup.txt (                $G_SEC_4                      ) = 'coupling SECtion 4'    ! Comment
+subvargroup.end (                   $G_3D                         )                           ! $G_3D
+subvargroup.txt (                   $G_3D                         ) = '3D properties'         ! Comment
+
+subvargroup.begin (                 $G_INTERFACE                  )                           ! $G_INTERFACE
+   subvargroup.begin (              $G_034_CPL                    )                           ! $G_INTERFACE.$G_034_CPL
+      subvargroup.begin (           $G_PA                         )                           ! $G_INTERFACE.$G_034_CPL.$G_PA
+         subvargroup.begin (        $G_SCN                        )                           ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN
+            subvar.str (            $_GBX_2_CPL_X                 ) = '$G_PA.$G_SCN.$_GBX_2_CPL_X' ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_GBX_2_CPL_X, Definition
+            subvar.intent (         $_GBX_2_CPL_X                 ) = 2                       ! Intent
+            subvar.status (         $_GBX_2_CPL_X                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+            subvar.txt (            $_GBX_2_CPL_X                 ) = 'x-position, GearBoX to CouPLing' ! Comment
+
+            subvar.str (            $_CPL_2_GEN_X                 ) = '$G_PA.$G_SCN.$_CPL_2_GEN_X' ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X, Definition
+            subvar.intent (         $_CPL_2_GEN_X                 ) = 2                       ! Intent
+            subvar.status (         $_CPL_2_GEN_X                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+            subvar.txt (            $_CPL_2_GEN_X                 ) = 'x-position, CouPLing to GENerator' ! Comment
+
+         subvargroup.end (          $G_SCN                        )                           ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN
+         subvargroup.txt (          $G_SCN                        ) = 'Shaft CoNnections'     ! Comment
+      subvargroup.end (             $G_PA                         )                           ! $G_INTERFACE.$G_034_CPL.$G_PA
+      subvargroup.txt (             $G_PA                         ) = 'PArameter'             ! Comment
+   subvargroup.end (                $G_034_CPL                    )                           ! $G_INTERFACE.$G_034_CPL
+   subvargroup.txt (                $G_034_CPL                    ) = 'CouPLing'              ! Comment
+subvargroup.end (                   $G_INTERFACE                  )                           ! $G_INTERFACE
+subvargroup.txt (                   $G_INTERFACE                  ) = 'INTERFACE subvars - exchanged with other submodels via communicators' ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = 6.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = 1.00000000000000000E+01
+refsys.attr.2d.width (              $R_Isys                       ) = 9.10000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 2.50000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+marker.type (                       $M_Isys_INTERFACE_GBX_CPL     ) = 2                       ! Type
+marker.parent (                     $M_Isys_INTERFACE_GBX_CPL     ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_INTERFACE_GBX_CPL     ) = $G_PA.$G_SCN.$_GBX_2_CPL_X ! Position
+
+marker.type (                       $M_Isys_INTERFACE_GEN_CPL     ) = 2                       ! Type
+marker.parent (                     $M_Isys_INTERFACE_GEN_CPL     ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_INTERFACE_GEN_CPL     ) = $G_PA.$G_SCN.$_CPL_2_GEN_X ! Position
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+!**********************************************************************
+! Bodies
+!**********************************************************************
+body.m (                            $B_SEC_1                      ) = $G_BP.$G_SEC_1.$_M      ! Mass of the Body
+body.mp (                           $B_SEC_1                      ) = 0                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.cg.pos (             1 ,       $B_SEC_1                      ) = $G_BP.$G_SEC_1.$_CM_X   ! Center of gravity
+body.cg.pos (             2 ,       $B_SEC_1                      ) = { $G_BP.$G_SEC_1.$_CM_Y + ($G_BP.$G_SEC_1.$_ECC * $G_BP.$G_SEC_1.$_ECC_SWITCH) } ! Center of gravity
+body.cg.pos (             3 ,       $B_SEC_1                      ) = $G_BP.$G_SEC_1.$_CM_Z   ! Center of gravity
+body.I.tens (             1 ,   1 , $B_SEC_1                      ) = $G_BP.$G_SEC_1.$_IXX    ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_SEC_1                      ) = $G_BP.$G_SEC_1.$_IYY    ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_SEC_1                      ) = $G_BP.$G_SEC_1.$_IZZ    ! Moments of inertia
+body.I.kind (                       $B_SEC_1                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.brf.st.pos (         1 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $B_SEC_1                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $B_SEC_1                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $B_SEC_1                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.flx.cosim.job.type (           $B_SEC_1                      ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_SEC_1                      ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_SEC_1                      ) = ''                      ! additional command line options for the abaqus run
+body.flx.cosim.job.solver (         $B_SEC_1                      ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+body.attr.2d.pos.x (                $B_SEC_1                      ) = 1.70000000000000000E+02
+body.attr.2d.pos.y (                $B_SEC_1                      ) = 9.00000000000000000E+01
+body.attr.2d.width (                $B_SEC_1                      ) = 1.20000000000000000E+02
+body.attr.2d.height (               $B_SEC_1                      ) = 8.00000000000000000E+01
+
+marker.type (                       $M_SEC_1_BRF                  ) = 1                       ! Type
+marker.parent (                     $M_SEC_1_BRF                  ) = $B_SEC_1                ! Body
+marker.flx.type (                   $M_SEC_1_BRF                  ) = 4                       ! Flexible type
+
+marker.type (                       $M_SEC_1_GBX                  ) = 2                       ! Type
+marker.parent (                     $M_SEC_1_GBX                  ) = $B_SEC_1                ! Body
+marker.pos (              1 ,       $M_SEC_1_GBX                  ) = $G_KP.$G_SEC_1.$_GBX_X  ! Position
+
+marker.type (                       $M_SEC_1_SEC_2                ) = 2                       ! Type
+marker.parent (                     $M_SEC_1_SEC_2                ) = $B_SEC_1                ! Body
+marker.pos (              1 ,       $M_SEC_1_SEC_2                ) = $G_KP.$G_SEC_1.$_SEC_2_X ! Position
+
+marker.type (                       $M_SEC_1_BRK                  ) = 2                       ! Type
+marker.parent (                     $M_SEC_1_BRK                  ) = $B_SEC_1                ! Body
+marker.pos (              1 ,       $M_SEC_1_BRK                  ) = { $G_3D.$G_SEC_1.$G_DSC.$_L / 2 } ! Position
+
+prim.type (                         $P_SEC_1_CYL_1                ) = 2                       ! Type
+prim.ref (                          $P_SEC_1_CYL_1                ) = $M_SEC_1_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_1_CYL_1                ) = { - $G_3D.$G_SEC_1.$G_CYL_1.$_L / 2 } ! Position
+prim.ang (                3 ,       $P_SEC_1_CYL_1                ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_1_CYL_1                ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_1_CYL_1                ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_1_CYL_1                ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_1_CYL_1                ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_1_CYL_1                ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_1_CYL_1                ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_1_CYL_1                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_1_CYL_1                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_SEC_1_CYL_1                ) = $G_3D.$G_SEC_1.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_1_CYL_1                ) = $G_3D.$G_SEC_1.$G_CYL_1.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_1_CYL_1                ) = $G_3D.$G_SEC_1.$G_CYL_1.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_1_CYL_1                ) = $G_3D.$G_SEC_1.$G_CYL_1.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_1_CYL_1                ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_1_CYL_1                ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_1_CYL_1                ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_1_CYL_1                ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_1_CYL_1                ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+prim.type (                         $P_SEC_1_CYL_2                ) = 2                       ! Type
+prim.ref (                          $P_SEC_1_CYL_2                ) = $M_SEC_1_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_1_CYL_2                ) = { $G_3D.$G_SEC_1.$G_CYL_2.$_L / 2 + $G_3D.$G_SEC_1.$G_DSC.$_L } ! Position
+prim.ang (                3 ,       $P_SEC_1_CYL_2                ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_1_CYL_2                ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_1_CYL_2                ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_1_CYL_2                ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_1_CYL_2                ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_1_CYL_2                ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_1_CYL_2                ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_1_CYL_2                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_1_CYL_2                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_SEC_1_CYL_2                ) = $G_3D.$G_SEC_1.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_1_CYL_2                ) = $G_3D.$G_SEC_1.$G_CYL_2.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_1_CYL_2                ) = $G_3D.$G_SEC_1.$G_CYL_2.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_1_CYL_2                ) = $G_3D.$G_SEC_1.$G_CYL_2.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_1_CYL_2                ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_1_CYL_2                ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_1_CYL_2                ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_1_CYL_2                ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_1_CYL_2                ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+prim.type (                         $P_SEC_1_DSC                  ) = 2                       ! Type
+prim.ref (                          $P_SEC_1_DSC                  ) = $M_SEC_1_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_1_DSC                  ) = { $G_3D.$G_SEC_1.$G_DSC.$_L / 2 } ! Position
+prim.ang (                3 ,       $P_SEC_1_DSC                  ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_1_DSC                  ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_1_DSC                  ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_1_DSC                  ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_1_DSC                  ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_1_DSC                  ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_1_DSC                  ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_1_DSC                  ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_1_DSC                  ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_SEC_1_DSC                  ) = $G_3D.$G_SEC_1.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_1_DSC                  ) = $G_3D.$G_SEC_1.$G_DSC.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_1_DSC                  ) = $G_3D.$G_SEC_1.$G_DSC.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_1_DSC                  ) = $G_3D.$G_SEC_1.$G_DSC.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_1_DSC                  ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_1_DSC                  ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_1_DSC                  ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_1_DSC                  ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_1_DSC                  ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+
+body.m (                            $B_SEC_2                      ) = $G_BP.$G_SEC_2.$_M      ! Mass of the Body
+body.cg.pos (             1 ,       $B_SEC_2                      ) = $G_BP.$G_SEC_2.$_CM_X   ! Center of gravity
+body.cg.pos (             2 ,       $B_SEC_2                      ) = { $G_BP.$G_SEC_2.$_CM_Y + ($G_BP.$G_SEC_2.$_ECC * $G_BP.$G_SEC_2.$_ECC_SWITCH) } ! Center of gravity
+body.cg.pos (             3 ,       $B_SEC_2                      ) = $G_BP.$G_SEC_2.$_CM_Z   ! Center of gravity
+body.I.tens (             1 ,   1 , $B_SEC_2                      ) = $G_BP.$G_SEC_2.$_IXX    ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_SEC_2                      ) = $G_BP.$G_SEC_2.$_IYY    ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_SEC_2                      ) = $G_BP.$G_SEC_2.$_IZZ    ! Moments of inertia
+body.I.kind (                       $B_SEC_2                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.brf.st.pos (         1 ,       $B_SEC_2                      ) = 1.49999999999999994E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $B_SEC_2                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $B_SEC_2                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $B_SEC_2                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.attr.2d.pos.x (                $B_SEC_2                      ) = 3.50000000000000000E+02
+body.attr.2d.pos.y (                $B_SEC_2                      ) = 9.00000000000000000E+01
+body.attr.2d.width (                $B_SEC_2                      ) = 1.20000000000000000E+02
+body.attr.2d.height (               $B_SEC_2                      ) = 8.00000000000000000E+01
+
+marker.type (                       $M_SEC_2_BRF                  ) = 1                       ! Type
+marker.parent (                     $M_SEC_2_BRF                  ) = $B_SEC_2                ! Body
+marker.flx.type (                   $M_SEC_2_BRF                  ) = 4                       ! Flexible type
+
+marker.type (                       $M_SEC_2_SEC_1                ) = 2                       ! Type
+marker.parent (                     $M_SEC_2_SEC_1                ) = $B_SEC_2                ! Body
+marker.pos (              1 ,       $M_SEC_2_SEC_1                ) = $G_KP.$G_SEC_2.$_SEC_1_X ! Position
+
+marker.type (                       $M_SEC_2_SEC_3                ) = 2                       ! Type
+marker.parent (                     $M_SEC_2_SEC_3                ) = $B_SEC_2                ! Body
+marker.pos (              1 ,       $M_SEC_2_SEC_3                ) = $G_KP.$G_SEC_2.$_SEC_3_X ! Position
+
+prim.type (                         $P_SEC_2                      ) = 2                       ! Type
+prim.ref (                          $P_SEC_2                      ) = $M_SEC_2_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_2                      ) = { $G_3D.$G_SEC_2.$G_CYL.$_L / 2 } ! Position
+prim.ang (                3 ,       $P_SEC_2                      ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_2                      ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_2                      ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_SEC_2                      ) = $G_3D.$G_SEC_2.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_2                      ) = $G_3D.$G_SEC_2.$G_CYL.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_2                      ) = $G_3D.$G_SEC_2.$G_CYL.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_2                      ) = $G_3D.$G_SEC_2.$G_CYL.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_2                      ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_2                      ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_2                      ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+
+body.m (                            $B_SEC_3                      ) = $G_BP.$G_SEC_3.$_M      ! Mass of the Body
+body.cg.pos (             1 ,       $B_SEC_3                      ) = $G_BP.$G_SEC_3.$_CM_X   ! Center of gravity
+body.cg.pos (             2 ,       $B_SEC_3                      ) = { $G_BP.$G_SEC_3.$_CM_Y + ($G_BP.$G_SEC_3.$_ECC * $G_BP.$G_SEC_3.$_ECC_SWITCH) } ! Center of gravity
+body.cg.pos (             3 ,       $B_SEC_3                      ) = $G_BP.$G_SEC_3.$_CM_Z   ! Center of gravity
+body.I.tens (             1 ,   1 , $B_SEC_3                      ) = $G_BP.$G_SEC_3.$_IXX    ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_SEC_3                      ) = $G_BP.$G_SEC_3.$_IYY    ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_SEC_3                      ) = $G_BP.$G_SEC_3.$_IZZ    ! Moments of inertia
+body.I.kind (                       $B_SEC_3                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.brf.st.pos (         1 ,       $B_SEC_3                      ) = 3.69999999999999996E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $B_SEC_3                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $B_SEC_3                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $B_SEC_3                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.attr.2d.pos.x (                $B_SEC_3                      ) = 5.50000000000000000E+02
+body.attr.2d.pos.y (                $B_SEC_3                      ) = 9.00000000000000000E+01
+body.attr.2d.width (                $B_SEC_3                      ) = 1.20000000000000000E+02
+body.attr.2d.height (               $B_SEC_3                      ) = 8.00000000000000000E+01
+
+marker.type (                       $M_SEC_3_BRF                  ) = 1                       ! Type
+marker.parent (                     $M_SEC_3_BRF                  ) = $B_SEC_3                ! Body
+marker.flx.type (                   $M_SEC_3_BRF                  ) = 4                       ! Flexible type
+
+marker.type (                       $M_SEC_3_SEC_2                ) = 2                       ! Type
+marker.parent (                     $M_SEC_3_SEC_2                ) = $B_SEC_3                ! Body
+marker.pos (              1 ,       $M_SEC_3_SEC_2                ) = $G_KP.$G_SEC_3.$_SEC_2_X ! Position
+
+marker.type (                       $M_SEC_3_SEC_4                ) = 2                       ! Type
+marker.parent (                     $M_SEC_3_SEC_4                ) = $B_SEC_3                ! Body
+marker.pos (              1 ,       $M_SEC_3_SEC_4                ) = $G_KP.$G_SEC_3.$_SEC_4_X ! Position
+
+prim.type (                         $P_SEC_3                      ) = 2                       ! Type
+prim.ref (                          $P_SEC_3                      ) = $M_SEC_3_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_3                      ) = { $G_3D.$G_SEC_3.$G_CYL.$_L / 2 } ! Position
+prim.ang (                3 ,       $P_SEC_3                      ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_3                      ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_3                      ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_3                      ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_3                      ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_3                      ) = 2.55000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_3                      ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_3                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_3                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_SEC_3                      ) = $G_3D.$G_SEC_3.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_3                      ) = $G_3D.$G_SEC_3.$G_CYL.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_3                      ) = $G_3D.$G_SEC_3.$G_CYL.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_3                      ) = $G_3D.$G_SEC_3.$G_CYL.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_3                      ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_3                      ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_3                      ) = 0.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_3                      ) = 0.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_3                      ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+
+body.m (                            $B_SEC_4                      ) = $G_BP.$G_SEC_4.$_M      ! Mass of the Body
+body.cg.pos (             1 ,       $B_SEC_4                      ) = $G_BP.$G_SEC_4.$_CM_X   ! Center of gravity
+body.cg.pos (             2 ,       $B_SEC_4                      ) = { $G_BP.$G_SEC_4.$_CM_Y + ($G_BP.$G_SEC_4.$_ECC * $G_BP.$G_SEC_4.$_ECC_SWITCH) } ! Center of gravity
+body.cg.pos (             3 ,       $B_SEC_4                      ) = $G_BP.$G_SEC_4.$_CM_Z   ! Center of gravity
+body.I.tens (             1 ,   1 , $B_SEC_4                      ) = $G_BP.$G_SEC_4.$_IXX    ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_SEC_4                      ) = $G_BP.$G_SEC_4.$_IYY    ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_SEC_4                      ) = $G_BP.$G_SEC_4.$_IZZ    ! Moments of inertia
+body.I.kind (                       $B_SEC_4                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.brf.st.pos (         1 ,       $B_SEC_4                      ) = 5.89999999999999969E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $B_SEC_4                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $B_SEC_4                      ) = -0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $B_SEC_4                      ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.attr.2d.pos.x (                $B_SEC_4                      ) = 7.30000000000000000E+02
+body.attr.2d.pos.y (                $B_SEC_4                      ) = 9.00000000000000000E+01
+body.attr.2d.width (                $B_SEC_4                      ) = 1.20000000000000000E+02
+body.attr.2d.height (               $B_SEC_4                      ) = 8.00000000000000000E+01
+
+marker.type (                       $M_SEC_4_BRF                  ) = 1                       ! Type
+marker.parent (                     $M_SEC_4_BRF                  ) = $B_SEC_4                ! Body
+marker.flx.type (                   $M_SEC_4_BRF                  ) = 4                       ! Flexible type
+
+marker.type (                       $M_SEC_4_SEC_3                ) = 2                       ! Type
+marker.parent (                     $M_SEC_4_SEC_3                ) = $B_SEC_4                ! Body
+marker.pos (              1 ,       $M_SEC_4_SEC_3                ) = $G_KP.$G_SEC_4.$_SEC_3_X ! Position
+
+marker.type (                       $M_SEC_4_GEN                  ) = 2                       ! Type
+marker.parent (                     $M_SEC_4_GEN                  ) = $B_SEC_4                ! Body
+marker.pos (              1 ,       $M_SEC_4_GEN                  ) = $G_KP.$G_SEC_4.$_GEN_X  ! Position
+
+prim.type (                         $P_SEC_4_CYL_1                ) = 2                       ! Type
+prim.ref (                          $P_SEC_4_CYL_1                ) = $M_SEC_4_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_4_CYL_1                ) = { $G_3D.$G_SEC_4.$G_CYL_1.$_L / 2 } ! Position
+prim.ang (                3 ,       $P_SEC_4_CYL_1                ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_4_CYL_1                ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_4_CYL_1                ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_4_CYL_1                ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_4_CYL_1                ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_4_CYL_1                ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_4_CYL_1                ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_4_CYL_1                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_4_CYL_1                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.drawstyle (                    $P_SEC_4_CYL_1                ) = 1                       ! Draw style
+prim.transparency (                 $P_SEC_4_CYL_1                ) = $G_3D.$G_SEC_4.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_4_CYL_1                ) = $G_3D.$G_SEC_4.$G_CYL_1.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_4_CYL_1                ) = $G_3D.$G_SEC_4.$G_CYL_1.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_4_CYL_1                ) = $G_3D.$G_SEC_4.$G_CYL_1.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_4_CYL_1                ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_4_CYL_1                ) = 0.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_4_CYL_1                ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_4_CYL_1                ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_4_CYL_1                ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+prim.type (                         $P_SEC_4_CYL_2                ) = 2                       ! Type
+prim.ref (                          $P_SEC_4_CYL_2                ) = $M_SEC_4_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_SEC_4_CYL_2                ) = { $G_3D.$G_SEC_4.$G_CYL_2.$_L / 2 + $G_3D.$G_SEC_4.$G_CYL_1.$_L } ! Position
+prim.ang (                3 ,       $P_SEC_4_CYL_2                ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_SEC_4_CYL_2                ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_SEC_4_CYL_2                ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_SEC_4_CYL_2                ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_SEC_4_CYL_2                ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_SEC_4_CYL_2                ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_SEC_4_CYL_2                ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_SEC_4_CYL_2                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_SEC_4_CYL_2                ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_SEC_4_CYL_2                ) = $G_3D.$G_SEC_4.$_TRANSPARENCY ! Transparency
+prim.par (                2 ,       $P_SEC_4_CYL_2                ) = $G_3D.$G_SEC_4.$G_CYL_2.$_L ! [m] Height
+prim.par (                3 ,       $P_SEC_4_CYL_2                ) = $G_3D.$G_SEC_4.$G_CYL_2.$_D_O ! [m] Outer diameter
+prim.par (                4 ,       $P_SEC_4_CYL_2                ) = $G_3D.$G_SEC_4.$G_CYL_2.$_D_I ! [m] Inner diameter
+prim.par (                5 ,       $P_SEC_4_CYL_2                ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_SEC_4_CYL_2                ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_SEC_4_CYL_2                ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_SEC_4_CYL_2                ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_SEC_4_CYL_2                ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+
+!**********************************************************************
+! Force Elements
+!**********************************************************************
+force.type (                        $F_SCN_1_2                    ) = 186                     ! Type
+force.from (                        $F_SCN_1_2                    ) = $M_SEC_2_SEC_1          ! From Marker
+force.to (                          $F_SCN_1_2                    ) = $M_SEC_1_SEC_2          ! To Marker
+force.st.desc (           1 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           2 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           3 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           4 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           5 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           6 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.intern (                   $F_SCN_1_2                    ) = ''                      ! Internal state
+force.par (               5 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [-] Axial direction
+force.par (              10 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [N] Nominal force x
+force.par (              11 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [N] Nominal force y
+force.par (              12 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [N] Nominal force z
+force.par (              13 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque x
+force.par (              14 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque y
+force.par (              15 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque z
+force.par (              18 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [N/m] Axial stiffness
+force.par (              19 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [N/m] Radial stiffness
+force.par (              20 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Nm/rad] Torsional stiffness
+force.par (              21 ,       $F_SCN_1_2                    ) = $G_FE.$G_SCN_1_2.$_C_TLT ! [Nm/rad] Tilting stiffness
+force.par (              23 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Ns/m] Axial damping
+force.par (              24 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Ns/m] Radial damping
+force.par (              26 ,       $F_SCN_1_2                    ) = 0.00000000000000000E+00 ! [Nms/rad] Torsional damping
+force.par (              27 ,       $F_SCN_1_2                    ) = $G_FE.$G_SCN_1_2.$_D_TLT ! [Nms/rad] Tilting damping
+force.par (              30 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn ax. stif. frc Fc(x)
+force.par (              31 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn rad. stif. frc Fc(r)
+force.par (              32 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn tors. stif. trq Tc(al)
+force.par (              33 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn tilt. stif. trq Tc(psi)
+force.par (              35 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn ax. damp. frc Fd(xd)
+force.par (              36 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn rad. damp. frc Fd(rd)
+force.par (              38 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn tors. damp. trq Td(ald)
+force.par (              39 ,       $F_SCN_1_2                    ) = null                    ! [-] IFctn tilt. damp. trq Td(psid)
+force.par (              42 ,       $F_SCN_1_2                    ) = null                    ! [-] Input Function Set
+force.attr.2d.pos.x (     1 ,       $F_SCN_1_2                    ) = 320
+force.attr.2d.pos.y (     1 ,       $F_SCN_1_2                    ) = 110
+force.attr.2d.ori (       1 ,       $F_SCN_1_2                    ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_SCN_1_2   ) = 350, 337
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_SCN_1_2   ) = 110, 110
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_SCN_1_2     ) = 290, 303
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_SCN_1_2     ) = 110, 110
+
+force.type (                        $F_SCN_2_3                    ) = 186                     ! Type
+force.from (                        $F_SCN_2_3                    ) = $M_SEC_3_SEC_2          ! From Marker
+force.to (                          $F_SCN_2_3                    ) = $M_SEC_2_SEC_3          ! To Marker
+force.st.desc (           1 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           2 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           3 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           4 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           5 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           6 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.intern (                   $F_SCN_2_3                    ) = ''                      ! Internal state
+force.par (               5 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [-] Axial direction
+force.par (              10 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [N] Nominal force x
+force.par (              11 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [N] Nominal force y
+force.par (              12 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [N] Nominal force z
+force.par (              13 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque x
+force.par (              14 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque y
+force.par (              15 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque z
+force.par (              18 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [N/m] Axial stiffness
+force.par (              19 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [N/m] Radial stiffness
+force.par (              20 ,       $F_SCN_2_3                    ) = $G_FE.$G_SCN_2_3.$_C_ROT ! [Nm/rad] Torsional stiffness
+force.par (              21 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Nm/rad] Tilting stiffness
+force.par (              23 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Ns/m] Axial damping
+force.par (              24 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Ns/m] Radial damping
+force.par (              26 ,       $F_SCN_2_3                    ) = $G_FE.$G_SCN_2_3.$_D_ROT ! [Nms/rad] Torsional damping
+force.par (              27 ,       $F_SCN_2_3                    ) = 0.00000000000000000E+00 ! [Nms/rad] Tilting damping
+force.par (              30 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn ax. stif. frc Fc(x)
+force.par (              31 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn rad. stif. frc Fc(r)
+force.par (              32 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn tors. stif. trq Tc(al)
+force.par (              33 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn tilt. stif. trq Tc(psi)
+force.par (              35 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn ax. damp. frc Fd(xd)
+force.par (              36 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn rad. damp. frc Fd(rd)
+force.par (              38 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn tors. damp. trq Td(ald)
+force.par (              39 ,       $F_SCN_2_3                    ) = null                    ! [-] IFctn tilt. damp. trq Td(psid)
+force.par (              42 ,       $F_SCN_2_3                    ) = null                    ! [-] Input Function Set
+force.attr.2d.pos.x (     1 ,       $F_SCN_2_3                    ) = 510
+force.attr.2d.pos.y (     1 ,       $F_SCN_2_3                    ) = 110
+force.attr.2d.ori (       1 ,       $F_SCN_2_3                    ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_SCN_2_3   ) = 550, 527
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_SCN_2_3   ) = 110, 110
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_SCN_2_3     ) = 470, 493
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_SCN_2_3     ) = 110, 110
+
+force.type (                        $F_SCN_3_4                    ) = 186                     ! Type
+force.from (                        $F_SCN_3_4                    ) = $M_SEC_4_SEC_3          ! From Marker
+force.to (                          $F_SCN_3_4                    ) = $M_SEC_3_SEC_4          ! To Marker
+force.st.desc (           1 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           2 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           3 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           4 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           5 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           6 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.intern (                   $F_SCN_3_4                    ) = ''                      ! Internal state
+force.par (               5 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [-] Axial direction
+force.par (              10 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [N] Nominal force x
+force.par (              11 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [N] Nominal force y
+force.par (              12 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [N] Nominal force z
+force.par (              13 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque x
+force.par (              14 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque y
+force.par (              15 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Nm] Nominal torque z
+force.par (              18 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [N/m] Axial stiffness
+force.par (              19 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [N/m] Radial stiffness
+force.par (              20 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Nm/rad] Torsional stiffness
+force.par (              21 ,       $F_SCN_3_4                    ) = $G_FE.$G_SCN_3_4.$_C_TLT ! [Nm/rad] Tilting stiffness
+force.par (              23 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Ns/m] Axial damping
+force.par (              24 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Ns/m] Radial damping
+force.par (              26 ,       $F_SCN_3_4                    ) = 0.00000000000000000E+00 ! [Nms/rad] Torsional damping
+force.par (              27 ,       $F_SCN_3_4                    ) = $G_FE.$G_SCN_3_4.$_D_TLT ! [Nms/rad] Tilting damping
+force.par (              30 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn ax. stif. frc Fc(x)
+force.par (              31 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn rad. stif. frc Fc(r)
+force.par (              32 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn tors. stif. trq Tc(al)
+force.par (              33 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn tilt. stif. trq Tc(psi)
+force.par (              35 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn ax. damp. frc Fd(xd)
+force.par (              36 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn rad. damp. frc Fd(rd)
+force.par (              38 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn tors. damp. trq Td(ald)
+force.par (              39 ,       $F_SCN_3_4                    ) = null                    ! [-] IFctn tilt. damp. trq Td(psid)
+force.par (              42 ,       $F_SCN_3_4                    ) = null                    ! [-] Input Function Set
+force.attr.2d.pos.x (     1 ,       $F_SCN_3_4                    ) = 700
+force.attr.2d.pos.y (     1 ,       $F_SCN_3_4                    ) = 110
+force.attr.2d.ori (       1 ,       $F_SCN_3_4                    ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_SCN_3_4   ) = 730, 717
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_SCN_3_4   ) = 110, 110
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_SCN_3_4     ) = 670, 683
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_SCN_3_4     ) = 110, 110
+
+force.type (                        $F_GBX_connect                ) = 186                     ! Type
+force.from (                        $F_GBX_connect                ) = $M_SEC_1_GBX            ! From Marker
+force.to (                          $F_GBX_connect                ) = $M_Isys_INTERFACE_GBX_CPL ! To Marker
+force.st.desc (           1 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           2 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           3 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           4 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           5 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.desc (           6 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! Descriptive states
+force.st.intern (                   $F_GBX_connect                ) = ''                      ! Internal state
+force.disabled (                    $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_ACTIVE ! Disabled
+force.par (               5 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [-] Axial direction
+force.par (              10 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [N] Nominal force x
+force.par (              11 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [N] Nominal force y
+force.par (              12 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [N] Nominal force z
+force.par (              13 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [Nm] Nominal torque x
+force.par (              14 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [Nm] Nominal torque y
+force.par (              15 ,       $F_GBX_connect                ) = 0.00000000000000000E+00 ! [Nm] Nominal torque z
+force.par (              18 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_C_A ! [N/m] Axial stiffness
+force.par (              19 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_C_R ! [N/m] Radial stiffness
+force.par (              20 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_C_ROT ! [Nm/rad] Torsional stiffness
+force.par (              21 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_C_TLT ! [Nm/rad] Tilting stiffness
+force.par (              23 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_D_A ! [Ns/m] Axial damping
+force.par (              24 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_D_R ! [Ns/m] Radial damping
+force.par (              26 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_D_ROT ! [Nms/rad] Torsional damping
+force.par (              27 ,       $F_GBX_connect                ) = $G_FE.$G_GBX_connect.$_D_TLT ! [Nms/rad] Tilting damping
+force.par (              30 ,       $F_GBX_connect                ) = null                    ! [-] IFctn ax. stif. frc Fc(x)
+force.par (              31 ,       $F_GBX_connect                ) = null                    ! [-] IFctn rad. stif. frc Fc(r)
+force.par (              32 ,       $F_GBX_connect                ) = null                    ! [-] IFctn tors. stif. trq Tc(al)
+force.par (              33 ,       $F_GBX_connect                ) = null                    ! [-] IFctn tilt. stif. trq Tc(psi)
+force.par (              35 ,       $F_GBX_connect                ) = null                    ! [-] IFctn ax. damp. frc Fd(xd)
+force.par (              36 ,       $F_GBX_connect                ) = null                    ! [-] IFctn rad. damp. frc Fd(rd)
+force.par (              38 ,       $F_GBX_connect                ) = null                    ! [-] IFctn tors. damp. trq Td(ald)
+force.par (              39 ,       $F_GBX_connect                ) = null                    ! [-] IFctn tilt. damp. trq Td(psid)
+force.par (              42 ,       $F_GBX_connect                ) = null                    ! [-] Input Function Set
+force.attr.2d.pos.x (     1 ,       $F_GBX_connect                ) = 140
+force.attr.2d.pos.y (     1 ,       $F_GBX_connect                ) = 150
+force.attr.2d.ori (       1 ,       $F_GBX_connect                ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_GBX_connect) = 170, 157
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_GBX_connect) = 150, 150
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_GBX_connect ) = 60, 123
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_GBX_connect ) = 150, 150
+
+!**********************************************************************
+! Connection Elements
+!**********************************************************************
+connect.type (                      $CTN_SEC_1                    ) = 22                      ! Type
+connect.st.pos (          1 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          2 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Velocity states
+connect.st.vel (          2 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Velocity states
+connect.st.equi (         1 ,       $CTN_SEC_1                    ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         2 ,       $CTN_SEC_1                    ) = 0                       ! Equilibrium calculation flags
+connect.st.lin (          1 ,       $CTN_SEC_1                    ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          2 ,       $CTN_SEC_1                    ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.force (        1 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $CTN_SEC_1                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.par (             2 ,   2 , $CTN_SEC_1                    ) = $M_SEC_2_SEC_1          ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_SEC_1                    ) = $M_SEC_1_SEC_2          ! [-] To Marker
+connect.par (             3 ,   3 , $CTN_SEC_1                    ) = 1.00000000000000000E+00 ! [-] Rotation sequence
+connect.attr.2d.pos.x (   1 ,       $CTN_SEC_1                    ) = 320
+connect.attr.2d.pos.y (   1 ,       $CTN_SEC_1                    ) = 150
+connect.attr.2d.ori (     1 ,       $CTN_SEC_1                    ) = 180
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_1 ) = 350, 337
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_1 ) = 150, 150
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_1   ) = 290, 303
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_1   ) = 150, 150
+
+connect.type (                      $CTN_SEC_2                    ) = 11                      ! Type
+connect.st.pos (          1 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Velocity states
+connect.st.equi (         1 ,       $CTN_SEC_2                    ) = 0                       ! Equilibrium calculation flags
+connect.st.lin (          1 ,       $CTN_SEC_2                    ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.desc (         1 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+connect.st.desc (         2 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+connect.st.desc (         3 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+connect.st.desc (         4 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+connect.st.desc (         5 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+connect.st.desc (         6 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Descriptive states
+connect.st.force (        1 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.par (             2 ,   2 , $CTN_SEC_2                    ) = $M_SEC_3_SEC_2          ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_SEC_2                    ) = $M_SEC_2_SEC_3          ! [-] To Marker
+connect.par (             3 ,   3 , $CTN_SEC_2                    ) = 0.00000000000000000E+00 ! [-] Axis of rotation
+connect.attr.2d.pos.x (   1 ,       $CTN_SEC_2                    ) = 510
+connect.attr.2d.pos.y (   1 ,       $CTN_SEC_2                    ) = 150
+connect.attr.2d.ori (     1 ,       $CTN_SEC_2                    ) = 180
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_2 ) = 550, 527
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_2 ) = 150, 150
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_2   ) = 470, 493
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_2   ) = 150, 150
+
+connect.type (                      $CTN_SEC_3                    ) = 22                      ! Type
+connect.st.pos (          1 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          2 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Velocity states
+connect.st.vel (          2 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Velocity states
+connect.st.equi (         1 ,       $CTN_SEC_3                    ) = 0                       ! Equilibrium calculation flags
+connect.st.equi (         2 ,       $CTN_SEC_3                    ) = 0                       ! Equilibrium calculation flags
+connect.st.lin (          1 ,       $CTN_SEC_3                    ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.lin (          2 ,       $CTN_SEC_3                    ) = 0                       ! Linearization mode (0=Automatic; 1=Export; 2=Resolve
+connect.st.force (        1 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $CTN_SEC_3                    ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.par (             2 ,   2 , $CTN_SEC_3                    ) = $M_SEC_4_SEC_3          ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_SEC_3                    ) = $M_SEC_3_SEC_4          ! [-] To Marker
+connect.par (             3 ,   3 , $CTN_SEC_3                    ) = 1.00000000000000000E+00 ! [-] Rotation sequence
+connect.attr.2d.pos.x (   1 ,       $CTN_SEC_3                    ) = 700
+connect.attr.2d.pos.y (   1 ,       $CTN_SEC_3                    ) = 150
+connect.attr.2d.ori (     1 ,       $CTN_SEC_3                    ) = 180
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_3 ) = 730, 717
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_3 ) = 150, 150
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_3   ) = 670, 683
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_3   ) = 150, 150
+
+connect.type (                      $CTN_SEC_4                    ) = 2                       ! Type
+connect.par (             2 ,   2 , $CTN_SEC_4                    ) = $M_Isys_INTERFACE_GEN_CPL ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_SEC_4                    ) = $M_SEC_4_GEN            ! [-] To Marker
+connect.par (             3 ,   3 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [m] Translation in x
+connect.par (             3 ,   4 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [m] Translation in y
+connect.par (             3 ,   5 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [m] Translation in z
+connect.par (             3 ,   6 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+connect.par (             3 ,   7 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [rad] Rotation alpha
+connect.par (             3 ,   8 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [rad] Rotation beta
+connect.par (             3 ,   9 , $CTN_SEC_4                    ) = 0.00000000000000000E+00 ! [rad] Rotation gamma
+connect.attr.2d.pos.x (   1 ,       $CTN_SEC_4                    ) = 910
+connect.attr.2d.pos.y (   1 ,       $CTN_SEC_4                    ) = 130
+connect.attr.2d.ori (     1 ,       $CTN_SEC_4                    ) = 180
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_4 ) = 970, 927
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_4 ) = 130, 130
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $CTN_SEC_4   ) = 850, 893
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $CTN_SEC_4   ) = 130, 130
+
+connect.type (                      $CTN_GBX                      ) = 2                       ! Type
+connect.st.force (        1 ,       $CTN_GBX                      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $CTN_GBX                      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $CTN_GBX                      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $CTN_GBX                      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $CTN_GBX                      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $CTN_GBX                      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.disabled (                  $CTN_GBX                      ) = { 1 - $G_FE.$G_GBX_connect.$_ACTIVE } ! Disabled
+connect.par (             2 ,   2 , $CTN_GBX                      ) = $M_Isys_INTERFACE_GBX_CPL ! [-] From Marker
+connect.par (             2 ,   3 , $CTN_GBX                      ) = $M_SEC_1_GBX            ! [-] To Marker
+connect.par (             3 ,   3 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [m] Translation in x
+connect.par (             3 ,   4 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [m] Translation in y
+connect.par (             3 ,   5 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [m] Translation in z
+connect.par (             3 ,   6 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+connect.par (             3 ,   7 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [rad] Rotation alpha
+connect.par (             3 ,   8 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [rad] Rotation beta
+connect.par (             3 ,   9 , $CTN_GBX                      ) = 0.00000000000000000E+00 ! [rad] Rotation gamma
+connect.attr.2d.pos.x (   1 ,       $CTN_GBX                      ) = 140
+connect.attr.2d.pos.y (   1 ,       $CTN_GBX                      ) = 110
+connect.attr.2d.ori (     1 ,       $CTN_GBX                      ) = 0
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $CTN_GBX   ) = 60, 123
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $CTN_GBX   ) = 110, 110
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $CTN_GBX     ) = 170, 157
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $CTN_GBX     ) = 110, 110
+
+!**********************************************************************
+! Initial Conditions
+!**********************************************************************
+inicon.type (                       $IC_SEC_1                     ) = 2                       ! Type
+inicon.disabled (                   $IC_SEC_1                     ) = 0                       ! Disabled
+inicon.par (              1 ,       $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] General
+inicon.par (              1 ,   2 , $IC_SEC_1                     ) = $CTN_SEC_1              ! [-] Connection
+inicon.par (              2 ,       $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] States
+inicon.par (              2 ,   1 , $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] 1st rotation beta
+inicon.par (              2 ,   1 ,   1 , $IC_SEC_1               ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   1 ,   2 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   1 ,   3 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   2 , $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] 2nd rotation gamma
+inicon.par (              2 ,   2 ,   1 , $IC_SEC_1               ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   2 ,   2 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   2 ,   3 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   3 , $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] State 3
+inicon.par (              2 ,   3 ,   1 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   3 ,   2 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   3 ,   3 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   4 , $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] State 4
+inicon.par (              2 ,   4 ,   1 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   4 ,   2 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   4 ,   3 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   5 , $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] State 5
+inicon.par (              2 ,   5 ,   1 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   5 ,   2 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   5 ,   3 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   6 , $IC_SEC_1                     ) = 0.00000000000000000E+00 ! [-] State 6
+inicon.par (              2 ,   6 ,   1 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   6 ,   2 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   6 ,   3 , $IC_SEC_1               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+
+inicon.type (                       $IC_SEC_2                     ) = 2                       ! Type
+inicon.disabled (                   $IC_SEC_2                     ) = 0                       ! Disabled
+inicon.par (              1 ,       $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] General
+inicon.par (              1 ,   2 , $IC_SEC_2                     ) = $CTN_SEC_2              ! [-] Connection
+inicon.par (              2 ,       $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] States
+inicon.par (              2 ,   1 , $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] Rotation alpha
+inicon.par (              2 ,   1 ,   1 , $IC_SEC_2               ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   1 ,   2 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   1 ,   3 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   2 , $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] State 2
+inicon.par (              2 ,   2 ,   1 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   2 ,   2 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   2 ,   3 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   3 , $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] State 3
+inicon.par (              2 ,   3 ,   1 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   3 ,   2 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   3 ,   3 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   4 , $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] State 4
+inicon.par (              2 ,   4 ,   1 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   4 ,   2 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   4 ,   3 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   5 , $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] State 5
+inicon.par (              2 ,   5 ,   1 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   5 ,   2 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   5 ,   3 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   6 , $IC_SEC_2                     ) = 0.00000000000000000E+00 ! [-] State 6
+inicon.par (              2 ,   6 ,   1 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   6 ,   2 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   6 ,   3 , $IC_SEC_2               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+
+inicon.type (                       $IC_SEC_3                     ) = 2                       ! Type
+inicon.disabled (                   $IC_SEC_3                     ) = 0                       ! Disabled
+inicon.par (              1 ,       $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] General
+inicon.par (              1 ,   2 , $IC_SEC_3                     ) = $CTN_SEC_3              ! [-] Connection
+inicon.par (              2 ,       $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] States
+inicon.par (              2 ,   1 , $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] 1st rotation beta
+inicon.par (              2 ,   1 ,   1 , $IC_SEC_3               ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   1 ,   2 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   1 ,   3 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   2 , $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] 2nd rotation gamma
+inicon.par (              2 ,   2 ,   1 , $IC_SEC_3               ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   2 ,   2 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   2 ,   3 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   3 , $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] State 3
+inicon.par (              2 ,   3 ,   1 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   3 ,   2 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   3 ,   3 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   4 , $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] State 4
+inicon.par (              2 ,   4 ,   1 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   4 ,   2 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   4 ,   3 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   5 , $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] State 5
+inicon.par (              2 ,   5 ,   1 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   5 ,   2 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   5 ,   3 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   6 , $IC_SEC_3                     ) = 0.00000000000000000E+00 ! [-] State 6
+inicon.par (              2 ,   6 ,   1 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   6 ,   2 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   6 ,   3 , $IC_SEC_3               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+
+inicon.type (                       $IC_GBX                       ) = 1                       ! Type
+inicon.disabled (                   $IC_GBX                       ) = $G_PA.$_CONNECT_TYPE    ! Disabled
+inicon.par (              1 ,       $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] General
+inicon.par (              1 ,   2 , $IC_GBX                       ) = $M_Isys_INTERFACE_GBX_CPL ! [-] Marker
+inicon.par (              1 ,   3 , $IC_GBX                       ) = $M_SEC_1_GBX            ! [-] Relative to Marker
+inicon.par (              1 ,   4 , $IC_GBX                       ) = $M_SEC_1_GBX            ! [-] Coordinates w.r.t. Marker
+inicon.par (              1 ,   6 , $IC_GBX                       ) = 3.00000000000000000E+00 ! [-] Conditions
+inicon.par (              2 ,       $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Direction
+inicon.par (              2 ,   1 , $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Translation in x
+inicon.par (              2 ,   1 ,   1 , $IC_GBX                 ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   1 ,   2 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   1 ,   3 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   2 , $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Translation in y
+inicon.par (              2 ,   2 ,   1 , $IC_GBX                 ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   2 ,   2 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   2 ,   3 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   3 , $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Translation in z
+inicon.par (              2 ,   3 ,   1 , $IC_GBX                 ) = 3.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   3 ,   2 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   3 ,   3 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   4 , $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Rotation about al
+inicon.par (              2 ,   4 ,   1 , $IC_GBX                 ) = 1.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   4 ,   2 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   4 ,   3 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   5 , $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Rotation about be
+inicon.par (              2 ,   5 ,   1 , $IC_GBX                 ) = 1.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   5 ,   2 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   5 ,   3 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   6 , $IC_GBX                       ) = 0.00000000000000000E+00 ! [-] Rotation about ga
+inicon.par (              2 ,   6 ,   1 , $IC_GBX                 ) = 1.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   6 ,   2 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   6 ,   3 , $IC_GBX                 ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+
+inicon.type (                       $IC_SEC_4                     ) = 1                       ! Type
+inicon.par (              1 ,       $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] General
+inicon.par (              1 ,   2 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Marker
+inicon.par (              1 ,   3 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Relative to Marker
+inicon.par (              1 ,   4 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Coordinates w.r.t. Marker
+inicon.par (              1 ,   6 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Conditions
+inicon.par (              2 ,       $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Direction
+inicon.par (              2 ,   1 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Translation in x
+inicon.par (              2 ,   1 ,   1 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   1 ,   2 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   1 ,   3 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   2 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Translation in y
+inicon.par (              2 ,   2 ,   1 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   2 ,   2 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   2 ,   3 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   3 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Translation in z
+inicon.par (              2 ,   3 ,   1 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   3 ,   2 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [m] Position
+inicon.par (              2 ,   3 ,   3 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [m/s] Velocity
+inicon.par (              2 ,   4 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Rotation about al
+inicon.par (              2 ,   4 ,   1 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   4 ,   2 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   4 ,   3 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   5 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Rotation about be
+inicon.par (              2 ,   5 ,   1 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   5 ,   2 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   5 ,   3 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+inicon.par (              2 ,   6 , $IC_SEC_4                     ) = 0.00000000000000000E+00 ! [-] Rotation about ga
+inicon.par (              2 ,   6 ,   1 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [-] Condition
+inicon.par (              2 ,   6 ,   2 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [rad] Position
+inicon.par (              2 ,   6 ,   3 , $IC_SEC_4               ) = 0.00000000000000000E+00 ! [rad/s] Velocity
+
+!**********************************************************************
+! Senders
+!**********************************************************************
+sender.ref (                        $COM_S_________SUBVARS        ) = null                    ! Source object
+sender.alias (                      $COM_S_________SUBVARS        ) = ''                      ! Alias
+
+sender.ref (                        $COM_G_INTERFACE_G_034_CPL_G_PA_G_SCN__GBX_2_CPL_X) = $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_GBX_2_CPL_X ! Source object
+
+sender.ref (                        $COM_G_INTERFACE_G_034_CPL_G_PA_G_SCN__CPL_2_GEN_X) = $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X ! Source object
+
+!**********************************************************************
+! Receivers
+!**********************************************************************
+receiver.ref (                      $COM_R_________MARKER         ) = null                    ! Destination object
+
+receiver.ref (                      $COM_M_INTERFACE_GBX_CPL      ) = $M_Isys_INTERFACE_GBX_CPL ! Destination object
+
+receiver.ref (                      $COM_M_INTERFACE_GEN_CPL      ) = $M_Isys_INTERFACE_GEN_CPL ! Destination object
+
+model.data.redundancy                                               = 'eJxjZMAOzMzMEy0sLJMNDJLNDc1TLM2APIMUMwNjCxPTZMM0IwCFAggSOAAAAAAAAAA=' ! Constraint redundancy data
+model.data.dependency                                               = 'eJxjYEAFTEDMSCQ2MzNPtLCwTDYwSDY3NE+xNAPyDFLMDIwtTEyTDdOMAIeiCB1cAAAAAAAAAA==' ! Solver state dependency data

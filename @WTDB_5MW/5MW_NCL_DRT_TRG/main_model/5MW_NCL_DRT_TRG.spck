@@ -1,0 +1,825 @@
+!file.version=3.4! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '../../../@NREL_5MW/input_functions'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.compat.track.excit                                             = 1                       ! Track Excitation rotation sequence
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $S_TRG.$TPL.$GlobalSolverSettings ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+model.txt                                                           = '5 MW Nacelle Drivetrain Testrig#5 MW Nacelle Drivetrain Testrig main model for drivetrain analysis.' ! Comment
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Substructures
+!**********************************************************************
+substr.file (                       $S_NCL                        ) = '030_NCL_A_DRT.spck'    ! Filename
+substr.id (                         $S_NCL                        ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_NCL                        ) = '../database'           ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_NCL                        ) = -1.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_NCL                        ) = 2.00000000000000000E+01
+substr.attr.2d.width (              $S_NCL                        ) = 1.30000000000000000E+02
+substr.attr.2d.height (             $S_NCL                        ) = 6.00000000000000000E+01
+
+substr.file (                       $S_TRG                        ) = '210_TRG_A_DRT_RES_ALY.par.spck' ! Filename
+substr.id (                         $S_TRG                        ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_TRG                        ) = '../database'           ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_TRG                        ) = -2.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_TRG                        ) = 1.40000000000000000E+02
+substr.attr.2d.width (              $S_TRG                        ) = 1.60000000000000000E+02
+substr.attr.2d.height (             $S_TRG                        ) = 4.00000000000000000E+01
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -1.26186609268188477E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -2.89543094635009766E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.10301399230957031E+01 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo offset
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -1.86969673037528992E+01 ! Position
+view.pos (                2 ,       $V_perspective                ) = -4.37102284133434296E+01 ! Position
+view.pos (                3 ,       $V_perspective                ) = 1.52869955636560917E+01 ! Position
+view.orient (             1 ,       $V_perspective                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 1000 s }              ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.atol.body.flx.st.vel (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.body.flx.st.vel (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
+slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.fallback.enable (          $SLV_SolverSettings           ) = 0                       ! Enable fallbacks
+slv.equi.st.meth (                  $SLV_SolverSettings           ) = 2                       ! EQUI_STATIC_INTPAR_METHOD
+slv.init.task (                     $SLV_SolverSettings           ) = 2                       ! Task: 0 = No initialization; 1 = Assemble System; 2 = Apply Initial Conditions and Assemble System
+slv.init.meth (                     $SLV_SolverSettings           ) = 0                       ! Algorithm: 0 = Nonlinear solver; 1 = Projection
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -4.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = 0.00000000000000000E+00
+refsys.attr.2d.width (              $R_Isys                       ) = 1.90000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 2.10000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+
+! Overwritten substructure values
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -2.12465107829489996E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 1.18342000000000003E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -7.75118536691317976E-28 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -6.98785985963814898E-29 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -5.57298469871244095E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -4.12034613465729095E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 5.74679827315737676E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = 2.87987303149034866E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -4.34800000000000030E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSG   ) = -1.12427821804854906E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -2.12465107829489996E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 1.18342000000000003E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -1.04142150457104513E-27 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -5.36201431848672908E-29 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -5.57298469871244095E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -4.12034613465729095E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 5.74679827315737676E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = 2.87987303149034866E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -4.34800000000000030E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLC) = -1.12427821804854906E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -2.06146316480284764E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 1.18342000000000003E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 2.74580828381756792E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 1.27908009640874040E-27 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -2.55870441043202319E-28 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -5.60438774418038688E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -4.14114576293461451E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 5.77427237794372120E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = 2.87987303149006202E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -4.34800000000000030E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT1) = -1.12427821804854662E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -2.12465107829489996E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -6.06657999999999920E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 1.52477199073558323E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 4.02516451016829944E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -8.71738183585299420E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -5.57379669871244099E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -4.12034613465729095E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 5.74542077315737670E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 1.53776451956454032E-06 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = -3.11924572028774490E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT2) = 4.33827799835748585E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -2.18783899178695229E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 1.18341999999999892E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 1.30132597158453733E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -3.04884193443413709E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -8.68932574690693682E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 8.07226011739159074E-03 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -5.54158165324449503E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -4.09954650637996739E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 5.71932416837103233E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -6.36576153198556392E-06 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = 4.33968433545044163E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT3) = -2.92286315971430769E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -2.12465107829489996E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 8.43341999999999925E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -1.52477199073558323E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 4.02516451016829598E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 8.71738183585299420E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -5.57217269871244092E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -4.12034613465729008E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 5.74817577315737682E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = 3.65037182932370364E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -8.81617729787243480E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_PLT4) = -4.34858389386008539E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -2.12465107829489996E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 1.18342000000000003E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -9.09622035024895292E-27 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 1.55089870712140465E-27 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -5.57298469871244095E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -4.12034613465729095E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 5.74679827315737676E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = 2.87987303149111912E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -4.34800000000000030E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_LSS_SUN) = -1.12427821804855584E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -9.69065228508475318E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 1.18342000000000003E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 1.92246646611376937E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -8.89665428829563713E-27 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 1.03075616479827935E-27 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -5.56858884194662673E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -4.24785083726321195E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 6.24924700064451444E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = 2.87987303149111912E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -4.34800000000000030E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLC) = -1.12427821804855584E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -9.22872684852216407E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 1.18342000000000003E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 2.45044965610239407E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -8.52306785171816766E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 8.69512880270909561E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 7.41942084749925863E-03 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -5.59154555104732998E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -4.26305608276250029E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 6.26933151862625465E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = 6.09927465695478223E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -4.32268275498876205E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT1) = -4.83554744043767271E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -9.92161500336604552E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -3.40651464005752469E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 1.65847487111945657E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -1.10533372969026145E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 3.92479172334415718E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 7.79625487210110907E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -5.55762456007595884E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -4.24024821451356865E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 6.23833265407203186E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = 1.73547526927387137E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -1.85145516840212331E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT2) = -3.93873668801006036E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -9.92161500336604774E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 5.77335464005752419E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 1.65847487111945635E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -2.12099703525833583E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -4.57123092526713556E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 7.43617769045892413E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -5.55659641471658694E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -4.24024821451356778E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 6.24007682923525403E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -1.47863789034573468E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = 2.36885900192960802E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_PLT3) = -3.65157480452859293E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -9.69065228508475318E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.18342000000000058E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.92246646611376937E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 3.15281477634360152E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 8.29852513224368510E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -2.70288998301101147E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -5.56858884194662673E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -4.24785083726321282E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 6.24924700064451444E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -8.42854816108393542E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = -4.16841273602274603E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_IMS_SUN) = 1.24605423352076167E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -3.26422123022341581E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.18342000000000058E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.84054006793097069E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 3.15281477634360152E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 8.29852513224368510E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -2.70288998301101147E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -5.56502668215363760E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -4.35117361351283847E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 6.65640372809098851E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -8.42854816108393542E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = -4.16841273602274603E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_BGR) = 1.24605423352076167E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 2.19341266074149499E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 6.68473556174964401E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 2.23871308325716090E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -1.14233679370127938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 3.63329258248124357E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 7.93607380919095495E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -5.58172309751710505E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -4.36264049079988954E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 6.67259550778162153E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = 1.64450327319206528E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -1.70458792668004133E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$032_GBX.$TPL.$B_HSS_HSH) = -4.00414582625735396E-03 ! Velocity x/y/z/al/be/ga
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -7.72168976644523127E-28 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 2.82433320018893718E-28 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.37434630379191242E-28 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.04809660202111133E-27 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.41284994740660388E-28 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -2.12457936741088848E-28 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 1.15062143638996896E-35 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 1.81810847165427609E-34 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 5.89805447254397537E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -2.53962688390128403E-33 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -3.03164709244008043E-34 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -3.15179942928807749E-34 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9xofmuu2c5rfLPO7l4twEM6sTq6ecYTquuisiKUen+lDILt/2ky7GyWq7JqQWrtW4arCrwb7Udee0dRYPHsldSDB9Z7HhzdOWppmXLYQLu+pq4rV29s1IWDtT/+eOiaLvryjp/9oBAPMIMhS0AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -2.65289604687880493E-28 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.75187950081236198E-29 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -6.95137754994917752E-30 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.42893315319386211E-29 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 2.08319223985819158E-28 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -6.37880121065336475E-29 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -5.35944917555855610E-35 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -6.81594294479001907E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 5.17826807414959642E-36 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -7.03944669014436437E-36 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 5.46322172564961622E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.62625814806938286E-36 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9Xtu6ErexmO76WJHfo2P6zTLs5sEtm+c/3Oleb2ahLvvJUox9qoN5o4HVMe3PupLmIrsqXmivCTh/cYdT55m9G+QW7XixfoKwd8dsC4Pqz1PPbFu0Y8M+rdAZ6pcsGAo3tUh4N1oAAKpALzm0AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 2.31167139180946960E-27 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 1.11715728137669238E-29 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -5.25727781191685551E-33 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 1.67302673862076621E-28 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 2.03140017767346817E-28 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -2.85324165477420966E-18 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 3.12773251818749019E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -2.33201664953956455E-37 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -4.82598659836228134E-36 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 3.28355078455477426E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 4.39009001112896985E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9Yt2JzSeepFn973r56nDQG0v3op/v5Xysdzb82u09q0nL6qf1OjdtCQMrmN6tpccOsAV67Wk4sH+7/cIJFgwLbHetuxa848HaG09PrZi5497Rb0JrLh210JBe/zBS96wFAMmuMNW0AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -4.61998919645557962E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -9.76054607943086774E-47 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -1.14826569155188288E-71 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 4.94552312947137285E-31 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -5.69269878589919138E-31 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -1.15645991808378077E-18 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -1.30400508736391940E-37 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -9.14868077989855634E-53 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 6.69198019812010642E-37 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 1.28373772965167012E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 2.51861201405413834E-37 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9oTxKSs3Ll++ve3rH6uKVxG1C3ydcPeBpslEnxLp/J/8SywaFjNeLxJfvhOndrCPtaBVquqehqdBpn77bDpBYQ5viVofd9y68Lsux2JEq7REqsNGCoXOaHG9uqAUApJMnMLQAAAAAAAAA' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 9.23997839291117590E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -2.70236566618053639E-69 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 3.03255826941057208E-33 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 5.06479824811426469E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 6.75347459117229063E-18 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -1.69375407592379082E-37 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 4.43720703823899668E-53 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 5.59242479347546327E-37 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -6.24538360578311378E-37 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 6.81345929186035775E-36 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9iTxKSs3Lt9vD5E4fj9u2atmmjR+XKJu9qdW3DLnws4CXV8AKJj8rrLtYQjXe5sOb+OdhF312QEQFTW+8VW+cczLdQk5V6Pa8CVk79ljpsjPILrIAAC0QIr20AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 4.61998919645559974E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -7.41718855829863048E-47 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 1.37033021434412391E-48 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -1.74435634384718080E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -2.54613908721214616E-18 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -6.22238291887703725E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 1.64976010212172696E-51 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -2.70462447900975691E-36 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 2.42231630784548689E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 4.14767969262171022E-36 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9RTxKSs3Ll9unly8/v18yehvcfMktFXNYGcw8+J/1HpL5thMm7nLCZMmzavc9LmcZGPZ0LdgBEms4kGzKsOGl1oZDPTsWtd/ujZY8YCHA/S2/nXeaBQAZbiRTtAAAAAAAAAA=' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -1.98806652836942547E-28 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 4.28306182918672338E-30 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 5.02749213966358939E-28 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -6.76060924776426789E-29 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -1.51360183983117374E-28 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 5.96640968302229064E-35 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -1.51283353984466763E-35 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 8.40165590192459149E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 1.44267675098603909E-35 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -3.62875318610335258E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -2.26793675346221703E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9976nBvY16O9Kf2iZs3v7VctpfBxTq185W+11tZp9O0d0V+Cuf8zPfqvvgukVCbL6vuLyZYsHK/4/eC69ZYdYwMkFYa9vW9jMdduko7vZ4rnf1zcMcid2LHBf3pOsum8HAMRdMDu0AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -8.09063085611078332E-27 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -5.09496797708445985E-29 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 3.92796282711926181E-28 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -2.41043333238131769E-28 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 2.35768373074886351E-31 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 8.65803363450368081E-28 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 7.67304183798609098E-18 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -9.17164444351262200E-35 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 6.60413492809698182E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -1.10493887641137996E-35 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 4.95260064843466627E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 1.49695330510059414E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9y9hzXnJztOzap/qyqF1VYNfNr/Oe35Kzt9pyYk/XBwnjXTPuKG/YrjDZkvdAEquqWqDV0WuTfGI3JtoUWJV7xFfd23GneIel7qerFgwqt9kux6/dkbLz8guT0gsWDnv87e493WwBANTGMLK0AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -8.49079095564815173E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 7.63477168607433606E-29 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -1.17914395441837553E-30 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 1.85203063419070547E-29 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -3.28942934572475963E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 4.33166549147832060E-29 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -9.12734676986256050E-17 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -4.94882022878235344E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.02263548251138947E-36 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.36867942876187799E-35 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 4.10070990932398071E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -3.50844396368142891E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR98o3bw9r2bN0/o2Mll4CRhBUDwwH18lfbdzIwPLqlV/Xd8u50ubr0myy77vzXLm4v4bZa1fOH77TfrD0Xwi5p//GfteOCvrGJclOrhUL2r9NGNfstPE5ICf13OG2xgif5nl/g8R0AhLovErQAAAAAAAAA' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 3.08498738055213995E+00 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.19698539730821287E-49 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.35178550454572241E-68 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 1.36355826891282517E-32 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 1.86244849214628661E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -6.10285376389851576E-17 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -2.17172566354074663E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -2.92229235294845922E-50 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 1.27586003876521511E-36 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 3.40919266080638318E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.92127450616254807E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9WVEKd3nXcTj8ubn7cnbKsa0H5PMe/gu6vnHB+2Yx482BlhuUbdb8nf3dEqZ3RWhXtcz0iXv2Bfk//S/evgMseG/p1mfHlKIKlaotlFr9rhSsOGZxh0lf5VDnzh0AhR4tF7QAAAAAAAAA' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.83026365188244894E-02 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -1.77730125003800979E-46 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 2.11330047780908431E-67 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -8.17933623811588914E-34 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -6.63011388024442277E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.83610338920038303E-17 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 2.63567859352271946E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 6.53182977246652305E-52 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 3.78291706627786349E-36 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.09379778275007290E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -3.69466839103926411E-36 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9Kiu/nIj9PWf/3L3cB7htCralb5xTr39KzKhg9/W+h38Edib9Tzn+h0l0F0zvi4cqEyMjG/bssn719D9bjwVY0MPftGRDhhmX7BSL0lcNMpev7N5RcaqN882SyTsAl60thLQAAAAAAAAA' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -3.04553204455016863E-29 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -5.59957295868159881E-28 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -4.18691880924560501E-28 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -2.48984206122641840E-28 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 2.84841844637172260E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -2.56861680947450485E-29 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 3.57323848297985089E-36 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 7.00605833777596870E-36 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 7.80364140453271442E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 2.43557222840369425E-35 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 1.35484278084426280E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -9.78031562859973469E-36 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9WfYlLSt8mXeZhvI5LtFz25V1+q4L1zSHXS/CPV/+32m8awtT5u5LvExWja6P1150Z9iVoHz08eL/kyzO5a1pFl6wyKLStnTWrHc3LRI0UoJe6h+wKJiU2uLFtMlC4Po0X2WGVTsAf/IuRLQAAAAAAAAA' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 3.14159265358980644E-01 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 1.26946104609247998E-28 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -8.60882718182440991E-30 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 6.53101985720433277E-28 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 3.65934765671795906E-29 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -2.13785904814658679E-29 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 2.97920805620499470E-16 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 1.87985795294633676E-35 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -4.20964716422563386E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -1.48821998351728277E-35 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 5.53922329403593740E-37 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -2.82005673827647413E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9Pz7MKdOXvmL/enn6jm5ZFasQNuvDRZef7ky5fWij7X1Pq04txZ6FhuxW6eXLz++X/L2ztlDWanX5VpsXvno2l//ssDjx8c378F+nd5zoaylSO7F5B4OBl/i6/nSLCZJXPgrvO7QDAEpEM060AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.14089417419840355E+00 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -2.01832212869271086E-30 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.46421003935773742E-31 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -7.15860065116816380E-31 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 7.89941586264925228E-31 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.30357604131085651E-30 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.10036943365424518E-15 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -1.94561133198050621E-35 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.90756073666176061E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.77588720653973569E-34 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.83516901281936912E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -3.41068301877326507E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9awSe2Us5ftrP1TVF+W75kZ2vVb30xA+17wzWXl/1inPtTiPJLRVzWDdYLik7c6S3YNfOx6l33/Vdurxnw71NjZPu7NzBw7/B/2vQYYuApSIHVvB/t9jbt9/l1PVDFtovj/74uerYDgCATTbFtAAAAAAAAAA=' ! Internal state
+
+body.brf.st.pos (         1 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 3.13273525141405162E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 6.68473556174964401E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 1.96482616167264590E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 4.94917840647833912E-32 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -6.26407086584420609E-31 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -5.56981449416661056E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -4.70805732523015344E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 8.03375509927156256E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = 2.87987303149034866E-05 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -4.34800000000000030E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$033_GEN.$TPL.$B_STR   ) = -1.12427821804854906E-04 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 3.13273525141405162E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 6.68473556174964734E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 1.96482616167264457E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -1.14233679370127938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 3.63329258248124357E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 7.93607380919095495E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -5.56981449416660945E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -4.70805732523015691E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 8.03375509927155979E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = 1.64450327319206501E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -1.70458792668004133E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$033_GEN.$TPL.$B_GRO   ) = -4.00414582625735396E-03 ! Velocity x/y/z/al/be/ga
+
+connect.st.pos (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 4.93034528844387518E-32 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -7.52298194631297681E-32 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -6.22093593384347635E-31 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -8.44517052866091685E-31 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -6.53955762078870535E-31 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 3.47900107870555139E-31 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -4.89036145838659121E-36 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -5.27354641783834838E-35 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 2.62492989813413260E-35 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -2.51755444062256301E-34 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = -5.85218513301483980E-35 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 4.97753702171170129E-35 ! Velocity states
+connect.st.intern (                 $S_NCL.$033_GEN.$TPL.$CTN_STR ) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR90l8WffnwP9+yYnVVwM3Mip1+uecKDGxW7tzVsnzrb4WNO+fe15wr0L5qpxvXIodZlnMsT6y3d85imLVDMyFlq03bxR0JnTIWYkUHLZwYlzHbv/qy48nVw/y1RZd3SHwXn5TddcECAIGyMeu0AAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -1.14089417419840355E+00 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -6.16811920922366242E-30 ! Position states
+connect.st.pos (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -3.12352540551706030E-29 ! Position states
+connect.st.pos (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -1.81457594901924873E-27 ! Position states
+connect.st.pos (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 1.85088327111085654E-16 ! Position states
+connect.st.pos (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -4.03679993897706696E-16 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -1.10039653870855751E-15 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 3.66719026409684141E-32 ! Velocity states
+connect.st.vel (          3 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 4.72125870250430973E-21 ! Velocity states
+connect.st.vel (          4 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 1.14066272235362758E-16 ! Velocity states
+connect.st.vel (          5 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -3.38836914729028934E-18 ! Velocity states
+connect.st.vel (          6 ,       $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = -9.14885600616160823E-18 ! Velocity states
+connect.st.intern (                 $S_NCL.$033_GEN.$TPL.$CTN_GRO ) = 'eJxjfmvMyAAFRkDMD8RsDKQDNiR9awSe2Us5ftp/7MhfvbVu93dO0NTaaHqGeVeD01/5+h+Juy5Pkb7cu2aVzT6ZmvtTxPbueZJ69926S5f3PNo4wUrrbLplxP8Dp5d5b7N2F/er9i1YYHP6VWZlv4P/nvMVd9k7JFL3AAD1BTUrtAAAAAAAAAA=' ! Internal state
+
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 7.89187224153220512E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 6.68473556174964401E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 2.16986004648651098E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.14233679370127938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 3.63329258248124357E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 7.93607380919095495E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -5.57872936747831671E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -4.44947558998840410E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 7.01478041701855265E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = 1.64450327319206528E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -1.70458792668004133E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_1 ) = -4.00414582625735396E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 9.38616428866982266E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 6.68473556174964401E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 2.15678668507436244E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -1.14233679370127938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 3.63329258248124357E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 7.93607380919095495E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -5.57816093772411703E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -4.46596326704951606E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 7.07975223522809560E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = 1.64450327319206528E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -1.70458792668004133E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_2 ) = -4.00414582625735396E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 1.15777926244716634E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 6.68473556174964401E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 2.13761242166987753E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -1.14233679370127938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 3.63329258248124357E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 7.93607380919095495E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -5.57732724075128972E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -4.49014519340581054E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 7.17504423526875990E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = 1.64450327319206528E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -1.70458792668004133E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_3 ) = -4.00414582625735396E-03 ! Velocity x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 1.37694209602735018E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 6.68473556174964734E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 2.11843815826539217E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -1.14233679370127938E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 3.63329258248124357E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 7.93607380919095495E-02 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -5.57649354377846351E-01 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -4.51432711976210849E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 7.27033623530942280E-02 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = 1.64450327319206501E-04 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -1.70458792668004133E-03 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_NCL.$034_CPL.$TPL.$B_SEC_4 ) = -4.00414582625735396E-03 ! Velocity x/y/z/al/be/ga
+
+connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 2.25878225459734354E-33 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = -8.41798341008073926E-33 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 8.44777060969556432E-37 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = -3.85470232994933482E-37 ! Velocity states
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_1) = 'eJxjfmvMyAAFRkAsCcRMMAEGDgcow4EJSXzi1Scrtt5ytTxTadt9v0R9ZwFvsF5aaoJFy8rj8enfC3cAAKp9EnhUAAAAAAAAAA==' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_2) = 5.13170824337701564E-49 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_2) = 6.74309181730703689E-53 ! Velocity states
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_2) = 'eJxjfmvMyAAFRkAM4zAisSHgxVYGFbH3s65KbgUAXbwGXTQAAAAAAAAA' ! Internal state
+
+connect.st.pos (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = 6.93889390390722992E-18 ! Position states
+connect.st.pos (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = 0.00000000000000000E+00 ! Position states
+connect.st.vel (          1 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = -2.14740171512428070E-21 ! Velocity states
+connect.st.vel (          2 ,       $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = 9.84589271420209219E-22 ! Velocity states
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_3) = ''                     ! Internal state
+
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_SEC_4) = ''                     ! Internal state
+
+connect.st.intern (                 $S_NCL.$034_CPL.$TPL.$CTN_GBX ) = ''                      ! Internal state
+
+body.brf.st.pos (         1 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.vel (         1 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         2 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         3 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         4 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         5 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+body.brf.st.vel (         6 ,       $S_TRG.$TPL.$B_DRV            ) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
+
+force.st.intern (                   $S_TRG.$TPL.$F_DRV            ) = ''                      ! Internal state
+force.attr.2d.pos.x (     1 ,       $S_TRG.$TPL.$F_DRV            ) = 10
+force.attr.2d.pos.y (     1 ,       $S_TRG.$TPL.$F_DRV            ) = 110
+force.attr.2d.ori (       1 ,       $S_TRG.$TPL.$F_DRV            ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_DRV) = 10, 10
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_DRV) = 140, 127
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_DRV) = 10, 10
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_DRV) = 80, 93
+
+force.attr.2d.pos.x (     1 ,       $S_TRG.$TPL.$F_ROT_TRQ_static ) = 100
+force.attr.2d.pos.y (     1 ,       $S_TRG.$TPL.$F_ROT_TRQ_static ) = 110
+force.attr.2d.ori (       1 ,       $S_TRG.$TPL.$F_ROT_TRQ_static ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_ROT_TRQ_static) = 100, 100
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_ROT_TRQ_static) = 140, 127
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_ROT_TRQ_static) = 100, 100
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_ROT_TRQ_static) = 80, 93
+
+force.st.intern (                   $S_TRG.$TPL.$F_BLP_TRQ        ) = ''                      ! Internal state
+force.attr.2d.pos.x (     1 ,       $S_TRG.$TPL.$F_BLP_TRQ        ) = 40
+force.attr.2d.pos.y (     1 ,       $S_TRG.$TPL.$F_BLP_TRQ        ) = 110
+force.attr.2d.ori (       1 ,       $S_TRG.$TPL.$F_BLP_TRQ        ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TRQ) = 40, 40
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TRQ) = 140, 127
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TRQ) = 40, 40
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TRQ) = 80, 93
+
+force.st.intern (                   $S_TRG.$TPL.$F_BLP_TLT        ) = ''                      ! Internal state
+force.attr.2d.pos.x (     1 ,       $S_TRG.$TPL.$F_BLP_TLT        ) = 70
+force.attr.2d.pos.y (     1 ,       $S_TRG.$TPL.$F_BLP_TLT        ) = 110
+force.attr.2d.ori (       1 ,       $S_TRG.$TPL.$F_BLP_TLT        ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 70, 70
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 140, 127
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 70, 70
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_TRG.$TPL.$F_BLP_TLT) = 80, 93
+
+model.data.redundancy                                               = 'eJxjYCANJCZaGhpaGKaYJxqYGqemmqQlW6aaJFukGJhbGhqYmVkCAJLxCJlQAAAAAAAAAA==' ! Constraint redundancy data
+model.data.dependency                                               = 'eJxjYEAFbEDMSCSGAVzibAzUA6NmjZo1ahblZhHKy0PdLCY8enGJJyZaGhpaGKaYJxqYGqemmqQlW6aaJFukGJhbGhqYmVkCAABDCR8kBQAAAAAAAA==' ! Solver state dependency data

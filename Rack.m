@@ -22,12 +22,12 @@ classdef Rack
     %
     
     properties(Access = protected)
-        m       (1, 1) double {mustBePositive, mustBeInRange(m, [1.0 50.0])} = 1.0;  % [mm],   Module
+        m       (1, 1) double {mustBePositive, mustBeInRange(m, [0.01 50.0])} = 1.0;  % [mm],   Module
     end
     
     properties(SetAccess = private)
         type    (1, :) string {mustBeMember(type, ["A", "B", "C", "D"])}     = "A";  % [-],    Type of basic rack tooth profile
-        alpha_P (1, 1) double {mustBePositive}                               = 20.0; % [deg.], Pressure angle
+        alpha_P (1, 1) double {mustBeNonnegative}                            = 20.0; % [deg.], Pressure angle
         U_FP    (1, 1) double {mustBeNumeric}                                = 0.0;  % [mm],   Size of undercut
         alpha_FP(1, 1) double {mustBeNumeric}                                = 0.0;  % [deg.], Angle of undercut
     end
@@ -53,10 +53,10 @@ classdef Rack
                        'm'      , 1.0, ...
                        'alpha_P', 20.0};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             % fit the module to [2]:
-            m = Rack.module(default.m, "calc", "nearest");
+            m = Rack.module(default.m, "round_0125", "nearest");
             
             obj.type     = default.type;
             obj.m        = m;
@@ -130,13 +130,17 @@ classdef Rack
                 case "calc_2"
                     m_2(9) = 21.0; % removing the value 6.5 which should be avoided according to ISO 54:1996
                     x = m_2;
+                case 'round_0125'
+                    
                 otherwise
                     error("prog:input", "Option [%s] is NOT valid.", upper(option));
             end
             
             m = zeros(size(m_x));
             
-            if(~strcmp(option, "show"))
+            if(strcmp(option, 'round_0125'))
+                m = round(m_x*8)/8;
+            elseif(contains(option, 'calc', 'IgnoreCase', true))
                 idx = interp1(x, 1:length(x), m_x, round_opt);
                 
                 for jdx = 1:length(m_x)
@@ -153,6 +157,9 @@ classdef Rack
                 
             end
             
+            if(nargout == 0)
+                clear m;
+            end
         end
         
     end

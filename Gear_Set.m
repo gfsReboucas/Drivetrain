@@ -64,6 +64,7 @@ classdef Gear_Set < Gear
         d_Na;          % [mm],        Active tip diameter
         f_pb;          % [um],        Transverse base pitch deviation
         y_alpha;       % [um],        Running-in allowance
+        g_alpha;       % [mm],        Length of path of contact
     end
     
     methods
@@ -86,7 +87,7 @@ classdef Gear_Set < Gear
                        'R_a'          ,   1.0, ...
                        'material'     , [Material(), Material()]};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             if(length(default.z) < 2)
                 error('prog:input', 'There should be at least two gears.');
@@ -106,8 +107,6 @@ classdef Gear_Set < Gear
                 error('prog:input', 'Pressure angles alpha_n should be equal for all gears.');
             elseif(std(default.beta) ~= 0.0)
                 error('prog:input', 'Helix angles beta should be equal for all gears.');
-%             elseif(std(default.b) ~= 0.0)
-%                 error('prog:input', 'Face width b should be equal for all gears.');
             end
             
             obj@Gear('m_n'       , default.m_n, ...
@@ -266,7 +265,7 @@ classdef Gear_Set < Gear
                 plot(obj.gear(1), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(1, :));
                 plot(obj.gear(2), C_p*1.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
                 
-                legend(['Pinion', 'Wheel'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+                legend(["Pinion", "Wheel"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
                 
             elseif(strcmp(obj.configuration, 'planetary'))
                 plot(obj.gear(1), C_p*0.0, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(1, :));
@@ -281,7 +280,7 @@ classdef Gear_Set < Gear
                     plot(obj.gear(2), RotXY(ang*(idx - 1))*C_p, 'lineStyle', '-' , 'lineWidth', 2.0, 'color', color(2, :));
                 end
                 
-                legend(['Sun', 'Planet', 'Ring', 'Carrier'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+                legend(["Sun", "Planet", "Ring", "Carrier"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
             end
             
             xlabel('y');
@@ -300,13 +299,15 @@ classdef Gear_Set < Gear
             C_p = [obj.a_w, 0.0]';
 
             if(strcmp(obj.configuration, 'parallel'))
-                plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
-                plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
+                hp = plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
+                hw = plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
                 
+                legend([hp, hw], ["Pinion", "Wheel"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+
             elseif(strcmp(obj.configuration, 'planetary'))
-                plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
-                plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
-                plot3(obj.gear(3), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(3, :));
+                hs = plot3(obj.gear(1), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(1, :));
+                hp = plot3(obj.gear(2), C_p*1.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(2, :));
+                hr = plot3(obj.gear(3), C_p*0.0, 'edgeColor', 'none', 'lineStyle', '-' , 'faceColor', color(3, :));
                 
                 RotXY = @(x)[cos(x), sin(x); sin(x), cos(x)];
                 
@@ -315,9 +316,36 @@ classdef Gear_Set < Gear
                     plot3(obj.gear(2), RotXY(ang*(idx - 1))*C_p, 'edgeColor', 'none', 'lineStyle', 'none' , 'faceColor', color(2, :));
                 end
                 
-                legend(['Sun', 'Planet', 'Ring', 'Carrier'], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+                legend([hs, hp, hr], ["Sun", "Planet", "Ring", "Carrier"], 'location', 'best', 'fontName', 'Times', 'fontSize', 12.0);
+            end
+            xlabel('y');
+            ylabel('x');
+            zlabel('z');
+            
+        end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+            
+            data = rmfield(data, 'output_shaft');
+            data.output_shaft = obj.output_shaft.export2struct();
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                data = rmfield(data, 'carrier');
+                data.carrier = obj.carrier.export2struct();
             end
             
+            data = rmfield(data, 'bearing');
+            for idx = 1:length(obj.bearing)
+                data.bearing(idx) = obj.bearing(idx).export2struct();
+            end
+            
+            data = rmfield(data, 'material');
+            for idx = 1:length(obj.material)
+                data.material(idx) = obj.material(idx).export2struct();
+            end
         end
         
         function rectangle(obj, varargin)
@@ -470,10 +498,10 @@ classdef Gear_Set < Gear
             gamma('m_n') = m_n_sca/obj_ref.m_n;
             
             ref_shaft = obj_ref.output_shaft;
-            shaft_sca = Shaft(ref_shaft.d*gamma('d'), ...
-                              ref_shaft.L*gamma('L'), ...
-                              ref_shaft.bearing, ...
-                              ref_shaft.material);
+            shaft_sca = Shaft('d'       , ref_shaft.d*gamma('d'), ...
+                              'L'       , ref_shaft.L*gamma('L'), ...
+                              'bearing' , ref_shaft.bearing, ...
+                              'material', ref_shaft.material);
                           
             obj_sca = Gear_Set('configuration', obj_ref.configuration, ...
                                'm_n'          , obj_ref.m_n*gamma('m_n'), ...
@@ -535,7 +563,105 @@ classdef Gear_Set < Gear
             obj_sca = obj_ref.scale_aspect(gamma, aspect);
         end
         
+        function [n_new, idx_zero, idx_inp] = set_gear_speed(obj, n_old)
+            %SET_GEAR_SPEED sets the speeds of a Gear_Set. The array n_old
+            % should specify only the fixed element (if a planetary
+            % Gear_Set) and the input element. The other speeds are
+            % calculated in this method and should be defined as NaN in
+            % n_old.
+            %
+            
+            if(strcmpi(obj.configuration, 'parallel'))
+                idx_zero = nan;
+                
+                U = diag([1.0/obj.u, obj.u]);
+                U = flip(U);
+            elseif(strcmpi(obj.configuration, 'planetary'))
+                idx_zero = find(n_old == 0);
+                n_old(idx_zero) = nan;
+                zc = num2cell(obj.z);
+                [s, p, r] = deal(zc{:});
+                r = abs(r);
+                U = zeros(4);
+
+                switch(idx_zero)
+                    case 1 % fixed: sun
+                           % input: ring*
+                           % output: carrier* (* or vice-versa)
+                        U(:, 4) = [0.0, (r + s)/p, (1.0 + s/r), 1.0]';
+                    case 2
+                        error('Gear_Set:speed', 'Direct drive not implemented yet.');
+                    case 3 % fixed: ring
+                           % input: sun*
+                           % output: carrier*
+                        U(:, 4) = [(1.0 + r/s), (r + s)/p, 0.0, 1.0]';
+                    case 4 % fixed: carrier
+                           % input: sun*
+                           % output: ring*
+                        U(:, 3) = [-r/s, r/p, 1.0, 0.0];
+                    otherwise
+                        if(isempty(idx_zero))
+                            error('Gear_Set:speed', 'There are no fixed elements or the size.');
+                        elseif(idx_zero > 4)
+                            error('Gear_Set:speed', 'There should be a maximum of 4 velocities.');
+                        end
+                end
+                
+            end
+            
+            A = eye(length(U)) - U;
+            x = null(A);
+            
+            idx_inp = find(~isnan(n_old));
+            x = x./x(idx_inp);
+            n_new = x*n_old(idx_inp);
+        end
+        
         %% Misc.:
+        function k_hat = mesh_stiffness(obj, varargin)
+            %MESH_STIFFNESS Calculates the mesh stiffness for a Gear_Set
+            % according to [1-2].
+            % [1] Gu, X., Velex, P., Sainsot, P., and Bruyère, J. (June 1,
+            % 2015). "Analytical Investigations on the Mesh Stiffness
+            % Function of Solid Spur and Helical Gears." ASME. J. Mech.
+            % Des. June 2015; 137(6): 063301. 
+            % https://doi.org/10.1115/1.4030272
+            % [2] Velex Philippe (April 11th 2012). On the Modelling of 
+            % Spur and Helical Gear Dynamic Behaviour, Mechanical 
+            % Engineering, Murat Gokcek, IntechOpen, DOI: 10.5772/36157.
+            %
+            
+            default = {'t',       0.0, ...
+                       'k',       5, ...
+                       'Omega_1', 1.0};
+            
+            default = scaling_factor.process_varargin(default, varargin);
+            t       = default.t;
+            k       = default.k;
+            Omega_1 = default.Omega_1;
+            
+            % Meshing period, [2]:
+            T_m = pi*obj.m_n*cosd(obj.alpha_n)/(2.0*obj.d_b(1)*Omega_1);
+            tau = t/T_m; % normalized time instant
+            
+            eps_a = obj.eps_alpha;            eps_b = obj.eps_beta;
+            
+            % Eq. (10), [1]:
+            Xi = @(k)((0.7 + 0.09./(k.*eps_a).^2).*sinc(k.*eps_a) + ...
+                - cos(pi.*k.*eps_a).*0.09./(k.*eps_a).^2);
+            
+            gen_term = @(kk, tt)(Xi(kk).*sinc(kk.*eps_b).* ...
+                                 cos(pi.*kk.*(2.0.*tt - eps_a - eps_b)));
+            
+            k_hat = 1.0;
+            for idx = 1:k
+                k_hat = k_hat + 2.0*gen_term(idx, tau);
+            end
+            
+            k_hat = k_hat.*obj.k_mesh;
+            
+        end
+        
         function m_tot = get_mass(obj)
             if(strcmp(obj.configuration, 'parallel'))
                 m_tot = sum(obj.mass);
@@ -557,6 +683,85 @@ classdef Gear_Set < Gear
             aw = abs(obj.z(1) + obj.z(2))*obj.m_n*cosd(obj.alpha_t)/(2.0*cosd(alpha_wt_star)*cosd(obj.beta));
         end
         
+        function kinematic_tree(obj)
+            % +--------------+----------------------------------+--------------------------------+-----------------------+
+            % |              |              Stage 1             |             Stage 2            |        Stage 3        |
+            % |    Element   +------------+---------------------+------------+-------------------+------------+----------+
+            % |              |    Prev.   |         Next        |    Prev.   |        Next       |    Prev.   |   Next   |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % | Output shaft |    frame   | sun   1 / carrier 2 |    frame   | sun   2 / Wheel 3 |    frame   | Pinion 3 |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % |  Sun/Pinion  | O. shaft 1 |          NA         | O. shaft 2 |         NA        | O. shaft 3 |    NA    |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % | Planet/Wheel |    pin 1   |          NA         |    pin 2   |         NA        | O. shaft 2 |    NA    |
+            % +--------------+------------+---------------------+------------+-------------------+------------+----------+
+            % |     Ring     |    Frame   |          NA         |    Frame   |         NA        |                       |
+            % +--------------+------------+---------------------+------------+-------------------+                       |
+            % |    Carrier   |  M. shaft  |        pin 1        | O. shaft 1 |       pin 2       |                       |
+            % +--------------+------------+---------------------+------------+-------------------+                       |
+            % |      pin     |  carrier 1 |       planet 1      |  carrier 2 |      planet 2     |                       |
+            % +--------------+------------+---------------------+------------+-------------------+-----------------------+
+            
+            clr = ['r', 'g', 'b', 'k', 'c']';
+            
+            origin = 's';
+            input  = 'o';
+            output = '>';
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                
+            elseif(strcmp(obj.configuration, 'planetary'))
+                SUN = struct;
+                PLT = struct;
+                RNG = struct;
+                CAR = struct; % 2
+                SFT = struct; % 1
+                HSG = struct;
+                
+                HSG.y = 0.0;
+                
+                
+                SUN.y = 5.0;
+                SUN.out = obj.carrier.b/2.0;
+                
+                PLT.y = 4.0;
+                PLT.A = -0.77*obj.b;
+                PLT.B = -PLT.A;
+                
+                RNG.y = 3.0;
+                
+                SFT.y   = 1.0;
+                SFT.inp = -obj.output_shaft.L/2.0;
+                SFT.out = -SFT.inp;
+                
+                CAR.y = 2.0;
+                CAR.A   = -0.6*obj.carrier.b/2.0;
+                CAR.B   =  0.6*obj.carrier.b/2.0;
+                CAR.inp =  CAR.A;
+                CAR.out =  0.0;
+                
+                figure;
+                subplot(121)
+                hold on;
+                plot(0.0    , SUN.y, [clr(1, :), origin]);
+                plot(SUN.out, SUN.y, [clr(1, :), output]);
+                
+                plot(0.0    , CAR.y, [clr(4, :), origin])
+                plot(CAR.inp, CAR.y, [clr(4, :), input ]);
+                
+                plot(0.0    , SFT.y, [clr(5, :), origin]);
+                plot(SFT.inp, SFT.y, [clr(5, :), input ]);
+                plot(SFT.out, SFT.y, [clr(5, :), output]);
+                
+                set(gca, 'ytick'     ,  0:5);
+                set(gca, 'yticklabel', ["HSG", "SFT", "CAR", "RNG", "PLT", "SUN"]);
+                set(gca, 'ylim', [0 5]);
+                
+                subplot(122)
+                hold on;
+                
+            end
+        end
     end
     
     %% Set methods:
@@ -763,6 +968,177 @@ classdef Gear_Set < Gear
             end
         end
         
+        function val = get.g_alpha(obj)
+            val = (sqrt(obj.d_Na(1)^2 - obj.d_b(1)^2) + sign(obj.z(2))*(sqrt(obj.d_Na(1)^2 - obj.d_b(1)^2) - 2.0*obj.a_w*sind(obj.alpha_wt)))/2.0;
+        end
+        
+    end
+    
+    %% Validation:
+    methods(Static)
+        function test_k_mesh()
+            % to do: test obj.mesh_stiffness against data from [1], Fig. 5.
+            %
+            % [1] Gu, X., Velex, P., Sainsot, P., and Bruyère, J. (June 1,
+            % 2015). "Analytical Investigations on the Mesh Stiffness
+            % Function of Solid Spur and Helical Gears." ASME. J. Mech.
+            % Des. June 2015; 137(6): 063301. 
+            % https://doi.org/10.1115/1.4030272
+            % [2] Rohatgi, A. (July, 2020). WebPlotDigitizer
+            % https://automeris.io/WebPlotDigitizer
+            %
+            % +-----------------------+--------------------+
+            % |          tau          |   k(tau), Eq. (9)  |
+            % +-----------------------+--------------------+
+            % | 5.551115123125783e-17 | 0.9171063829787234 |
+            % +-----------------------+--------------------+
+            % |  0.04885993485342027  | 0.9337872340425531 |
+            % +-----------------------+--------------------+
+            % |  0.10097719869706845  | 0.9516595744680851 |
+            % +-----------------------+--------------------+
+            % |  0.15146579804560267  | 0.9698723404255318 |
+            % +-----------------------+--------------------+
+            % |   0.2035830618892509  | 0.9885957446808511 |
+            % +-----------------------+--------------------+
+            % |   0.252442996742671   | 1.0078297872340425 |
+            % +-----------------------+--------------------+
+            % |  0.30293159609120535  |  1.027744680851064 |
+            % +-----------------------+--------------------+
+            % |  0.35342019543973946  | 1.0394893617021277 |
+            % +-----------------------+--------------------+
+            % |   0.4039087947882737  | 1.0420425531914894 |
+            % +-----------------------+--------------------+
+            % |   0.4543973941368078  |  1.043404255319149 |
+            % +-----------------------+--------------------+
+            % |   0.504885993485342   |  1.044936170212766 |
+            % +-----------------------+--------------------+
+            % |   0.5553745928338762  | 1.0456170212765958 |
+            % +-----------------------+--------------------+
+            % |   0.6058631921824105  | 1.0454468085106383 |
+            % +-----------------------+--------------------+
+            % |   0.6563517915309447  | 1.0442553191489363 |
+            % +-----------------------+--------------------+
+            % |   0.7068403908794789  | 1.0296170212765958 |
+            % +-----------------------+--------------------+
+            % |   0.7557003257328991  |  1.009531914893617 |
+            % +-----------------------+--------------------+
+            % |   0.8078175895765471  | 0.9892765957446809 |
+            % +-----------------------+--------------------+
+            % |   0.8599348534201954  | 0.9693617021276595 |
+            % +-----------------------+--------------------+
+            % |   0.9104234527687296  | 0.9506382978723404 |
+            % +-----------------------+--------------------+
+            % |   0.9609120521172638  | 0.9314042553191488 |
+            % +-----------------------+--------------------+
+            % |   1.011400651465798   | 0.9201702127659575 |
+            % +-----------------------+--------------------+
+            % |   1.0602605863192183  |  0.937531914893617 |
+            % +-----------------------+--------------------+
+            % |   1.1123778501628665  | 0.9552340425531914 |
+            % +-----------------------+--------------------+
+            % |   1.1644951140065147  | 0.9739574468085106 |
+            % +-----------------------+--------------------+
+            % |   1.211726384364821   | 0.9928510638297873 |
+            % +-----------------------+--------------------+
+            % |   1.2638436482084692  | 1.0119148936170212 |
+            % +-----------------------+--------------------+
+            % |   1.3159609120521174  | 1.0316595744680852 |
+            % +-----------------------+--------------------+
+            % |   1.3631921824104234  | 1.0398297872340425 |
+            % +-----------------------+--------------------+
+            % |   1.4153094462540716  | 1.0423829787234042 |
+            % +-----------------------+--------------------+
+            % |   1.4641693811074918  |  1.043744680851064 |
+            % +-----------------------+--------------------+
+            % |   1.514657980456026   |  1.045276595744681 |
+            % +-----------------------+--------------------+
+            % |   1.5667752442996743  | 1.0456170212765958 |
+            % +-----------------------+--------------------+
+            % |   1.6172638436482085  | 1.0451063829787235 |
+            % +-----------------------+--------------------+
+            % |   1.6677524429967427  | 1.0442553191489363 |
+            % +-----------------------+--------------------+
+            % |   1.7182410423452772  | 1.0253617021276595 |
+            % +-----------------------+--------------------+
+            % |   1.7687296416938108  |  1.005276595744681 |
+            % +-----------------------+--------------------+
+            % |   1.8192182410423452  | 0.9851914893617021 |
+            % +-----------------------+--------------------+
+            % |   1.8713355048859934  | 0.9656170212765958 |
+            % +-----------------------+--------------------+
+            % |   1.9218241042345279  | 0.9472340425531914 |
+            % +-----------------------+--------------------+
+            % |   1.970684039087948   | 0.9274893617021276 |
+            % +-----------------------+--------------------+
+            %
+            
+%             data = [5.551115123125783e-17	0.9171063829787234
+%                     0.04885993485342027     0.9337872340425531
+%                     0.10097719869706845     0.9516595744680851
+%                     0.15146579804560267     0.9698723404255318
+%                     0.2035830618892509      0.9885957446808511
+%                     0.252442996742671       1.0078297872340425
+%                     0.30293159609120535     1.027744680851064
+%                     0.35342019543973946     1.0394893617021277
+%                     0.4039087947882737      1.0420425531914894
+%                     0.4543973941368078      1.043404255319149
+%                     0.504885993485342       1.044936170212766
+%                     0.5553745928338762      1.0456170212765958
+%                     0.6058631921824105      1.0454468085106383
+%                     0.6563517915309447      1.0442553191489363
+%                     0.7068403908794789      1.0296170212765958
+%                     0.7557003257328991      1.009531914893617
+%                     0.8078175895765471      0.9892765957446809
+%                     0.8599348534201954      0.9693617021276595
+%                     0.9104234527687296      0.9506382978723404
+%                     0.9609120521172638      0.9314042553191488
+%                     1.011400651465798       0.9201702127659575
+%                     1.0602605863192183      0.937531914893617
+%                     1.1123778501628665      0.9552340425531914
+%                     1.1644951140065147      0.9739574468085106
+%                     1.211726384364821       0.9928510638297873
+%                     1.2638436482084692      1.0119148936170212
+%                     1.3159609120521174      1.0316595744680852
+%                     1.3631921824104234      1.0398297872340425
+%                     1.4153094462540716      1.0423829787234042
+%                     1.4641693811074918      1.043744680851064
+%                     1.514657980456026       1.045276595744681
+%                     1.5667752442996743      1.0456170212765958
+%                     1.6172638436482085  	1.0451063829787235
+%                     1.6677524429967427      1.0442553191489363
+%                     1.7182410423452772      1.0253617021276595
+%                     1.7687296416938108      1.005276595744681
+%                     1.8192182410423452      0.9851914893617021
+%                     1.8713355048859934      0.9656170212765958
+%                     1.9218241042345279      0.9472340425531914
+%                     1.970684039087948       0.9274893617021276];
+            
+            % Reading data from [1], Fig. 5. The data was extracted using
+            % WebPlotDigitizer [2].
+            mat = readmatrix('Fig_5_Gu_Velex_2015.csv');
+            tau9  = mat(:, 1);          tau9  = tau9(1:41);
+            eq_9  = mat(:, 2);          eq_9  = eq_9(1:41);
+            t_LDP = mat(:, 3);          LDP   = mat(:, 4);
+            t_VSA = mat(:, 5);          VSA   = mat(:, 6);          
+            tau10 = mat(:, 7);          tau10 = tau10(1:41);
+            eq_10 = mat(:, 8);          eq_10 = eq_10(1:41);
+            
+            figure();
+            subplot(121)
+            hold on;
+            plot(tau9, eq_9 ,  'marker', 'x' , 'markerSize', 10.0, 'lineStyle', 'none', 'markerFaceColor',  [0.346 0.536 0.691]);
+            plot(tau10, eq_10, 'marker', 'o' , 'markerSize',  5.0, 'lineStyle', 'none', 'markerFaceColor',  [0.915 0.281 0.287]);
+            plot(t_VSA, VSA, 'lineStyle', ':' , 'lineWidth',  2.0, 'color', [0.441 0.749 0.432]);
+            plot(t_LDP, LDP, 'lineStyle', '-.', 'lineWidth',  2.0, 'color', [1.0   0.598 0.2  ]);
+            xlim([0.0 2.0]);
+            ylim([0.9 1.1]);
+            
+            xlabel('\tau');
+            ylabel('k(\tau)');
+            legend({'Eq. (9)', 'Eq. (10)', 'VSA', 'LDP'}, 'location', 'best')
+            set(gca, 'box', 'on');
+            
+        end
     end
     
 end

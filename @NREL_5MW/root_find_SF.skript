@@ -1,0 +1,365 @@
+//! WARNING: This is a generated comment to declare for which module and version this was generated. SKRIPTMODULE=Z014; SKRIPTNAME=; SKRIPTVERSION=20.0; SKRIPTDESCRIPTION=;
+
+/*
+    This script calculates a scaling factor for planetary and parallel gearboxes while keeping its safety factor the same.
+    The scaling factor is found using a root-finding algorithm [1]. More info about KISSsoft's script language can be found in [2].
+    written by:
+    Geraldo Rebouças
+    - Geraldo.Reboucas@ntnu.no OR
+    - gfs.reboucas@gmail.com
+
+    Postdoctoral Fellow at:
+    Norwegian University of Science and Technology, NTNU
+    Department of Marine Technology, IMT
+    Marine System Dynamics and Vibration Lab, MD Lab
+    https://www.ntnu.edu/imt/lab/md-lab
+
+    [1] J. Kiusalaas, "Roots of Equations," in Numerical Methods in Engineering with Python 3, 3rd ed., Cambridge: Cambridge University Press, 2013, pp. 145-182.
+    DOI: https://doi.org/10.1017/CBO9781139523899.005
+    [2] https://www.kisssoft.ch/news/pdf/kisssoft-anl-122-E-Skript_documentation.pdf
+*/
+
+// number PP_ref = ZS.P
+// number mn_ref = ZS.Geo.mn
+// number aw_ref = ZP[0].a
+// number bb_ref = ZR[0].b
+
+// Set stage:
+number stage = 3
+
+// Set reference parameters:
+number PP_ref = 5.0e3
+number mn_ref = 0.0
+number aw_ref = 0.0
+number bb_ref = 0.0
+number id_ref = 3
+
+if(stage == 1)
+{
+    mn_ref = 45.0
+    aw_ref = 863.0
+    bb_ref = 491.0
+}
+if(stage == 2)
+{
+    mn_ref = 21.0
+    aw_ref = 584.0
+    bb_ref = 550.0
+}
+if(stage == 3)
+{
+    mn_ref = 14.0
+    aw_ref = 861.0
+    bb_ref = 360.0
+    id_ref = 2
+}
+
+// Define reference parameters:
+ZS.P      = PP_ref
+ZS.Geo.mn = mn_ref
+ZP[0].a	  = aw_ref
+ZR[0].b   = bb_ref
+ZR[1].b   = bb_ref
+if(stage <= 2)
+{
+    ZR[2].b   = bb_ref
+}
+Calculate()
+
+number idx = 0
+for idx = 1 to id_ref
+    // Decide which one will be used for root finding:
+    number S_ref =  ZPP[idx - 1].Fuss.SFnorm
+
+    string file_name = "M:/Documents/coding/Drivetrain_2/@NREL_5MW/stage_0" + stage + ".scalingF0" + idx + ".dat"
+    //string file_name = "M:/Documents/coding/Drivetrain_2/@NREL_5MW/stage_01.ridder.scalingF1.dat"
+    open(file_name)
+
+    // Get reference safeties:
+    number S_F1ref = ZPP[0].Fuss.SFnorm
+    number S_F2ref = ZPP[1].Fuss.SFnorm
+    number S_F3ref = -1.0
+
+    number S_H1ref = ZPP[0].Flanke.SH
+    number S_H2ref = ZPP[1].Flanke.SH
+    number S_H3ref = -1.0
+
+    if(stage <= 2)
+    {
+        S_F3ref = ZPP[2].Fuss.SFnorm
+        S_H3ref = ZPP[2].Flanke.SH
+    }
+
+    // Root solving parameters:
+    number N_Max = 15
+    number tol = 1.0e-4
+    number rel_error = 0
+
+    number x_b   = 1.0
+    number x_a   = 0.0
+    number x_c   = 0.0
+    number x_d   = 0.0
+    number x     = 1.0
+    number s     = 0.0
+    number dx    = 0.0
+    number x_old = 0.0
+
+    number P_Max = 5.0e3
+    number P_min = 0.5
+    number N_P = 5
+    number ratio = pow(P_min/P_Max, 1.0/(N_P - 1))
+
+    number PP = P_Max
+    number n_iter = 0
+
+    number f_d = 0.0
+    number f_c = 0.0
+    number f_b = 0.0
+    number f_a = 0.0
+
+    number error_min = 10.0
+    number nn_it = 0
+
+    append_to_file(file_name, "P, m_n, a_w, b, S_F1, S_F2, S_F3, S_H1, S_H2, S_H3, rel_error, n_iter\n")
+    append_to_file(file_name, "" + PP_ref + ", " + mn_ref + ", " + aw_ref + ", " + bb_ref + ", " + S_F1ref + ", " + S_F2ref + ", " + S_F3ref   + ", " + S_H1ref + ", " + S_H2ref + ", " + S_H3ref + ", " + 0.0 + ", " + 0 + "\n")
+
+    while(PP >= P_min)
+    {
+        PP = PP*ratio
+        ZS.P = PP
+
+        write("Power, (REF.): " + PP_ref + " | (SCA.): " + PP + " kW")
+        write("S_ref: " + S_ref)
+
+        // Upper limit
+        x_b = x
+    //    ZS.Geo.mn = round(mn_ref*x_b*8.0)/8.0
+    //    ZP[0].a	  = round(aw_ref*x_b*100.0)/100.0
+    //    ZR[0].b   = round(bb_ref*x_b*100.0)/100.0
+    //    ZR[1].b   = round(bb_ref*x_b*100.0)/100.0
+    //    ZR[2].b   = round(bb_ref*x_b*100.0)/100.0
+        ZS.Geo.mn = mn_ref*x_b
+        ZP[0].a	  = aw_ref*x_b
+        ZR[0].b   = bb_ref*x_b
+        ZR[1].b   = bb_ref*x_b
+        if(stage <= 2)
+        {
+            ZR[2].b   = bb_ref*x_b
+        }
+        Calculate()
+        f_b = ZPP[idx - 1].Fuss.SFnorm - S_ref
+
+        // lower limit
+        x_a = 0.01
+        ZS.Geo.mn = mn_ref*x_a
+        ZP[0].a	  = aw_ref*x_a
+        ZR[0].b   = bb_ref*x_a
+        ZR[1].b   = bb_ref*x_a
+        if(stage <= 2)
+        {
+            ZR[2].b   = bb_ref*x_a
+        }
+        Calculate()
+        f_a = ZPP[idx - 1].Fuss.SFnorm - S_ref
+
+        number cond = f_a*f_b
+        if(cond > 0)
+        {
+            write("!!!!!!!!!!!!!!!!!!!!!!!!!")
+            write("ERROR: " + cond + " > 0")
+            write("!!!!!!!!!!!!!!!!!!!!!!!!!")
+            n_iter = N_Max
+        }
+
+        n_iter = 0
+        error_min = tol + 1.0
+        while(n_iter < N_Max)
+        {
+            x_c = (x_b + x_a)/2.0
+            ZS.Geo.mn = mn_ref*x_c
+            ZP[0].a	  = aw_ref*x_c
+            ZR[0].b   = bb_ref*x_c
+            ZR[1].b   = bb_ref*x_c
+            if(stage <= 2)
+            {
+                ZR[2].b   = bb_ref*x_c
+            }
+            Calculate()
+            f_c = ZPP[idx - 1].Fuss.SFnorm - S_ref
+
+            s = sqrt(f_c*f_c - f_a*f_b)
+            if(s == 0.0)
+            {
+                write("s is ZERO.")
+                n_iter = N_Max
+            }
+            
+            dx = (x_c - x_a)*f_c/s
+            if(f_a < f_b)
+            {
+                dx = - dx
+            }
+
+            x_d = x_c + dx
+            ZS.Geo.mn = mn_ref*x_d
+            ZP[0].a	  = aw_ref*x_d
+            ZR[0].b   = bb_ref*x_d
+            ZR[1].b   = bb_ref*x_d
+            if(stage <= 2)
+            {
+                ZR[2].b   = bb_ref*x_d
+            }
+            Calculate()
+            f_d = ZPP[idx - 1].Fuss.SFnorm - S_ref
+
+            // Convergence test:
+            rel_error = f_d/S_ref
+            if(n_iter > 0)
+            {
+                if(abs(rel_error) < tol)
+                {
+                    write("**********************")
+                    write("Root is gamma = " + x_d)
+                    write("Abs. error = " + 100*abs(x_d - x_old) + " %")
+                    write("Rel. error = " + 100*abs(x_d - x_old)/abs(max(f_d, 1.0)) + " %")
+                    write("Min. error = " + 100*f_d/S_ref + " %")
+                    write("**********************")
+
+                    n_iter = N_Max
+                }
+            }
+            x_old = x_d
+
+            // Redefine interval:
+            if(f_c*f_d > 0.0)
+            {
+                if(f_a*f_d < 0.0)
+                {
+                    x_b = x_d
+                    f_b = f_d
+                }
+                else
+                {
+                    x_a = x_d
+                    f_a = f_d
+                }
+            }
+            else
+            {
+                x_a = x_c            f_a = f_c
+                x_b = x_d            f_b = f_d
+            }
+
+            n_iter = n_iter + 1
+            write("Iteration: " + n_iter + " Rel. error = " + 100*rel_error + " %")
+            write("           x_d = " + x_d + " f(x_d) = " + f_d)
+            write("           x_c = " + x_c + " f(x_c) = " + f_c)
+            write("           x_b = " + x_b + " f(x_b) = " + f_b)
+            write("           x_a = " + x_a + " f(x_a) = " + f_a)
+            write("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+            rel_error = abs(rel_error)
+            if(rel_error < error_min)
+            {
+                error_min = rel_error
+                x = x_d
+                nn_it = n_iter
+            }
+
+        }
+
+        write("Ref. index: " + idx)
+        write("Power, (REF): " + PP_ref + " | (SCA): "+ PP + " kW")
+
+        // Scaled:
+        ZS.Geo.mn = mn_ref*x
+        ZP[0].a	  = aw_ref*x
+        ZR[0].b   = bb_ref*x
+        ZR[1].b   = bb_ref*x
+        if(stage <= 2)
+        {
+            ZR[2].b   = bb_ref*x
+        }
+        Calculate()
+
+        number S_F1sca = ZPP[0].Fuss.SFnorm
+        number S_F2sca = ZPP[1].Fuss.SFnorm
+        number S_F3sca = -1.0
+
+        number S_H1sca = ZPP[0].Flanke.SH
+        number S_H2sca = ZPP[1].Flanke.SH
+        number S_H3sca = -1.0
+
+        if(stage <= 2)
+        {
+            S_F3sca = ZPP[2].Fuss.SFnorm
+            S_H3sca = ZPP[2].Flanke.SH
+        }
+
+        number mn_sca = ZS.Geo.mn
+        number aw_sca = ZP[0].a
+        number bb_sca = ZR[0].b
+        number er_sca = abs(ZPP[idx - 1].Fuss.SFnorm - S_ref)/S_ref
+
+        append_to_file(file_name, "" + PP + ", " + mn_sca + ", " + aw_sca  + ", " + bb_sca  + ", " + S_F1sca + ", " + S_F2sca + ", " + S_F3sca + ", " + S_H1sca + ", " + S_H2sca + ", " + S_H3sca + ", " + er_sca + ", " + nn_it  + "\n")
+
+        // Scaled + rounded:
+        ZS.Geo.mn = round(mn_ref*x*100.0)/100.0
+        ZP[0].a	  = round(aw_ref*x*100.0)/100.0
+        ZR[0].b   = round(bb_ref*x*100.0)/100.0
+        ZR[1].b   = round(bb_ref*x*100.0)/100.0
+        if(stage <= 2)
+        {
+            ZR[2].b   = round(bb_ref*x*100.0)/100.0
+        }
+        Calculate()
+
+        number S_F1scr = ZPP[0].Fuss.SFnorm
+        number S_F2scr = ZPP[1].Fuss.SFnorm
+        number S_F3scr = -1.0
+
+        number S_H1scr = ZPP[0].Flanke.SH
+        number S_H2scr = ZPP[1].Flanke.SH
+        number S_H3scr = -1.0
+
+        if(stage <= 2)
+        {
+            S_F3scr = ZPP[2].Fuss.SFnorm
+            S_H3scr = ZPP[2].Flanke.SH
+        }
+
+        number mn_scr = ZS.Geo.mn
+        number aw_scr = ZP[0].a
+        number bb_scr = ZR[0].b
+        number er_scr = abs(ZPP[idx - 1].Fuss.SFnorm - S_ref)/S_ref
+
+        append_to_file(file_name, "" + PP + ", " + mn_scr + ", " + aw_scr  + ", " + bb_scr + ", " + S_F1scr + ", " + S_F2scr + ", " + S_F3scr + ", " + S_H1scr + ", " + S_H2scr + ", " + S_H3scr + ", " + er_scr + ", " + nn_it  + "\n")
+
+        write("Pitting, (REF): S_1: " + S_H1ref + " | S_2: " + S_H2ref + " | S_3: " + S_H3ref)
+        write("Pitting, (SCA): S_1: " + S_H1sca + " | S_2: " + S_H2sca + " | S_3: " + S_H3sca)
+        write("Pitting, (SCR): S_1: " + S_H1scr + " | S_2: " + S_H2scr + " | S_3: " + S_H3scr)
+        write("Bending, (REF): S_1: " + S_F1ref + " | S_2: " + S_F2ref + " | S_3: " + S_F3ref)
+        write("Bending, (SCA): S_1: " + S_F1sca + " | S_2: " + S_F2sca + " | S_3: " + S_F3sca)
+        write("Bending, (SCR): S_1: " + S_F1scr + " | S_2: " + S_F2scr + " | S_3: " + S_F3scr)
+        write("(REF), m_n: " + mn_ref + " a_w: " + aw_ref + " b: " + bb_ref + " mm")
+        write("(SCA), m_n: " + mn_sca + " a_w: " + aw_sca + " b: " + bb_sca + " mm")
+        write("(SCR), m_n: " + mn_scr + " a_w: " + aw_scr + " b: " + bb_scr + " mm")
+        write("###############################################################################")
+    }
+
+    close(file_name)
+
+    // Define reference parameters:
+    ZS.P      = PP_ref
+    ZS.Geo.mn = mn_ref
+    ZP[0].a	  = aw_ref
+    ZR[0].b   = bb_ref
+    ZR[1].b   = bb_ref
+    if(stage <= 2)
+    {
+        ZR[2].b   = bb_ref
+    }
+	Calculate()
+
+end
+

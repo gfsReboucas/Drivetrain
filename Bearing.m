@@ -14,16 +14,20 @@ classdef Bearing
     %
     
     properties
-%         X;
-%         Y;
-%         a;
+        X; % [-], Radial load factor
+        Y; % [-], Axial load factor
+        a; % [-], Exponent of the life equation
+        C; % [N], Basic dynamic load rating
+        e; % [-], Force ratio factor
+        L_10; % [M], Basic rating life
+        
         name(1, :) string;    % [-],       Bearing designation
         type(1, :) string {mustBeMember(type, ["CARB", "CRB", "SRB", "TRB", "none"])} = "none";
                                               % CARB: CARB toroidal roller bearing
                                                       % CRB: Cylindrical Roller Bearing
                                                              % SRB: Spherical Roller Bearing
                                                                     % TRB: Tapered Roller Bearing
-
+        x;       % [mm],      bearing axial position w. r. t. shaft/pin 
         K_x;     % [N/m],     Translational stiffness, x axis
         K_y;     % [N/m],     Translational stiffness, y axis
         K_z;     % [N/m],     Translational stiffness, z axis
@@ -38,19 +42,25 @@ classdef Bearing
         C_beta;  % [N-m-s/rad], Torsional damping, y axis
         C_gamma; % [N-m-s/rad], Torsional damping, z axis
 
-        OD;      % [mm],      Outer diameter
-        ID;      % [mm],      Inner diameter
+        D;       % [mm],      Outer diameter
+        d;       % [mm],      Inner diameter
         B;       % [mm],      Thickness
     end
     
     methods
-%         function obj = Bearing(nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
-        function obj = Bearing(varargin)%nam, typ, kx, ky, kz, ka, kb, kg, od, id, b)
+        function obj = Bearing(varargin)
             default = {'name'  , 'no_name', ...
                       'type'   , 'none', ...
-                      'OD'     , 0.0, ...
-                      'ID'     , 0.0, ...
+                      'x'      , 0.0, ...
+                      'D'      , 0.0, ...
+                      'd'      , 0.0, ...
                       'B'      , 0.0, ...
+                      'a'      , 3.0, ...
+                      'C'      , 0.0, ...
+                      'e'      , 0.0, ...
+                      'X'      , 0.0, ...
+                      'Y'      , 0.0, ...
+                      'L_10'   , 1.0, ...
                       'K_x'    , 0.0, ...
                       'K_y'    , 0.0, ...
                       'K_z'    , 0.0, ...
@@ -64,14 +74,22 @@ classdef Bearing
                       'C_beta' , 0.0, ...
                       'C_gamma', 0.0};
                   
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj.name    = default.name;
             obj.type    = default.type;
-            obj.OD      = default.OD;
-            obj.ID      = default.ID;
+            obj.D       = default.D;
+            obj.d       = default.d;
             obj.B       = default.B;
             
+            obj.a       = default.a;
+            obj.C       = default.C;
+            obj.e       = default.e;
+            obj.X       = default.X;
+            obj.Y       = default.Y;
+            obj.L_10    = default.L_10;
+            
+            obj.x       = default.x;
             obj.K_x     = default.K_x;
             obj.K_y     = default.K_y;
             obj.K_z     = default.K_z;
@@ -104,9 +122,11 @@ classdef Bearing
                            "Rotational Damping (rot. axis)",   "C_alpha", "N-m-s/rad", obj.C_alpha;
                            "Rotational Damping",               "C_beta",  "N-m-s/rad", obj.C_beta;
                            "Rotational Damping",               "C_gamma", "N-m-s/rad", obj.C_gamma;
-                           "Outer diameter",                   "OD",      "mm",        obj.OD;
-                           "Inner diameter",                   "ID",      "mm",        obj.ID;
+                           "Inner diameter",                   "d",       "mm",        obj.d;
+                           "Outer diameter",                   "D",       "mm",        obj.D;
                            "Width",                            "B",       "mm",        obj.B;
+                           "Exponent of the life equation",    "a",        "-",        obj.a;
+                           "Basic dynamic load rating"    ,    "C",       "N",         obj.C;
                            };
 
                 Parameter = tab_set(:, 1);
@@ -134,6 +154,13 @@ classdef Bearing
                 end
             end
         end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+        end
+        
     end
     
     %% Calculation:
@@ -170,18 +197,26 @@ classdef Bearing
                     cg = cg + 1.0/obj(idx).C_gamma;
                 end
                 
-                kx = 1.0/kx;    ky = 1.0/ky;    kz = 1.0/kz;
-                ka = 1.0/ka;    kb = 1.0/kb;    kg = 1.0/kg;
-                
-                cx = 1.0/cx;    cy = 1.0/cy;    cz = 1.0/cz;
-                ca = 1.0/ca;    cb = 1.0/cb;    cg = 1.0/cg;
+                if(1.0/kx == inf),  kx = 0.0;  else,  kx = 1.0/kx;  end
+                if(1.0/ky == inf),  ky = 0.0;  else,  ky = 1.0/ky;  end
+                if(1.0/kz == inf),  kz = 0.0;  else,  kz = 1.0/kz;  end
+                if(1.0/ka == inf),  ka = 0.0;  else,  ka = 1.0/ka;  end
+                if(1.0/kb == inf),  kb = 0.0;  else,  kb = 1.0/kb;  end
+                if(1.0/kg == inf),  kg = 0.0;  else,  kg = 1.0/kg;  end
+
+                if(1.0/cx == inf),  cx = 0.0;  else,  cx = 1.0/cx;  end
+                if(1.0/cy == inf),  cy = 0.0;  else,  cy = 1.0/cy;  end
+                if(1.0/cz == inf),  cz = 0.0;  else,  cz = 1.0/cz;  end
+                if(1.0/ca == inf),  ca = 0.0;  else,  ca = 1.0/ca;  end
+                if(1.0/cb == inf),  cb = 0.0;  else,  cb = 1.0/cb;  end
+                if(1.0/cg == inf),  cg = 0.0;  else,  cg = 1.0/cg;  end
                 
                 val = Bearing('name'   , nam      , 'type'  , obj(1).type, ...
                               'K_x'    , kx       , 'K_y'   , ky         , 'K_z'    , kz,...
                               'K_alpha', ka       , 'K_beta', kb         , 'K_gamma', kg, ...
                               'C_x'    , cx       , 'C_y'   , cy         , 'C_z'    , cz,...
                               'C_alpha', ca       , 'C_beta', cb         , 'C_gamma', cg, ...
-                              'OD'     , obj(1).OD, 'ID'    , obj(1).ID  , 'B'      , obj(1).B);
+                              'D'     , obj(1).D, 'd'    , obj(1).d  , 'B'      , obj(1).B);
             end
         end
         
@@ -222,7 +257,7 @@ classdef Bearing
                               'K_alpha', ka       , 'K_beta', kb         , 'K_gamma', kg, ...
                               'C_x'    , cx       , 'C_y'   , cy         , 'C_z'    , cz,...
                               'C_alpha', ca       , 'C_beta', cb         , 'C_gamma', cg, ...
-                              'OD'     , obj(1).OD, 'ID'    , obj(1).ID  , 'B'      , obj(1).B);
+                              'D'      , obj(1).D , 'd'     , obj(1).d   , 'B'      , obj(1).B);
             end
         end
         
@@ -239,6 +274,112 @@ classdef Bearing
                                        obj(idx).K_gamma]);
             end
         end
+        
+        function mat = damping_matrix(obj)
+            n = numel(obj);
+            mat = zeros(6, 6, n);
+            
+            for idx = 1:n
+                mat(:, :, idx) = diag([obj(idx).C_x ...
+                                       obj(idx).C_y ...
+                                       obj(idx).C_z ...
+                                       obj(idx).C_alpha ...
+                                       obj(idx).C_beta ...
+                                       obj(idx).C_gamma]);
+            end
+        end
+        
+        function P = dynamic_equiv_load(obj, F_R, F_A)
+            cond = F_R./F_A <= obj.e;
+            P = (F_R.*obj.X(1) + F_A.*obj.Y(1)).*( cond) + ...
+                (F_R.*obj.X(2) + F_A.*obj.Y(2)).*(~cond);
+        end
+        
+        function D = damage_calculation(obj, F_R, F_A, speed, time_step)
+            %DAMAGE_CALCULATION performs fatigue damage calculation for a
+            % Bearing object. F_R and F_A are the radial and axial forces
+            % at the Bearing, which rotates with velocity speed in [1/min.].
+            %
+            
+            % Dynamic equivalent load:
+            P = obj.dynamic_equiv_load(F_R, F_A);
+            [N, P_edges] = ISO_6336.LDD(P, speed, time_step);
+            
+            sum_term = N.*power(P_edges, obj.a);
+            D = power(obj.L_10*obj.C, -obj.a)*sum(sum_term);
+            
+        end
+        
+        function D = damage_analysis(obj, data)
+            F_A = data.load.ov_001.values;
+            F_y = data.load.ov_002.values;
+            F_z = data.load.ov_003.values;
+            F_R = sqrt(F_y.^2 + F_z.^2);
+            
+            % [rad/s] to [1/min.]:
+            speed = data.load.ov_017.values.*30.0/pi;
+            
+            D = obj.damage_calculation(F_R, F_A, speed, data.time_step);
+            
+        end
+        
+        function show_LDD(obj, data)
+            F_A = data.load.ov_001.values;
+            F_y = data.load.ov_002.values;
+            F_z = data.load.ov_003.values;
+            F_R = sqrt(F_y.^2 + F_z.^2);
+            
+            % [rad/s] to [1/min.]:
+            speed = data.load.ov_017.values.*30.0/pi;
+            
+            % Dynamic equivalent load:
+            P = obj.dynamic_equiv_load(F_R, F_A);
+            [N, P_edges] = ISO_6336.LDD(P, speed, data.time_step);
+            time_duration = length(speed)*data.time_step;
+
+            histogram('binEdges'    , N*obj.L_10*3.6e3/time_duration, ...
+                      'binCounts'   , P_edges(2:end)*1.0e-3, ...
+                      'displayStyle', 'stairs', ...
+                      'lineWidth'   , 2.0);
+        end
+        
+        function show_histogram(obj, data)
+            F_A = data.load.ov_001.values;
+            F_y = data.load.ov_002.values;
+            F_z = data.load.ov_003.values;
+            F_R = sqrt(F_y.^2 + F_z.^2);
+            
+            % [rad/s] to [1/min.]:
+            speed = data.load.ov_017.values.*30.0/pi;
+            
+            % Dynamic equivalent load:
+            P = obj.dynamic_equiv_load(F_R, F_A);
+            [N, P_edges, speed_edges] = ISO_6336.LDD(P, speed, data.time_step);
+            N = diff(N)*60.0./(speed_edges.*data.time_step);
+            N(isnan(N)) = 0;
+            
+            histogram('binEdges'    , fliplr(P_edges), ...
+                      'binCounts'   , fliplr(N), ...
+                      'displayStyle', 'stairs', ...
+                      'lineWidth'   , 2.0);
+        end
+        
+        function [a, b] = Weibull(obj, data)
+            F_A = data.load.ov_001.values;
+            F_y = data.load.ov_002.values;
+            F_z = data.load.ov_003.values;
+            F_R = sqrt(F_y.^2 + F_z.^2);
+            
+            % Dynamic equivalent load:
+            P = obj.dynamic_equiv_load(F_R, F_A);
+            
+            wbull = fitdist(abs(P) + eps, 'weibull');
+            
+            a = wbull.a; % scale param.
+            b = wbull.b; % shape param.
+            
+        end
+        
         
     end
     
