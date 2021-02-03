@@ -629,16 +629,22 @@ receivergroup.begin (               $RG_bearing_A                 )             
    receiver.priolist (    1 ,       $COM_k_gamma                  ) = '$COM_shaft_bearing_A_k_gamma' ! Sender priority list
 
    receiver.ref (                   $COM_d_x                      ) = $SVG_bearing_A.$_d_x    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_x                      ) = '$COM_shaft_bearing_A_d_x' ! Sender priority list
 
    receiver.ref (                   $COM_d_y                      ) = $SVG_bearing_A.$_d_y    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_y                      ) = '$COM_shaft_bearing_A_d_y' ! Sender priority list
 
    receiver.ref (                   $COM_d_z                      ) = $SVG_bearing_A.$_d_z    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_z                      ) = '$COM_shaft_bearing_A_d_z' ! Sender priority list
 
    receiver.ref (                   $COM_d_alpha                  ) = $SVG_bearing_A.$_d_alpha ! Destination object
+   receiver.priolist (    1 ,       $COM_d_alpha                  ) = '$COM_shaft_bearing_A_d_alpha' ! Sender priority list
 
    receiver.ref (                   $COM_d_beta                   ) = $SVG_bearing_A.$_d_beta ! Destination object
+   receiver.priolist (    1 ,       $COM_d_beta                   ) = '$COM_shaft_bearing_A_d_beta' ! Sender priority list
 
    receiver.ref (                   $COM_d_gamma                  ) = $SVG_bearing_A.$_d_gamma ! Destination object
+   receiver.priolist (    1 ,       $COM_d_gamma                  ) = '$COM_shaft_bearing_A_d_gamma' ! Sender priority list
 
 receivergroup.end (                 $RG_bearing_A                 )                           ! $RG_bearing_A
 
@@ -665,16 +671,22 @@ receivergroup.begin (               $RG_bearing_B                 )             
    receiver.priolist (    1 ,       $COM_k_gamma                  ) = '$COM_shaft_bearing_B_k_gamma' ! Sender priority list
 
    receiver.ref (                   $COM_d_x                      ) = $SVG_bearing_B.$_d_x    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_x                      ) = '$COM_shaft_bearing_B_d_x' ! Sender priority list
 
    receiver.ref (                   $COM_d_y                      ) = $SVG_bearing_B.$_d_y    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_y                      ) = '$COM_shaft_bearing_B_d_y' ! Sender priority list
 
    receiver.ref (                   $COM_d_z                      ) = $SVG_bearing_B.$_d_z    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_z                      ) = '$COM_shaft_bearing_B_d_z' ! Sender priority list
 
    receiver.ref (                   $COM_d_alpha                  ) = $SVG_bearing_B.$_d_alpha ! Destination object
+   receiver.priolist (    1 ,       $COM_d_alpha                  ) = '$COM_shaft_bearing_B_d_alpha' ! Sender priority list
 
    receiver.ref (                   $COM_d_beta                   ) = $SVG_bearing_B.$_d_beta ! Destination object
+   receiver.priolist (    1 ,       $COM_d_beta                   ) = '$COM_shaft_bearing_B_d_beta' ! Sender priority list
 
    receiver.ref (                   $COM_d_gamma                  ) = $SVG_bearing_B.$_d_gamma ! Destination object
+   receiver.priolist (    1 ,       $COM_d_gamma                  ) = '$COM_shaft_bearing_B_d_gamma' ! Sender priority list
 
 receivergroup.end (                 $RG_bearing_B                 )                           ! $RG_bearing_B
 

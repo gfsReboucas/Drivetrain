@@ -62,3 +62,7 @@ new.subvar
 *.ks
 @NREL_5MW/stage_01.VP.csv
 notes/gear_params.ipynb
+@NREL_5MW/DoE
+@NREL_5MW/NREL_5MW_referenceOLD.spck
+main_shaft
+*.kpro

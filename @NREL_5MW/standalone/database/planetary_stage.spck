@@ -807,63 +807,6 @@ forcegroup.begin (                  $FEG_mesh                     )             
 forcegroup.end (                    $FEG_mesh                     )                           ! $FEG_mesh
 
 forcegroup.begin (                  $FEG_mesh_basic               )                           ! $FEG_mesh_basic
-   force.type (                     $F_ring_planet_01             ) = 204                     ! Type
-   force.from (                     $F_ring_planet_01             ) = $S_planet_01.$S_TPL.$M_gear_ref ! From Marker
-   force.to (                       $F_ring_planet_01             ) = $S_ring.$S_TPL.$M_ring_ref ! To Marker
-   force.disabled (                 $F_ring_planet_01             ) = $_use_basic             ! Disabled
-   force.par (            2 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Gear type
-   force.par (            3 ,       $F_ring_planet_01             ) = 2.00000000000000000E+00 ! [-] Modeling approach
-   force.par (            5 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Geometry input mode
-   force.par (            6 ,       $F_ring_planet_01             ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry Gear 1 (external)
-   force.par (            7 ,       $F_ring_planet_01             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry Gear 2 (internal)
-   force.par (           31 ,       $F_ring_planet_01             ) = 0.00000000000000000E+00 ! [-] Stiffness method
-   force.par (           32 ,       $F_ring_planet_01             ) = $_k_RP                  ! [N/m] Stiffness constant
-   force.par (           35 ,       $F_ring_planet_01             ) = $_tooth_damping         ! [Ns/m] Damping constant
-   force.par (           36 ,       $F_ring_planet_01             ) = $_x0_full_damping       ! [m] Damping transition depth
-   force.par (           40 ,       $F_ring_planet_01             ) = 0.00000000000000000E+00 ! [-] Power loss input mode
-   force.plot.par (       1 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 , $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 , $F_ring_planet_01       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_ring_planet_01 ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-
-   force.type (                     $F_ring_planet_02             ) = 204                     ! Type
-   force.from (                     $F_ring_planet_02             ) = $S_planet_02.$S_TPL.$M_gear_ref ! From Marker
-   force.to (                       $F_ring_planet_02             ) = $S_ring.$S_TPL.$M_ring_ref ! To Marker
-   force.disabled (                 $F_ring_planet_02             ) = $_use_basic             ! Disabled
-   force.par (            2 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Gear type
-   force.par (            3 ,       $F_ring_planet_02             ) = 2.00000000000000000E+00 ! [-] Modeling approach
-   force.par (            5 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Geometry input mode
-   force.par (            6 ,       $F_ring_planet_02             ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry Gear 1 (external)
-   force.par (            7 ,       $F_ring_planet_02             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry Gear 2 (internal)
-   force.par (           31 ,       $F_ring_planet_02             ) = 0.00000000000000000E+00 ! [-] Stiffness method
-   force.par (           32 ,       $F_ring_planet_02             ) = $_k_RP                  ! [N/m] Stiffness constant
-   force.par (           35 ,       $F_ring_planet_02             ) = $_tooth_damping         ! [Ns/m] Damping constant
-   force.par (           36 ,       $F_ring_planet_02             ) = $_x0_full_damping       ! [m] Damping transition depth
-   force.par (           40 ,       $F_ring_planet_02             ) = 0.00000000000000000E+00 ! [-] Power loss input mode
-
-   force.type (                     $F_ring_planet_03             ) = 204                     ! Type
-   force.from (                     $F_ring_planet_03             ) = $S_planet_03.$S_TPL.$M_gear_ref ! From Marker
-   force.to (                       $F_ring_planet_03             ) = $S_ring.$S_TPL.$M_ring_ref ! To Marker
-   force.disabled (                 $F_ring_planet_03             ) = $_use_basic             ! Disabled
-   force.par (            2 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Gear type
-   force.par (            3 ,       $F_ring_planet_03             ) = 2.00000000000000000E+00 ! [-] Modeling approach
-   force.par (            5 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Geometry input mode
-   force.par (            6 ,       $F_ring_planet_03             ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry Gear 1 (external)
-   force.par (            7 ,       $F_ring_planet_03             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry Gear 2 (internal)
-   force.par (           31 ,       $F_ring_planet_03             ) = 0.00000000000000000E+00 ! [-] Stiffness method
-   force.par (           32 ,       $F_ring_planet_03             ) = $_k_RP                  ! [N/m] Stiffness constant
-   force.par (           35 ,       $F_ring_planet_03             ) = $_tooth_damping         ! [Ns/m] Damping constant
-   force.par (           36 ,       $F_ring_planet_03             ) = $_x0_full_damping       ! [m] Damping transition depth
-   force.par (           40 ,       $F_ring_planet_03             ) = 0.00000000000000000E+00 ! [-] Power loss input mode
-
    force.type (                     $F_sun_planet_01              ) = 204                     ! Type
    force.from (                     $F_sun_planet_01              ) = $S_planet_01.$S_TPL.$M_gear_ref ! From Marker
    force.to (                       $F_sun_planet_01              ) = $S_sun.$S_TPL.$M_sun_ref ! To Marker
@@ -944,6 +887,63 @@ forcegroup.begin (                  $FEG_mesh_basic               )             
    force.plot.par (       1 ,   1 ,   1 ,   7 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    force.plot.par (       1 ,   1 ,   1 ,   8 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
    force.plot.par (       1 ,   1 ,   2 ,   1 , $F_sun_planet_03  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   force.type (                     $F_ring_planet_01             ) = 204                     ! Type
+   force.from (                     $F_ring_planet_01             ) = $S_planet_01.$S_TPL.$M_gear_ref ! From Marker
+   force.to (                       $F_ring_planet_01             ) = $S_ring.$S_TPL.$M_ring_ref ! To Marker
+   force.disabled (                 $F_ring_planet_01             ) = $_use_basic             ! Disabled
+   force.par (            2 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Gear type
+   force.par (            3 ,       $F_ring_planet_01             ) = 2.00000000000000000E+00 ! [-] Modeling approach
+   force.par (            5 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Geometry input mode
+   force.par (            6 ,       $F_ring_planet_01             ) = $S_planet_01.$S_TPL.$P_gear ! [-] Geometry Gear 1 (external)
+   force.par (            7 ,       $F_ring_planet_01             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry Gear 2 (internal)
+   force.par (           31 ,       $F_ring_planet_01             ) = 0.00000000000000000E+00 ! [-] Stiffness method
+   force.par (           32 ,       $F_ring_planet_01             ) = $_k_RP                  ! [N/m] Stiffness constant
+   force.par (           35 ,       $F_ring_planet_01             ) = $_tooth_damping         ! [Ns/m] Damping constant
+   force.par (           36 ,       $F_ring_planet_01             ) = $_x0_full_damping       ! [m] Damping transition depth
+   force.par (           40 ,       $F_ring_planet_01             ) = 0.00000000000000000E+00 ! [-] Power loss input mode
+   force.plot.par (       1 ,       $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 , $F_ring_planet_01             ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 , $F_ring_planet_01       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   1 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   2 , $F_ring_planet_01 ) = 3.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   3 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   4 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   5 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   6 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   7 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   1 ,   8 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+   force.plot.par (       1 ,   1 ,   2 ,   1 , $F_ring_planet_01 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+   force.type (                     $F_ring_planet_02             ) = 204                     ! Type
+   force.from (                     $F_ring_planet_02             ) = $S_planet_02.$S_TPL.$M_gear_ref ! From Marker
+   force.to (                       $F_ring_planet_02             ) = $S_ring.$S_TPL.$M_ring_ref ! To Marker
+   force.disabled (                 $F_ring_planet_02             ) = $_use_basic             ! Disabled
+   force.par (            2 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Gear type
+   force.par (            3 ,       $F_ring_planet_02             ) = 2.00000000000000000E+00 ! [-] Modeling approach
+   force.par (            5 ,       $F_ring_planet_02             ) = 1.00000000000000000E+00 ! [-] Geometry input mode
+   force.par (            6 ,       $F_ring_planet_02             ) = $S_planet_02.$S_TPL.$P_gear ! [-] Geometry Gear 1 (external)
+   force.par (            7 ,       $F_ring_planet_02             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry Gear 2 (internal)
+   force.par (           31 ,       $F_ring_planet_02             ) = 0.00000000000000000E+00 ! [-] Stiffness method
+   force.par (           32 ,       $F_ring_planet_02             ) = $_k_RP                  ! [N/m] Stiffness constant
+   force.par (           35 ,       $F_ring_planet_02             ) = $_tooth_damping         ! [Ns/m] Damping constant
+   force.par (           36 ,       $F_ring_planet_02             ) = $_x0_full_damping       ! [m] Damping transition depth
+   force.par (           40 ,       $F_ring_planet_02             ) = 0.00000000000000000E+00 ! [-] Power loss input mode
+
+   force.type (                     $F_ring_planet_03             ) = 204                     ! Type
+   force.from (                     $F_ring_planet_03             ) = $S_planet_03.$S_TPL.$M_gear_ref ! From Marker
+   force.to (                       $F_ring_planet_03             ) = $S_ring.$S_TPL.$M_ring_ref ! To Marker
+   force.disabled (                 $F_ring_planet_03             ) = $_use_basic             ! Disabled
+   force.par (            2 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Gear type
+   force.par (            3 ,       $F_ring_planet_03             ) = 2.00000000000000000E+00 ! [-] Modeling approach
+   force.par (            5 ,       $F_ring_planet_03             ) = 1.00000000000000000E+00 ! [-] Geometry input mode
+   force.par (            6 ,       $F_ring_planet_03             ) = $S_planet_03.$S_TPL.$P_gear ! [-] Geometry Gear 1 (external)
+   force.par (            7 ,       $F_ring_planet_03             ) = $S_ring.$S_TPL.$P_ring  ! [-] Geometry Gear 2 (internal)
+   force.par (           31 ,       $F_ring_planet_03             ) = 0.00000000000000000E+00 ! [-] Stiffness method
+   force.par (           32 ,       $F_ring_planet_03             ) = $_k_RP                  ! [N/m] Stiffness constant
+   force.par (           35 ,       $F_ring_planet_03             ) = $_tooth_damping         ! [Ns/m] Damping constant
+   force.par (           36 ,       $F_ring_planet_03             ) = $_x0_full_damping       ! [m] Damping transition depth
+   force.par (           40 ,       $F_ring_planet_03             ) = 0.00000000000000000E+00 ! [-] Power loss input mode
 
 forcegroup.end (                    $FEG_mesh_basic               )                           ! $FEG_mesh_basic
 

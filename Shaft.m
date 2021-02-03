@@ -447,6 +447,13 @@ classdef Shaft
                     R(8, 4) = 1;    R(9, 5) = 1;    R(10, 6) = 1;
                     
                     K = R' * K * R;
+%                     
+%                     kk = zeros(3);
+%                     kk(end, end) = 1.0;
+%                     
+%                     kt = obj.stiffness('torsional');
+%                     K = [kt*kk, -kt*kk;
+%                         -kt*kk,  kt*kk];
                     
                 case 'LP_99:main_shaft'
                     % +-----------------+-----------------+-----------------+-----------------+

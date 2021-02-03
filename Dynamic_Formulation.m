@@ -119,6 +119,17 @@ classdef Dynamic_Formulation
                 MS(:, idx) = MS(:, idx)./MS(n, idx);
             end
             
+            flag_RB = any(abs(omega_n) < 1.0e-2);
+            if(flag_RB)
+                idx = (abs(omega_n) < 1.0e-2);
+                omega_n(idx) = 0.0;
+                
+                omega_n = [omega_n(~idx);
+                           omega_n(idx)];
+                   
+                MS = [MS(:, ~idx), MS(:, idx)];
+            end
+            
             %% Damped case:
             [MS_d, EV_d] = eig(obj.A);
             
@@ -273,7 +284,7 @@ classdef Dynamic_Formulation
 
             warning('on', 'Dynamic_Formulation:RB');
             
-            data = load('input_load.mat');
+            data = load('data/input_load.mat');
             t_load = data.time;
             T_aero = data.Mx*1.0e3;
             gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
@@ -360,13 +371,39 @@ classdef Dynamic_Formulation
             
             n = length(x_0);     nt = length(time);
             
-            data = load('data/input_load.mat');
-            t_load = data.time;
-            T_aero = data.Mx*1.0e3;
-            gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
+%             data = load('data/input_load.mat');
+%             t_load = data.time;
+%             T_aero = data.Mx*1.0e3;
+%             gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
+% 
+%             T_A = interp1(t_load, T_aero, time, 'linear');
+%             ref_gen_speed = interp1(t_load, gen_speed, time, 'linear');
 
-            T_A = interp1(t_load, T_aero, time, 'linear');
-            ref_gen_speed = interp1(t_load, gen_speed, time, 'linear');
+            data = readtable('data/load_data.xlsx');
+            
+            TA = data.T_A(3:end)*data.T_A(2);
+            time_TA = (0:(length(TA)-1))*data.T_A(1);
+            T_A = interp1(time_TA, TA, time, 'linear');
+            
+            wG = data.gen_speed(3:end)*data.gen_speed(2);
+            time_wG = (0:(length(wG)-1))*data.gen_speed(1); 
+            ref_gen_speed = interp1(time_wG, wG, time, 'linear')*(30.0/pi);
+            
+%             if(strcmpi(class(obj),'Lin_Parker_99'))
+%                 Fx = data.F_x(3:end)*data.F_x(2);
+%                 time_Fx = 0:(length(Fx)-1)*data.F_x(1);
+%                 F_x = interp1(time_Fx, Fx, time, 'linear');
+%                 
+%                 Fy = data.F_y(3:end)*data.F_y(2);
+%                 time_Fy = 0:(length(Fy)-1)*data.F_y(1);
+%                 F_y = interp1(time_Fy, Fy, time, 'linear');
+%                 
+%                 Fz = data.F_z(3:end)*data.F_z(2);
+%                 time_Fz = 0:(length(Fz)-1)*data.F_z(1);
+%                 F_z = interp1(time_Fz, Fz, time, 'linear');
+%             end
+            
+            clear data;
 
             warning('off', 'Dynamic_Formulation:RB');
             
@@ -409,22 +446,20 @@ classdef Dynamic_Formulation
             acc(:, idx) = obj.M\(obj.b*T_AG - obj.D*vel(:, idx) - KK*pos(:, idx));
             
             %% for each time step:
-            nt = nt - 1;
-            
-            for idx = 1:nt
-                Delta_R_hat = obj.b*T_AG + obj.M*(a_1*pos(:, idx) + a_3*vel(:, idx) + a_4*acc(:, idx)) + ...
-                                           obj.D*(a_2*pos(:, idx) + a_5*vel(:, idx) + a_6*acc(:, idx));
+            for idx = 2:nt
+                Delta_R_hat = obj.b*T_AG + obj.M*(a_1*pos(:, idx - 1) + a_3*vel(:, idx - 1) + a_4*acc(:, idx - 1)) + ...
+                                           obj.D*(a_2*pos(:, idx - 1) + a_5*vel(:, idx - 1) + a_6*acc(:, idx - 1));
                 
-                pos(:, idx + 1) = K_hat\Delta_R_hat;
-                acc(:, idx + 1) = a_1*(pos(:, idx + 1) - pos(:, idx)) - a_3*vel(:, idx) - a_4*acc(:, idx);
-                vel(:, idx + 1) = vel(:, idx) + a_7*acc(:, idx) + a_8*acc(:, idx + 1);
+                pos(:, idx) = K_hat\Delta_R_hat;
+                acc(:, idx) = a_1*(pos(:, idx) - pos(:, idx - 1)) - a_3*vel(:, idx - 1) - a_4*acc(:, idx - 1);
+                vel(:, idx) = vel(:, idx - 1) + a_7*acc(:, idx - 1) + a_8*acc(:, idx);
                 
-                output(:, idx + 1) = C*vel(:, idx + 1);
-                error (:, idx + 1) = ref_gen_speed(:, idx + 1) - output(:, idx + 1);
-                sum_error = sum_error + error(:, idx + 1);
-                T_G(:, idx + 1) = K_p*error(:, idx + 1) + K_I*T_sample*sum_error;
-                T_AG = [T_A(:, idx + 1);
-                        T_G(:, idx + 1)];
+                output(:, idx) = C*vel(:, idx);
+                error (:, idx) = ref_gen_speed(:, idx) - output(:, idx);
+                sum_error = sum_error + error(:, idx);
+                T_G(:, idx) = K_p*error(:, idx) + K_I*T_sample*sum_error;
+                T_AG = [T_A(:, idx);
+                        T_G(:, idx)];
             end
             
             sol = struct;
@@ -433,7 +468,7 @@ classdef Dynamic_Formulation
             sol.alpha  = alpha;
             sol.t      = time;
             sol.pos    = pos;
-            sol.vel    = vel*C(end);
+            sol.vel    = vel; %*C(end);
             sol.acc    = acc;
             sol.M      = obj.M;
             sol.D      = obj.D;
@@ -444,6 +479,9 @@ classdef Dynamic_Formulation
             sol.K_I    = K_I;
             sol.T_gen  = T_G;
             sol.T_aero = T_A;
+            sol.error  = error;
+            sol.output = output;
+            sol.ref_speed = ref_gen_speed;
             
         end
         
@@ -464,11 +502,32 @@ classdef Dynamic_Formulation
             KK = obj.K_m + obj.K_b;
             
             for idx = 1:n_Om
-                Hx(idx, :, :) = (-obj.M.*Omega(idx).^2 + i.*Omega(idx).*obj.D + KK)\obj.b;
+                Hx(idx, :, :) = (KK - obj.M.*Omega(idx).^2 + i.*Omega(idx).*obj.D)\obj.b;
                 Hv(idx, :, :) = Hx(idx, :, :).*Omega(idx);
                 Ha(idx, :, :) = Hv(idx, :, :).*Omega(idx);
             end
             
+            if(n_Om == 1)
+                Hx = reshape(Hx, size(obj.b));
+                Hv = reshape(Hv, size(obj.b));
+                Ha = reshape(Ha, size(obj.b));
+            end
+        end
+        
+        function [Rx, Rv, Ra] =  Freq_response(obj, freq, T_A, T_G)
+            Omega = 2.0*pi*freq;
+            i = sqrt(-1.0);
+            
+            n_Om = length(Omega);
+            Rx = zeros([n_Om, length(obj.b)]);
+            Rv = Rx;        Ra = Rx;
+            T_AG = [T_A;
+                    T_G];
+            for idx = 1:n_Om
+                Rx(idx, :) = obj.FRF(freq(idx))*T_AG(:, idx);
+                Rv(idx, :) = Rx(idx, :)*i*Omega(idx);
+                Ra(idx, :) = Rv(idx, :)*i*Omega(idx);
+            end
         end
         
         function [MM, GG] = inertia_matrix(obj)
