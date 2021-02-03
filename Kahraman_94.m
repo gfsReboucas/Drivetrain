@@ -368,6 +368,9 @@ classdef Kahraman_94 < Dynamic_Formulation
                 % OBS.: got a negative k_mesh for DTU_10MW planet-ring
                 k_sp = sun_pla.k_mesh;
                 k_rp = pla_rng.k_mesh;
+                
+                k_sp = k_sp*(1.0 - val);
+%                 k_rp = k_rp*(1.0 - val);
 
                 r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;
@@ -378,18 +381,11 @@ classdef Kahraman_94 < Dynamic_Formulation
                 KK(n - 1,     1) = KK(1, n - 1);
                 KK(n - 1, n - 1) =  stage_idx.N_p*k_sp*r_s^2;
                 
-                vec = ones(1, stage_idx.N_p);
-                vec(2) = 1.0 - val;
-                
                 for jdx = 2:(n - 2)
-                    
-                    k_rp_idx = k_rp*vec(jdx - 1);
-                    k_sp_idx = k_sp*vec(jdx - 1);
-                    
-                    KK(    1,   jdx) = r_c*r_p*(k_rp_idx - k_sp_idx);
+                    KK(    1,   jdx) = r_c*r_p*(k_rp - k_sp);
                     KK(jdx  ,     1) = KK(1, jdx);
-                    KK(jdx  ,   jdx) = (k_rp_idx + k_sp_idx)*r_p^2;
-                    KK(n - 1,   jdx) = r_s*r_p*k_sp_idx;
+                    KK(jdx  ,   jdx) = (k_rp + k_sp)*r_p^2;
+                    KK(n - 1,   jdx) = r_s*r_p*k_sp;
                     KK(jdx  , n - 1) = KK(n - 1, jdx);
                 end
             end

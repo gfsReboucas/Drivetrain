@@ -25,8 +25,14 @@ classdef Lin_Parker_99 < Dynamic_Formulation
     end
     
     methods
-        function obj = Lin_Parker_99(DT)
-            obj@Dynamic_Formulation(DT);
+        function obj = Lin_Parker_99(DT, varargin)
+            default = {'fault_type',  '', ...
+                       'fault_val' , 0.0};
+            
+            default = scaling_factor.process_varargin(default, varargin);
+            
+            obj@Dynamic_Formulation(DT, 'fault_type', default.fault_type, ...
+                                        'fault_val' , default.fault_val);
         end
         
         %% Calculation:

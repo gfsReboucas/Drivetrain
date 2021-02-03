@@ -22,7 +22,7 @@ classdef Rack
     %
     
     properties(Access = protected)
-        m       (1, 1) double {mustBePositive, mustBeInRange(m, [1.0 50.0])} = 1.0;  % [mm],   Module
+        m       (1, 1) double {mustBePositive, mustBeInRange(m, [0.01 50.0])} = 1.0;  % [mm],   Module
     end
     
     properties(SetAccess = private)

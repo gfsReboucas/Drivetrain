@@ -1009,33 +1009,37 @@ subvargroup.begin (                 $SVG_loading                  )             
    subvar.discr.str (     1 ,       $_base_excitation_flag        ) = '1'                     ! Discrete values
    subvar.discr.str (     2 ,       $_base_excitation_flag        ) = '0'                     ! Discrete values
 
-   subvar.str (                     $_aero_flag                   ) = '0'                     ! $SVG_loading.$_aero_flag, Definition
+   subvar.str (                     $_aero_flag                   ) = '1'                     ! $SVG_loading.$_aero_flag, Definition
    subvar.discr.desc (    1 ,       $_aero_flag                   ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_aero_flag                   ) = 'DLC'                   ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_aero_flag                   ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_aero_flag                   ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_aero_flag                   ) = 'DLC'                   ! Description of discrete values
    subvar.discr.str (     1 ,       $_aero_flag                   ) = '0'                     ! Discrete values
    subvar.discr.str (     2 ,       $_aero_flag                   ) = '1'                     ! Discrete values
    subvar.discr.str (     3 ,       $_aero_flag                   ) = '2'                     ! Discrete values
 
-   subvar.str (                     $_use_aero_DLC                ) = 'IF($SVG_loading.$_aero_flag== 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_DLC, Definition
+   subvar.str (                     $_use_aero_DLC                ) = 'IF($SVG_loading.$_aero_flag== 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_DLC, Definition
 
-   subvar.str (                     $_use_aero_nominal            ) = 'IF($SVG_loading.$_aero_flag== 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_nominal, Definition
+   subvar.str (                     $_use_aero_nominal            ) = 'IF($SVG_loading.$_aero_flag== 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_aero_nominal, Definition
 
-   subvar.str (                     $_generator_flag              ) = '2'                     ! $SVG_loading.$_generator_flag, Definition
+   subvar.str (                     $_generator_flag              ) = '1'                     ! $SVG_loading.$_generator_flag, Definition
    subvar.discr.desc (    1 ,       $_generator_flag              ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
-   subvar.discr.desc (    4 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_generator_flag              ) = 'Nominal'               ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_generator_flag              ) = 'Prop. control'         ! Description of discrete values
+   subvar.discr.desc (    4 ,       $_generator_flag              ) = 'PI control'            ! Description of discrete values
+   subvar.discr.desc (    5 ,       $_generator_flag              ) = 'Time series, omega_gen' ! Description of discrete values
    subvar.discr.str (     1 ,       $_generator_flag              ) = '0'                     ! Discrete values
    subvar.discr.str (     2 ,       $_generator_flag              ) = '1'                     ! Discrete values
    subvar.discr.str (     3 ,       $_generator_flag              ) = '2'                     ! Discrete values
    subvar.discr.str (     4 ,       $_generator_flag              ) = '3'                     ! Discrete values
+   subvar.discr.str (     5 ,       $_generator_flag              ) = '4'                     ! Discrete values
 
-   subvar.str (                     $_use_Prop                    ) = 'IF($SVG_loading.$_generator_flag == 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_Prop, Definition
+   subvar.str (                     $_use_gen_nominal             ) = 'IF($SVG_loading.$_generator_flag == 1)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_gen_nominal, Definition
 
-   subvar.str (                     $_use_PI                      ) = 'IF($SVG_loading.$_generator_flag == 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_PI, Definition
+   subvar.str (                     $_use_Prop                    ) = 'IF($SVG_loading.$_generator_flag == 2)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_Prop, Definition
 
-   subvar.str (                     $_use_time_series             ) = 'IF($SVG_loading.$_generator_flag == 3)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_time_series, Definition
+   subvar.str (                     $_use_PI                      ) = 'IF($SVG_loading.$_generator_flag == 3)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_PI, Definition
+
+   subvar.str (                     $_use_time_series             ) = 'IF($SVG_loading.$_generator_flag == 4)\n{\n0\n}\nELSE\n{\n1\n}' ! $SVG_loading.$_use_time_series, Definition
 
    subvar.str (                     $_rated_power                 ) = '5.0e3 kW'              ! $SVG_loading.$_rated_power, Definition
 
@@ -1087,9 +1091,20 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 ! Force Elements
 !**********************************************************************
 forcegroup.begin (                  $FEG_aero                     )                           ! $FEG_aero
+   force.type (                     $F_nominal                    ) = 93                      ! Type
+   force.from (                     $F_nominal                    ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
+   force.to (                       $F_nominal                    ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
+   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_aero_nominal ! Disabled
+   force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
+   force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
+   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
+   force.par (            4 ,       $F_nominal                    ) = $UE_T_aero_nominal      ! [-] u-Vector Element torque x
+   force.par (            5 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque y
+   force.par (            6 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque z
+
    force.type (                     $F_DLC                        ) = 93                      ! Type
    force.from (                     $F_DLC                        ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
-   force.to (                       $F_DLC                        ) = $M_Isys                 ! To Marker
+   force.to (                       $F_DLC                        ) = $S_main_shaft.$S_TPL.$M_shaft_input ! To Marker
    force.disabled (                 $F_DLC                        ) = $SVG_loading.$_use_aero_DLC ! Disabled
    force.par (            1 ,       $F_DLC                        ) = $UE_F_x                 ! [-] u-Vector Element force x
    force.par (            2 ,       $F_DLC                        ) = $UE_F_y                 ! [-] u-Vector Element force y
@@ -1105,22 +1120,24 @@ forcegroup.begin (                  $FEG_aero                     )             
    force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_DLC      ) = 310, 244.25, 244.25, 77
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_DLC      ) = 200, 200, 50, 50
 
-   force.type (                     $F_nominal                    ) = 93                      ! Type
-   force.from (                     $F_nominal                    ) = $S_bed_plate.$S_TPL.$M_bed_plate_main_shaft ! From Marker
-   force.to (                       $F_nominal                    ) = $M_Isys                 ! To Marker
-   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_aero_nominal ! Disabled
-   force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
-   force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
-   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
-   force.par (            4 ,       $F_nominal                    ) = $UE_T_aero_nominal      ! [-] u-Vector Element torque x
-   force.par (            5 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque y
-   force.par (            6 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element torque z
-
 forcegroup.end (                    $FEG_aero                     )                           ! $FEG_aero
 
 forcegroup.begin (                  $FEG_gen                      )                           ! $FEG_gen
+   force.type (                     $F_nominal                    ) = 110                     ! Type
+   force.from (                     $F_nominal                    ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_nominal                    ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.st.equi (        1 ,       $F_nominal                    ) = 0                       ! Equilibrium
+   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   force.par (            1 ,       $F_nominal                    ) = $C_Prop                 ! [-] Input Control Element 1
+   force.par (            2 ,       $F_nominal                    ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
+   force.par (            3 ,       $F_nominal                    ) = null                    ! [-] Input Control Element 2
+   force.par (            4 ,       $F_nominal                    ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
+   force.par (            5 ,       $F_nominal                    ) = 2.00000000000000000E+00 ! [-] Output type
+   force.par (            7 ,       $F_nominal                    ) = 1.00000000000000000E+00 ! [-] Axis of torque
+   force.par (            8 ,       $F_nominal                    ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
+
    force.type (                     $F_Prop                       ) = 110                     ! Type
-   force.from (                     $F_Prop                       ) = $M_Isys                 ! From Marker
+   force.from (                     $F_Prop                       ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
    force.to (                       $F_Prop                       ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
    force.st.equi (        1 ,       $F_Prop                       ) = 0                       ! Equilibrium
    force.disabled (                 $F_Prop                       ) = $SVG_loading.$_use_Prop ! Disabled
@@ -1139,7 +1156,7 @@ forcegroup.begin (                  $FEG_gen                      )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_Prop     ) = 180, 170, 170, 165.77301025390625, 153.092041015625, 136.18408203125, 124.912109375, 109.8828125, 89.84375, 63.125, 27.5, -20, -20, -20, -10, -10, -10, -10, -10, -10, -10, -10, -10, -20, -30, -40, -110, -110
 
    force.type (                     $F_PI                         ) = 110                     ! Type
-   force.from (                     $F_PI                         ) = $M_Isys                 ! From Marker
+   force.from (                     $F_PI                         ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
    force.to (                       $F_PI                         ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
    force.st.equi (        1 ,       $F_PI                         ) = 0                       ! Equilibrium
    force.disabled (                 $F_PI                         ) = $SVG_loading.$_use_PI   ! Disabled
@@ -1160,7 +1177,7 @@ forcegroup.begin (                  $FEG_gen                      )             
    force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_PI       ) = 200, 200, 120, 120, 120, 120
 
    force.type (                     $F_time_series                ) = 93                      ! Type
-   force.from (                     $F_time_series                ) = $M_Isys                 ! From Marker
+   force.from (                     $F_time_series                ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
    force.to (                       $F_time_series                ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
    force.disabled (                 $F_time_series                ) = $SVG_loading.$_use_time_series ! Disabled
    force.par (            1 ,       $F_time_series                ) = null                    ! [-] u-Vector Element force x

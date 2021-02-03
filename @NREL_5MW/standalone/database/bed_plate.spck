@@ -68,8 +68,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.34087431
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.76997426897287369E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.76997413635253906E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.76997445523738861E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.76997432708740234E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -319,29 +319,60 @@ marker.parent (                     $M_bed_plate_INP_B            ) = $B_bed_pla
 marker.pos (              1 ,       $M_bed_plate_INP_B            ) = { $SVG_main_shaft.$_x0 + $SVG_main_shaft.$_x_B } ! Position
 marker.pos (              3 ,       $M_bed_plate_INP_B            ) = $SVG_bed_plate.$_z0     ! Position
 
+marker.type (                       $M_bed_plate_excitation       ) = -70                     ! Type
+marker.parent (                     $M_bed_plate_excitation       ) = $B_bed_plate            ! Body
+marker.par (              2 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [-] Input mode
+marker.par (              3 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [-] Velocity & acceleration mode
+marker.par (              5 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [m] Offset for x-position
+marker.par (              6 ,       $M_bed_plate_excitation       ) = $UE_x                   ! [-] u-Element for x-position
+marker.par (              7 ,       $M_bed_plate_excitation       ) = $UE_x_1st_deriv         ! [-] u-Element for x-velocity
+marker.par (              8 ,       $M_bed_plate_excitation       ) = $UE_x_2nd_deriv         ! [-] u-Element for x-acceleration
+marker.par (             11 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [m] Offset for y-position
+marker.par (             12 ,       $M_bed_plate_excitation       ) = $UE_y                   ! [-] u-Element for y-position
+marker.par (             13 ,       $M_bed_plate_excitation       ) = $UE_y_1st_deriv         ! [-] u-Element for y-velocity
+marker.par (             14 ,       $M_bed_plate_excitation       ) = $UE_y_2nd_deriv         ! [-] u-Element for y-acceleration
+marker.par (             17 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [m] Offset for z-position
+marker.par (             18 ,       $M_bed_plate_excitation       ) = $UE_z                   ! [-] u-Element for z-position
+marker.par (             19 ,       $M_bed_plate_excitation       ) = $UE_z_1st_deriv         ! [-] u-Element for z-velocity
+marker.par (             20 ,       $M_bed_plate_excitation       ) = $UE_z_2nd_deriv         ! [-] u-Element for z-acceleration
+marker.par (             23 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [rad] Offset for al-position
+marker.par (             24 ,       $M_bed_plate_excitation       ) = $UE_alpha               ! [-] u-Element for al-position
+marker.par (             25 ,       $M_bed_plate_excitation       ) = $UE_alpha_1st_deriv     ! [-] u-Element for al-velocity
+marker.par (             26 ,       $M_bed_plate_excitation       ) = $UE_alpha_2nd_deriv     ! [-] u-Element for al-acceleration
+marker.par (             29 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [rad] Offset for be-position
+marker.par (             30 ,       $M_bed_plate_excitation       ) = $UE_beta                ! [-] u-Element for be-position
+marker.par (             31 ,       $M_bed_plate_excitation       ) = $UE_beta_1st_deriv      ! [-] u-Element for be-velocity
+marker.par (             32 ,       $M_bed_plate_excitation       ) = $UE_beta_2nd_deriv      ! [-] u-Element for be-acceleration
+marker.par (             35 ,       $M_bed_plate_excitation       ) = 0.00000000000000000E+00 ! [rad] Offset for ga-position
+marker.par (             36 ,       $M_bed_plate_excitation       ) = $UE_gamma               ! [-] u-Element for ga-position
+marker.par (             37 ,       $M_bed_plate_excitation       ) = $UE_gamma_1st_deriv     ! [-] u-Element for ga-velocity
+marker.par (             38 ,       $M_bed_plate_excitation       ) = $UE_gamma_2nd_deriv     ! [-] u-Element for ga-acceleration
+
 joint.from (                        $J_bed_plate                  ) = $M_Isys                 ! From Marker
 joint.to (                          $J_bed_plate                  ) = $M_bed_plate_BRF        ! To Marker
-joint.type (                        $J_bed_plate                  ) = 35                      ! Type
+joint.type (                        $J_bed_plate                  ) = 20                      ! Type
+joint.st.dep (            1 ,       $J_bed_plate                  ) = 1                       ! Dependency state
+joint.st.dep (            2 ,       $J_bed_plate                  ) = 1                       ! Dependency state
+joint.st.dep (            3 ,       $J_bed_plate                  ) = 1                       ! Dependency state
+joint.st.dep (            4 ,       $J_bed_plate                  ) = 1                       ! Dependency state
+joint.st.dep (            5 ,       $J_bed_plate                  ) = 1                       ! Dependency state
+joint.st.dep (            6 ,       $J_bed_plate                  ) = 1                       ! Dependency state
+joint.st.jac.skip (       3 ,       $J_bed_plate                  ) = 0                       ! Skip Jacobian
+joint.st.jac.skip (       4 ,       $J_bed_plate                  ) = 0                       ! Skip Jacobian
+joint.st.jac.skip (       5 ,       $J_bed_plate                  ) = 0                       ! Skip Jacobian
 joint.disabled (                    $J_bed_plate                  ) = $_excitation_ON         ! Disabled
-joint.par (               1 ,       $J_bed_plate                  ) = $I_x                    ! [-] IFctn for x
-joint.par (               2 ,       $J_bed_plate                  ) = $I_y                    ! [-] IFctn for y
-joint.par (               3 ,       $J_bed_plate                  ) = $I_z                    ! [-] IFctn for z
-joint.par (               4 ,       $J_bed_plate                  ) = $I_alpha                ! [-] IFctn for al
-joint.par (               5 ,       $J_bed_plate                  ) = $I_beta                 ! [-] IFctn for be
-joint.par (               6 ,       $J_bed_plate                  ) = $I_gamma                ! [-] IFctn for ga
-joint.par (               7 ,       $J_bed_plate                  ) = $I_x_dot                ! [-] IFctn for v_x
-joint.par (               8 ,       $J_bed_plate                  ) = $I_y_dot                ! [-] IFctn for v_y
-joint.par (               9 ,       $J_bed_plate                  ) = $I_z_dot                ! [-] IFctn for v_z
-joint.par (              10 ,       $J_bed_plate                  ) = $I_alpha_dot            ! [-] IFctn for w_x
-joint.par (              11 ,       $J_bed_plate                  ) = $I_beta_dot             ! [-] IFctn for w_y
-joint.par (              12 ,       $J_bed_plate                  ) = $I_gamma_dot            ! [-] IFctn for w_z
-joint.par (              13 ,       $J_bed_plate                  ) = $I_x_ddot               ! [-] IFctn for a_x
-joint.par (              14 ,       $J_bed_plate                  ) = $I_y_ddot               ! [-] IFctn for a_y
-joint.par (              15 ,       $J_bed_plate                  ) = $I_z_ddot               ! [-] IFctn for a_z
-joint.par (              16 ,       $J_bed_plate                  ) = $I_alpha_ddot           ! [-] IFctn for wd_x
-joint.par (              17 ,       $J_bed_plate                  ) = $I_beta_ddot            ! [-] IFctn for wd_y
-joint.par (              18 ,       $J_bed_plate                  ) = $I_gamma_ddot           ! [-] IFctn for wd_z
-joint.par (              19 ,       $J_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Rotation sequence
+joint.par (               5 ,       $J_bed_plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about al
+joint.par (               6 ,       $J_bed_plate                  ) = $I_gamma                ! [rad] Time Excitation angle al(t)
+joint.par (               7 ,       $J_bed_plate                  ) = $I_x_dot                ! [rad] Offset in al
+joint.par (              10 ,       $J_bed_plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about be
+joint.par (              11 ,       $J_bed_plate                  ) = $I_beta_dot             ! [rad] Time Excitation angle be(t)
+joint.par (              12 ,       $J_bed_plate                  ) = $I_gamma_dot            ! [rad] Offset in be
+joint.par (              15 ,       $J_bed_plate                  ) = 0.00000000000000000E+00 ! [-] Driven rotation about ga
+joint.par (              16 ,       $J_bed_plate                  ) = $I_alpha_ddot           ! [rad] Time Excitation angle ga(t)
+joint.par (              17 ,       $J_bed_plate                  ) = $I_beta_ddot            ! [rad] Offset in ga
+joint.par (              20 ,       $J_bed_plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in x
+joint.par (              25 ,       $J_bed_plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in y
+joint.par (              30 ,       $J_bed_plate                  ) = 0.00000000000000000E+00 ! [-] Driven translation in z
 
 prim.type (                         $P_bed_plate                  ) = 1                       ! Type
 prim.ref (                          $P_bed_plate                  ) = $M_bed_plate_BRF        ! Reference Marker
@@ -355,6 +386,19 @@ prim.par (                2 ,       $P_bed_plate                  ) = $SVG_bed_p
 prim.par (                3 ,       $P_bed_plate                  ) = $SVG_bed_plate.$_width  ! [m] Length in Y
 prim.par (                4 ,       $P_bed_plate                  ) = $SVG_bed_plate.$_thickness ! [m] Length in Z
 
+
+!**********************************************************************
+! Constraints
+!**********************************************************************
+constr.from (                       $L_bed_plate                  ) = $M_Isys                 ! From Marker
+constr.to (                         $L_bed_plate                  ) = $M_bed_plate_excitation ! To Marker
+constr.type (                       $L_bed_plate                  ) = 25                      ! Type
+constr.par (              1 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Rotation in alpha
+constr.par (              2 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Rotation in beta
+constr.par (              3 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Rotation in gamma
+constr.par (              4 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Transl.  in x  of M_k
+constr.par (              5 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Transl.  in y  of M_k
+constr.par (              6 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Transl.  in z  of M_k
 
 !**********************************************************************
 ! Connection Elements
@@ -793,24 +837,72 @@ excit.plot.par (          1 ,   8 ,   1 , $E_gamma                ) = 1.00000000
 uele.type (                         $UE_x                         ) = 1                       ! Type
 uele.excit (                        $UE_x                         ) = $E_x                    ! Referenced Excitation
 
+uele.type (                         $UE_x_1st_deriv               ) = 1                       ! Type
+uele.excit (                        $UE_x_1st_deriv               ) = $E_x                    ! Referenced Excitation
+uele.index (                        $UE_x_1st_deriv               ) = 1                       ! Index
+
+uele.type (                         $UE_x_2nd_deriv               ) = 1                       ! Type
+uele.excit (                        $UE_x_2nd_deriv               ) = $E_x                    ! Referenced Excitation
+uele.index (                        $UE_x_2nd_deriv               ) = 2                       ! Index
+
 uele.type (                         $UE_y                         ) = 1                       ! Type
 uele.excit (                        $UE_y                         ) = $E_y                    ! Referenced Excitation
 uele.index (                        $UE_y                         ) = 0                       ! Index
+
+uele.type (                         $UE_y_1st_deriv               ) = 1                       ! Type
+uele.excit (                        $UE_y_1st_deriv               ) = $E_y                    ! Referenced Excitation
+uele.index (                        $UE_y_1st_deriv               ) = 1                       ! Index
+
+uele.type (                         $UE_y_2nd_deriv               ) = 1                       ! Type
+uele.excit (                        $UE_y_2nd_deriv               ) = $E_y                    ! Referenced Excitation
+uele.index (                        $UE_y_2nd_deriv               ) = 2                       ! Index
 
 uele.type (                         $UE_z                         ) = 1                       ! Type
 uele.excit (                        $UE_z                         ) = $E_z                    ! Referenced Excitation
 uele.index (                        $UE_z                         ) = 0                       ! Index
 
+uele.type (                         $UE_z_1st_deriv               ) = 1                       ! Type
+uele.excit (                        $UE_z_1st_deriv               ) = $E_z                    ! Referenced Excitation
+uele.index (                        $UE_z_1st_deriv               ) = 1                       ! Index
+
+uele.type (                         $UE_z_2nd_deriv               ) = 1                       ! Type
+uele.excit (                        $UE_z_2nd_deriv               ) = $E_z                    ! Referenced Excitation
+uele.index (                        $UE_z_2nd_deriv               ) = 2                       ! Index
+
 uele.type (                         $UE_alpha                     ) = 1                       ! Type
 uele.excit (                        $UE_alpha                     ) = $E_alpha                ! Referenced Excitation
 uele.index (                        $UE_alpha                     ) = 0                       ! Index
+
+uele.type (                         $UE_alpha_1st_deriv           ) = 1                       ! Type
+uele.excit (                        $UE_alpha_1st_deriv           ) = $E_alpha                ! Referenced Excitation
+uele.index (                        $UE_alpha_1st_deriv           ) = 1                       ! Index
+
+uele.type (                         $UE_alpha_2nd_deriv           ) = 1                       ! Type
+uele.excit (                        $UE_alpha_2nd_deriv           ) = $E_alpha                ! Referenced Excitation
+uele.index (                        $UE_alpha_2nd_deriv           ) = 2                       ! Index
 
 uele.type (                         $UE_beta                      ) = 1                       ! Type
 uele.excit (                        $UE_beta                      ) = $E_beta                 ! Referenced Excitation
 uele.index (                        $UE_beta                      ) = 0                       ! Index
 
+uele.type (                         $UE_beta_1st_deriv            ) = 1                       ! Type
+uele.excit (                        $UE_beta_1st_deriv            ) = $E_beta                 ! Referenced Excitation
+uele.index (                        $UE_beta_1st_deriv            ) = 1                       ! Index
+
+uele.type (                         $UE_beta_2nd_deriv            ) = 1                       ! Type
+uele.excit (                        $UE_beta_2nd_deriv            ) = $E_beta                 ! Referenced Excitation
+uele.index (                        $UE_beta_2nd_deriv            ) = 2                       ! Index
+
 uele.type (                         $UE_gamma                     ) = 1                       ! Type
 uele.excit (                        $UE_gamma                     ) = $E_gamma                ! Referenced Excitation
+
+uele.type (                         $UE_gamma_1st_deriv           ) = 1                       ! Type
+uele.excit (                        $UE_gamma_1st_deriv           ) = $E_gamma                ! Referenced Excitation
+uele.index (                        $UE_gamma_1st_deriv           ) = 1                       ! Index
+
+uele.type (                         $UE_gamma_2nd_deriv           ) = 1                       ! Type
+uele.excit (                        $UE_gamma_2nd_deriv           ) = $E_gamma                ! Referenced Excitation
+uele.index (                        $UE_gamma_2nd_deriv           ) = 2                       ! Index
 
 !**********************************************************************
 ! Senders

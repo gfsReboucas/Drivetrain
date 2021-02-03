@@ -1,0 +1,59 @@
+!file.version=3.5! Removing this line will make the file unreadable
+
+! General
+output                                                              = 'DoE'
+surfacemodel                                                        = 4
+experimentdesign                                                    = 3
+runs.num                                                            = 4
+runs.cand                                                           = 35
+seed                                                                = 0
+centerpoints.num                                                    = 0
+centerpoints.default                                                = 1
+
+! Factors
+
+factors.name (            1                                       ) = 'gamma_K'
+factors.size (            1                                       ) = 2
+factors.ele (             1 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
+factors.type (            1 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             1 ,   1                                 ) = '0.1'
+factors.max (             1 ,   1                                 ) = '1'
+factors.order (           1 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             1 ,   2                                 ) = $SVG_stage_01.$_gamma_stiff
+factors.type (            1 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             1 ,   2                                 ) = '0.1'
+factors.max (             1 ,   2                                 ) = '1'
+factors.order (           1 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             1 ,   3                                 ) = $SVG_stage_02.$_gamma_stiff
+factors.type (            1 ,   3                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             1 ,   3                                 ) = '0.1'
+factors.max (             1 ,   3                                 ) = '1'
+factors.order (           1 ,   3                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             1 ,   4                                 ) = $SVG_stage_03.$_gamma_stiff
+factors.type (            1 ,   4                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             1 ,   4                                 ) = '0.1'
+factors.max (             1 ,   4                                 ) = '1'
+factors.order (           1 ,   4                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+model.path (                        $Model1                       ) = 'NREL_5MW_reference.spck'
+
+   ! Job definition
+
+model.task (              1 ,       $Model1                       ) = 'user-script'
+model.task.script (       1 ,       $Model1                       ) = '    print(\'SCRIPT:\\tSTART initial_step.sjs\')\n\n    // Disabling translation and tilting for shafts:\n    print(\'SCRIPT:\\t1. Disabling shaft translation and tilting...\')\n    var switch_AIC = Spck.currentModel.findElement(\'$DoE.$SVG_loading.$_switch_AIC\');\n    switch_AIC.str.src = \'1\';\n\n    // Apply zero initial condtions:\n    print(\'SCRIPT:\\t2. Setting states to ZERO...\');\n    var zero_IC = Spck.currentModel.findElement("$DoE.$ST_all_zero");\n    zero_IC.copyToModel();\n\n    // Gear force elements: basic\n    print(\'SCRIPT:\\t2.1. Setting gear mesh force to type 204 (basic)...\');\n    var mesh_flag = Spck.currentModel.findElement(\'$DoE.$SVG_loading.$_mesh_flag\');\n    mesh_flag.str.src = \'204\';\n\n    print(\'SCRIPT:\\t2.2. Saving model...\');\n    Spck.currentModel.save();\n\n    // Apply Initial Conditions solver:\n    print(\'SCRIPT:\\t3. Running Assemble System solver...\');\n    Spck.Slv.assmbl(Spck.currentModel);\n\n    // Update state set:\n    print(\'SCRIPT:\\t3.1. Saving model with updated state sets from solver...\');\n    var state_AIC = Spck.currentModel.findElement("$DoE.$ST_AIC");\n    state_AIC.copyFromModel();\n\n    Spck.currentModel.save();\n\n    // Re-enabling translation and tilting for shafts:\n    print(\'SCRIPT:\\t4. Re-enabling shaft translation and tilting...\');\n    switch_AIC.str.src = \'0\';\n\n    // Calculating static equilibrium:\n    print(\'SCRIPT:\\t5. Calculating static equilibrium using:\');\n    print(\'SCRIPT:\\t5.1. Time integration method...\');\n    Spck.currentModel.slv.active.src = "$DoE.$SLV_static_eq_time_integ";\n    Spck.currentModel.save();\n\n    Spck.Slv.equi(Spck.currentModel);\n\n    // Update state set:\n    print(\'SCRIPT:\\t5.1.1. Updating state sets with result from solver (static equilibrium via time integration)...\');\n    \n    var output_path = Spck.currentModel.origin;\n    var pos = output_path.lastIndexOf(\'/\');\n    output_path = output_path.slice(0, pos);\n    output_path = output_path + \'/output/\' + Spck.currentModel.name;\n\n    var static_eq = Spck.currentModel.findElement("$DoE.$ST_static_eq");\n    static_eq.importStateFile(output_path + \'.spckst\');\n    static_eq.copyToModel();\n\n    print(\'SCRIPT:\\t5.2. Newton method...\');\n    Spck.currentModel.slv.active.src = "$DoE.$SLV_static_eq_Newton_acc";\n    Spck.currentModel.save();\n    Spck.Slv.equi(Spck.currentModel);\n\n    // Update state set:\n    print(\'SCRIPT:\\t5.2.2. Updating state sets with results from solver (static equilibrium via Newton method and convergence w.r.t. acceleration)...\');\n    static_eq.importStateFile(output_path + \'.spckst\');\n    static_eq.copyToModel();\n\n    print(\'SCRIPT:\\t5.3. Setting gear mesh force to type 225 (advanced)...\');\n    mesh_flag.str.src = \'225\';\n    \n    print(\'SCRIPT:\\t6. Saving model...\');\n    Spck.currentModel.slv.active.src = "$DoE.$SLV_SolverSettings";\n    Spck.currentModel.save();\n\n    print(\'SCRIPT:\\tEND initial_step.sjs\')\n'
+model.task (              2 ,       $Model1                       ) = 'eigenvalues'
+model.task (              3 ,       $Model1                       ) = 'integration'
+
+   ! Responses
+
+response.ref.ele (        1 ,       $Model1.$PLC_acc_x            ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$PLC_acc_x            ) = 1
+response.ref.ele (        1 ,       $Model1.$PLC_acc_y            ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$PLC_acc_y            ) = 2
+response.ref.ele (        1 ,       $Model1.$PLC_acc_z            ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$PLC_acc_z            ) = 3
+response.ref.ele (        1 ,       $Model1.$RS_PLC_acc_abs       ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_PLC_acc_abs       ) = 4

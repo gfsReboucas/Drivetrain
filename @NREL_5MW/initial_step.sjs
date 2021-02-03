@@ -1,57 +1,84 @@
 function main()
 {
+    print('SCRIPT:\tSTART initial_step.sjs')
     var model = Spck.currentModel;
 
-    // Apply zero initial condtions:
-    var zero_IC = model.findElement("$ST_all_zero");
-    zero_IC.copyToModel();
-
     // Disabling translation and tilting for shafts:
-    var switch_AIC = model.findElement('$SVG_loading.$_switch_AIC');
+    print('SCRIPT:\t1. Disabling shaft translation and tilting...')
+    var switch_AIC = Spck.currentModel.findElement('$SVG_loading.$_switch_AIC');
     switch_AIC.str.src = '1';
 
-    // Base excitation: enabled
-    var base_flag = model.findElement('$SVG_loading.$_base_excitation_flag');
-    base_flag.str.src = '1';
-    // 3. Aerodynamic loads: nominal
-    var aero_flag = model.findElement('$SVG_loading.$_aero_excitation_flag');
-    aero_flag.str.src = '1';
-    // 4. Generator loads: nominal
-    var gen_flag = model.findElement('$SVG_loading.$_generator_flag');
-    gen_flag.str.src = '1';
-    // 5. gear force elements: basic
-    var mesh_flag = model.findElement('$SVG_loading.$_mesh_flag');
+    // Apply zero initial condtions:
+    print('SCRIPT:\t2. Setting states to ZERO...');
+    var zero_IC = Spck.currentModel.findElement("$ST_all_zero");
+    zero_IC.copyToModel();
+
+    // Gear force elements: basic
+    print('SCRIPT:\t2.1. Setting gear mesh force to type 204 (basic)...');
+    var mesh_flag = Spck.currentModel.findElement('$SVG_loading.$_mesh_flag');
     mesh_flag.str.src = '204';
 
-    model.save();
+    print('SCRIPT:\t2.2. Saving model...');
+    Spck.currentModel.save();
 
     // Apply Initial Conditions solver:
-    var slv_AIC = Spck.Slv.applyInitialConditions(model);
+    print('SCRIPT:\t3. Running Assemble System solver...');
+    Spck.Slv.assmbl(Spck.currentModel);
 
     // Update state set:
+    print('SCRIPT:\t3.1. Saving model with updated state sets from solver...');
     var state_AIC = Spck.currentModel.findElement("$ST_AIC");
     state_AIC.copyFromModel();
 
-    model.save();
+    Spck.currentModel.save();
 
     // Re-enabling translation and tilting for shafts:
+    print('SCRIPT:\t4. Re-enabling shaft translation and tilting...');
     switch_AIC.str.src = '0';
-    
-    // Calculating static equilibrium state:
-    var eq = Spck.Slv.equi(model);
+
+    // Calculating static equilibrium:
+    print('SCRIPT:\t5. Calculating static equilibrium using:');
+    print('SCRIPT:\t5.1. Time integration method...');
+    Spck.currentModel.slv.active.src = "$SLV_static_eq_time_integ";
+    Spck.currentModel.save();
+
+    Spck.Slv.equi(Spck.currentModel);
 
     // Update state set:
+    print('SCRIPT:\t5.1.1. Updating state sets with result from solver (static equilibrium via time integration)...');
+    
+    var output_path = Spck.currentModel.origin;
+    var pos = output_path.lastIndexOf('/');
+    output_path = output_path.slice(0, pos);
+    output_path = output_path + '/output/' + Spck.currentModel.name;
+
     var static_eq = Spck.currentModel.findElement("$ST_static_eq");
-    static_eq.copyFromModel();
+    static_eq.importStateFile(output_path + '.spckst');
+//    static_eq.importStateFile('M:/Documents/coding/Drivetrain_2/@NREL_5MW/output/' + Spck.currentModel.name + '.spckst');
+    static_eq.copyToModel();
 
-    // Base excitation: enabled
-    base_flag.str.src   = '1';
-    // Aerodynamic loads: DLC
-    aero_flag.str.src = '2';
-    // Generator loads: PI
-    gen_flag.str.src = '3';
-    // Gear force elements: advanced
-    mesh_flag.str.src = '225';
+//    print('SCRIPT:\t5.1.2. Disabling shaft translation and tilting...')
+//    switch_AIC.str.src = '1';
 
+    print('SCRIPT:\t5.2. Newton method...');
+    Spck.currentModel.slv.active.src = "$SLV_static_eq_Newton_acc";
     Spck.currentModel.save();
+    Spck.Slv.equi(Spck.currentModel);
+
+//    print('SCRIPT:\t5.2.1. Re-enabling shaft translation and tilting...')
+//    switch_AIC.str.src = '0';
+
+    // Update state set:
+    print('SCRIPT:\t5.2.2. Updating state sets with results from solver (static equilibrium via Newton method and convergence w.r.t. acceleration)...');
+    static_eq.importStateFile(output_path + '.spckst');
+    static_eq.copyToModel();
+
+    print('SCRIPT:\t5.3. Setting gear mesh force to type 225 (advanced)...');
+    mesh_flag.str.src = '225';
+    
+    print('SCRIPT:\t6. Saving model...');
+    Spck.currentModel.slv.active.src = "$SLV_SolverSettings";
+    Spck.currentModel.save();
+
+    print('SCRIPT:\tEND initial_step.sjs')
 }

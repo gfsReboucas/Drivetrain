@@ -76,18 +76,18 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 8.74883711338043213E-01 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -7.87940561771392822E-01 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 1.06295132637023926E+00 ! Position
-view.orient (             1 ,       $V_WorkingView                ) = 3.38618725538253784E-01 ! Orientation
-view.orient (             2 ,       $V_WorkingView                ) = 1.07989132404327393E-01 ! Orientation
-view.orient (             3 ,       $V_WorkingView                ) = 2.36587420105934143E-01 ! Orientation
-view.orient (             4 ,       $V_WorkingView                ) = 9.04268801212310791E-01 ! Orientation
+view.pos (                1 ,       $V_WorkingView                ) = 4.62454462051391602E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -4.44375324249267578E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 5.93076515197753906E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 3.32150846719741821E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 2.06434383988380432E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 3.71847480535507202E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 8.41896712779998779E-01 ! Orientation
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
 view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.82997357845306396E+00 ! Back clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 9.80435752868652344E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -237,16 +237,22 @@ subvar.discr.str (        1 ,       $_switch_AIC                  ) = '0'       
 subvar.discr.str (        2 ,       $_switch_AIC                  ) = '1'                     ! Discrete values
 
 subvargroup.begin (                 $SVG_shaft                    )                           ! $SVG_shaft
-   subvar.str (                     $_length                      ) = '500.0 mm'              ! $SVG_shaft.$_length, Definition
+   subvar.str (                     $_length                      ) = '$SVG_shaft.$_free_length+$SVG_shaft.$_length_A+$SVG_shaft.$_length_B' ! $SVG_shaft.$_length, Definition
 
    subvar.str (                     $_diameter                    ) = '300.0 mm'              ! $SVG_shaft.$_diameter, Definition
 
    subvar.str (                     $_x0                          ) = '$SVG_shaft.$_length/2.0' ! $SVG_shaft.$_x0, Definition
 
+   subvar.str (                     $_free_length                 ) = '2550.0 mm'             ! $SVG_shaft.$_free_length, Definition
+
+   subvar.str (                     $_length_A                    ) = '1.2*$SVG_bearing_A.$_b' ! $SVG_shaft.$_length_A, Definition
+
+   subvar.str (                     $_length_B                    ) = '1.2*$SVG_bearing_B.$_b' ! $SVG_shaft.$_length_B, Definition
+
 subvargroup.end (                   $SVG_shaft                    )                           ! $SVG_shaft
 
 subvargroup.begin (                 $SVG_bearing_A                )                           ! $SVG_bearing_A
-   subvar.str (                     $_x                           ) = '$SVG_shaft.$_length/6.0' ! $SVG_bearing_A.$_x, Definition
+   subvar.str (                     $_x                           ) = '$SVG_shaft.$_length_A/2.0' ! $SVG_bearing_A.$_x, Definition
 
    subvar.str (                     $_k_x                         ) = '91016 N/m'             ! $SVG_bearing_A.$_k_x, Definition
 
@@ -272,10 +278,16 @@ subvargroup.begin (                 $SVG_bearing_A                )             
 
    subvar.str (                     $_d_gamma                     ) = '47.8 Nms/rad'          ! $SVG_bearing_A.$_d_gamma, Definition
 
+   subvar.str (                     $_d_in                        ) = '1250.0 mm'             ! $SVG_bearing_A.$_d_in, Definition
+
+   subvar.str (                     $_d_out                       ) = '1750.0 mm'             ! $SVG_bearing_A.$_d_out, Definition
+
+   subvar.str (                     $_b                           ) = '375.0 mm'              ! $SVG_bearing_A.$_b, Definition
+
 subvargroup.end (                   $SVG_bearing_A                )                           ! $SVG_bearing_A
 
 subvargroup.begin (                 $SVG_bearing_B                )                           ! $SVG_bearing_B
-   subvar.str (                     $_x                           ) = '$SVG_shaft.$_length*7.0/12.0' ! $SVG_bearing_B.$_x, Definition
+   subvar.str (                     $_x                           ) = '$SVG_shaft.$_length_B/2.0' ! $SVG_bearing_B.$_x, Definition
 
    subvar.str (                     $_k_x                         ) = '91016 N/m'             ! $SVG_bearing_B.$_k_x, Definition
 
@@ -300,6 +312,12 @@ subvargroup.begin (                 $SVG_bearing_B                )             
    subvar.str (                     $_d_beta                      ) = '34.3 Nms/rad'          ! $SVG_bearing_B.$_d_beta, Definition
 
    subvar.str (                     $_d_gamma                     ) = '47.8 Nms/rad'          ! $SVG_bearing_B.$_d_gamma, Definition
+
+   subvar.str (                     $_d_in                        ) = '750.0 mm'              ! $SVG_bearing_B.$_d_in, Definition
+
+   subvar.str (                     $_d_out                       ) = '1220.0 mm'             ! $SVG_bearing_B.$_d_out, Definition
+
+   subvar.str (                     $_b                           ) = '365.0 mm'              ! $SVG_bearing_B.$_b, Definition
 
 subvargroup.end (                   $SVG_bearing_B                )                           ! $SVG_bearing_B
 
@@ -360,11 +378,11 @@ body.sb.node.pos (        1 ,   1 , $B_shaft                      ) = 0.00000000
 body.sb.node.pos (        2 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.node.pos (        3 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.node.id (         2 ,       $B_shaft                      ) = 2                       ! Node ID
-body.sb.node.pos (        1 ,   2 , $B_shaft                      ) = $SVG_bearing_A.$_x      ! Node Position
+body.sb.node.pos (        1 ,   2 , $B_shaft                      ) = $SVG_shaft.$_length_A   ! Node Position
 body.sb.node.pos (        2 ,   2 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.node.pos (        3 ,   2 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.node.id (         3 ,       $B_shaft                      ) = 3                       ! Node ID
-body.sb.node.pos (        1 ,   3 , $B_shaft                      ) = $SVG_bearing_B.$_x      ! Node Position
+body.sb.node.pos (        1 ,   3 , $B_shaft                      ) = { $SVG_shaft.$_length_A+$SVG_shaft.$_free_length } ! Node Position
 body.sb.node.pos (        2 ,   3 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.node.pos (        3 ,   3 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.node.id (         4 ,       $B_shaft                      ) = 4                       ! Node ID
@@ -373,9 +391,9 @@ body.sb.node.pos (        2 ,   4 , $B_shaft                      ) = 0.00000000
 body.sb.node.pos (        3 ,   4 , $B_shaft                      ) = 0.00000000000000000E+00 ! Node Position
 body.sb.ele.from (        1 ,       $B_shaft                      ) = 1                       ! From Node
 body.sb.ele.to (          1 ,       $B_shaft                      ) = 2                       ! To Node
-body.sb.ele.type (        1 ,       $B_shaft                      ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   1 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
-body.sb.ele.xsec (        2 ,   1 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
+body.sb.ele.type (        1 ,       $B_shaft                      ) = 3                       ! Type
+body.sb.ele.xsec (        1 ,   1 , $B_shaft                      ) = $XSc_shaft_A            ! Cross Section
+body.sb.ele.xsec (        2 ,   1 , $B_shaft                      ) = $XSc_shaft_A            ! Cross Section
 body.sb.ele.ori.vec (     1 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
 body.sb.ele.ori.vec (     2 ,   1 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
 body.sb.ele.ori.vec (     3 ,   1 , $B_shaft                      ) = 1.00000000000000000E+00 ! Orientation Vector
@@ -386,9 +404,9 @@ body.sb.ele.active (      1 ,       $B_shaft                      ) = 1         
 body.sb.ele.scal.len (    1 ,       $B_shaft                      ) = 1.00000000000000000E+00 ! Length Scaling
 body.sb.ele.from (        2 ,       $B_shaft                      ) = 2                       ! From Node
 body.sb.ele.to (          2 ,       $B_shaft                      ) = 3                       ! To Node
-body.sb.ele.type (        2 ,       $B_shaft                      ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   2 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
-body.sb.ele.xsec (        2 ,   2 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
+body.sb.ele.type (        2 ,       $B_shaft                      ) = 3                       ! Type
+body.sb.ele.xsec (        1 ,   2 , $B_shaft                      ) = $XSc_shaft_A            ! Cross Section
+body.sb.ele.xsec (        2 ,   2 , $B_shaft                      ) = $XSc_shaft_B            ! Cross Section
 body.sb.ele.ori.vec (     1 ,   2 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
 body.sb.ele.ori.vec (     2 ,   2 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
 body.sb.ele.ori.vec (     3 ,   2 , $B_shaft                      ) = 1.00000000000000000E+00 ! Orientation Vector
@@ -399,9 +417,9 @@ body.sb.ele.active (      2 ,       $B_shaft                      ) = 1         
 body.sb.ele.scal.len (    2 ,       $B_shaft                      ) = 1.00000000000000000E+00 ! Length Scaling
 body.sb.ele.from (        3 ,       $B_shaft                      ) = 3                       ! From Node
 body.sb.ele.to (          3 ,       $B_shaft                      ) = 4                       ! To Node
-body.sb.ele.type (        3 ,       $B_shaft                      ) = 4                       ! Type
-body.sb.ele.xsec (        1 ,   3 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
-body.sb.ele.xsec (        2 ,   3 , $B_shaft                      ) = $XSc_shaft              ! Cross Section
+body.sb.ele.type (        3 ,       $B_shaft                      ) = 3                       ! Type
+body.sb.ele.xsec (        1 ,   3 , $B_shaft                      ) = $XSc_shaft_B            ! Cross Section
+body.sb.ele.xsec (        2 ,   3 , $B_shaft                      ) = $XSc_shaft_B            ! Cross Section
 body.sb.ele.ori.vec (     1 ,   3 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
 body.sb.ele.ori.vec (     2 ,   3 , $B_shaft                      ) = 0.00000000000000000E+00 ! Orientation Vector
 body.sb.ele.ori.vec (     3 ,   3 , $B_shaft                      ) = 1.00000000000000000E+00 ! Orientation Vector
@@ -579,7 +597,7 @@ marker.pos (              1 ,       $M_shaft_bearing_A            ) = $SVG_beari
 
 marker.type (                       $M_shaft_bearing_B            ) = 2                       ! Type
 marker.parent (                     $M_shaft_bearing_B            ) = $B_shaft                ! Body
-marker.pos (              1 ,       $M_shaft_bearing_B            ) = $SVG_bearing_B.$_x      ! Position
+marker.pos (              1 ,       $M_shaft_bearing_B            ) = { $SVG_bearing_B.$_x + $SVG_shaft.$_length_A + $SVG_shaft.$_free_length } ! Position
 
 marker.type (                       $M_shaft_sun                  ) = 2                       ! Type
 marker.parent (                     $M_shaft_sun                  ) = $B_shaft                ! Body
@@ -892,12 +910,22 @@ material.par (            6 ,       $Mat_shaft                    ) = 8.07692307
 !**********************************************************************
 ! Cross Sections
 !**********************************************************************
-xsection.type (                     $XSc_shaft                    ) = 1                       ! Type
-xsection.par (            1 ,       $XSc_shaft                    ) = $Mat_shaft              ! [-] Material
-xsection.par (            3 ,       $XSc_shaft                    ) = $SVG_shaft.$_diameter   ! [m] Diameter
-xsection.par (            4 ,       $XSc_shaft                    ) = 3.60000000000000000E+01 ! [-] Number of cross section nodes
-xsection.plot.par (       1 ,       $XSc_shaft                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-xsection.plot.par (       1 ,   1 ,   1 , $XSc_shaft              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
-xsection.plot.par (       1 ,   2 ,   1 , $XSc_shaft              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.type (                     $XSc_shaft_A                  ) = 2                       ! Type
+xsection.par (            1 ,       $XSc_shaft_A                  ) = $Mat_shaft              ! [-] Material
+xsection.par (            3 ,       $XSc_shaft_A                  ) = $SVG_bearing_A.$_d_in   ! [m] Outer diameter
+xsection.par (            4 ,       $XSc_shaft_A                  ) = { 0.1*$SVG_bearing_A.$_d_in } ! [m] Inner diameter
+xsection.par (            5 ,       $XSc_shaft_A                  ) = 3.60000000000000000E+01 ! [-] Number of cross section nodes
+xsection.plot.par (       1 ,       $XSc_shaft_A                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   1 ,   1 , $XSc_shaft_A            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   2 ,   1 , $XSc_shaft_A            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+xsection.type (                     $XSc_shaft_B                  ) = 2                       ! Type
+xsection.par (            1 ,       $XSc_shaft_B                  ) = $Mat_shaft              ! [-] Material
+xsection.par (            3 ,       $XSc_shaft_B                  ) = $SVG_bearing_B.$_d_in   ! [m] Outer diameter
+xsection.par (            4 ,       $XSc_shaft_B                  ) = { 0.1*$SVG_bearing_A.$_d_in } ! [m] Inner diameter
+xsection.par (            5 ,       $XSc_shaft_B                  ) = 3.60000000000000000E+01 ! [-] Number of cross section nodes
+xsection.plot.par (       1 ,       $XSc_shaft_B                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   1 ,   1 , $XSc_shaft_B            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   2 ,   1 , $XSc_shaft_B            ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
                                                                                                                                                             
