@@ -380,15 +380,7 @@ classdef Dynamic_Formulation
             
             n = length(x_0);     nt = length(time);
             
-%             data = load('data/input_load.mat');
-%             t_load = data.time;
-%             T_aero = data.Mx*1.0e3;
-%             gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
-% 
-%             T_A = interp1(t_load, T_aero, time, 'linear');
-%             ref_gen_speed = interp1(t_load, gen_speed, time, 'linear');
-
-            data = readtable('data/load_data.xlsx');
+            data = readtable('data/load_data.csv');
             
             TA = data.T_A(3:end)*data.T_A(2);
             time_TA = (0:(length(TA)-1))*data.T_A(1);
