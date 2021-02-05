@@ -1,5 +1,6 @@
-classdef ISO_6336 < Gear_Set
+classdef (Abstract) ISO_6336 < Gear_Set
     %ISO_6336 do some calculations following the ISO 6336 standard.
+    % see also: KSISO_6336, MATISO_6336, Gear_Set
     %
     % References:
     %   [1] ISO 6336-1:2006 Calculation of load capacity of spur and 
@@ -7,40 +8,49 @@ classdef ISO_6336 < Gear_Set
     % influence factors.
     %   [2] ISO 6336-2:2006 Calculation of load capacity of spur and 
     % helical gears -- Part 2: Calculation of surface durability (pitting).
-    %   [3] ISO/TR 6336-30:2017 Calculation of load capacity of spur and 
+    %   [3] ISO 6336-6:2019 Calculation of load capacity of spur and 
+    % helical gears -- Part 6: Calculation of service life under variable 
+    % load
+    %   [4] ISO/TR 6336-30:2017 Calculation of load capacity of spur and 
     % helical gears -- Calculation examples for the application of ISO 6336 
     % parts 1, 2, 3, 5
-    %   [4] Arnaudov, K., Karaivanov, D. (2019). Planetary Gear Trains. 
+    %   [5] Arnaudov, K., Karaivanov, D. (2019). Planetary Gear Trains. 
     % Boca Raton: CRC Press, https://doi.org/10.1201/9780429458521
     %
     
     properties(Access = public)
-        P_rated;     % [kW], Rated power
-        n_out;       % [1/min.], Output speed
-        S_Hmin;      % [-], Minimum required safety factor for surface durability (pitting)
-        S_Fmin;      % [-], Minimum required safety factor for tooth bending strength
-        L_h;         % [h], Required life
-        K_A;         % [-], Application factor
-        calculation; % [-], calculation method: [KISSsoft] or [default]
-        S_H;         % [-], Pitting safety factor
-        S_F;         % [-], Tooth bending safety factor
-    end
-    
-    properties(Dependent)
-        K_gamma;       % [-], Mesh load factor
-        T_1;           % [N-m], Applied torque
-        sigma_HP_ref;  % [N/mm^2], Permissive contact stress (reference)
-        sigma_HP_stat; % [N/mm^2], Permissive contact stress (static)
+        P_rated;     % [kW],     Rated power
+        S_Hmin;      % [-],      Minimum required safety factor for surface durability (pitting)
+        S_Fmin;      % [-],      Minimum required safety factor for tooth bending strength
+        L_h;         % [h],      Required life
+        K_A;         % [-],      Application factor
+        n_nominal;   % [1/min.], Nominal speed of each component(gears and carrier)
     end
     
     properties(Access = private)
-        gear_set (1, :) Gear_Set; % [-], Gear stage
-        Z_NT;
-        Z_L;
-        Z_v;
-        Z_R;
-        Z_W;
-        Z_X;
+        idx_fixed; % [-],        Index of the fixed element (if planetary)
+        idx_input; % [-],        Index of the input element
+%         gear_set;
+    end
+    
+    properties(Dependent, Access = public)
+        speed_ratio;   % [-],      Speed ratio w.r.t. input element
+        torque_ratio;  % [-],      Torque ratio w.r.t. input element
+        T_nominal;     % [N-m],    Nominal torque applied on each element
+        T_input;       % [N-m],    Input torque of the Gear_Set
+        T_output;      % [N-m],    Output torque of the Gear_Set
+        n_input;       % [1/min.], Input speed of the Gear_Set
+        n_output;      % [1/min.], Output speed of the Gear_Set
+        sigma_HP_ref;  % [N/mm^2], Permissive contact stress (reference)
+        sigma_HP_stat; % [N/mm^2], Permissive contact stress (static)
+        K_gamma;       % [-],      Mesh load factor
+        F_tH;          % [N],      Determinant tangential load in a transverse plane for K_Halpha and K_Falpha
+        J_eq;          % [kg-m^2], Equivalent mass moment of inertia
+        k_T;           % [-],      Scaling factor for the input torque 
+    end
+    
+    properties(Dependent, Access = private)
+        idx_output; % [-],        Index of the output element
     end
     
     methods
@@ -55,15 +65,14 @@ classdef ISO_6336 < Gear_Set
             n_1 = 360.0;
             P_r = 1.0e-3*T_1*n_1*pi/30.0;
             
-            default = {'calculation', 'default', ...
-                       'P_rated'    , P_r, ...
-                       'n_out'      , n_1, ...
+            default = {'P_rated'    , P_r, ...
                        'S_Hmin'     , 1.0, ...
                        'S_Fmin'     , 1.0, ...
                        'L_h'        , 50.0e3, ...
-                       'K_A'        , 1.0};
+                       'K_A'        , 1.0, ...
+                       'n_nominal'  , [n_1, NaN]};
             
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj@Gear_Set('configuration', gset.configuration, ...
                          'm_n'          , gset.m_n, ...
@@ -82,410 +91,868 @@ classdef ISO_6336 < Gear_Set
                          'Q'            , gset.Q, ...
                          'R_a'          , gset.R_a, ...
                          'material'     , gset.material);
-
-            obj.gear_set = gset;
-
-            if(strcmpi(default.calculation, 'KISSsoft'))
-                obj.calculation = 'KISSsoft';
-                if(~KISSsoftCOM.is_installed())
-                    obj.calculation = 'default';
-                    warning('ISO_6336:KS', ['KISSsoft\x00a9 COM interface not found. ', ...
-                                            'Using [DEFAULT] calculation method.']);
-                end
-            elseif(strcmpi(default.calculation, 'default'))
-                obj.calculation = 'default';
-            end
             
-            obj.P_rated  = default.P_rated;
-            obj.n_out    = default.n_out;
-            obj.S_Hmin   = default.S_Hmin;
-            obj.S_Fmin   = default.S_Fmin;
-            obj.L_h      = default.L_h;
-            obj.K_A      = default.K_A;
+            obj.P_rated = default.P_rated;
+            obj.S_Hmin  = default.S_Hmin;
+            obj.S_Fmin  = default.S_Fmin;
+            obj.L_h     = default.L_h;
+            obj.K_A     = default.K_A;
+
+            [obj.n_nominal, ...
+                obj.idx_fixed, obj.idx_input] = obj.set_gear_speed(default.n_nominal);
+        end
+        
+        function [N, sigma] = Pitting_SN_curve(obj, varargin)
+            N = logspace(1, 10, 100);
+            default = {'N', N};
+            default = scaling_factor.process_varargin(default, varargin);
+            N = default.N;
+            
+            ZN = obj.life_factor(N);
+            
+            sigma = diag(obj.sigma_HP_ref)*ZN;
         end
         
         function disp(obj)
             % to be done...
         end
+        
     end
     
     %% Calculation methods:
     methods
-        function [SH, SF] = safety_factors(obj, varargin)
-            if(strcmpi(obj.calculation, 'KISSsoft'))
-                [SH, SF] = obj.KISSsoft_calculation(varargin{:});
-            elseif(strcmpi(obj.calculation, 'default'))
-                warning('ISO_6336:SF', 'Calculation of the tooth bending safety factor not implemented yet.');
-                SH = obj.Pitting(varargin{:});
-                SF = nan(size(SH));
+        function obj_sca = scale_by(obj_ref, gamma)
+            if(~isa(gamma, 'scaling_factor'))
+                error('gamma should be a [SCALING_FACTOR] object.');
             end
+                                                        % Scaling factors for:
+            gamma_one = scaling_factor({'m_n', 1.0, ... % normal module,         [mm]
+                                        'b'  , 1.0, ... % face width,            [mm]
+                                        'd'  , 1.0, ... % output shaft diameter, [mm]
+                                        'L'  , 1.0});   % output shaft length,   [mm]
+
+            gamma = gamma_one.update(gamma);
+            
+            m_n_sca = Rack.module(obj_ref.m_n*gamma('m_n'), 'round_0125', '');
+            
+            gamma('m_n') = m_n_sca/obj_ref.m_n;
+            
+            ref_shaft = obj_ref.output_shaft;
+            shaft_sca = Shaft('d'       , ref_shaft.d*gamma('d'), ...
+                              'L'       , ref_shaft.L*gamma('L'), ...
+                              'bearing' , ref_shaft.bearing, ...
+                              'material', ref_shaft.material);
+                          
+            gset = Gear_Set('configuration', obj_ref.configuration, ...
+                            'm_n'          , obj_ref.m_n*gamma('m_n'), ...
+                            'alpha_n'      , obj_ref.alpha_n, ...
+                            'z'            , obj_ref.z, ...
+                            'b'            , obj_ref.b*gamma('b'), ...
+                            'x'            , obj_ref.x, ...
+                            'beta'         , obj_ref.beta, ...
+                            'k'            , obj_ref.k, ...
+                            'bore_ratio'   , obj_ref.bore_ratio, ...
+                            'N_p'          , obj_ref.N_p, ...
+                            'a_w'          , obj_ref.a_w*gamma('m_n'), ...
+                            'rack_type'    , obj_ref.type, ...
+                            'bearing'      , obj_ref.bearing, ...
+                            'shaft'        , shaft_sca, ...
+                            'Q'            , obj_ref.Q, ...
+                            'R_a'          , obj_ref.R_a, ...
+                            'material'     , obj_ref.material);
+            
+            if(strcmpi(obj_ref.configuration, 'parallel'))
+                n_nom = [1.0, nan];
+            elseif(strcmpi(obj_ref.configuration, 'planetary'))
+                n_nom = [nan, nan, 0.0, 1.0];
+            end
+            n_nom = n_nom*obj_ref.n_input;
+            
+            constructor = str2func(class(obj_ref));
+            obj_sca = constructor(gset, 'P_rated'  , obj_ref.P_rated, ...
+                                        'S_Hmin'   , obj_ref.S_Hmin, ...
+                                        'S_Fmin'   , obj_ref.S_Fmin, ...
+                                        'L_h'      , obj_ref.L_h, ...
+                                        'K_A'      , obj_ref.K_A, ...
+                                        'n_nominal', n_nom);
         end
         
-        function [SH, SF] = KISSsoft_calculation(obj, varargin)
-            default = {'lubricant_ID', '11220', ...
-                       'stage_idx'   ,  0, ...
-                       'save_report' ,  false, ...
-                       'show_report' ,  false};
+        function N_star = num_cycles_failure(obj)
+            N_star = zeros(1, 2);
+            sig_HPR = obj.sigma_HP_ref;
             
-            default = process_varargin(default, varargin);
-            
-            ks = obj.KISSsoft();
-            ks.set_var('ZS.P'       , obj.P_rated); % rated power
-            ks.set_var('ZS.Pnominal', obj.P_rated); % rated power
-            
-            ks.set_var('ZS.Oil.SchmierTypID', default.lubricant_ID);
-            
-            flag_impul = true;
-            if(strcmp(obj.configuration, "parallel"))
-                flag_impul = true;
-                template_code = 12;
-            elseif(strcmp(obj.configuration, 'planetary'))
-                n_c = obj.n_out/obj.u;
-                T_c = obj.P_rated/(n_c.*pi/30.0);
-                n_planet = n_c.*(1.0 - obj.z(3)./obj.z(2));
-                ks.set_var('ZR[1].n'               , abs(n_planet)); % speed at gear 2: planet
-                ks.set_var('ZR[2].n'               , 0.0          ); % speed at gear 3: ring
-                ks.set_var('ZS.Planet.nStegnominal', n_c          ); % speed at planet carrier
-                ks.set_var('ZS.Planet.nSteg'       , n_c          ); % speed at planet carrier
-                
-                ks.set_var('ZR[1].T'               , abs(n_planet)); % speed at gear 2: planet
-                ks.set_var('ZS.Planet.TStegnominal', T_c          ); % torque at planet carrier
-                ks.set_var('ZS.Planet.nSteg'       , T_c          ); % torque at planet carrier
-                
-                flag_impul = false;
-                template_code = 14;
-            end
-            
-            ks.set_var('ZR[0].Tnominal', obj.T_1   ); % torque at gear 1
-            ks.set_var('ZR[0].n'       , obj.n_out ); % speed at gear 1
-            ks.set_var('ZP[0].Impuls'  , flag_impul); % sense of rotation, gear 1
-
-            ks.set_var('ZS.SSi.Flanke'      , obj.S_Hmin);
-            ks.set_var('ZS.SSi_0to05.Flanke', obj.S_Hmin);
-            ks.set_var('ZS.SSi_at1.Flanke'  , obj.S_Hmin);
-            ks.set_var('ZS.SSi_2to20.Flanke', obj.S_Hmin);
-            ks.set_var('ZS.SSi_fix.Flanke'  , obj.S_Hmin);
-            
-            ks.set_var('ZS.SSi.Fuss'      , obj.S_Fmin);
-            ks.set_var('ZS.SSi_0to05.Fuss', obj.S_Fmin);
-            ks.set_var('ZS.SSi_at1.Fuss'  , obj.S_Fmin);
-            ks.set_var('ZS.SSi_2to20.Fuss', obj.S_Fmin);
-            ks.set_var('ZS.SSi_fix.Fuss'  , obj.S_Fmin);
-            
-            ks.set_var('ZS.H'   , obj.L_h);
-            ks.set_var('ZS.KA'  , obj.K_A);
-            ks.set_var('ZS.Kgam', obj.K_gamma);
-            
-            if(~ks.calculate())
-                delete(ks);
-            end
-            
-            kv = ks.get_var('ZS.KVcalc');
-            
-            flag_kv = false;
-            if(kv < 1.05)
-                flag_kv = true;
-                for idx = 1:2
-                    ks.set_var(sprintf('ZP[%d].KV.KV', idx), 1.05);
-                end
-                
-                ks.set_var('Zst.KVFlag', flag_kv);
-            end
-            
-            flag_khb = false;
             for idx = 1:2
-                khb = ks.get_var(sprintf('ZP[%d].KHb', idx - 1));
-                
-                if(khb < 1.15)
-                    flag_khb = true;
-                    ks.set_var(sprintf('ZP[%d].KHb', idx - 1), 1.15);
-                end
-            end
-            
-            if(flag_khb)
-                ks.set_var('Zst.KHbVariant', true);
-            end
-            
-            if(~ks.calculate())
-                delete(ks);
-            end
-            
-            if(flag_kv || flag_khb)
-                ks.calculate();
-            end
-            
-            max_Np = obj.N_p + 1;
-            
-            SH = zeros(max_Np, 1);
-            SF = zeros(max_Np, 1);
-            
-            for idx = 1:length(obj.z)
-                SH(idx) = ks.get_var(sprintf('ZPP[%d].Flanke.SH', idx - 1));
-                SF(idx) = ks.get_var(sprintf('ZPP[%d].Fuss.SF'  , idx - 1));
-            end
-            
-            SH(SH == 0.0) = [];
-            SF(SF == 0.0) = [];
-            
-            SH(isnan(SH)) = [];
-            SF(isnan(SF)) = [];
-            
-            if(isrow(SH))
-                SH = SH';
-            end
-            
-            if(isrow(SF))
-                SF = SF';
-            end
-            
-            if(default.save_report)
-                if(strcmpi(class(obj), "Drivetrain"))
-                    report_name = sprintf("%s\\stage_%02d.rtf" , pwd, default.stage_idx);
-                    file_name   = sprintf("%s\\stage_%02d.Z0%d", pwd, default.stage_idx, template_code);
-                else
-                    report_name = sprintf("%s\\@%s\\stage_%02d.rtf" , pwd, class(obj), default.stage_idx);
-                    file_name   = sprintf("%s\\@%s\\stage_%02d.Z0%d", pwd, class(obj), default.stage_idx, template_code);
-                end
-                
-                ks.save_file(file_name);
-                version = ks.get_version;
-                template = sprintf("C:\\Program Files (x86)\\KISSsoft %s\\rpt\\Z0%dLe0.RPT", version, template_code);
-                
-                ks.write_report(template, ... % template file
-                    report_name, default.show_report, 0); % output format
-            else
-                ks.report(default.show_report);
+                func = @(x)(obj.sigma_H(idx).*obj.S_H(idx) - obj.life_factor(x).*sig_HPR(idx));
+                x0 = obj.N_L(idx)*2.0;
+                [N_star(idx),~] = fsolve(func, x0);
             end
         end
         
-        function [SH, out] = Pitting(obj, varargin)
-            % [N/mm^2],  Allowable contact stress number:
-            sigma_Hlim = obj.material.sigma_Hlim;
-            % Tip relief by running-in, Table 8, [1]:
-            C_ay = (1.0/18.0)*(sigma_Hlim/97.0 - 18.45)^2 + 1.5;
+        function [num_cycle, sigmaH, torque_edges, speed_Max] = pitting_stress_bins(obj, torque, speed, time_step)
+            %PITTING_STRESS_BINS performs LDD on the torque signal,
+            % calculating the values of the pitting stress sigmaH for each
+            % torque bin. The num_cycles is expanded to the required life
+            % span L_h of the Gear_Set.
             
-            default = {'nu_40', 220.0, ...
-                       'C_a'  , C_ay};
+            [num_cycle, torque_edges, speed_Max] = ISO_6336.LDD(torque, speed, time_step);
             
-            default = process_varargin(default, varargin);
+            Max_power = torque_edges(2:end).*1.0e-3 .* ... % [kN-m]
+                        speed_Max.*(pi/30.0);     % [rad/s] = [kW]
             
-            out = struct();
+            obj_tmp = obj;
+            obj_tmp.K_A = 1.0;
+            
+            sigmaH = zeros(2, length(speed_Max));
+            
+            for idx = 1:length(speed_Max)
+                obj_tmp.P_rated = Max_power(idx);
+                obj_tmp.n_nominal = obj_tmp.speed_ratio*abs(speed_Max(idx));
+                sigmaH(:, idx) = obj_tmp.sigma_H';
+            end
+            
+            time_duration = time_step*length(torque);
+            num_cycle = num_cycle.*obj.L_h./time_duration;
+            
+            %% Example of plotting:
+%             figure;
+%             subplot(211)
+%             histogram('binEdges' , num_cycle, ...
+%                       'binCounts', sigmaH(1, :), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 2.0);
+%             ylabel('\sigma_{H1}, [N/mm^2]');
+%             
+%             subplot(212)
+%             histogram('binEdges' , num_cycle, ...
+%                       'binCounts', sigmaH(2, :), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 3);
+%             xlabel('N, [-]');
+%             ylabel('\sigma_{H2}, [N/mm^2]');
+%             
+%             fig_axes = findobj(gcf, 'Type', 'Axes');
+%             set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xscale', 'log');
+% 
+        end
+        
+        %%
+        function load_spectrum_KISSsoft(obj, file_name, torque_signal, load_speed, time_step)
+            [~, torque_edges, speed_edges, N] = ISO_6336.LDD(torque_signal, load_speed, time_step);
+            
+            power_edges = torque_edges(2:end).*1.0e-3 .* ... % [kN-m]
+                           speed_edges.*(pi/30.0);    % [rad/s] = [kW]
 
-            f_pb = max(obj.f_pt.*cosd(obj.alpha_t));
-            out.f_pb = f_pb;
+            freq_factor  = N./sum(N);
+            power_factor = power_edges./obj.P_rated;
+            speed_factor = speed_edges./obj.n_input;
+
+            tab = table(freq_factor',  power_factor',  speed_factor', 'variableNames', ...
+                     {'#frequency'  , 'power'       , 'speed'});
             
-            if(f_pb >= 40.0) % [um]
-                y_alpha = 3.0; % [um]
+            writetable(tab, sprintf('%s.dat', file_name));
+        end
+        
+        function [NL, sigH, sigF] = read_Woehler_KS(obj)
+            if(strcmpi(obj.configuration, 'planetary'))
+                format_spec = '  -        %f     %f N/mm²    %f N/mm²    %f N/mm²      %f N/mm² (3)  (3)     %f N/mm² (4)  (4)     %f N/mm² (5)  (5)  ';
+                idx_F = 2:4;
+                idx_H = idx_F + 3;
+            elseif(strcmpi(obj.configuration, 'parallel'))
+                format_spec = '  -        %f     %f N/mm²    %f N/mm²    %f N/mm²      %f N/mm² (3)  (3)     %f N/mm² (4)  (4)     %f N/mm² (5)  (5)  ';
+                idx_F = 2:3;
+                idx_H = idx_F + 2;
+            end
+            
+            name = tempdir;
+            name = strrep(name, ':', '');
+            idx = find(ismember(name, 'Temp'), 1, 'last') + 1;
+            name = ['\\tsclient\', name(1:idx), 'KISS_*\Z01-H1.TMP'];
+            file = dir(name);
+            file_full = [file.folder, '\', file.name];
+            file_ID = fopen(file_full, 'r');
+            
+            line_start = 7;
+            line_start = line_start - 1;
+            
+            C = textscan(file_ID, format_spec, 1000, 'delimiter', '\n', 'headerlines', line_start);
+            NL = C{1};
+            sigH = cell2mat(C(idx_H));
+            sigF = cell2mat(C(idx_F));
+            
+        end
+        
+        function D = Simpack_damage_analysis(obj, data)
+            field_name = fieldnames(data.load);
+            
+            data_tmp = data;
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                D_PL_A = zeros(1, obj.N_p);
+                D_PL_B = D_PL_A;
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    D_PL_A(idx) = obj.bearing(1).Simpack_damage_analysis(data_tmp);
+                    
+                    jdx = idx_PL(2*idx);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    D_PL_B(idx) = obj.bearing(2).Simpack_damage_analysis(data_tmp);
+                end
+                
+                D_PL = [D_PL_A; D_PL_B];
+                D_PL = reshape(D_PL, 1, 2*obj.N_p);
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                jdx = idx_PLC(1);
+                data_tmp.load = data.load.(field_name{jdx});
+                D_PLC(1) = obj.bearing(3).Simpack_damage_analysis(data_tmp);
+                
+                jdx = idx_PLC(2);
+                data_tmp.load = data.load.(field_name{jdx});
+                D_PLC(2) = obj.bearing(4).Simpack_damage_analysis(data_tmp);
+                
+                D = [D_PL, D_PLC];
+                
+%                 idx_SP = find(contains(field_name, 'sun_planet'));
+%                 name_field = fieldnames(data.speed);
+%                 D_SP = zeros(1, obj.N_p);
+%                 for idx = 1:obj.N_p
+%                     jdx = idx_SP(idx);
+%                     data_tmp.load = data.load.(field_name{jdx});
+%                     
+%                     [n, sigma_H, speed] = ...
+%                     ISO_6336.LDD(data_tmp.load.ov_020.values, ...
+%                                  data_tmp.speed.(name_field{1}).x.values, ...
+%                                  data_tmp.time_step);
+%                 end
+                
+%                 for idx = idx_SP
+%                     ISO_6336.LDD(data.load.(field_name{idx}), ...
+%                                  data.speed.(field_name{idx}), ...
+%                                  data.time_step);
+%                 end
+%                 idx_RP = find(contains(field_name, '_ring_planet_'));
+                
             else
-                y_alpha = f_pb*75.0e-3;
+                % Pinion bearings:
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                D_pin = zeros(1, length(idx_PIN));
+                for idx = 1:length(D_pin)
+                    jdx = idx_PIN(idx);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    D_pin(idx) = obj.bearing(idx).Simpack_damage_analysis(data_tmp);
+                end
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                D_whe = zeros(1, length(idx_WHE));
+                for idx = 1:length(D_whe)
+                    jdx = idx_WHE(idx);
+                    data_tmp.load = data.load.(field_name{jdx});
+                    kdx = length(D_pin) + idx;
+                    D_whe(idx) = obj.bearing(kdx).Simpack_damage_analysis(data_tmp);
+                end
+                
+                D = [D_pin, D_whe];
+                
+%                 idx_PW = find(contains(field_name, 'pinion_wheel'));
+%                 ISO_6336.LDD(data.load.(field_name{idx_PW}), ...
+%                              data.speed.(field_name{idx_PW}), ...
+%                              data.time_step);
             end
-            out.y_alpha = y_alpha;
             
-            f_falpha = max(obj.f_falpha);
-            out.f_falpha = f_falpha;
-            % Estimated running allowance (pitch deviation):
-            y_p = y_alpha;
-            out.y_p = y_p;
-            % Estimated running allowance (flank deviation):
-            y_f = f_falpha*75.0e-3;
-            out.y_f = y_f;
+        end
+        
+        function show_LDD(obj, data, name)
+            field_name = fieldnames(data.load);
+            name_field = fieldnames(data.speed);
             
-            f_pbeff = f_pb - y_p;
-            out.f_pbeff = f_pbeff;
+            data_idx = data;
             
-            f_falphaeff = f_falpha - y_f; % 0.925*y_f
-            out.f_falphaeff = f_falphaeff;
-            
-            % Pitch line velocity:
-            v = obj.pitch_line_velocity();
-            out.v = v;
-            
-            Z_eps = obj.contact_ratio_factor();
-            out.Z_eps = Z_eps;
-            
-            % [N], Nominal tangential load:
-            F_t = 2.0e3*(obj.T_1/obj.d(1))/obj.N_p;
-            F_t = abs(F_t);
-            out.F_t = F_t;
-            
-            line_load = F_t*obj.K_A*obj.K_gamma/mean(obj.b);
-            
-            K_v = obj.dynamic_factor(v, line_load, default.C_a, ...
-            f_pbeff, f_falphaeff);
-            out.K_v = K_v;
-            
-            K_Hbeta = obj.face_load_factor();
-            out.K_Hbeta = K_Hbeta;
-            
-            % Determinant tangential load in a transverse plane:
-            F_tH = F_t*obj.K_gamma*obj.K_A*K_v*K_Hbeta;
-            out.F_tH = F_tH;
-            
-            term = obj.c_gamma_alpha*(f_pb - y_alpha)/(F_tH/obj.b);
-            K_Halpha = obj.transverse_load_factor(term, Z_eps);
-            out.K_Halpha = K_Halpha;
-            
-            % Zone factor: (sec. 6.1)
-            Z_H = obj.zone_factor();
-            out.Z_H = Z_H;
-            % Single pair tooth contact factor (sec. 6.2)
-            Z_BD = obj.tooth_contact_factor();
-            out.Z_BD = Z_BD;
-            
-            % [N/mm^2], Young's modulus:
-            E = obj.material.E;
-            % [-], Poisson's ratio:
-            nu = obj.material.nu;
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                figure('units', 'centimeters', 'position', [5.0, 5.0, 75.0 15.0]);
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 5, 5*idx - 4);
+                    obj.bearing(1).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(1).name, idx));
+                    
+                    jdx = idx_PL(2*idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 5, 5*idx - 3);
+                    obj.bearing(2).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(2).name, idx));
+                end
+                subplot(3, 5, 11)
+                xlabel('N, [-]')
+                
+                subplot(3, 5, 12)
+                xlabel('N, [-]')
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                for idx = 1:length(idx_PLC)
+                    jdx = idx_PLC(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 5, 5*idx - 2);
+                    hold on;
+                    obj.bearing(idx + 2).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(idx + 2).name, idx));
+                end
+                xlabel('N, [-]')
+                
+                % Sun-planet gear contact:
+                jdx_SP = find(contains(field_name, 'sun_planet'));
+                kdx_SP = find(contains(name_field, 'planet'));
+                for idx = 1:obj.N_p
+                    jdx = jdx_SP(idx);
+                    kdx = kdx_SP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                             
+                    subplot(3, 5, 5*idx - 1)
+                    histogram('binEdges'    , N, ...
+                              'binCounts'   , sigma_H(2:end)*1.0e-6, ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('\sigma_H, [N/mm^2]')
+                end
+                xlabel('N, [-]')
+                subplot(3, 5, 4)
+                title('Max. Sun-Planet contact stress');
+                
+                % Ring-planet gear contact:
+                jdx_RP = find(contains(field_name, 'ring_planet'));
+                kdx_RP = find(contains(name_field, 'planet'));
+                for idx = 1:obj.N_p
+                    jdx = jdx_RP(idx);
+                    kdx = kdx_RP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    
+                    subplot(3, 5, 5*idx)
+                    histogram('binEdges'    , N, ...
+                              'binCounts'   , sigma_H(2:end)*1.0e-6, ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('\sigma_H, [N/mm^2]')
+                end
+                xlabel('N, [-]')
+                subplot(3, 5, 5)
+                title('Max. Ring-Planet contact stress');
+                
+            else
+                % Pinion bearings:
+                figure('units', 'centimeters', 'position', [5.0, 5.0, 45.0 15.0]);
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                n_PIN = length(idx_PIN);
+                for idx = 1:n_PIN
+                    jdx = idx_PIN(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 3, 3*idx - 2)
+                    obj.bearing(idx).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(idx).name, idx));
+                end
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                n_WHE = length(idx_WHE);
+                for idx = 1:n_WHE
+                    jdx = idx_WHE(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    kdx = n_PIN + idx;
+                    
+                    subplot(3, 3, 3*idx - 1)
+                    obj.bearing(kdx).show_LDD(data_idx);
+                    ylabel('P, [N]')
+                    title(sprintf('%s.%d', obj.bearing(kdx).name, idx));
+                end
+                
+                % Pinion-Wheel gear contact:
+                jdx_PW = contains(field_name, 'pinion_wheel');
+                kdx_PW = contains(name_field, 'pinion');
+                name_field = fieldnames(data.speed);
+                
+                [N, sigma_H] = ISO_6336.LDD(data.load. (field_name{jdx_PW}).ov_020.values, ...
+                                            data.speed.(name_field{kdx_PW}).x.values, ...
+                                            data.time_step);
 
-            % Elasticity factor: (sec. 7)
-            Z_E = sqrt(E/(2.0*pi*(1.0 - nu^2)));
-            out.Z_E = Z_E;
-            
-            % Helix angle factor: (sec. 9)
-            Z_beta = 1.0/sqrt(cosd(obj.beta));
-            out.Z_beta = Z_beta;
-            
-            [ZL, Zv] = obj.lubrication_velocity_factor(sigma_Hlim, default.nu_40, v);
-            obj.Z_L = ZL;
-            obj.Z_v = Zv;
-            
-            % Roughness factor:
-            ZR = obj.roughness_factor(sigma_Hlim);
-            obj.Z_R = ZR;
-            
-            % Work hardening factor:
-            ZW = 1.0;
-            obj.Z_W = ZW;
-            
-            % Size factor:
-            ZX = 1.0;
-            obj.Z_X = ZX;
-
-            % Number of load cycles:
-            N_L1 = obj.n_out*60.0*obj.L_h; % pinion
-            N_L2 = N_L1/obj.u;             % wheel
-            out.N_L = [N_L1 N_L2];
-            
-            % Life factor:
-            % line = 2
-            Z_NT1 = obj.life_factor(N_L1);
-            Z_NT2 = obj.life_factor(N_L2);
-            ZNT = [Z_NT1 Z_NT2];
-            obj.Z_NT = ZNT;
-            
-            % Contact stress:
-            % Nominal contact stress at pitch point:
-            num = F_t*(obj.u + 1.0);
-            den = obj.d(1)*obj.b*obj.u;
-            sigma_H0 = Z_H*Z_E*Z_eps*Z_beta*sqrt(num/den);
-            out.sigma_H0 = sigma_H0;
-            
-            % nominal contact stress at pitch point:
-            sigma_H = Z_BD*sigma_H0*sqrt(obj.K_gamma*obj.K_A*K_v*K_Hbeta*K_Halpha); % pinion/wheel
-            out.sigma_H = sigma_H;
-            
-            % Permissible contact stress:
-            sigma_HP = sigma_Hlim*obj.Z_NT* ...
-                                  obj.Z_L * ...
-                                  obj.Z_v * ...
-                                  obj.Z_R * ...
-                                  obj.Z_W * ...
-                                  obj.Z_X/obj.S_Hmin;
-            out.sigma_HP = sigma_HP;
-            
-            % Safety factor for surface durability (against pitting):
-            SH = obj.S_Hmin*sigma_HP./sigma_H; % pinion/planet
-            
-            if(isrow(SH))
-                SH = SH';
+                subplot(3, 3, 3:3:9)
+                histogram('binEdges'    , N, ...
+                          'binCounts'   , sigma_H(2:end)*1.0e-6, ...
+                          'displayStyle', 'stairs', ...
+                          'lineWidth'   , 2.0);
+                title('Max. Pinion-Wheel contact stress');
+                                        
             end
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'box', 'on');
+            set(fig_axes, 'xScale', 'log');
+            
+            fig_axes(end).Title.String = [name, ' - ', fig_axes(end).Title.String];
+
+        end
+        
+        function show_histogram(obj, data, name)
+            field_name = fieldnames(data.load);
+            name_field = fieldnames(data.speed);
+            
+            data_idx = data;
+            
+            figure('units', 'centimeters', 'position', [5.0, 5.0, 50.0 20.0]);
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 5, 5*idx - 4);
+                    obj.bearing(1).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(1).name, idx));
+                    
+                    jdx = idx_PL(2*idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    subplot(3, 5, 5*idx - 3);
+                    obj.bearing(2).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(2).name, idx));
+                end
+                subplot(3, 5, 11)
+                xlabel('P, [N]')
+                
+                subplot(3, 5, 12)
+                xlabel('P, [N]')
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                for idx = 1:length(idx_PLC)
+                    jdx = idx_PLC(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 5, 5*idx - 2);
+                    hold on;
+                    obj.bearing(idx + 2).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(idx + 2).name, idx));
+                end
+                xlabel('P, [N]')
+                
+                % Sun-planet gear contact:
+                jdx_SP = find(contains(field_name, 'sun_planet'));
+                kdx_SP = find(contains(name_field, 'planet'));
+                for idx = 1:obj.N_p
+                    jdx = jdx_SP(idx);
+                    kdx = kdx_SP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H, speed] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    N = diff(N)*60.0./(speed.*data.time_step);
+                    N(isnan(N)) = 0;
+            
+                    subplot(3, 5, 5*idx - 1)
+                    histogram('binEdges'    , fliplr(sigma_H)*1.0e-6, ...
+                              'binCounts'   , fliplr(N), ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('N, [-]')
+                end
+                xlabel('\sigma_H, [N/mm^2]');
+
+                subplot(3, 5, 4)
+                title('Max. Sun-Planet contact stress');
+                
+                % Ring-planet gear contact:
+                jdx_RP = find(contains(field_name, 'ring_planet'));
+                kdx_RP = find(contains(name_field, 'planet'));
+                for idx = 1:obj.N_p
+                    jdx = jdx_RP(idx);
+                    kdx = kdx_RP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [N, sigma_H, speed] = ...
+                    ISO_6336.LDD(data_idx.load.ov_020.values, ...
+                                 data_idx.speed.(name_field{kdx}).x.values, ...
+                                 data_idx.time_step);
+                    N = diff(N)*60.0./(speed.*data.time_step);
+                    N(isnan(N)) = 0;
+
+                    subplot(3, 5, 5*idx)
+                    histogram('binEdges'    , fliplr(sigma_H)*1.0e-6, ...
+                              'binCounts'   , fliplr(N), ...
+                              'displayStyle', 'stairs', ...
+                              'lineWidth'   , 2.0);
+                    ylabel('N, [-]')
+                end
+                xlabel('\sigma_H, [N/mm^2]');
+                
+                subplot(3, 5, 5)
+                title('Max. Ring-Planet contact stress');
+                
+            else
+                % Pinion bearings:
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                n_PIN = length(idx_PIN);
+                for idx = 1:n_PIN
+                    jdx = idx_PIN(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    subplot(3, 3, 3*idx - 2)
+                    obj.bearing(idx).show_histogram(data_idx);
+                    ylabel('N, [-]')
+                    title(sprintf('%s.%d', obj.bearing(idx).name, idx));
+                end
+                xlabel('P, [N]');
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                n_WHE = length(idx_WHE);
+                for idx = 1:n_WHE
+                    jdx = idx_WHE(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    kdx = n_PIN + idx;
+                    
+                    subplot(3, 3, 3*idx - 1)
+                    obj.bearing(kdx).show_histogram(data_idx);
+                    title(sprintf('%s.%d', obj.bearing(kdx).name, idx));
+                end
+                xlabel('P, [N]');
+                
+                % Pinion-Wheel gear contact:
+                jdx_PW = contains(field_name, 'pinion_wheel');
+                kdx_PW = contains(name_field, 'pinion');
+                name_field = fieldnames(data.speed);
+                
+                [N, sigma_H, speed] = ISO_6336.LDD(data.load. (field_name{jdx_PW}).ov_020.values, ...
+                                                   data.speed.(name_field{kdx_PW}).x.values, ...
+                                                   data.time_step);
+                N = diff(N)*60.0./(speed.*data.time_step);
+                N(isnan(N)) = 0;
+
+                subplot(3, 3, 3:3:9)
+                histogram('binEdges'    , fliplr(sigma_H)*1.0e-6, ...
+                          'binCounts'   , fliplr(N), ...
+                          'displayStyle', 'stairs', ...
+                          'lineWidth'   , 2.0);
+                ylabel('N, [-]')
+                title('Max. Pinion-Wheel contact stress');
+            end
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xScale', 'log');
+            
+            fig_axes(end).Title.String = [name, ' - ', fig_axes(end).Title.String];
+
+        end
+        
+        function [a, b] = Weibull(obj, data, name)
+            field_name = fieldnames(data.load);
+            
+            data_idx = data;
+            
+            if(strcmp(obj.configuration, 'planetary'))
+                % Planet bearings:
+                idx_PL  = find(contains(field_name, 'S_planet'));
+                a_PL = zeros(size(idx_PL));
+                b_PL = zeros(size(idx_PL));
+                
+                for idx = 1:obj.N_p
+                    jdx = idx_PL(2*idx - 1);
+                    data_idx.load = data.load.(field_name{jdx});
+
+                    [a, b] = obj.bearing(1).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(1).name, ...
+                                                        idx, a, b);
+
+                    a_PL(2*idx - 1) = a;
+                    b_PL(2*idx - 1) = b;
+                    
+                    jdx = idx_PL(2*idx);
+                    data_idx.load = data.load.(field_name{jdx});
+
+                    [a, b] = obj.bearing(2).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(2).name, ...
+                                                        idx, a, b);
+
+                    a_PL(2*idx) = a;
+                    b_PL(2*idx) = b;
+                end
+                
+                % Planet carrier bearings:
+                idx_PLC = find(contains(field_name, 'S_carrier'));
+                a_PLC = zeros(size(idx_PLC));
+                b_PLC = zeros(size(idx_PLC));
+                for idx = 1:length(idx_PLC)
+                    jdx = idx_PLC(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+
+                    [a, b] = obj.bearing(idx + 2).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx + 2).name, ...
+                                                        idx, a, b);
+
+                    a_PLC(idx) = a;
+                    b_PLC(idx) = b;
+                end
+                
+                % Sun-planet gear contact:
+                jdx_SP = find(contains(field_name, 'sun_planet'));
+                a_SP = zeros(obj.N_p, 1);
+                b_SP = zeros(obj.N_p, 1);
+                for idx = 1:obj.N_p
+                    jdx = jdx_SP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                                 
+                    wbull = fitdist(data_idx.load.ov_020.values + eps, 'weibull');
+                    
+                    a = wbull.a; % scale param.
+                    b = wbull.b; % shape param.
+                    
+                    fprintf('%s:\tSP%d\ta = %e\tb = %e\n', name, idx, a, b);
+                    a_SP(idx) = a;
+                    b_SP(idx) = b;
+                end
+                
+                % Ring-planet gear contact:
+                jdx_RP = find(contains(field_name, 'ring_planet'));
+                a_RP = zeros(obj.N_p, 1);
+                b_RP = zeros(obj.N_p, 1);
+                for idx = 1:obj.N_p
+                    jdx = jdx_RP(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    wbull = fitdist(data_idx.load.ov_020.values + eps, 'weibull');
+                    
+                    a = wbull.a; % scale param.
+                    b = wbull.b; % shape param.
+                    
+                    fprintf('%s:\tRP%d\ta = %e\tb = %e\n', name, idx, a, b);
+                    a_RP(idx) = a;
+                    b_RP(idx) = b;
+                end
+                
+                a = [a_PL; a_PLC; a_SP; a_RP];
+                b = [b_PL; b_PLC; b_SP; b_RP];
+                
+            else
+                % Pinion bearings:
+                idx_PIN  = find(contains(field_name, 'pinion_b'));
+                n_PIN = length(idx_PIN);
+                a_PIN = zeros(size(idx_PIN));
+                b_PIN = zeros(size(idx_PIN));
+                for idx = 1:n_PIN
+                    jdx = idx_PIN(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    
+                    [a, b] = obj.bearing(idx).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx).name, ...
+                                                        idx, a, b);
+
+                    a_PIN(idx) = a;
+                    b_PIN(idx) = b;
+                end
+                
+                % Wheel bearings:
+                idx_WHE  = find(contains(field_name, 'wheel_b'));
+                n_WHE = length(idx_WHE);
+                a_WHE = zeros(size(idx_WHE));
+                b_WHE = zeros(size(idx_WHE));
+                for idx = 1:n_WHE
+                    jdx = idx_WHE(idx);
+                    data_idx.load = data.load.(field_name{jdx});
+                    kdx = n_PIN + idx;
+                    
+                    [a, b] = obj.bearing(kdx).Weibull(data_idx);
+                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(kdx).name, ...
+                                                        idx, a, b);
+
+                    a_WHE(idx) = a;
+                    b_WHE(idx) = b;
+                end
+                
+                % Pinion-Wheel gear contact:
+                jdx_PW = contains(field_name, 'pinion_wheel');
+                
+                wbull = fitdist(data.load.(field_name{jdx_PW}).ov_020.values + eps, 'weibull');
+                
+                a = wbull.a; % scale param.
+                b = wbull.b; % shape param.
+                
+                fprintf('%s:\tPW\ta = %e\tb = %e\n', name, a, b);
+                
+                a = [a_PIN; a_WHE; a];
+                b = [b_PIN; b_WHE; b];
+            end
+            
+        end
+        
+        function save_params(obj, name)
+            save(obj.export2struct(), name);
         end
         
     end
     
     methods(Static)
-        function ex01 = example01()
-            
-            ex01 = Gear_Set('configuration', 'parallel', ...   % configuration
-                            'm_n'          , 8.0, ...          % normal module
-                            'alpha_n'      , 20.0, ...         % pressure angle
-                            'z'            , [17 103], ...     % number of teeth
-                            'b'            , 100.0, ...        % face width
-                            'x'            , [0.145 0.0], ...  % profile shift coefficient
-                            'beta'         , 15.8, ...         % helix angle
-                            'k'            , [1 1]*0, ...      % k
-                            'bore_ratio'   , [1 1]*0.5, ...    % bore ratio
-                            'N_p'          , 1, ...            % number of planets
-                            'a_w'          , 500.0, ...        % center distance
-                            'rack_type'    , 'D', ...          % rack type
-                            'bearing'      , Bearing(), ...    %
-                            'shaft'        , Shaft(), ...      %
-                            'Q'            , 5.0, ...          % ISO accuracy grade
-                            'R_a'          , 1.0);             % surface roughness flank
-            
-            T_1 = 9.0e3;
-            n_1 = 360.0;
-            P_r = 1.0e-3*T_1*n_1*pi/30.0;
-            
-            calc = ISO_6336(ex01, 'calculation', 'default', ...
-                                  'P_rated'    , P_r, ...
-                                  'n_out'      , n_1, ...
-                                  'S_Hmin'     , 1.0, ...
-                                  'S_Fmin'     , 1.0, ...
-                                  'L_h'        , 50.0e3, ...
-                                  'K_A'        , 1.0);
+        function [num_cycle, load_edges, speed_mean, N] = LDD(load_signal, load_speed, time_step)
+            %LDD produces the load duration distribution of a load_signal
+            % with rotational speed load_speed in [1/min.]. time_step is 
+            % the inverse of the sampling frequency of both signals.
+            % Inputs:
+            % - load_signal: load signal to be processed.
+            % - load_speed: rotational speed of the element being loaded.
+            % - time_step: inverse of the sampling frequency of load and
+            % speed signals, given in seconds.
+            %
+            % Outputs:
+            % - num_cycle: cumulative number of cycles
+            % - load_edges: edges of the load bins
+            % - speed_mean: mean speed at each load bin
+            % - N: Number of cycles at each bin
+            %
+            % References:
+            % [1] A. R. Nejad, Z. Gao, and T. Moan, "On long-term fatigue 
+            % damage and reliability analysis of gears under wind loads in 
+            % offshore wind turbine drivetrains" Int. J. Fatigue, vol. 61,
+            % pp. 116-128, Apr. 2014. 10.1016/j.ijfatigue.2013.11.023
+            %
 
-            [SH, SF] = calc.safety_factors('C_a'  ,  70.0, ...
-                                           'nu_40', 320.0);
+            load_signal = abs(load_signal);
+            load_speed = abs(load_speed);
             
-        end
-        
-    end
-    
-    methods(Access = private)
-        function v = pitch_line_velocity(obj)
-            v = nan;
-            if(strcmp(obj.configuration, 'parallel'))
-                v = (pi*obj.n_out/60.0e3)*obj.d(1);
-            elseif(strcmp(obj.configuration, 'planetary'))
-                v = (pi*obj.n_out/60.0e3)*(obj.d(1) - obj.a_w/obj.u);
+            [load_min, load_Max] = bounds(load_signal);
+            num_bins = 101; % according to [1], 4.6
+            bin_size = (load_Max - load_min)/num_bins;
+            if(load_min > bin_size)
+                load_min = load_min - bin_size;
             end
-        end
-        
-        function Z_eps = contact_ratio_factor(obj)
-            eps_a = obj.eps_alpha;
-            eps_b = obj.eps_beta;
+            load_Max = load_Max + bin_size;
+            load_edges = linspace(load_min, load_Max, num_bins);
             
-            if(obj.beta == 0.0)
-                Z_eps = sqrt((4.0 - eps_a)/3.0);
-            else
-                if(eps_b < 1.0)
-                    Z_eps = sqrt((1.0 - eps_b)*(4.0 - eps_a)/3.0 + eps_b/eps_a);
-                else
-                    Z_eps = sqrt(1.0/eps_a);
+            % [N, edges, bin] = histcounts(signal, nbins OR edges)
+            [N, load_edges] = histcounts(load_signal, load_edges);
+            
+            speed_mean = zeros(1, num_bins - 1);
+            for idx = 1:(num_bins - 1)
+                if(N(idx) ~= 0.0)
+                    range = (load_signal >= load_edges(idx)) & ...
+                            (load_signal <= load_edges(idx + 1));
+                    speed_mean(idx) = mean(load_speed(range));
                 end
             end
             
+            % descending order:
+            load_edges = fliplr(load_edges);
+            speed_mean  = fliplr(speed_mean);
+            N          = fliplr(N);
+            
+            % Assuming that each load is constant during a time step:
+            load_time = N*time_step;
+            
+            % according to [1], (10):
+            num_cycle = load_time.*speed_mean/60.0;
+            num_cycle = [0.0, cumsum(num_cycle)];
+            
+            %% Example of plotting:
+%             figure;
+%             subplot(211)
+%             histogram('binEdges', fliplr(load_edges), ...
+%                       'binCounts', fliplr(N), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 2.0);
+%             title('Histogram');
+%             xlabel('Load, [NA]');
+%             ylabel('Num. cycles, [-]');
+%             
+%             subplot(212)
+%             histogram('binEdges' , num_cycle, ...
+%                       'binCounts', load_edges(2:end), ...
+%                       'displayStyle', 'stairs', ...
+%                       'lineWidth'   , 2.0);
+%             title('Load duration distribution - LDD');
+%             xlabel('Cum. num. cycles, [-]');
+%             ylabel('Load, [NA]');
+%             set(gca, 'xscale', 'log')
+%             
+%             fig_axes = findobj(gcf, 'Type', 'Axes');
+%             set(fig_axes, 'box', 'on');
+%             set(fig_axes, 'xscale', 'log');
+% 
         end
         
-        function K_v = dynamic_factor(obj, v, line_load, C_a, f_pbeff, f_falphaeff)
+    end
+
+    methods(Access = private)
+        function val = F_t_spectra(obj, torque)
+            val = 2.0e3*(torque/obj.d(1))/obj.N_p;
+            val = abs(val);
+        end
+        
+        function val = F_tH_spectra(obj, torque)
+            val = 2.0e3*(torque/obj.d(1))/obj.N_p;
+            val = abs(val);
+        end
+        
+        function val = dynamic_factor(obj)
             z1 = obj.z(1);
             uu = obj.u;
-            cond = (v*z1/100.0)*sqrt((uu.^2)/(1.0 + uu.^2));
+            cond = (obj.v_pitch_line*z1/100.0)*sqrt((uu.^2)/(1.0 + uu.^2));
             if(cond < 3.0) % [m/s]
                 warning('ISO_6336:KV', ['Calculating K_v using method B', ...
                     ' outside of its useful range. ', ...
                 'More info at the end of Sec. 6.3.2 of ISO 6336-1.']);
             end
             
-            rho = obj.material.rho;
+            rho = [obj.material.rho];
+            
+            % transverse base pitch deviation, [um]:
+            fpb = obj.f_pb;
+            
+            % profile form deviation, [um]
+            f_falpha = max(obj.f_falpha);
+            
+            % Estimated running allowance (pitch deviation):
+            y_p = obj.y_alpha;
+            
+            % Estimated running allowance (flank deviation):
+            y_f = f_falpha*75.0e-3;
+            
+            % transverse effective base pitch deviation after running-in, [um]:
+            f_pbeff = fpb - y_p;
+            
+            % effective profile form deviation after running-in, [um]
+            f_falphaeff = f_falpha - y_f; % 0.925*y_f
             
             if(strcmp(obj.configuration, 'parallel'))
                 % Based on Sec. 6.5.9 of ISO 6336-1, Eq. (30), assuming gears:
                 % - of solid construction, and
                 % - with the same density
                 
-                num = pi*rho*(obj.u^2)*obj.d_m(1)^4;
+                num = pi*rho(1)*(obj.u^2)*obj.d_m(1)^4;
                 den = 8.0*(obj.u^2 + 1.0)*obj.d_b(1)^2;
                 m_red = num/den;
                 
@@ -493,13 +960,13 @@ classdef ISO_6336 < Gear_Set
                 n_E1 = 3.0e4*sqrt(obj.c_gamma_alpha/m_red)/(pi*obj.z(1)); % [1/min]
                 
                 % Resonance ratio, Eq. (9) [1]:
-                N = obj.n_out/n_E1;
+                N = obj.n_output/n_E1;
                 
-                K_v = obj.dynamic_factor_from_range(line_load, N, C_a, ...
+                val = obj.dynamic_factor_from_range(N, obj.C_a, ...
                     f_pbeff, f_falphaeff);
             elseif(strcmp(obj.configuration, 'planetary'))
-                m_sun = rho*(pi/8.0)*(obj.d_m(1)^4)/(obj.d_b(1)^2); % sun
-                m_pla = rho*(pi/8.0)*(obj.d_m(2)^4)/(obj.d_b(2)^2); % planet
+                m_sun = rho(1)*(pi/8.0)*(obj.d_m(1)^4)/(obj.d_b(1)^2); % sun
+                m_pla = rho(2)*(pi/8.0)*(obj.d_m(2)^4)/(obj.d_b(2)^2); % planet
                 m_red1 = (m_pla*m_sun)/(m_sun + m_pla*obj.N_p);
                 m_red2 =  m_pla;
                 
@@ -508,20 +975,20 @@ classdef ISO_6336 < Gear_Set
                 n_E12 = 3.0e4*sqrt(obj.cprime/m_red2)*1.0/(pi*obj.z(2)); % [1/min]
                 
                 % Resonance ratio:
-                N_1 =  obj.n_out/n_E11;
-                N_2 = (obj.n_out/obj.u)/n_E12;
+                N_1 =  obj.n_output/n_E11;
+                N_2 = (obj.n_output/obj.u)/n_E12;
 
-                K_v1 = obj.dynamic_factor_from_range(line_load, N_1, C_a, ...
+                K_v1 = obj.dynamic_factor_from_range(N_1, obj.C_a, ...
                     f_pbeff, f_falphaeff);
                 
-                K_v2 = obj.dynamic_factor_from_range(line_load, N_2, C_a, ...
+                K_v2 = obj.dynamic_factor_from_range(N_2, obj.C_a, ...
                     f_pbeff, f_falphaeff);
                 
-                K_v = max(K_v1, K_v2);
+                val = max(K_v1, K_v2);
             end
         end
         
-        function K_v = dynamic_factor_from_range(obj, line_load, N, C_a, f_pbeff, f_falphaeff)
+        function K_v = dynamic_factor_from_range(obj, N, C_a, f_pbeff, f_falphaeff)
             % Table 8, [1]:
             C_v1 = 0.32;
             C_v5 = 0.47;
@@ -548,13 +1015,13 @@ classdef ISO_6336 < Gear_Set
             end
             
             cp = obj.cprime;
-            B_p = cp*f_pbeff/line_load;        % Eq. (15)
-            B_f = cp*f_falphaeff/line_load;    % Eq. (16)
-            B_k = abs(1.0 - cp*C_a/line_load); % Eq. (17)
+            B_p = cp*f_pbeff/obj.line_load;        % Eq. (15)
+            B_f = cp*f_falphaeff/obj.line_load;    % Eq. (16)
+            B_k = abs(1.0 - cp*C_a/obj.line_load); % Eq. (17)
             
             % Dynamic factor:
-            if(line_load < 100) % [N/mm]
-                N_S = 0.5 + 0.35*sqrt(line_load/100.0); % Eq. (11), [1]
+            if(obj.line_load < 100) % [N/mm]
+                N_S = 0.5 + 0.35*sqrt(obj.line_load/100.0); % Eq. (11), [1]
             else
                 N_S = 0.85; % Eq. (12) [1]
             end
@@ -577,206 +1044,114 @@ classdef ISO_6336 < Gear_Set
             end
         end
         
-        function [K_Hbeta, K_Fbeta] = face_load_factor(obj)
-            % The face load factor (contact stress) is not calculated from
-            % ISO 6336 [1], but according to [4], Eq.(17.14):
-            K_Hbeta = 1.0 + 0.4*(obj.b/obj.d(1))^2;
+        function [Z_L, Z_v] = lubrication_velocity_factor(obj)
+
+            % [N/mm^2],  Allowable contact stress number:
+            sig_Hlim = min(obj.sigma_Hlim);
             
-            % Method B:
-            % h_1 = h_aP + h_fP + k_1*m_n;
-            h_1 = abs(obj.d_a(1) - obj.d_f(1))/2.0;
-            bh1 = obj.b/h_1;
-            h_2 = abs(obj.d_a(2) - obj.d_f(2))/2.0;
-            bh2 = obj.b/h_2;
-            
-            bh = min(bh1, bh2);
-            
-            if(bh < 3.0)
-                bh = 3.0;
-                
-                hb = 1.0/bh;
-                
-                N_F = 1.0/(1.0 + hb + hb.^2);
-                
-                % Face load factor (root stress):
-                K_Fbeta = power(K_Hbeta, N_F);
-            end
-        end
-        
-        function [K_Halpha, K_Falpha] = transverse_load_factor(obj, term, Z_eps)
-            % Section 8.3.2 of [1]:
-            if(obj.eps_gamma <= 2.0) % Eq. (73)
-                K_Falpha = (0.9 + 0.4*term)*(obj.eps_gamma/2.0);
-            else % Eq. (74)
-                K_Falpha = 0.9 + 0.4*sqrt(2.0*(obj.eps_gamma - 1.0)/obj.eps_gamma)*term;
-            end
-            
-            K_Halpha = K_Falpha;
-            
-            % Section 8.3.4 of [1]:
-            % Transverse load factor (contact stress), Eq. (75):
-            K_Halpha_lim = obj.eps_gamma/(obj.eps_alpha*Z_eps.^2);
-            if(K_Halpha > K_Halpha_lim)
-                K_Halpha = K_Halpha_lim;
-            elseif(K_Halpha < 1.0)
-                K_Halpha = 1.0;
-            end
-            
-            % Section 8.3.5 of [1]:
-            % Transverse load factor (root stress), Eq. (76):
-            K_Falpha_lim = obj.eps_gamma/(0.25*obj.eps_alpha + 0.75);
-            if(K_Falpha > K_Falpha_lim)
-                K_Falpha = K_Falpha_lim;
-            elseif(K_Falpha < 1.0)
-                K_Falpha = 1.0;
-            end
-            
-        end
-        
-        function Z_H = zone_factor(obj)
-            num = 2.0*cosd(obj.beta_b)*cosd(obj.alpha_wt);
-            den = sind(obj.alpha_wt)*cosd(obj.alpha_t).^2;
-            Z_H = sqrt(num/den);
-        end
-        
-        function Z_BD = tooth_contact_factor(obj)
-            M_1 = tand(obj.alpha_wt)/sqrt((sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - ...
-                2.0*pi/obj.z(1))*(sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - ...
-                (obj.eps_alpha - 1.0)*2.0*pi/obj.z(2)));
-            M_2 = tan(obj.alpha_wt)/sqrt((sqrt((obj.d_a(2)/obj.d_b(2))^2 - 1.0) - ...
-                2.0*pi/obj.z(2))*(sqrt((obj.d_a(1)/obj.d_b(1))^2 - 1.0) - ...
-                (obj.eps_alpha - 1.0)*2.0*pi/obj.z(1)));
-            
-            Z_BD = ones(1, 2)*nan;
-            if((obj.eps_beta == 0.0) && (obj.eps_alpha > 1.0))
-                if(M_1 > 1.0)
-                    Z_BD(1) = M_1;
-                else
-                    Z_BD(1) = 1.0;
-                end
-                
-                if(M_2 > 1.0)
-                    Z_BD(2) = M_2;
-                else
-                    Z_BD(2) = 1.0;
-                end
-            elseif((obj.eps_alpha > 1.0) && (obj.eps_beta >= 1.0))
-                Z_BD(1) = 1.0;
-                Z_BD(2) = 1.0;
-            elseif((obj.eps_alpha > 1.0) && (obj.eps_beta <  1.0))
-                Z_BD(1) = M_1 - obj.eps_beta*(M_1 - 1.0);
-                Z_BD(2) = M_2 - obj.eps_beta*(M_2 - 1.0);
-            end
-        end
-        
-        function [Z_L, Z_v] = lubrication_velocity_factor(~, sigma_Hlim, nu_40, v)
-            if(sigma_Hlim  < 850.0) % [N/mm^2]
+            if(sig_Hlim  < 850.0) % [N/mm^2]
                 C_ZL = 0.83;
-            elseif((850.0 <= sigma_Hlim) && (sigma_Hlim  < 1200.0))
-                C_ZL = sigma_Hlim/4375.0 + 0.6357;
+            elseif((850.0 <= sig_Hlim) && (sig_Hlim  < 1200.0))
+                C_ZL = sig_Hlim/4375.0 + 0.6357;
             else
                 C_ZL = 0.91;
             end
             
             % Lubricant factor:
-            Z_L = C_ZL + 4.0*(1.0 - C_ZL)/(1.2 + 134.0/nu_40)^2;
+            Z_L = C_ZL + 4.0*(1.0 - C_ZL)/(1.2 + 134.0/obj.nu_40)^2;
             
             % Velocity factor:
             C_Zv = C_ZL + 0.02;
-            Z_v = C_Zv + 2.0*(1.0 - C_Zv)/sqrt(0.8 + 32.0/v);
+            Z_v = C_Zv + 2.0*(1.0 - C_Zv)/sqrt(0.8 + 32.0/obj.v_pitch_line);
         end
         
-        function Z_R = roughness_factor(obj, sigma_Hlim)
-            rho_1 = 0.5*obj.d_b(1)*tand(obj.alpha_wt);
-            rho_2 = 0.5*obj.d_b(2)*tand(obj.alpha_wt);
-            
-            rho_red = (rho_1*rho_2)/(rho_1 + rho_2);
-            
-            R_z10 = obj.R_z*power(10.0/rho_red, 1.0/3.0);
-            
-            if(sigma_Hlim < 850.0) % [N/mm^2]
-                C_ZR = 0.15;
-            elseif((850.0 <= sigma_Hlim) && (sigma_Hlim < 1200.0))
-                C_ZR = 0.32 - sigma_Hlim*2.0e-4;
-            else
-                C_ZR = 0.08;
-            end
-            
-            Z_R = power(3.0/R_z10, C_ZR);
-        end
-        
-        function Z_NT = life_factor(obj, N)
-            line = obj.material.row;
-            
-            switch line
-                case 1
-                    % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF (when limited pitting is permitted)
-                    x = [6.0e5 1.0e7 1.0e9 1.0e10];
-                    y = [1.6   1.3   1.0   0.85];
-                case 2
-                    % St, V, GGG (perl. bai.), GTS (perl.), Eh, IF
-                    x = [1.0e5 5.0e7 1.0e9 1.0e10];
-                    y = [1.6   1.0   1.0   0.85];
-                case 3
-                    % GG, GGG (ferr.), NT (nitr.), NV (nitr.)
-                    x = [1.0e5 2.0e6 1.0e10];
-                    y = [1.3   1.0   0.85];
-                case 4
-                    % NV (nitrocar.)
-                    x = [1.0e5 2.0e6 1.0e10];
-                    y = [1.1   1.0   0.85];
-                otherwise
-                    error("prog:input", "Invalid input [%d].\nValid options are 1 to 4.\n", line);
-            end
-
-            if(N <= x(1))
-                Z_NT = y(1);
-            elseif(N > x(end))
-                Z_NT = y(end);
-            else
-                Z_NT = interp1(log(x), y, log(N));
-            end
-        end
     end
     
     %% Set methods:
     methods
-        function obj = set.Z_NT(obj, val)
-            obj.Z_NT = val;
+        function obj = set.P_rated(obj, val)
+            obj.P_rated = val;
         end
-        
-        function obj = set.Z_L(obj, val)
-            obj.Z_L = val;
-        end
-        
-        function obj = set.Z_v(obj, val)
-            obj.Z_v = val;
-        end
-        
-        function obj = set.Z_R(obj, val)
-            obj.Z_R = val;
-        end
-        
-        function obj = set.Z_W(obj, val)
-            obj.Z_W = val;
-        end
-        
-        function obj = set.Z_X(obj, val)
-            obj.Z_X = val;
-        end
-        
     end
     
     %% Get methods:
     methods
-        function val = get.T_1(obj)
-            val = (obj.P_rated*1.0e3)/(obj.n_out*pi/30.0);
+        function val = get.speed_ratio(obj)
+            val = obj.n_nominal./obj.n_input;
+        end
+        
+        function val = get.torque_ratio(obj)
+            val = obj.T_nominal./obj.T_input;
+        end
+        
+        function val = get.F_tH(obj)
+            val = obj.F_t*obj.K_gamma* ...
+                          obj.K_A    * ...
+                          obj.K_v    * ...
+                          obj.K_Hbeta;
+        end
+        
+        function val = get.sigma_HP_ref(obj)
+            ZNT = 1.0;
+            val = [obj.material(1:2).sigma_Hlim].*ZNT*obj.Z_L* ...
+                                                      obj.Z_v* ...
+                                                      obj.Z_R* ...
+                                                      obj.Z_W* ...
+                                                      obj.Z_X./obj.S_Hmin;
+        end
+        
+        function val = get.sigma_HP_stat(obj)
+            val = [obj.material(1:2).sigma_Hlim].*obj.Z_NT* ...
+                                                  obj.Z_L* ...
+                                                  obj.Z_v* ...
+                                                  obj.Z_R* ...
+                                                  obj.Z_W* ...
+                                                  obj.Z_X./obj.S_Hmin;
+        end
+        
+        function val = get.T_nominal(obj)
+            val = (obj.P_rated*1.0e3)./(obj.n_nominal*pi/30.0);
+            val(2) = val(2)/obj.N_p;
+            val(val == inf) = nan;
+        end
+        
+        function val = get.T_input(obj)
+            val = obj.T_nominal(obj.idx_input);
+        end
+        
+        function val = get.T_output(obj)
+            val = obj.T_nominal(obj.idx_output);
+        end
+        
+        function val = get.n_input(obj)
+            val = obj.n_nominal(obj.idx_input);
+        end
+        
+        function val = get.n_output(obj)
+            val = obj.n_nominal(obj.idx_output);
+        end
+        
+        function val = get.idx_output(obj)
+            if(strcmpi(obj.configuration, 'parallel'))
+                val = setdiff([1 2], obj.idx_input);
+            elseif(strcmpi(obj.configuration, 'planetary'))
+                switch(obj.idx_fixed)
+                    case 1
+                        val = setdiff([3 4], obj.idx_input);
+                    case 2
+                        error('ISO_6336:idx_out', 'Direct drive not implemented yet.');
+                    case 3
+                        val = setdiff([1 4], obj.idx_input);
+                    case 4
+                        val = setdiff([1 3], obj.idx_input);
+                    otherwise
+                        error('ISO_6336:idx_out', 'Invalid index.');
+                end
+            end
         end
         
         function val = get.K_gamma(obj)
-            Np = obj.N_p;
-            
-            switch(Np)
+            switch(obj.N_p)
                 case 3
                     val = 1.1;
                 case 4
@@ -792,14 +1167,41 @@ classdef ISO_6336 < Gear_Set
             end
         end
         
-        function val = get.sigma_HP_ref(obj)
-            ZNT = 1.0;
-            val = sigma_Hlim*ZNT*obj.Z_L*obj.Z_v*obj.Z_R*obj.Z_W*obj.Z_X/obj.S_Hmin;
+        function val = get.J_eq(obj)
+            % based on: 
+            % Borders, J. (2009), Planetary Geartrain Analysis.
+            % Accesed on 23.11.2020.
+            % http://www.bordersengineering.com/tech_ref/planetary/planetary_analysis.pdf
+            %
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                val = obj.J_x(2) + obj.J_x(1)*obj.u^2;
+            elseif(strcmp(obj.configuration, 'planetary'))
+                r_s = (obj.d(1)*1.0e-3)/2.0;
+                r_p = (obj.d(2)*1.0e-3)/2.0;
+                r_r = (obj.d(3)*1.0e-3)/2.0;
+                aw  =  obj.a_w*1.0e-3;
+                
+                val = obj.J_x(1) + ...
+                      obj.carrier.J_x*(r_s^2)/(2.0*aw*(r_s + r_r)) + ...
+                     (obj.J_x(2)/(r_p^2) + obj.mass(2)*aw/(r_s + r_r))*(obj.N_p*r_s^2)/2.0;
+            else
+                error('prog:input', 'Configuration [%s] is NOT defined.', obj.configuration);
+            end
         end
         
-        function val = get.sigma_HP_stat(obj)
-            val = sigma_Hlim*obj.Z_NT*obj.Z_L*obj.Z_v*obj.Z_R*obj.Z_W*obj.Z_X/obj.S_Hmin;
+        function val = get.k_T(obj)
+            % based on: 
+            % Borders, J. (2009), Planetary Geartrain Analysis.
+            % Accesed on 23.11.2020.
+            % http://www.bordersengineering.com/tech_ref/planetary/planetary_analysis.pdf
+            %
+            
+            if(strcmp(obj.configuration, 'parallel'))
+                val = -obj.z(2)/obj.z(1);
+            elseif(strcmp(obj.configuration, 'planetary'))
+                val = obj.d(1)/(4.0*obj.a_w);
+            end
         end
-        
     end
 end

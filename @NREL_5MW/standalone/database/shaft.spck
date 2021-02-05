@@ -1,0 +1,774 @@
+!file.version=3.5! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20210000
+version.desc   = ''
+version.build  = 101
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '.'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.compat.track.excit                                             = 1                       ! Track Excitation rotation sequence
+glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
+glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   3                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   4                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   5                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   6                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   7                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   8                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   9                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  10                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  11                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  12                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  13                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  14                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  15                                       ) = 1                       ! Formalism Tuning Flags
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+glob.ifctn.bounds                                                   = 1                       ! Cubic spline boundary conditions
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = 8.74883711338043213E-01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -7.87940561771392822E-01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.06295132637023926E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 3.38618725538253784E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = 1.07989132404327393E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 2.36587420105934143E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 9.04268801212310791E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.82997357845306396E+00 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 1000 s }              ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.atol.body.flx.st.vel (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.body.flx.st.pos (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_POS
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.body.flx.st.vel (    $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
+slv.meas.time.start (               $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! MEAS_PAR_TIME_START
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
+slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
+slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
+slv.equi.fallback.enable (          $SLV_SolverSettings           ) = 0                       ! Enable fallbacks
+slv.init.tol (                      $SLV_SolverSettings           ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvar.str (                        $_x_output                    ) = '$SVG_shaft.$_length'   ! Definition
+
+subvar.str (                        $_switch_AIC                  ) = '0'                     ! Definition
+subvar.discr.desc (       1 ,       $_switch_AIC                  ) = 'enabled'               ! Description of discrete values
+subvar.discr.desc (       2 ,       $_switch_AIC                  ) = 'disabled'              ! Description of discrete values
+subvar.discr.str (        1 ,       $_switch_AIC                  ) = '0'                     ! Discrete values
+subvar.discr.str (        2 ,       $_switch_AIC                  ) = '1'                     ! Discrete values
+
+subvargroup.begin (                 $SVG_shaft                    )                           ! $SVG_shaft
+   subvar.str (                     $_length                      ) = '500.0 mm'              ! $SVG_shaft.$_length, Definition
+
+   subvar.str (                     $_diameter                    ) = '300.0 mm'              ! $SVG_shaft.$_diameter, Definition
+
+   subvar.str (                     $_x0                          ) = '$SVG_shaft.$_length/2.0' ! $SVG_shaft.$_x0, Definition
+
+subvargroup.end (                   $SVG_shaft                    )                           ! $SVG_shaft
+
+subvargroup.begin (                 $SVG_bearing_A                )                           ! $SVG_bearing_A
+   subvar.str (                     $_x                           ) = '$SVG_shaft.$_length/6.0' ! $SVG_bearing_A.$_x, Definition
+
+   subvar.str (                     $_k_x                         ) = '91016 N/m'             ! $SVG_bearing_A.$_k_x, Definition
+
+   subvar.str (                     $_k_y                         ) = '9.37E+9 N/m'           ! $SVG_bearing_A.$_k_y, Definition
+
+   subvar.str (                     $_k_z                         ) = '3.20E+9 N/m'           ! $SVG_bearing_A.$_k_z, Definition
+
+   subvar.str (                     $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_bearing_A.$_k_alpha, Definition
+
+   subvar.str (                     $_k_beta                      ) = '1.39E+6 Nm/rad'        ! $SVG_bearing_A.$_k_beta, Definition
+
+   subvar.str (                     $_k_gamma                     ) = '4.45E+6 Nm/rad'        ! $SVG_bearing_A.$_k_gamma, Definition
+
+   subvar.str (                     $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_bearing_A.$_d_x, Definition
+
+   subvar.str (                     $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_bearing_A.$_d_y, Definition
+
+   subvar.str (                     $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_bearing_A.$_d_z, Definition
+
+   subvar.str (                     $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_bearing_A.$_d_alpha, Definition
+
+   subvar.str (                     $_d_beta                      ) = '34.3 Nms/rad'          ! $SVG_bearing_A.$_d_beta, Definition
+
+   subvar.str (                     $_d_gamma                     ) = '47.8 Nms/rad'          ! $SVG_bearing_A.$_d_gamma, Definition
+
+subvargroup.end (                   $SVG_bearing_A                )                           ! $SVG_bearing_A
+
+subvargroup.begin (                 $SVG_bearing_B                )                           ! $SVG_bearing_B
+   subvar.str (                     $_x                           ) = '$SVG_shaft.$_length*7.0/12.0' ! $SVG_bearing_B.$_x, Definition
+
+   subvar.str (                     $_k_x                         ) = '91016 N/m'             ! $SVG_bearing_B.$_k_x, Definition
+
+   subvar.str (                     $_k_y                         ) = '9.37E+9 N/m'           ! $SVG_bearing_B.$_k_y, Definition
+
+   subvar.str (                     $_k_z                         ) = '3.20E+9 N/m'           ! $SVG_bearing_B.$_k_z, Definition
+
+   subvar.str (                     $_k_alpha                     ) = '0.0 Nm/rad'            ! $SVG_bearing_B.$_k_alpha, Definition
+
+   subvar.str (                     $_k_beta                      ) = '1.39E+6 Nm/rad'        ! $SVG_bearing_B.$_k_beta, Definition
+
+   subvar.str (                     $_k_gamma                     ) = '4.45E+6 Nm/rad'        ! $SVG_bearing_B.$_k_gamma, Definition
+
+   subvar.str (                     $_d_x                         ) = '4.53e2 Ns/m'           ! $SVG_bearing_B.$_d_x, Definition
+
+   subvar.str (                     $_d_y                         ) = '4.20e4 Ns/m'           ! $SVG_bearing_B.$_d_y, Definition
+
+   subvar.str (                     $_d_z                         ) = '3.06e4 Ns/m'           ! $SVG_bearing_B.$_d_z, Definition
+
+   subvar.str (                     $_d_alpha                     ) = '0.0 Nms/rad'           ! $SVG_bearing_B.$_d_alpha, Definition
+
+   subvar.str (                     $_d_beta                      ) = '34.3 Nms/rad'          ! $SVG_bearing_B.$_d_beta, Definition
+
+   subvar.str (                     $_d_gamma                     ) = '47.8 Nms/rad'          ! $SVG_bearing_B.$_d_gamma, Definition
+
+subvargroup.end (                   $SVG_bearing_B                )                           ! $SVG_bearing_B
+
+subvargroup.begin (                 $SVG_material                 )                           ! $SVG_material
+   subvar.str (                     $_density                     ) = '7850.0 kg/m^3'         ! $SVG_material.$_density, Definition
+
+   subvar.str (                     $_elasticity_modulus          ) = '206.0 N/mm^2'          ! $SVG_material.$_elasticity_modulus, Definition
+
+   subvar.str (                     $_poissons_ratio              ) = '0.3'                   ! $SVG_material.$_poissons_ratio, Definition
+
+subvargroup.end (                   $SVG_material                 )                           ! $SVG_material
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -9.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -1.00000000000000000E+01
+refsys.attr.2d.width (              $R_Isys                       ) = 2.40000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 2.20000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+marker.type (                       $M_Isys_input                 ) = 2                       ! Type
+marker.parent (                     $M_Isys_input                 ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_input                 ) = 0.00000000000000000E+00 ! Position
+marker.ang (              3 ,       $M_Isys_input                 ) = 0.00000000000000000E+00 ! Angles
+
+marker.type (                       $M_Isys_output                ) = 2                       ! Type
+marker.parent (                     $M_Isys_output                ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_output                ) = $_x_output              ! Position
+marker.pos (              2 ,       $M_Isys_output                ) = 0.00000000000000000E+00 ! Position
+marker.ang (              3 ,       $M_Isys_output                ) = 0.00000000000000000E+00 ! Angles
+
+marker.type (                       $M_Isys_bearing_A             ) = 2                       ! Type
+marker.parent (                     $M_Isys_bearing_A             ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_bearing_A             ) = $SVG_bearing_A.$_x      ! Position
+
+marker.type (                       $M_Isys_bearing_B             ) = 2                       ! Type
+marker.parent (                     $M_Isys_bearing_B             ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_bearing_B             ) = $SVG_bearing_B.$_x      ! Position
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+!**********************************************************************
+! Bodies
+!**********************************************************************
+body.m (                            $B_shaft                      ) = 1.00000000000000000E+00 ! Mass of the Body
+body.mp (                           $B_shaft                      ) = 1                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.I.tens (             1 ,   1 , $B_shaft                      ) = 1.00000000000000000E+00 ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_shaft                      ) = 1.00000000000000000E+00 ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_shaft                      ) = 1.00000000000000000E+00 ! Moments of inertia
+body.I.kind (                       $B_shaft                      ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+
+marker.type (                       $M_shaft_BRF                  ) = 1                       ! Type
+marker.parent (                     $M_shaft_BRF                  ) = $B_shaft                ! Body
+marker.flx.type (                   $M_shaft_BRF                  ) = 4                       ! Flexible type
+
+marker.type (                       $M_shaft_input                ) = 2                       ! Type
+marker.parent (                     $M_shaft_input                ) = $B_shaft                ! Body
+marker.pos (              1 ,       $M_shaft_input                ) = 0.00000000000000000E+00 ! Position
+
+marker.type (                       $M_shaft_output               ) = 2                       ! Type
+marker.parent (                     $M_shaft_output               ) = $B_shaft                ! Body
+marker.pos (              1 ,       $M_shaft_output               ) = $_x_output              ! Position
+
+marker.type (                       $M_shaft_bearing_A            ) = 2                       ! Type
+marker.parent (                     $M_shaft_bearing_A            ) = $B_shaft                ! Body
+marker.pos (              1 ,       $M_shaft_bearing_A            ) = $SVG_bearing_A.$_x      ! Position
+
+marker.type (                       $M_shaft_bearing_B            ) = 2                       ! Type
+marker.parent (                     $M_shaft_bearing_B            ) = $B_shaft                ! Body
+marker.pos (              1 ,       $M_shaft_bearing_B            ) = $SVG_bearing_B.$_x      ! Position
+
+marker.type (                       $M_shaft_sun                  ) = 2                       ! Type
+marker.parent (                     $M_shaft_sun                  ) = $B_shaft                ! Body
+
+joint.from (                        $J_shaft                      ) = $M_Isys_input           ! From Marker
+joint.to (                          $J_shaft                      ) = $M_shaft_input          ! To Marker
+joint.type (                        $J_shaft                      ) = 15                      ! Type
+joint.par (               2 ,       $J_shaft                      ) = 0.00000000000000000E+00 ! [-] Rotation axis
+joint.par (               3 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Tilting
+joint.par (               4 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in x
+joint.par (               5 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in y
+joint.par (               6 ,       $J_shaft                      ) = $_switch_AIC            ! [-] Translation in z
+
+prim.type (                         $P_shaft                      ) = 2                       ! Type
+prim.ref (                          $P_shaft                      ) = $M_shaft_BRF            ! Reference Marker
+prim.pos (                1 ,       $P_shaft                      ) = $SVG_shaft.$_x0         ! Position
+prim.ang (                3 ,       $P_shaft                      ) = { 90.0 deg }            ! Angles
+prim.color.r (            1 ,       $P_shaft                      ) = 2.21000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_shaft                      ) = 2.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_shaft                      ) = 2.07000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_shaft                      ) = 1.42000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_shaft                      ) = 1.10000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_shaft                      ) = 1.97000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.mp.dens.solid (                $P_shaft                      ) = $SVG_material.$_density ! Density
+prim.par (                2 ,       $P_shaft                      ) = $SVG_shaft.$_length     ! [m] Height
+prim.par (                3 ,       $P_shaft                      ) = $SVG_shaft.$_diameter   ! [m] Outer diameter
+prim.par (                4 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [m] Inner diameter
+prim.par (                5 ,       $P_shaft                      ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_shaft                      ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_shaft                      ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_shaft                      ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [rad] Start angle
+prim.par (               10 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [rad] Delta angle
+prim.par (               11 ,       $P_shaft                      ) = 0.00000000000000000E+00 ! [-] Close geometry with
+
+
+!**********************************************************************
+! Force Elements
+!**********************************************************************
+force.type (                        $F_bearing_A                  ) = 43                      ! Type
+force.from (                        $F_bearing_A                  ) = $M_Isys_bearing_A       ! From Marker
+force.to (                          $F_bearing_A                  ) = $M_shaft_bearing_A      ! To Marker
+force.disabled (                    $F_bearing_A                  ) = 0                       ! Disabled
+force.par (               1 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_k_x    ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_k_y    ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_k_z    ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_k_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_k_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_k_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_d_x    ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_d_y    ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_d_z    ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_d_alpha ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_d_beta ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_bearing_A                  ) = $SVG_bearing_A.$_d_gamma ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_bearing_A                  ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_bearing_A                  ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_bearing_A                  ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_bearing_A                  ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_bearing_A                  ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_bearing_A                  ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_bearing_A                  ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_bearing_A                  ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_bearing_A                  ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_bearing_A                  ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_bearing_A                  ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_bearing_A                  ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_bearing_A                  ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+force.par (              33 ,       $F_bearing_A                  ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_bearing_A                  ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_bearing_A                  ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_bearing_A                  ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_bearing_A                  ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_bearing_A                  ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_bearing_A                  ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
+force.par (              41 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
+force.par (              42 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
+force.par (              43 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in al
+force.par (              44 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in be
+force.par (              45 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_bearing_A                  ) = 0.00000000000000000E+00 ! [-] Output force in To Marker
+
+force.type (                        $F_bearing_B                  ) = 43                      ! Type
+force.from (                        $F_bearing_B                  ) = $M_Isys_bearing_B       ! From Marker
+force.to (                          $F_bearing_B                  ) = $M_shaft_bearing_B      ! To Marker
+force.disabled (                    $F_bearing_B                  ) = 0                       ! Disabled
+force.par (               1 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [N] Nominal force in x
+force.par (               2 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [N] Nominal force in y
+force.par (               3 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [N] Nominal force in z
+force.par (               4 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [Nm] Nominal torque in al
+force.par (               5 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [Nm] Nominal torque in be
+force.par (               6 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [Nm] Nominal torque in ga
+force.par (               7 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_k_x    ! [N/m] Transl. stiffness in x
+force.par (               8 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_k_y    ! [N/m] Transl. stiffness in y
+force.par (               9 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_k_z    ! [N/m] Transl. stiffness in z
+force.par (              10 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_k_alpha ! [Nm/rad] Rotat. stiffness in al
+force.par (              11 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_k_beta ! [Nm/rad] Rotat. stiffness in be
+force.par (              12 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_k_gamma ! [Nm/rad] Rotat. stiffness in ga
+force.par (              13 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_d_x    ! [Ns/m] Transl. damping in x
+force.par (              14 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_d_y    ! [Ns/m] Transl. damping in y
+force.par (              15 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_d_z    ! [Ns/m] Transl. damping in z
+force.par (              16 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_d_alpha ! [Nms/rad] Rotat. damping in al
+force.par (              17 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_d_beta ! [Nms/rad] Rotat. damping in be
+force.par (              18 ,       $F_bearing_B                  ) = $SVG_bearing_B.$_d_gamma ! [Nms/rad] Rotat. damping in ga
+force.par (              19 ,       $F_bearing_B                  ) = null                    ! [-] Input Function F_c(x)
+force.par (              20 ,       $F_bearing_B                  ) = null                    ! [-] Input Function F_c(y)
+force.par (              21 ,       $F_bearing_B                  ) = null                    ! [-] Input Function F_c(z)
+force.par (              22 ,       $F_bearing_B                  ) = null                    ! [-] Input Function T_c(al)
+force.par (              23 ,       $F_bearing_B                  ) = null                    ! [-] Input Function T_c(be)
+force.par (              24 ,       $F_bearing_B                  ) = null                    ! [-] Input Function T_c(ga)
+force.par (              25 ,       $F_bearing_B                  ) = null                    ! [-] Input Function F_d(xd)
+force.par (              26 ,       $F_bearing_B                  ) = null                    ! [-] Input Function F_d(yd)
+force.par (              27 ,       $F_bearing_B                  ) = null                    ! [-] Input Function F_d(zd)
+force.par (              28 ,       $F_bearing_B                  ) = null                    ! [-] Input Function T_d(ald)
+force.par (              29 ,       $F_bearing_B                  ) = null                    ! [-] Input Function T_d(bed)
+force.par (              30 ,       $F_bearing_B                  ) = null                    ! [-] Input Function T_d(gad)
+force.par (              31 ,       $F_bearing_B                  ) = 2.00000000000000000E+00 ! [-] Mode of angle calculation
+force.par (              33 ,       $F_bearing_B                  ) = null                    ! [-] Expression for force in x
+force.par (              34 ,       $F_bearing_B                  ) = null                    ! [-] Expression for force in y
+force.par (              35 ,       $F_bearing_B                  ) = null                    ! [-] Expression for force in z
+force.par (              36 ,       $F_bearing_B                  ) = null                    ! [-] Expression for torque in al
+force.par (              37 ,       $F_bearing_B                  ) = null                    ! [-] Expression for torque in be
+force.par (              38 ,       $F_bearing_B                  ) = null                    ! [-] Expression for torque in ga
+force.par (              39 ,       $F_bearing_B                  ) = null                    ! [-] Input Function Set
+force.par (              40 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [m] Nominal displacement in x
+force.par (              41 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [m] Nominal displacement in y
+force.par (              42 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [m] Nominal displacement in z
+force.par (              43 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in al
+force.par (              44 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in be
+force.par (              45 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [rad] Nominal angle in ga
+force.par (              46 ,       $F_bearing_B                  ) = 0.00000000000000000E+00 ! [-] Output force in To Marker
+
+!**********************************************************************
+! Y Output
+!**********************************************************************
+youtgroup.begin (                   $YOG_bearing_A                )                           ! $YOG_bearing_A
+   yout.type (                      $Y_x                          ) = 12                      ! Type
+   yout.disabled (                  $Y_x                          ) = 0                       ! Disabled
+   yout.par (             1 ,       $Y_x                          ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_y                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_y                          ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_y                          ) = 2.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_z                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_z                          ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_z                          ) = 3.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_speed                      ) = 12                      ! Type
+   yout.par (             1 ,       $Y_speed                      ) = $F_bearing_A            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_speed                      ) = 1.70000000000000000E+01 ! [-] Output Value
+
+youtgroup.end (                     $YOG_bearing_A                )                           ! $YOG_bearing_A
+
+youtgroup.begin (                   $YOG_bearing_B                )                           ! $YOG_bearing_B
+   yout.type (                      $Y_x                          ) = 12                      ! Type
+   yout.disabled (                  $Y_x                          ) = 0                       ! Disabled
+   yout.par (             1 ,       $Y_x                          ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_x                          ) = 0.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_y                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_y                          ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_y                          ) = 2.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_z                          ) = 12                      ! Type
+   yout.par (             1 ,       $Y_z                          ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_z                          ) = 3.00000000000000000E+00 ! [-] Output Value
+
+   yout.type (                      $Y_speed                      ) = 12                      ! Type
+   yout.par (             1 ,       $Y_speed                      ) = $F_bearing_B            ! [-] Force/Control Element
+   yout.par (             2 ,       $Y_speed                      ) = 1.70000000000000000E+01 ! [-] Output Value
+
+youtgroup.end (                     $YOG_bearing_B                )                           ! $YOG_bearing_B
+
+!**********************************************************************
+! Result Elements
+!**********************************************************************
+result.container (                  $RS_bearing_A                 ) = null                    ! Parent result element
+result.type (                       $RS_bearing_A                 ) = 22                      ! Type
+result.par (              1 ,       $RS_bearing_A                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+result.channel.indep.ele (   1 ,    $RS_bearing_A                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   1 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   1 , $RS_bearing_A                 ) = $F_bearing_A            ! [-] Force/Control Element
+result.channel.par (      3 ,   1 , $RS_bearing_A                 ) = 1.00000000000000000E+00 ! [-] Output Value
+result.channel.par (      4 ,   1 , $RS_bearing_A                 ) = null                    ! [-] Value selection
+result.channel.par (      5 ,   1 , $RS_bearing_A                 ) = null                    ! [-] Index
+result.channel.par (      6 ,   1 , $RS_bearing_A                 ) = null                    ! [-] FE node ID
+result.channel.indep.ele (   2 ,    $RS_bearing_A                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   2 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   2 , $RS_bearing_A                 ) = $F_bearing_A            ! [-] Force/Control Element
+result.channel.par (      3 ,   2 , $RS_bearing_A                 ) = 2.00000000000000000E+00 ! [-] Output Value
+result.channel.indep.ele (   3 ,    $RS_bearing_A                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   3 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   3 , $RS_bearing_A                 ) = $F_bearing_A            ! [-] Force/Control Element
+result.channel.par (      3 ,   3 , $RS_bearing_A                 ) = 3.00000000000000000E+00 ! [-] Output Value
+result.channel.par (      4 ,   3 , $RS_bearing_A                 ) = $M_Isys_bearing_A       ! [-] Value selection
+result.channel.indep.ele (   4 ,    $RS_bearing_A                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   4 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   4 , $RS_bearing_A                 ) = $F_bearing_A            ! [-] Force/Control Element
+result.channel.par (      3 ,   4 , $RS_bearing_A                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+result.container (                  $RS_bearing_B                 ) = null                    ! Parent result element
+result.type (                       $RS_bearing_B                 ) = 22                      ! Type
+result.par (              1 ,       $RS_bearing_B                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+result.channel.indep.ele (   1 ,    $RS_bearing_B                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   1 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   1 , $RS_bearing_B                 ) = $F_bearing_B            ! [-] Force/Control Element
+result.channel.par (      3 ,   1 , $RS_bearing_B                 ) = 1.00000000000000000E+00 ! [-] Output Value
+result.channel.indep.ele (   2 ,    $RS_bearing_B                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   2 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   2 , $RS_bearing_B                 ) = $F_bearing_B            ! [-] Force/Control Element
+result.channel.par (      3 ,   2 , $RS_bearing_B                 ) = 2.00000000000000000E+00 ! [-] Output Value
+result.channel.indep.ele (   3 ,    $RS_bearing_B                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   3 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   3 , $RS_bearing_B                 ) = $F_bearing_B            ! [-] Force/Control Element
+result.channel.par (      3 ,   3 , $RS_bearing_B                 ) = 3.00000000000000000E+00 ! [-] Output Value
+result.channel.par (      4 ,   3 , $RS_bearing_B                 ) = $M_Isys_bearing_A       ! [-] Value selection
+result.channel.indep.ele (   4 ,    $RS_bearing_B                 ) = null                    ! Independent channel element
+result.channel.par (      1 ,   4 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   4 , $RS_bearing_B                 ) = $F_bearing_B            ! [-] Force/Control Element
+result.channel.par (      3 ,   4 , $RS_bearing_B                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+!**********************************************************************
+! Senders
+!**********************************************************************
+sender.ref (                        $COM_stage_output             ) = $M_shaft_output         ! Source object
+
+sender.ref (                        $COM_shaft_sun                ) = $M_shaft_sun            ! Source object
+
+!**********************************************************************
+! Receivers
+!**********************************************************************
+receiver.ref (                      $COM_switch_AIC               ) = $_switch_AIC            ! Destination object
+
+receivergroup.begin (               $RG_marker                    )                           ! $RG_marker
+   receiver.ref (                   $COM_input                    ) = $M_Isys_input           ! Destination object
+   receiver.priolist (    1 ,       $COM_input                    ) = '$COM_shaft_input'      ! Sender priority list
+
+   receiver.ref (                   $COM_output                   ) = $M_Isys_output          ! Destination object
+   receiver.priolist (    1 ,       $COM_output                   ) = '$COM_stage_01'         ! Sender priority list
+   receiver.priolist (    2 ,       $COM_output                   ) = '$COM_stage_02'         ! Sender priority list
+   receiver.priolist (    3 ,       $COM_output                   ) = '$COM_stage_03'         ! Sender priority list
+   receiver.override (              $COM_output                   ) = { SUBSTR_ID(1) }        ! Override index
+
+   receiver.ref (                   $COM_bearing_A                ) = $M_Isys_bearing_A       ! Destination object
+   receiver.priolist (    1 ,       $COM_bearing_A                ) = '$COM_shaft_bearing_A'  ! Sender priority list
+   receiver.disabled (              $COM_bearing_A                ) = 0                       ! Disabled
+
+   receiver.ref (                   $COM_bearing_B                ) = $M_Isys_bearing_B       ! Destination object
+   receiver.priolist (    1 ,       $COM_bearing_B                ) = '$COM_shaft_bearing_B'  ! Sender priority list
+   receiver.disabled (              $COM_bearing_B                ) = 0                       ! Disabled
+
+receivergroup.end (                 $RG_marker                    )                           ! $RG_marker
+
+receivergroup.begin (               $RG_shaft                     )                           ! $RG_shaft
+   receiver.ref (                   $COM_length                   ) = $SVG_shaft.$_length     ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_shaft_length'     ! Sender priority list
+
+   receiver.ref (                   $COM_diameter                 ) = $SVG_shaft.$_diameter   ! Destination object
+   receiver.priolist (    1 ,       $COM_diameter                 ) = '$COM_shaft_diameter'   ! Sender priority list
+
+receivergroup.end (                 $RG_shaft                     )                           ! $RG_shaft
+
+receivergroup.begin (               $RG_bearing_A                 )                           ! $RG_bearing_A
+   receiver.ref (                   $COM_x                        ) = $SVG_bearing_A.$_x      ! Destination object
+   receiver.priolist (    1 ,       $COM_x                        ) = '$COM_shaft_bearing_A_x' ! Sender priority list
+
+   receiver.ref (                   $COM_k_x                      ) = $SVG_bearing_A.$_k_x    ! Destination object
+   receiver.priolist (    1 ,       $COM_k_x                      ) = '$COM_shaft_bearing_A_k_x' ! Sender priority list
+
+   receiver.ref (                   $COM_k_y                      ) = $SVG_bearing_A.$_k_y    ! Destination object
+   receiver.priolist (    1 ,       $COM_k_y                      ) = '$COM_shaft_bearing_A_k_y' ! Sender priority list
+
+   receiver.ref (                   $COM_k_z                      ) = $SVG_bearing_A.$_k_z    ! Destination object
+   receiver.priolist (    1 ,       $COM_k_z                      ) = '$COM_shaft_bearing_A_k_z' ! Sender priority list
+
+   receiver.ref (                   $COM_k_alpha                  ) = $SVG_bearing_A.$_k_alpha ! Destination object
+   receiver.priolist (    1 ,       $COM_k_alpha                  ) = '$COM_shaft_bearing_A_k_alpha' ! Sender priority list
+
+   receiver.ref (                   $COM_k_beta                   ) = $SVG_bearing_A.$_k_beta ! Destination object
+   receiver.priolist (    1 ,       $COM_k_beta                   ) = '$COM_shaft_bearing_A_k_beta' ! Sender priority list
+
+   receiver.ref (                   $COM_k_gamma                  ) = $SVG_bearing_A.$_k_gamma ! Destination object
+   receiver.priolist (    1 ,       $COM_k_gamma                  ) = '$COM_shaft_bearing_A_k_gamma' ! Sender priority list
+
+   receiver.ref (                   $COM_d_x                      ) = $SVG_bearing_A.$_d_x    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_x                      ) = '$COM_shaft_bearing_A_d_x' ! Sender priority list
+
+   receiver.ref (                   $COM_d_y                      ) = $SVG_bearing_A.$_d_y    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_y                      ) = '$COM_shaft_bearing_A_d_y' ! Sender priority list
+
+   receiver.ref (                   $COM_d_z                      ) = $SVG_bearing_A.$_d_z    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_z                      ) = '$COM_shaft_bearing_A_d_z' ! Sender priority list
+
+   receiver.ref (                   $COM_d_alpha                  ) = $SVG_bearing_A.$_d_alpha ! Destination object
+   receiver.priolist (    1 ,       $COM_d_alpha                  ) = '$COM_shaft_bearing_A_d_alpha' ! Sender priority list
+
+   receiver.ref (                   $COM_d_beta                   ) = $SVG_bearing_A.$_d_beta ! Destination object
+   receiver.priolist (    1 ,       $COM_d_beta                   ) = '$COM_shaft_bearing_A_d_beta' ! Sender priority list
+
+   receiver.ref (                   $COM_d_gamma                  ) = $SVG_bearing_A.$_d_gamma ! Destination object
+   receiver.priolist (    1 ,       $COM_d_gamma                  ) = '$COM_shaft_bearing_A_d_gamma' ! Sender priority list
+
+receivergroup.end (                 $RG_bearing_A                 )                           ! $RG_bearing_A
+
+receivergroup.begin (               $RG_bearing_B                 )                           ! $RG_bearing_B
+   receiver.ref (                   $COM_x                        ) = $SVG_bearing_B.$_x      ! Destination object
+   receiver.priolist (    1 ,       $COM_x                        ) = '$COM_shaft_bearing_B_x' ! Sender priority list
+
+   receiver.ref (                   $COM_k_x                      ) = $SVG_bearing_B.$_k_x    ! Destination object
+   receiver.priolist (    1 ,       $COM_k_x                      ) = '$COM_shaft_bearing_B_k_x' ! Sender priority list
+
+   receiver.ref (                   $COM_k_y                      ) = $SVG_bearing_B.$_k_y    ! Destination object
+   receiver.priolist (    1 ,       $COM_k_y                      ) = '$COM_shaft_bearing_B_k_y' ! Sender priority list
+
+   receiver.ref (                   $COM_k_z                      ) = $SVG_bearing_B.$_k_z    ! Destination object
+   receiver.priolist (    1 ,       $COM_k_z                      ) = '$COM_shaft_bearing_B_k_z' ! Sender priority list
+
+   receiver.ref (                   $COM_k_alpha                  ) = $SVG_bearing_B.$_k_alpha ! Destination object
+   receiver.priolist (    1 ,       $COM_k_alpha                  ) = '$COM_shaft_bearing_B_k_alpha' ! Sender priority list
+
+   receiver.ref (                   $COM_k_beta                   ) = $SVG_bearing_B.$_k_beta ! Destination object
+   receiver.priolist (    1 ,       $COM_k_beta                   ) = '$COM_shaft_bearing_B_k_beta' ! Sender priority list
+
+   receiver.ref (                   $COM_k_gamma                  ) = $SVG_bearing_B.$_k_gamma ! Destination object
+   receiver.priolist (    1 ,       $COM_k_gamma                  ) = '$COM_shaft_bearing_B_k_gamma' ! Sender priority list
+
+   receiver.ref (                   $COM_d_x                      ) = $SVG_bearing_B.$_d_x    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_x                      ) = '$COM_shaft_bearing_B_d_x' ! Sender priority list
+
+   receiver.ref (                   $COM_d_y                      ) = $SVG_bearing_B.$_d_y    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_y                      ) = '$COM_shaft_bearing_B_d_y' ! Sender priority list
+
+   receiver.ref (                   $COM_d_z                      ) = $SVG_bearing_B.$_d_z    ! Destination object
+   receiver.priolist (    1 ,       $COM_d_z                      ) = '$COM_shaft_bearing_B_d_z' ! Sender priority list
+
+   receiver.ref (                   $COM_d_alpha                  ) = $SVG_bearing_B.$_d_alpha ! Destination object
+   receiver.priolist (    1 ,       $COM_d_alpha                  ) = '$COM_shaft_bearing_B_d_alpha' ! Sender priority list
+
+   receiver.ref (                   $COM_d_beta                   ) = $SVG_bearing_B.$_d_beta ! Destination object
+   receiver.priolist (    1 ,       $COM_d_beta                   ) = '$COM_shaft_bearing_B_d_beta' ! Sender priority list
+
+   receiver.ref (                   $COM_d_gamma                  ) = $SVG_bearing_B.$_d_gamma ! Destination object
+   receiver.priolist (    1 ,       $COM_d_gamma                  ) = '$COM_shaft_bearing_B_d_gamma' ! Sender priority list
+
+receivergroup.end (                 $RG_bearing_B                 )                           ! $RG_bearing_B
+
+receivergroup.begin (               $RG_material                  )                           ! $RG_material
+   receiver.ref (                   $COM_density                  ) = $SVG_material.$_density ! Destination object
+   receiver.priolist (    1 ,       $COM_density                  ) = '$COM_shaft_density'    ! Sender priority list
+
+   receiver.ref (                   $COM_elasticity_modulus       ) = $SVG_material.$_elasticity_modulus ! Destination object
+   receiver.priolist (    1 ,       $COM_elasticity_modulus       ) = '$COM_shaft_elasticity_modulus' ! Sender priority list
+
+   receiver.ref (                   $COM_poissons_ratio           ) = $SVG_material.$_poissons_ratio ! Destination object
+   receiver.priolist (    1 ,       $COM_poissons_ratio           ) = '$COM_shaft_poissons_ratio' ! Sender priority list
+
+receivergroup.end (                 $RG_material                  )                           ! $RG_material
+
+!**********************************************************************
+! Materials
+!**********************************************************************
+material.type (                     $Mat_shaft                    ) = 1                       ! Type
+material.par (            2 ,       $Mat_shaft                    ) = $SVG_material.$_density ! [kg/m³] Density
+material.par (            3 ,       $Mat_shaft                    ) = 0.00000000000000000E+00 ! [-] Input mode
+material.par (            4 ,       $Mat_shaft                    ) = $SVG_material.$_elasticity_modulus ! [Pa] Young's modulus
+material.par (            5 ,       $Mat_shaft                    ) = $SVG_material.$_poissons_ratio ! [-] Poisson's ratio
+material.par (            6 ,       $Mat_shaft                    ) = 8.07692307692307739E+10 ! [Pa] Shear modulus
+
+!**********************************************************************
+! Cross Sections
+!**********************************************************************
+xsection.type (                     $XSc_shaft                    ) = 1                       ! Type
+xsection.par (            1 ,       $XSc_shaft                    ) = $Mat_shaft              ! [-] Material
+xsection.par (            3 ,       $XSc_shaft                    ) = $SVG_shaft.$_diameter   ! [m] Diameter
+xsection.par (            4 ,       $XSc_shaft                    ) = 3.60000000000000000E+01 ! [-] Number of cross section nodes
+xsection.plot.par (       1 ,       $XSc_shaft                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   1 ,   1 , $XSc_shaft              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+xsection.plot.par (       1 ,   2 ,   1 , $XSc_shaft              ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+                                                                                                                                                            

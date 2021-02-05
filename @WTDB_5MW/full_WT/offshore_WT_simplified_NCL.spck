@@ -1,0 +1,528 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200002
+version.desc   = ''
+version.build  = 149
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+model.txt                                                           = '5 MW Windturbine offshore#5 MW Windturbine main model for design load calculation with simple nacelle model.' ! Comment
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Substructures
+!**********************************************************************
+substr.file (                       $S_FND                        ) = '010_FND_B_Offshore_Monopile.par.spck' ! Filename
+substr.id (                         $S_FND                        ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_FND                        ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/010_FND' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_FND                        ) = 2.90000000000000000E+02
+substr.attr.2d.pos.y (              $S_FND                        ) = 1.50000000000000000E+02
+substr.attr.2d.width (              $S_FND                        ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_FND                        ) = 4.00000000000000000E+01
+
+substr.file (                       $S_TWR                        ) = '020_TWR_B_Offshore_OC4.par.spck' ! Filename
+substr.id (                         $S_TWR                        ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_TWR                        ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/020_TWR' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_TWR                        ) = 3.10000000000000000E+02
+substr.attr.2d.pos.y (              $S_TWR                        ) = -5.00000000000000000E+01
+substr.attr.2d.width (              $S_TWR                        ) = 6.00000000000000000E+01
+substr.attr.2d.height (             $S_TWR                        ) = 1.40000000000000000E+02
+
+substr.file (                       $S_NCL                        ) = '030_NCL_B_DLC.spck'    ! Filename
+substr.id (                         $S_NCL                        ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_NCL                        ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/030_NCL' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_NCL                        ) = 2.80000000000000000E+02
+substr.attr.2d.pos.y (              $S_NCL                        ) = -1.70000000000000000E+02
+substr.attr.2d.width (              $S_NCL                        ) = 1.20000000000000000E+02
+substr.attr.2d.height (             $S_NCL                        ) = 7.00000000000000000E+01
+
+substr.file (                       $S_HUB                        ) = '040_HUB_A.par.spck'    ! Filename
+substr.id (                         $S_HUB                        ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_HUB                        ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/040_HUB' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_HUB                        ) = 1.50000000000000000E+02
+substr.attr.2d.pos.y (              $S_HUB                        ) = -1.70000000000000000E+02
+substr.attr.2d.width (              $S_HUB                        ) = 7.00000000000000000E+01
+substr.attr.2d.height (             $S_HUB                        ) = 6.00000000000000000E+01
+
+substr.file (                       $S_RBL_1                      ) = '050_RBL_A_simbeam_advanced.par.spck' ! Filename
+substr.id (                         $S_RBL_1                      ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_RBL_1                      ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/050_RBL' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_RBL_1                      ) = -1.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_RBL_1                      ) = -2.10000000000000000E+02
+substr.attr.2d.width (              $S_RBL_1                      ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_RBL_1                      ) = 4.00000000000000000E+01
+
+substr.file (                       $S_RBL_2                      ) = '050_RBL_A_simbeam_advanced.par.spck' ! Filename
+substr.id (                         $S_RBL_2                      ) = '2'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_RBL_2                      ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/050_RBL' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_RBL_2                      ) = -1.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_RBL_2                      ) = -1.60000000000000000E+02
+substr.attr.2d.width (              $S_RBL_2                      ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_RBL_2                      ) = 4.00000000000000000E+01
+
+substr.file (                       $S_RBL_3                      ) = '050_RBL_A_simbeam_advanced.par.spck' ! Filename
+substr.id (                         $S_RBL_3                      ) = '3'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_RBL_3                      ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/050_RBL' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_RBL_3                      ) = -1.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_RBL_3                      ) = -1.10000000000000000E+02
+substr.attr.2d.width (              $S_RBL_3                      ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_RBL_3                      ) = 4.00000000000000000E+01
+
+substr.file (                       $S_CTRL                       ) = '130_CTRL_A_Wind_Controller_DLL.par.spck' ! Filename
+substr.id (                         $S_CTRL                       ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_CTRL                       ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/130_CTRL' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_CTRL                       ) = 1.30000000000000000E+02
+substr.attr.2d.pos.y (              $S_CTRL                       ) = 4.00000000000000000E+01
+substr.attr.2d.width (              $S_CTRL                       ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_CTRL                       ) = 6.00000000000000000E+01
+
+substr.file (                       $S_AERO                       ) = '110_AERO_A_AeroDyn_v13.par.spck' ! Filename
+substr.id (                         $S_AERO                       ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_AERO                       ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/110_AERO' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_AERO                       ) = -1.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_AERO                       ) = 4.00000000000000000E+01
+substr.attr.2d.width (              $S_AERO                       ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_AERO                       ) = 6.00000000000000000E+01
+
+substr.file (                       $S_HYDRO                      ) = '120_HYDRO_A_HydroDyn.par.spck' ! Filename
+substr.id (                         $S_HYDRO                      ) = '1'                     ! Substructure Id
+substr.add.searchpath (   1 ,       $S_HYDRO                      ) = 'C:/Users/geraldod/SIMPACK/SPCK_WDB_V2.02/01_model/5MW_WT_example/database/mbs_db_substructure/120_HYDRO' ! Substructure-specific search path
+substr.attr.2d.pos.x (              $S_HYDRO                      ) = -1.00000000000000000E+01
+substr.attr.2d.pos.y (              $S_HYDRO                      ) = 1.20000000000000000E+02
+substr.attr.2d.width (              $S_HYDRO                      ) = 1.00000000000000000E+02
+substr.attr.2d.height (             $S_HYDRO                      ) = 6.00000000000000000E+01
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -2.17671168945729733E+02 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -5.59455118030309677E+02 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 2.14711040079593658E+02 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo offset
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -2.17671168945729733E+02 ! Position
+view.pos (                2 ,       $V_perspective                ) = -5.59455118030309677E+02 ! Position
+view.pos (                3 ,       $V_perspective                ) = 2.14711040079593658E+02 ! Position
+view.orient (             1 ,       $V_perspective                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 20 Hz }               ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 1000 s }              ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 3.00000000000000006E-03 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 3.00000000000000006E-03 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.mat.enabled (            $SLV_SolverSettings           ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
+slv.threads (                       $SLV_SolverSettings           ) = 4                       ! Solver Threads
+slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.st.meth (                  $SLV_SolverSettings           ) = 2                       ! EQUI_STATIC_INTPAR_METHOD
+slv.init.task (                     $SLV_SolverSettings           ) = 2                       ! Task: 0 = No initialization; 1 = Assemble System; 2 = Apply Initial Conditions and Assemble System
+slv.init.meth (                     $SLV_SolverSettings           ) = 0                       ! Algorithm: 0 = Nonlinear solver; 1 = Projection
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -6.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -2.20000000000000000E+02
+refsys.attr.2d.width (              $R_Isys                       ) = 5.30000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 4.30000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+
+! Overwritten substructure values
+body.flx.internal.data (            $S_FND.$TPL.$B_MPL            ) = ''                      ! Internal flexible Body data
+
+body.flx.internal.data (            $S_TWR.$TPL.$B_TWR            ) = ''                      ! Internal flexible Body data
+
+joint.attr.2d.pos.x (     1 ,       $S_TWR.$TPL.$J_TWR            ) = 340
+joint.attr.2d.pos.y (     1 ,       $S_TWR.$TPL.$J_TWR            ) = 120
+joint.attr.2d.ori (       1 ,       $S_TWR.$TPL.$J_TWR            ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_TWR.$TPL.$J_TWR) = 340, 340
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_TWR.$TPL.$J_TWR) = 150, 137
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_TWR.$TPL.$J_TWR) = 340, 340
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_TWR.$TPL.$J_TWR) = 90, 103
+
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_SH1   ) = -6.97336078294899409E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_SH1   ) = 8.00235671277010567E+01 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_NCL.$032_GBX.$TPL.$B_SH2   ) = -3.00138075493751089E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_NCL.$032_GBX.$TPL.$B_SH2   ) = 8.02251449171645419E+01 ! Position x/y/z/al/be/ga
+
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$CTN_SH1 ) = 'eJxjfmvMyAAFRkAM4zAisdEBAEJWAVo0AAAAAAAAAA==' ! Internal state
+
+connect.st.intern (                 $S_NCL.$032_GBX.$TPL.$CTN_SH1_SH2) = 'eJxjfmvMyAAFRkDMD8RsDLjAB3tcNMgQRqx6GBgATzkGKmQAAAAAAAAA' ! Internal state
+
+joint.attr.2d.pos.x (     1 ,       $S_NCL.$036_YAW.$TPL.$J_YAW   ) = 340
+joint.attr.2d.pos.y (     1 ,       $S_NCL.$036_YAW.$TPL.$J_YAW   ) = -70
+joint.attr.2d.ori (       1 ,       $S_NCL.$036_YAW.$TPL.$J_YAW   ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_NCL.$036_YAW.$TPL.$J_YAW) = 340, 340
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_NCL.$036_YAW.$TPL.$J_YAW) = -50, -53
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_NCL.$036_YAW.$TPL.$J_YAW) = 340, 340
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_NCL.$036_YAW.$TPL.$J_YAW) = -100, -87
+
+
+body.brf.st.pos (         1 ,       $S_HUB.$TPL.$B_connector_RBL1 ) = -5.43266886682082806E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_HUB.$TPL.$B_connector_RBL1 ) = 8.19421516999490933E+01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_HUB.$TPL.$B_connector_RBL1 ) = 4.36332312998582370E-02 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_HUB.$TPL.$B_connector_RBL2 ) = -5.62858264385439000E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_HUB.$TPL.$B_connector_RBL2 ) = -1.29780170924333049E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_HUB.$TPL.$B_connector_RBL2 ) = 7.97028469816239351E+01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_HUB.$TPL.$B_connector_RBL2 ) = 2.08943776257349789E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_HUB.$TPL.$B_connector_RBL2 ) = -8.70998845042612185E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_HUB.$TPL.$B_connector_RBL2 ) = -7.58389797338825805E-02 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $S_HUB.$TPL.$B_connector_RBL3 ) = -5.62858264385438822E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $S_HUB.$TPL.$B_connector_RBL3 ) = 1.29780170924333049E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $S_HUB.$TPL.$B_connector_RBL3 ) = 7.97028469816239635E+01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $S_HUB.$TPL.$B_connector_RBL3 ) = -2.08943776257349834E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $S_HUB.$TPL.$B_connector_RBL3 ) = -8.70998845042612740E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $S_HUB.$TPL.$B_connector_RBL3 ) = 7.58389797338825528E-02 ! Position x/y/z/al/be/ga
+
+joint.attr.2d.pos.x (     1 ,       $S_HUB.$TPL.$J_HUB            ) = 250
+joint.attr.2d.pos.y (     1 ,       $S_HUB.$TPL.$J_HUB            ) = -140
+joint.attr.2d.ori (       1 ,       $S_HUB.$TPL.$J_HUB            ) = 180
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_HUB.$TPL.$J_HUB) = 280, 267
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_HUB.$TPL.$J_HUB) = -140, -140
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_HUB.$TPL.$J_HUB) = 220, 233
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_HUB.$TPL.$J_HUB) = -140, -140
+
+
+connect.st.pos (          1 ,       $S_HUB.$TPL.$G_REVOLUTE.$CTN_connector_RBL1) = 0.00000000000000000E+00 ! Position states
+connect.st.intern (                 $S_HUB.$TPL.$G_REVOLUTE.$CTN_connector_RBL1) = 'eJxjfmvMyAAFRkDMDGUzQjE2AABCngFcNAAAAAAAAAA=' ! Internal state
+
+connect.st.pos (          1 ,       $S_HUB.$TPL.$G_REVOLUTE.$CTN_connector_RBL2) = 0.00000000000000000E+00 ! Position states
+connect.st.intern (                 $S_HUB.$TPL.$G_REVOLUTE.$CTN_connector_RBL2) = 'eJxjfmvMyAAFRkDMDGUzQjE2AABCngFcNAAAAAAAAAA=' ! Internal state
+
+connect.st.pos (          1 ,       $S_HUB.$TPL.$G_REVOLUTE.$CTN_connector_RBL3) = 0.00000000000000000E+00 ! Position states
+connect.st.intern (                 $S_HUB.$TPL.$G_REVOLUTE.$CTN_connector_RBL3) = 'eJxjfmvMyAAFRkDMDGUzQjE2AABCngFcNAAAAAAAAAA=' ! Internal state
+
+body.flx.internal.data (            $S_RBL_1.$TPL.$B_RBL          ) = ''                      ! Internal flexible Body data
+
+joint.attr.2d.substr (    1 ,       $S_RBL_1.$TPL.$J_RBL          ) = $S_HUB.$TPL
+joint.attr.2d.pos.x (     1 ,       $S_RBL_1.$TPL.$J_RBL          ) = -20
+joint.attr.2d.pos.y (     1 ,       $S_RBL_1.$TPL.$J_RBL          ) = -20
+joint.attr.2d.ori (       1 ,       $S_RBL_1.$TPL.$J_RBL          ) = 180
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = 0, 7, 7, -3
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = -100, -100, -20, -20
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = -160, -37
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = -20, -20
+joint.attr.2d.pos.x (     2 ,       $S_RBL_1.$TPL.$J_RBL          ) = 120
+joint.attr.2d.pos.y (     2 ,       $S_RBL_1.$TPL.$J_RBL          ) = -190
+joint.attr.2d.ori (       2 ,       $S_RBL_1.$TPL.$J_RBL          ) = 180
+joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = 150, 140, 140, 137
+joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = -160, -160, -190, -190
+joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = 90, 103
+joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_RBL_1.$TPL.$J_RBL) = -190, -190
+
+
+body.flx.internal.data (            $S_RBL_2.$TPL.$B_RBL          ) = ''                      ! Internal flexible Body data
+
+joint.attr.2d.substr (    1 ,       $S_RBL_2.$TPL.$J_RBL          ) = $S_HUB.$TPL
+joint.attr.2d.pos.x (     1 ,       $S_RBL_2.$TPL.$J_RBL          ) = -90
+joint.attr.2d.pos.y (     1 ,       $S_RBL_2.$TPL.$J_RBL          ) = 0
+joint.attr.2d.ori (       1 ,       $S_RBL_2.$TPL.$J_RBL          ) = 180
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = 40, 40, -73
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = -90, 0, 0
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = -160, -107
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = 0, 0
+joint.attr.2d.pos.x (     2 ,       $S_RBL_2.$TPL.$J_RBL          ) = 120
+joint.attr.2d.pos.y (     2 ,       $S_RBL_2.$TPL.$J_RBL          ) = -140
+joint.attr.2d.ori (       2 ,       $S_RBL_2.$TPL.$J_RBL          ) = 180
+joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = 150, 137
+joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = -140, -140
+joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = 90, 103
+joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_RBL_2.$TPL.$J_RBL) = -140, -140
+
+
+body.flx.internal.data (            $S_RBL_3.$TPL.$B_RBL          ) = ''                      ! Internal flexible Body data
+
+joint.attr.2d.substr (    1 ,       $S_RBL_3.$TPL.$J_RBL          ) = $S_HUB.$TPL
+joint.attr.2d.pos.x (     1 ,       $S_RBL_3.$TPL.$J_RBL          ) = -150
+joint.attr.2d.pos.y (     1 ,       $S_RBL_3.$TPL.$J_RBL          ) = -50
+joint.attr.2d.ori (       1 ,       $S_RBL_3.$TPL.$J_RBL          ) = 180
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = 190, 190, -133
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = -90, -50, -50
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = -160, -157.4375, -157.4375, -179.75, -179.75, -167
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = -30, -30, -40, -40, -50, -50
+joint.attr.2d.pos.x (     2 ,       $S_RBL_3.$TPL.$J_RBL          ) = 120
+joint.attr.2d.pos.y (     2 ,       $S_RBL_3.$TPL.$J_RBL          ) = -90
+joint.attr.2d.ori (       2 ,       $S_RBL_3.$TPL.$J_RBL          ) = 180
+joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = 160, 160, 137
+joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = -110, -90, -90
+joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = 90, 103
+joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $S_RBL_3.$TPL.$J_RBL) = -90, -90
+
+
+force.st.alg (            7 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (            8 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (            9 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           10 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           11 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           12 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           13 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           14 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           15 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           16 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           17 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           18 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           19 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           20 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           21 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           22 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           23 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           24 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           25 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           26 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           27 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           28 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           29 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           30 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           31 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           32 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           33 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           34 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           35 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           36 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           37 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           38 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           39 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           40 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           41 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           42 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           43 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           44 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           45 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           46 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           47 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           48 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           49 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           50 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           51 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           52 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           53 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           54 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           55 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           56 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           57 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           58 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           59 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           60 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           61 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           62 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           63 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           64 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           65 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           66 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           67 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           68 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           69 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           70 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           71 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           72 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           73 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           74 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           75 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           76 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           77 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+force.st.alg (           78 ,       $S_HYDRO.$TPL.$F_HydroDyn     ) = 0.00000000000000000E+00 ! Algebraic states
+
+                                       

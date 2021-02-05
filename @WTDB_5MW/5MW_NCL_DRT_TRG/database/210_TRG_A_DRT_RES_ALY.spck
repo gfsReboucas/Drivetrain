@@ -1,0 +1,1383 @@
+!file.version=3.4! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '.'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.compat.track.excit                                             = 1                       ! Track Excitation rotation sequence
+glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
+glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   3                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   4                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   5                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   6                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   7                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   8                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   9                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  10                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  11                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  12                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  13                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  14                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  15                                       ) = 1                       ! Formalism Tuning Flags
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $GlobalSolverSettings   ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+editmode.submodel                                                   = 0                       ! 0: in main model; 1: in this model
+model.txt                                                           = 'Testrig#Testrig for detailed drivetrain resonance analysis.[br]Applicable to wind turbine model or (detailed) nacelle model. [br]Switchable between three modes (Run Up, Static Torque, No Torque).[br]Run up is performed by a drive body, which is elastically connected to the windturbine / nacelle model. [br][br]' ! Comment
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -1.97274646759033203E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -3.67193717956542969E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.16568479537963867E+01 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 6.03440582752227783E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.02286398410797119E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.50671601295471191E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.76334404945373535E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo offset
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -1.97274646759033203E+01 ! Position
+view.pos (                2 ,       $V_perspective                ) = -3.67193717956542969E+01 ! Position
+view.pos (                3 ,       $V_perspective                ) = 1.16568479537963867E+01 ! Position
+view.orient (             1 ,       $V_perspective                ) = 6.03440582752227783E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.02286398410797119E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -1.50671601295471191E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.76334404945373535E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $GlobalSolverSettings         ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $GlobalSolverSettings         ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $GlobalSolverSettings         ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $GlobalSolverSettings         ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $GlobalSolverSettings         ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $GlobalSolverSettings         ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $GlobalSolverSettings         ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $GlobalSolverSettings         ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $GlobalSolverSettings         ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $GlobalSolverSettings         ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $GlobalSolverSettings         ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $GlobalSolverSettings         ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $GlobalSolverSettings         ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $GlobalSolverSettings         ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $GlobalSolverSettings         ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $GlobalSolverSettings         ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $GlobalSolverSettings         ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $GlobalSolverSettings         ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $GlobalSolverSettings         ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $GlobalSolverSettings         ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $GlobalSolverSettings         ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $GlobalSolverSettings         ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $GlobalSolverSettings         ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $GlobalSolverSettings         ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $GlobalSolverSettings         ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $GlobalSolverSettings         ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $GlobalSolverSettings         ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $GlobalSolverSettings         ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $GlobalSolverSettings         ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $GlobalSolverSettings         ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $GlobalSolverSettings         ) = $G_SLV.$_SAMPLE_RATE    ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $GlobalSolverSettings         ) = $G_SLV.$_TIME           ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $GlobalSolverSettings         ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $GlobalSolverSettings         ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.atol.body.flx.st.vel (    $GlobalSolverSettings         ) = $G_SLV.$_FBVS           ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
+slv.integ.rtol.gen (                $GlobalSolverSettings         ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $GlobalSolverSettings         ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.body.flx.st.vel (    $GlobalSolverSettings         ) = $G_SLV.$_FBVS           ! TIME_INTEG_PARSTATE_BODY_FLX_ST_VEL
+slv.meas.geo (                      $GlobalSolverSettings         ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $GlobalSolverSettings         ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $GlobalSolverSettings         ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $GlobalSolverSettings         ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $GlobalSolverSettings         ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $GlobalSolverSettings         ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $GlobalSolverSettings         ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $GlobalSolverSettings         ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $GlobalSolverSettings         ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $GlobalSolverSettings         ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $GlobalSolverSettings         ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $GlobalSolverSettings         ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $GlobalSolverSettings         ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $GlobalSolverSettings         ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $GlobalSolverSettings         ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $GlobalSolverSettings         ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $GlobalSolverSettings         ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $GlobalSolverSettings         ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $GlobalSolverSettings         ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $GlobalSolverSettings         ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $GlobalSolverSettings         ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $GlobalSolverSettings         ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $GlobalSolverSettings         ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $GlobalSolverSettings         ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $GlobalSolverSettings         ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.basename (          $GlobalSolverSettings         ) = ''                      ! OUTPUT_FILEBASENAME
+slv.output.mat.enabled (            $GlobalSolverSettings         ) = 1                       ! mat file generation 0 = disable; 1 = enable
+slv.output.eva.enabled (            $GlobalSolverSettings         ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.file.desc (              $GlobalSolverSettings         ) = ''                      ! Description written to the output file if supported
+slv.output.fileinlining.enabled (   $GlobalSolverSettings         ) = 0                       ! file inlining 0 = disable; 1 = enable
+slv.threads (                       $GlobalSolverSettings         ) = $G_SLV.$_N_CPU_Cores    ! Solver Threads
+slv.compat.solver (                 $GlobalSolverSettings         ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.fallback.enable (          $GlobalSolverSettings         ) = 0                       ! Enable fallbacks
+slv.equi.st.meth (                  $GlobalSolverSettings         ) = 2                       ! EQUI_STATIC_INTPAR_METHOD
+slv.init.task (                     $GlobalSolverSettings         ) = 2                       ! Task: 0 = No initialization; 1 = Assemble System; 2 = Apply Initial Conditions and Assemble System
+slv.init.tol (                      $GlobalSolverSettings         ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
+slv.init.meth (                     $GlobalSolverSettings         ) = 0                       ! Algorithm: 0 = Nonlinear solver; 1 = Projection
+slv.txt (                           $GlobalSolverSettings         ) = ''                      ! Comment
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvargroup.begin (                 $G_SLV                        )                           ! $G_SLV
+   subvar.str (                     $_TIME                        ) = '10 s'                  ! $G_SLV.$_TIME, Definition
+   subvar.intent (                  $_TIME                        ) = 0                       ! Intent
+   subvar.status (                  $_TIME                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+   subvar.txt (                     $_TIME                        ) = 'simulation TIME'       ! Comment
+
+   subvar.str (                     $_SAMPLE_RATE                 ) = '200 Hz'                ! $G_SLV.$_SAMPLE_RATE, Definition
+   subvar.intent (                  $_SAMPLE_RATE                 ) = 0                       ! Intent
+   subvar.status (                  $_SAMPLE_RATE                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+   subvar.txt (                     $_SAMPLE_RATE                 ) = 'SAMPLE RATE'           ! Comment
+
+   subvar.str (                     $_N_CPU_Cores                 ) = '3'                     ! $G_SLV.$_N_CPU_Cores, Definition
+   subvar.intent (                  $_N_CPU_Cores                 ) = 0                       ! Intent
+   subvar.status (                  $_N_CPU_Cores                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+   subvar.txt (                     $_N_CPU_Cores                 ) = 'Number of CPU CORES'   ! Comment
+
+   subvar.str (                     $_FBVS                        ) = '1.0e-4'                ! $G_SLV.$_FBVS, Definition
+   subvar.txt (                     $_FBVS                        ) = 'FlexBody Velocity States' ! Comment
+
+subvargroup.end (                   $G_SLV                        )                           ! $G_SLV
+
+subvargroup.begin (                 $G_PA                         )                           ! $G_PA
+   subvar.str (                     $_ROT_H                       ) = '1.949256m'             ! $G_PA.$_ROT_H, Definition
+   subvar.txt (                     $_ROT_H                       ) = 'Height of rotor axis over tower top' ! Comment
+
+   subvar.str (                     $_DRV_Offset_X                ) = '-12 m'                 ! $G_PA.$_DRV_Offset_X, Definition
+   subvar.txt (                     $_DRV_Offset_X                ) = 'Offset in x-direction in direction of (possibly tilted) rotor axis' ! Comment
+
+subvargroup.end (                   $G_PA                         )                           ! $G_PA
+subvargroup.txt (                   $G_PA                         ) = 'general PArameter'     ! Comment
+
+subvargroup.begin (                 $G_HP                         )                           ! $G_HP
+   subvar.str (                     $_TWR_Z                       ) = '$G_INTERFACE.$G_010_FND.$G_HP.$_TWR_Z' ! $G_HP.$_TWR_Z, Definition
+   subvar.intent (                  $_TWR_Z                       ) = 2                       ! Intent
+   subvar.txt (                     $_TWR_Z                       ) = 'z-pos. of ToWeR bottom (wrt. ISYS)' ! Comment
+
+subvargroup.end (                   $G_HP                         )                           ! $G_HP
+subvargroup.txt (                   $G_HP                         ) = 'Hard Points'           ! Comment
+
+subvargroup.begin (                 $G_KP                         )                           ! $G_KP
+   subvargroup.begin (              $G_TRG                        )                           ! $G_KP.$G_TRG
+      subvar.str (                  $_DRV_REF_Z                   ) = ' $G_HP.$_TWR_Z+$G_HL.$_TWR_H+ $G_PA.$_ROT_H' ! $G_KP.$G_TRG.$_DRV_REF_Z, Definition
+      subvar.intent (               $_DRV_REF_Z                   ) = 2                       ! Intent
+
+      subvar.str (                  $_DRV_REF_ANG                 ) = '-$G_HL.$_TLT_ANG'      ! $G_KP.$G_TRG.$_DRV_REF_ANG, Definition
+      subvar.intent (               $_DRV_REF_ANG                 ) = 2                       ! Intent
+
+      subvar.str (                  $_DRV_Offset_X                ) = '$G_PA.$_DRV_Offset_X'  ! $G_KP.$G_TRG.$_DRV_Offset_X, Definition
+      subvar.intent (               $_DRV_Offset_X                ) = 2                       ! Intent
+      subvar.txt (                  $_DRV_Offset_X                ) = 'Offset in x-direction in direction of (possibly tilted) rotor axis' ! Comment
+
+   subvargroup.end (                $G_TRG                        )                           ! $G_KP.$G_TRG
+   subvargroup.txt (                $G_TRG                        ) = 'Test RiG'              ! Comment
+subvargroup.end (                   $G_KP                         )                           ! $G_KP
+subvargroup.txt (                   $G_KP                         ) = 'Kinematic Points'      ! Comment
+
+subvargroup.begin (                 $G_HL                         )                           ! $G_HL
+   subvar.str (                     $_DRV_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 1;\n   CASE 3: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_DRV_disabled, Definition
+   subvar.intent (                  $_DRV_disabled                ) = 2                       ! Intent
+   subvar.status (                  $_DRV_disabled                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvar.str (                     $_GEN_TRQ_RunUp_gain          ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 1;\n   CASE 1: 0;\n   CASE 2: 0;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_GEN_TRQ_RunUp_gain, Definition
+   subvar.intent (                  $_GEN_TRQ_RunUp_gain          ) = 2                       ! Intent
+   subvar.status (                  $_GEN_TRQ_RunUp_gain          ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvar.str (                     $_BLP_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 1;\n   CASE 3: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_BLP_disabled, Definition
+   subvar.intent (                  $_BLP_disabled                ) = 2                       ! Intent
+   subvar.status (                  $_BLP_disabled                ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvar.str (                     $_ROT_TRQ_static_disabled     ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 1;\n   CASE 1: 0;\n   CASE 2: 1;\n   CASE 3: 1;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_ROT_TRQ_static_disabled, Definition
+   subvar.intent (                  $_ROT_TRQ_static_disabled     ) = 2                       ! Intent
+   subvar.status (                  $_ROT_TRQ_static_disabled     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvar.str (                     $_GEN_TRQ_static_gain         ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 0;\n   CASE 1: 1;\n   CASE 2: 0;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_GEN_TRQ_static_gain, Definition
+   subvar.intent (                  $_GEN_TRQ_static_gain         ) = 2                       ! Intent
+   subvar.status (                  $_GEN_TRQ_static_gain         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvar.str (                     $_DLC_disabled                ) = 'SWITCH($G_LC.$_SIM_mode)\n{\n   CASE 0: 1;\n   CASE 1: 1;\n   CASE 2: 1;\n   CASE 3: 0;\n   DEFAULT: 0;\n}\n' ! $G_HL.$_DLC_disabled, Definition
+   subvar.intent (                  $_DLC_disabled                ) = 2                       ! Intent
+
+   subvar.str (                     $_TWR_H                       ) = '$G_INTERFACE.$G_020_TWR.$G_HL.$_H' ! $G_HL.$_TWR_H, Definition
+   subvar.intent (                  $_TWR_H                       ) = 2                       ! Intent
+   subvar.txt (                     $_TWR_H                       ) = 'ToWeR Height'          ! Comment
+
+   subvar.str (                     $_GBX_I                       ) = '$G_INTERFACE.$G_032_GBX.$G_HL.$_GBX_I' ! $G_HL.$_GBX_I, Definition
+   subvar.intent (                  $_GBX_I                       ) = 2                       ! Intent
+   subvar.status (                  $_GBX_I                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+   subvar.txt (                     $_GBX_I                       ) = 'GearBoX ratio'         ! Comment
+
+   subvar.str (                     $_TLT_ANG                     ) = '$G_INTERFACE.$G_031_MFR.$G_HL.$_TLT_ANG' ! $G_HL.$_TLT_ANG, Definition
+   subvar.intent (                  $_TLT_ANG                     ) = 2                       ! Intent
+   subvar.txt (                     $_TLT_ANG                     ) = 'TiLT ANGle'            ! Comment
+
+subvargroup.end (                   $G_HL                         )                           ! $G_HL
+subvargroup.txt (                   $G_HL                         ) = 'HeLp values'           ! Comment
+
+subvargroup.begin (                 $G_FE                         )                           ! $G_FE
+   subvargroup.begin (              $G_DRV                        )                           ! $G_FE.$G_DRV
+      subvar.str (                  $T_NOM_ROT                    ) = '-6e06 Nm'              ! $G_FE.$G_DRV.$T_NOM_ROT, Definition
+      subvar.intent (               $T_NOM_ROT                    ) = 0                       ! Intent
+      subvar.status (               $T_NOM_ROT                    ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $T_NOM_ROT                    ) = '\\[Nm\\]'              ! Comment
+
+      subvar.str (                  $_C_ROT                       ) = '1e07 Nm/rad'           ! $G_FE.$G_DRV.$_C_ROT, Definition
+      subvar.intent (               $_C_ROT                       ) = 0                       ! Intent
+      subvar.status (               $_C_ROT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_C_ROT                       ) = '\\[Nm/rad\\]'          ! Comment
+
+      subvar.str (                  $_D_ROT                       ) = '3e07'                  ! $G_FE.$G_DRV.$_D_ROT, Definition
+      subvar.intent (               $_D_ROT                       ) = 0                       ! Intent
+      subvar.status (               $_D_ROT                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_D_ROT                       ) = '\\[Nms/rad\\]'         ! Comment
+
+   subvargroup.end (                $G_DRV                        )                           ! $G_FE.$G_DRV
+   subvargroup.txt (                $G_DRV                        ) = 'Drive Spring'          ! Comment
+subvargroup.end (                   $G_FE                         )                           ! $G_FE
+subvargroup.txt (                   $G_FE                         ) = 'Force Elements'        ! Comment
+
+subvargroup.begin (                 $G_LC                         )                           ! $G_LC
+   subvar.str (                     $_SIM_mode                    ) = '3'                     ! $G_LC.$_SIM_mode, Definition
+   subvar.intent (                  $_SIM_mode                    ) = 0                       ! Intent
+   subvar.status (                  $_SIM_mode                    ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+   subvar.discr.desc (    1 ,       $_SIM_mode                    ) = 'Run Up'                ! Description of discrete values
+   subvar.discr.desc (    2 ,       $_SIM_mode                    ) = 'Static Torque'         ! Description of discrete values
+   subvar.discr.desc (    3 ,       $_SIM_mode                    ) = 'No Torque'             ! Description of discrete values
+   subvar.discr.desc (    4 ,       $_SIM_mode                    ) = 'Dyn. Load Case'        ! Description of discrete values
+   subvar.discr.str (     1 ,       $_SIM_mode                    ) = '0'                     ! Discrete values
+   subvar.discr.str (     2 ,       $_SIM_mode                    ) = '1'                     ! Discrete values
+   subvar.discr.str (     3 ,       $_SIM_mode                    ) = '2'                     ! Discrete values
+   subvar.discr.str (     4 ,       $_SIM_mode                    ) = '3'                     ! Discrete values
+   subvar.txt (                     $_SIM_mode                    ) = 'SIMulation mode'       ! Comment
+
+   subvargroup.begin (              $G_BLP                        )                           ! $G_LC.$G_BLP
+      subvar.str (                  $_Width_TRQ                   ) = '0.05*2*PI'             ! $G_LC.$G_BLP.$_Width_TRQ, Definition
+      subvar.intent (               $_Width_TRQ                   ) = 0                       ! Intent
+      subvar.status (               $_Width_TRQ                   ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_Width_TRQ                   ) = 'half width of the peak in \\[rad\\]' ! Comment
+
+      subvar.str (                  $_Amplitude_TRQ               ) = '45000'                 ! $G_LC.$G_BLP.$_Amplitude_TRQ, Definition
+      subvar.intent (               $_Amplitude_TRQ               ) = 0                       ! Intent
+      subvar.status (               $_Amplitude_TRQ               ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_Amplitude_TRQ               ) = 'amplitude of the blade passing in \\[Nm\\]' ! Comment
+
+      subvar.str (                  $_Width_TLT                   ) = '0.1*2*PI'              ! $G_LC.$G_BLP.$_Width_TLT, Definition
+      subvar.intent (               $_Width_TLT                   ) = 0                       ! Intent
+      subvar.status (               $_Width_TLT                   ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_Width_TLT                   ) = 'half width of the peak in \\[rad\\]' ! Comment
+
+      subvar.str (                  $_Amplitude_TLT               ) = '4e5'                   ! $G_LC.$G_BLP.$_Amplitude_TLT, Definition
+      subvar.intent (               $_Amplitude_TLT               ) = 0                       ! Intent
+      subvar.status (               $_Amplitude_TLT               ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_Amplitude_TLT               ) = 'amplitude of the blade passing in \\[Nm\\]' ! Comment
+
+   subvargroup.end (                $G_BLP                        )                           ! $G_LC.$G_BLP
+   subvargroup.txt (                $G_BLP                        ) = 'BLade Passing'         ! Comment
+   subvargroup.begin (              $G_TRQ_STAT                   )                           ! $G_LC.$G_TRQ_STAT
+      subvar.str (                  $_IFCTN_X                     ) = '125'                   ! $G_LC.$G_TRQ_STAT.$_IFCTN_X, Definition
+      subvar.intent (               $_IFCTN_X                     ) = 0                       ! Intent
+      subvar.status (               $_IFCTN_X                     ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+      subvar.str (                  $_STEP_switch                 ) = '0'                     ! $G_LC.$G_TRQ_STAT.$_STEP_switch, Definition
+      subvar.intent (               $_STEP_switch                 ) = 0                       ! Intent
+      subvar.status (               $_STEP_switch                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.discr.desc (   1 ,     $_STEP_switch                 ) = 'Off'                   ! Description of discrete values
+      subvar.discr.desc (   2 ,     $_STEP_switch                 ) = 'On'                    ! Description of discrete values
+      subvar.discr.str (   1 ,      $_STEP_switch                 ) = '0'                     ! Discrete values
+      subvar.discr.str (   2 ,      $_STEP_switch                 ) = '1'                     ! Discrete values
+
+      subvar.str (                  $_STEP_time                   ) = '25'                    ! $G_LC.$G_TRQ_STAT.$_STEP_time, Definition
+      subvar.intent (               $_STEP_time                   ) = 0                       ! Intent
+      subvar.status (               $_STEP_time                   ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+
+   subvargroup.end (                $G_TRQ_STAT                   )                           ! $G_LC.$G_TRQ_STAT
+   subvargroup.txt (                $G_TRQ_STAT                   ) = 'ToRQue STATic '        ! Comment
+   subvargroup.begin (              $G_RUN_UP                     )                           ! $G_LC.$G_RUN_UP
+      subvar.str (                  $_DRV_VEL_MAX                 ) = '1.466076572 rad/s'     ! $G_LC.$G_RUN_UP.$_DRV_VEL_MAX, Definition
+      subvar.intent (               $_DRV_VEL_MAX                 ) = 0                       ! Intent
+      subvar.status (               $_DRV_VEL_MAX                 ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_DRV_VEL_MAX                 ) = 'DRiVe VELocity MAXimum' ! Comment
+
+   subvargroup.end (                $G_RUN_UP                     )                           ! $G_LC.$G_RUN_UP
+   subvargroup.txt (                $G_RUN_UP                     ) = 'RUN UP'                ! Comment
+subvargroup.end (                   $G_LC                         )                           ! $G_LC
+subvargroup.txt (                   $G_LC                         ) = 'Load Case'             ! Comment
+
+subvargroup.begin (                 $G_INTERFACE                  )                           ! $G_INTERFACE
+   subvargroup.begin (              $G_010_FND                    )                           ! $G_INTERFACE.$G_010_FND
+      subvargroup.begin (           $G_HP                         )                           ! $G_INTERFACE.$G_010_FND.$G_HP
+         subvar.str (               $_TWR_Z                       ) = '0 m'                   ! $G_INTERFACE.$G_010_FND.$G_HP.$_TWR_Z, Definition
+         subvar.intent (            $_TWR_Z                       ) = 2                       ! Intent
+         subvar.txt (               $_TWR_Z                       ) = 'z-pos. of ToWeR bottom (wrt. ISYS)' ! Comment
+
+      subvargroup.end (             $G_HP                         )                           ! $G_INTERFACE.$G_010_FND.$G_HP
+      subvargroup.txt (             $G_HP                         ) = 'Hard Points'           ! Comment
+   subvargroup.end (                $G_010_FND                    )                           ! $G_INTERFACE.$G_010_FND
+   subvargroup.txt (                $G_010_FND                    ) = 'FouNDation'            ! Comment
+   subvargroup.begin (              $G_020_TWR                    )                           ! $G_INTERFACE.$G_020_TWR
+      subvargroup.begin (           $G_HL                         )                           ! $G_INTERFACE.$G_020_TWR.$G_HL
+         subvar.str (               $_H                           ) = '0 m'                   ! $G_INTERFACE.$G_020_TWR.$G_HL.$_H, Definition
+         subvar.intent (            $_H                           ) = 2                       ! Intent
+         subvar.txt (               $_H                           ) = 'height tower'          ! Comment
+
+      subvargroup.end (             $G_HL                         )                           ! $G_INTERFACE.$G_020_TWR.$G_HL
+      subvargroup.txt (             $G_HL                         ) = 'HeLp values'           ! Comment
+   subvargroup.end (                $G_020_TWR                    )                           ! $G_INTERFACE.$G_020_TWR
+   subvargroup.txt (                $G_020_TWR                    ) = 'ToWeR'                 ! Comment
+   subvargroup.begin (              $G_031_MFR                    )                           ! $G_INTERFACE.$G_031_MFR
+      subvargroup.begin (           $G_HL                         )                           ! $G_INTERFACE.$G_031_MFR.$G_HL
+         subvar.str (               $_TLT_ANG                     ) = '- 5 deg'               ! $G_INTERFACE.$G_031_MFR.$G_HL.$_TLT_ANG, Definition
+         subvar.intent (            $_TLT_ANG                     ) = 2                       ! Intent
+         subvar.txt (               $_TLT_ANG                     ) = 'TiLT ANGle'            ! Comment
+
+      subvargroup.end (             $G_HL                         )                           ! $G_INTERFACE.$G_031_MFR.$G_HL
+   subvargroup.end (                $G_031_MFR                    )                           ! $G_INTERFACE.$G_031_MFR
+   subvargroup.begin (              $G_032_GBX                    )                           ! $G_INTERFACE.$G_032_GBX
+      subvargroup.begin (           $G_HL                         )                           ! $G_INTERFACE.$G_032_GBX.$G_HL
+         subvar.str (               $_GBX_I                       ) = '97.8302'               ! $G_INTERFACE.$G_032_GBX.$G_HL.$_GBX_I, Definition
+         subvar.intent (            $_GBX_I                       ) = 2                       ! Intent
+         subvar.status (            $_GBX_I                       ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+         subvar.txt (               $_GBX_I                       ) = 'GearBoX RATIO'         ! Comment
+
+      subvargroup.end (             $G_HL                         )                           ! $G_INTERFACE.$G_032_GBX.$G_HL
+      subvargroup.txt (             $G_HL                         ) = 'PArameter'             ! Comment
+   subvargroup.end (                $G_032_GBX                    )                           ! $G_INTERFACE.$G_032_GBX
+   subvargroup.txt (                $G_032_GBX                    ) = 'NaCeLle'               ! Comment
+subvargroup.end (                   $G_INTERFACE                  )                           ! $G_INTERFACE
+subvargroup.txt (                   $G_INTERFACE                  ) = 'INTERFACE parameter'   ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -4.70000000000000000E+02
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -7.00000000000000000E+01
+refsys.attr.2d.width (              $R_Isys                       ) = 6.20000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 3.70000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+marker.type (                       $M_Isys_TRG                   ) = 2                       ! Type
+marker.parent (                     $M_Isys_TRG                   ) = $R_Isys                 ! Reference system
+
+marker.type (                       $M_Isys_INTERFACE_TRG_HUB     ) = 2                       ! Type
+marker.parent (                     $M_Isys_INTERFACE_TRG_HUB     ) = $R_Isys                 ! Reference system
+marker.pos (              1 ,       $M_Isys_INTERFACE_TRG_HUB     ) = -3.29000000000000004E+00 ! Position
+marker.pos (              3 ,       $M_Isys_INTERFACE_TRG_HUB     ) = $G_KP.$G_TRG.$_DRV_REF_Z ! Position
+marker.ang (              2 ,       $M_Isys_INTERFACE_TRG_HUB     ) = $G_KP.$G_TRG.$_DRV_REF_ANG ! Angles
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+!**********************************************************************
+! Bodies
+!**********************************************************************
+body.m (                            $B_DRV                        ) = 1.00000000000000006E-09 ! Mass of the Body
+body.mp (                           $B_DRV                        ) = 0                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.I.tens (             1 ,   1 , $B_DRV                        ) = 1.00000000000000006E-09 ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_DRV                        ) = 1.00000000000000006E-09 ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_DRV                        ) = 1.00000000000000006E-09 ! Moments of inertia
+body.I.kind (                       $B_DRV                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.flx.cosim.job.type (           $B_DRV                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_DRV                        ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_DRV                        ) = ''                      ! additional command line options for the abaqus run
+body.flx.defhandling (              $B_DRV                        ) = 1                       ! 0=Retain deformation; 1=Retain modal coordinates; 2=Reset deformation to zero
+body.attr.2d.pos.x (                $B_DRV                        ) = -4.00000000000000000E+02
+body.attr.2d.pos.y (                $B_DRV                        ) = -1.00000000000000000E+01
+body.attr.2d.width (                $B_DRV                        ) = 1.60000000000000000E+02
+body.attr.2d.height (               $B_DRV                        ) = 8.00000000000000000E+01
+
+marker.type (                       $M_DRV_BRF                    ) = 1                       ! Type
+marker.parent (                     $M_DRV_BRF                    ) = $B_DRV                  ! Body
+marker.flx.type (                   $M_DRV_BRF                    ) = 4                       ! Flexible type
+
+marker.type (                       $M_DRV_JNT                    ) = 2                       ! Type
+marker.parent (                     $M_DRV_JNT                    ) = $B_DRV                  ! Body
+
+marker.type (                       $M_DRV_HUB                    ) = 2                       ! Type
+marker.parent (                     $M_DRV_HUB                    ) = $B_DRV                  ! Body
+
+joint.from (                        $J_DRV                        ) = $M_TRG_DRV              ! From Marker
+joint.to (                          $J_DRV                        ) = $M_DRV_JNT              ! To Marker
+joint.type (                        $J_DRV                        ) = 40                      ! Type
+joint.par (               1 ,       $J_DRV                        ) = 1.00000000000000000E+00 ! [-] Axis of motion
+joint.par (               2 ,       $J_DRV                        ) = $UE_DRV_Value           ! [-] u-Vector Element s(t)
+joint.par (               3 ,       $J_DRV                        ) = $UE_DRV_1st_deriv       ! [-] u-Vector Element sd(t)
+joint.par (               4 ,       $J_DRV                        ) = $UE_DRV_2nd_deriv       ! [-] u-Vector Element sdd(t)
+joint.par (               5 ,       $J_DRV                        ) = 0.00000000000000000E+00 ! [rad] Constant offset
+joint.par (               8 ,       $J_DRV                        ) = 1.00000000000000000E+00 ! [-] Scaling factor for s/sd/sdd
+joint.attr.2d.pos.x (     1 ,       $J_DRV                        ) = -320
+joint.attr.2d.pos.y (     1 ,       $J_DRV                        ) = 110
+joint.attr.2d.ori (       1 ,       $J_DRV                        ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_DRV       ) = -320, -320
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_DRV       ) = 150, 127
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_DRV         ) = -320, -320
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_DRV         ) = 70, 93
+
+prim.type (                         $P_DRV                        ) = 2                       ! Type
+prim.ref (                          $P_DRV                        ) = $M_DRV_BRF              ! Reference Marker
+prim.ang (                3 ,       $P_DRV                        ) = { 90 deg }              ! Angles
+prim.color.r (            1 ,       $P_DRV                        ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_DRV                        ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_DRV                        ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.g (            2 ,       $P_DRV                        ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_DRV                        ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.b (            2 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                2 ,       $P_DRV                        ) = 2.70000000000000018E+00 ! [m] Height
+prim.par (                3 ,       $P_DRV                        ) = 1.80000000000000004E+00 ! [m] Outer diameter
+prim.par (                4 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! [m] Inner diameter
+prim.par (                5 ,       $P_DRV                        ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_DRV                        ) = 1.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_DRV                        ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_DRV                        ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! [rad] Start angle
+prim.par (               10 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! [rad] Delta angle
+prim.par (               11 ,       $P_DRV                        ) = 0.00000000000000000E+00 ! [-] Close geometry with
+
+prim.type (                         $P_DRV_BR                     ) = 2                       ! Type
+prim.ref (                          $P_DRV_BR                     ) = $M_DRV_JNT              ! Reference Marker
+prim.pos (                1 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Position
+prim.ang (                3 ,       $P_DRV_BR                     ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_DRV_BR                     ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.r (            2 ,       $P_DRV_BR                     ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Colors (green component)
+prim.color.g (            2 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Colors (green component)
+prim.color.b (            1 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.b (            2 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.drawstyle (                    $P_DRV_BR                     ) = 1                       ! Draw style
+prim.par (                2 ,       $P_DRV_BR                     ) = 1.19999999999999996E+00 ! [m] Height
+prim.par (                3 ,       $P_DRV_BR                     ) = 2.20000000000000018E+00 ! [m] Outer diameter
+prim.par (                4 ,       $P_DRV_BR                     ) = 1.80000000000000004E+00 ! [m] Inner diameter
+prim.par (                5 ,       $P_DRV_BR                     ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_DRV_BR                     ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_DRV_BR                     ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_DRV_BR                     ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+prim.type (                         $P_DRV_spring                 ) = 19                      ! Type
+prim.ref (                          $P_DRV_spring                 ) = $M_DRV_BRF              ! Reference Marker
+prim.color.r (            1 ,       $P_DRV_spring                 ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_DRV_spring                 ) = 0.00000000000000000E+00 ! Colors (green component)
+prim.color.b (            1 ,       $P_DRV_spring                 ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_DRV_spring                 ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                1 ,       $P_DRV_spring                 ) = 2.00000000000000000E+00 ! [-] Type
+prim.par (                2 ,       $P_DRV_spring                 ) = $M_DRV_HUB              ! [-] Marker i
+prim.par (                3 ,       $P_DRV_spring                 ) = $M_Isys_INTERFACE_TRG_HUB ! [-] Marker j
+prim.par (                7 ,       $P_DRV_spring                 ) = 1.00000000000000000E+00 ! [m] Diameter
+prim.par (                8 ,       $P_DRV_spring                 ) = 2.00000000000000000E+01 ! [-] Number of windings
+
+
+body.m (                            $B_TRG                        ) = 1.00000000000000006E-09 ! Mass of the Body
+body.mp (                           $B_TRG                        ) = 0                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.I.tens (             1 ,   1 , $B_TRG                        ) = 1.00000000000000006E-09 ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_TRG                        ) = 1.00000000000000006E-09 ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_TRG                        ) = 1.00000000000000006E-09 ! Moments of inertia
+body.I.kind (                       $B_TRG                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.flx.cosim.job.type (           $B_TRG                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_TRG                        ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_TRG                        ) = ''                      ! additional command line options for the abaqus run
+body.flx.defhandling (              $B_TRG                        ) = 1                       ! 0=Retain deformation; 1=Retain modal coordinates; 2=Reset deformation to zero
+body.attr.2d.pos.x (                $B_TRG                        ) = -4.10000000000000000E+02
+body.attr.2d.pos.y (                $B_TRG                        ) = 1.50000000000000000E+02
+body.attr.2d.width (                $B_TRG                        ) = 4.80000000000000000E+02
+body.attr.2d.height (               $B_TRG                        ) = 7.00000000000000000E+01
+
+marker.type (                       $M_TRG_BRF                    ) = 1                       ! Type
+marker.parent (                     $M_TRG_BRF                    ) = $B_TRG                  ! Body
+marker.flx.type (                   $M_TRG_BRF                    ) = 4                       ! Flexible type
+
+marker.type (                       $M_TRG_JNT                    ) = 2                       ! Type
+marker.parent (                     $M_TRG_JNT                    ) = $B_TRG                  ! Body
+
+marker.type (                       $M_TRG_DRV_ref                ) = 2                       ! Type
+marker.parent (                     $M_TRG_DRV_ref                ) = $B_TRG                  ! Body
+marker.pos (              1 ,       $M_TRG_DRV_ref                ) = 0.00000000000000000E+00 ! Position
+marker.pos (              3 ,       $M_TRG_DRV_ref                ) = $G_KP.$G_TRG.$_DRV_REF_Z ! Position
+marker.ang (              2 ,       $M_TRG_DRV_ref                ) = $G_KP.$G_TRG.$_DRV_REF_ANG ! Angles
+
+marker.type (                       $M_TRG_DRV                    ) = 2                       ! Type
+marker.ref (                        $M_TRG_DRV                    ) = $M_TRG_DRV_ref          ! Reference Marker
+marker.parent (                     $M_TRG_DRV                    ) = $B_TRG                  ! Body
+marker.pos (              1 ,       $M_TRG_DRV                    ) = $G_KP.$G_TRG.$_DRV_Offset_X ! Position
+marker.pos (              3 ,       $M_TRG_DRV                    ) = 0.00000000000000000E+00 ! Position
+
+marker.type (                       $M_TRG_HUB                    ) = 2                       ! Type
+marker.ref (                        $M_TRG_HUB                    ) = $M_TRG_DRV_ref          ! Reference Marker
+marker.parent (                     $M_TRG_HUB                    ) = $B_TRG                  ! Body
+marker.pos (              1 ,       $M_TRG_HUB                    ) = -3.29000000000000004E+00 ! Position
+
+marker.type (                       $M_TRG_INTERFACE_TRG_HUB      ) = 2                       ! Type
+marker.ref (                        $M_TRG_INTERFACE_TRG_HUB      ) = $M_TRG_DRV_ref          ! Reference Marker
+marker.parent (                     $M_TRG_INTERFACE_TRG_HUB      ) = $B_TRG                  ! Body
+marker.pos (              1 ,       $M_TRG_INTERFACE_TRG_HUB      ) = -3.29000000000000004E+00 ! Position
+
+marker.type (                       $M_TRG_NCL                    ) = 2                       ! Type
+marker.parent (                     $M_TRG_NCL                    ) = $B_TRG                  ! Body
+
+joint.from (                        $J_TRG                        ) = $M_Isys_TRG             ! From Marker
+joint.to (                          $J_TRG                        ) = $M_TRG_JNT              ! To Marker
+joint.type (                        $J_TRG                        ) = 0                       ! Type
+joint.par (               1 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
+joint.par (               2 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [rad] Rotation about beta
+joint.par (               3 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [rad] Rotation about gamma
+joint.par (               4 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [m] Translation in x
+joint.par (               5 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [m] Translation in y
+joint.par (               6 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [m] Translation in z
+joint.par (               7 ,       $J_TRG                        ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+joint.attr.2d.pos.x (     1 ,       $J_TRG                        ) = -170
+joint.attr.2d.pos.y (     1 ,       $J_TRG                        ) = 260
+joint.attr.2d.ori (       1 ,       $J_TRG                        ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_TRG       ) = -170, -170
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_TRG       ) = 300, 277
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_TRG         ) = -170, -170
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_TRG         ) = 220, 243
+
+prim.type (                         $P_TRG                        ) = 1                       ! Type
+prim.ref (                          $P_TRG                        ) = $M_TRG_BRF              ! Reference Marker
+prim.color.r (            1 ,       $P_TRG                        ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_TRG                        ) = 0.00000000000000000E+00 ! Colors (green component)
+prim.color.b (            1 ,       $P_TRG                        ) = 0.00000000000000000E+00 ! Colors (blue component)
+prim.color.t (            1 ,       $P_TRG                        ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                2 ,       $P_TRG                        ) = 5.00000000000000000E-01 ! [m] Length in X
+prim.par (                3 ,       $P_TRG                        ) = 5.00000000000000000E-01 ! [m] Length in Y
+prim.par (                4 ,       $P_TRG                        ) = 5.00000000000000000E-01 ! [m] Length in Z
+
+prim.type (                         $P_TRG_BR                     ) = 2                       ! Type
+prim.ref (                          $P_TRG_BR                     ) = $M_TRG_DRV_ref          ! Reference Marker
+prim.pos (                1 ,       $P_TRG_BR                     ) = -1.20000000000000000E+01 ! Position
+prim.ang (                3 ,       $P_TRG_BR                     ) = { 90deg }               ! Angles
+prim.color.r (            1 ,       $P_TRG_BR                     ) = 6.40000000000000000E+01 ! Colors (red component)
+prim.color.r (            2 ,       $P_TRG_BR                     ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_TRG_BR                     ) = 6.40000000000000000E+01 ! Colors (green component)
+prim.color.g (            2 ,       $P_TRG_BR                     ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_TRG_BR                     ) = 6.40000000000000000E+01 ! Colors (blue component)
+prim.color.b (            2 ,       $P_TRG_BR                     ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_TRG_BR                     ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.color.t (            2 ,       $P_TRG_BR                     ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.drawstyle (                    $P_TRG_BR                     ) = 2                       ! Draw style
+prim.par (                2 ,       $P_TRG_BR                     ) = 1.19999999999999996E+00 ! [m] Height
+prim.par (                3 ,       $P_TRG_BR                     ) = { 2.2 + 0.001 }         ! [m] Outer diameter
+prim.par (                4 ,       $P_TRG_BR                     ) = 1.80000000000000004E+00 ! [m] Inner diameter
+prim.par (                5 ,       $P_TRG_BR                     ) = 2.40000000000000000E+01 ! [-] Number of planes
+prim.par (                6 ,       $P_TRG_BR                     ) = 0.00000000000000000E+00 ! [-] Number of highlighted planes
+prim.par (                7 ,       $P_TRG_BR                     ) = 1.00000000000000000E+00 ! [-] Show bottom cap
+prim.par (                8 ,       $P_TRG_BR                     ) = 1.00000000000000000E+00 ! [-] Show top cap
+prim.par (                9 ,       $P_TRG_BR                     ) = 0.00000000000000000E+00 ! [rad] Start angle
+
+
+!**********************************************************************
+! Force Elements
+!**********************************************************************
+force.type (                        $F_DRV                        ) = 14                      ! Type
+force.from (                        $F_DRV                        ) = $M_DRV_JNT              ! From Marker
+force.to (                          $F_DRV                        ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
+force.st.dyn (            1 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! Dynamic states
+force.st.dyn (            2 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! Dynamic states
+force.st.equi (           1 ,       $F_DRV                        ) = 0                       ! Equilibrium
+force.st.equi (           2 ,       $F_DRV                        ) = 0                       ! Equilibrium
+force.disabled (                    $F_DRV                        ) = $G_HL.$_DRV_disabled    ! Disabled
+force.par (               3 ,       $F_DRV                        ) = 1.00000000000000000E+00 ! [-] Kinematic input
+force.par (               4 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Spring-damper element location
+force.par (               6 ,       $F_DRV                        ) = null                    ! [-] Input shaft Connection/Joint
+force.par (              10 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Rotation axis
+force.par (              11 ,       $F_DRV                        ) = $M_DRV_JNT              ! [-] Input shaft Marker
+force.par (              12 ,       $F_DRV                        ) = $M_Isys_INTERFACE_TRG_HUB ! [-] Output shaft Marker
+force.par (              13 ,       $F_DRV                        ) = $M_TRG_DRV              ! [-] Housing Marker
+force.par (              15 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Kinematics mode
+force.par (              16 ,       $F_DRV                        ) = 1.00000000000000000E+00 ! [-] Gear ratio omega_in/omega_out
+force.par (              22 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [rad] Nominal input shaft angle
+force.par (              23 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [rad] Nominal output shaft angle
+force.par (              25 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [Nm] Nominal torque T_in
+force.par (              26 ,       $F_DRV                        ) = $G_FE.$G_DRV.$_C_ROT    ! [Nm/rad] Stiffness c_in
+force.par (              27 ,       $F_DRV                        ) = $G_FE.$G_DRV.$_D_ROT    ! [Nms/rad] Damping d_in
+force.par (              28 ,       $F_DRV                        ) = null                    ! [-] IFctn T_c_in(dalpha_in)
+force.par (              29 ,       $F_DRV                        ) = null                    ! [-] IFctn T_d_in(domega_in)
+force.par (              31 ,       $F_DRV                        ) = 0.00000000000000000E+00 ! [-] Power loss mode
+force.attr.2d.pos.x (     1 ,       $F_DRV                        ) = -160
+force.attr.2d.pos.y (     1 ,       $F_DRV                        ) = 20
+force.attr.2d.ori (       1 ,       $F_DRV                        ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_DRV       ) = -240, -160, -160
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_DRV       ) = 40, 40, 37
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_DRV         ) = -160, -160
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_DRV         ) = -70, 3
+
+force.type (                        $F_ROT_TRQ_static             ) = 50                      ! Type
+force.from (                        $F_ROT_TRQ_static             ) = $M_TRG_HUB              ! From Marker
+force.to (                          $F_ROT_TRQ_static             ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
+force.disabled (                    $F_ROT_TRQ_static             ) = $G_HL.$_ROT_TRQ_static_disabled ! Disabled
+force.par (               1 ,       $F_ROT_TRQ_static             ) = null                    ! [-] Reference Marker for calc.
+force.par (               3 ,       $F_ROT_TRQ_static             ) = null                    ! [-] Expression for Fx
+force.par (               4 ,       $F_ROT_TRQ_static             ) = null                    ! [-] Expression for Fy
+force.par (               5 ,       $F_ROT_TRQ_static             ) = null                    ! [-] Expression for Fz
+force.par (               6 ,       $F_ROT_TRQ_static             ) = $X_ROT_TRQ_static       ! [-] Expression for Lx
+force.par (               7 ,       $F_ROT_TRQ_static             ) = null                    ! [-] Expression for Ly
+force.par (               8 ,       $F_ROT_TRQ_static             ) = null                    ! [-] Expression for Lz
+force.attr.2d.pos.x (     1 ,       $F_ROT_TRQ_static             ) = -20
+force.attr.2d.pos.y (     1 ,       $F_ROT_TRQ_static             ) = 30
+force.attr.2d.ori (       1 ,       $F_ROT_TRQ_static             ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_ROT_TRQ_static) = -20, -20
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_ROT_TRQ_static) = 150, 47
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_ROT_TRQ_static) = -20, -20
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_ROT_TRQ_static) = -70, 13
+
+force.type (                        $F_BLP_TRQ                    ) = 50                      ! Type
+force.from (                        $F_BLP_TRQ                    ) = $M_TRG_HUB              ! From Marker
+force.to (                          $F_BLP_TRQ                    ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
+force.disabled (                    $F_BLP_TRQ                    ) = $G_HL.$_BLP_disabled    ! Disabled
+force.par (               1 ,       $F_BLP_TRQ                    ) = null                    ! [-] Reference Marker for calc.
+force.par (               3 ,       $F_BLP_TRQ                    ) = null                    ! [-] Expression for Fx
+force.par (               4 ,       $F_BLP_TRQ                    ) = null                    ! [-] Expression for Fy
+force.par (               5 ,       $F_BLP_TRQ                    ) = null                    ! [-] Expression for Fz
+force.par (               6 ,       $F_BLP_TRQ                    ) = $X_BLP_TRQ              ! [-] Expression for Lx
+force.par (               7 ,       $F_BLP_TRQ                    ) = null                    ! [-] Expression for Ly
+force.par (               8 ,       $F_BLP_TRQ                    ) = null                    ! [-] Expression for Lz
+force.attr.2d.pos.x (     1 ,       $F_BLP_TRQ                    ) = -100
+force.attr.2d.pos.y (     1 ,       $F_BLP_TRQ                    ) = 30
+force.attr.2d.ori (       1 ,       $F_BLP_TRQ                    ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TRQ   ) = -100, -100
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TRQ   ) = 150, 47
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TRQ     ) = -100, -100
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TRQ     ) = -70, 13
+
+force.type (                        $F_BLP_TLT                    ) = 50                      ! Type
+force.from (                        $F_BLP_TLT                    ) = $M_TRG_HUB              ! From Marker
+force.to (                          $F_BLP_TLT                    ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
+force.disabled (                    $F_BLP_TLT                    ) = $G_HL.$_BLP_disabled    ! Disabled
+force.par (               1 ,       $F_BLP_TLT                    ) = null                    ! [-] Reference Marker for calc.
+force.par (               3 ,       $F_BLP_TLT                    ) = null                    ! [-] Expression for Fx
+force.par (               4 ,       $F_BLP_TLT                    ) = null                    ! [-] Expression for Fy
+force.par (               5 ,       $F_BLP_TLT                    ) = null                    ! [-] Expression for Fz
+force.par (               6 ,       $F_BLP_TLT                    ) = null                    ! [-] Expression for Lx
+force.par (               7 ,       $F_BLP_TLT                    ) = $X_BLP_TLT              ! [-] Expression for Ly
+force.par (               8 ,       $F_BLP_TLT                    ) = null                    ! [-] Expression for Lz
+force.attr.2d.pos.x (     1 ,       $F_BLP_TLT                    ) = -60
+force.attr.2d.pos.y (     1 ,       $F_BLP_TLT                    ) = 30
+force.attr.2d.ori (       1 ,       $F_BLP_TLT                    ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT   ) = -60, -60
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT   ) = 150, 47
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT     ) = -60, -60
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_BLP_TLT     ) = -70, 13
+
+force.type (                        $F_DLC                        ) = 93                      ! Type
+force.from (                        $F_DLC                        ) = $M_TRG_HUB              ! From Marker
+force.to (                          $F_DLC                        ) = $M_Isys_INTERFACE_TRG_HUB ! To Marker
+force.disabled (                    $F_DLC                        ) = $G_HL.$_DLC_disabled    ! Disabled
+force.par (               1 ,       $F_DLC                        ) = $UE_Fx                  ! [-] u-Vector Element force x
+force.par (               2 ,       $F_DLC                        ) = $UE_Fy                  ! [-] u-Vector Element force y
+force.par (               3 ,       $F_DLC                        ) = $UE_Fz                  ! [-] u-Vector Element force z
+force.par (               4 ,       $F_DLC                        ) = $UE_Mx                  ! [-] u-Vector Element torque x
+force.par (               5 ,       $F_DLC                        ) = $UE_My                  ! [-] u-Vector Element torque y
+force.par (               6 ,       $F_DLC                        ) = $UE_Mz                  ! [-] u-Vector Element torque z
+
+!**********************************************************************
+! Control Elements
+!**********************************************************************
+control.type (                      $C_HUB_angle                  ) = 165                     ! Type
+control.st.alg (          1 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! Algebraic States
+control.par (             2 ,       $C_HUB_angle                  ) = $M_TRG_HUB              ! [-] From Marker M_i
+control.par (             3 ,       $C_HUB_angle                  ) = $M_Isys                 ! [-] To Marker M_j
+control.par (            10 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 1: Measurement type
+control.par (            11 ,       $C_HUB_angle                  ) = 2.00000000000000000E+00 ! [-]  Ch 1: Meas. reference
+control.par (            12 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 1: Measurement axis
+control.par (            13 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 1: Gain factor C
+control.par (            14 ,       $C_HUB_angle                  ) = null                    ! [-]  Ch 1: Disturb. Ctrl. Element
+control.par (            15 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 1: -> Output value u
+control.par (            17 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 2: Measurement type
+control.par (            18 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 2: Meas. reference
+control.par (            19 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 2: Measurement axis
+control.par (            20 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 2: Gain factor C
+control.par (            21 ,       $C_HUB_angle                  ) = null                    ! [-]  Ch 2: Disturb. Ctrl. Element
+control.par (            22 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 2: -> Output value u
+control.par (            24 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 3: Measurement type
+control.par (            25 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 3: Meas. reference
+control.par (            26 ,       $C_HUB_angle                  ) = 1.00000000000000000E+00 ! [-]  Ch 3: Measurement axis
+control.par (            27 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 3: Gain factor C
+control.par (            28 ,       $C_HUB_angle                  ) = null                    ! [-]  Ch 3: Disturb. Ctrl. Element
+control.par (            29 ,       $C_HUB_angle                  ) = 0.00000000000000000E+00 ! [-]  Ch 3: -> Output value u
+
+control.type (                      $C_GEN_speed                  ) = 165                     ! Type
+control.st.alg (          1 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! Algebraic States
+control.par (             2 ,       $C_GEN_speed                  ) = $M_Isys                 ! [-] From Marker M_i
+control.par (             3 ,       $C_GEN_speed                  ) = $M_Isys                 ! [-] To Marker M_j
+control.par (            10 ,       $C_GEN_speed                  ) = 4.00000000000000000E+00 ! [-]  Ch 1: Measurement type
+control.par (            11 ,       $C_GEN_speed                  ) = 2.00000000000000000E+00 ! [-]  Ch 1: Meas. reference
+control.par (            12 ,       $C_GEN_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 1: Measurement axis
+control.par (            13 ,       $C_GEN_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 1: Gain factor C
+control.par (            14 ,       $C_GEN_speed                  ) = null                    ! [-]  Ch 1: Disturb. Ctrl. Element
+control.par (            15 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 1: -> Output value u
+control.par (            17 ,       $C_GEN_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 2: Measurement type
+control.par (            18 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 2: Meas. reference
+control.par (            19 ,       $C_GEN_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 2: Measurement axis
+control.par (            20 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 2: Gain factor C
+control.par (            21 ,       $C_GEN_speed                  ) = null                    ! [-]  Ch 2: Disturb. Ctrl. Element
+control.par (            22 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 2: -> Output value u
+control.par (            24 ,       $C_GEN_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 3: Measurement type
+control.par (            25 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 3: Meas. reference
+control.par (            26 ,       $C_GEN_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 3: Measurement axis
+control.par (            27 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 3: Gain factor C
+control.par (            28 ,       $C_GEN_speed                  ) = null                    ! [-]  Ch 3: Disturb. Ctrl. Element
+control.par (            29 ,       $C_GEN_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 3: -> Output value u
+
+control.type (                      $C_GEN_TRQ_connector          ) = 143                     ! Type
+control.st.alg (          1 ,       $C_GEN_TRQ_connector          ) = 0.00000000000000000E+00 ! Algebraic States
+control.disabled (                  $C_GEN_TRQ_connector          ) = 0                       ! Disabled
+control.par (             1 ,       $C_GEN_TRQ_connector          ) = $C_GEN_TRQ_runUp        ! [-] Input Element ch. 1
+control.par (             2 ,       $C_GEN_TRQ_connector          ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
+control.par (             3 ,       $C_GEN_TRQ_connector          ) = $G_HL.$_GEN_TRQ_RunUp_gain ! [-] Gain factor C1 for ch. 1
+control.par (             4 ,       $C_GEN_TRQ_connector          ) = $C_GEN_TRQ_static       ! [-] Input Element ch. 2
+control.par (             5 ,       $C_GEN_TRQ_connector          ) = 1.00000000000000000E+00 ! [-] Output Value ch. 2
+control.par (             6 ,       $C_GEN_TRQ_connector          ) = $G_HL.$_GEN_TRQ_static_gain ! [-] Gain factor C2 for ch. 2
+control.par (             7 ,       $C_GEN_TRQ_connector          ) = 1.00000000000000000E+00 ! [-] Connection type
+control.par (             8 ,       $C_GEN_TRQ_connector          ) = 1.00000000000000000E+00 ! [-] Function parameter P
+control.par (             9 ,       $C_GEN_TRQ_connector          ) = 0.00000000000000000E+00 ! [-] Function type
+control.par (            13 ,       $C_GEN_TRQ_connector          ) = 0.00000000000000000E+00 ! [-] Constant zero deviation K
+
+control.type (                      $C_GEN_TRQ_static             ) = 231                     ! Type
+control.st.alg (          1 ,       $C_GEN_TRQ_static             ) = 0.00000000000000000E+00 ! Algebraic States
+control.disabled (                  $C_GEN_TRQ_static             ) = 0                       ! Disabled
+control.par (             1 ,       $C_GEN_TRQ_static             ) = 1.00000000000000000E+00 ! [-] Number of input Expressions
+control.par (             2 ,       $C_GEN_TRQ_static             ) = $X_GEN_TRQ_static       ! [-]  Input Expression 1
+
+control.type (                      $C_GEN_TRQ_runUp              ) = 231                     ! Type
+control.st.alg (          1 ,       $C_GEN_TRQ_runUp              ) = 0.00000000000000000E+00 ! Algebraic States
+control.disabled (                  $C_GEN_TRQ_runUp              ) = 0                       ! Disabled
+control.par (             1 ,       $C_GEN_TRQ_runUp              ) = 1.00000000000000000E+00 ! [-] Number of input Expressions
+control.par (             2 ,       $C_GEN_TRQ_runUp              ) = $X_GEN_TRQ_runUp        ! [-]  Input Expression 1
+
+control.type (                      $C_GEN_TRQ                    ) = 169                     ! Type
+control.st.alg (          1 ,       $C_GEN_TRQ                    ) = 0.00000000000000000E+00 ! Algebraic States
+control.disabled (                  $C_GEN_TRQ                    ) = 0                       ! Disabled
+control.par (             3 ,       $C_GEN_TRQ                    ) = $C_GEN_TRQ_connector    ! [-] Input Force/Control Element
+control.par (             4 ,       $C_GEN_TRQ                    ) = 9.00000000000000000E+00 ! [-] -> Output Value
+control.par (             5 ,       $C_GEN_TRQ                    ) = 1.00000000000000000E+00 ! [-] Gain factor
+
+!**********************************************************************
+! Input Functions
+!**********************************************************************
+ifctn.x (                 1 ,       $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! X values
+ifctn.x (                 2 ,       $I_GEN_TRQ_smooth             ) = 2.00000000000000000E+01 ! X values
+ifctn.x (                 3 ,       $I_GEN_TRQ_smooth             ) = 3.00000000000000000E+01 ! X values
+ifctn.x (                 4 ,       $I_GEN_TRQ_smooth             ) = 4.00000000000000000E+01 ! X values
+ifctn.x (                 5 ,       $I_GEN_TRQ_smooth             ) = 4.50000000000000000E+01 ! X values
+ifctn.x (                 6 ,       $I_GEN_TRQ_smooth             ) = 5.50000000000000000E+01 ! X values
+ifctn.x (                 7 ,       $I_GEN_TRQ_smooth             ) = 6.00000000000000000E+01 ! X values
+ifctn.x (                 8 ,       $I_GEN_TRQ_smooth             ) = 6.10000000000000000E+01 ! X values
+ifctn.x (                 9 ,       $I_GEN_TRQ_smooth             ) = 6.20000000000000000E+01 ! X values
+ifctn.x (                10 ,       $I_GEN_TRQ_smooth             ) = 6.30000000000000000E+01 ! X values
+ifctn.x (                11 ,       $I_GEN_TRQ_smooth             ) = 6.37999999999999972E+01 ! X values
+ifctn.x (                12 ,       $I_GEN_TRQ_smooth             ) = 6.45000000000000000E+01 ! X values
+ifctn.x (                13 ,       $I_GEN_TRQ_smooth             ) = 6.67000000000000028E+01 ! X values
+ifctn.x (                14 ,       $I_GEN_TRQ_smooth             ) = 6.90000000000000000E+01 ! X values
+ifctn.x (                15 ,       $I_GEN_TRQ_smooth             ) = 7.00000000000000000E+01 ! X values
+ifctn.x (                16 ,       $I_GEN_TRQ_smooth             ) = 7.20000000000000000E+01 ! X values
+ifctn.x (                17 ,       $I_GEN_TRQ_smooth             ) = 7.40000000000000000E+01 ! X values
+ifctn.x (                18 ,       $I_GEN_TRQ_smooth             ) = 7.80000000000000000E+01 ! X values
+ifctn.x (                19 ,       $I_GEN_TRQ_smooth             ) = 9.12109099999999984E+01 ! X values
+ifctn.x (                20 ,       $I_GEN_TRQ_smooth             ) = 9.39911962099999982E+01 ! X values
+ifctn.x (                21 ,       $I_GEN_TRQ_smooth             ) = 9.67714824199999981E+01 ! X values
+ifctn.x (                22 ,       $I_GEN_TRQ_smooth             ) = 9.95517686299999980E+01 ! X values
+ifctn.x (                23 ,       $I_GEN_TRQ_smooth             ) = 1.02332054839999998E+02 ! X values
+ifctn.x (                24 ,       $I_GEN_TRQ_smooth             ) = 1.05112341000000001E+02 ! X values
+ifctn.x (                25 ,       $I_GEN_TRQ_smooth             ) = 1.07892627250000004E+02 ! X values
+ifctn.x (                26 ,       $I_GEN_TRQ_smooth             ) = 1.10672913500000007E+02 ! X values
+ifctn.x (                27 ,       $I_GEN_TRQ_smooth             ) = 1.13453199999999995E+02 ! X values
+ifctn.x (                28 ,       $I_GEN_TRQ_smooth             ) = 1.16233485999999999E+02 ! X values
+ifctn.x (                29 ,       $I_GEN_TRQ_smooth             ) = 1.19013772000000003E+02 ! X values
+ifctn.x (                30 ,       $I_GEN_TRQ_smooth             ) = 1.21680499999999995E+02 ! X values
+ifctn.x (                31 ,       $I_GEN_TRQ_smooth             ) = 1.22500000000000000E+02 ! X values
+ifctn.x (                32 ,       $I_GEN_TRQ_smooth             ) = 1.23500000000000000E+02 ! X values
+ifctn.x (                33 ,       $I_GEN_TRQ_smooth             ) = 1.24722513000000006E+02 ! X values
+ifctn.x (                34 ,       $I_GEN_TRQ_smooth             ) = 1.25500000000000000E+02 ! X values
+ifctn.x (                35 ,       $I_GEN_TRQ_smooth             ) = 1.26500000000000000E+02 ! X values
+ifctn.x (                36 ,       $I_GEN_TRQ_smooth             ) = 1.27764525000000006E+02 ! X values
+ifctn.x (                37 ,       $I_GEN_TRQ_smooth             ) = 1.28500000000000000E+02 ! X values
+ifctn.x (                38 ,       $I_GEN_TRQ_smooth             ) = 1.29500000000000000E+02 ! X values
+ifctn.x (                39 ,       $I_GEN_TRQ_smooth             ) = 1.30806537999999989E+02 ! X values
+ifctn.x (                40 ,       $I_GEN_TRQ_smooth             ) = 1.32000000000000000E+02 ! X values
+ifctn.x (                41 ,       $I_GEN_TRQ_smooth             ) = 1.33848549999999989E+02 ! X values
+ifctn.x (                42 ,       $I_GEN_TRQ_smooth             ) = 1.36890562999999986E+02 ! X values
+ifctn.x (                43 ,       $I_GEN_TRQ_smooth             ) = 1.39932575000000014E+02 ! X values
+ifctn.x (                44 ,       $I_GEN_TRQ_smooth             ) = 1.42974588000000011E+02 ! X values
+ifctn.x (                45 ,       $I_GEN_TRQ_smooth             ) = 1.46016600000000011E+02 ! X values
+ifctn.x (                46 ,       $I_GEN_TRQ_smooth             ) = 1.49058613000000008E+02 ! X values
+ifctn.x (                47 ,       $I_GEN_TRQ_smooth             ) = 1.52100625000000008E+02 ! X values
+ifctn.x (                48 ,       $I_GEN_TRQ_smooth             ) = 1.60000000000000000E+02 ! X values
+ifctn.x (                49 ,       $I_GEN_TRQ_smooth             ) = 1.70000000000000000E+02 ! X values
+ifctn.x (                50 ,       $I_GEN_TRQ_smooth             ) = 2.00000000000000000E+02 ! X values
+ifctn.y (                 1 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 2 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 3 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 4 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 5 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 6 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 7 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+01 ! Y values
+ifctn.y (                 8 ,       $I_GEN_TRQ_smooth             ) = 2.00000000000000000E+01 ! Y values
+ifctn.y (                 9 ,       $I_GEN_TRQ_smooth             ) = 4.00000000000000000E+01 ! Y values
+ifctn.y (                10 ,       $I_GEN_TRQ_smooth             ) = 8.00000000000000000E+01 ! Y values
+ifctn.y (                11 ,       $I_GEN_TRQ_smooth             ) = 1.40000000000000000E+02 ! Y values
+ifctn.y (                12 ,       $I_GEN_TRQ_smooth             ) = 2.20000000000000000E+02 ! Y values
+ifctn.y (                13 ,       $I_GEN_TRQ_smooth             ) = 6.00000000000000000E+02 ! Y values
+ifctn.y (                14 ,       $I_GEN_TRQ_smooth             ) = 1.20000000000000000E+03 ! Y values
+ifctn.y (                15 ,       $I_GEN_TRQ_smooth             ) = 1.55000000000000000E+03 ! Y values
+ifctn.y (                16 ,       $I_GEN_TRQ_smooth             ) = 2.45000000000000000E+03 ! Y values
+ifctn.y (                17 ,       $I_GEN_TRQ_smooth             ) = 3.80000000000000000E+03 ! Y values
+ifctn.y (                18 ,       $I_GEN_TRQ_smooth             ) = 7.22508589699999993E+03 ! Y values
+ifctn.y (                19 ,       $I_GEN_TRQ_smooth             ) = 1.94032986799999999E+04 ! Y values
+ifctn.y (                20 ,       $I_GEN_TRQ_smooth             ) = 2.06042279100000014E+04 ! Y values
+ifctn.y (                21 ,       $I_GEN_TRQ_smooth             ) = 2.18412142700000004E+04 ! Y values
+ifctn.y (                22 ,       $I_GEN_TRQ_smooth             ) = 2.31142577400000009E+04 ! Y values
+ifctn.y (                23 ,       $I_GEN_TRQ_smooth             ) = 2.44233583299999991E+04 ! Y values
+ifctn.y (                24 ,       $I_GEN_TRQ_smooth             ) = 2.57685160399999986E+04 ! Y values
+ifctn.y (                25 ,       $I_GEN_TRQ_smooth             ) = 2.71497308599999997E+04 ! Y values
+ifctn.y (                26 ,       $I_GEN_TRQ_smooth             ) = 2.85670027999999984E+04 ! Y values
+ifctn.y (                27 ,       $I_GEN_TRQ_smooth             ) = 3.05000000000000000E+04 ! Y values
+ifctn.y (                28 ,       $I_GEN_TRQ_smooth             ) = 3.30000000000000000E+04 ! Y values
+ifctn.y (                29 ,       $I_GEN_TRQ_smooth             ) = 3.60000000000000000E+04 ! Y values
+ifctn.y (                30 ,       $I_GEN_TRQ_smooth             ) = 3.83000000000000000E+04 ! Y values
+ifctn.y (                31 ,       $I_GEN_TRQ_smooth             ) = 3.89000000000000000E+04 ! Y values
+ifctn.y (                32 ,       $I_GEN_TRQ_smooth             ) = 3.95000000000000000E+04 ! Y values
+ifctn.y (                33 ,       $I_GEN_TRQ_smooth             ) = 4.00000000000000000E+04 ! Y values
+ifctn.y (                34 ,       $I_GEN_TRQ_smooth             ) = 4.02000000000000000E+04 ! Y values
+ifctn.y (                35 ,       $I_GEN_TRQ_smooth             ) = 4.04000000000000000E+04 ! Y values
+ifctn.y (                36 ,       $I_GEN_TRQ_smooth             ) = 4.04600000000000000E+04 ! Y values
+ifctn.y (                37 ,       $I_GEN_TRQ_smooth             ) = 4.04300000000000000E+04 ! Y values
+ifctn.y (                38 ,       $I_GEN_TRQ_smooth             ) = 4.03500000000000000E+04 ! Y values
+ifctn.y (                39 ,       $I_GEN_TRQ_smooth             ) = 4.01800000000000000E+04 ! Y values
+ifctn.y (                40 ,       $I_GEN_TRQ_smooth             ) = 3.99500000000000000E+04 ! Y values
+ifctn.y (                41 ,       $I_GEN_TRQ_smooth             ) = 3.95000000000000000E+04 ! Y values
+ifctn.y (                42 ,       $I_GEN_TRQ_smooth             ) = 3.86922948029999970E+04 ! Y values
+ifctn.y (                43 ,       $I_GEN_TRQ_smooth             ) = 3.78511579589999965E+04 ! Y values
+ifctn.y (                44 ,       $I_GEN_TRQ_smooth             ) = 3.70458141729999988E+04 ! Y values
+ifctn.y (                45 ,       $I_GEN_TRQ_smooth             ) = 3.62740263780000023E+04 ! Y values
+ifctn.y (                46 ,       $I_GEN_TRQ_smooth             ) = 3.55337401249999966E+04 ! Y values
+ifctn.y (                47 ,       $I_GEN_TRQ_smooth             ) = 3.48230653230000025E+04 ! Y values
+ifctn.y (                48 ,       $I_GEN_TRQ_smooth             ) = 3.31038125000000000E+04 ! Y values
+ifctn.y (                49 ,       $I_GEN_TRQ_smooth             ) = 3.11565294099999992E+04 ! Y values
+ifctn.y (                50 ,       $I_GEN_TRQ_smooth             ) = 2.64830499999999993E+04 ! Y values
+ifctn.intpol.type (                 $I_GEN_TRQ_smooth             ) = 5                       ! Interpolation type
+ifctn.intpol.par (        3 ,       $I_GEN_TRQ_smooth             ) = 2.00000000000000011E-01 ! Interpolation parameters
+ifctn.disc (              1 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              2 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              3 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              4 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              5 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              6 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              7 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              8 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (              9 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             10 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             11 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             12 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             13 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             14 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             15 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             16 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             17 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             18 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             19 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             20 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             21 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             22 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             23 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             24 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             25 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             26 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             27 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             28 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             29 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             30 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             31 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             32 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             33 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             34 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             35 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             36 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             37 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             38 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             39 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             40 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             41 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             42 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             43 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             44 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             45 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             46 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             47 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             48 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             49 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.disc (             50 ,       $I_GEN_TRQ_smooth             ) = 0                       ! Discontinuity
+ifctn.range.handling (              $I_GEN_TRQ_smooth             ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_GEN_TRQ_smooth             ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_GEN_TRQ_smooth             ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 ,   1 , $I_GEN_TRQ_smooth       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_GEN_TRQ_smooth             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_GEN_TRQ_smooth       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_GEN_TRQ_smooth       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_GEN_TRQ_smooth       ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctn.file (                        $I_Fx                         ) = '../../../@NREL_5MW/input_functions/Fx.if2' ! File or URI
+ifctn.range.handling (              $I_Fx                         ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_Fx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_Fx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_Fx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_Fx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctn.file (                        $I_Fy                         ) = '../../../@NREL_5MW/input_functions/Fy.if2' ! File or URI
+ifctn.range.handling (              $I_Fy                         ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_Fy                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_Fy                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_Fy                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_Fy                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctn.file (                        $I_Fz                         ) = '../../../@NREL_5MW/input_functions/Fz.if2' ! File or URI
+ifctn.range.handling (              $I_Fz                         ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_Fz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_Fz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_Fz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_Fz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctn.file (                        $I_Mx                         ) = '../../../@NREL_5MW/input_functions/Mx.if2' ! File or URI
+ifctn.range.handling (              $I_Mx                         ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_Mx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_Mx                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctn.file (                        $I_My                         ) = '../../../@NREL_5MW/input_functions/My.if2' ! File or URI
+ifctn.range.handling (              $I_My                         ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_My                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_My                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_My                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_My                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+ifctn.file (                        $I_Mz                         ) = '../../../@NREL_5MW/input_functions/Mz.if2' ! File or URI
+ifctn.range.handling (              $I_Mz                         ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
+ifctn.plot.par (          1 ,       $I_Mz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   1 , $I_Mz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   2 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   3 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   4 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   5 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   6 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   7 , $I_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   8 ,   1 , $I_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,   9 ,   1 , $I_Mz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+ifctn.plot.par (          1 ,  10 ,   1 , $I_Mz                   ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+
+!**********************************************************************
+! Expressions
+!**********************************************************************
+express.str (                       $X_HUB_angle                  ) = 'FORCEOV($C_HUB_angle,1)' ! Definition
+
+express.str (                       $X_GEN_TRQ_runUp              ) = 'IFCTNX( FORCEOV( $C_GEN_speed, 1 ), $I_GEN_TRQ_smooth ) ' ! Definition
+
+express.str (                       $X_GEN_TRQ_static             ) = 'SWITCH($G_LC.$G_TRQ_STAT.$_STEP_switch)\n{\n   CASE 0: IFCTNX( $G_LC.$G_TRQ_STAT.$_IFCTN_X, $I_GEN_TRQ_smooth ) ;\n\n   CASE 1: STEP5( TIME, 0, 0, $G_LC.$G_TRQ_STAT.$_STEP_time, ( IFCTNX( $G_LC.$G_TRQ_STAT.$_IFCTN_X, $I_GEN_TRQ_smooth ) ) ) ;\n\n   DEFAULT: IFCTNX( $G_LC.$G_TRQ_STAT.$_IFCTN_X, $I_GEN_TRQ_smooth ) ;\n}\n' ! Definition
+express.txt (                       $X_GEN_TRQ_static             ) = 'IFCTNX( 127, $I_GEN_TRQ_smooth ) * 1[br]+[br]IFCTNX( 10, $I_GEN_TRQ_smooth ) * 0[br]+[br]STEP5( TIME, 0, 0, 25, ( IFCTNX( 127, $I_GEN_TRQ_smooth ) ) ) * 0[br]+ [br]STEP5( TIME, 0, 0, 100, ( IFCTNX( 10, $I_GEN_TRQ_smooth ) ) ) * 0' ! Comment
+
+express.str (                       $X_ROT_TRQ_static             ) = '-$X_GEN_TRQ_static * $G_HL.$_GBX_I' ! Definition
+express.txt (                       $X_ROT_TRQ_static             ) = ''                      ! Comment
+
+express.str (                       $X_BLP_TRQ                    ) = '(\nSTEP5( $X_HUB_angle, -PI, 1, -PI + $G_LC.$G_BLP.$_Width_TRQ, 0 )\n+\nSTEP5( $X_HUB_angle, -PI/3 - $G_LC.$G_BLP.$_Width_TRQ, 0, -PI/3, 1 ) * STEP5( $X_HUB_angle, -PI/3, 1, -PI/3 + $G_LC.$G_BLP.$_Width_TRQ, 0 )\n+\nSTEP5( $X_HUB_angle, PI/3 - $G_LC.$G_BLP.$_Width_TRQ, 0, PI/3, 1 ) * STEP5( $X_HUB_angle, PI/3, 1, PI/3 + $G_LC.$G_BLP.$_Width_TRQ, 0 )\n+\nSTEP5( $X_HUB_angle, PI - $G_LC.$G_BLP.$_Width_TRQ, 0, PI, 1 )\n)\n* $G_LC.$G_BLP.$_Amplitude_TRQ' ! Definition
+
+express.str (                       $X_BLP_TLT                    ) = '(\nSTEP5( $X_HUB_angle, -PI, 1, -PI + $G_LC.$G_BLP.$_Width_TRQ, 0 )\n+\nSTEP5( $X_HUB_angle, -PI/3 - $G_LC.$G_BLP.$_Width_TRQ, 0, -PI/3, 1 ) * STEP5( $X_HUB_angle, -PI/3, 1, -PI/3 + $G_LC.$G_BLP.$_Width_TRQ, 0 )\n+\nSTEP5( $X_HUB_angle, PI/3 - $G_LC.$G_BLP.$_Width_TRQ, 0, PI/3, 1 ) * STEP5( $X_HUB_angle, PI/3, 1, PI/3 + $G_LC.$G_BLP.$_Width_TRQ, 0 )\n+\nSTEP5( $X_HUB_angle, PI - $G_LC.$G_BLP.$_Width_TRQ, 0, PI, 1 )\n)\n* $G_LC.$G_BLP.$_Amplitude_TLT' ! Definition
+
+express.str (                       $X_HUB_ANG_VEL                ) = 'UELE($UE_DRV_1st_deriv)' ! Definition
+
+express.str (                       $X_GEN_ANG_VEL                ) = 'UELE($UE_DRV_1st_deriv)*$G_HL.$_GBX_I' ! Definition
+
+!**********************************************************************
+! Excitations
+!**********************************************************************
+excit.type (                        $E_DRV                        ) = 14                      ! Type
+excit.par (               1 ,       $E_DRV                        ) = { DIMLESS($G_LC.$G_RUN_UP.$_DRV_VEL_MAX) / DIMLESS($G_SLV.$_TIME) } ! [-] Constant value
+excit.par (               2 ,       $E_DRV                        ) = 2.00000000000000000E+00 ! [-] Constant value for
+excit.par (               3 ,       $E_DRV                        ) = 0.00000000000000000E+00 ! [-] Initial value f(t)
+excit.par (               4 ,       $E_DRV                        ) = 0.00000000000000000E+00 ! [-] Initial value fd(t)
+excit.plot.par (          1 ,       $E_DRV                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_DRV                        ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_DRV                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_DRV                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_DRV                        ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_DRV                        ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_DRV                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_DRV                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_DRV                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_Fx                         ) = 2                       ! Type
+excit.par (               1 ,       $E_Fx                         ) = $I_Fx                   ! [-] Input Function f(t)
+excit.par (               2 ,       $E_Fx                         ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_Fx                         ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_Fx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+excit.par (               7 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+excit.par (               8 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_Fx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_Fx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_Fx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_Fx                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_Fx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_Fy                         ) = 2                       ! Type
+excit.par (               1 ,       $E_Fy                         ) = $I_Fy                   ! [-] Input Function f(t)
+excit.par (               2 ,       $E_Fy                         ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_Fy                         ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_Fy                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+excit.par (               7 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+excit.par (               8 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_Fy                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_Fy                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_Fy                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_Fy                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_Fy                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_Fz                         ) = 2                       ! Type
+excit.par (               1 ,       $E_Fz                         ) = $I_Fz                   ! [-] Input Function f(t)
+excit.par (               2 ,       $E_Fz                         ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_Fz                         ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_Fz                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+excit.par (               7 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+excit.par (               8 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_Fz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_Fz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_Fz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_Fz                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_Fz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_Mx                         ) = 2                       ! Type
+excit.par (               1 ,       $E_Mx                         ) = $I_Mx                   ! [-] Input Function f(t)
+excit.par (               2 ,       $E_Mx                         ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_Mx                         ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_Mx                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+excit.par (               7 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+excit.par (               8 ,       $E_Mx                         ) = -1.00000000000000000E+00 ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_Mx                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_Mx                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_Mx                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_Mx                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_Mx                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_My                         ) = 2                       ! Type
+excit.par (               1 ,       $E_My                         ) = $I_My                   ! [-] Input Function f(t)
+excit.par (               2 ,       $E_My                         ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_My                         ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_My                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_My                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_My                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+excit.par (               7 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+excit.par (               8 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_My                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_My                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_My                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_My                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_My                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+excit.type (                        $E_Mz                         ) = 2                       ! Type
+excit.par (               1 ,       $E_Mz                         ) = $I_Mz                   ! [-] Input Function f(t)
+excit.par (               2 ,       $E_Mz                         ) = null                    ! [-] Input Function fd(t)
+excit.par (               3 ,       $E_Mz                         ) = null                    ! [-] Input Function fdd(t)
+excit.par (               4 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Derivatives fd, fdd mode
+excit.par (               5 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Enforce linear interpolation
+excit.par (               6 ,       $E_Mz                         ) = 0.00000000000000000E+00 ! [s] Time offset t0
+excit.par (               7 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Time scaling factor a
+excit.par (               8 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Scaling factor c
+excit.plot.par (          1 ,       $E_Mz                         ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   1 , $E_Mz                         ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   2 , $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   3 , $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   4 , $E_Mz                         ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   5 , $E_Mz                         ) = 1.00000000000000000E+01 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   6 ,   1 , $E_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   7 ,   1 , $E_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+excit.plot.par (          1 ,   8 ,   1 , $E_Mz                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
+
+!**********************************************************************
+! u-Vector
+!**********************************************************************
+uele.type (                         $UE_DRV_Value                 ) = 1                       ! Type
+uele.excit (                        $UE_DRV_Value                 ) = $E_DRV                  ! Referenced Excitation
+uele.index (                        $UE_DRV_Value                 ) = 0                       ! Index
+
+uele.type (                         $UE_DRV_1st_deriv             ) = 1                       ! Type
+uele.excit (                        $UE_DRV_1st_deriv             ) = $E_DRV                  ! Referenced Excitation
+uele.index (                        $UE_DRV_1st_deriv             ) = 1                       ! Index
+
+uele.type (                         $UE_DRV_2nd_deriv             ) = 1                       ! Type
+uele.excit (                        $UE_DRV_2nd_deriv             ) = $E_DRV                  ! Referenced Excitation
+uele.index (                        $UE_DRV_2nd_deriv             ) = 2                       ! Index
+
+uele.type (                         $UE_Fx                        ) = 1                       ! Type
+uele.excit (                        $UE_Fx                        ) = $E_Fx                   ! Referenced Excitation
+uele.index (                        $UE_Fx                        ) = 0                       ! Index
+
+uele.type (                         $UE_Fy                        ) = 1                       ! Type
+uele.excit (                        $UE_Fy                        ) = $E_Fy                   ! Referenced Excitation
+uele.index (                        $UE_Fy                        ) = 0                       ! Index
+
+uele.type (                         $UE_Fz                        ) = 1                       ! Type
+uele.excit (                        $UE_Fz                        ) = $E_Fz                   ! Referenced Excitation
+uele.index (                        $UE_Fz                        ) = 0                       ! Index
+
+uele.type (                         $UE_Mx                        ) = 1                       ! Type
+uele.excit (                        $UE_Mx                        ) = $E_Mx                   ! Referenced Excitation
+uele.index (                        $UE_Mx                        ) = 0                       ! Index
+
+uele.type (                         $UE_My                        ) = 1                       ! Type
+uele.excit (                        $UE_My                        ) = $E_My                   ! Referenced Excitation
+uele.index (                        $UE_My                        ) = 0                       ! Index
+
+uele.type (                         $UE_Mz                        ) = 1                       ! Type
+uele.excit (                        $UE_Mz                        ) = $E_Mz                   ! Referenced Excitation
+uele.index (                        $UE_Mz                        ) = 0                       ! Index
+
+!**********************************************************************
+! Result Elements
+!**********************************************************************
+result.container (                  $RS_RES_ALY                   ) = null                    ! Parent result element
+result.type (                       $RS_RES_ALY                   ) = 21                      ! Type
+result.par (              1 ,       $RS_RES_ALY                   ) = 2.00000000000000000E+00 ! [-] Number of Expressions
+result.channel.indep.ele (   1 ,    $RS_RES_ALY                   ) = null                    ! Independent channel element
+result.channel.par (      1 ,   1 , $RS_RES_ALY                   ) = $X_HUB_ANG_VEL          ! [-] Select Expression
+result.channel.indep.ele (   2 ,    $RS_RES_ALY                   ) = null                    ! Independent channel element
+result.channel.par (      1 ,   2 , $RS_RES_ALY                   ) = $X_GEN_ANG_VEL          ! [-] Select Expression
+
+!**********************************************************************
+! Senders
+!**********************************************************************
+sender.ref (                        $COM_S_________MARKER         ) = null                    ! Source object
+sender.alias (                      $COM_S_________MARKER         ) = 'COM_S_________SUBVARS' ! Alias
+
+sender.ref (                        $COM_S_________CONTROL_ELEMENTS) = null                   ! Source object
+sender.alias (                      $COM_S_________CONTROL_ELEMENTS) = 'COM_S_________SUBVARS' ! Alias
+
+sender.ref (                        $COM_C_INTERFACE_TRG_GEN_TRQ  ) = $C_GEN_TRQ              ! Source object
+
+!**********************************************************************
+! Receivers
+!**********************************************************************
+receiver.ref (                      $COM_R_________MARKER         ) = null                    ! Destination object
+receiver.priolist (       1 ,       $COM_R_________MARKER         ) = 'COM_R_________SUBVARS' ! Sender priority list
+
+receiver.ref (                      $COM_M_INTERFACE_HUB_TRG      ) = $M_Isys_INTERFACE_TRG_HUB ! Destination object
+receiver.priolist (       1 ,       $COM_M_INTERFACE_HUB_TRG      ) = '$COM_M_INTERFACE_HUB_TRG' ! Sender priority list
+receiver.priolist (       2 ,       $COM_M_INTERFACE_HUB_TRG      ) = '$COM_M_INTERFACE_MSH_HUB' ! Sender priority list
+
+receiver.ref (                      $COM_R_________SUBVARS        ) = null                    ! Destination object
+
+receiver.ref (                      $COM_G_INTERFACE_G_010_FND_G_HP__TWR_Z) = $G_INTERFACE.$G_010_FND.$G_HP.$_TWR_Z ! Destination object
+
+receiver.ref (                      $COM_G_INTERFACE_G_020_TWR_G_HL__H) = $G_INTERFACE.$G_020_TWR.$G_HL.$_H ! Destination object
+
+receiver.ref (                      $COM_G_INTERFACE_G_031_MFR_G_HL__TLT_ANG) = $G_INTERFACE.$G_031_MFR.$G_HL.$_TLT_ANG ! Destination object
+
+receiver.ref (                      $COM_G_INTERFACE_G_032_GBX_G_HL__GBX_I) = $G_INTERFACE.$G_032_GBX.$G_HL.$_GBX_I ! Destination object
+
+                                                                                                                                                                    

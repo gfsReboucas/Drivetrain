@@ -1,0 +1,829 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '.'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+model.txt                                                           = 'Nacelle#Nacelle (detailed) for drivetrain analysis.' ! Comment
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Substructures
+!**********************************************************************
+substr.file (                       $031_MFR                      ) = '031_MFR_A_DRT.par.spck' ! Filename
+substr.id (                         $031_MFR                      ) = ''                      ! Substructure Id
+substr.add.searchpath (   1 ,       $031_MFR                      ) = '.'                     ! Substructure-specific search path
+substr.attr.2d.pos.x (              $031_MFR                      ) = 3.80000000000000000E+02
+substr.attr.2d.pos.y (              $031_MFR                      ) = -2.10000000000000000E+02
+substr.attr.2d.width (              $031_MFR                      ) = 1.00000000000000000E+03
+substr.attr.2d.height (             $031_MFR                      ) = 1.00000000000000000E+02
+
+substr.file (                       $032_GBX                      ) = '032_GBX_A_DRT.par.spck' ! Filename
+substr.id (                         $032_GBX                      ) = ''                      ! Substructure Id
+substr.add.searchpath (   1 ,       $032_GBX                      ) = '.'                     ! Substructure-specific search path
+substr.attr.2d.pos.x (              $032_GBX                      ) = 6.20000000000000000E+02
+substr.attr.2d.pos.y (              $032_GBX                      ) = -4.10000000000000000E+02
+substr.attr.2d.width (              $032_GBX                      ) = 1.60000000000000000E+02
+substr.attr.2d.height (             $032_GBX                      ) = 9.00000000000000000E+01
+
+substr.file (                       $033_GEN                      ) = '033_GEN_A.par.spck'    ! Filename
+substr.id (                         $033_GEN                      ) = ''                      ! Substructure Id
+substr.add.searchpath (   1 ,       $033_GEN                      ) = '.'                     ! Substructure-specific search path
+substr.attr.2d.pos.x (              $033_GEN                      ) = 1.20000000000000000E+03
+substr.attr.2d.pos.y (              $033_GEN                      ) = -4.10000000000000000E+02
+substr.attr.2d.width (              $033_GEN                      ) = 1.50000000000000000E+02
+substr.attr.2d.height (             $033_GEN                      ) = 8.00000000000000000E+01
+
+substr.file (                       $034_CPL                      ) = '034_CPL_A.par.spck'    ! Filename
+substr.id (                         $034_CPL                      ) = ''                      ! Substructure Id
+substr.add.searchpath (   1 ,       $034_CPL                      ) = '.'                     ! Substructure-specific search path
+substr.attr.2d.pos.x (              $034_CPL                      ) = 8.90000000000000000E+02
+substr.attr.2d.pos.y (              $034_CPL                      ) = -4.10000000000000000E+02
+substr.attr.2d.width (              $034_CPL                      ) = 1.60000000000000000E+02
+substr.attr.2d.height (             $034_CPL                      ) = 8.00000000000000000E+01
+
+substr.file (                       $037_MSH                      ) = '037_MSH_A.par.spck'    ! Filename
+substr.id (                         $037_MSH                      ) = ''                      ! Substructure Id
+substr.add.searchpath (   1 ,       $037_MSH                      ) = '.'                     ! Substructure-specific search path
+substr.attr.2d.pos.x (              $037_MSH                      ) = 3.90000000000000000E+02
+substr.attr.2d.pos.y (              $037_MSH                      ) = -4.10000000000000000E+02
+substr.attr.2d.width (              $037_MSH                      ) = 1.10000000000000000E+02
+substr.attr.2d.height (             $037_MSH                      ) = 1.00000000000000000E+02
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -1.41358194351196289E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -3.72844009399414063E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.21039695739746094E+01 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo offset
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -1.41358194351196289E+01 ! Position
+view.pos (                2 ,       $V_perspective                ) = -3.72844009399414063E+01 ! Position
+view.pos (                3 ,       $V_perspective                ) = 1.21039695739746094E+01 ! Position
+view.orient (             1 ,       $V_perspective                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 2 s }                 ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.equi.st.meth (                  $SLV_SolverSettings           ) = 2                       ! EQUI_STATIC_INTPAR_METHOD
+slv.init.task (                     $SLV_SolverSettings           ) = 2                       ! Task: 0 = No initialization; 1 = Assemble System; 2 = Apply Initial Conditions and Assemble System
+slv.init.meth (                     $SLV_SolverSettings           ) = 0                       ! Algorithm: 0 = Nonlinear solver; 1 = Projection
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = 3.10000000000000000E+02
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -4.60000000000000000E+02
+refsys.attr.2d.width (              $R_Isys                       ) = 1.18000000000000000E+03
+refsys.attr.2d.height (             $R_Isys                       ) = 7.30000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+
+! Overwritten substructure values
+joint.attr.2d.pos.x (     1 ,       $031_MFR.$TPL.$J_MFR          ) = 880
+joint.attr.2d.pos.y (     1 ,       $031_MFR.$TPL.$J_MFR          ) = -70
+joint.attr.2d.ori (       1 ,       $031_MFR.$TPL.$J_MFR          ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $031_MFR.$TPL.$J_MFR) = 880, 880
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $031_MFR.$TPL.$J_MFR) = -10, -53
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $031_MFR.$TPL.$J_MFR) = 880, 880
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $031_MFR.$TPL.$J_MFR) = -110, -87
+
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_HSG          ) = -6.97336078294899853E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_HSG          ) = 6.02817585573541295E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_HSG          ) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_HSG          ) = -1.44683143653883644E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_HSG          ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_HSG          ) = 7.86646140020885671E-26 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_LSS_PLC      ) = -6.97336078294899853E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_LSS_PLC      ) = 5.80424301992331957E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_LSS_PLC      ) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_LSS_PLC      ) = -1.31840958058813420E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_LSS_PLC      ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_LSS_PLC      ) = 7.85495758426635559E-26 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_LSS_PLT1     ) = -6.34148164802847747E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_LSS_PLT1     ) = 6.55135669758274700E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_LSS_PLT1     ) = 2.74580828381756792E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_LSS_PLT1     ) = 1.59619937376046858E-16 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_LSS_PLT1     ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_LSS_PLT1     ) = -1.39117941219435424E-17 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_LSS_PLT2     ) = -6.97336078294899853E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_LSS_PLT2     ) = -7.25000000000000089E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_LSS_PLT2     ) = 2.02356712770105318E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_LSS_PLT2     ) = 1.52477199073558456E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_LSS_PLT2     ) = 4.02516451016817628E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_LSS_PLT2     ) = -8.71738183585299420E-02 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_LSS_PLT3     ) = -7.60523991786952069E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_LSS_PLT3     ) = -6.93889390390722838E-17 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_LSS_PLT3     ) = 1.30132597158453733E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_LSS_PLT3     ) = 3.04884193443413620E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_LSS_PLT3     ) = -8.68932574690693682E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_LSS_PLT3     ) = -8.07226011739165840E-03 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_LSS_PLT4     ) = -6.97336078294899964E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_LSS_PLT4     ) = 7.24999999999999867E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_LSS_PLT4     ) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_LSS_PLT4     ) = -1.52477199073558367E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_LSS_PLT4     ) = 4.02516451016825261E-03 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_LSS_PLT4     ) = 8.71738183585299420E-02 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_LSS_SUN      ) = -6.97336078294899853E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_LSS_SUN      ) = 6.37622464624302475E-26 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_LSS_SUN      ) = 2.02356712770105274E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_LSS_SUN      ) = -3.34062692970938726E-16 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_LSS_SUN      ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_LSS_SUN      ) = 2.91154822055981383E-17 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_IMS_PLC      ) = 4.58249771491524960E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_IMS_PLC      ) = 1.50558245281182513E-25 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_IMS_PLC      ) = 1.92246646611376937E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_IMS_PLC      ) = -3.34062692970641129E-16 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_IMS_PLC      ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_IMS_PLC      ) = 2.91154822063579840E-17 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_IMS_PLT1     ) = 5.04442315147783704E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_IMS_PLT1     ) = 1.94289029309402395E-16 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_IMS_PLT1     ) = 2.45044965610239407E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_IMS_PLT1     ) = 8.52306785171812603E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_IMS_PLT1     ) = 8.69512880270909561E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_IMS_PLT1     ) = -7.41942084749922393E-03 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_IMS_PLT2     ) = 4.35153499663395504E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_IMS_PLT2     ) = -4.58993464005752638E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_IMS_PLT2     ) = 1.65847487111945679E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_IMS_PLT2     ) = -1.10533372969026167E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_IMS_PLT2     ) = 3.92479172334415441E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_IMS_PLT2     ) = 7.79625487210111046E-02 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_IMS_PLT3     ) = 4.35153499663395449E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_IMS_PLT3     ) = 4.58993464005752361E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_IMS_PLT3     ) = 1.65847487111945613E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_IMS_PLT3     ) = -2.12099703525833583E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_IMS_PLT3     ) = -4.57123092526713765E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_IMS_PLT3     ) = 7.43617769045892274E-02 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_IMS_SUN      ) = 4.58249771491524960E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_IMS_SUN      ) = 1.51032942330899257E-25 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_IMS_SUN      ) = 1.92246646611376937E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_IMS_SUN      ) = -2.41081325068967114E-15 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_IMS_SUN      ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_IMS_SUN      ) = 2.10116219566650272E-16 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_HSS_BGR      ) = 1.39467278769776604E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_HSS_BGR      ) = 2.23034643733136668E-25 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_HSS_BGR      ) = 1.84054006793097069E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_HSS_BGR      ) = -2.41081325068961947E-15 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_HSS_BGR      ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_HSS_BGR      ) = 2.10116219566902831E-16 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $032_GBX.$TPL.$B_HSS_HSH      ) = 1.42950841266074180E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $032_GBX.$TPL.$B_HSS_HSH      ) = 5.50131556174964342E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $032_GBX.$TPL.$B_HSS_HSH      ) = 2.23871308325716178E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $032_GBX.$TPL.$B_HSS_HSH      ) = -9.95846524467909888E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $032_GBX.$TPL.$B_HSS_HSH      ) = 8.68362803968676517E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $032_GBX.$TPL.$B_HSS_HSH      ) = 8.66514418999524139E-03 ! Position x/y/z/al/be/ga
+
+force.attr.2d.substr (    1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = $032_GBX
+force.attr.2d.pos.x (     1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = 120
+force.attr.2d.pos.y (     1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = -20
+force.attr.2d.ori (       1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = 180
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = 220, 137
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = -20, -20
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = 90, 90, 91.25, 91.25, 91.25, 91.25, 91.25, 91.25, 91.25, 91.25, 103
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = -110, -110, -110, -80, -70, -60, -50, -40, -30, -20, -20
+force.attr.2d.pos.x (     2 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = 650
+force.attr.2d.pos.y (     2 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = -270
+force.attr.2d.ori (       2 ,       $032_GBX.$TPL.$G_SPB.$F_SPB2  ) = 270
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = 650, 650
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = -210, -253
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = 650, 650
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB2) = -320, -287
+
+force.attr.2d.substr (    1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = $032_GBX
+force.attr.2d.pos.x (     1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = 50
+force.attr.2d.pos.y (     1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = -20
+force.attr.2d.ori (       1 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = 90
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = 49.999999999999972, 49.999999999999972, 50, 50, 50
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = -140, -124.1875, -124.1875, -106.75, -37
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = 40, 40, 50, 50, 50, 50, 50, 50, 50
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = 90, 91.25, 91.25, 65, 30.000000000000011, 20.000000000000011, 10.000000000000011, 1.4210854715202001E-14, -3
+force.attr.2d.pos.x (     2 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = 750
+force.attr.2d.pos.y (     2 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = -270
+force.attr.2d.ori (       2 ,       $032_GBX.$TPL.$G_SPB.$F_SPB1  ) = 270
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = 750, 750
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = -210, -253
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = 750, 750
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SPB.$F_SPB1) = -320, -287
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_RNG_PLT1) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_RNG_PLT2) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_RNG_PLT3) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_RNG_PLT4) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_SUN_PLT1) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_SUN_PLT2) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_SUN_PLT3) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_LSS_SUN_PLT4) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_IMS_RNG_PLT1) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_IMS_RNG_PLT2) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_IMS_RNG_PLT3) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_IMS_SUN_PLT1) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_IMS_SUN_PLT2) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_IMS_SUN_PLT3) = ''           ! Internal state
+
+force.st.intern (                   $032_GBX.$TPL.$G_GP_basic.$F_HSS_BGR_PIN) = ''            ! Internal state
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.44132580611245258E-26 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -1.35579929486088116E-26 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 7.74036173172665421E-26 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 2.30344476837368386E-26 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 6.02817585573541295E-26 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 8.68710992954952691E-27 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.attr.2d.substr (   1 ,      $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = $032_GBX
+connect.attr.2d.pos.x (   1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -20
+connect.attr.2d.pos.y (   1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -20
+connect.attr.2d.ori (     1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 90
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -20, -20
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -140, -37
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -10, -10, -20, -20, -20, -20
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 90, 90.34375, 90.34375, 61.375, 48.5, -3
+connect.attr.2d.pos.x (   2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 700
+connect.attr.2d.pos.y (   2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -270
+connect.attr.2d.ori (     2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 270
+connect.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 700, 700
+connect.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -210, -253
+connect.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = 700, 700
+connect.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $032_GBX.$TPL.$G_SHAFT.$CTN_HSG) = -320, -287
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.27933172017191589E-27 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.40336923558073738E-28 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -3.11113702085378890E-30 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -2.11637187709200623E-29 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = -2.23932835812095684E-27 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 1.20027129116960858E-29 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 1.59012535336888257E-16 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 1.15850058560299743E-28 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 3.15488644351829629E-31 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = -2.05092371279140268E-27 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -4.61998919645543876E-02 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -2.58708169055406265E-31 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 2.88889469387248884E-34 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = -4.92630522423432733E-31 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 2.34077131171058244E-30 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -9.23997839291122863E-02 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -6.52067413381026064E-30 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = -1.30672635882392278E-29 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 2.15198462639392680E-28 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 4.61998919645555048E-02 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -1.16890806514876312E-30 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = -2.44898277847389955E-30 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 3.13609464178745493E-29 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_PLT4) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -2.96470586429072470E-28 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 2.99643918714894327E-29 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = -7.85786238170283570E-28 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 1.27300250493207556E-28 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 1.01678430390481442E-27 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_LSS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -3.32791483553190060E-16 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 6.35148502199002413E-29 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = -1.18474430575265421E-27 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 1.37103219513056286E-28 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 4.88310400259627916E-28 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 1.87224648585977457E-29 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLC) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 8.49079095564814479E-02 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.41591739887886317E-29 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 2.28945829863605083E-30 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = -5.40004301873007447E-28 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT1) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 3.08498738055213995E+00 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -7.32273006178286141E-31 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 1.69349271347615680E-31 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -6.61239267633962729E-31 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = -1.39028115797192495E-33 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT2) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = -2.83026365188243090E-02 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 1.73213124620360909E-33 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 1.45331791143730353E-30 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 1.31297030790205379E-30 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 6.16391827466449390E-33 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_PLT3) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -5.14383580322773399E-29 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -2.82035726747571501E-30 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = -2.57052634652281808E-28 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 4.43626506729162330E-29 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 2.80746472973240480E-28 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_IMS_SUN) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -2.40163937841191199E-15 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 2.43525211232323766E-30 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = -2.50792279895168901E-28 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 2.21504837810971181E-29 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 2.04878925656584622E-28 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 7.84913640207361947E-29 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_BGR) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+connect.st.pos (          1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -9.92081890607191125E-02 ! Position states
+connect.st.pos (          2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -4.68655433189997231E-29 ! Position states
+connect.st.pos (          3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 5.72559069591346618E-28 ! Position states
+connect.st.pos (          4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 2.93468359865346761E-27 ! Position states
+connect.st.pos (          5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = -2.01436844085946735E-27 ! Position states
+connect.st.pos (          6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 6.63020908484991236E-28 ! Position states
+connect.st.force (        1 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $032_GBX.$TPL.$G_SHAFT.$CTN_HSS_HSH) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+
+body.brf.st.pos (         1 ,       $033_GEN.$TPL.$B_STR          ) = 4.56005025141405174E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $033_GEN.$TPL.$B_STR          ) = 5.50131556174964342E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $033_GEN.$TPL.$B_STR          ) = 1.96482616167264590E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $033_GEN.$TPL.$B_STR          ) = 7.14813169863997356E-30 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $033_GEN.$TPL.$B_STR          ) = 8.72664625997164600E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $033_GEN.$TPL.$B_STR          ) = 2.92758413294106478E-27 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $033_GEN.$TPL.$B_GRO          ) = 4.56005025141405174E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $033_GEN.$TPL.$B_GRO          ) = 5.50131556174963787E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $033_GEN.$TPL.$B_GRO          ) = 1.96482616167264745E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $033_GEN.$TPL.$B_GRO          ) = -9.95846524467909888E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $033_GEN.$TPL.$B_GRO          ) = 8.68362803968676378E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $033_GEN.$TPL.$B_GRO          ) = 8.66514418999523965E-03 ! Position x/y/z/al/be/ga
+
+force.attr.2d.pos.x (     1 ,       $033_GEN.$TPL.$F_STR_BU1      ) = 1220
+force.attr.2d.pos.y (     1 ,       $033_GEN.$TPL.$F_STR_BU1      ) = -280
+force.attr.2d.ori (       1 ,       $033_GEN.$TPL.$F_STR_BU1      ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU1) = 1220, 1220
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU1) = -210, -263
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU1) = 1220, 1220
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU1) = -330, -297
+
+force.attr.2d.pos.x (     1 ,       $033_GEN.$TPL.$F_STR_BU2      ) = 1310
+force.attr.2d.pos.y (     1 ,       $033_GEN.$TPL.$F_STR_BU2      ) = -270
+force.attr.2d.ori (       1 ,       $033_GEN.$TPL.$F_STR_BU2      ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU2) = 1310, 1310
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU2) = -210, -253
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU2) = 1310, 1310
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU2) = -330, -287
+
+force.attr.2d.pos.x (     1 ,       $033_GEN.$TPL.$F_STR_BU3      ) = 1250
+force.attr.2d.pos.y (     1 ,       $033_GEN.$TPL.$F_STR_BU3      ) = -280
+force.attr.2d.ori (       1 ,       $033_GEN.$TPL.$F_STR_BU3      ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU3) = 1250, 1250
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU3) = -210, -263
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU3) = 1250, 1250
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU3) = -330, -297
+
+force.attr.2d.pos.x (     1 ,       $033_GEN.$TPL.$F_STR_BU4      ) = 1340
+force.attr.2d.pos.y (     1 ,       $033_GEN.$TPL.$F_STR_BU4      ) = -280
+force.attr.2d.ori (       1 ,       $033_GEN.$TPL.$F_STR_BU4      ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU4) = 1340, 1340
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU4) = -210, -263
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU4) = 1340, 1340
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$F_STR_BU4) = -330, -297
+
+connect.st.pos (          1 ,       $033_GEN.$TPL.$CTN_STR        ) = 7.12093089944668446E-30 ! Position states
+connect.st.pos (          2 ,       $033_GEN.$TPL.$CTN_STR        ) = -1.83798726686074795E-27 ! Position states
+connect.st.pos (          3 ,       $033_GEN.$TPL.$CTN_STR        ) = 2.92820713366851758E-27 ! Position states
+connect.st.pos (          4 ,       $033_GEN.$TPL.$CTN_STR        ) = -1.46518977210806049E-27 ! Position states
+connect.st.pos (          5 ,       $033_GEN.$TPL.$CTN_STR        ) = -3.60548658202078998E-28 ! Position states
+connect.st.pos (          6 ,       $033_GEN.$TPL.$CTN_STR        ) = -1.17021493956890511E-27 ! Position states
+connect.attr.2d.pos.x (   1 ,       $033_GEN.$TPL.$CTN_STR        ) = 1280
+connect.attr.2d.pos.y (   1 ,       $033_GEN.$TPL.$CTN_STR        ) = -280
+connect.attr.2d.ori (     1 ,       $033_GEN.$TPL.$CTN_STR        ) = 270
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$CTN_STR) = 1280, 1280
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$CTN_STR) = -210, -263
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$CTN_STR) = 1280, 1280
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $033_GEN.$TPL.$CTN_STR) = -330, -297
+
+connect.st.pos (          1 ,       $033_GEN.$TPL.$CTN_GRO        ) = -9.92081890607191125E-02 ! Position states
+connect.st.pos (          2 ,       $033_GEN.$TPL.$CTN_GRO        ) = -1.04289185490771719E-17 ! Position states
+connect.st.pos (          3 ,       $033_GEN.$TPL.$CTN_GRO        ) = -4.60200604471075102E-19 ! Position states
+connect.st.pos (          4 ,       $033_GEN.$TPL.$CTN_GRO        ) = 1.55991347262079305E-17 ! Position states
+connect.st.pos (          5 ,       $033_GEN.$TPL.$CTN_GRO        ) = -5.68711290532627336E-16 ! Position states
+connect.st.pos (          6 ,       $033_GEN.$TPL.$CTN_GRO        ) = 1.11248682264046086E-15 ! Position states
+
+body.brf.st.pos (         1 ,       $034_CPL.$TPL.$B_SEC_1        ) = 2.21650222415322062E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $034_CPL.$TPL.$B_SEC_1        ) = 5.50131556174964342E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $034_CPL.$TPL.$B_SEC_1        ) = 2.16986004648651187E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $034_CPL.$TPL.$B_SEC_1        ) = -9.95846524467909888E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $034_CPL.$TPL.$B_SEC_1        ) = 8.68362803968676517E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $034_CPL.$TPL.$B_SEC_1        ) = 8.66514418999524139E-03 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $034_CPL.$TPL.$B_SEC_2        ) = 2.36593142886698260E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $034_CPL.$TPL.$B_SEC_2        ) = 5.50131556174964342E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $034_CPL.$TPL.$B_SEC_2        ) = 2.15678668507436289E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $034_CPL.$TPL.$B_SEC_2        ) = -9.95846524467909888E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $034_CPL.$TPL.$B_SEC_2        ) = 8.68362803968676517E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $034_CPL.$TPL.$B_SEC_2        ) = 8.66514418999524139E-03 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $034_CPL.$TPL.$B_SEC_3        ) = 2.58509426244716689E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $034_CPL.$TPL.$B_SEC_3        ) = 5.50131556174964342E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $034_CPL.$TPL.$B_SEC_3        ) = 2.13761242166987842E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $034_CPL.$TPL.$B_SEC_3        ) = -9.95846524467909888E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $034_CPL.$TPL.$B_SEC_3        ) = 8.68362803968676517E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $034_CPL.$TPL.$B_SEC_3        ) = 8.66514418999524139E-03 ! Position x/y/z/al/be/ga
+
+body.brf.st.pos (         1 ,       $034_CPL.$TPL.$B_SEC_4        ) = 2.80425709602735074E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         2 ,       $034_CPL.$TPL.$B_SEC_4        ) = 5.50131556174963787E-01 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         3 ,       $034_CPL.$TPL.$B_SEC_4        ) = 2.11843815826539483E+00 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         4 ,       $034_CPL.$TPL.$B_SEC_4        ) = -9.95846524467909888E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         5 ,       $034_CPL.$TPL.$B_SEC_4        ) = 8.68362803968676378E-02 ! Position x/y/z/al/be/ga
+body.brf.st.pos (         6 ,       $034_CPL.$TPL.$B_SEC_4        ) = 8.66514418999523965E-03 ! Position x/y/z/al/be/ga
+
+force.attr.2d.substr (    1 ,       $034_CPL.$TPL.$F_GBX_connect  ) = $032_GBX
+force.attr.2d.pos.x (     1 ,       $034_CPL.$TPL.$F_GBX_connect  ) = 260
+force.attr.2d.pos.y (     1 ,       $034_CPL.$TPL.$F_GBX_connect  ) = -20
+force.attr.2d.ori (       1 ,       $034_CPL.$TPL.$F_GBX_connect  ) = 0
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = 220, 218.25, 218.25, 243
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = -30, -30, -20, -20
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = 140, 287, 287, 287, 287, 277
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = -50, -50, -40, -30, -20, -20
+force.attr.2d.pos.x (     2 ,       $034_CPL.$TPL.$F_GBX_connect  ) = 840
+force.attr.2d.pos.y (     2 ,       $034_CPL.$TPL.$F_GBX_connect  ) = -350
+force.attr.2d.ori (       2 ,       $034_CPL.$TPL.$F_GBX_connect  ) = 180
+force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = 890, 857
+force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = -350, -350
+force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = 780, 823
+force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$F_GBX_connect) = -350, -350
+
+connect.st.pos (          1 ,       $034_CPL.$TPL.$CTN_SEC_1      ) = 2.03372573530270681E-31 ! Position states
+connect.st.pos (          2 ,       $034_CPL.$TPL.$CTN_SEC_1      ) = -2.72810959324572800E-31 ! Position states
+
+connect.st.pos (          1 ,       $034_CPL.$TPL.$CTN_SEC_2      ) = 6.94895886608614466E-46 ! Position states
+
+connect.st.pos (          1 ,       $034_CPL.$TPL.$CTN_SEC_3      ) = 1.38777878078144568E-17 ! Position states
+connect.st.pos (          2 ,       $034_CPL.$TPL.$CTN_SEC_3      ) = 1.73472347597680709E-18 ! Position states
+
+connect.st.force (        1 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        2 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        3 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        4 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        5 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.st.force (        6 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 0.00000000000000000E+00 ! Constraint forces (locked directions)
+connect.attr.2d.pos.x (   1 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 1130
+connect.attr.2d.pos.y (   1 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = -370
+connect.attr.2d.ori (     1 ,       $034_CPL.$TPL.$CTN_SEC_4      ) = 180
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_SEC_4) = 1200, 1147
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_SEC_4) = -370, -370
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_SEC_4) = 1050, 1113
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_SEC_4) = -370, -370
+
+connect.attr.2d.substr (   1 ,      $034_CPL.$TPL.$CTN_GBX        ) = $032_GBX
+connect.attr.2d.pos.x (   1 ,       $034_CPL.$TPL.$CTN_GBX        ) = 190
+connect.attr.2d.pos.y (   1 ,       $034_CPL.$TPL.$CTN_GBX        ) = -20
+connect.attr.2d.ori (     1 ,       $034_CPL.$TPL.$CTN_GBX        ) = 0
+connect.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = 140, 173
+connect.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = -20, -20
+connect.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = 220, 210, 210, 207
+connect.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = -10, -10, -20, -20
+connect.attr.2d.pos.x (   2 ,       $034_CPL.$TPL.$CTN_GBX        ) = 840
+connect.attr.2d.pos.y (   2 ,       $034_CPL.$TPL.$CTN_GBX        ) = -380
+connect.attr.2d.ori (     2 ,       $034_CPL.$TPL.$CTN_GBX        ) = 0
+connect.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = 780, 823
+connect.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = -380, -380
+connect.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = 890, 857
+connect.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $034_CPL.$TPL.$CTN_GBX) = -380, -380
+
+joint.attr.2d.substr (    1 ,       $037_MSH.$TPL.$J_MSH          ) = $032_GBX
+joint.attr.2d.pos.x (     1 ,       $037_MSH.$TPL.$J_MSH          ) = 320
+joint.attr.2d.pos.y (     1 ,       $037_MSH.$TPL.$J_MSH          ) = -20
+joint.attr.2d.ori (       1 ,       $037_MSH.$TPL.$J_MSH          ) = 180
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = 140, 383.75, 383.75, 383.75, 337
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = -40, -40, -30, -20, -20
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = 220, 219.80859375, 219.80859375, 249.234375, 262.3125, 279.75, 279.75, 279.75, 303
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = -50.000000000000007, -50.000000000000007, -50, -50, -50, -50, -40, -20, -20
+joint.attr.2d.pos.x (     2 ,       $037_MSH.$TPL.$J_MSH          ) = 560
+joint.attr.2d.pos.y (     2 ,       $037_MSH.$TPL.$J_MSH          ) = -360
+joint.attr.2d.ori (       2 ,       $037_MSH.$TPL.$J_MSH          ) = 180
+joint.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = 620, 577
+joint.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = -360, -360
+joint.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = 500, 543
+joint.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$J_MSH) = -360, -360
+
+
+force.st.intern (                   $037_MSH.$TPL.$F_MSH_BR       ) = ''                      ! Internal state
+force.attr.2d.pos.x (     1 ,       $037_MSH.$TPL.$F_MSH_BR       ) = 440
+force.attr.2d.pos.y (     1 ,       $037_MSH.$TPL.$F_MSH_BR       ) = -260
+force.attr.2d.ori (       1 ,       $037_MSH.$TPL.$F_MSH_BR       ) = 270
+force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$F_MSH_BR) = 440, 440
+force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$F_MSH_BR) = -210, -243
+force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$F_MSH_BR) = 440, 440
+force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $037_MSH.$TPL.$F_MSH_BR) = -310, -277
+
+model.data.redundancy                                               = 'eJxjYMAOjMxN09LMjC3NTJMSLU0sjY2MDVJNUo1TLc1TzBKTTM0BiJEIeDgAAAAAAAAA' ! Constraint redundancy data
+model.data.dependency                                               = 'eJxjYMAEbEDMiAMjA3Q+NnE2HGrIAaNmjZo1ahblZuHK28TkZ2LNYmDAbSY2cWLLHGIBE4n2G5mbpqWZGVuamSYlWppYGhsZG6SapBqnWpqnmCUmmZoDAN2ACP4oBQAAAAAAAA==' ! Solver state dependency data

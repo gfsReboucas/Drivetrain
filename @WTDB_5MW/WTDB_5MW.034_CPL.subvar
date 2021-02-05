@@ -1,0 +1,97 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+subvar($G_PA.$_CONNECT_TYPE, str= '1', status= 1, discr.desc (   1) = 'Force Element', discr.desc (   2) = 'Rigid', discr.str (   1) = '0', discr.str (   2) = '1', txt= 'CONNECTion TYPE: 0/1 --- 0:Force Element, 1:Rigid') ! $G_PA.$_CONNECT_TYPE
+subvar($G_PA.$G_SCN.$_GBX_2_CPL_X, str= '-0.15 m\n', status= 1, txt= 'x-pos. of connection GearBoX to CouPLing (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_GBX_2_CPL_X
+subvar($G_PA.$G_SCN.$_CPL_2_GEN_X, str= '0.79 m', status= 1, txt= 'x-pos. of connection GENerator to CouPLing (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_CPL_2_GEN_X
+subvar($G_PA.$G_SCN.$_SEC_1_X, str= '0 m', status= 1, txt= 'x-pos. of SECtion 1 reference marker (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_SEC_1_X
+subvar($G_PA.$G_SCN.$_SEC_2_X, str= '0.15 m', status= 1, txt= 'x-pos. of SECtion 2 reference marker (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_SEC_2_X
+subvar($G_PA.$G_SCN.$_SEC_3_X, str= '0.37 m', status= 1, txt= 'x-pos. of SECtion 3 reference marker (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_SEC_3_X
+subvar($G_PA.$G_SCN.$_SEC_4_X, str= '0.59 m', status= 1, txt= 'x-pos. of SECtion 4 reference marker (wrt. CouPLing reference frame)') ! $G_PA.$G_SCN.$_SEC_4_X
+subvar($G_PA.$G_ECC.$_SWITCH, str= '0', status= 1, discr.desc (   1) = 'Off', discr.desc (   2) = 'On', discr.str (   1) = '0', discr.str (   2) = '1', txt= 'ECCentricity switch: 0:off / 1:on; If on, the center of gravity of each section has an eccenctric position.') ! $G_PA.$G_ECC.$_SWITCH
+subvar($G_PA.$G_ECC.$_R, str= '1e-5 m', status= 1, txt= 'ECCentricity Radius')                ! $G_PA.$G_ECC.$_R
+subvar($G_KP.$G_SEC_1.$_SEC_2_X, str= '$G_PA.$G_SCN.$_SEC_2_X - $G_PA.$G_SCN.$_SEC_1_X', intent= 2, status= 1, txt= 'x-pos. of connection SECtion 2 to SECtion 1 (wrt. SEC 1 reference frame)') ! $G_KP.$G_SEC_1.$_SEC_2_X
+subvar($G_KP.$G_SEC_1.$_GBX_X, str= '$G_PA.$G_SCN.$_GBX_2_CPL_X\n- $G_PA.$G_SCN.$_SEC_1_X', intent= 2, status= 1, txt= 'x-pos. of connection GearBoX to SECtion 1 (wrt. SEC 1 reference frame)') ! $G_KP.$G_SEC_1.$_GBX_X
+subvar($G_KP.$G_SEC_2.$_SEC_1_X, str= '0 m', intent= 2, status= 1, txt= 'x-pos. of connection SECtion 2 to SECtion 1 (wrt. SECtion 2 reference frame)') ! $G_KP.$G_SEC_2.$_SEC_1_X
+subvar($G_KP.$G_SEC_2.$_SEC_3_X, str= '$G_PA.$G_SCN.$_SEC_3_X - $G_PA.$G_SCN.$_SEC_2_X', intent= 2, status= 1, txt= 'x-pos. of connection SECtion 3 to SECtion 2 (wrt. SECtion 2 reference frame)') ! $G_KP.$G_SEC_2.$_SEC_3_X
+subvar($G_KP.$G_SEC_3.$_SEC_2_X, str= '0 m', intent= 2, status= 1, txt= 'x-pos. of connection SECtion 3 to SECtion 2 (wrt. SECtion 3 reference frame)') ! $G_KP.$G_SEC_3.$_SEC_2_X
+subvar($G_KP.$G_SEC_3.$_SEC_4_X, str= '$G_PA.$G_SCN.$_SEC_4_X - $G_PA.$G_SCN.$_SEC_3_X', intent= 2, status= 1, txt= 'x-pos. of connection SECtion 4 to SECtion 3 (wrt. SECtion 3 reference frame)') ! $G_KP.$G_SEC_3.$_SEC_4_X
+subvar($G_KP.$G_SEC_4.$_SEC_3_X, str= '0 m', intent= 2, status= 1, txt= 'x-pos. of connection SECtion 4 to SECtion 3 (wrt. SECtion 4 reference frame)') ! $G_KP.$G_SEC_4.$_SEC_3_X
+subvar($G_KP.$G_SEC_4.$_GEN_X, str= '$G_PA.$G_SCN.$_CPL_2_GEN_X - $G_PA.$G_SCN.$_SEC_4_X', intent= 2, status= 1, txt= 'x-pos. of connection GENerator to SECtion 4 (wrt. SECtion 4 reference frame)') ! $G_KP.$G_SEC_4.$_GEN_X
+subvar($G_BP.$G_SEC_1.$_M, str= '300 kg', status= 1, txt= 'Mass')                             ! $G_BP.$G_SEC_1.$_M
+subvar($G_BP.$G_SEC_1.$_CM_X, str= '0.04 m', status= 1, txt= 'Center of Mass wrt. BRF')       ! $G_BP.$G_SEC_1.$_CM_X
+subvar($G_BP.$G_SEC_1.$_CM_Y, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_1.$_CM_Y
+subvar($G_BP.$G_SEC_1.$_CM_Z, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_1.$_CM_Z
+subvar($G_BP.$G_SEC_1.$_IXX, str= '30 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')    ! $G_BP.$G_SEC_1.$_IXX
+subvar($G_BP.$G_SEC_1.$_IYY, str= '15 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')    ! $G_BP.$G_SEC_1.$_IYY
+subvar($G_BP.$G_SEC_1.$_IZZ, str= '15 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')    ! $G_BP.$G_SEC_1.$_IZZ
+subvar($G_BP.$G_SEC_1.$_ECC, str= '$G_PA.$G_ECC.$_R', intent= 2, status= 1, txt= 'ECCentricity') ! $G_BP.$G_SEC_1.$_ECC
+subvar($G_BP.$G_SEC_1.$_ECC_SWITCH, str= '$G_PA.$G_ECC.$_SWITCH', intent= 2, status= 1, txt= 'ECCentricity switch: 0 = off 1 = on') ! $G_BP.$G_SEC_1.$_ECC_SWITCH
+subvar($G_BP.$G_SEC_2.$_M, str= '70 kg', status= 1, txt= 'Mass')                              ! $G_BP.$G_SEC_2.$_M
+subvar($G_BP.$G_SEC_2.$_CM_X, str= '0.1 m', status= 1, txt= 'Center of Mass wrt. BRF')        ! $G_BP.$G_SEC_2.$_CM_X
+subvar($G_BP.$G_SEC_2.$_CM_Y, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_2.$_CM_Y
+subvar($G_BP.$G_SEC_2.$_CM_Z, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_2.$_CM_Z
+subvar($G_BP.$G_SEC_2.$_IXX, str= '2.75 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')  ! $G_BP.$G_SEC_2.$_IXX
+subvar($G_BP.$G_SEC_2.$_IYY, str= '1.8 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_2.$_IYY
+subvar($G_BP.$G_SEC_2.$_IZZ, str= '1.8 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_2.$_IZZ
+subvar($G_BP.$G_SEC_2.$_ECC, str= '$G_PA.$G_ECC.$_R', intent= 2, status= 1, txt= 'ECCentricity') ! $G_BP.$G_SEC_2.$_ECC
+subvar($G_BP.$G_SEC_2.$_ECC_SWITCH, str= '$G_PA.$G_ECC.$_SWITCH', intent= 2, status= 1, txt= 'ECCentricity  switch:\n0 = off\n1 = on') ! $G_BP.$G_SEC_2.$_ECC_SWITCH
+subvar($G_BP.$G_SEC_3.$_M, str= '70 kg', status= 1, txt= 'Mass')                              ! $G_BP.$G_SEC_3.$_M
+subvar($G_BP.$G_SEC_3.$_CM_X, str= '0.1 m', status= 1, txt= 'Center of Mass wrt. BRF')        ! $G_BP.$G_SEC_3.$_CM_X
+subvar($G_BP.$G_SEC_3.$_CM_Y, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_3.$_CM_Y
+subvar($G_BP.$G_SEC_3.$_CM_Z, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_3.$_CM_Z
+subvar($G_BP.$G_SEC_3.$_IXX, str= '2.75 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')  ! $G_BP.$G_SEC_3.$_IXX
+subvar($G_BP.$G_SEC_3.$_IYY, str= '1.8 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_3.$_IYY
+subvar($G_BP.$G_SEC_3.$_IZZ, str= '1.8 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_3.$_IZZ
+subvar($G_BP.$G_SEC_3.$_ECC, str= '$G_PA.$G_ECC.$_R', intent= 2, status= 1, txt= 'ECCentricity') ! $G_BP.$G_SEC_3.$_ECC
+subvar($G_BP.$G_SEC_3.$_ECC_SWITCH, str= '$G_PA.$G_ECC.$_SWITCH', intent= 2, status= 1, txt= 'ECCentricity  switch:\n0 = off\n1 = on') ! $G_BP.$G_SEC_3.$_ECC_SWITCH
+subvar($G_BP.$G_SEC_4.$_M, str= '75 kg', status= 1, txt= 'Mass')                              ! $G_BP.$G_SEC_4.$_M
+subvar($G_BP.$G_SEC_4.$_CM_X, str= '0.075 m', status= 1, txt= 'Center of Mass wrt. BRF')      ! $G_BP.$G_SEC_4.$_CM_X
+subvar($G_BP.$G_SEC_4.$_CM_Y, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_4.$_CM_Y
+subvar($G_BP.$G_SEC_4.$_CM_Z, str= '0 m', status= 1, txt= 'Center of Mass wrt. BRF')          ! $G_BP.$G_SEC_4.$_CM_Z
+subvar($G_BP.$G_SEC_4.$_IXX, str= '1.7 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_4.$_IXX
+subvar($G_BP.$G_SEC_4.$_IYY, str= '1.2 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_4.$_IYY
+subvar($G_BP.$G_SEC_4.$_IZZ, str= '1.2 kgm^2', status= 1, txt= 'Moment of Inertia wrt. CM')   ! $G_BP.$G_SEC_4.$_IZZ
+subvar($G_BP.$G_SEC_4.$_ECC, str= '$G_PA.$G_ECC.$_R', intent= 2, status= 1, txt= 'ECCentricity') ! $G_BP.$G_SEC_4.$_ECC
+subvar($G_BP.$G_SEC_4.$_ECC_SWITCH, str= '$G_PA.$G_ECC.$_SWITCH', intent= 2, status= 1, txt= 'ECCentricity  switch:\n0 = off\n1 = on') ! $G_BP.$G_SEC_4.$_ECC_SWITCH
+subvar($G_FE.$G_SCN_1_2.$_C_TLT, str= '200000 Nm/rad', status= 1, txt= 'tilting stiffness (about beta and gamma)') ! $G_FE.$G_SCN_1_2.$_C_TLT
+subvar($G_FE.$G_SCN_1_2.$_D_TLT, str= '10000 Nms/rad', status= 1, txt= 'tilting damping (about beta and gamma)') ! $G_FE.$G_SCN_1_2.$_D_TLT
+subvar($G_FE.$G_SCN_2_3.$_C_ROT, str= '20000000 Nm/rad', status= 1, txt= 'rotational stiffness (about alpha)') ! $G_FE.$G_SCN_2_3.$_C_ROT
+subvar($G_FE.$G_SCN_2_3.$_D_ROT, str= '55000 Nms/rad', status= 1, txt= 'rotational damping (about alpha)') ! $G_FE.$G_SCN_2_3.$_D_ROT
+subvar($G_FE.$G_SCN_3_4.$_C_TLT, str= '200000 Nm/rad', status= 1, txt= 'tilting stiffness (about beta and gamma)') ! $G_FE.$G_SCN_3_4.$_C_TLT
+subvar($G_FE.$G_SCN_3_4.$_D_TLT, str= '10000 Nms/rad', status= 1, txt= 'tilting damping (about beta and gamma)') ! $G_FE.$G_SCN_3_4.$_D_TLT
+subvar($G_FE.$G_GBX_connect.$_C_A, str= '650000000000 N/m', status= 1, txt= 'axial stiffness (in x-direction)') ! $G_FE.$G_GBX_connect.$_C_A
+subvar($G_FE.$G_GBX_connect.$_C_R, str= '380000000000 N/m', status= 1, txt= 'radial stiffness (in y- and z-direction)') ! $G_FE.$G_GBX_connect.$_C_R
+subvar($G_FE.$G_GBX_connect.$_C_ROT, str= '2100000000 Nm/rad', status= 1, txt= 'rotational stiffness (about alpha)') ! $G_FE.$G_GBX_connect.$_C_ROT
+subvar($G_FE.$G_GBX_connect.$_C_TLT, str= '6800000000 Nm/rad', status= 1, txt= 'tilting stiffness (about beta and gamma)') ! $G_FE.$G_GBX_connect.$_C_TLT
+subvar($G_FE.$G_GBX_connect.$_D_A, str= '11000000 Ns/m', status= 1, txt= 'axial damping (in x-direction)') ! $G_FE.$G_GBX_connect.$_D_A
+subvar($G_FE.$G_GBX_connect.$_D_R, str= '6000000 Ns/m', status= 1, txt= 'radial damping (in y- and z-direction)') ! $G_FE.$G_GBX_connect.$_D_R
+subvar($G_FE.$G_GBX_connect.$_D_ROT, str= '35000 Nms/rad', status= 1, txt= 'rotational damping (about alpha)') ! $G_FE.$G_GBX_connect.$_D_ROT
+subvar($G_FE.$G_GBX_connect.$_D_TLT, str= '110000 Nms/rad', status= 1, txt= 'tilting damping (about beta and gamma)') ! $G_FE.$G_GBX_connect.$_D_TLT
+subvar($G_FE.$G_GBX_connect.$_ACTIVE, str= 'SWITCH($G_PA.$_CONNECT_TYPE)\n{\n   CASE 0:    0;\n   CASE 1:    1;\n   DEFAULT:  1;\n}', intent= 2, status= 1) ! $G_FE.$G_GBX_connect.$_ACTIVE
+subvar($G_3D.$G_SEC_1.$_TRANSPARENCY, str= '0', intent= 1, status= 1, txt= 'Transparency')    ! $G_3D.$G_SEC_1.$_TRANSPARENCY
+subvar($G_3D.$G_SEC_1.$G_CYL_1.$_L, str= '0.3 m', intent= 0, status= 1, txt= 'CYLinder 1 Length') ! $G_3D.$G_SEC_1.$G_CYL_1.$_L
+subvar($G_3D.$G_SEC_1.$G_CYL_1.$_D_O, str= '0.31 m', intent= 0, status= 1, txt= 'CYLinder 1 Diameter Out') ! $G_3D.$G_SEC_1.$G_CYL_1.$_D_O
+subvar($G_3D.$G_SEC_1.$G_CYL_1.$_D_I, str= '0.17 m', intent= 0, status= 1, txt= 'CYLinder 1 Diameter In') ! $G_3D.$G_SEC_1.$G_CYL_1.$_D_I
+subvar($G_3D.$G_SEC_1.$G_CYL_2.$_L, str= '0.1 m', intent= 0, status= 1, txt= 'CYLinder 2 Length') ! $G_3D.$G_SEC_1.$G_CYL_2.$_L
+subvar($G_3D.$G_SEC_1.$G_CYL_2.$_D_O, str= '0.5 m', intent= 0, status= 1, txt= 'CYLinder 2 Diameter Out') ! $G_3D.$G_SEC_1.$G_CYL_2.$_D_O
+subvar($G_3D.$G_SEC_1.$G_CYL_2.$_D_I, str= '0.17 m', intent= 0, status= 1, txt= 'CYLinder 2 Diameter In') ! $G_3D.$G_SEC_1.$G_CYL_2.$_D_I
+subvar($G_3D.$G_SEC_1.$G_DSC.$_L, str= '0.05 m', intent= 0, status= 1, txt= 'DiSC Length')    ! $G_3D.$G_SEC_1.$G_DSC.$_L
+subvar($G_3D.$G_SEC_1.$G_DSC.$_D_O, str= '1.5 m', intent= 0, status= 1, txt= 'DiSC Diameter Out') ! $G_3D.$G_SEC_1.$G_DSC.$_D_O
+subvar($G_3D.$G_SEC_1.$G_DSC.$_D_I, str= '0.17 m', intent= 0, status= 1, txt= 'DiSC Diameter In') ! $G_3D.$G_SEC_1.$G_DSC.$_D_I
+subvar($G_3D.$G_SEC_2.$_TRANSPARENCY, str= '0', intent= 1, status= 1, txt= 'Transparency')    ! $G_3D.$G_SEC_2.$_TRANSPARENCY
+subvar($G_3D.$G_SEC_2.$G_CYL.$_D_O, str= '0.31 m', intent= 0, status= 1, txt= 'Diameter Out') ! $G_3D.$G_SEC_2.$G_CYL.$_D_O
+subvar($G_3D.$G_SEC_2.$G_CYL.$_D_I, str= '0.26 m', intent= 0, status= 1, txt= 'Diameter In')  ! $G_3D.$G_SEC_2.$G_CYL.$_D_I
+subvar($G_3D.$G_SEC_2.$G_CYL.$_L, str= '$G_PA.$G_SCN.$_SEC_3_X - $G_PA.$G_SCN.$_SEC_2_X', intent= 1, status= 1, txt= 'Length') ! $G_3D.$G_SEC_2.$G_CYL.$_L
+subvar($G_3D.$G_SEC_3.$_TRANSPARENCY, str= '0', intent= 1, status= 1, txt= 'Transparency')    ! $G_3D.$G_SEC_3.$_TRANSPARENCY
+subvar($G_3D.$G_SEC_3.$G_CYL.$_D_O, str= '0.31 m', intent= 0, status= 1, txt= 'Diameter Out') ! $G_3D.$G_SEC_3.$G_CYL.$_D_O
+subvar($G_3D.$G_SEC_3.$G_CYL.$_D_I, str= '0.26 m', intent= 0, status= 1, txt= 'Diameter In')  ! $G_3D.$G_SEC_3.$G_CYL.$_D_I
+subvar($G_3D.$G_SEC_3.$G_CYL.$_L, str= '$G_PA.$G_SCN.$_SEC_4_X - $G_PA.$G_SCN.$_SEC_3_X', intent= 1, status= 1, txt= 'Length') ! $G_3D.$G_SEC_3.$G_CYL.$_L
+subvar($G_3D.$G_SEC_4.$_TRANSPARENCY, str= '0', intent= 1, status= 1, txt= 'Transparency')    ! $G_3D.$G_SEC_4.$_TRANSPARENCY
+subvar($G_3D.$G_SEC_4.$G_CYL_1.$_L, str= '0.1 m', intent= 0, status= 1, txt= 'CYLinder 1 Length') ! $G_3D.$G_SEC_4.$G_CYL_1.$_L
+subvar($G_3D.$G_SEC_4.$G_CYL_1.$_D_O, str= '0.5 m', intent= 0, status= 1, txt= 'CYLinder 1 Diameter Out') ! $G_3D.$G_SEC_4.$G_CYL_1.$_D_O
+subvar($G_3D.$G_SEC_4.$G_CYL_1.$_D_I, str= '0.17 m', intent= 0, status= 1, txt= 'CYLinder 1 Diameter In') ! $G_3D.$G_SEC_4.$G_CYL_1.$_D_I
+subvar($G_3D.$G_SEC_4.$G_CYL_2.$_L, str= '0.21 m', intent= 0, status= 1, txt= 'CYLinder 2 Length') ! $G_3D.$G_SEC_4.$G_CYL_2.$_L
+subvar($G_3D.$G_SEC_4.$G_CYL_2.$_D_O, str= '0.31 m', intent= 0, status= 1, txt= 'CYLinder 2 Diameter Out') ! $G_3D.$G_SEC_4.$G_CYL_2.$_D_O
+subvar($G_3D.$G_SEC_4.$G_CYL_2.$_D_I, str= '0.17 m', intent= 0, status= 1, txt= 'CYLinder 2 Diameter In') ! $G_3D.$G_SEC_4.$G_CYL_2.$_D_I
+subvar($G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_GBX_2_CPL_X, str= '$G_PA.$G_SCN.$_GBX_2_CPL_X', intent= 2, status= 1, txt= 'x-position, GearBoX to CouPLing') ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_GBX_2_CPL_X
+subvar($G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X, str= '$G_PA.$G_SCN.$_CPL_2_GEN_X', intent= 2, status= 1, txt= 'x-position, CouPLing to GENerator') ! $G_INTERFACE.$G_034_CPL.$G_PA.$G_SCN.$_CPL_2_GEN_X

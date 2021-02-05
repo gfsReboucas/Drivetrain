@@ -35,6 +35,12 @@ classdef Carrier
             obj.b_g = bg;
         end
         
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+        end
+        
         function h = plot(obj, varargin)
             if(nargin == 1)
                 C = zeros(2, 1);
@@ -50,6 +56,35 @@ classdef Carrier
             
             h = plot(x, y, plot_prop{:});
             
+            if(nargout == 0)
+                clear h;
+            end
+        end
+        
+        function h = plot3(obj, varargin)
+            % External cylinder
+            [X_tmp, Y_tmp, Z_tmp] = cylinder(obj.d_bore/2, abs(obj.z));
+            X =  X_tmp + C(1);
+            Y =  Z_tmp.*obj.b;
+            Z = -Y_tmp - C(2);
+            
+            % Internal cylinder
+            [X2_tmp, Y2_tmp, Z2_tmp] = cylinder(obj.d/2, abs(obj.z));
+            X2 =  X2_tmp + C(1);
+            Y2 =  Z2_tmp.*obj.b;
+            Z2 = -Y2_tmp - C(2);
+            
+            [x1_tmp, y1_tmp, z1_tmp] = fill_ring(obj.d_bore/2, obj.d/2, abs(obj.z));
+            x1 =  x1_tmp + C(1);
+            y1 =  z1_tmp;
+            z1 = -y1_tmp - C(2);
+            
+            surf(X, Y, Z, plot_prop{:});
+            hold on;
+            
+            surf(X2, Y2,         Z2, plot_prop{:});
+            surf(x1, y1        , z1, plot_prop{:});
+            h = surf(x1, y1 + obj.b, z1, plot_prop{:});
         end
         
         function h = rectangle(obj, varargin)
@@ -105,8 +140,7 @@ classdef Carrier
         end
         
         function val = get.b(obj)
-%             val = 0.75*obj.b_g;
-            val = 1.2*obj.b_g;
+            val = 1.4*obj.b_g;
         end
         
         function val = get.V(obj)

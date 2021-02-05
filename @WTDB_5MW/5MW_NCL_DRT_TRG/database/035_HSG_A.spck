@@ -1,0 +1,620 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '.'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
+glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   3                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   4                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   5                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   6                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   7                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   8                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   9                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  10                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  11                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  12                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  13                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  14                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  15                                       ) = 1                       ! Formalism Tuning Flags
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+model.txt                                                           = 'Housing#Housing (detailed) consisting of one rigid body.' ! Comment
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.55000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -1.15824788613244891E+01 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -3.38624051557853818E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.23609438632265665E+01 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+view.stereo.active (                $V_WorkingView                ) = 0                       ! Stereo enabled
+view.stereo.balance (               $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo balance
+view.stereo.offset (                $V_WorkingView                ) = 1.00000000000000000E+00 ! Stereo offset
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -1.15824788613244891E+01 ! Position
+view.pos (                2 ,       $V_perspective                ) = -3.38624051557853818E+01 ! Position
+view.pos (                3 ,       $V_perspective                ) = 1.23609438632265665E+01 ! Position
+view.orient (             1 ,       $V_perspective                ) = 5.98538339138031006E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.13521769642829895E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -1.60114407539367676E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.76677608489990234E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 3.14159274101257324E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 1.00000001490000004E-01 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 2 s }                 ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
+slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.init.tol (                      $SLV_SolverSettings           ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvargroup.begin (                 $G_BP                         )                           ! $G_BP
+   subvargroup.begin (              $G_HSG                        )                           ! $G_BP.$G_HSG
+      subvar.str (                  $_M                           ) = '240000 kg'             ! $G_BP.$G_HSG.$_M, Definition
+      subvar.intent (               $_M                           ) = 0                       ! Intent
+      subvar.status (               $_M                           ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_M                           ) = 'Mass'                  ! Comment
+
+      subvar.str (                  $_CM_X                        ) = '1.9 m'                 ! $G_BP.$G_HSG.$_CM_X, Definition
+      subvar.intent (               $_CM_X                        ) = 0                       ! Intent
+      subvar.status (               $_CM_X                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_X                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Y                        ) = '0 m'                   ! $G_BP.$G_HSG.$_CM_Y, Definition
+      subvar.intent (               $_CM_Y                        ) = 0                       ! Intent
+      subvar.status (               $_CM_Y                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Y                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_CM_Z                        ) = '1.75 m'                ! $G_BP.$G_HSG.$_CM_Z, Definition
+      subvar.intent (               $_CM_Z                        ) = 0                       ! Intent
+      subvar.status (               $_CM_Z                        ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_CM_Z                        ) = 'Center of Mass wrt. BRF' ! Comment
+
+      subvar.str (                  $_IXX                         ) = '1300000 kgm^2'         ! $G_BP.$G_HSG.$_IXX, Definition
+      subvar.intent (               $_IXX                         ) = 0                       ! Intent
+      subvar.status (               $_IXX                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IXX                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IYY                         ) = '2250000 kgm^2'         ! $G_BP.$G_HSG.$_IYY, Definition
+      subvar.intent (               $_IYY                         ) = 0                       ! Intent
+      subvar.status (               $_IYY                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IYY                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+      subvar.str (                  $_IZZ                         ) = '2610000 kgm^2'         ! $G_BP.$G_HSG.$_IZZ, Definition
+      subvar.intent (               $_IZZ                         ) = 0                       ! Intent
+      subvar.status (               $_IZZ                         ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_IZZ                         ) = 'Moment of Inertia wrt. CM' ! Comment
+
+   subvargroup.end (                $G_HSG                        )                           ! $G_BP.$G_HSG
+   subvargroup.txt (                $G_HSG                        ) = 'HouSinG'               ! Comment
+subvargroup.end (                   $G_BP                         )                           ! $G_BP
+subvargroup.txt (                   $G_BP                         ) = 'Body Properties'       ! Comment
+
+subvargroup.begin (                 $G_3D                         )                           ! $G_3D
+   subvargroup.begin (              $G_HSG                        )                           ! $G_3D.$G_HSG
+      subvar.str (                  $_TRANSPARENCY_ALL            ) = '0.7\n'                 ! $G_3D.$G_HSG.$_TRANSPARENCY_ALL, Definition
+      subvar.intent (               $_TRANSPARENCY_ALL            ) = 1                       ! Intent
+      subvar.status (               $_TRANSPARENCY_ALL            ) = 1                       ! 1=undefined; 2=unchecked; 3=pending; 4=cleared
+      subvar.txt (                  $_TRANSPARENCY_ALL            ) = 'Transparency global'   ! Comment
+
+   subvargroup.end (                $G_HSG                        )                           ! $G_3D.$G_HSG
+   subvargroup.txt (                $G_HSG                        ) = 'HouSinG'               ! Comment
+subvargroup.end (                   $G_3D                         )                           ! $G_3D
+subvargroup.txt (                   $G_3D                         ) = '3D properties'         ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -9.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = 4.00000000000000000E+01
+refsys.attr.2d.width (              $R_Isys                       ) = 2.60000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 2.70000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+marker.type (                       $M_Isys_INTERFACE_YAW_HSG     ) = 2                       ! Type
+marker.parent (                     $M_Isys_INTERFACE_YAW_HSG     ) = $R_Isys                 ! Reference system
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+!**********************************************************************
+! Bodies
+!**********************************************************************
+body.m (                            $B_HSG                        ) = $G_BP.$G_HSG.$_M        ! Mass of the Body
+body.mp (                           $B_HSG                        ) = 0                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.cg.pos (             1 ,       $B_HSG                        ) = $G_BP.$G_HSG.$_CM_X     ! Center of gravity
+body.cg.pos (             2 ,       $B_HSG                        ) = $G_BP.$G_HSG.$_CM_Y     ! Center of gravity
+body.cg.pos (             3 ,       $B_HSG                        ) = $G_BP.$G_HSG.$_CM_Z     ! Center of gravity
+body.cg.kind (                      $B_HSG                        ) = 1                       ! Kind of CG specification: 0=wrt CG; 1=wrt Marker
+body.cg.ref (                       $B_HSG                        ) = $M_HSG_BRF              ! Reference Marker for center of gravity
+body.I.tens (             1 ,   1 , $B_HSG                        ) = $G_BP.$G_HSG.$_IXX      ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_HSG                        ) = $G_BP.$G_HSG.$_IYY      ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_HSG                        ) = $G_BP.$G_HSG.$_IZZ      ! Moments of inertia
+body.I.kind (                       $B_HSG                        ) = -1                      ! Kind of I-tensor specification: -1=wrt CG; 0=wrt BRF; 1=wrt Marker
+body.I.ref (                        $B_HSG                        ) = null                    ! Inertia Reference Marker
+body.type (                         $B_HSG                        ) = 0                       ! Body type: 0=rigid; 1=linear flex; 2=linear SIMBEAM; 4=nonlinear SIMBEAM; 6=nonlinear flex; 7=Abq Co-Sim; 8=flextrack
+body.flx.cosim.job.type (           $B_HSG                        ) = 0                       ! 0=new run; 1=import co-sim with database results; 2=restart co-sim
+body.flx.cosim.job.previous (       $B_HSG                        ) = ''                      ! previous abaqus job run
+body.flx.cosim.job.cmdoptions (     $B_HSG                        ) = ''                      ! additional command line options for the abaqus run
+body.flx.cosim.job.solver (         $B_HSG                        ) = 0                       ! 0=Abaqus/Explicit; 1=Abaqus/Standard
+body.flx.defhandling (              $B_HSG                        ) = 1                       ! 0=Retain deformation; 1=Retain modal coordinates; 2=Reset deformation to zero
+body.txt (                          $B_HSG                        ) = 'nacelle'               ! Comment
+body.attr.2d.pos.x (                $B_HSG                        ) = -4.00000000000000000E+01
+body.attr.2d.pos.y (                $B_HSG                        ) = 1.40000000000000000E+02
+body.attr.2d.width (                $B_HSG                        ) = 1.60000000000000000E+02
+body.attr.2d.height (               $B_HSG                        ) = 3.00000000000000000E+01
+
+marker.type (                       $M_HSG_BRF                    ) = 1                       ! Type
+marker.parent (                     $M_HSG_BRF                    ) = $B_HSG                  ! Body
+marker.flx.type (                   $M_HSG_BRF                    ) = 4                       ! Flexible type
+
+marker.type (                       $M_HSG_YAW                    ) = 2                       ! Type
+marker.parent (                     $M_HSG_YAW                    ) = $B_HSG                  ! Body
+
+marker.type (                       $M_HSG_INTERFACE_HSG_MFR      ) = 2                       ! Type
+marker.parent (                     $M_HSG_INTERFACE_HSG_MFR      ) = $B_HSG                  ! Body
+
+marker.type (                       $M_HSG_INTERFACE_AD_NCL       ) = 2                       ! Type
+marker.parent (                     $M_HSG_INTERFACE_AD_NCL       ) = $B_HSG                  ! Body
+
+marker.type (                       $M_HSG_INTERFACE_AD_FRL       ) = 2                       ! Type
+marker.parent (                     $M_HSG_INTERFACE_AD_FRL       ) = $B_HSG                  ! Body
+
+marker.type (                       $M_HSG_CAD                    ) = 2                       ! Type
+marker.parent (                     $M_HSG_CAD                    ) = $B_HSG                  ! Body
+marker.ang (              1 ,       $M_HSG_CAD                    ) = -1.57079632679489700E+00 ! Angles
+marker.ang (              2 ,       $M_HSG_CAD                    ) = -1.57079632679489700E+00 ! Angles
+marker.ang (              3 ,       $M_HSG_CAD                    ) = 0.00000000000000000E+00 ! Angles
+
+marker.type (                       $M_HSG_CAD_Logo_1             ) = 2                       ! Type
+marker.parent (                     $M_HSG_CAD_Logo_1             ) = $B_HSG                  ! Body
+marker.pos (              1 ,       $M_HSG_CAD_Logo_1             ) = 9.00000000000000000E+00 ! Position
+marker.pos (              2 ,       $M_HSG_CAD_Logo_1             ) = -2.35000000000000009E+00 ! Position
+marker.pos (              3 ,       $M_HSG_CAD_Logo_1             ) = 3.39999999999999991E+00 ! Position
+marker.ang (              1 ,       $M_HSG_CAD_Logo_1             ) = 0.00000000000000000E+00 ! Angles
+marker.ang (              2 ,       $M_HSG_CAD_Logo_1             ) = 0.00000000000000000E+00 ! Angles
+marker.ang (              3 ,       $M_HSG_CAD_Logo_1             ) = 0.00000000000000000E+00 ! Angles
+
+marker.type (                       $M_HSG_CAD_Logo_2             ) = 2                       ! Type
+marker.parent (                     $M_HSG_CAD_Logo_2             ) = $B_HSG                  ! Body
+marker.pos (              1 ,       $M_HSG_CAD_Logo_2             ) = 9.00000000000000000E+00 ! Position
+marker.pos (              2 ,       $M_HSG_CAD_Logo_2             ) = 2.35000000000000009E+00 ! Position
+marker.pos (              3 ,       $M_HSG_CAD_Logo_2             ) = 3.39999999999999991E+00 ! Position
+marker.ang (              1 ,       $M_HSG_CAD_Logo_2             ) = 0.00000000000000000E+00 ! Angles
+marker.ang (              2 ,       $M_HSG_CAD_Logo_2             ) = 0.00000000000000000E+00 ! Angles
+marker.ang (              3 ,       $M_HSG_CAD_Logo_2             ) = 0.00000000000000000E+00 ! Angles
+
+joint.from (                        $J_HSG                        ) = $M_Isys_INTERFACE_YAW_HSG ! From Marker
+joint.to (                          $J_HSG                        ) = $M_HSG_YAW              ! To Marker
+joint.type (                        $J_HSG                        ) = 0                       ! Type
+joint.st.pos (            1 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! Position
+joint.st.pos (            2 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! Position
+joint.st.vel (            1 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! Velocity
+joint.st.vel (            2 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! Velocity
+joint.st.dep (            1 ,       $J_HSG                        ) = 0                       ! Dependency state
+joint.st.dep (            2 ,       $J_HSG                        ) = 0                       ! Dependency state
+joint.par (               1 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
+joint.par (               2 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [rad] Rotation about beta
+joint.par (               3 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [rad] Rotation about gamma
+joint.par (               4 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [m] Translation in x
+joint.par (               5 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [m] Translation in y
+joint.par (               6 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [m] Translation in z
+joint.par (               7 ,       $J_HSG                        ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+joint.attr.2d.pos.x (     1 ,       $J_HSG                        ) = 40
+joint.attr.2d.pos.y (     1 ,       $J_HSG                        ) = 240
+joint.attr.2d.ori (       1 ,       $J_HSG                        ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_HSG       ) = 40, 40
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_HSG       ) = 310, 257
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_HSG         ) = 40, 40
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_HSG         ) = 170, 223
+
+prim.type (                         $P_HSG_Basic                  ) = 39                      ! Type
+prim.ref (                          $P_HSG_Basic                  ) = $M_HSG_CAD              ! Reference Marker
+prim.pos (                2 ,       $P_HSG_Basic                  ) = { -1.95509 m }          ! Position
+prim.pos (                3 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_Basic                  ) = { 5deg }                ! Angles
+prim.ang (                2 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_Basic                  ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_Basic                  ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_Basic                  ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_Basic                  ) = $G_3D.$G_HSG.$_TRANSPARENCY_ALL ! Transparency
+prim.par (                2 ,       $P_HSG_Basic                  ) = 'maschinenhaus_grundlage.stl' ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_Basic                  ) = 1.00000000000000002E-03 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_Basic                  ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_Side_left              ) = 39                      ! Type
+prim.ref (                          $P_HSG_Side_left              ) = $M_HSG_CAD              ! Reference Marker
+prim.pos (                2 ,       $P_HSG_Side_left              ) = { -1.95509 m }          ! Position
+prim.pos (                3 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_Side_left              ) = { 5deg }                ! Angles
+prim.ang (                2 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_Side_left              ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_Side_left              ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_Side_left              ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_Side_left              ) = $G_3D.$G_HSG.$_TRANSPARENCY_ALL ! Transparency
+prim.par (                2 ,       $P_HSG_Side_left              ) = 'maschinenhaus_seitenwand_links.stl' ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_Side_left              ) = 1.00000000000000002E-03 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_Side_left              ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_Side_right             ) = 39                      ! Type
+prim.ref (                          $P_HSG_Side_right             ) = $M_HSG_CAD              ! Reference Marker
+prim.pos (                2 ,       $P_HSG_Side_right             ) = { -1.95509 m }          ! Position
+prim.pos (                3 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_Side_right             ) = { 5deg }                ! Angles
+prim.ang (                2 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_Side_right             ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_Side_right             ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_Side_right             ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_Side_right             ) = $G_3D.$G_HSG.$_TRANSPARENCY_ALL ! Transparency
+prim.par (                2 ,       $P_HSG_Side_right             ) = 'maschinenhaus_seitenwand_rechts.stl' ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_Side_right             ) = 1.00000000000000002E-03 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_Side_right             ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_Top                    ) = 39                      ! Type
+prim.ref (                          $P_HSG_Top                    ) = $M_HSG_CAD              ! Reference Marker
+prim.pos (                2 ,       $P_HSG_Top                    ) = { -1.95509 m }          ! Position
+prim.pos (                3 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_Top                    ) = { 5deg }                ! Angles
+prim.ang (                2 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_Top                    ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_Top                    ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_Top                    ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_Top                    ) = $G_3D.$G_HSG.$_TRANSPARENCY_ALL ! Transparency
+prim.par (                2 ,       $P_HSG_Top                    ) = 'maschinenhaus_dach.stl' ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_Top                    ) = 1.00000000000000002E-03 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_Top                    ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_IMM_logo_1_IN          ) = 39                      ! Type
+prim.ref (                          $P_HSG_IMM_logo_1_IN          ) = $M_HSG_CAD_Logo_1       ! Reference Marker
+prim.pos (                1 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! Position
+prim.pos (                2 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! Position
+prim.pos (                3 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_IMM_logo_1_IN          ) = { 90deg }               ! Angles
+prim.ang (                3 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_IMM_logo_1_IN          ) = 1.10000000000000000E+01 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_IMM_logo_1_IN          ) = 4.20000000000000000E+01 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_IMM_logo_1_IN          ) = 8.10000000000000000E+01 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_IMM_logo_1_IN          ) = $G_3D.$G_HSG.$_TRANSPARENCY_ALL ! Transparency
+prim.par (                2 ,       $P_HSG_IMM_logo_1_IN          ) = '00_IMM_logo_IN.STL'    ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_IMM_logo_1_IN          ) = 2.00000000000000000E+00 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_IMM_logo_1_IN          ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_IMM_logo_1_OUT         ) = 39                      ! Type
+prim.ref (                          $P_HSG_IMM_logo_1_OUT         ) = $M_HSG_CAD_Logo_1       ! Reference Marker
+prim.pos (                1 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! Position
+prim.pos (                2 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! Position
+prim.pos (                3 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_IMM_logo_1_OUT         ) = { 90deg }               ! Angles
+prim.ang (                3 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_IMM_logo_1_OUT         ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_IMM_logo_1_OUT         ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_IMM_logo_1_OUT         ) = 2.55000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_IMM_logo_1_OUT         ) = $G_3D.$G_HSG.$_TRANSPARENCY_ALL ! Transparency
+prim.par (                2 ,       $P_HSG_IMM_logo_1_OUT         ) = '00_IMM_logo_OUT.STL'   ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_IMM_logo_1_OUT         ) = 2.00000000000000000E+00 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_IMM_logo_1_OUT         ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_IMM_logo_2_IN          ) = 39                      ! Type
+prim.ref (                          $P_HSG_IMM_logo_2_IN          ) = $M_HSG_CAD_Logo_2       ! Reference Marker
+prim.pos (                1 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! Position
+prim.pos (                2 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! Position
+prim.pos (                3 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_IMM_logo_2_IN          ) = { 90deg }               ! Angles
+prim.ang (                2 ,       $P_HSG_IMM_logo_2_IN          ) = { 180deg }              ! Angles
+prim.ang (                3 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_IMM_logo_2_IN          ) = 1.10000000000000000E+01 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_IMM_logo_2_IN          ) = 4.20000000000000000E+01 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_IMM_logo_2_IN          ) = 8.10000000000000000E+01 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_IMM_logo_2_IN          ) = { 1 }                   ! Transparency
+prim.par (                2 ,       $P_HSG_IMM_logo_2_IN          ) = '00_IMM_logo_IN.STL'    ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_IMM_logo_2_IN          ) = 2.00000000000000000E+00 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_IMM_logo_2_IN          ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+prim.type (                         $P_HSG_IMM_logo_2_OUT         ) = 39                      ! Type
+prim.ref (                          $P_HSG_IMM_logo_2_OUT         ) = $M_HSG_CAD_Logo_2       ! Reference Marker
+prim.pos (                1 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! Position
+prim.pos (                2 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! Position
+prim.pos (                3 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! Position
+prim.ang (                1 ,       $P_HSG_IMM_logo_2_OUT         ) = { 90deg }               ! Angles
+prim.ang (                2 ,       $P_HSG_IMM_logo_2_OUT         ) = { 180deg }              ! Angles
+prim.ang (                3 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! Angles
+prim.color.r (            1 ,       $P_HSG_IMM_logo_2_OUT         ) = 2.55000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_HSG_IMM_logo_2_OUT         ) = 2.55000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_HSG_IMM_logo_2_OUT         ) = 2.55000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.transparency (                 $P_HSG_IMM_logo_2_OUT         ) = { 1 }                   ! Transparency
+prim.par (                2 ,       $P_HSG_IMM_logo_2_OUT         ) = '00_IMM_logo_OUT.STL'   ! [-] CAD file name
+prim.par (                9 ,       $P_HSG_IMM_logo_2_OUT         ) = 2.00000000000000000E+00 ! [-] Global scaling factor
+prim.par (               10 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Scaling factor in x direction
+prim.par (               11 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Scaling factor in y direction
+prim.par (               12 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Scaling factor in z direction
+prim.par (               13 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Mirror in x direction
+prim.par (               14 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Mirror in y direction
+prim.par (               15 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Mirror in z direction
+prim.par (               16 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Switch vertex normals
+prim.par (               17 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Switch face normals
+prim.par (               18 ,       $P_HSG_IMM_logo_2_OUT         ) = 0.00000000000000000E+00 ! [-] Repeat shape
+
+
+!**********************************************************************
+! Senders
+!**********************************************************************
+sender.ref (                        $COM_S_________MARKER         ) = null                    ! Source object
+sender.alias (                      $COM_S_________MARKER         ) = 'COM_S_________SUBVARS' ! Alias
+
+sender.ref (                        $COM_M_INTERFACE_HSG_MFR      ) = $M_HSG_INTERFACE_HSG_MFR ! Source object
+
+sender.ref (                        $COM_M_INTERFACE_AD_NCL       ) = $M_HSG_INTERFACE_AD_NCL ! Source object
+
+sender.ref (                        $COM_M_INTERFACE_AD_FRL       ) = $M_HSG_INTERFACE_AD_FRL ! Source object
+
+!**********************************************************************
+! Receivers
+!**********************************************************************
+receiver.ref (                      $COM_R_________MARKER         ) = null                    ! Destination object
+receiver.priolist (       1 ,       $COM_R_________MARKER         ) = 'COM_R_________SUBVARS' ! Sender priority list
+
+receiver.ref (                      $COM_M_INTERFACE_YAW_HSG      ) = $M_Isys_INTERFACE_YAW_HSG ! Destination object
+
+                                                                                                                                                                    

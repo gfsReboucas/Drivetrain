@@ -1,0 +1,263 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20200100
+version.desc   = ''
+version.build  = 82
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+searchpath (              1                                       ) = '.'
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = { -9.81 m/s^2 }         ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
+glob.rhs.tuning.type                                                = 0                       ! Formalism Tuning Type
+glob.rhs.tuning.flags (   1                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   2                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   3                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   4                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   5                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   6                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   7                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   8                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (   9                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  10                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  11                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  12                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  13                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  14                                       ) = 1                       ! Formalism Tuning Flags
+glob.rhs.tuning.flags (  15                                       ) = 1                       ! Formalism Tuning Flags
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 3                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+editmode.submodel                                                   = 1                       ! 0: in main model; 1: in this model
+glob.ifctn.bounds                                                   = 1                       ! Cubic spline boundary conditions
+prop3d.bg.base.color.r                                              = 9.90000000000000000E+01 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 1.84000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.38000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 2.55000000000000000E+02 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Substructures
+!**********************************************************************
+substr.file (                       $TPL                          ) = '033_GEN_A.spck'        ! Filename
+substr.id (                         $TPL                          ) = '1'                     ! Substructure Id
+substr.attr.2d.pos.x (              $TPL                          ) = -1.60000000000000000E+02
+substr.attr.2d.pos.y (              $TPL                          ) = -1.10000000000000000E+02
+substr.attr.2d.width (              $TPL                          ) = 3.00000000000000000E+02
+substr.attr.2d.height (             $TPL                          ) = 2.00000000000000000E+02
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = -2.85575962066650391E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -6.60035181045532227E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 1.10347187519073486E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 6.48251473903656006E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.30946248769760132E-01 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = -1.54253125190734863E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 7.34049797058105469E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 6.05770230293273926E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 9.99999977650000045E-03 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+
+view.type (                         $V_perspective                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_perspective                ) = -7.44499564170837402E-01 ! Position
+view.pos (                2 ,       $V_perspective                ) = -1.46436131000518799E+00 ! Position
+view.pos (                3 ,       $V_perspective                ) = 7.94588744640350342E-01 ! Position
+view.orient (             1 ,       $V_perspective                ) = 5.58120608329772949E-01 ! Orientation
+view.orient (             2 ,       $V_perspective                ) = -1.86172485351562500E-01 ! Orientation
+view.orient (             3 ,       $V_perspective                ) = -3.07769417762756348E-01 ! Orientation
+view.orient (             4 ,       $V_perspective                ) = 7.47742772102355957E-01 ! Orientation
+view.angle (                        $V_perspective                ) = 6.05770230293273926E-01 ! Lens angle
+view.fclip.auto (                   $V_perspective                ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_perspective                ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_perspective                ) = 9.99999977650000045E-03 ! Front clipping plane value
+view.bclip.value (                  $V_perspective                ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_perspective                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_perspective                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_perspective                ) = 0                       ! Camera is moved
+
+view.type (                         $V_ortho_x                    ) = 1                       ! Projection type
+view.pos (                1 ,       $V_ortho_x                    ) = -3.80536794662475586E+00 ! Position
+view.pos (                2 ,       $V_ortho_x                    ) = -9.87499952316284180E-02 ! Position
+view.pos (                3 ,       $V_ortho_x                    ) = 4.26611542701721191E-01 ! Position
+view.orient (             1 ,       $V_ortho_x                    ) = 5.00000000000000000E-01 ! Orientation
+view.orient (             2 ,       $V_ortho_x                    ) = -5.00000000000000000E-01 ! Orientation
+view.orient (             3 ,       $V_ortho_x                    ) = -5.00000000000000000E-01 ! Orientation
+view.orient (             4 ,       $V_ortho_x                    ) = 5.00000000000000000E-01 ! Orientation
+view.height (                       $V_ortho_x                    ) = 9.44045364856719971E-01 ! View height
+view.fclip.auto (                   $V_ortho_x                    ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_ortho_x                    ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_ortho_x                    ) = 9.99999977650000045E-03 ! Front clipping plane value
+view.bclip.value (                  $V_ortho_x                    ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_ortho_x                    ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_ortho_x                    ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_ortho_x                    ) = 0                       ! Camera is moved
+
+view.type (                         $V_ortho_y                    ) = 1                       ! Projection type
+view.pos (                1 ,       $V_ortho_y                    ) = 2.33775258064270020E-01 ! Position
+view.pos (                2 ,       $V_ortho_y                    ) = -4.11786937713623047E+00 ! Position
+view.pos (                3 ,       $V_ortho_y                    ) = 4.26611065864562988E-01 ! Position
+view.orient (             1 ,       $V_ortho_y                    ) = 7.07106840791185132E-01 ! Orientation
+view.orient (             2 ,       $V_ortho_y                    ) = 3.09086175872820712E-08 ! Orientation
+view.orient (             3 ,       $V_ortho_y                    ) = 3.09086175872820712E-08 ! Orientation
+view.orient (             4 ,       $V_ortho_y                    ) = 7.07106721581903463E-01 ! Orientation
+view.height (                       $V_ortho_y                    ) = 9.44045424461364746E-01 ! View height
+view.fclip.auto (                   $V_ortho_y                    ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_ortho_y                    ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_ortho_y                    ) = 9.99999977650000045E-03 ! Front clipping plane value
+view.bclip.value (                  $V_ortho_y                    ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_ortho_y                    ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_ortho_y                    ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_ortho_y                    ) = 0                       ! Camera is moved
+
+view.type (                         $V_ortho_z                    ) = 1                       ! Projection type
+view.pos (                1 ,       $V_ortho_z                    ) = 2.33775138854980469E-01 ! Position
+view.pos (                2 ,       $V_ortho_z                    ) = -9.87503603100776672E-02 ! Position
+view.pos (                3 ,       $V_ortho_z                    ) = 4.64716243743896484E+00 ! Position
+view.orient (             1 ,       $V_ortho_z                    ) = -3.09086175872820712E-08 ! Orientation
+view.orient (             2 ,       $V_ortho_z                    ) = -3.09086175872820712E-08 ! Orientation
+view.orient (             3 ,       $V_ortho_z                    ) = 7.07106840791185021E-01 ! Orientation
+view.orient (             4 ,       $V_ortho_z                    ) = -7.07106721581903686E-01 ! Orientation
+view.height (                       $V_ortho_z                    ) = 9.98305022716522217E-01 ! View height
+view.fclip.auto (                   $V_ortho_z                    ) = 0                       ! Front clipping plane auto
+view.bclip.auto (                   $V_ortho_z                    ) = 0                       ! Back clipping plane auto
+view.fclip.value (                  $V_ortho_z                    ) = 9.99999977650000045E-03 ! Front clipping plane value
+view.bclip.value (                  $V_ortho_z                    ) = 1.00000000000000000E+03 ! Back clipping plane value
+view.rotcenter.type (               $V_ortho_z                    ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_ortho_z                    ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_ortho_z                    ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 6.00000000000000000E+00 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 0.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 2 s }                 ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 1                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.eva.enabled (            $SLV_SolverSettings           ) = 1                       ! eva file generation 0 = disable; 1 = enable
+slv.output.fileinlining.enabled (   $SLV_SolverSettings           ) = 0                       ! file inlining 0 = disable; 1 = enable
+slv.compat.solver (                 $SLV_SolverSettings           ) = 1                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.init.tol (                      $SLV_SolverSettings           ) = 1.00000000000000002E-08 ! Tolerance used for Assemble System and Initial Conditions
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -1.90000000000000000E+02
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -1.40000000000000000E+02
+refsys.attr.2d.width (              $R_Isys                       ) = 4.10000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 3.50000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+
+                                                                                                                                                                            

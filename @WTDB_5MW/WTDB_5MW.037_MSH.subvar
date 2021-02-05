@@ -1,0 +1,180 @@
+!file.version=3.3! Removing this line will make the file unreadable
+
+subvar($G_PA.$G_BR.$G_MSH.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_PA.$G_BR.$G_MSH.$_X', intent= 2, status= 1, txt= 'x-pos. of Main SHaft BeaRing (wrt. Main SHaft reference frame)') ! $G_PA.$G_BR.$G_MSH.$_X
+subvar($G_PA.$G_SCN.$_MSH_2_LSS_X, str= '$G_INTERFACE.$G_032_GBX.$G_PA.$G_SCN.$_MSH_2_LSS_X', intent= 2, status= 1, txt= 'x-pos. of connection Low Speed Stage PLanet Carrier to Main SHaft (wrt. Low Speed Stage reference frame)') ! $G_PA.$G_SCN.$_MSH_2_LSS_X
+subvar($G_HP.$G_HUB.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_HUB.$_X', intent= 2, status= 1, txt= 'x-pos. of Main SHaft connection to HUB; HP 2 (wrt. DRiveTrain reference frame, HP 0)') ! $G_HP.$G_HUB.$_X
+subvar($G_HP.$G_MSH.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_MSH.$_X', intent= 2, status= 1, txt= 'rel. x-pos. of Main SHaft reference marker, HP 3 (wrt. DriveTRain reference frame, HP 0)') ! $G_HP.$G_MSH.$_X
+subvar($G_HP.$G_GBX.$_X, str= '$G_INTERFACE.$G_031_MFR.$G_HP.$G_GBX.$_X', intent= 2, status= 1, txt= 'x-pos. of GearBoX reference frame, HP 4 (wrt. DriveTRain reference frame, HP 0)') ! $G_HP.$G_GBX.$_X
+subvar($G_HP.$G_GBX.$G_LSS.$_X, str= '$G_INTERFACE.$G_032_GBX.$G_HP.$G_GBX.$G_LSS.$_X', intent= 2, status= 1, txt= 'x-pos. of Low Speed Stage reference marker, HP 4a (wrt. GearBoX reference frame, HP 4)') ! $G_HP.$G_GBX.$G_LSS.$_X
+subvar($G_KP.$G_MSH.$_BR_X, str= '$G_PA.$G_BR.$G_MSH.$_X', intent= 2, status= 1, txt= 'x-pos. of Main SHaft BeaRing (wrt. Main SHaft reference frame)') ! $G_KP.$G_MSH.$_BR_X
+subvar($G_KP.$G_MSH.$_HUB_X, str= '$G_HP.$G_HUB.$_X \n- $G_HP.$G_MSH.$_X \n', intent= 2, status= 1, txt= 'x-pos. of connection HUB to Main SHaft (wrt. Main SHaft reference frame)') ! $G_KP.$G_MSH.$_HUB_X
+subvar($G_KP.$G_MSH.$_LSS_PLC_X, str= '$G_HP.$G_GBX.$G_LSS.$_X + $G_HP.$G_GBX.$_X\n- $G_HP.$G_MSH.$_X \n+ $G_PA.$G_SCN.$_MSH_2_LSS_X', intent= 2, status= 1, txt= 'x-pos. of connection Low Speed Stage PLanet Carrier to Main SHaft (wrt. Main SHaft reference frame)') ! $G_KP.$G_MSH.$_LSS_PLC_X
+subvar($G_HL.$_TLT_ANG, str= '$G_INTERFACE.$G_031_MFR.$G_HL.$_TLT_ANG', intent= 2, txt= 'TiLT ANGle') ! $G_HL.$_TLT_ANG
+subvar($G_BP.$G_MSH.$_M, str= '22745.00843864858 kg', intent= 0, status= 1, txt= 'Mass')      ! $G_BP.$G_MSH.$_M
+subvar($G_BP.$G_MSH.$_CM_X, str= '-1.552576942089109 m', intent= 0, status= 1, txt= 'Center of Mass wrt. BRF') ! $G_BP.$G_MSH.$_CM_X
+subvar($G_BP.$G_MSH.$_CM_Y, str= '0 m', intent= 0, status= 1, txt= 'Center of Mass wrt. BRF') ! $G_BP.$G_MSH.$_CM_Y
+subvar($G_BP.$G_MSH.$_CM_Z, str= '0 m', intent= 0, status= 1, txt= 'Center of Mass wrt. BRF') ! $G_BP.$G_MSH.$_CM_Z
+subvar($G_BP.$G_MSH.$_IXX, str= '7032.043578950762 kgm^2', intent= 0, status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_MSH.$_IXX
+subvar($G_BP.$G_MSH.$_IYY, str= '18201.9996801336 kgm^2', intent= 0, status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_MSH.$_IYY
+subvar($G_BP.$G_MSH.$_IZZ, str= '18201.9996801336 kgm^2', intent= 0, status= 1, txt= 'Moment of Inertia wrt. CM') ! $G_BP.$G_MSH.$_IZZ
+subvar($G_BP.$G_MSH.$_BODY_TYPE, str= '0', intent= 0, status= 1, desc (   1) = 'Body type: 0/1  ---  0: rigid  1: flexible', desc (   2) = '', desc (   3) = '', discr.desc (   1) = 'Rigid', discr.desc (   2) = 'Flexible (modal)', discr.desc (   3) = 'SIMBEAM', discr.str (   1) = '0', discr.str (   2) = '1', discr.str (   3) = '2', txt= 'Body Type (rigid, Flexible (modal), SIMBEAM, ...)') ! $G_BP.$G_MSH.$_BODY_TYPE
+subvar($G_BP.$G_MSH.$G_FLX.$G_FBI.$_FILE_ID, str= '"037_MSH.fbi"', intent= 0, status= 1, desc (   1) = 'FBI file reference', desc (   2) = '', desc (   3) = '', txt= 'FBI file reference') ! $G_BP.$G_MSH.$G_FLX.$G_FBI.$_FILE_ID
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_MAT.$_DEN, str= '7850 kg/m^3', intent= 0, status= 1, desc (   1) = '', desc (   2) = '', desc (   3) = '', txt= 'DENsity') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_MAT.$_DEN
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_MAT.$_YMD, str= '2.1e11 N/m^2', intent= 0, status= 1, desc (   1) = '', desc (   2) = '', desc (   3) = '', txt= 'Young\'s MoDulus') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_MAT.$_YMD
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_MAT.$_PRT, str= '0.3', intent= 0, status= 1, desc (   1) = '', desc (   2) = '', desc (   3) = '', txt= 'Poisson\'s RaTio') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_MAT.$_PRT
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_I, str= '0.2 m', status= 1, txt= 'Diameter In')  ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_I
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_1, str= '1.5 m', intent= 1, status= 1, txt= 'Diameter Out 1') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_1
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_2, str= '1.5 m', intent= 1, status= 1, txt= 'Diameter Out 2') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_2
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_3, str= '2.2 m', intent= 1, status= 1, txt= 'Diameter Out 3') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_3
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_4, str= '2.2 m', intent= 1, status= 1, txt= 'Diameter Out 4') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_4
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_5, str= '2.2 m', intent= 1, status= 1, txt= 'Diameter Out 5') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_5
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_6, str= '2.2 m', intent= 1, status= 1, txt= 'Diameter Out 6') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_6
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_7, str= '2.2 m', intent= 1, status= 1, txt= 'Diameter Out 7') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_7
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_8, str= '1.50226 m', intent= 1, status= 1, txt= 'Diameter Out 8') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_8
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_9, str= '1.34216 m', intent= 1, status= 1, txt= 'Diameter Out 9') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_9
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_10, str= '1.23475 m', intent= 1, status= 1, txt= 'Diameter Out 10') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_10
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_11, str= '1.158 m', intent= 1, status= 1, txt= 'Diameter Out 11') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_11
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_12, str= '1.10342 m', intent= 1, status= 1, txt= 'Diameter Out 12') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_12
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_13, str= '1.06686 m', intent= 1, status= 1, txt= 'Diameter Out 13') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_13
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_14, str= '1.0461 m', intent= 1, status= 1, txt= 'Diameter Out 14') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_14
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_15, str= '1 m', intent= 1, status= 1, txt= 'Diameter Out 15') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_15
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_16, str= '1 m', intent= 1, status= 1, txt= 'Diameter Out 16') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_16
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_17, str= '1 m', intent= 1, status= 1, txt= 'Diameter Out 17') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_17
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_18, str= '1 m', intent= 1, status= 1, txt= 'Diameter Out 18') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_18
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_19, str= '0.94 m', intent= 1, status= 1, txt= 'Diameter Out 19') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_19
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_20, str= '0.922 m', intent= 1, status= 1, txt= 'Diameter Out 20') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_20
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_21, str= '0.904 m', intent= 1, status= 1, txt= 'Diameter Out 21') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_21
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_22, str= '0.886 m', intent= 1, status= 1, txt= 'Diameter Out 22') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_22
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_23, str= '0.868 m', intent= 1, status= 1, txt= 'Diameter Out 23') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_23
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_24, str= '0.85 m', intent= 1, status= 1, txt= 'Diameter Out 24') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_24
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_25, str= '0.85 m', intent= 1, status= 1, txt= 'Diameter Out 25') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_25
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_26, str= '0.85 m', intent= 1, status= 1, txt= 'Diameter Out 26') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_26
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_27, str= '0.85 m', intent= 1, status= 1, txt= 'Diameter Out 27') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_27
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_1, str= '-2.4591', txt= 'x-pos. of NODe 1')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_1
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_2, str= '-2.4091', txt= 'x-pos. of NODe 2')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_2
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_3, str= '-2.3591', txt= 'x-pos. of NODe 3')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_3
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_4, str= '-2.3091', txt= 'x-pos. of NODe 4')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_4
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_5, str= '-2.2591', txt= 'x-pos. of NODe 5')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_5
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_6, str= '-2.2091', txt= 'x-pos. of NODe 6')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_6
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_7, str= '-2.1591', txt= 'x-pos. of NODe 7')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_7
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_8, str= '-2.1022875', txt= 'x-pos. of NODe 8')   ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_8
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_9, str= '-2.045475', txt= 'x-pos. of NODe 9')    ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_9
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_10, str= '-1.9886625', txt= 'x-pos. of NODe 10') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_10
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_11, str= '-1.93185', txt= 'x-pos. of NODe 11')   ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_11
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_12, str= '-1.8750375', txt= 'x-pos. of NODe 12') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_12
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_13, str= '-1.818225', txt= 'x-pos. of NODe 13')  ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_13
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_14, str= '-1.7614125', txt= 'x-pos. of NODe 14') ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_14
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_15, str= '-1.7046', txt= 'x-pos. of NODe 15')    ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_15
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_16, str= '-1.5471', txt= 'x-pos. of NODe 16')    ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_16
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_17, str= '-1.3896', txt= 'x-pos. of NODe 17')    ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_17
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_18, str= '-1.2971', txt= 'x-pos. of NODe 18')    ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_18
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_19, str= '-1.2046', txt= 'x-pos. of NODe 19')    ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_19
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_20, str= '-1.03868', txt= 'x-pos. of NODe 20')   ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_20
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_21, str= '-0.87276', txt= 'x-pos. of NODe 21')   ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_21
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_22, str= '-0.70684', txt= 'x-pos. of NODe 22')   ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_22
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_23, str= '-0.54092', txt= 'x-pos. of NODe 23')   ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_23
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_24, str= '-0.375', txt= 'x-pos. of NODe 24')     ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_24
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_25, str= '-0.2', txt= 'x-pos. of NODe 25')       ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_25
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_26, str= '0', txt= 'x-pos. of NODe 26')          ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_26
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_27, str= '0.15', txt= 'x-pos. of NODe 27')       ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_27
+subvar($G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_28, str= '0.325', txt= 'x-pos. of NODe 28')      ! $G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_28
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_SELECTION, str= '1', intent= 1, status= 1, desc (   1) = 'Eigenmode selection type: 0/1/2/3  ---  0:none  1:f-min,f-max  2:f-min,n-modes  3:f-min,all modes', desc (   2) = '', desc (   3) = '', discr.desc (   1) = 'none', discr.desc (   2) = 'f-min,f-max', discr.desc (   3) = 'f-min,n-modes', discr.desc (   4) = 'f-min,all modes', discr.str (   1) = '0', discr.str (   2) = '1', discr.str (   3) = '2', discr.str (   4) = '3', txt= 'Eigenmode selection type: 0/1/2/3 --- 0:none 1:f-min,f-max 2:f-min,n-modes 3:f-min,all modes') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_SELECTION
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED, str= '65 Hz', intent= 1, status= 1, desc (   1) = 'Max. frequency of interest', desc (   2) = '', desc (   3) = '', txt= 'Max. frequency of interest') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_MIN, str= '0.01 Hz', intent= 1, status= 1, desc (   1) = 'Min. eigenmode frequency', desc (   2) = '', desc (   3) = '', txt= 'Min. eigenmode frequency') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_MIN
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_MAX, str= '1.5*$G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED', intent= 1, status= 1, desc (   1) = 'Max. eigenmode frequency', desc (   2) = '', desc (   3) = '', txt= 'Max. eigenmode frequency') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_MAX
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_N_MODES, str= '0', intent= 1, status= 1, desc (   1) = 'Number of eigenmodes', desc (   2) = '', desc (   3) = '', txt= 'Number of eigenmodes') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_N_MODES
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_IMO_SELECTION, str= '-1', intent= 1, status= 1, desc (   1) = 'Interface Modes: -1/0/1  ---  -1: None (default)  0: IRM  1: FRM Auto  ', desc (   2) = '', desc (   3) = '', discr.desc (   1) = 'None', discr.desc (   2) = 'IRM', discr.desc (   3) = 'FRM Auto', discr.str (   1) = '-1', discr.str (   2) = '0', discr.str (   3) = '1', txt= 'Interface Modes: -1/0/1 --- -1: None (default) 0: IRM 1: FRM Auto ') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_IMO_SELECTION
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_TRANS_F_SWITCH, str= '0', intent= 1, status= 1, desc (   1) = 'Modal mass transformation frequency: 0/1  ---  0: None (default)  1: Manual ($_TRANS_F_LIMIT active)', desc (   2) = '', desc (   3) = '', discr.desc (   1) = 'None', discr.desc (   2) = 'Manual', discr.str (   1) = '0', discr.str (   2) = '1', txt= 'Modal mass transformation frequency: 0/1 --- 0: None (default) 1: Manual ($_TRANS_F_LIMIT active)') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_TRANS_F_SWITCH
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_TRANS_F_LIMIT, str= '5*$G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_MAX', intent= 1, status= 1, desc (   1) = 'The frequency is transformed to the specified value if it is greater than that value.', desc (   2) = '', desc (   3) = '', txt= 'The frequency is transformed to the specified value if it is greater than that value.') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_TRANS_F_LIMIT
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_CUTOFF_F_SWITCH, str= '0', intent= 1, status= 1, desc (   1) = 'Cut-Off Frequency: 0/1/2  ---  0: None (default)  1: Auto  2: Manual ($_CUTOFF_F_LIMIT active)', desc (   2) = '', desc (   3) = '', discr.desc (   1) = 'None', discr.desc (   2) = 'Auto', discr.desc (   3) = 'Manual', discr.str (   1) = '0', discr.str (   2) = '1', discr.str (   3) = '2', txt= 'Cut-Off Frequency: 0/1/2 --- 0: None (default) 1: Auto 2: Manual ($_CUTOFF_F_LIMIT active)') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_CUTOFF_F_SWITCH
+subvar($G_BP.$G_MSH.$G_FLX.$G_MOD.$_CUTOFF_F_LIMIT, str= '5*$G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_MAX', intent= 1, status= 1, desc (   1) = 'Modes will not be used in simulation tasks if their frequencies are greater than the specified value.', desc (   2) = '', desc (   3) = '', txt= 'Modes will not be used in simulation tasks if their frequencies are greater than the specified value.') ! $G_BP.$G_MSH.$G_FLX.$G_MOD.$_CUTOFF_F_LIMIT
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_LOW, str= '0.03', intent= 1, status= 1, desc (   1) = 'Flex. body damping at low frequencies', desc (   2) = '', desc (   3) = '', txt= 'Flex. body damping at low frequencies') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_LOW
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_HIGH, str= '0.8', intent= 1, status= 1, desc (   1) = 'Flex. body damping at high frequencies', desc (   2) = '', desc (   3) = '', txt= 'Flex. body damping at high frequencies') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_HIGH
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_1, str= '0 Hz', intent= 1, status= 1, desc (   1) = '1st refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= '1st refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_1
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_2, str= '0.5 * $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED', intent= 1, status= 1, desc (   1) = '2nd refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= '2nd refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_2
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_3, str= '1.0 * $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED', intent= 1, status= 1, desc (   1) = '3rd refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= '3rd refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_3
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_4, str= '1.5 * $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED', intent= 1, status= 1, desc (   1) = '4th refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= '4th refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_4
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_5, str= '2.0 * $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED', intent= 1, status= 1, desc (   1) = '5th refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= '5th refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_5
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_6, str= '6.0 * $G_BP.$G_MSH.$G_FLX.$G_MOD.$_EMO_F_DESIRED', intent= 1, status= 1, desc (   1) = '6th refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= '6th refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_F_6
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_1, str= '$G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_LOW', intent= 1, status= 1, desc (   1) = 'modal damping at 1st refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= 'modal damping at 1st refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_1
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_2, str= '$G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_LOW', intent= 1, status= 1, desc (   1) = 'modal damping at 2nd refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= 'modal damping at 2nd refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_2
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_3, str= '$G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_LOW', intent= 1, status= 1, desc (   1) = 'modal damping at 3rd refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= 'modal damping at 3rd refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_3
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_4, str= '$G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_LOW', intent= 1, status= 1, desc (   1) = 'modal damping at 4th refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= 'modal damping at 4th refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_4
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_5, str= '$G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_HIGH', intent= 1, status= 1, desc (   1) = 'modal damping at 5th refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= 'modal damping at 5th refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_5
+subvar($G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_6, str= '$G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_HIGH', intent= 1, status= 1, desc (   1) = 'modal damping at 6th refernce frequency for modal damping input function', desc (   2) = '', desc (   3) = '', txt= 'modal damping at 6th refernce frequency for modal damping input function') ! $G_BP.$G_MSH.$G_FLX.$G_DMP.$_D_6
+subvar($G_FE.$G_MSH_BR.$_C_A, str= '1000000000 N/m', intent= 0, status= 1, txt= 'axial stiffness (in x-direction)') ! $G_FE.$G_MSH_BR.$_C_A
+subvar($G_FE.$G_MSH_BR.$_C_R, str= '1000000000 N/m', intent= 0, status= 1, txt= 'radial stiffness (in y- and z-direction)') ! $G_FE.$G_MSH_BR.$_C_R
+subvar($G_FE.$G_MSH_BR.$_D_A, str= '500000 Ns/m ', intent= 0, status= 1, txt= 'axial damping (in x-direction)') ! $G_FE.$G_MSH_BR.$_D_A
+subvar($G_FE.$G_MSH_BR.$_D_R, str= '2000000 Ns/m', intent= 0, status= 1, txt= 'radial damping (in y- and z-direction)') ! $G_FE.$G_MSH_BR.$_D_R
+subvar($G_3D.$G_MSH.$_TRANSPARENCY_ALL, str= '0', intent= 1, status= 1, txt= 'Transparency global') ! $G_3D.$G_MSH.$_TRANSPARENCY_ALL
+subvar($G_3D.$G_MSH.$_TRANSPARENCY_RIGID, str= 'SWITCH($G_BP.$G_MSH.$_BODY_TYPE)\n{\n   CASE   0 :   $G_3D.$G_MSH.$_TRANSPARENCY_ALL;\n   CASE   1 :   1;\n   CASE   2 :   1 ;\n\n   DEFAULT:  $G_3D.$G_MSH.$_TRANSPARENCY_ALL;\n}', intent= 1, status= 1, txt= 'Transparency rigid body primitives, when flexible bodies are used') ! $G_3D.$G_MSH.$_TRANSPARENCY_RIGID
+subvar($G_3D.$G_MSH.$_TRANSPARENCY_FLEX, str= 'SWITCH($G_BP.$G_MSH.$_BODY_TYPE)\n{\n   CASE   0 :   1;\n   CASE   1 :   $G_3D.$G_MSH.$_TRANSPARENCY_ALL;\n   CASE   2 :   $G_3D.$G_MSH.$_TRANSPARENCY_ALL ;\n\n   DEFAULT:  $G_3D.$G_MSH.$_TRANSPARENCY_ALL;\n}', intent= 1, status= 1, txt= 'Transparency rigid body primitives, when flexible bodies are used') ! $G_3D.$G_MSH.$_TRANSPARENCY_FLEX
+subvar($G_3D.$G_MSH.$G_SH.$_D_I, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_I', intent= 1, status= 1, txt= 'Diameter In') ! $G_3D.$G_MSH.$G_SH.$_D_I
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_1, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_1', intent= 1, status= 1, txt= 'Diameter Out 1') ! $G_3D.$G_MSH.$G_SH.$_D_O_1
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_2, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_2', intent= 1, status= 1, txt= 'Diameter Out 2') ! $G_3D.$G_MSH.$G_SH.$_D_O_2
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_3, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_3', intent= 1, status= 1, txt= 'Diameter Out 3') ! $G_3D.$G_MSH.$G_SH.$_D_O_3
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_4, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_4', intent= 1, status= 1, txt= 'Diameter Out 4') ! $G_3D.$G_MSH.$G_SH.$_D_O_4
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_5, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_5', intent= 1, status= 1, txt= 'Diameter Out 5') ! $G_3D.$G_MSH.$G_SH.$_D_O_5
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_6, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_6', intent= 1, status= 1, txt= 'Diameter Out 6') ! $G_3D.$G_MSH.$G_SH.$_D_O_6
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_7, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_7', intent= 1, status= 1, txt= 'Diameter Out 7') ! $G_3D.$G_MSH.$G_SH.$_D_O_7
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_8, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_8', intent= 1, status= 1, txt= 'Diameter Out 8') ! $G_3D.$G_MSH.$G_SH.$_D_O_8
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_9, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_9', intent= 1, status= 1, txt= 'Diameter Out 9') ! $G_3D.$G_MSH.$G_SH.$_D_O_9
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_10, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_10', intent= 1, status= 1, txt= 'Diameter Out 10') ! $G_3D.$G_MSH.$G_SH.$_D_O_10
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_11, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_11', intent= 1, status= 1, txt= 'Diameter Out 11') ! $G_3D.$G_MSH.$G_SH.$_D_O_11
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_12, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_12', intent= 1, status= 1, txt= 'Diameter Out 12') ! $G_3D.$G_MSH.$G_SH.$_D_O_12
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_13, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_13', intent= 1, status= 1, txt= 'Diameter Out 13') ! $G_3D.$G_MSH.$G_SH.$_D_O_13
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_14, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_14', intent= 1, status= 1, txt= 'Diameter Out 14') ! $G_3D.$G_MSH.$G_SH.$_D_O_14
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_15, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_15', intent= 1, status= 1, txt= 'Diameter Out 15') ! $G_3D.$G_MSH.$G_SH.$_D_O_15
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_16, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_16', intent= 1, status= 1, txt= 'Diameter Out 16') ! $G_3D.$G_MSH.$G_SH.$_D_O_16
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_17, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_17', intent= 1, status= 1, txt= 'Diameter Out 17') ! $G_3D.$G_MSH.$G_SH.$_D_O_17
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_18, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_18', intent= 1, status= 1, txt= 'Diameter Out 18') ! $G_3D.$G_MSH.$G_SH.$_D_O_18
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_19, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_19', intent= 1, status= 1, txt= 'Diameter Out 19') ! $G_3D.$G_MSH.$G_SH.$_D_O_19
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_20, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_20', intent= 1, status= 1, txt= 'Diameter Out 20') ! $G_3D.$G_MSH.$G_SH.$_D_O_20
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_21, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_21', intent= 1, status= 1, txt= 'Diameter Out 21') ! $G_3D.$G_MSH.$G_SH.$_D_O_21
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_22, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_22', intent= 1, status= 1, txt= 'Diameter Out 22') ! $G_3D.$G_MSH.$G_SH.$_D_O_22
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_23, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_23', intent= 1, status= 1, txt= 'Diameter Out 23') ! $G_3D.$G_MSH.$G_SH.$_D_O_23
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_24, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_24', intent= 1, status= 1, txt= 'Diameter Out 24') ! $G_3D.$G_MSH.$G_SH.$_D_O_24
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_25, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_25', intent= 1, status= 1, txt= 'Diameter Out 25') ! $G_3D.$G_MSH.$G_SH.$_D_O_25
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_26, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_26', intent= 1, status= 1, txt= 'Diameter Out 26') ! $G_3D.$G_MSH.$G_SH.$_D_O_26
+subvar($G_3D.$G_MSH.$G_SH.$_D_O_27, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_XSC.$_D_O_27', intent= 1, status= 1, txt= 'Diameter Out 27') ! $G_3D.$G_MSH.$G_SH.$_D_O_27
+subvar($G_3D.$G_MSH.$G_SH.$_X_1, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_1', intent= 1, txt= 'x-pos. of NODe 1') ! $G_3D.$G_MSH.$G_SH.$_X_1
+subvar($G_3D.$G_MSH.$G_SH.$_X_2, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_2', intent= 1, txt= 'x-pos. of NODe 2') ! $G_3D.$G_MSH.$G_SH.$_X_2
+subvar($G_3D.$G_MSH.$G_SH.$_X_3, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_3', intent= 1, txt= 'x-pos. of NODe 3') ! $G_3D.$G_MSH.$G_SH.$_X_3
+subvar($G_3D.$G_MSH.$G_SH.$_X_4, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_4', intent= 1, txt= 'x-pos. of NODe 4') ! $G_3D.$G_MSH.$G_SH.$_X_4
+subvar($G_3D.$G_MSH.$G_SH.$_X_5, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_5', intent= 1, txt= 'x-pos. of NODe 5') ! $G_3D.$G_MSH.$G_SH.$_X_5
+subvar($G_3D.$G_MSH.$G_SH.$_X_6, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_6', intent= 1, txt= 'x-pos. of NODe 6') ! $G_3D.$G_MSH.$G_SH.$_X_6
+subvar($G_3D.$G_MSH.$G_SH.$_X_7, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_7', intent= 1, txt= 'x-pos. of NODe 7') ! $G_3D.$G_MSH.$G_SH.$_X_7
+subvar($G_3D.$G_MSH.$G_SH.$_X_8, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_8', intent= 1, txt= 'x-pos. of NODe 8') ! $G_3D.$G_MSH.$G_SH.$_X_8
+subvar($G_3D.$G_MSH.$G_SH.$_X_9, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_9', intent= 1, txt= 'x-pos. of NODe 9') ! $G_3D.$G_MSH.$G_SH.$_X_9
+subvar($G_3D.$G_MSH.$G_SH.$_X_10, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_10', intent= 1, txt= 'x-pos. of NODe 10') ! $G_3D.$G_MSH.$G_SH.$_X_10
+subvar($G_3D.$G_MSH.$G_SH.$_X_11, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_11', intent= 1, txt= 'x-pos. of NODe 11') ! $G_3D.$G_MSH.$G_SH.$_X_11
+subvar($G_3D.$G_MSH.$G_SH.$_X_12, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_12', intent= 1, txt= 'x-pos. of NODe 12') ! $G_3D.$G_MSH.$G_SH.$_X_12
+subvar($G_3D.$G_MSH.$G_SH.$_X_13, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_13', intent= 1, txt= 'x-pos. of NODe 13') ! $G_3D.$G_MSH.$G_SH.$_X_13
+subvar($G_3D.$G_MSH.$G_SH.$_X_14, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_14', intent= 1, txt= 'x-pos. of NODe 14') ! $G_3D.$G_MSH.$G_SH.$_X_14
+subvar($G_3D.$G_MSH.$G_SH.$_X_15, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_15', intent= 1, txt= 'x-pos. of NODe 15') ! $G_3D.$G_MSH.$G_SH.$_X_15
+subvar($G_3D.$G_MSH.$G_SH.$_X_16, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_16', intent= 1, txt= 'x-pos. of NODe 16') ! $G_3D.$G_MSH.$G_SH.$_X_16
+subvar($G_3D.$G_MSH.$G_SH.$_X_17, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_17', intent= 1, txt= 'x-pos. of NODe 17') ! $G_3D.$G_MSH.$G_SH.$_X_17
+subvar($G_3D.$G_MSH.$G_SH.$_X_18, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_18', intent= 1, txt= 'x-pos. of NODe 18') ! $G_3D.$G_MSH.$G_SH.$_X_18
+subvar($G_3D.$G_MSH.$G_SH.$_X_19, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_19', intent= 1, txt= 'x-pos. of NODe 19') ! $G_3D.$G_MSH.$G_SH.$_X_19
+subvar($G_3D.$G_MSH.$G_SH.$_X_20, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_20', intent= 1, txt= 'x-pos. of NODe 20') ! $G_3D.$G_MSH.$G_SH.$_X_20
+subvar($G_3D.$G_MSH.$G_SH.$_X_21, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_21', intent= 1, txt= 'x-pos. of NODe 21') ! $G_3D.$G_MSH.$G_SH.$_X_21
+subvar($G_3D.$G_MSH.$G_SH.$_X_22, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_22', intent= 1, txt= 'x-pos. of NODe 22') ! $G_3D.$G_MSH.$G_SH.$_X_22
+subvar($G_3D.$G_MSH.$G_SH.$_X_23, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_23', intent= 1, txt= 'x-pos. of NODe 23') ! $G_3D.$G_MSH.$G_SH.$_X_23
+subvar($G_3D.$G_MSH.$G_SH.$_X_24, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_24', intent= 1, txt= 'x-pos. of NODe 24') ! $G_3D.$G_MSH.$G_SH.$_X_24
+subvar($G_3D.$G_MSH.$G_SH.$_X_25, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_25', intent= 1, txt= 'x-pos. of NODe 25') ! $G_3D.$G_MSH.$G_SH.$_X_25
+subvar($G_3D.$G_MSH.$G_SH.$_X_26, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_26', intent= 1, txt= 'x-pos. of NODe 26') ! $G_3D.$G_MSH.$G_SH.$_X_26
+subvar($G_3D.$G_MSH.$G_SH.$_X_27, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_27', intent= 1, txt= 'x-pos. of NODe 27') ! $G_3D.$G_MSH.$G_SH.$_X_27
+subvar($G_3D.$G_MSH.$G_SH.$_X_28, str= '$G_BP.$G_MSH.$G_FLX.$G_SBM.$G_NOD.$_X_28', intent= 1, txt= 'x-pos. of NODe 28') ! $G_3D.$G_MSH.$G_SH.$_X_28
+subvar($G_3D.$G_MSH.$G_BR.$_D_O, str= '$G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_D_O', intent= 1, status= 1, txt= 'Diameter Out') ! $G_3D.$G_MSH.$G_BR.$_D_O
+subvar($G_3D.$G_MSH.$G_BR.$_D_I, str= '$G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_D_I', intent= 1, status= 1, txt= 'Diameter In') ! $G_3D.$G_MSH.$G_BR.$_D_I
+subvar($G_3D.$G_MSH.$G_BR.$_L, str= '$G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_L', intent= 1, status= 1, txt= 'Length') ! $G_3D.$G_MSH.$G_BR.$_L
+subvar($G_INTERFACE.$G_031_MFR.$G_PA.$G_BR.$G_MSH.$_X, str= '-1.5471 m', intent= 2, status= 1, txt= 'x-pos. of Main SHaft BeaRing (wrt. Main SHaft reference frame)') ! $G_INTERFACE.$G_031_MFR.$G_PA.$G_BR.$G_MSH.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_HUB.$_X, str= '-3.3191 m', intent= 2, txt= 'x-pos. of Main SHaft connection to HUB; HP 2 (wrt. DRiveTrain reference frame, HP 0)') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_HUB.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_MSH.$_X, str= '- 0.86 m', intent= 2, txt= 'x-pos. of Main FRame connection to Main SHaft (wrt. DRiveTrain reference frame); corresponds to Main SHaft reference frame') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_MSH.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_HP.$G_GBX.$_X, str= '0 m', intent= 2, txt= 'x-pos. of Main FRame connection to GearBoX (wrt. DriveTRain reference frame); corresponds to GearBoX reference frame') ! $G_INTERFACE.$G_031_MFR.$G_HP.$G_GBX.$_X
+subvar($G_INTERFACE.$G_031_MFR.$G_HL.$_TLT_ANG, str= '-5 deg', intent= 2, txt= 'TiLT ANGle')  ! $G_INTERFACE.$G_031_MFR.$G_HL.$_TLT_ANG
+subvar($G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_D_O, str= '1.315 m', intent= 2, status= 1, txt= 'Diameter Out') ! $G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_D_O
+subvar($G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_D_I, str= '1 m', intent= 2, status= 1, txt= 'Diameter In') ! $G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_D_I
+subvar($G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_L, str= '0.315m', intent= 2, status= 1, txt= 'Length') ! $G_INTERFACE.$G_031_MFR.$G_3D.$G_MSH.$G_BR.$_L
+subvar($G_INTERFACE.$G_032_GBX.$G_PA.$G_SCN.$_MSH_2_LSS_X, str= '-0.86 m', intent= 2, status= 1, txt= 'x-pos. of connection Low Speed Stage PLanet Carrier to Main SHaft (wrt. Low Speed Stage reference frame)') ! $G_INTERFACE.$G_032_GBX.$G_PA.$G_SCN.$_MSH_2_LSS_X
+subvar($G_INTERFACE.$G_032_GBX.$G_HP.$G_GBX.$G_LSS.$_X, str= '0 m', intent= 2, status= 1, txt= 'x-pos. of Low Speed Stage reference marker (wrt. GearBoX reference frame)') ! $G_INTERFACE.$G_032_GBX.$G_HP.$G_GBX.$G_LSS.$_X

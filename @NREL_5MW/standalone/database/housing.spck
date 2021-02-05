@@ -1,0 +1,563 @@
+!file.version=3.5! Removing this line will make the file unreadable
+
+!**********************************************************************
+! Simpack Version Information
+!**********************************************************************
+version.number = 20210000
+version.desc   = ''
+version.build  = 101
+
+!**********************************************************************
+!  Global parameters
+!**********************************************************************
+gravity (                 1                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 2                                       ) = 0.00000000000000000E+00 ! Gravity
+gravity (                 3                                       ) = -9.81000000000000050E+00 ! Gravity
+vehicle.startvel                                                    = 0.00000000000000000E+00 ! Vehicle initial velocity
+vehicle.applystartvel                                               = 0                       ! Apply vehicle initial velocity at solver start
+glob.compat.flxnodeori                                              = 0                       ! Flexbody Node Orientation Method
+glob.compat.afcf                                                    = 0                       ! References Frame for Joint and Force Element Forces and Torques
+rw.cont.meth                                                        = 2                       ! MISCPAR_RW_CONTACT_METHOD
+rw.linear                                                           = 0                       ! MISCPAR_RW_PROFILE_LINEARIZATION_METHOD
+time                                                                = 0.00000000000000000E+00 ! Time
+slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
+track.active                                                        = null                    ! Active Track element
+glob.slv.error.mode                                                 = 2                       ! Solver termination due to errors and warnings
+prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
+prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
+prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
+prop3d.bg.base.color.t                                              = 0.00000000000000000E+00 ! Background color (transparency component)
+prop3d.bg.grad.color.r                                              = 2.55000000000000000E+02 ! Gradient color (red component)
+prop3d.bg.grad.color.g                                              = 2.55000000000000000E+02 ! Gradient color (green component)
+prop3d.bg.grad.color.b                                              = 2.55000000000000000E+02 ! Gradient color (blue component)
+prop3d.bg.grad.color.t                                              = 0.00000000000000000E+00 ! Gradient color (transparency component)
+prop3d.bg.gradient                                                  = 1                       ! 0 = constant, 1 = gradient
+prop3d.marker.size                                                  = 0.00000000000000000E+00 ! length of Marker axes, if value is zero, use "auto"
+prop3d.marker.auto                                                  = 1                       ! 0 = user defined, 1 = auto size determination
+prop3d.marker.color.r                                               = 0.00000000000000000E+00 ! Marker color (red component)
+prop3d.marker.color.g                                               = 0.00000000000000000E+00 ! Marker color (green component)
+prop3d.marker.color.b                                               = 0.00000000000000000E+00 ! Marker color (blue component)
+prop3d.marker.color.t                                               = 0.00000000000000000E+00 ! Marker color (transparency component)
+prop3d.display                                                      = 1                       ! 1 = shaded,  2 = wireframe, 3 = hidden line
+prop3d.bbox                                                         = 0                       ! 0 = exclude all refsys objects, 1 = include all refsys objects
+prop2d.joint.visible                                                = 1                       ! Joints visible
+prop2d.force.visible                                                = 1                       ! Forces visible
+prop2d.constr.visible                                               = 1                       ! Constraints visible
+prop2d.sensor.visible                                               = 0                       ! Sensors visible
+prop2d.grid.visible                                                 = 0                       ! Show grid
+prop2d.grid.hor.start                                               = 0.00000000000000000E+00 ! Horizontal offset
+prop2d.grid.hor.step                                                = 1.00000000000000000E+01 ! Horizontal step
+prop2d.grid.vert.start                                              = 0.00000000000000000E+00 ! Vertical offset
+prop2d.grid.vert.step                                               = 1.00000000000000000E+01 ! Vertical step
+prop2d.line.width                                                   = 0                       ! Line width
+prop2d.proj.dir                                                     = 2                       ! Projection direction
+
+
+!**********************************************************************
+! Views
+!**********************************************************************
+view.type (                         $V_WorkingView                ) = 0                       ! Projection type
+view.pos (                1 ,       $V_WorkingView                ) = 1.59603357315063477E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -1.08342247009277344E+01 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 3.98844361305236816E+00 ! Position
+view.orient (             1 ,       $V_WorkingView                ) = 5.72478830814361572E-01 ! Orientation
+view.orient (             2 ,       $V_WorkingView                ) = -1.37023981660604477E-02 ! Orientation
+view.orient (             3 ,       $V_WorkingView                ) = 1.36945649981498718E-01 ! Orientation
+view.orient (             4 ,       $V_WorkingView                ) = 8.08285892009735107E-01 ! Orientation
+view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
+view.fclip.value (                  $V_WorkingView                ) = 1.48549927398562431E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.48549919128417969E+01 ! Back clipping plane value
+view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
+
+view.type (                         $V_Ortho                      ) = 0                       ! Projection type
+view.pos (                1 ,       $V_Ortho                      ) = 6.85247761197388172E-01 ! Position
+view.pos (                2 ,       $V_Ortho                      ) = -7.19467787537723780E-01 ! Position
+view.pos (                3 ,       $V_Ortho                      ) = 3.52404586199554615E-01 ! Position
+view.orient (             1 ,       $V_Ortho                      ) = 5.24405717849731445E-01 ! Orientation
+view.orient (             2 ,       $V_Ortho                      ) = 2.11789414286613464E-01 ! Orientation
+view.orient (             3 ,       $V_Ortho                      ) = 2.88275688886642456E-01 ! Orientation
+view.orient (             4 ,       $V_Ortho                      ) = 7.72684276103973389E-01 ! Orientation
+view.angle (                        $V_Ortho                      ) = 7.85398185253143311E-01 ! Lens angle
+view.fclip.auto (                   $V_Ortho                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Ortho                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Ortho                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Ortho                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Ortho                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Front                      ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Front                      ) = -5.99845290184020996E-01 ! Position
+view.pos (                3 ,       $V_Front                      ) = 2.98023294931226701E-08 ! Position
+view.orient (             1 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.orient (             2 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Front                      ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Front                      ) = 7.07106769084930420E-01 ! Orientation
+view.height (                       $V_Front                      ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Front                      ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Front                      ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Front                      ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Front                      ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Front                      ) = 0                       ! Camera is moved
+
+view.type (                         $V_Top                        ) = 1                       ! Projection type
+view.pos (                1 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Position
+view.pos (                2 ,       $V_Top                        ) = -7.49893719330430031E-04 ! Position
+view.pos (                3 ,       $V_Top                        ) = 5.99095582962036133E-01 ! Position
+view.orient (             1 ,       $V_Top                        ) = 2.51447520582814832E-08 ! Orientation
+view.orient (             2 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             3 ,       $V_Top                        ) = 0.00000000000000000E+00 ! Orientation
+view.orient (             4 ,       $V_Top                        ) = 1.00000000000000000E+00 ! Orientation
+view.height (                       $V_Top                        ) = 8.00000000000000044E-01 ! View height
+view.fclip.auto (                   $V_Top                        ) = 1                       ! Front clipping plane auto
+view.bclip.auto (                   $V_Top                        ) = 1                       ! Back clipping plane auto
+view.rotcenter.type (               $V_Top                        ) = 0                       ! Rotation center type
+view.rotcenter.adjust (             $V_Top                        ) = 1                       ! Adjust rotation center
+view.motion.active (                $V_Top                        ) = 0                       ! Camera is moved
+
+!**********************************************************************
+! Solver Settings
+!**********************************************************************
+slv.kin.task (                      $SLV_SolverSettings           ) = 3                       ! KIN_INTPAR_TASK
+slv.kin.tout.n (                    $SLV_SolverSettings           ) = 201                     ! KIN_INTPAR_NUM_STEPS
+slv.kin.tol (                       $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! Kinematics tolerance
+slv.integ.fix.driftstab (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_CONSTAB
+slv.integ.fix.jac.update (          $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_FIXINT_JACOBIAN_EVAL
+slv.integ.fix.part.type (           $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_INTPAR_FIXINT_JAC_PART_TYPE
+slv.integ.fix.order (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_METHOD_ORDER
+slv.integ.fix.posup (               $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FIXINT_POS_COORD_UPDATE
+slv.integ.sodasrt.formalism (       $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_FORMALISM
+slv.integ.type (                    $SLV_SolverSettings           ) = 1                       ! Integrator type
+slv.integ.jac.struc (               $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_JACOBIAN_STRUC
+slv.integ.jac.incr.type (           $SLV_SolverSettings           ) = 2                       ! Jacobian increment type
+slv.integ.linalg.slv (              $SLV_SolverSettings           ) = 1                       ! 1 = dense ; 2 = sparse (UMFPACK) ; 3 = sparse (PARDISO)
+slv.integ.lsode.meth (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_PAR_LSODE_INTEG_METHOD
+slv.integ.lsode.jac.struc (         $SLV_SolverSettings           ) = 3                       ! SOLVER_TIME_INTEG_PAR_LSODE_JACOBIAN_STRUC
+slv.integ.lsode.maxord (            $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_LSODE_MAX_ORDER
+slv.integ.maxrhs (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_RHS
+slv.integ.maxstp (                  $SLV_SolverSettings           ) = -1                      ! TIME_INTEG_INTPAR_MAX_TIME_STEPS
+slv.integ.newton.maxit (            $SLV_SolverSettings           ) = 7                       ! TIME_INTEG_INTPAR_NEWTON_ITERS
+slv.integ.tout.n (                  $SLV_SolverSettings           ) = 101                     ! TIME_INTEG_INTPAR_OUTPUT_NUM_POINTS
+slv.integ.sodasrt2.iestsc (         $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_PAR_SODASRT20_ERROR_EST_SCALE_METHOD
+slv.integ.sodasrt.maxord (          $SLV_SolverSettings           ) = 5                       ! TIME_INTEG_INTPAR_SODASRT_MAX_ORDER
+slv.integ.sodasrt1.errnorm (        $SLV_SolverSettings           ) = 3                       ! TIME_INTEG_PAR_SODASRT_NORM_TYPE
+slv.integ.tout.mode (               $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_INTPAR_TOUT_MODE
+slv.integ.meetop (                  $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EVAL_MOTION_EQ_AT_COMM_POINTS
+slv.integ.driftstab (               $SLV_SolverSettings           ) = 2                       ! TIME_INTEG_BOOLPAR_ACCEPT_DRIFT
+slv.integ.root (                    $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_DETECT_IMPLICIT_DISCONTINUITIES
+slv.integ.jac.part (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_PARTITIONED_EVAL_JACOBIAN
+slv.integ.addrhscall (              $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_EXTRA_EVAL_AFTER_SUCCESSFUL_STEP
+slv.integ.linalg.red2nd (           $SLV_SolverSettings           ) = 1                       ! Linear equations second order reduction
+slv.integ.fix.oneleg (              $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_IMPLICIT_ONE_LEG_OLC
+slv.integ.fix.conforce (            $SLV_SolverSettings           ) = 0                       ! TIME_INTEG_BOOLPAR_FIXINT_CONFORCE
+slv.integ.fix.clss (                $SLV_SolverSettings           ) = 1                       ! TIME_INTEG_BOOLPAR_FIXINT_METHOD_CLASS
+slv.integ.sodasrt1.scal.lam (       $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_SCALARPAR_SCALE_CONSTRAINT_FORCES
+slv.integ.sodasrt1.scal.acc (       $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_SCALE_ACCELERATIONS
+slv.integ.newton.eps (              $SLV_SolverSettings           ) = 3.33000000000000018E-01 ! TIME_INTEG_SCALARPAR_NEWTON_ERROR_BOUND
+slv.integ.fix.utcpar (              $SLV_SolverSettings           ) = 1.00000000000000000E+00 ! TIME_INTEG_SCALARPAR_FIXINT_EULER_UTC
+slv.integ.fix.olcpar (              $SLV_SolverSettings           ) = 5.00000000000000000E-01 ! TIME_INTEG_SCALARPAR_FIXINT_ONE_LEG_OLC
+slv.integ.sodasrt2.estfac (         $SLV_SolverSettings           ) = 9.99999999999999955E-07 ! TIME_INTEG_SCALARPAR_SODASRT20_ERROR_EST_SCALE_FACTOR
+slv.integ.tout.freq (               $SLV_SolverSettings           ) = { 200 Hz }              ! TIME_INTEG_PAR_OUTPUT_FREQ
+slv.integ.tend.time (               $SLV_SolverSettings           ) = { 2 s }                 ! TIME_INTEG_TIMEPAR_END_TIME
+slv.integ.atol.gen (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.atol.vel (                $SLV_SolverSettings           ) = 1.00000000000000005E-04 ! TIME_INTEG_PARSTATE_VEL
+slv.integ.rtol.gen (                $SLV_SolverSettings           ) = 9.99999999999999955E-08 ! TIME_INTEG_PARSTATE_DEFAULT
+slv.integ.rtol.vel (                $SLV_SolverSettings           ) = 1.00000000000000008E-05 ! TIME_INTEG_PARSTATE_VEL
+slv.meas.geo (                      $SLV_SolverSettings           ) = 1                       ! Animation data to result file
+slv.meas.sensor.pos (               $SLV_SolverSettings           ) = 1                       ! Sensor position to result file
+slv.meas.sensor.vel (               $SLV_SolverSettings           ) = 1                       ! Sensor velocity to result file
+slv.meas.sensor.acc (               $SLV_SolverSettings           ) = 1                       ! Sensor acceleration to result file
+slv.meas.force.af (                 $SLV_SolverSettings           ) = 1                       ! applied forces to result file
+slv.meas.force.ov (                 $SLV_SolverSettings           ) = 1                       ! Force outpur values to result file
+slv.meas.force.st.dyn (             $SLV_SolverSettings           ) = 1                       ! Force dynamic states to result file
+slv.meas.force.st.alg (             $SLV_SolverSettings           ) = 1                       ! Force algebraic states to result file
+slv.meas.joint.st.pos (             $SLV_SolverSettings           ) = 1                       ! Joint position to result file
+slv.meas.joint.st.vel (             $SLV_SolverSettings           ) = 1                       ! Joint velocity to result file
+slv.meas.joint.st.acc (             $SLV_SolverSettings           ) = 1                       ! Joint acceleration to result file
+slv.meas.joint.cf (                 $SLV_SolverSettings           ) = 1                       ! Joint constraining forces to result file
+slv.meas.body.pos (                 $SLV_SolverSettings           ) = 1                       ! Body position to result file
+slv.meas.body.vel (                 $SLV_SolverSettings           ) = 1                       ! Body velocity to result file
+slv.meas.body.acc (                 $SLV_SolverSettings           ) = 1                       ! Body acceleration to result file
+slv.meas.body.flx.st.pos (          $SLV_SolverSettings           ) = 1                       ! Body elastic state position to result file
+slv.meas.body.flx.st.vel (          $SLV_SolverSettings           ) = 1                       ! Body elastic state velocity to result file
+slv.meas.body.flx.st.acc (          $SLV_SolverSettings           ) = 1                       ! Body elastic state acceleration to result file
+slv.meas.marker.st.alg (            $SLV_SolverSettings           ) = 1                       ! Marker algebraic state to result file
+slv.meas.constr.cf (                $SLV_SolverSettings           ) = 1                       ! Constraint constrained state to result file
+slv.meas.yout (                     $SLV_SolverSettings           ) = 1                       ! y-Outputs to result file
+slv.meas.result (                   $SLV_SolverSettings           ) = 1                       ! Result elements to result file
+slv.meas.subvar (                   $SLV_SolverSettings           ) = 1                       ! MEAS_BOOLPAR_SUBVAR
+slv.assmbl.task (                   $SLV_SolverSettings           ) = 3                       ! ASSMBL_PAR_SOLVER_MODE
+slv.output.path.type (              $SLV_SolverSettings           ) = 0                       ! OUTPUT_PATH_PAR_TYPE
+slv.output.file.desc (              $SLV_SolverSettings           ) = ''                      ! Description written to the output file if supported
+slv.compat.solver (                 $SLV_SolverSettings           ) = 0                       ! 0 = no (new solver); 1 = yes (classic solver)
+slv.ev.force.handling (             $SLV_SolverSettings           ) = 1                       ! Force Elements
+slv.txt (                           $SLV_SolverSettings           ) = ''                      ! Comment
+
+!**********************************************************************
+! SubVars
+!**********************************************************************
+subvar.str (                        $_length                      ) = '$SVG_stage_01.$_x_ring + $SVG_stage_01.$_length+ $SVG_stage_02.$_length + $SVG_stage_03.$_length - $SVG_stage_03.$_shaft_length/2.0' ! Definition
+
+subvar.str (                        $_width                       ) = '1.2*$SVG_stage_01.$_ring_bore_diam' ! Definition
+
+subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
+   subvar.str (                     $_length                      ) = '2000.0 mm'             ! $SVG_main_shaft.$_length, Definition
+
+   subvar.str (                     $_x_B                         ) = '1166.0 mm'             ! $SVG_main_shaft.$_x_B, Definition
+
+subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
+
+subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
+   subvar.str (                     $_normal_module               ) = '45.0 mm'               ! $SVG_stage_01.$_normal_module, Definition
+
+   subvar.str (                     $_planet_width                ) = '491.0 mm'              ! $SVG_stage_01.$_planet_width, Definition
+
+   subvar.str (                     $_ring_num_teeth              ) = '56'                    ! $SVG_stage_01.$_ring_num_teeth, Definition
+
+   subvar.str (                     $_carrier_width               ) = '1.8*$SVG_stage_01.$_planet_width' ! $SVG_stage_01.$_carrier_width, Definition
+
+   subvar.str (                     $_shaft_length                ) = '500.0 mm'              ! $SVG_stage_01.$_shaft_length, Definition
+
+   subvar.str (                     $_length                      ) = '1.0 m'                 ! $SVG_stage_01.$_length, Definition
+
+   subvar.str (                     $_x_ring                      ) = '($SVG_main_shaft.$_length - $SVG_main_shaft.$_x_B)/2.0' ! $SVG_stage_01.$_x_ring, Definition
+
+   subvar.str (                     $_x_PLC_A                     ) = '$SVG_stage_01.$_x_ring' ! $SVG_stage_01.$_x_PLC_A, Definition
+
+   subvar.str (                     $_x_PLC_B                     ) = '$SVG_stage_01.$_x_PLC_A + $SVG_stage_01.$_carrier_width' ! $SVG_stage_01.$_x_PLC_B, Definition
+
+   subvar.str (                     $_x_shaft                     ) = '$SVG_stage_01.$_x_PLC_B' ! $SVG_stage_01.$_x_shaft, Definition
+
+   subvar.str (                     $_ring_bore_diam              ) = '$SVG_stage_01.$_normal_module*$SVG_stage_01.$_ring_num_teeth*1.2' ! $SVG_stage_01.$_ring_bore_diam, Definition
+
+subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
+
+subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
+   subvar.str (                     $_planet_width                ) = '550.0 mm'              ! $SVG_stage_02.$_planet_width, Definition
+
+   subvar.str (                     $_carrier_width               ) = '1.8*$SVG_stage_02.$_planet_width' ! $SVG_stage_02.$_carrier_width, Definition
+
+   subvar.str (                     $_shaft_length                ) = '500.0 mm'              ! $SVG_stage_02.$_shaft_length, Definition
+
+   subvar.str (                     $_length                      ) = '1.0 m'                 ! $SVG_stage_02.$_length, Definition
+
+   subvar.str (                     $_x_ring                      ) = '$SVG_stage_01.$_x_shaft + $SVG_stage_01.$_shaft_length' ! $SVG_stage_02.$_x_ring, Definition
+
+   subvar.str (                     $_x_PLC_A                     ) = '$SVG_stage_02.$_x_ring' ! $SVG_stage_02.$_x_PLC_A, Definition
+
+   subvar.str (                     $_x_PLC_B                     ) = '$SVG_stage_02.$_carrier_width + $SVG_stage_02.$_x_PLC_A' ! $SVG_stage_02.$_x_PLC_B, Definition
+
+   subvar.str (                     $_x_shaft                     ) = '$SVG_stage_02.$_x_PLC_B' ! $SVG_stage_02.$_x_shaft, Definition
+
+subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
+
+subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
+   subvar.str (                     $_center_distance             ) = '861.0 mm'              ! $SVG_stage_03.$_center_distance, Definition
+
+   subvar.str (                     $_pinion_width                ) = '360.0 mm'              ! $SVG_stage_03.$_pinion_width, Definition
+
+   subvar.str (                     $_wheel_width                 ) = '360.0 mm'              ! $SVG_stage_03.$_wheel_width, Definition
+
+   subvar.str (                     $_shaft_length                ) = '1000.0 mm'             ! $SVG_stage_03.$_shaft_length, Definition
+
+   subvar.str (                     $_length                      ) = '1.0 m'                 ! $SVG_stage_03.$_length, Definition
+
+   subvar.str (                     $_x_shaft                     ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 1.8*$SVG_stage_03.$_wheel_width' ! $SVG_stage_03.$_x_shaft, Definition
+
+   subvar.str (                     $_y_shaft                     ) = '-$SVG_stage_03.$_center_distance' ! $SVG_stage_03.$_y_shaft, Definition
+
+   subvar.str (                     $_y_PABC                      ) = '-$SVG_stage_03.$_center_distance' ! $SVG_stage_03.$_y_PABC, Definition
+
+   subvar.str (                     $_x_PA                        ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 0.2*$SVG_stage_03.$_pinion_width' ! $SVG_stage_03.$_x_PA, Definition
+
+   subvar.str (                     $_x_PB                        ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 1.5*$SVG_stage_03.$_pinion_width' ! $SVG_stage_03.$_x_PB, Definition
+
+   subvar.str (                     $_x_PC                        ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 1.7*$SVG_stage_03.$_pinion_width' ! $SVG_stage_03.$_x_PC, Definition
+
+   subvar.str (                     $_x_WA                        ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 0.2*$SVG_stage_03.$_wheel_width' ! $SVG_stage_03.$_x_WA, Definition
+
+   subvar.str (                     $_x_WB                        ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 1.5*$SVG_stage_03.$_wheel_width' ! $SVG_stage_03.$_x_WB, Definition
+
+   subvar.str (                     $_x_WC                        ) = '$SVG_stage_02.$_x_shaft + $SVG_stage_02.$_shaft_length + 1.7*$SVG_stage_03.$_wheel_width' ! $SVG_stage_03.$_x_WC, Definition
+
+   subvar.str (                     $_x_gen                       ) = '$SVG_stage_03.$_x_shaft + $SVG_stage_03.$_shaft_length' ! $SVG_stage_03.$_x_gen, Definition
+
+subvargroup.end (                   $SVG_stage_03                 )                           ! $SVG_stage_03
+
+!**********************************************************************
+! Reference systems
+!**********************************************************************
+refsys.type (                       $R_Isys                       ) = 1                       ! Type
+refsys.attr.2d.pos.x (              $R_Isys                       ) = -9.00000000000000000E+01
+refsys.attr.2d.pos.y (              $R_Isys                       ) = -1.00000000000000000E+01
+refsys.attr.2d.width (              $R_Isys                       ) = 2.40000000000000000E+02
+refsys.attr.2d.height (             $R_Isys                       ) = 2.20000000000000000E+02
+
+marker.type (                       $M_Isys                       ) = 1                       ! Type
+marker.parent (                     $M_Isys                       ) = $R_Isys                 ! Reference system
+
+marker.type (                       $M_Isys_input                 ) = 2                       ! Type
+marker.parent (                     $M_Isys_input                 ) = $R_Isys                 ! Reference system
+
+prim.type (                         $P_Isys                       ) = 30                      ! Type
+prim.ref (                          $P_Isys                       ) = $M_Isys                 ! Reference Marker
+prim.color.r (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_Isys                       ) = 1.48000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_Isys                       ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.par (                3 ,       $P_Isys                       ) = 1.00000000000000006E-01 ! [m] Length
+
+
+!**********************************************************************
+! Bodies
+!**********************************************************************
+body.m (                            $B_housing                    ) = 1.00000000000000000E+00 ! Mass of the Body
+body.mp (                           $B_housing                    ) = 0                       ! 0=manual; 1=auto (based on geometry); 2=mass manual, CG & Inertia auto
+body.I.tens (             1 ,   1 , $B_housing                    ) = 1.00000000000000000E+00 ! Moments of inertia
+body.I.tens (             2 ,   2 , $B_housing                    ) = 1.00000000000000000E+00 ! Moments of inertia
+body.I.tens (             3 ,   3 , $B_housing                    ) = 1.00000000000000000E+00 ! Moments of inertia
+body.attr.2d.pos.x (                $B_housing                    ) = -3.00000000000000000E+01
+body.attr.2d.pos.y (                $B_housing                    ) = 3.00000000000000000E+01
+body.attr.2d.width (                $B_housing                    ) = 1.10000000000000000E+02
+body.attr.2d.height (               $B_housing                    ) = 8.00000000000000000E+01
+
+marker.type (                       $M_housing_BRF                ) = 1                       ! Type
+marker.parent (                     $M_housing_BRF                ) = $B_housing              ! Body
+marker.flx.type (                   $M_housing_BRF                ) = 4                       ! Flexible type
+
+marker.type (                       $M_housing_S01_ring           ) = 2                       ! Type
+marker.parent (                     $M_housing_S01_ring           ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S01_ring           ) = $SVG_stage_01.$_x_ring  ! Position
+
+marker.type (                       $M_housing_S01_PLC_A          ) = 2                       ! Type
+marker.parent (                     $M_housing_S01_PLC_A          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S01_PLC_A          ) = $SVG_stage_01.$_x_PLC_A ! Position
+
+marker.type (                       $M_housing_S01_PLC_B          ) = 2                       ! Type
+marker.parent (                     $M_housing_S01_PLC_B          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S01_PLC_B          ) = $SVG_stage_01.$_x_PLC_B ! Position
+
+marker.type (                       $M_housing_S01_shaft          ) = 2                       ! Type
+marker.parent (                     $M_housing_S01_shaft          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S01_shaft          ) = $SVG_stage_01.$_x_shaft ! Position
+
+marker.type (                       $M_housing_S02_ring           ) = 2                       ! Type
+marker.parent (                     $M_housing_S02_ring           ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S02_ring           ) = $SVG_stage_02.$_x_ring  ! Position
+
+marker.type (                       $M_housing_S02_PLC_A          ) = 2                       ! Type
+marker.parent (                     $M_housing_S02_PLC_A          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S02_PLC_A          ) = $SVG_stage_02.$_x_PLC_A ! Position
+
+marker.type (                       $M_housing_S02_PLC_B          ) = 2                       ! Type
+marker.parent (                     $M_housing_S02_PLC_B          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S02_PLC_B          ) = $SVG_stage_02.$_x_PLC_B ! Position
+
+marker.type (                       $M_housing_S02_shaft          ) = 2                       ! Type
+marker.parent (                     $M_housing_S02_shaft          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S02_shaft          ) = $SVG_stage_02.$_x_shaft ! Position
+
+marker.type (                       $M_housing_S03_shaft          ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_shaft          ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_shaft          ) = $SVG_stage_03.$_x_shaft ! Position
+marker.pos (              2 ,       $M_housing_S03_shaft          ) = $SVG_stage_03.$_y_shaft ! Position
+
+marker.type (                       $M_housing_S03_PA             ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_PA             ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_PA             ) = $SVG_stage_03.$_x_PA    ! Position
+marker.pos (              2 ,       $M_housing_S03_PA             ) = $SVG_stage_03.$_y_PABC  ! Position
+marker.desc (             1 ,       $M_housing_S03_PA             ) = 'Wheel Bearing A'       ! Description
+
+marker.type (                       $M_housing_S03_PB             ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_PB             ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_PB             ) = $SVG_stage_03.$_x_PB    ! Position
+marker.pos (              2 ,       $M_housing_S03_PB             ) = $SVG_stage_03.$_y_PABC  ! Position
+marker.desc (             1 ,       $M_housing_S03_PB             ) = 'Wheel Bearing B'       ! Description
+
+marker.type (                       $M_housing_S03_PC             ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_PC             ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_PC             ) = $SVG_stage_03.$_x_PC    ! Position
+marker.pos (              2 ,       $M_housing_S03_PC             ) = $SVG_stage_03.$_y_PABC  ! Position
+marker.desc (             1 ,       $M_housing_S03_PC             ) = 'Wheel Bearing C'       ! Description
+
+marker.type (                       $M_housing_S03_WA             ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_WA             ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_WA             ) = $SVG_stage_03.$_x_WA    ! Position
+marker.desc (             1 ,       $M_housing_S03_WA             ) = 'Wheel Bearing A'       ! Description
+
+marker.type (                       $M_housing_S03_WB             ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_WB             ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_WB             ) = $SVG_stage_03.$_x_WB    ! Position
+marker.desc (             1 ,       $M_housing_S03_WB             ) = 'Wheel Bearing B'       ! Description
+
+marker.type (                       $M_housing_S03_WC             ) = 2                       ! Type
+marker.parent (                     $M_housing_S03_WC             ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_S03_WC             ) = $SVG_stage_03.$_x_WC    ! Position
+marker.desc (             1 ,       $M_housing_S03_WC             ) = 'Wheel Bearing C'       ! Description
+
+marker.type (                       $M_housing_gen                ) = 2                       ! Type
+marker.parent (                     $M_housing_gen                ) = $B_housing              ! Body
+marker.pos (              1 ,       $M_housing_gen                ) = $SVG_stage_03.$_x_gen   ! Position
+marker.pos (              2 ,       $M_housing_gen                ) = $SVG_stage_03.$_y_shaft ! Position
+
+joint.from (                        $J_housing                    ) = $M_Isys_input           ! From Marker
+joint.to (                          $J_housing                    ) = $M_housing_BRF          ! To Marker
+joint.type (                        $J_housing                    ) = 0                       ! Type
+joint.st.vel (            1 ,       $J_housing                    ) = 0.00000000000000000E+00 ! Velocity
+joint.par (               1 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [rad] Rotation about alpha
+joint.par (               2 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [rad] Rotation about beta
+joint.par (               3 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [rad] Rotation about gamma
+joint.par (               4 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [m] Translation in x
+joint.par (               5 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [m] Translation in y
+joint.par (               6 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [m] Translation in z
+joint.par (               7 ,       $J_housing                    ) = 0.00000000000000000E+00 ! [-] Rotation sequence
+joint.attr.2d.pos.x (     1 ,       $J_housing                    ) = 20
+joint.attr.2d.pos.y (     1 ,       $J_housing                    ) = 170
+joint.attr.2d.ori (       1 ,       $J_housing                    ) = 270
+joint.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $J_housing   ) = 20, 20
+joint.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $J_housing   ) = 210, 187
+joint.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $J_housing     ) = 20, 20
+joint.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $J_housing     ) = 110, 153
+
+prim.type (                         $P_housing                    ) = 1                       ! Type
+prim.ref (                          $P_housing                    ) = $M_housing_BRF          ! Reference Marker
+prim.pos (                1 ,       $P_housing                    ) = { $_length/2 }          ! Position
+prim.color.r (            1 ,       $P_housing                    ) = 1.28000000000000000E+02 ! Colors (red component)
+prim.color.g (            1 ,       $P_housing                    ) = 1.28000000000000000E+02 ! Colors (green component)
+prim.color.b (            1 ,       $P_housing                    ) = 1.28000000000000000E+02 ! Colors (blue component)
+prim.color.t (            1 ,       $P_housing                    ) = 0.00000000000000000E+00 ! Colors (transparency component)
+prim.drawstyle (                    $P_housing                    ) = 2                       ! Draw style
+prim.transparency (                 $P_housing                    ) = 0.00000000000000000E+00 ! Transparency
+prim.mp.dens.solid (                $P_housing                    ) = 7.85000000000000000E+03 ! Density
+prim.par (                2 ,       $P_housing                    ) = $_length                ! [m] Length in X
+prim.par (                3 ,       $P_housing                    ) = $_width                 ! [m] Length in Y
+prim.par (                4 ,       $P_housing                    ) = $_width                 ! [m] Length in Z
+
+
+!**********************************************************************
+! Senders
+!**********************************************************************
+sender.ref (                        $COM_width                    ) = $_width                 ! Source object
+sender.alias (                      $COM_width                    ) = '$COM_housing_width'    ! Alias
+
+sendergroup.begin (                 $SG_stage_01                  )                           ! $SG_stage_01
+   sender.ref (                     $COM_stage_01_ring            ) = $M_housing_S01_ring     ! Source object
+
+   sender.ref (                     $COM_stage_01_PLC_A           ) = $M_housing_S01_PLC_A    ! Source object
+
+   sender.ref (                     $COM_stage_01_PLC_B           ) = $M_housing_S01_PLC_B    ! Source object
+
+   sender.ref (                     $COM_stage_01_shaft           ) = $M_housing_S01_shaft    ! Source object
+   sender.alias (                   $COM_stage_01_shaft           ) = ''                      ! Alias
+
+sendergroup.end (                   $SG_stage_01                  )                           ! $SG_stage_01
+
+sendergroup.begin (                 $SG_stage_02                  )                           ! $SG_stage_02
+   sender.ref (                     $COM_stage_02_ring            ) = $M_housing_S02_ring     ! Source object
+
+   sender.ref (                     $COM_stage_02_PLC_A           ) = $M_housing_S02_PLC_A    ! Source object
+
+   sender.ref (                     $COM_stage_02_PLC_B           ) = $M_housing_S02_PLC_B    ! Source object
+
+   sender.ref (                     $COM_stage_02_shaft           ) = $M_housing_S02_shaft    ! Source object
+   sender.alias (                   $COM_stage_02_shaft           ) = ''                      ! Alias
+
+sendergroup.end (                   $SG_stage_02                  )                           ! $SG_stage_02
+
+sendergroup.begin (                 $SG_stage_03                  )                           ! $SG_stage_03
+   sender.ref (                     $COM_stage_03_PA              ) = $M_housing_S03_PA       ! Source object
+
+   sender.ref (                     $COM_stage_03_PB              ) = $M_housing_S03_PB       ! Source object
+
+   sender.ref (                     $COM_stage_03_PC              ) = $M_housing_S03_PC       ! Source object
+
+   sender.ref (                     $COM_stage_03_WA              ) = $M_housing_S03_WA       ! Source object
+
+   sender.ref (                     $COM_stage_03_WB              ) = $M_housing_S03_WB       ! Source object
+
+   sender.ref (                     $COM_stage_03_WC              ) = $M_housing_S03_WC       ! Source object
+
+sendergroup.end (                   $SG_stage_03                  )                           ! $SG_stage_03
+
+!**********************************************************************
+! Receivers
+!**********************************************************************
+receiver.ref (                      $COM_input                    ) = $M_Isys_input           ! Destination object
+receiver.priolist (       1 ,       $COM_input                    ) = '$COM_bed_plate_housing' ! Sender priority list
+
+receivergroup.begin (               $RG_housing                   )                           ! $RG_housing
+   receiver.ref (                   $COM_length                   ) = $_length                ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_housing_length'   ! Sender priority list
+   receiver.disabled (              $COM_length                   ) = 0                       ! Disabled
+
+   receiver.ref (                   $COM_width                    ) = $_width                 ! Destination object
+   receiver.priolist (    1 ,       $COM_width                    ) = '$COM_housing_width'    ! Sender priority list
+
+receivergroup.end (                 $RG_housing                   )                           ! $RG_housing
+
+receivergroup.begin (               $RG_main_shaft                )                           ! $RG_main_shaft
+   receiver.ref (                   $COM_length                   ) = $SVG_main_shaft.$_length ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_shaft_length'     ! Sender priority list
+
+   receiver.ref (                   $COM_x_B                      ) = $SVG_main_shaft.$_x_B   ! Destination object
+   receiver.priolist (    1 ,       $COM_x_B                      ) = '$COM_shaft_bearing_B_x' ! Sender priority list
+
+receivergroup.end (                 $RG_main_shaft                )                           ! $RG_main_shaft
+
+receivergroup.begin (               $RG_stage_01                  )                           ! $RG_stage_01
+   receiver.ref (                   $COM_normal_module            ) = $SVG_stage_01.$_normal_module ! Destination object
+   receiver.priolist (    1 ,       $COM_normal_module            ) = '$COM_stage_01_normal_module' ! Sender priority list
+
+   receiver.ref (                   $COM_planet_width             ) = $SVG_stage_01.$_planet_width ! Destination object
+   receiver.priolist (    1 ,       $COM_planet_width             ) = '$COM_stage_01_planet_flank_width' ! Sender priority list
+
+   receiver.ref (                   $COM_shaft_length             ) = $SVG_stage_01.$_shaft_length ! Destination object
+   receiver.priolist (    1 ,       $COM_shaft_length             ) = '$COM_stage_01_shaft_length' ! Sender priority list
+   receiver.override (              $COM_shaft_length             ) = 0                       ! Override index
+
+   receiver.ref (                   $COM_ring_num_teeth           ) = $SVG_stage_01.$_ring_num_teeth ! Destination object
+   receiver.priolist (    1 ,       $COM_ring_num_teeth           ) = '$COM_stage_01_ring_num_teeth' ! Sender priority list
+
+   receiver.ref (                   $COM_length                   ) = $SVG_stage_01.$_length  ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_stage_01_length'  ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
+
+receivergroup.end (                 $RG_stage_01                  )                           ! $RG_stage_01
+
+receivergroup.begin (               $RG_stage_02                  )                           ! $RG_stage_02
+   receiver.ref (                   $COM_planet_width             ) = $SVG_stage_02.$_planet_width ! Destination object
+   receiver.priolist (    1 ,       $COM_planet_width             ) = '$COM_stage_02_planet_flank_width' ! Sender priority list
+
+   receiver.ref (                   $COM_shaft_length             ) = $SVG_stage_02.$_shaft_length ! Destination object
+   receiver.priolist (    1 ,       $COM_shaft_length             ) = '$COM_stage_02_shaft_length' ! Sender priority list
+   receiver.override (              $COM_shaft_length             ) = 0                       ! Override index
+
+   receiver.ref (                   $COM_length                   ) = $SVG_stage_02.$_length  ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_stage_02_length'  ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
+
+receivergroup.end (                 $RG_stage_02                  )                           ! $RG_stage_02
+
+receivergroup.begin (               $RG_stage_03                  )                           ! $RG_stage_03
+   receiver.ref (                   $COM_center_distance          ) = $SVG_stage_03.$_center_distance ! Destination object
+   receiver.priolist (    1 ,       $COM_center_distance          ) = '$COM_stage_03_center_distance' ! Sender priority list
+
+   receiver.ref (                   $COM_pinion_width             ) = $SVG_stage_03.$_pinion_width ! Destination object
+   receiver.priolist (    1 ,       $COM_pinion_width             ) = '$COM_stage_03_pinion_flank_width' ! Sender priority list
+
+   receiver.ref (                   $COM_wheel_width              ) = $SVG_stage_03.$_wheel_width ! Destination object
+   receiver.priolist (    1 ,       $COM_wheel_width              ) = '$COM_stage_03_wheel_flank_width' ! Sender priority list
+
+   receiver.ref (                   $COM_shaft_length             ) = $SVG_stage_03.$_shaft_length ! Destination object
+   receiver.priolist (    1 ,       $COM_shaft_length             ) = '$COM_stage_03_shaft_length' ! Sender priority list
+
+   receiver.ref (                   $COM_length                   ) = $SVG_stage_03.$_length  ! Destination object
+   receiver.priolist (    1 ,       $COM_length                   ) = '$COM_stage_03_length'  ! Sender priority list
+   receiver.override (              $COM_length                   ) = 0                       ! Override index
+
+receivergroup.end (                 $RG_stage_03                  )                           ! $RG_stage_03
+
+                                                                                                                                                                    

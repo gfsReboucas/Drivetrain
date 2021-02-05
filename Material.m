@@ -37,7 +37,7 @@ classdef Material
     
     methods
         function obj = Material(varargin)
-            default = {'row'       , 1, ...
+            default = {'row'       , 2, ...
                        'label'     , '16MnCr5', ...
                        'E'         , 206.0e3, ...
                        'nu'        , 0.3, ...
@@ -47,7 +47,7 @@ classdef Material
                        'S_y'       , 490.0e6, ...
                        'KISS_ID'   , 10250};
                    
-            default = process_varargin(default, varargin);
+            default = scaling_factor.process_varargin(default, varargin);
             
             obj.row        = default.row;
             obj.label      = default.label;
@@ -84,6 +84,13 @@ classdef Material
                 clear tab;
             end
         end
+        
+        function data = export2struct(obj)
+            warning('off', 'MATLAB:structOnObject');
+            data = struct(obj);
+            warning('on', 'MATLAB:structOnObject');
+        end
+        
     end
     
     %% Get methods:
