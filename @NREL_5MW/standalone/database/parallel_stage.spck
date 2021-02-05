@@ -1537,6 +1537,18 @@ youtgroup.begin (                   $YOG_wheel_bearing            )             
 youtgroup.end (                     $YOG_wheel_bearing            )                           ! $YOG_wheel_bearing
 
 !**********************************************************************
+! Result Elements
+!**********************************************************************
+result.container (                  $RS_pinion_wheel              ) = null                    ! Parent result element
+result.type (                       $RS_pinion_wheel              ) = 22                      ! Type
+result.par (              1 ,       $RS_pinion_wheel              ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+result.channel.indep.ele (   1 ,    $RS_pinion_wheel              ) = null                    ! Independent channel element
+result.channel.par (      1 ,   1 , $RS_pinion_wheel              ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   1 , $RS_pinion_wheel              ) = $F_pinion_wheel         ! [-] Force/Control Element
+result.channel.par (      3 ,   1 , $RS_pinion_wheel              ) = 2.00000000000000000E+01 ! [-] Output Value
+result.channel.par (      4 ,   1 , $RS_pinion_wheel              ) = 2.00000000000000000E+00 ! [-] Value selection
+
+!**********************************************************************
 ! Senders
 !**********************************************************************
 sender.ref (                        $COM_shaft_length             ) = $SVG_shaft.$_length     ! Source object

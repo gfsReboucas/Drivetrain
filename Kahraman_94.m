@@ -369,8 +369,8 @@ classdef Kahraman_94 < Dynamic_Formulation
                 k_sp = sun_pla.k_mesh;
                 k_rp = pla_rng.k_mesh;
                 
-                k_sp = k_sp*(1.0 - val);
-%                 k_rp = k_rp*(1.0 - val);
+%                 k_sp = k_sp*(1.0 - val);
+                k_rp = k_rp*(1.0 - val);
 
                 r_c =  stage_idx.a_w *1.0e-3;
                 r_s = (stage_idx.d(1)*1.0e-3)/2.0;
