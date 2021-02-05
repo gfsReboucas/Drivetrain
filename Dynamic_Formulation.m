@@ -26,6 +26,7 @@ classdef Dynamic_Formulation
         K_m;     % Mesh stiffness matrix
         K_b;     % Bearing stiffness matrix
         K_Omega; % Centripetal stiffness matrix
+        K;       % Overall stiffness matrix
         c;       % Centripetal force vector
         b;       % External load vector
         A;       % State matrix
@@ -61,12 +62,20 @@ classdef Dynamic_Formulation
             
             [obj.M, ...
              obj.G]       = obj.inertia_matrix();
-            obj.D         = obj.damping_matrix();
             [obj.K_m, ...
              obj.K_b, ...
              obj.K_Omega] = obj.stiffness_matrix();
             obj.c         = obj.centripetal_force_vector();
             obj.b         = obj.external_load_vector();
+            obj.K         = obj.K_m + obj.K_b;
+            
+            % Damping from Nejad's Simpack model:
+            obj.D         = obj.damping_matrix();
+            % Rayleigh damping:
+%             alpha = 0.0;
+%             beta  = 0.05;
+%             obj.D         = alpha*obj.K + beta*obj.M;
+            
             obj.A         = obj.state_matrix();
             
             obj.DOF_description = obj.explain_DOF();
@@ -200,12 +209,12 @@ classdef Dynamic_Formulation
             IC = zeros(2*obj.n_DOF(end), 1);
             
             default = {'solver'    , @ode23t  , ... 
-                       'time_range', [    0.0 , ...  % initial time instant, [s]
+                       'time_range', [    0.0 , ... % initial time instant, [s]
                                         100.0], ... % final time instant, [s]
-                       'IC'        ,    IC    , ... % [rad, 1/min]
-                       'K_p'       ,   2200.0 , ...
-                       'K_I'       ,    220.0 , ...
-                       'f_sample'  ,    200.0};
+                       'IC'        ,    IC    , ... % initial condition in the form [x0; v0] size (2*n, 1)
+                       'K_p'       ,   2200.0 , ... % proportional gain
+                       'K_I'       ,    220.0 , ... % integral gain
+                       'f_sample'  ,    200.0};     % sampling frequency
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -226,7 +235,7 @@ classdef Dynamic_Formulation
             Kb = obj.K_b;
             bb = obj.b;
             
-            KK = Km + Kb;
+            KK = obj.K;
             
             N_modes = obj.n_DOF(end);
             I_n     = eye(N_modes);
@@ -337,7 +346,7 @@ classdef Dynamic_Formulation
 %             end
         end
         
-        function sol = Newmark_integration(obj,varargin)
+        function sol = Newmark_integration(obj, varargin)
             
             x_0 = zeros(obj.n_DOF(end), 1);
             
@@ -345,10 +354,10 @@ classdef Dynamic_Formulation
                                         100.0], ... % final time instant, [s]
                        'x_0'       ,    x_0   , ... % initial position
                        'v_0'       ,    x_0   , ... % initial velocity
-                       'K_p'       ,   2200.0 , ...
-                       'K_I'       ,    220.0 , ...
-                       'f_sample'  ,    200.0 , ...
-                       'option'    , 'average'};
+                       'K_p'       ,   2200.0 , ... % proportional gain
+                       'K_I'       ,    220.0 , ... % integral gain
+                       'f_sample'  ,    200.0 , ... % sampling frequency
+                       'option'    , 'average'};    % Newmark integrator type: average OR linear acceleration
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -427,7 +436,7 @@ classdef Dynamic_Formulation
             a_7 = T_sample*(1 - delta);
             a_8 = delta*T_sample;
             
-            KK = obj.K_b + obj.K_m;
+            KK = obj.K;
             K_hat = a_1*obj.M + a_2*obj.D + KK;
             
             %% Initial calculation:
@@ -499,7 +508,7 @@ classdef Dynamic_Formulation
             n_Om = length(Omega);
             Hx = zeros([n_Om, size(obj.b)]);
             Hv = Hx;        Ha = Hx;
-            KK = obj.K_m + obj.K_b;
+            KK = obj.K;
             
             for idx = 1:n_Om
                 Hx(idx, :, :) = (KK - obj.M.*Omega(idx).^2 + i.*Omega(idx).*obj.D)\obj.b;
@@ -569,12 +578,10 @@ classdef Dynamic_Formulation
         end
         
         function AA = state_matrix(obj)
-            KK = obj.K_m + obj.K_b;
-            
             n = obj.n_DOF(end);
             
-            AA = [ zeros(n),  eye(n);
-                  -obj.M\KK, -obj.M\obj.D];
+            AA = [    zeros(n),  eye(n);
+                  -obj.M\obj.K, -obj.M\obj.D];
         end
     end
     

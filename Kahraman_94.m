@@ -53,7 +53,7 @@ classdef Kahraman_94 < Dynamic_Formulation
             
             for idx = 1:N
                 desc{N + idx, 1} = strrep(desc{idx, 1}, 'displacement, [rad]', ...
-                                                        'speed, [1/min]');
+                                                        'speed, [rad/s]');
                 desc{N + idx, 2} = strrep(desc{idx, 2}, 'theta', ...
                                                         'omega');
             end
@@ -116,17 +116,33 @@ classdef Kahraman_94 < Dynamic_Formulation
             Km(1:2, 1:2) = Km(1:2, 1:2) + K_tmp;
             
             for idx = 1:DT.N_stage
-                if(strcmpi(obj.fault_type, 'K') && (obj.fault_stage == idx))
-                    K_tmp = Kahraman_94.stage_faulty_stiffness_matrix(DT.stage(idx), ...
-                                                                      obj.fault_val(idx));
-                else
-                    K_tmp = Kahraman_94.stage_stiffness_matrix(DT.stage(idx));
+                K_tmp = Kahraman_94.stage_stiffness_matrix(DT.stage(idx));
+                if(obj.has_fault && (obj.fault_stage == idx))
+                    K_f = obj.K_fault(DT.stage(idx));
+                    K_tmp = K_tmp - K_f;
                 end
+                
                 jdx = obj.n_DOF(idx);
                 kdx = jdx:(jdx + length(K_tmp) - 1);
                 
                 Km(kdx, kdx) = Km(kdx, kdx) + K_tmp;
             end
+        end
+        
+        function Kf = K_fault(obj, stage_idx)
+            if(strcmpi(obj.fault_type, 'sun'))
+                Kf = Kahraman_94.K_sun(stage_idx);
+            elseif(strcmpi(obj.fault_type, 'planet'))
+                Kf = Kahraman_94.K_planet(stage_idx);
+            elseif(strcmpi(obj.fault_type, 'ring'))
+                Kf = Kahraman_94.K_ring(stage_idx);
+            elseif(strcmpi(obj.fault_type, 'parallel'))
+                Kf = Kahraman_94.stage_stiffness_matrix(stage_idx);
+            else
+                error('Kahraman_94:K_fault', 'Fault type = [%s] is NOT defined.', upper(obj.fault_type));
+            end
+            idx = obj.fault_stage;
+            Kf = obj.fault_val(idx)*Kf;
         end
         
         function cc = centripetal_force_vector(obj)
@@ -340,60 +356,88 @@ classdef Kahraman_94 < Dynamic_Formulation
             
         end
         
-        function KK = stage_faulty_stiffness_matrix(stage_idx, val)
-
-            if(strcmp(stage_idx.configuration, 'parallel'))
-                n = 3;
-                KK = zeros(n, n);
-                
-                r_p = (stage_idx.d(1)*1.0e-3)/2.0;
-                r_w = (stage_idx.d(2)*1.0e-3)/2.0;
-                
-                k_pw = stage_idx.k_mesh;
-                k_pw = k_pw*(1.0 - val);
-                
-                range = 1:2;
-                KK(range, range) = [r_w ^ 2 * k_pw         r_p     * k_pw * r_w;
-                                    r_w     * k_pw * r_p   r_p ^ 2 * k_pw];
-            elseif(strcmp(stage_idx.configuration, 'planetary'))
-                n = stage_idx.N_p + 3;
-                KK = zeros(n, n);
-                
-                % Mesh stiffness:
-                % Mesh component:
-                sun_pla = stage_idx.sub_set('sun_planet');
-                pla_rng = stage_idx.sub_set('planet_ring');
-
-                
-                % OBS.: got a negative k_mesh for DTU_10MW planet-ring
-                k_sp = sun_pla.k_mesh;
-                k_rp = pla_rng.k_mesh;
-                
-%                 k_sp = k_sp*(1.0 - val);
-                k_rp = k_rp*(1.0 - val);
-
-                r_c =  stage_idx.a_w *1.0e-3;
-                r_s = (stage_idx.d(1)*1.0e-3)/2.0;
-                r_p = (stage_idx.d(2)*1.0e-3)/2.0;
-                
-                KK(    1,     1) =  stage_idx.N_p*(k_rp + k_sp)*r_c^2;
-                KK(    1, n - 1) = -stage_idx.N_p*  r_s * k_sp *r_c;
-                KK(n - 1,     1) = KK(1, n - 1);
-                KK(n - 1, n - 1) =  stage_idx.N_p*k_sp*r_s^2;
-                
-                for jdx = 2:(n - 2)
-                    KK(    1,   jdx) = r_c*r_p*(k_rp - k_sp);
-                    KK(jdx  ,     1) = KK(1, jdx);
-                    KK(jdx  ,   jdx) = (k_rp + k_sp)*r_p^2;
-                    KK(n - 1,   jdx) = r_s*r_p*k_sp;
-                    KK(jdx  , n - 1) = KK(n - 1, jdx);
-                end
+        function KK = K_sun(stage_idx)
+            n = stage_idx.N_p + 3;
+            KK = zeros(n, n);
+            
+            % Mesh stiffness:
+            % Mesh component:
+            sun_pla = stage_idx.sub_set('sun_planet');
+            
+            k_sp = sun_pla.k_mesh;
+            
+            r_c =  stage_idx.a_w *1.0e-3;
+            r_s = (stage_idx.d(1)*1.0e-3)/2.0;
+            r_p = (stage_idx.d(2)*1.0e-3)/2.0;
+            
+            KK(    1,     1) =  stage_idx.N_p*(k_sp)*r_c^2;
+            KK(    1, n - 1) = -stage_idx.N_p*  r_s * k_sp *r_c;
+            KK(n - 1,     1) = KK(1, n - 1);
+            KK(n - 1, n - 1) =  stage_idx.N_p*k_sp*r_s^2;
+            
+            for jdx = 2:(n - 2)
+                KK(    1,   jdx) = r_c*r_p*(- k_sp);
+                KK(jdx  ,     1) = KK(1, jdx);
+                KK(jdx  ,   jdx) = (k_sp)*r_p^2;
+                KK(n - 1,   jdx) = r_s*r_p*k_sp;
+                KK(jdx  , n - 1) = KK(n - 1, jdx);
             end
-            range = (n - 1):n;
+        end
+        
+        function KK = K_planet(stage_idx)
+            n = stage_idx.N_p + 3;
+            KK = zeros(n, n);
             
-            KK(range, range) = KK(range, range) + ...
-                stage_idx.output_shaft.stiffness_matrix('torsional');
+            % Mesh stiffness:
+            % Mesh component:
+            sun_pla = stage_idx.sub_set('sun_planet');
             
+            k_sp = sun_pla.k_mesh;
+            
+            r_c =  stage_idx.a_w *1.0e-3;
+            r_s = (stage_idx.d(1)*1.0e-3)/2.0;
+            r_p = (stage_idx.d(2)*1.0e-3)/2.0;
+            
+            KK(    1,     1) =  1.0*(k_sp)*r_c^2;
+            KK(    1, n - 1) = -1.0*  r_s * k_sp *r_c;
+            KK(n - 1,     1) = KK(1, n - 1);
+            KK(n - 1, n - 1) =  1.0*k_sp*r_s^2;
+            
+            for jdx = 2:(n - 2)
+                KK(    1,   jdx) = r_c*r_p*(- k_sp);
+                KK(jdx  ,     1) = KK(1, jdx);
+                KK(jdx  ,   jdx) = (k_sp)*r_p^2;
+                KK(n - 1,   jdx) = r_s*r_p*k_sp;
+                KK(jdx  , n - 1) = KK(n - 1, jdx);
+            end
+        end
+        
+        function KK = K_ring(stage_idx)
+            n = stage_idx.N_p + 3;
+            KK = zeros(n, n);
+            
+            % Mesh stiffness:
+            % Mesh component:
+            pla_rng = stage_idx.sub_set('planet_ring');
+            
+            k_rp = pla_rng.k_mesh;
+            
+            r_c =  stage_idx.a_w *1.0e-3;
+            r_s = (stage_idx.d(1)*1.0e-3)/2.0;
+            r_p = (stage_idx.d(2)*1.0e-3)/2.0;
+            
+            KK(    1,     1) =  stage_idx.N_p*(k_rp)*r_c^2;
+            KK(    1, n - 1) = -stage_idx.N_p*  r_s * 0.0 *r_c;
+            KK(n - 1,     1) = KK(1, n - 1);
+            KK(n - 1, n - 1) =  stage_idx.N_p*0.0*r_s^2;
+            
+            for jdx = 2:(n - 2)
+                KK(    1,   jdx) = r_c*r_p*(k_rp);
+                KK(jdx  ,     1) = KK(1, jdx);
+                KK(jdx  ,   jdx) = (k_sp)*r_p^2;
+                KK(n - 1,   jdx) = r_s*r_p*k_sp;
+                KK(jdx  , n - 1) = KK(n - 1, jdx);
+            end
         end
         
         function flag = test()
