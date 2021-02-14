@@ -4,21 +4,29 @@
 output                                                              = 'DoE_scaled'
 surfacemodel                                                        = 4
 experimentdesign                                                    = 3
-runs.num                                                            = 35
-runs.cand                                                           = 35
+runs.num                                                            = 81
+runs.cand                                                           = 81
 seed                                                                = 0
 centerpoints.num                                                    = 0
-centerpoints.default                                                = 1
+centerpoints.default                                                = 0
 
 ! Factors
 
 factors.name (            1                                       ) = 'gamma_KS'
 factors.size (            1                                       ) = 3
 factors.ele (             1 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
-factors.type (            1 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             1 ,   1                                 ) = '0'
-factors.max (             1 ,   1                                 ) = '1'
-factors.order (           1 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+factors.type (            1 ,   1                                 ) = 0                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.val (             1 ,   1 ,   1                           ) = '0.0'
+factors.val (             1 ,   1 ,   2                           ) = '0.1'
+factors.val (             1 ,   1 ,   3                           ) = '0.2'
+factors.val (             1 ,   1 ,   4                           ) = '0.3'
+factors.val (             1 ,   1 ,   5                           ) = '0.4'
+factors.val (             1 ,   1 ,   6                           ) = '0.5'
+factors.val (             1 ,   1 ,   7                           ) = '0.6'
+factors.val (             1 ,   1 ,   8                           ) = '0.7'
+factors.val (             1 ,   1 ,   9                           ) = '0.8'
+factors.val (             1 ,   1 ,  10                           ) = '0.9'
+factors.val (             1 ,   1 ,  11                           ) = '1.0'
 
 factors.name (            2                                       ) = 'gamma_K1'
 factors.size (            2                                       ) = 3

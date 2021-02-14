@@ -13,16 +13,16 @@ subvargroup.begin (                 $SVG_loading                  )             
    subvar($_gamma_Power, str= '1.0')                                                          ! $SVG_loading.$_gamma_Power
    subvar($_gamma_Speed, str= '1.0')                                                          ! $SVG_loading.$_gamma_Speed
    subvar($_gamma_Torque, str= '$SVG_loading.$_gamma_Power/$SVG_loading.$_gamma_Speed')       ! $SVG_loading.$_gamma_Torque
-   subvar($_gamma_Force, str= 'pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed') ! $SVG_loading.$_gamma_Force
-   subvar($_gamma_Disp, str= '1.00000e+00')                                                   ! $SVG_loading.$_gamma_Disp
+   subvar($_gamma_Force, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 2.0/3.0)/$SVG_loading.$_gamma_Speed') ! $SVG_loading.$_gamma_Force
+   subvar($_gamma_Disp, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 1.0/3.0)')                      ! $SVG_loading.$_gamma_Disp
    subvar($_rated_power_ref, str= '5.0e3 kW')                                                 ! $SVG_loading.$_rated_power_ref
    subvar($_rated_power, str= '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power')    ! $SVG_loading.$_rated_power
    subvar($_simulation_time, str= '0.30000e+03 s')                                            ! $SVG_loading.$_simulation_time
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
-   subvar($_gamma_M, str= '1.0')                                                              ! $SVG_rotor.$_gamma_M
-   subvar($_gamma_J, str= '1.00000e+00')                                                      ! $SVG_rotor.$_gamma_J
+   subvar($_gamma_M, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 5.0/6.0)')                         ! $SVG_rotor.$_gamma_M
+   subvar($_gamma_J, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 3.0/2.0)')                         ! $SVG_rotor.$_gamma_J
    subvar($_mass_ref, str= 'IF($SVG_loading.$_inertia_flag == 1){110.0e3 kg}ELSE{1.0 kg}')    ! $SVG_rotor.$_mass_ref
    subvar($_mass_mom_inertia_ref, str= 'IF($SVG_loading.$_inertia_flag== 1){57231535.0 kg m^2}ELSE{1.0 kg m^2}') ! $SVG_rotor.$_mass_mom_inertia_ref
    subvar($_length_ref, str= '250.0 mm')                                                      ! $SVG_rotor.$_length_ref
@@ -36,9 +36,9 @@ subvargroup.end (                   $SVG_rotor                    )             
 
 subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
    subvar($_gamma_L, str= '1.00000e+00')                                                      ! $SVG_main_shaft.$_gamma_L
-   subvar($_gamma_d, str= '1.00000e+00')                                                      ! $SVG_main_shaft.$_gamma_d
-   subvar($_gamma_stiff, str= '1.00000e+00')                                                  ! $SVG_main_shaft.$_gamma_stiff
-   subvar($_gamma_damp, str= '1.00000e+00')                                                   ! $SVG_main_shaft.$_gamma_damp
+   subvar($_gamma_d, str= '$SVG_loading.$_gamma_Disp')                                        ! $SVG_main_shaft.$_gamma_d
+   subvar($_gamma_stiff, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 1.0/3.0)')                     ! $SVG_main_shaft.$_gamma_stiff
+   subvar($_gamma_damp, str= '1.0')                                                           ! $SVG_main_shaft.$_gamma_damp
    subvar($_length_ref, str= '2550.0 mm')                                                     ! $SVG_main_shaft.$_length_ref
    subvar($_diameter_ref, str= '700.0 mm')                                                    ! $SVG_main_shaft.$_diameter_ref
    subvar($_x_A_ref, str= '333.0 mm')                                                         ! $SVG_main_shaft.$_x_A_ref
@@ -109,15 +109,15 @@ subvargroup.begin (                 $SVG_stage_01                 )             
    subvar($_gamma_b, str= '1.00000e+00')                                                      ! $SVG_stage_01.$_gamma_b
    subvar($_gamma_L, str= '1.00000e+00')                                                      ! $SVG_stage_01.$_gamma_L
    subvar($_gamma_d, str= '1.00000e+00')                                                      ! $SVG_stage_01.$_gamma_d
-   subvar($_gamma_stiff, str= '1.00000e+00')                                                  ! $SVG_stage_01.$_gamma_stiff
-   subvar($_gamma_damp, str= '1.00000e+00')                                                   ! $SVG_stage_01.$_gamma_damp
+   subvar($_gamma_stiff, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 1.0/3.0)')                     ! $SVG_stage_01.$_gamma_stiff
+   subvar($_gamma_damp, str= '1.0')                                                           ! $SVG_stage_01.$_gamma_damp
    subvar($_k_SP, str= '1.34953e+10 N/m')                                                     ! $SVG_stage_01.$_k_SP
    subvar($_k_RP, str= '1.66471e+10 N/m')                                                     ! $SVG_stage_01.$_k_RP
    subvar($_normal_module_ref, str= '45 mm')                                                  ! $SVG_stage_01.$_normal_module_ref
    subvar($_center_distance_ref, str= '863.0 mm')                                             ! $SVG_stage_01.$_center_distance_ref
    subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_01.$_normal_backlash_ref
-   subvar($_normal_module, str= '4.50000e+01 mm')                                             ! $SVG_stage_01.$_normal_module
-   subvar($_center_distance, str= '8.63000e+02 mm')                                           ! $SVG_stage_01.$_center_distance
+   subvar($_normal_module, str= '$SVG_stage_01.$_normal_module_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$_normal_module
+   subvar($_center_distance, str= '$SVG_stage_01.$_center_distance_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$_center_distance
    subvar($_normal_backlash, str= '$SVG_stage_01.$_normal_backlash_ref*$SVG_stage_01.$_gamma_mn') ! $SVG_stage_01.$_normal_backlash
    subvar($_length, str= '1.8*$SVG_stage_01.$SVG_planet.$_flank_width + $SVG_stage_01.$SVG_shaft.$_length') ! $SVG_stage_01.$_length
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
@@ -229,15 +229,15 @@ subvargroup.begin (                 $SVG_stage_02                 )             
    subvar($_gamma_b, str= '1.00000e+00')                                                      ! $SVG_stage_02.$_gamma_b
    subvar($_gamma_L, str= '1.00000e+00')                                                      ! $SVG_stage_02.$_gamma_L
    subvar($_gamma_d, str= '1.00000e+00')                                                      ! $SVG_stage_02.$_gamma_d
-   subvar($_gamma_stiff, str= '1.00000e+00')                                                  ! $SVG_stage_02.$_gamma_stiff
-   subvar($_gamma_damp, str= '1.00000e+00')                                                   ! $SVG_stage_02.$_gamma_damp
+   subvar($_gamma_stiff, str= 'pow($SVG_loading.$_gamma_Power, 1.0/3.0)')                     ! $SVG_stage_02.$_gamma_stiff
+   subvar($_gamma_damp, str= '1.0')                                                           ! $SVG_stage_02.$_gamma_damp
    subvar($_k_SP, str= '1.70943e+10 N/m')                                                     ! $SVG_stage_02.$_k_SP
    subvar($_k_RP, str= '7.28588e+10 N/m')                                                     ! $SVG_stage_02.$_k_RP
    subvar($_normal_module_ref, str= '21.0 mm')                                                ! $SVG_stage_02.$_normal_module_ref
    subvar($_center_distance_ref, str= '584.0 mm')                                             ! $SVG_stage_02.$_center_distance_ref
    subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_02.$_normal_backlash_ref
-   subvar($_normal_module, str= '2.10000e+01 mm')                                             ! $SVG_stage_02.$_normal_module
-   subvar($_center_distance, str= '5.84000e+02 mm')                                           ! $SVG_stage_02.$_center_distance
+   subvar($_normal_module, str= '$SVG_stage_02.$_normal_module_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$_normal_module
+   subvar($_center_distance, str= '$SVG_stage_02.$_center_distance_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$_center_distance
    subvar($_normal_backlash, str= '$SVG_stage_02.$_normal_backlash_ref*$SVG_stage_02.$_gamma_mn') ! $SVG_stage_02.$_normal_backlash
    subvar($_length, str= '1.8*$SVG_stage_02.$SVG_planet.$_flank_width + $SVG_stage_02.$SVG_shaft.$_length') ! $SVG_stage_02.$_length
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
@@ -349,14 +349,14 @@ subvargroup.begin (                 $SVG_stage_03                 )             
    subvar($_gamma_b, str= '1.00000e+00')                                                      ! $SVG_stage_03.$_gamma_b
    subvar($_gamma_L, str= '1.00000e+00')                                                      ! $SVG_stage_03.$_gamma_L
    subvar($_gamma_d, str= '1.00000e+00')                                                      ! $SVG_stage_03.$_gamma_d
-   subvar($_gamma_stiff, str= '1.00000e+00')                                                  ! $SVG_stage_03.$_gamma_stiff
-   subvar($_gamma_damp, str= '1.00000e+00')                                                   ! $SVG_stage_03.$_gamma_damp
+   subvar($_gamma_stiff, str= 'pow($SVG_loading.$_gamma_Power, 1.0/3.0)')                     ! $SVG_stage_03.$_gamma_stiff
+   subvar($_gamma_damp, str= '1.0')                                                           ! $SVG_stage_03.$_gamma_damp
    subvar($_k_PW, str= '1.28568e+10 N/m')                                                     ! $SVG_stage_03.$_k_PW
    subvar($_normal_module_ref, str= '14 mm')                                                  ! $SVG_stage_03.$_normal_module_ref
    subvar($_center_distance_ref, str= '861.0 mm')                                             ! $SVG_stage_03.$_center_distance_ref
    subvar($_normal_backlash_ref, str= '0.40 mm')                                              ! $SVG_stage_03.$_normal_backlash_ref
-   subvar($_normal_module, str= '1.40000e+01 mm')                                             ! $SVG_stage_03.$_normal_module
-   subvar($_center_distance, str= '8.61000e+02 mm')                                           ! $SVG_stage_03.$_center_distance
+   subvar($_normal_module, str= '$SVG_stage_03.$_normal_module_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$_normal_module
+   subvar($_center_distance, str= '$SVG_stage_03.$_center_distance_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$_center_distance
    subvar($_normal_backlash, str= '$SVG_stage_03.$_normal_backlash_ref*$SVG_stage_03.$_gamma_mn') ! $SVG_stage_03.$_normal_backlash
    subvar($_length, str= '1.8*$SVG_stage_03.$SVG_pinion.$_flank_width + $SVG_stage_03.$SVG_shaft.$_length') ! $SVG_stage_03.$_length
    subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion

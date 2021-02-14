@@ -24,7 +24,15 @@ time                                                                = 0.00000000
 slv.active                                                          = $SLV_SolverSettings     ! Active SolverSettings element
 track.active                                                        = null                    ! Active Track element
 subvarset.file (          1                                       ) = './NREL_5MW_reference.subvar' ! subvarset filename
-subvarset.role (          1                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.role (          1                                       ) = 1                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.file (          2                                       ) = './NREL_5MW_0500.0kW.subvar' ! subvarset filename
+subvarset.role (          2                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.file (          3                                       ) = './NREL_5MW_0050.0kW.subvar' ! subvarset filename
+subvarset.role (          3                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.file (          4                                       ) = './NREL_5MW_0005.0kW.subvar' ! subvarset filename
+subvarset.role (          4                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.file (          5                                       ) = './NREL_5MW_0000.5kW.subvar' ! subvarset filename
+subvarset.role (          5                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
@@ -604,12 +612,12 @@ stateset.begin (                    $ST_AIC )
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.constr.f (       1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.44883511310709757E+05 ! Constraint forces
-   stset.constr.f (       2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.08328536832177807E+07 ! Constraint forces
-   stset.constr.f (       3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90365176672269001E+02 ! Constraint forces
-   stset.constr.f (       4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.34432416911364516E+01 ! Constraint forces
-   stset.constr.f (       5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.70775418356521602E-01 ! Constraint forces
-   stset.constr.f (       6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.70555529594825208E+06 ! Constraint forces
+   stset.constr.f (       1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.44883511251404067E+05 ! Constraint forces
+   stset.constr.f (       2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.08328536832103450E+07 ! Constraint forces
+   stset.constr.f (       3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90365203783060622E+02 ! Constraint forces
+   stset.constr.f (       4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.34432416912274153E+01 ! Constraint forces
+   stset.constr.f (       5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.70775139585480212E-01 ! Constraint forces
+   stset.constr.f (       6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.70555529594806442E+06 ! Constraint forces
    stset.control.st.dyn (   1 ,     $S_reference.$C_Prop          ) = 0.00000000000000000E+00 ! Control dynamic states
    stset.control.st.dyn (   1 ,     $S_reference.$C_PI            ) = 0.00000000000000000E+00 ! Control dynamic states
    stset.joint.st.pos (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 0.00000000000000000E+00 ! Joint position states
@@ -686,7 +694,7 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.vel (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.89999999999999943E-05 ! Joint velocity states
+   stset.joint.st.vel (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.90000000000000078E-05 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_housing.$S_TPL.$J_housing) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
@@ -717,7 +725,7 @@ stateset.begin (                    $ST_AIC )
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.11999999999999985E-04 ! Joint velocity states
+   stset.joint.st.vel (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.12000000000000025E-04 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1860,88 +1868,88 @@ stateset.begin (                    $ST_static_eq )
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_stage_03.$S_TPL.$BG_wheel.$B_gear) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_rotor.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
    stset.body.brf.st.vel (   6 ,    $S_reference.$S_generator.$S_TPL.$B_disc) = 0.00000000000000000E+00 ! Body BRF velocity states
-   stset.constr.f (       1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.44883511214073864E+05 ! Constraint forces
-   stset.constr.f (       2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.08328536832097620E+07 ! Constraint forces
-   stset.constr.f (       3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90365202492352751E+02 ! Constraint forces
-   stset.constr.f (       4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.34432416911110728E+01 ! Constraint forces
-   stset.constr.f (       5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.70774995275986663E-01 ! Constraint forces
-   stset.constr.f (       6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.70555529594796803E+06 ! Constraint forces
+   stset.constr.f (       1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.44883511490025150E+05 ! Constraint forces
+   stset.constr.f (       2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.08328536832153685E+07 ! Constraint forces
+   stset.constr.f (       3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90365210401288834E+02 ! Constraint forces
+   stset.constr.f (       4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.34432416910163592E+01 ! Constraint forces
+   stset.constr.f (       5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.70776062019680264E-01 ! Constraint forces
+   stset.constr.f (       6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.70555529594868748E+06 ! Constraint forces
    stset.control.st.dyn (   1 ,     $S_reference.$C_Prop          ) = 0.00000000000000000E+00 ! Control dynamic states
-   stset.control.st.dyn (   1 ,     $S_reference.$C_PI            ) = -1.95250494437219899E+01 ! Control dynamic states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 9.62708715394798173E-20 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.09955387282499768E-02 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.17029582479833058E-02 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.53116619795524264E-02 ! Joint position states
+   stset.control.st.dyn (   1 ,     $S_reference.$C_PI            ) = -1.95250500627652031E+01 ! Control dynamic states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -5.34260710936341578E-20 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.09953998872710391E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.17024102782451722E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.53112044557176083E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.57931008187321836E-01 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.57930550883559034E-01 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.72940149726476045E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.72944723061598871E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_01.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -2.94935597848891215E-02 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 9.36761866072845784E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -2.94901572743532861E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 9.36747626202941303E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 9.35015747856602908E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 9.35001584124185298E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 9.40684299626988046E-02 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 9.40670236637878715E-02 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_gear) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   1 ,       $S_reference.$S_stage_02.$S_TPL.$S_carrier.$S_TPL.$J_carrier) = -6.45235502945023682E-16 ! Joint position states
-   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.31951078029595412E-06 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -5.26044355506989330E-21 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 2.29566279457595279E-04 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.60551581040213860E-04 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.36559808214468288E-07 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.35712238556282454E-07 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.99171776219790901E-07 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.57649684231755180E-05 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 5.61109677071301188E-07 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -2.08934324032619392E-07 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 7.45235773149655224E-08 ! Joint position states
-   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -8.21696495044334100E-05 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 2.62741506289311836E-20 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 5.39888380365847128E-05 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.98098008387732355E-05 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -1.71229870275320314E-06 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -1.80970112584177517E-06 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.87685267592902080E-06 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 1.00830841463977349E-04 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.78212865765703321E-06 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.64476696955447308E-07 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -2.83817615844274942E-07 ! Joint position states
-   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.19261854230816192E-04 ! Joint position states
+   stset.joint.st.pos (   1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.21493315666687082E-05 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 3.30570706000517094E-21 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 2.29566286287984507E-04 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.60551535130063071E-04 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.36558176546900141E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.35710870766146104E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.99170278045537952E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.57660705100367896E-05 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 5.61100738528112806E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -2.08932668979096735E-07 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 7.45228126342501096E-08 ! Joint position states
+   stset.joint.st.pos (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -8.21696843513388683E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -2.25830675582399360E-20 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 5.39888341059119835E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.98091312895901712E-05 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -1.71229842374829008E-06 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -1.80970057708629920E-06 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.87685277520854765E-06 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 1.00834913072757299E-04 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.78213391225966475E-06 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.64466044570643740E-07 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -2.83810833879361762E-07 ! Joint position states
+   stset.joint.st.pos (   3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.19261856854055247E-04 ! Joint position states
    stset.joint.st.pos (   4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.42731499999999989E+00 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -4.86053459151533987E-03 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.30672774141695876E-07 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -8.78000901977154732E-05 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -8.75485441688064742E-05 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.59005261291832849E-05 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.90567721715865495E-04 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.81072949659499746E-03 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.87805403025475676E-03 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.80880314726185761E-03 ! Joint position states
-   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.63061939171139149E-04 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -4.86053459147564246E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.30671973134630462E-07 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -8.78000783385527600E-05 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -8.75485161769581059E-05 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.59005306616413526E-05 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.90567730911954589E-04 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.81073331910628500E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.87805678019559690E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.80880194010657128E-03 ! Joint position states
+   stset.joint.st.pos (   4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.63061943928291233E-04 ! Joint position states
    stset.joint.st.pos (   5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.18342000000000003E-01 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -8.89080086070949323E-05 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.20369766697104811E-05 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 2.68352524936922884E-05 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.81282981465580443E-05 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.16990489142400368E-05 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.25064883532691286E-05 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.20887846629308432E-04 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.06136174515400695E-04 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.06307991215995579E-04 ! Joint position states
-   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.23425267511929246E-05 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -3.54890371206379621E-21 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 4.45332906725727647E-04 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -3.45131863714274838E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -8.89080060471971904E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.20372852992700934E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 2.68351762482164436E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.81282334041106791E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.16989721778079325E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.25115100866563648E-05 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.20881643327922412E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.06129995090199071E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.06301448396045959E-04 ! Joint position states
+   stset.joint.st.pos (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.23425272071057285E-05 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.55121891413402533E-21 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 4.45332910678632057E-04 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -3.45131878754066461E-04 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.98881460386094057E-04 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.98882550659764719E-04 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
    stset.joint.st.pos (   6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint position states
-   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 2.52245861290287363E-04 ! Joint position states
+   stset.joint.st.pos (   6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 2.52245885826303539E-04 ! Joint position states
    stset.joint.st.vel (   1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.89999999999999977E-05 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
@@ -1973,7 +1981,7 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.11999999999999998E-04 ! Joint velocity states
+   stset.joint.st.vel (   3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.11999999999999985E-04 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -2006,7 +2014,7 @@ stateset.begin (                    $ST_static_eq )
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
-   stset.joint.st.vel (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171220000030E-02 ! Joint velocity states
+   stset.joint.st.vel (   6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171219999891E-02 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Joint velocity states
    stset.joint.st.vel (   6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Joint velocity states
@@ -2296,293 +2304,31 @@ slv.txt (                           $SLV_static_eq_Newton_acc     ) = ''        
 ! SubVars
 !**********************************************************************
 subvargroup.begin (                 $SVG_loading                  )                           ! $SVG_loading
-   subvar.str (                     $_aero_excitation_flag        ) = '2'                     ! $SVG_loading.$_aero_excitation_flag, Definition
-   subvar.discr.desc (    1 ,       $_aero_excitation_flag        ) = 'OFF'                   ! Description of discrete values
-   subvar.discr.desc (    2 ,       $_aero_excitation_flag        ) = 'Nominal'               ! Description of discrete values
-   subvar.discr.desc (    3 ,       $_aero_excitation_flag        ) = 'DLC'                   ! Description of discrete values
-   subvar.discr.str (     1 ,       $_aero_excitation_flag        ) = '0'                     ! Discrete values
-   subvar.discr.str (     2 ,       $_aero_excitation_flag        ) = '1'                     ! Discrete values
-   subvar.discr.str (     3 ,       $_aero_excitation_flag        ) = '2'                     ! Discrete values
-
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_rotor                    )                           ! $SVG_rotor
 subvargroup.end (                   $SVG_rotor                    )                           ! $SVG_rotor
 
 subvargroup.begin (                 $SVG_main_shaft               )                           ! $SVG_main_shaft
-   subvar.str (                     $_gamma_stiff                 ) = '1.00000e+00'           ! $SVG_main_shaft.$_gamma_stiff, Definition
-
-   subvar.str (                     $_gamma_damp                  ) = '1.00000e+00'           ! $SVG_main_shaft.$_gamma_damp, Definition
-
    subvargroup.begin (              $SVG_A                        )                           ! $SVG_main_shaft.$SVG_A
-      subvar.str (                  $_k_x_ref                     ) = '66.0e3 N/m'            ! $SVG_main_shaft.$SVG_A.$_k_x_ref, Definition
-
-      subvar.str (                  $_k_y_ref                     ) = '1.7e9 N/m'             ! $SVG_main_shaft.$SVG_A.$_k_y_ref, Definition
-
-      subvar.str (                  $_k_z_ref                     ) = '1.1e9 N/m'             ! $SVG_main_shaft.$SVG_A.$_k_z_ref, Definition
-
-      subvar.str (                  $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_main_shaft.$SVG_A.$_k_alpha_ref, Definition
-
-      subvar.str (                  $_k_beta_ref                  ) = '1.39e6 Nm/rad'         ! $SVG_main_shaft.$SVG_A.$_k_beta_ref, Definition
-
-      subvar.str (                  $_k_gamma_ref                 ) = '1.39e6 Nm/rad'         ! $SVG_main_shaft.$SVG_A.$_k_gamma_ref, Definition
-
-      subvar.str (                  $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_main_shaft.$SVG_A.$_d_x_ref, Definition
-
-      subvar.str (                  $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_main_shaft.$SVG_A.$_d_y_ref, Definition
-
-      subvar.str (                  $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_main_shaft.$SVG_A.$_d_z_ref, Definition
-
-      subvar.str (                  $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_main_shaft.$SVG_A.$_d_alpha_ref, Definition
-
-      subvar.str (                  $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_main_shaft.$SVG_A.$_d_beta_ref, Definition
-
-      subvar.str (                  $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_main_shaft.$SVG_A.$_d_gamma_ref, Definition
-
-      subvar.str (                  $_k_x                         ) = '$SVG_main_shaft.$_gamma_stiff*$SVG_main_shaft.$SVG_A.$_k_x_ref' ! $SVG_main_shaft.$SVG_A.$_k_x, Definition
-
-      subvar.str (                  $_k_y                         ) = '$SVG_main_shaft.$_gamma_stiff*$SVG_main_shaft.$SVG_A.$_k_y_ref' ! $SVG_main_shaft.$SVG_A.$_k_y, Definition
-
-      subvar.str (                  $_k_z                         ) = '$SVG_main_shaft.$_gamma_stiff*$SVG_main_shaft.$SVG_A.$_k_z_ref' ! $SVG_main_shaft.$SVG_A.$_k_z, Definition
-
-      subvar.str (                  $_k_alpha                     ) = '$SVG_main_shaft.$_gamma_stiff*$SVG_main_shaft.$SVG_A.$_k_alpha_ref' ! $SVG_main_shaft.$SVG_A.$_k_alpha, Definition
-
-      subvar.str (                  $_k_beta                      ) = '$SVG_main_shaft.$_gamma_stiff*$SVG_main_shaft.$SVG_A.$_k_beta_ref' ! $SVG_main_shaft.$SVG_A.$_k_beta, Definition
-
-      subvar.str (                  $_k_gamma                     ) = '$SVG_main_shaft.$_gamma_stiff*$SVG_main_shaft.$SVG_A.$_k_gamma_ref' ! $SVG_main_shaft.$SVG_A.$_k_gamma, Definition
-
-      subvar.str (                  $_d_x                         ) = '$SVG_main_shaft.$_gamma_damp*$SVG_main_shaft.$SVG_A.$_d_x_ref' ! $SVG_main_shaft.$SVG_A.$_d_x, Definition
-
-      subvar.str (                  $_d_y                         ) = '$SVG_main_shaft.$_gamma_damp*$SVG_main_shaft.$SVG_A.$_d_y_ref' ! $SVG_main_shaft.$SVG_A.$_d_y, Definition
-
-      subvar.str (                  $_d_z                         ) = '$SVG_main_shaft.$_gamma_damp*$SVG_main_shaft.$SVG_A.$_d_z_ref' ! $SVG_main_shaft.$SVG_A.$_d_z, Definition
-
-      subvar.str (                  $_d_alpha                     ) = '$SVG_main_shaft.$_gamma_damp*$SVG_main_shaft.$SVG_A.$_d_alpha_ref' ! $SVG_main_shaft.$SVG_A.$_d_alpha, Definition
-
-      subvar.str (                  $_d_beta                      ) = '$SVG_main_shaft.$_gamma_damp*$SVG_main_shaft.$SVG_A.$_d_beta_ref' ! $SVG_main_shaft.$SVG_A.$_d_beta, Definition
-
-      subvar.str (                  $_d_gamma                     ) = '$SVG_main_shaft.$_gamma_damp*$SVG_main_shaft.$SVG_A.$_d_gamma_ref' ! $SVG_main_shaft.$SVG_A.$_d_gamma, Definition
-
-      subvar.str (                  $_diam_int                    ) = '1250.0 mm'             ! $SVG_main_shaft.$SVG_A.$_diam_int, Definition
-
-      subvar.str (                  $_diam_out                    ) = '1750.0 mm'             ! $SVG_main_shaft.$SVG_A.$_diam_out, Definition
-
-      subvar.str (                  $_b                           ) = '375.0 mm'              ! $SVG_main_shaft.$SVG_A.$_b, Definition
-
    subvargroup.end (                $SVG_A                        )                           ! $SVG_main_shaft.$SVG_A
    subvargroup.begin (              $SVG_B                        )                           ! $SVG_main_shaft.$SVG_B
-      subvar.str (                  $_k_x_ref                     ) = '66.0e6 N/m'            ! $SVG_main_shaft.$SVG_B.$_k_x_ref, Definition
-
-      subvar.str (                  $_k_y_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y' ! $SVG_main_shaft.$SVG_B.$_k_y_ref, Definition
-
-      subvar.str (                  $_k_z_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z' ! $SVG_main_shaft.$SVG_B.$_k_z_ref, Definition
-
-      subvar.str (                  $_k_alpha_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha' ! $SVG_main_shaft.$SVG_B.$_k_alpha_ref, Definition
-
-      subvar.str (                  $_k_beta_ref                  ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta' ! $SVG_main_shaft.$SVG_B.$_k_beta_ref, Definition
-
-      subvar.str (                  $_k_gamma_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma' ! $SVG_main_shaft.$SVG_B.$_k_gamma_ref, Definition
-
-      subvar.str (                  $_d_x_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x' ! $SVG_main_shaft.$SVG_B.$_d_x_ref, Definition
-
-      subvar.str (                  $_d_y_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y' ! $SVG_main_shaft.$SVG_B.$_d_y_ref, Definition
-
-      subvar.str (                  $_d_z_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z' ! $SVG_main_shaft.$SVG_B.$_d_z_ref, Definition
-
-      subvar.str (                  $_d_alpha_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha' ! $SVG_main_shaft.$SVG_B.$_d_alpha_ref, Definition
-
-      subvar.str (                  $_d_beta_ref                  ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta' ! $SVG_main_shaft.$SVG_B.$_d_beta_ref, Definition
-
-      subvar.str (                  $_d_gamma_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma' ! $SVG_main_shaft.$SVG_B.$_d_gamma_ref, Definition
-
-      subvar.str (                  $_k_x                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x_ref' ! $SVG_main_shaft.$SVG_B.$_k_x, Definition
-
-      subvar.str (                  $_k_y                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y_ref' ! $SVG_main_shaft.$SVG_B.$_k_y, Definition
-
-      subvar.str (                  $_k_z                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_z_ref' ! $SVG_main_shaft.$SVG_B.$_k_z, Definition
-
-      subvar.str (                  $_k_alpha                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_alpha_ref' ! $SVG_main_shaft.$SVG_B.$_k_alpha, Definition
-
-      subvar.str (                  $_k_beta                      ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_beta_ref' ! $SVG_main_shaft.$SVG_B.$_k_beta, Definition
-
-      subvar.str (                  $_k_gamma                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_gamma_ref' ! $SVG_main_shaft.$SVG_B.$_k_gamma, Definition
-
-      subvar.str (                  $_d_x                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_x_ref' ! $SVG_main_shaft.$SVG_B.$_d_x, Definition
-
-      subvar.str (                  $_d_y                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_y_ref' ! $SVG_main_shaft.$SVG_B.$_d_y, Definition
-
-      subvar.str (                  $_d_z                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_z_ref' ! $SVG_main_shaft.$SVG_B.$_d_z, Definition
-
-      subvar.str (                  $_d_alpha                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_alpha_ref' ! $SVG_main_shaft.$SVG_B.$_d_alpha, Definition
-
-      subvar.str (                  $_d_beta                      ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_beta_ref' ! $SVG_main_shaft.$SVG_B.$_d_beta, Definition
-
-      subvar.str (                  $_d_gamma                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_gamma_ref' ! $SVG_main_shaft.$SVG_B.$_d_gamma, Definition
-
    subvargroup.end (                $SVG_B                        )                           ! $SVG_main_shaft.$SVG_B
 subvargroup.end (                   $SVG_main_shaft               )                           ! $SVG_main_shaft
 
 subvargroup.begin (                 $SVG_stage_01                 )                           ! $SVG_stage_01
-   subvar.str (                     $_gamma_stiff                 ) = '1.00000e+00'           ! $SVG_stage_01.$_gamma_stiff, Definition
-
-   subvar.str (                     $_gamma_damp                  ) = '1.00000e+00'           ! $SVG_stage_01.$_gamma_damp, Definition
-
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_01.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
       subvargroup.begin (           $SVG_AB                       )                           ! $SVG_stage_01.$SVG_planet.$SVG_AB
-         subvar.str (               $_k_x_ref                     ) = '91016 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '9.37e9 N/m'            ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '3.2e9 N/m'             ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '1.39e6 Nm/rad'         ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '4.45e6 Nm/rad'         ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_planet.$SVG_AB.$_k_x_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_planet.$SVG_AB.$_k_y_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_planet.$SVG_AB.$_k_z_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_planet.$SVG_AB.$_k_alpha_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_planet.$SVG_AB.$_k_beta_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_planet.$SVG_AB.$_k_gamma_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_planet.$SVG_AB.$_d_x_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_planet.$SVG_AB.$_d_y_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_planet.$SVG_AB.$_d_z_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_planet.$SVG_AB.$_d_alpha_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_planet.$SVG_AB.$_d_beta_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_planet.$SVG_AB.$_d_gamma_ref' ! $SVG_stage_01.$SVG_planet.$SVG_AB.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_AB                       )                           ! $SVG_stage_01.$SVG_planet.$SVG_AB
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_01.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_01.$SVG_ring
    subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
-         subvar.str (               $_k_x_ref                     ) = '66.0e3 N/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '1.7e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '1.1e9 N/m'             ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '1.39e6 Nm/rad'         ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '1.39e6 Nm/rad'         ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_x_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_y_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_z_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_alpha_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_beta_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_01.$_gamma_stiff*$SVG_stage_01.$SVG_carrier.$SVG_A.$_k_gamma_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_carrier.$SVG_A.$_d_x_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_carrier.$SVG_A.$_d_y_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_carrier.$SVG_A.$_d_z_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_carrier.$SVG_A.$_d_alpha_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_carrier.$SVG_A.$_d_beta_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_01.$_gamma_damp*$SVG_stage_01.$SVG_carrier.$SVG_A.$_d_gamma_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_A.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
-         subvar.str (               $_k_x_ref                     ) = '66.0e6 N/m'            ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_z_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_alpha_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_beta_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_gamma_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_x_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_y_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_z_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_alpha_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_beta_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_gamma_ref' ! $SVG_stage_01.$SVG_carrier.$SVG_B.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_01.$SVG_carrier.$SVG_B
    subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_01.$SVG_carrier
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_01.$SVG_shaft
@@ -2590,166 +2336,18 @@ subvargroup.begin (                 $SVG_stage_01                 )             
 subvargroup.end (                   $SVG_stage_01                 )                           ! $SVG_stage_01
 
 subvargroup.begin (                 $SVG_stage_02                 )                           ! $SVG_stage_02
-   subvar.str (                     $_gamma_stiff                 ) = '1.00000e+00'           ! $SVG_stage_02.$_gamma_stiff, Definition
-
-   subvar.str (                     $_gamma_damp                  ) = '1.00000e+00'           ! $SVG_stage_02.$_gamma_damp, Definition
-
    subvargroup.begin (              $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
    subvargroup.end (                $SVG_sun                      )                           ! $SVG_stage_02.$SVG_sun
    subvargroup.begin (              $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
       subvargroup.begin (           $SVG_AB                       )                           ! $SVG_stage_02.$SVG_planet.$SVG_AB
-         subvar.str (               $_k_x_ref                     ) = '91.0e3 N/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '61.2e6 N/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '1.16e9 N/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '75.0e3 Nm/rad'         ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '75.0e3 Nm/rad'         ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_planet.$SVG_AB.$_k_x_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_planet.$SVG_AB.$_k_y_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_planet.$SVG_AB.$_k_z_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_planet.$SVG_AB.$_k_alpha_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_planet.$SVG_AB.$_k_beta_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_planet.$SVG_AB.$_k_gamma_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_planet.$SVG_AB.$_d_x_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_planet.$SVG_AB.$_d_y_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_planet.$SVG_AB.$_d_z_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_planet.$SVG_AB.$_d_alpha_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_planet.$SVG_AB.$_d_beta_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_planet.$SVG_AB.$_d_gamma_ref' ! $SVG_stage_02.$SVG_planet.$SVG_AB.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_AB                       )                           ! $SVG_stage_02.$SVG_planet.$SVG_AB
    subvargroup.end (                $SVG_planet                   )                           ! $SVG_stage_02.$SVG_planet
    subvargroup.begin (              $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
    subvargroup.end (                $SVG_ring                     )                           ! $SVG_stage_02.$SVG_ring
    subvargroup.begin (              $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
-         subvar.str (               $_k_x_ref                     ) = '91.0e3 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '61.2e6 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '1.16e9 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '74428 Nm/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '3.2398e3 Nm/rad'       ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_x_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
-         subvar.str (               $_k_x_ref                     ) = '91.0e6 N/m'            ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_y' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_z' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_alpha' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_beta' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_k_gamma' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_x' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_y' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_z' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_alpha' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_beta' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '$SVG_stage_02.$SVG_carrier.$SVG_A.$_d_gamma' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_z_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_alpha_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_beta_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_02.$_gamma_stiff*$SVG_stage_02.$SVG_carrier.$SVG_B.$_k_gamma_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_x_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_y_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_z_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_alpha_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_beta_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_02.$_gamma_damp*$SVG_stage_02.$SVG_carrier.$SVG_B.$_d_gamma_ref' ! $SVG_stage_02.$SVG_carrier.$SVG_B.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_02.$SVG_carrier.$SVG_B
    subvargroup.end (                $SVG_carrier                  )                           ! $SVG_stage_02.$SVG_carrier
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_02.$SVG_shaft
@@ -2757,312 +2355,20 @@ subvargroup.begin (                 $SVG_stage_02                 )             
 subvargroup.end (                   $SVG_stage_02                 )                           ! $SVG_stage_02
 
 subvargroup.begin (                 $SVG_stage_03                 )                           ! $SVG_stage_03
-   subvar.str (                     $_gamma_stiff                 ) = '1.00000e+00'           ! $SVG_stage_03.$_gamma_stiff, Definition
-
-   subvar.str (                     $_gamma_damp                  ) = '1.00000e+00'           ! $SVG_stage_03.$_gamma_damp, Definition
-
    subvargroup.begin (              $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
-         subvar.str (               $_k_x_ref                     ) = '126.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '821.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '821.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '1.1234e6 Nm/rad'       ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '2.539e6 Nm/rad'        ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_x_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
-         subvar.str (               $_k_x_ref                     ) = '67.0e6 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '809.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '133.0e6 N/m'           ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '171.0e3 Nm/rad'        ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '1.04e6 Nm/rad'         ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_k_x_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_k_y_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_B.$_k_gamma_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_B.$_d_x_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_B.$_d_y_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_B.$_d_z_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_B.$_d_alpha_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_B.$_d_beta_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_B.$_d_gamma_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_B.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_B
       subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
-         subvar.str (               $_k_x_ref                     ) = '79.3e6 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '1.04e9 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '72.9e6 N/m'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '97637.5 Nm/rad'        ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '1.39e6 Nm/rad'         ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_C.$_k_x_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_C.$_k_y_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_pinion.$SVG_C.$_k_gamma_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_C.$_d_x_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_C.$_d_y_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_C.$_d_z_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_C.$_d_alpha_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_C.$_d_beta_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_pinion.$SVG_C.$_d_gamma_ref' ! $SVG_stage_03.$SVG_pinion.$SVG_C.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_pinion.$SVG_C
    subvargroup.end (                $SVG_pinion                   )                           ! $SVG_stage_03.$SVG_pinion
    subvargroup.begin (              $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
       subvargroup.begin (           $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
-         subvar.str (               $_k_x_ref                     ) = '0.0 N/m'               ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '61.2e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '1.16e9 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '74428 Nm/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '3239.8 Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '453.0 Ns/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '42.0e3 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '30.6e3 Ns/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '0.0 Nms/rad'           ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '34.3 Nms/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '47.8 Nms/rad'          ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_x_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_alpha_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_alpha_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_beta_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_gamma_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_A.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_A                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_A
       subvargroup.begin (           $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
-         subvar.str (               $_k_x_ref                     ) = '74.1e6 N/m'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '517.0e6 N/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '484.0e6 N/m'           ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '1.67e6 Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '1.78e6 Nm/rad'         ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_y' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_z' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_alpha' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_beta' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '$SVG_stage_03.$SVG_wheel.$SVG_A.$_d_gamma' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_k_x_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_k_y_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_k_z_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_k_alpha_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_k_beta_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_B.$_k_gamma_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_B.$_d_x_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_B.$_d_y_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_B.$_d_z_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_B.$_d_alpha_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_B.$_d_beta_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_B.$_d_gamma_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_B.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_B                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_B
       subvargroup.begin (           $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
-         subvar.str (               $_k_x_ref                     ) = '78.723e6 N/m'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_x_ref, Definition
-
-         subvar.str (               $_k_y_ref                     ) = '737.08e6 N/m'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_y_ref, Definition
-
-         subvar.str (               $_k_z_ref                     ) = '326.12e6 N/m'          ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_z_ref, Definition
-
-         subvar.str (               $_k_alpha_ref                 ) = '0.0 Nm/rad'            ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_alpha_ref, Definition
-
-         subvar.str (               $_k_beta_ref                  ) = '1.1234e6 Nm/rad'       ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_beta_ref, Definition
-
-         subvar.str (               $_k_gamma_ref                 ) = '2.539e6 Nm/rad'        ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_gamma_ref, Definition
-
-         subvar.str (               $_d_x_ref                     ) = '$S_reference.$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_x' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_x_ref, Definition
-
-         subvar.str (               $_d_y_ref                     ) = '$S_reference.$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_y' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_y_ref, Definition
-
-         subvar.str (               $_d_z_ref                     ) = '$S_reference.$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_z' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_z_ref, Definition
-
-         subvar.str (               $_d_alpha_ref                 ) = '$S_reference.$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_alpha' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_alpha_ref, Definition
-
-         subvar.str (               $_d_beta_ref                  ) = '$S_reference.$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_beta' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_beta_ref, Definition
-
-         subvar.str (               $_d_gamma_ref                 ) = '$S_reference.$SVG_stage_03.$SVG_pinion.$SVG_A.$_d_gamma' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_gamma_ref, Definition
-
-         subvar.str (               $_k_x                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_k_x_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_x, Definition
-
-         subvar.str (               $_k_y                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_k_y_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_y, Definition
-
-         subvar.str (               $_k_z                         ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_k_z_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_z, Definition
-
-         subvar.str (               $_k_alpha                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_k_alpha_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_alpha, Definition
-
-         subvar.str (               $_k_beta                      ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_k_beta_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_beta, Definition
-
-         subvar.str (               $_k_gamma                     ) = '$SVG_stage_03.$_gamma_stiff*$SVG_stage_03.$SVG_wheel.$SVG_C.$_k_gamma_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_k_gamma, Definition
-
-         subvar.str (               $_d_x                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_C.$_d_x_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_x, Definition
-
-         subvar.str (               $_d_y                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_C.$_d_y_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_y, Definition
-
-         subvar.str (               $_d_z                         ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_C.$_d_z_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_z, Definition
-
-         subvar.str (               $_d_alpha                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_C.$_d_alpha_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_alpha, Definition
-
-         subvar.str (               $_d_beta                      ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_C.$_d_beta_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_beta, Definition
-
-         subvar.str (               $_d_gamma                     ) = '$SVG_stage_03.$_gamma_damp*$SVG_stage_03.$SVG_wheel.$SVG_C.$_d_gamma_ref' ! $SVG_stage_03.$SVG_wheel.$SVG_C.$_d_gamma, Definition
-
       subvargroup.end (             $SVG_C                        )                           ! $SVG_stage_03.$SVG_wheel.$SVG_C
    subvargroup.end (                $SVG_wheel                    )                           ! $SVG_stage_03.$SVG_wheel
    subvargroup.begin (              $SVG_shaft                    )                           ! $SVG_stage_03.$SVG_shaft
@@ -3104,7 +2410,12 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 !**********************************************************************
 result.container (                  $RS_PLC_A                     ) = null                    ! Parent result element
 result.type (                       $RS_PLC_A                     ) = 167                     ! Type
+result.active (                     $RS_PLC_A                     ) = 0                       ! Active
 result.par (              1 ,       $RS_PLC_A                     ) = $S_reference.$S_main_shaft.$S_TPL.$M_shaft_bearing_A ! [-] Measurement Marker
+result.channel.active (   1 ,       $RS_PLC_A                     ) = 0                       ! Active
+result.channel.active (   2 ,       $RS_PLC_A                     ) = 0                       ! Active
+result.channel.active (   3 ,       $RS_PLC_A                     ) = 0                       ! Active
+result.channel.active (   4 ,       $RS_PLC_A                     ) = 0                       ! Active
 
 !**********************************************************************
 ! Senders
@@ -3870,7 +3181,7 @@ sendergroup.end (                   $SG_bed_plate                 )             
 ! Overwritten substructure values
 control.st.dyn (          1 ,       $S_reference.$C_Prop          ) = 0.00000000000000000E+00 ! Dynamic States
 
-control.st.dyn (          1 ,       $S_reference.$C_PI            ) = -1.95250494437219899E+01 ! Dynamic States
+control.st.dyn (          1 ,       $S_reference.$C_PI            ) = -1.95250500627652031E+01 ! Dynamic States
 
 sender.disabled (                   $S_reference.$COM_base_excitation_flag) = 1               ! Disabled
 
@@ -3895,26 +3206,26 @@ body.brf.st.vel (         4 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plat
 body.brf.st.vel (         5 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_bed_plate.$S_TPL.$B_bed_plate) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 9.62708715394798173E-20 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -5.26044355506989330E-21 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 2.62741506289311836E-20 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -5.34260710936341578E-20 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 3.30570706000517094E-21 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -2.25830675582399360E-20 ! Position
 joint.st.pos (            4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.42731499999999989E+00 ! Position
 joint.st.pos (            5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.18342000000000003E-01 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -3.54890371206379621E-21 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.55121891413402533E-21 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -1.89999999999999977E-05 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.34800000000000030E-03 ! Velocity
-joint.st.vel (            3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.11999999999999998E-04 ! Velocity
+joint.st.vel (            3 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 1.11999999999999985E-04 ! Velocity
 joint.st.vel (            4 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 5.48513254303999997E-01 ! Velocity
 joint.st.vel (            5 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = 4.31985928000000029E-03 ! Velocity
-joint.st.vel (            6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171220000030E-02 ! Velocity
+joint.st.vel (            6 ,       $S_reference.$S_bed_plate.$S_TPL.$J_bed_plate) = -6.67037171219999891E-02 ! Velocity
 
 
-constr.f (                1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.44883511214073864E+05 ! Forces
-constr.f (                2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.08328536832097620E+07 ! Forces
-constr.f (                3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90365202492352751E+02 ! Forces
-constr.f (                4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.34432416911110728E+01 ! Forces
-constr.f (                5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.70774995275986663E-01 ! Forces
-constr.f (                6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.70555529594796803E+06 ! Forces
+constr.f (                1 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -3.44883511490025150E+05 ! Forces
+constr.f (                2 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.08328536832153685E+07 ! Forces
+constr.f (                3 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -2.90365210401288834E+02 ! Forces
+constr.f (                4 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.34432416910163592E+01 ! Forces
+constr.f (                5 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = -1.70776062019680264E-01 ! Forces
+constr.f (                6 ,       $S_reference.$S_bed_plate.$S_TPL.$L_bed_plate) = 2.70555529594868748E+06 ! Forces
 
 connect.st.force (        1 ,       $S_reference.$S_bed_plate.$S_TPL.$CTN_fixed) = -0.00000000000000000E+00 ! Constraint forces (locked directions)
 connect.st.force (        2 ,       $S_reference.$S_bed_plate.$S_TPL.$CTN_fixed) = -0.00000000000000000E+00 ! Constraint forces (locked directions)
@@ -4003,12 +3314,12 @@ body.flx.st.vel (        21 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) 
 body.flx.st.vel (        22 ,       $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity state
 body.flx.internal.data (            $S_reference.$S_main_shaft.$S_TPL.$B_shaft) = ''          ! Internal flexible Body data
 
-joint.st.pos (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.09955387282499768E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 2.29566279457595279E-04 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 5.39888380365847128E-05 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -4.86053459151533987E-03 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -8.89080086070949323E-05 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 4.45332906725727647E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -1.09953998872710391E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 2.29566286287984507E-04 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 5.39888341059119835E-05 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -4.86053459147564246E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = -8.89080060471971904E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 4.45332910678632057E-04 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_main_shaft.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -4080,12 +3391,12 @@ body.flx.st.vel (         9 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 
 body.flx.st.vel (        10 ,       $S_reference.$S_stage_01.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity state
 body.flx.internal.data (            $S_reference.$S_stage_01.$S_TPL.$B_shaft) = ''            ! Internal flexible Body data
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.17029582479833058E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.60551581040213860E-04 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.98098008387732355E-05 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.30672774141695876E-07 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.20369766697104811E-05 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -3.45131863714274838E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.17024102782451722E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -2.60551535130063071E-04 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.98091312895901712E-05 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 1.30671973134630462E-07 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -4.20372852992700934E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = -3.45131878754066461E-04 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_01.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -4133,11 +3444,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.53116619795524264E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.36559808214468288E-07 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -1.71229870275320314E-06 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -8.78000901977154732E-05 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 2.68352524936922884E-05 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 3.53112044557176083E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.36558176546900141E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -1.71229842374829008E-06 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -8.78000783385527600E-05 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 2.68351762482164436E-05 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -4203,11 +3514,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.57931008187321836E-01 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.35712238556282454E-07 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -1.80970112584177517E-06 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -8.75485441688064742E-05 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.81282981465580443E-05 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 1.57930550883559034E-01 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -9.35710870766146104E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -1.80970057708629920E-06 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -8.75485161769581059E-05 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.81282334041106791E-05 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -4273,11 +3584,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.72940149726476045E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.99171776219790901E-07 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.87685267592902080E-06 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.59005261291832849E-05 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.16990489142400368E-05 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.72944723061598871E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.99170278045537952E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -1.87685277520854765E-06 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -8.59005306616413526E-05 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 1.16989721778079325E-05 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_01.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -4402,12 +3713,12 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -2.94935597848891215E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.57649684231755180E-05 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 1.00830841463977349E-04 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.90567721715865495E-04 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.25064883532691286E-05 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.98881460386094057E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -2.94901572743532861E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.57660705100367896E-05 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 1.00834913072757299E-04 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 2.90567730911954589E-04 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -4.25115100866563648E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = -1.98882550659764719E-04 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_02.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
@@ -4455,11 +3766,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 9.36761866072845784E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 5.61109677071301188E-07 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.78212865765703321E-06 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.81072949659499746E-03 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.20887846629308432E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 9.36747626202941303E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 5.61100738528112806E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -6.78213391225966475E-06 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.81073331910628500E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = -4.20881643327922412E-04 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_01.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -4525,11 +3836,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 9.35015747856602908E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -2.08934324032619392E-07 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.64476696955447308E-07 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.87805403025475676E-03 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.06136174515400695E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 9.35001584124185298E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -2.08932668979096735E-07 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 4.64466044570643740E-07 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.87805678019559690E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = -4.06129995090199071E-04 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_02.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -4595,11 +3906,11 @@ body.brf.st.vel (         4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03
 body.brf.st.vel (         5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 body.brf.st.vel (         6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$B_pin) = 0.00000000000000000E+00 ! Velocity x/y/z/al/be/ga
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 9.40684299626988046E-02 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 7.45235773149655224E-08 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -2.83817615844274942E-07 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.80880314726185761E-03 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.06307991215995579E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 9.40670236637878715E-02 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 7.45228126342501096E-08 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -2.83810833879361762E-07 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.80880194010657128E-03 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = -4.06301448396045959E-04 ! Position
 joint.st.pos (            6 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_02.$S_TPL.$S_planet_03.$S_TPL.$J_pin) = 0.00000000000000000E+00 ! Velocity
@@ -4742,12 +4053,12 @@ body.flx.st.vel (         9 ,       $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 
 body.flx.st.vel (        10 ,       $S_reference.$S_stage_03.$S_TPL.$B_shaft) = 0.00000000000000000E+00 ! Velocity state
 body.flx.internal.data (            $S_reference.$S_stage_03.$S_TPL.$B_shaft) = ''            ! Internal flexible Body data
 
-joint.st.pos (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.31951078029595412E-06 ! Position
-joint.st.pos (            2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -8.21696495044334100E-05 ! Position
-joint.st.pos (            3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.19261854230816192E-04 ! Position
-joint.st.pos (            4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.63061939171139149E-04 ! Position
-joint.st.pos (            5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.23425267511929246E-05 ! Position
-joint.st.pos (            6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 2.52245861290287363E-04 ! Position
+joint.st.pos (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.21493315666687082E-05 ! Position
+joint.st.pos (            2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -8.21696843513388683E-05 ! Position
+joint.st.pos (            3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.19261856854055247E-04 ! Position
+joint.st.pos (            4 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.63061943928291233E-04 ! Position
+joint.st.pos (            5 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = -1.23425272071057285E-05 ! Position
+joint.st.pos (            6 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 2.52245885826303539E-04 ! Position
 joint.st.vel (            1 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 1.20549499999999995E+02 ! Velocity
 joint.st.vel (            2 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
 joint.st.vel (            3 ,       $S_reference.$S_stage_03.$S_TPL.$J_shaft) = 0.00000000000000000E+00 ! Velocity
