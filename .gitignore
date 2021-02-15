@@ -66,3 +66,4 @@ notes/gear_params.ipynb
 @NREL_5MW/NREL_5MW_referenceOLD.spck
 main_shaft
 *.kpro
+data/tab_gm.csv
