@@ -1,48 +1,50 @@
 !file.version=3.5! Removing this line will make the file unreadable
 
 ! General
-output                                                              = 'DoE_0500.0kW'
-surfacemodel                                                        = 4
+output                                                              = 'DOE_data/refs_caled'
+surfacemodel                                                        = 1
 experimentdesign                                                    = 3
-runs.num                                                            = 50
-runs.cand                                                           = 0
+runs.num                                                            = 3
+runs.cand                                                           = 4
 seed                                                                = 0
 centerpoints.num                                                    = 0
-centerpoints.default                                                = 0
+centerpoints.default                                                = 1
 
 ! Factors
 
-factors.name (            1                                       ) = 'gamma_MS'
+factors.name (            1                                       ) = 'gamma_P'
 factors.size (            1                                       ) = 2
-factors.ele (             1 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
-factors.type (            1 ,   1                                 ) = 3                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.ele (             1 ,   1                                 ) = $SVG_loading.$_gamma_Power
+factors.type (            1 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             1 ,   1                                 ) = '0.5'
 factors.max (             1 ,   1                                 ) = '1.5'
 factors.order (           1 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.name (            2                                       ) = 'gamma_S1'
+factors.name (            2                                       ) = 'gamma_MS'
 factors.size (            2                                       ) = 2
-factors.ele (             2 ,   1                                 ) = $SVG_stage_01.$_gamma_stiff
-factors.type (            2 ,   1                                 ) = 3                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.ele (             2 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
+factors.type (            2 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             2 ,   1                                 ) = '0.5'
 factors.max (             2 ,   1                                 ) = '1.5'
 factors.order (           2 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.name (            3                                       ) = 'gamma_S2'
-factors.size (            3                                       ) = 2
-factors.ele (             3 ,   1                                 ) = $SVG_stage_02.$_gamma_stiff
-factors.type (            3 ,   1                                 ) = 3                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   1                                 ) = '0.5'
-factors.max (             3 ,   1                                 ) = '1.5'
-factors.order (           3 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+factors.ele (             2 ,   2                                 ) = $SVG_stage_01.$_gamma_stiff
+factors.type (            2 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   2                                 ) = '0.5'
+factors.max (             2 ,   2                                 ) = '1.5'
+factors.order (           2 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.name (            4                                       ) = 'gamma_S3'
-factors.size (            4                                       ) = 2
-factors.ele (             4 ,   1                                 ) = $SVG_stage_03.$_gamma_stiff
-factors.type (            4 ,   1                                 ) = 3                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             4 ,   1                                 ) = '0.5'
-factors.max (             4 ,   1                                 ) = '1.5'
-factors.order (           4 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+factors.ele (             2 ,   3                                 ) = $SVG_stage_02.$_gamma_stiff
+factors.type (            2 ,   3                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   3                                 ) = '0.5'
+factors.max (             2 ,   3                                 ) = '1.5'
+factors.order (           2 ,   3                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             2 ,   4                                 ) = $SVG_stage_03.$_gamma_stiff
+factors.type (            2 ,   4                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   4                                 ) = '0.5'
+factors.max (             2 ,   4                                 ) = '1.5'
+factors.order (           2 ,   4                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
 model.path (                        $Model1                       ) = 'NREL_5MW_scaled.spck'
 
@@ -56,3 +58,13 @@ model.task (              4 ,       $Model1                       ) = 'integrati
 
    ! Responses
 
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_1     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_1     ) = 1
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_2     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_2     ) = 2
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_3     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_3     ) = 3
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_4     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_4     ) = 4
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_5     ) = '$DoE.$RS_torqe'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_5     ) = 1

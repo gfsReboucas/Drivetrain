@@ -1092,6 +1092,95 @@ sensor.from (                       $S_speed_sun_01               ) = $M_Isys   
 sensor.to (                         $S_speed_sun_01               ) = $M_Isys                 ! To Marker
 
 !**********************************************************************
+! Result Elements
+!**********************************************************************
+resultgroup.begin (                 $REG_mesh                     )                           ! $REG_mesh
+   result.container (               $RS_sun_planet                ) = null                    ! Parent result element
+   result.type (                    $RS_sun_planet                ) = 22                      ! Type
+   result.active (                  $RS_sun_planet                ) = 0                       ! Active
+   result.par (           1 ,       $RS_sun_planet                ) = 3.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_sun_planet                ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_sun_planet                ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_sun_planet                ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_sun_planet                ) = $FEG_mesh.$F_sun_planet_01 ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_sun_planet                ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_sun_planet                ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_sun_planet                ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_sun_planet                ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_sun_planet                ) = $FEG_mesh.$F_sun_planet_02 ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_sun_planet                ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_sun_planet                ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_sun_planet                ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_sun_planet                ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_sun_planet                ) = $FEG_mesh.$F_sun_planet_03 ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_sun_planet                ) = 2.00000000000000000E+01 ! [-] Output Value
+
+   result.container (               $RS_ring_planet               ) = null                    ! Parent result element
+   result.type (                    $RS_ring_planet               ) = 22                      ! Type
+   result.active (                  $RS_ring_planet               ) = 0                       ! Active
+   result.par (           1 ,       $RS_ring_planet               ) = 3.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_ring_planet               ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_ring_planet               ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_ring_planet               ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_ring_planet               ) = $FEG_mesh.$F_ring_planet_01 ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_ring_planet               ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_ring_planet               ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_ring_planet               ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_ring_planet               ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_ring_planet               ) = $FEG_mesh.$F_ring_planet_02 ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_ring_planet               ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_ring_planet               ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_ring_planet               ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_ring_planet               ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_ring_planet               ) = $FEG_mesh.$F_ring_planet_03 ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_ring_planet               ) = 2.00000000000000000E+01 ! [-] Output Value
+
+resultgroup.end (                   $REG_mesh                     )                           ! $REG_mesh
+
+resultgroup.begin (                 $REG_mesh_basic               )                           ! $REG_mesh_basic
+   result.container (               $RS_sun_planet                ) = null                    ! Parent result element
+   result.type (                    $RS_sun_planet                ) = 22                      ! Type
+   result.active (                  $RS_sun_planet                ) = $_use_advanced          ! Active
+   result.par (           1 ,       $RS_sun_planet                ) = 3.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_sun_planet                ) = $_use_advanced          ! Active
+   result.channel.indep.ele (   1 , $RS_sun_planet                ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_sun_planet                ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_sun_planet                ) = $FEG_mesh_basic.$F_sun_planet_01 ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_sun_planet                ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_sun_planet                ) = $_use_advanced          ! Active
+   result.channel.indep.ele (   2 , $RS_sun_planet                ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_sun_planet                ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_sun_planet                ) = $FEG_mesh_basic.$F_sun_planet_02 ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_sun_planet                ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_sun_planet                ) = $_use_advanced          ! Active
+   result.channel.indep.ele (   3 , $RS_sun_planet                ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_sun_planet                ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_sun_planet                ) = $FEG_mesh_basic.$F_sun_planet_03 ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_sun_planet                ) = 2.00000000000000000E+01 ! [-] Output Value
+
+   result.container (               $RS_ring_planet               ) = null                    ! Parent result element
+   result.type (                    $RS_ring_planet               ) = 22                      ! Type
+   result.active (                  $RS_ring_planet               ) = $_use_advanced          ! Active
+   result.par (           1 ,       $RS_ring_planet               ) = 3.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_ring_planet               ) = $_use_advanced          ! Active
+   result.channel.indep.ele (   1 , $RS_ring_planet               ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_ring_planet               ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_ring_planet               ) = $FEG_mesh_basic.$F_ring_planet_01 ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_ring_planet               ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_ring_planet               ) = $_use_advanced          ! Active
+   result.channel.indep.ele (   2 , $RS_ring_planet               ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_ring_planet               ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_ring_planet               ) = $FEG_mesh_basic.$F_ring_planet_02 ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_ring_planet               ) = 2.00000000000000000E+01 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_ring_planet               ) = $_use_advanced          ! Active
+   result.channel.indep.ele (   3 , $RS_ring_planet               ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_ring_planet               ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_ring_planet               ) = $FEG_mesh_basic.$F_ring_planet_03 ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_ring_planet               ) = 2.00000000000000000E+01 ! [-] Output Value
+
+resultgroup.end (                   $REG_mesh_basic               )                           ! $REG_mesh_basic
+
+!**********************************************************************
 ! Senders
 !**********************************************************************
 sender.ref (                        $COM_stage_length             ) = $_stage_length          ! Source object

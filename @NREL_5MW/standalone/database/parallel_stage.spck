@@ -1537,6 +1537,174 @@ youtgroup.begin (                   $YOG_wheel_bearing            )             
 youtgroup.end (                     $YOG_wheel_bearing            )                           ! $YOG_wheel_bearing
 
 !**********************************************************************
+! Result Elements
+!**********************************************************************
+result.container (                  $RS_pinion_wheel              ) = null                    ! Parent result element
+result.type (                       $RS_pinion_wheel              ) = 22                      ! Type
+result.par (              1 ,       $RS_pinion_wheel              ) = 1.00000000000000000E+00 ! [-] Number of Result channels
+result.channel.active (   1 ,       $RS_pinion_wheel              ) = 0                       ! Active
+result.channel.indep.ele (   1 ,    $RS_pinion_wheel              ) = null                    ! Independent channel element
+result.channel.par (      1 ,   1 , $RS_pinion_wheel              ) = 6.00000000000000000E+00 ! [-] Kind
+result.channel.par (      2 ,   1 , $RS_pinion_wheel              ) = $F_pinion_wheel         ! [-] Force/Control Element
+result.channel.par (      3 ,   1 , $RS_pinion_wheel              ) = 2.00000000000000000E+01 ! [-] Output Value
+
+resultgroup.begin (                 $REG_pinion_bearing           )                           ! $REG_pinion_bearing
+   result.container (               $RS_bearing_A                 ) = null                    ! Parent result element
+   result.type (                    $RS_bearing_A                 ) = 22                      ! Type
+   result.active (                  $RS_bearing_A                 ) = 0                       ! Active
+   result.par (           1 ,       $RS_bearing_A                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_bearing_A                 ) = $FEG_pinion_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_bearing_A                 ) = 1.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_bearing_A                 ) = $FEG_pinion_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_bearing_A                 ) = 2.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_bearing_A                 ) = $FEG_pinion_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_bearing_A                 ) = 3.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   4 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   4 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   4 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   4 , $RS_bearing_A                 ) = $FEG_pinion_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   4 , $RS_bearing_A                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+   result.container (               $RS_bearing_B                 ) = null                    ! Parent result element
+   result.type (                    $RS_bearing_B                 ) = 22                      ! Type
+   result.active (                  $RS_bearing_B                 ) = 0                       ! Active
+   result.par (           1 ,       $RS_bearing_B                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_bearing_B                 ) = $FEG_pinion_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_bearing_B                 ) = 1.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_bearing_B                 ) = $FEG_pinion_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_bearing_B                 ) = 2.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_bearing_B                 ) = $FEG_pinion_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_bearing_B                 ) = 3.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   4 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   4 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   4 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   4 , $RS_bearing_B                 ) = $FEG_pinion_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   4 , $RS_bearing_B                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+   result.container (               $RS_bearing_C                 ) = null                    ! Parent result element
+   result.type (                    $RS_bearing_C                 ) = 22                      ! Type
+   result.active (                  $RS_bearing_C                 ) = 0                       ! Active
+   result.par (           1 ,       $RS_bearing_C                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_bearing_C                 ) = $FEG_pinion_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_bearing_C                 ) = 1.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_bearing_C                 ) = $FEG_pinion_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_bearing_C                 ) = 2.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_bearing_C                 ) = $FEG_pinion_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_bearing_C                 ) = 3.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   4 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   4 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   4 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   4 , $RS_bearing_C                 ) = $FEG_pinion_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   4 , $RS_bearing_C                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+resultgroup.end (                   $REG_pinion_bearing           )                           ! $REG_pinion_bearing
+
+resultgroup.begin (                 $REG_wheel_bearing            )                           ! $REG_wheel_bearing
+   result.container (               $RS_bearing_A                 ) = null                    ! Parent result element
+   result.type (                    $RS_bearing_A                 ) = 22                      ! Type
+   result.active (                  $RS_bearing_A                 ) = 0                       ! Active
+   result.par (           1 ,       $RS_bearing_A                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_bearing_A                 ) = $FEG_wheel_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_bearing_A                 ) = 1.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_bearing_A                 ) = $FEG_wheel_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_bearing_A                 ) = 2.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_bearing_A                 ) = $FEG_wheel_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_bearing_A                 ) = 3.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   4 ,    $RS_bearing_A                 ) = 0                       ! Active
+   result.channel.indep.ele (   4 , $RS_bearing_A                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   4 , $RS_bearing_A                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   4 , $RS_bearing_A                 ) = $FEG_wheel_bearing.$F_A ! [-] Force/Control Element
+   result.channel.par (   3 ,   4 , $RS_bearing_A                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+   result.container (               $RS_bearing_B                 ) = null                    ! Parent result element
+   result.type (                    $RS_bearing_B                 ) = 22                      ! Type
+   result.active (                  $RS_bearing_B                 ) = 0                       ! Active
+   result.par (           1 ,       $RS_bearing_B                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_bearing_B                 ) = $FEG_wheel_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_bearing_B                 ) = 1.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_bearing_B                 ) = $FEG_wheel_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_bearing_B                 ) = 2.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_bearing_B                 ) = $FEG_wheel_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_bearing_B                 ) = 3.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   4 ,    $RS_bearing_B                 ) = 0                       ! Active
+   result.channel.indep.ele (   4 , $RS_bearing_B                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   4 , $RS_bearing_B                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   4 , $RS_bearing_B                 ) = $FEG_wheel_bearing.$F_B ! [-] Force/Control Element
+   result.channel.par (   3 ,   4 , $RS_bearing_B                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+   result.container (               $RS_bearing_C                 ) = null                    ! Parent result element
+   result.type (                    $RS_bearing_C                 ) = 22                      ! Type
+   result.active (                  $RS_bearing_C                 ) = 0                       ! Active
+   result.par (           1 ,       $RS_bearing_C                 ) = 4.00000000000000000E+00 ! [-] Number of Result channels
+   result.channel.active (   1 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   1 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   1 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   1 , $RS_bearing_C                 ) = $FEG_wheel_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   1 , $RS_bearing_C                 ) = 1.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   2 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   2 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   2 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   2 , $RS_bearing_C                 ) = $FEG_wheel_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   2 , $RS_bearing_C                 ) = 2.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   3 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   3 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   3 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   3 , $RS_bearing_C                 ) = $FEG_wheel_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   3 , $RS_bearing_C                 ) = 3.00000000000000000E+00 ! [-] Output Value
+   result.channel.active (   4 ,    $RS_bearing_C                 ) = 0                       ! Active
+   result.channel.indep.ele (   4 , $RS_bearing_C                 ) = null                    ! Independent channel element
+   result.channel.par (   1 ,   4 , $RS_bearing_C                 ) = 6.00000000000000000E+00 ! [-] Kind
+   result.channel.par (   2 ,   4 , $RS_bearing_C                 ) = $FEG_wheel_bearing.$F_C ! [-] Force/Control Element
+   result.channel.par (   3 ,   4 , $RS_bearing_C                 ) = 1.70000000000000000E+01 ! [-] Output Value
+
+resultgroup.end (                   $REG_wheel_bearing            )                           ! $REG_wheel_bearing
+
+!**********************************************************************
 ! Senders
 !**********************************************************************
 sender.ref (                        $COM_shaft_length             ) = $SVG_shaft.$_length     ! Source object

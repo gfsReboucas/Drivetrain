@@ -1422,19 +1422,19 @@ classdef (Abstract) Drivetrain
             
         end
         
-        function [gm, a, b] = Simpack_DOE(obj, t_transient)
+        function [X, Y_A, Y_B] = Simpack_DOE(obj, DOE_folder, t_transient)
             %SIMPACK_DOE cleans the data set called model_name,
             % neglecting the first t_transient seconds.
             %
-            
-            directory = dir('@NREL_5MW\\DoE\\run*');
+
+            directory = dir(sprintf('@%s\\%s\\run*', class(obj), DOE_folder));
             n = numel(directory);
-            a = zeros(37, n);
-            b = zeros(37, n);
+            Y_A = zeros(37, n);
+            Y_B = zeros(37, n);
             
-            gm = zeros(n, 4);
+            X = zeros(n, 34);
             
-            name = {'INP-A', 'INP-B', 'PL-A1', 'PL-B1', 'PL-A2', 'PL-B2', 'PL-A3', ...
+            name_Y = {'INP-A', 'INP-B', 'PL-A1', 'PL-B1', 'PL-A2', 'PL-B2', 'PL-A3', ...
                 'PL-B3', 'PLC-A1', 'PLC-B2', 'S01-SP1', 'S01-SP2', 'S01-SP3', 'S01-RP1', 'S01-RP2', ...
                 'S01-RP3', 'IMS-PL-A1', 'IMS-PL-B1', 'IMS-PL-A2', 'IMS-PL-B2', ...
                 'IMS-PL-A3', 'IMS-PL-B3', 'IMS-PLC-A1', 'IMS-PLC-B2', 'S02-SP1', ...
@@ -1444,7 +1444,7 @@ classdef (Abstract) Drivetrain
             for idx = 1:numel(directory)
                 %% cleaning:
                 % read folder:
-                folder_name = sprintf('@%s\\DoE\\run%02d\\output\\m1_var.mat', class(obj), idx);
+                folder_name = sprintf('%s\\%s\\output\\m1_var.mat', directory(idx).folder, directory(idx).name);
                 MAT_file = dir(folder_name);
                 
                 if(~isempty(MAT_file))
@@ -1452,15 +1452,16 @@ classdef (Abstract) Drivetrain
                           MAT_file.name], 'timeInt');
 
                     field_name = fieldnames(timeInt.subvar);
-                    index = find(contains(field_name, 'gamma_stiff'));
+                    index = contains(field_name, '__gamma_');
+                    name_X = field_name(index);
 
-                    for jdx = 1:4
-                        gm(idx, jdx) = timeInt.subvar.(field_name{index(jdx)}).value;
+                    for jdx = 1:numel(name_X)
+                        X(idx, jdx) = timeInt.subvar.(name_X{jdx}).value;
                     end
 
                     time  = timeInt.time.values;
-                    data.time_step = time(2) - time(1);
-                    idx_TRS = find(time < t_transient, 1, 'last');
+                    data.time_step = double(mean(diff(time)));
+                    idx_TRS = find(time <= t_transient, 1, 'last');
 
                     data.load  = timeInt.forceOv;
                     data.speed = timeInt.bodyVelRot;
@@ -1543,12 +1544,12 @@ classdef (Abstract) Drivetrain
                         b_sim{jdx + 1} = b_idx;
                     end
 
-                    a(:, idx) = cell2mat(a_sim);
-                    b(:, idx) = cell2mat(b_sim);
+                    Y_A(:, idx) = cell2mat(a_sim);
+                    Y_B(:, idx) = cell2mat(b_sim);
                 end
             end
             
-            save('data/DOE_coeffs.mat', 'a', 'b', 'gm', 'name');
+            save('data/DOE_coeffs.mat', 'Y_A', 'Y_B', 'X', 'name_X', 'name_Y');
             
         end
         
