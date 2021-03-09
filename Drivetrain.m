@@ -1427,12 +1427,14 @@ classdef (Abstract) Drivetrain
             % neglecting the first t_transient seconds.
             %
 
-            directory = dir(sprintf('@%s\\%s\\run*', class(obj), DOE_folder));
+            directory = dir(sprintf('@%s\\%s\\data_*.mat', class(obj), DOE_folder));
+            directory = directory(~contains({directory.name}, 'ev'));
+            
             n = numel(directory);
             Y_A = zeros(37, n);
             Y_B = zeros(37, n);
             
-            X = zeros(n, 34);
+            X = zeros(34, n);
             
             name_Y = {'INP-A', 'INP-B', 'PL-A1', 'PL-B1', 'PL-A2', 'PL-B2', 'PL-A3', ...
                 'PL-B3', 'PLC-A1', 'PLC-B2', 'S01-SP1', 'S01-SP2', 'S01-SP3', 'S01-RP1', 'S01-RP2', ...
@@ -1444,7 +1446,7 @@ classdef (Abstract) Drivetrain
             for idx = 1:numel(directory)
                 %% cleaning:
                 % read folder:
-                folder_name = sprintf('%s\\%s\\output\\m1_var.mat', directory(idx).folder, directory(idx).name);
+                folder_name = sprintf('%s\\%s', directory(idx).folder, directory(idx).name);
                 MAT_file = dir(folder_name);
                 
                 if(~isempty(MAT_file))
@@ -1456,7 +1458,7 @@ classdef (Abstract) Drivetrain
                     name_X = field_name(index);
 
                     for jdx = 1:numel(name_X)
-                        X(idx, jdx) = timeInt.subvar.(name_X{jdx}).value;
+                        X(jdx, idx) = timeInt.subvar.(name_X{jdx}).value;
                     end
 
                     time  = timeInt.time.values;
@@ -1549,7 +1551,7 @@ classdef (Abstract) Drivetrain
                 end
             end
             
-            save('data/DOE_coeffs.mat', 'Y_A', 'Y_B', 'X', 'name_X', 'name_Y');
+            save(sprintf('%s\\DOE_coeffs.mat', directory(1).folder), 'Y_A', 'Y_B', 'X', 'name_X', 'name_Y');
             
         end
         

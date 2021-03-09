@@ -8,167 +8,77 @@ runs.num                                                            = 100
 runs.cand                                                           = 84
 seed                                                                = 0
 centerpoints.num                                                    = 0
-centerpoints.default                                                = 0
+centerpoints.default                                                = 1
 
 ! Factors
 
-factors.name (            1                                       ) = 'gamma_P'
+factors.name (            1                                       ) = 'gamma_MS'
 factors.size (            1                                       ) = 2
-factors.ele (             1 ,   1                                 ) = $SVG_loading.$_gamma_Power
+factors.ele (             1 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
 factors.type (            1 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             1 ,   1                                 ) = '0.5'
 factors.max (             1 ,   1                                 ) = '1.5'
 factors.order (           1 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.name (            2                                       ) = 'gamma_F'
+factors.ele (             1 ,   2                                 ) = $SVG_main_shaft.$_gamma_damp
+factors.type (            1 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             1 ,   2                                 ) = '0.5'
+factors.max (             1 ,   2                                 ) = '1.5'
+factors.order (           1 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.name (            2                                       ) = 'gamma_S1'
 factors.size (            2                                       ) = 2
-factors.ele (             2 ,   1                                 ) = $SVG_loading.$_gamma_Force
+factors.ele (             2 ,   1                                 ) = $SVG_stage_01.$_gamma_stiff
 factors.type (            2 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             2 ,   1                                 ) = '0.5'
 factors.max (             2 ,   1                                 ) = '1.5'
 factors.order (           2 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.name (            3                                       ) = 'gamma_X'
+factors.ele (             2 ,   2                                 ) = $SVG_stage_01.$_gamma_damp
+factors.type (            2 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   2                                 ) = '0.5'
+factors.max (             2 ,   2                                 ) = '1.5'
+factors.order (           2 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.name (            3                                       ) = 'gamma_S2'
 factors.size (            3                                       ) = 2
-factors.ele (             3 ,   1                                 ) = $SVG_loading.$_gamma_Disp
+factors.ele (             3 ,   1                                 ) = $SVG_stage_02.$_gamma_stiff
 factors.type (            3 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             3 ,   1                                 ) = '0.5'
 factors.max (             3 ,   1                                 ) = '1.5'
 factors.order (           3 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.ele (             3 ,   2                                 ) = $SVG_main_shaft.$_gamma_L
+factors.ele (             3 ,   2                                 ) = $SVG_stage_02.$_gamma_damp
 factors.type (            3 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             3 ,   2                                 ) = '0.5'
 factors.max (             3 ,   2                                 ) = '1.5'
 factors.order (           3 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.ele (             3 ,   3                                 ) = $SVG_stage_01.$_gamma_mn
-factors.type (            3 ,   3                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   3                                 ) = '0.5'
-factors.max (             3 ,   3                                 ) = '1.5'
-factors.order (           3 ,   3                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,   4                                 ) = $SVG_stage_01.$_gamma_b
-factors.type (            3 ,   4                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   4                                 ) = '0.5'
-factors.max (             3 ,   4                                 ) = '1.5'
-factors.order (           3 ,   4                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,   5                                 ) = $SVG_stage_01.$_gamma_L
-factors.type (            3 ,   5                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   5                                 ) = '0.5'
-factors.max (             3 ,   5                                 ) = '1.5'
-factors.order (           3 ,   5                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,   6                                 ) = $SVG_stage_01.$_gamma_d
-factors.type (            3 ,   6                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   6                                 ) = '0.5'
-factors.max (             3 ,   6                                 ) = '1.5'
-factors.order (           3 ,   6                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,   7                                 ) = $SVG_stage_02.$_gamma_mn
-factors.type (            3 ,   7                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   7                                 ) = '0.5'
-factors.max (             3 ,   7                                 ) = '1.5'
-factors.order (           3 ,   7                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,   8                                 ) = $SVG_stage_02.$_gamma_b
-factors.type (            3 ,   8                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   8                                 ) = '0.5'
-factors.max (             3 ,   8                                 ) = '1.5'
-factors.order (           3 ,   8                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,   9                                 ) = $SVG_stage_02.$_gamma_L
-factors.type (            3 ,   9                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,   9                                 ) = '0.5'
-factors.max (             3 ,   9                                 ) = '1.5'
-factors.order (           3 ,   9                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,  10                                 ) = $SVG_stage_02.$_gamma_d
-factors.type (            3 ,  10                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,  10                                 ) = '0.5'
-factors.max (             3 ,  10                                 ) = '1.5'
-factors.order (           3 ,  10                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,  11                                 ) = $SVG_stage_03.$_gamma_mn
-factors.type (            3 ,  11                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,  11                                 ) = '0.5'
-factors.max (             3 ,  11                                 ) = '1.5'
-factors.order (           3 ,  11                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,  12                                 ) = $SVG_stage_03.$_gamma_b
-factors.type (            3 ,  12                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,  12                                 ) = '0.5'
-factors.max (             3 ,  12                                 ) = '1.5'
-factors.order (           3 ,  12                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,  13                                 ) = $SVG_stage_03.$_gamma_L
-factors.type (            3 ,  13                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,  13                                 ) = '0.5'
-factors.max (             3 ,  13                                 ) = '1.5'
-factors.order (           3 ,  13                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             3 ,  14                                 ) = $SVG_stage_03.$_gamma_d
-factors.type (            3 ,  14                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             3 ,  14                                 ) = '0.5'
-factors.max (             3 ,  14                                 ) = '1.5'
-factors.order (           3 ,  14                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.name (            4                                       ) = 'gamma_K'
+factors.name (            4                                       ) = 'gamma_S3'
 factors.size (            4                                       ) = 2
-factors.ele (             4 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
+factors.ele (             4 ,   1                                 ) = $SVG_stage_03.$_gamma_stiff
 factors.type (            4 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             4 ,   1                                 ) = '0.5'
 factors.max (             4 ,   1                                 ) = '1.5'
 factors.order (           4 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.ele (             4 ,   2                                 ) = $SVG_stage_01.$_gamma_stiff
+factors.ele (             4 ,   2                                 ) = $SVG_stage_03.$_gamma_damp
 factors.type (            4 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             4 ,   2                                 ) = '0.5'
 factors.max (             4 ,   2                                 ) = '1.5'
 factors.order (           4 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.ele (             4 ,   3                                 ) = $SVG_stage_02.$_gamma_stiff
-factors.type (            4 ,   3                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             4 ,   3                                 ) = '0.5'
-factors.max (             4 ,   3                                 ) = '1.5'
-factors.order (           4 ,   3                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             4 ,   4                                 ) = $SVG_stage_03.$_gamma_stiff
-factors.type (            4 ,   4                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             4 ,   4                                 ) = '0.5'
-factors.max (             4 ,   4                                 ) = '1.5'
-factors.order (           4 ,   4                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.name (            5                                       ) = 'gamma_D'
+factors.name (            5                                       ) = 'gamma_F'
 factors.size (            5                                       ) = 2
-factors.ele (             5 ,   1                                 ) = $SVG_main_shaft.$_gamma_damp
+factors.ele (             5 ,   1                                 ) = $SVG_loading.$_gamma_Force
 factors.type (            5 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             5 ,   1                                 ) = '0.5'
 factors.max (             5 ,   1                                 ) = '1.5'
 factors.order (           5 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
 
-factors.ele (             5 ,   2                                 ) = $SVG_stage_01.$_gamma_damp
-factors.type (            5 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             5 ,   2                                 ) = '0.5'
-factors.max (             5 ,   2                                 ) = '1.5'
-factors.order (           5 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             5 ,   3                                 ) = $SVG_stage_02.$_gamma_damp
-factors.type (            5 ,   3                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             5 ,   3                                 ) = '0.5'
-factors.max (             5 ,   3                                 ) = '1.5'
-factors.order (           5 ,   3                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.ele (             5 ,   4                                 ) = $SVG_stage_03.$_gamma_damp
-factors.type (            5 ,   4                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
-factors.min (             5 ,   4                                 ) = '0.5'
-factors.max (             5 ,   4                                 ) = '1.5'
-factors.order (           5 ,   4                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
-
-factors.name (            6                                       ) = 'gamma_speed'
+factors.name (            6                                       ) = 'gamma_X'
 factors.size (            6                                       ) = 2
-factors.ele (             6 ,   1                                 ) = $SVG_loading.$_gamma_Speed
+factors.ele (             6 ,   1                                 ) = $SVG_loading.$_gamma_Disp
 factors.type (            6 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
 factors.min (             6 ,   1                                 ) = '0.5'
 factors.max (             6 ,   1                                 ) = '1.5'

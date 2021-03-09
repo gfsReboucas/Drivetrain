@@ -70,3 +70,5 @@ notes/gear_params.ipynb
 @NREL_5MW/DoE_0500.0kW
 main_shaft
 *.kpro
+data/sample_all.csv
+data/sample_stiff_damp_load.csv

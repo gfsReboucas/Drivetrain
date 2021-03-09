@@ -17,7 +17,7 @@ subvargroup.begin (                 $SVG_loading                  )             
    subvar($_gamma_Disp, str= '1.0') ! pow($SVG_loading.$_gamma_Power, 1.0/3.0)')                      ! $SVG_loading.$_gamma_Disp
    subvar($_rated_power_ref, str= '5.0e3 kW')                                                 ! $SVG_loading.$_rated_power_ref
    subvar($_rated_power, str= '$SVG_loading.$_rated_power_ref*$SVG_loading.$_gamma_Power')    ! $SVG_loading.$_rated_power
-   subvar($_simulation_time, str= '0.30000e+02 s')                                            ! $SVG_loading.$_simulation_time
+   subvar($_simulation_time, str= '300.0 s')                                            ! $SVG_loading.$_simulation_time
    subvar($_start_steady_state, str= '$SVG_loading.$_simulation_time*2.0/3.0')                ! $SVG_loading.$_start_steady_state
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
