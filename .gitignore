@@ -67,3 +67,7 @@ notes/gear_params.ipynb
 main_shaft
 *.kpro
 data/tab_gm.csv
+notes/.ipynb_checkpoints
+notes/__pycache__
+notes/DA*
+@NREL_5MW/sample_stiff_damp_load.csv
