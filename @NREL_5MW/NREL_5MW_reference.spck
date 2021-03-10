@@ -33,6 +33,8 @@ subvarset.file (          4                                       ) = './NREL_5M
 subvarset.role (          4                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 subvarset.file (          5                                       ) = './NREL_5MW_0000.5kW.subvar' ! subvarset filename
 subvarset.role (          5                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
+subvarset.file (          6                                       ) = './NREL_5MW_DA.subvar'  ! subvarset filename
+subvarset.role (          6                                       ) = 0                       ! subvarset role: 0 = ini subvarset; 1 = overwriting (late) subvarset
 prop3d.bg.base.color.r                                              = 2.15000000000000000E+02 ! Background color (red component)
 prop3d.bg.base.color.g                                              = 2.15000000000000000E+02 ! Background color (green component)
 prop3d.bg.base.color.b                                              = 2.15000000000000000E+02 ! Background color (blue component)
