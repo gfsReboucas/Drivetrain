@@ -108,6 +108,13 @@ classdef SimpackCOM
             
             % Update state set:
             [path, name] = fileparts(obj.model.origin);
+            
+            solver = obj.find_element(obj.model.slv_active.src);
+            base_name = solver.output_file_basename.src;
+            if(~isempty(base_name))
+                name = base_name;
+            end
+            
             load(sprintf('%s/output/%s.ev.mat', path, name), 'eigen');
             
             % resonances:
@@ -202,6 +209,10 @@ classdef SimpackCOM
             
             % Update state set:
             [path, name] = fileparts(obj.model.origin);
+            base_name = solver.output_file_basename.src;
+            if(~isempty(base_name))
+                name = base_name;
+            end
             full_name  = sprintf('%s/output/%s.spckst', path, name);
             
 %             fprintf('SCRIPT:\t5.1.1. Updating state sets with result from solver (static equilibrium via time integration)...\n');
