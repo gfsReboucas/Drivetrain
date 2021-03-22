@@ -119,8 +119,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.56237232
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.57387498766183853E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.57387485504150391E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.57387517392635345E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.57387514114379883E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -1051,6 +1051,10 @@ subvargroup.begin (                 $SVG_loading                  )             
 
    subvar.str (                     $_gamma_Force                 ) = '1.0'                   ! $SVG_loading.$_gamma_Force, Definition
 
+   subvar.str (                     $_gamma_time                  ) = '1.0'                   ! $SVG_loading.$_gamma_time, Definition
+
+   subvar.str (                     $_gamma_Speed                 ) = '1.0'                   ! $SVG_loading.$_gamma_Speed, Definition
+
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_gear_params              )                           ! $SVG_gear_params
@@ -1273,10 +1277,7 @@ control.par (            15 ,       $C_gen_speed                  ) = 0.00000000
 ! Input Functions
 !**********************************************************************
 ifctn.file (                        $I_F_x                        ) = '../ref_files/Fx.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_F_x                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_F_x                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_F_x                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_F_x                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_F_x                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_F_x                        ) = $SVG_loading.$_gamma_Force ! Scaling factor
 ifctn.range.handling (              $I_F_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_F_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1292,10 +1293,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_F_x                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_F_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_F_y                        ) = '../ref_files/Fy.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_F_y                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_F_y                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_F_y                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_F_y                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_F_y                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_F_y                        ) = $SVG_loading.$_gamma_Force ! Scaling factor
 ifctn.range.handling (              $I_F_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_F_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1311,10 +1309,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_F_y                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_F_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_F_z                        ) = '../ref_files/Fz.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_F_z                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_F_z                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_F_z                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_F_z                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_F_z                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_F_z                        ) = $SVG_loading.$_gamma_Force ! Scaling factor
 ifctn.range.handling (              $I_F_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_F_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1330,10 +1325,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_F_z                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_F_z                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_M_x                        ) = '../ref_files/Mx.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_M_x                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_M_x                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_M_x                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_M_x                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_M_x                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_M_x                        ) = $SVG_loading.$_gamma_Torque ! Scaling factor
 ifctn.range.handling (              $I_M_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_M_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1349,10 +1341,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_M_x                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_M_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_M_y                        ) = '../ref_files/My.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_M_y                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_M_y                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_M_y                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_M_y                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_M_y                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_M_y                        ) = $SVG_loading.$_gamma_Torque ! Scaling factor
 ifctn.range.handling (              $I_M_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_M_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1368,10 +1357,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_M_y                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_M_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_M_z                        ) = '../ref_files/Mz.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_M_z                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_M_z                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_M_z                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_M_z                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_M_z                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_M_z                        ) = $SVG_loading.$_gamma_Torque ! Scaling factor
 ifctn.range.handling (              $I_M_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_M_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1387,6 +1373,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_M_z                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_M_z                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_omega_gen                  ) = '../ref_files/GEN_SPD.if2' ! File or URI
+ifctn.scal.x (                      $I_omega_gen                  ) = $SVG_loading.$_gamma_time ! Scaling factor
+ifctn.scal.z (                      $I_omega_gen                  ) = $SVG_loading.$_gamma_Speed ! Scaling factor
 ifctn.desc (              1 ,       $I_omega_gen                  ) = 'in [rad/s]'            ! Description
 ifctn.range.handling (              $I_omega_gen                  ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_omega_gen                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -2569,7 +2557,11 @@ receiver.ref (                      $COM_gamma_Torque             ) = $SVG_loadi
 
 receiver.ref (                      $COM_gamma_Force              ) = $SVG_loading.$_gamma_Force ! Destination object
 
+receiver.ref (                      $COM_gamma_time               ) = $SVG_loading.$_gamma_time ! Destination object
+
 receiver.ref (                      $COM_aero_excitation_flag     ) = $SVG_loading.$_aero_flag ! Destination object
+
+receiver.ref (                      $COM_gamma_Speed              ) = $SVG_loading.$_gamma_Speed ! Destination object
 
 
 ! Overwritten substructure values

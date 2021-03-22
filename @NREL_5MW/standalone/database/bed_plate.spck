@@ -214,6 +214,8 @@ subvar.str (                        $_housing_width               ) = '3.0 m'   
 
 subvar.str (                        $_gamma_Disp                  ) = '1.0'                   ! Definition
 
+subvar.str (                        $_gamma_time                  ) = '1.0'                   ! Definition
+
 subvargroup.begin (                 $SVG_bed_plate                )                           ! $SVG_bed_plate
    subvar.str (                     $_length                      ) = '7.0 m'                 ! $SVG_bed_plate.$_length, Definition
 
@@ -428,6 +430,7 @@ connect.par (             3 ,   9 , $CTN_fixed                    ) = 0.00000000
 ! Input Functions
 !**********************************************************************
 ifctn.file (                        $I_x                          ) = '../ref_files/EC4_s01_X.if2' ! File or URI
+ifctn.scal.x (                      $I_x                          ) = $_gamma_time            ! Scaling factor
 ifctn.scal.z (                      $I_x                          ) = $_gamma_Disp            ! Scaling factor
 ifctn.offset.z (                    $I_x                          ) = 0.00000000000000000E+00 ! Offset value
 ifctn.range.handling (              $I_x                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
@@ -444,6 +447,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_x                    ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_x                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_y                          ) = '../ref_files/EC4_s01_Y.if2' ! File or URI
+ifctn.scal.x (                      $I_y                          ) = $_gamma_time            ! Scaling factor
 ifctn.scal.z (                      $I_y                          ) = $_gamma_Disp            ! Scaling factor
 ifctn.offset.z (                    $I_y                          ) = 0.00000000000000000E+00 ! Offset value
 ifctn.range.handling (              $I_y                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
@@ -460,6 +464,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_y                    ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_y                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_z                          ) = '../ref_files/EC4_s01_Z.if2' ! File or URI
+ifctn.scal.x (                      $I_z                          ) = $_gamma_time            ! Scaling factor
 ifctn.scal.z (                      $I_z                          ) = $_gamma_Disp            ! Scaling factor
 ifctn.range.handling (              $I_z                          ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_z                          ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -475,6 +480,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_z                    ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_z                    ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_alpha                      ) = '../ref_files/EC4_s01_X_rot.if2' ! File or URI
+ifctn.scal.x (                      $I_alpha                      ) = $_gamma_time            ! Scaling factor
 ifctn.range.handling (              $I_alpha                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_alpha                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_alpha                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -489,6 +495,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_alpha                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_alpha                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_beta                       ) = '../ref_files/EC4_s01_Y_rot.if2' ! File or URI
+ifctn.scal.x (                      $I_beta                       ) = $_gamma_time            ! Scaling factor
 ifctn.range.handling (              $I_beta                       ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_beta                       ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_beta                       ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -503,6 +510,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_beta                 ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_beta                 ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_gamma                      ) = '../ref_files/EC4_s01_Z_rot.if2' ! File or URI
+ifctn.scal.x (                      $I_gamma                      ) = $_gamma_time            ! Scaling factor
 ifctn.range.handling (              $I_gamma                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_gamma                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_gamma                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -517,11 +525,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_gamma                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_gamma                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_x_dot                      ) = '../ref_files/EC4_s01_XD.if2' ! File or URI
-ifctn.x (                 1 ,       $I_x_dot                      ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_x_dot                      ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_x_dot                      ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_x_dot                      ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_x_dot                      ) = $_gamma_Disp            ! Scaling factor
+ifctn.scal.x (                      $I_x_dot                      ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_x_dot                      ) = { $_gamma_Disp/$_gamma_time } ! Scaling factor
 ifctn.range.handling (              $I_x_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_x_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_x_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -536,11 +541,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_x_dot                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_x_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_y_dot                      ) = '../ref_files/EC4_s01_YD.if2' ! File or URI
-ifctn.x (                 1 ,       $I_y_dot                      ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_y_dot                      ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_y_dot                      ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_y_dot                      ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_y_dot                      ) = $_gamma_Disp            ! Scaling factor
+ifctn.scal.x (                      $I_y_dot                      ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_y_dot                      ) = { $_gamma_Disp/$_gamma_time } ! Scaling factor
 ifctn.range.handling (              $I_y_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_y_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_y_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -555,11 +557,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_y_dot                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_y_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_z_dot                      ) = '../ref_files/EC4_s01_ZD.if2' ! File or URI
-ifctn.x (                 1 ,       $I_z_dot                      ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_z_dot                      ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_z_dot                      ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_z_dot                      ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_z_dot                      ) = $_gamma_Disp            ! Scaling factor
+ifctn.scal.x (                      $I_z_dot                      ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_z_dot                      ) = { $_gamma_Disp/$_gamma_time } ! Scaling factor
 ifctn.range.handling (              $I_z_dot                      ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_z_dot                      ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_z_dot                      ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -574,6 +573,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_z_dot                ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_z_dot                ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_alpha_dot                  ) = '../ref_files/EC4_s01_X_rotD.if2' ! File or URI
+ifctn.scal.x (                      $I_alpha_dot                  ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_alpha_dot                  ) = { 1/$_gamma_time }      ! Scaling factor
 ifctn.range.handling (              $I_alpha_dot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_alpha_dot                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_alpha_dot                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -588,6 +589,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_alpha_dot            ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_alpha_dot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_beta_dot                   ) = '../ref_files/EC4_s01_Y_rotD.if2' ! File or URI
+ifctn.scal.x (                      $I_beta_dot                   ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_beta_dot                   ) = { 1/$_gamma_time }      ! Scaling factor
 ifctn.range.handling (              $I_beta_dot                   ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_beta_dot                   ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_beta_dot                   ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -602,6 +605,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_beta_dot             ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_beta_dot             ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_gamma_dot                  ) = '../ref_files/EC4_s01_Z_rotD.if2' ! File or URI
+ifctn.scal.x (                      $I_gamma_dot                  ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_gamma_dot                  ) = { 1/$_gamma_time }      ! Scaling factor
 ifctn.range.handling (              $I_gamma_dot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_gamma_dot                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_gamma_dot                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -616,11 +621,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_gamma_dot            ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_gamma_dot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_x_ddot                     ) = '../ref_files/EC4_s01_XDD.if2' ! File or URI
-ifctn.x (                 1 ,       $I_x_ddot                     ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_x_ddot                     ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_x_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_x_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_x_ddot                     ) = $_gamma_Disp            ! Scaling factor
+ifctn.scal.x (                      $I_x_ddot                     ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_x_ddot                     ) = { $_gamma_Disp/($_gamma_time)^2 } ! Scaling factor
 ifctn.range.handling (              $I_x_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_x_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_x_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -635,11 +637,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_x_ddot               ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_x_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_y_ddot                     ) = '../ref_files/EC4_s01_YDD.if2' ! File or URI
-ifctn.x (                 1 ,       $I_y_ddot                     ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_y_ddot                     ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_y_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_y_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_y_ddot                     ) = $_gamma_Disp            ! Scaling factor
+ifctn.scal.x (                      $I_y_ddot                     ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_y_ddot                     ) = { $_gamma_Disp/($_gamma_time)^2 } ! Scaling factor
 ifctn.range.handling (              $I_y_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_y_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_y_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -654,11 +653,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_y_ddot               ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_y_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_z_ddot                     ) = '../ref_files/EC4_s01_ZDD.if2' ! File or URI
-ifctn.x (                 1 ,       $I_z_ddot                     ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_z_ddot                     ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_z_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_z_ddot                     ) = 0.00000000000000000E+00 ! Y values
-ifctn.scal.z (                      $I_z_ddot                     ) = $_gamma_Disp            ! Scaling factor
+ifctn.scal.x (                      $I_z_ddot                     ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_z_ddot                     ) = { $_gamma_Disp/($_gamma_time)^2 } ! Scaling factor
 ifctn.range.handling (              $I_z_ddot                     ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_z_ddot                     ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_z_ddot                     ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -673,6 +669,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_z_ddot               ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_z_ddot               ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_alpha_ddot                 ) = '../ref_files/EC4_s01_X_rotDD.if2' ! File or URI
+ifctn.scal.x (                      $I_alpha_ddot                 ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_alpha_ddot                 ) = { 1/($_gamma_time)^2 }  ! Scaling factor
 ifctn.range.handling (              $I_alpha_ddot                 ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_alpha_ddot                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_alpha_ddot                 ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -687,6 +685,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_alpha_ddot           ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_alpha_ddot           ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_beta_ddot                  ) = '../ref_files/EC4_s01_Y_rotDD.if2' ! File or URI
+ifctn.scal.x (                      $I_beta_ddot                  ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_beta_ddot                  ) = { 1/($_gamma_time)^2 }  ! Scaling factor
 ifctn.range.handling (              $I_beta_ddot                  ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_beta_ddot                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_beta_ddot                  ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -701,6 +701,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_beta_ddot            ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_beta_ddot            ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_gamma_ddot                 ) = '../ref_files/EC4_s01_Z_rotDD.if2' ! File or URI
+ifctn.scal.x (                      $I_gamma_ddot                 ) = $_gamma_time            ! Scaling factor
+ifctn.scal.z (                      $I_gamma_ddot                 ) = { 1/($_gamma_time)^2 }  ! Scaling factor
 ifctn.range.handling (              $I_gamma_ddot                 ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_gamma_ddot                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 ifctn.plot.par (          1 ,   1 , $I_gamma_ddot                 ) = 1.02400000000000000E+03 ! [-] Unknown plot parameter
@@ -932,6 +934,8 @@ receiver.priolist (       1 ,       $COM_rotor_length             ) = '$COM_roto
 receiver.ref (                      $COM_housing_width            ) = $_housing_width         ! Destination object
 
 receiver.ref (                      $COM_gamma_Disp               ) = $_gamma_Disp            ! Destination object
+
+receiver.ref (                      $COM_gamma_time               ) = $_gamma_time            ! Destination object
 
 receivergroup.begin (               $RG_bed_plate                 )                           ! $RG_bed_plate
    receiver.ref (                   $COM_length                   ) = $SVG_bed_plate.$_length ! Destination object

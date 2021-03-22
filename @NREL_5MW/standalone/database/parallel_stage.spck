@@ -1754,10 +1754,16 @@ receiver.ref (                      $COM_tooth_stiffness_ratio    ) = $_tooth_st
 receiver.override (                 $COM_tooth_stiffness_ratio    ) = { 0 }                   ! Override index
 
 receiver.ref (                      $COM_x0_full_damping          ) = $_x0_full_damping       ! Destination object
-receiver.override (                 $COM_x0_full_damping          ) = { 0 }                   ! Override index
+receiver.priolist (       1 ,       $COM_x0_full_damping          ) = '$COM_stage_01_x0_full_damping' ! Sender priority list
+receiver.priolist (       2 ,       $COM_x0_full_damping          ) = '$COM_stage_02_x0_full_damping' ! Sender priority list
+receiver.priolist (       3 ,       $COM_x0_full_damping          ) = '$COM_stage_03_x0_full_damping' ! Sender priority list
+receiver.override (                 $COM_x0_full_damping          ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_regularization_vel       ) = $_regularization_vel    ! Destination object
-receiver.override (                 $COM_regularization_vel       ) = { 0 }                   ! Override index
+receiver.priolist (       1 ,       $COM_regularization_vel       ) = '$COM_stage_01_regulariz_vel' ! Sender priority list
+receiver.priolist (       2 ,       $COM_regularization_vel       ) = '$COM_stage_02_regulariz_vel' ! Sender priority list
+receiver.priolist (       3 ,       $COM_regularization_vel       ) = '$COM_stage_03_regulariz_vel' ! Sender priority list
+receiver.override (                 $COM_regularization_vel       ) = { SUBSTR_ID(1) }        ! Override index
 
 receiver.ref (                      $COM_mesh_flag                ) = $_mesh_flag             ! Destination object
 receiver.override (                 $COM_mesh_flag                ) = { 0 }                   ! Override index
