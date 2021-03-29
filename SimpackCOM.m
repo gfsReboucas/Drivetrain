@@ -207,6 +207,7 @@ classdef SimpackCOM
 %             fprintf('SCRIPT:\t5. Calculating static equilibrium using:\n');
 %             fprintf('SCRIPT:\t5.1. Time integration method...\n');
             solver = obj.find_element('$SLV_SolverSettings');
+%             solver = obj.find_element('$SLV_SolverSettings_FStep');
             solver.equi_st_meth.src = 1;
             solver.equi_cond.src = 0;
             obj.save_file();
