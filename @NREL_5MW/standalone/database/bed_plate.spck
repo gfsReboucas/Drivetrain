@@ -395,6 +395,7 @@ prim.par (                4 ,       $P_bed_plate                  ) = $SVG_bed_p
 constr.from (                       $L_bed_plate                  ) = $M_Isys                 ! From Marker
 constr.to (                         $L_bed_plate                  ) = $M_bed_plate_excitation ! To Marker
 constr.type (                       $L_bed_plate                  ) = 25                      ! Type
+constr.disabled (                   $L_bed_plate                  ) = $_excitation_ON         ! Disabled
 constr.par (              1 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Rotation in alpha
 constr.par (              2 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Rotation in beta
 constr.par (              3 ,       $L_bed_plate                  ) = 1.00000000000000000E+00 ! [-] Lock Rotation in gamma
@@ -720,6 +721,7 @@ ifctn.plot.par (          1 ,  10 ,   1 , $I_gamma_ddot           ) = 0.00000000
 ! Excitations
 !**********************************************************************
 excit.type (                        $E_x                          ) = 2                       ! Type
+excit.disabled (                    $E_x                          ) = $_excitation_ON         ! Disabled
 excit.par (               1 ,       $E_x                          ) = $I_x                    ! [-] Input Function f(t)
 excit.par (               2 ,       $E_x                          ) = $I_x_dot                ! [-] Input Function fd(t)
 excit.par (               3 ,       $E_x                          ) = $I_x_ddot               ! [-] Input Function fdd(t)
@@ -739,6 +741,7 @@ excit.plot.par (          1 ,   7 ,   1 , $E_x                    ) = 1.00000000
 excit.plot.par (          1 ,   8 ,   1 , $E_x                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 excit.type (                        $E_y                          ) = 2                       ! Type
+excit.disabled (                    $E_y                          ) = $_excitation_ON         ! Disabled
 excit.par (               1 ,       $E_y                          ) = $I_y                    ! [-] Input Function f(t)
 excit.par (               2 ,       $E_y                          ) = $I_y_dot                ! [-] Input Function fd(t)
 excit.par (               3 ,       $E_y                          ) = $I_y_ddot               ! [-] Input Function fdd(t)
@@ -758,6 +761,7 @@ excit.plot.par (          1 ,   7 ,   1 , $E_y                    ) = 1.00000000
 excit.plot.par (          1 ,   8 ,   1 , $E_y                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 excit.type (                        $E_z                          ) = 2                       ! Type
+excit.disabled (                    $E_z                          ) = $_excitation_ON         ! Disabled
 excit.par (               1 ,       $E_z                          ) = $I_z                    ! [-] Input Function f(t)
 excit.par (               2 ,       $E_z                          ) = $I_z_dot                ! [-] Input Function fd(t)
 excit.par (               3 ,       $E_z                          ) = $I_z_ddot               ! [-] Input Function fdd(t)
@@ -777,6 +781,7 @@ excit.plot.par (          1 ,   7 ,   1 , $E_z                    ) = 1.00000000
 excit.plot.par (          1 ,   8 ,   1 , $E_z                    ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 excit.type (                        $E_alpha                      ) = 2                       ! Type
+excit.disabled (                    $E_alpha                      ) = $_excitation_ON         ! Disabled
 excit.par (               1 ,       $E_alpha                      ) = $I_alpha                ! [-] Input Function f(t)
 excit.par (               2 ,       $E_alpha                      ) = $I_alpha_dot            ! [-] Input Function fd(t)
 excit.par (               3 ,       $E_alpha                      ) = $I_alpha_ddot           ! [-] Input Function fdd(t)
@@ -796,6 +801,7 @@ excit.plot.par (          1 ,   7 ,   1 , $E_alpha                ) = 1.00000000
 excit.plot.par (          1 ,   8 ,   1 , $E_alpha                ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 excit.type (                        $E_beta                       ) = 2                       ! Type
+excit.disabled (                    $E_beta                       ) = $_excitation_ON         ! Disabled
 excit.par (               1 ,       $E_beta                       ) = $I_beta                 ! [-] Input Function f(t)
 excit.par (               2 ,       $E_beta                       ) = $I_beta_dot             ! [-] Input Function fd(t)
 excit.par (               3 ,       $E_beta                       ) = $I_beta_ddot            ! [-] Input Function fdd(t)
@@ -815,6 +821,7 @@ excit.plot.par (          1 ,   7 ,   1 , $E_beta                 ) = 1.00000000
 excit.plot.par (          1 ,   8 ,   1 , $E_beta                 ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
 
 excit.type (                        $E_gamma                      ) = 2                       ! Type
+excit.disabled (                    $E_gamma                      ) = $_excitation_ON         ! Disabled
 excit.par (               1 ,       $E_gamma                      ) = $I_gamma                ! [-] Input Function f(t)
 excit.par (               2 ,       $E_gamma                      ) = $I_gamma_dot            ! [-] Input Function fd(t)
 excit.par (               3 ,       $E_gamma                      ) = $I_gamma_ddot           ! [-] Input Function fdd(t)

@@ -9,16 +9,6 @@ classdef SimpackCOM
     %
     %
 
-% Apply state set to model:
-% var obj1 = Spck.currentModel.findElement("$ST_all_zero");
-% obj1.copyToModel();
-% Spck.currentModel.save();
-
-% Update state set from model:
-% var obj2 = Spck.currentModel.findElement("$ST_AIC");
-% obj2.copyFromModel();
-
-    
     properties(Access = private)
         COM;
         post;
@@ -154,6 +144,35 @@ classdef SimpackCOM
         
         function assemble(obj)
             obj.COM.Spck.Slv.assmbl(obj.current_model, true);
+        end
+        
+        function [A, B, C, D, result] = state_space(obj)
+            result = obj.COM.Spck.Slv.ssm(obj.model, ...
+                                          2, ... % 'new' MATLAB format
+                                          false); % don't re-use an existing solver
+            nx = result.stateDim;
+            nu = result.inputDim;
+            ny = result.outputDim;
+            
+            A = zeros(nx, nx);        B = zeros(nx, nu);
+            C = zeros(ny, nx);        D = zeros(ny, nu);
+            
+            n = max([nx nu ny]);
+            
+            for row = 1:n
+                for col = 1:n
+                    if((row <= nx) && (col <= nx))
+                        A(row, col) = result.A(row - 1, col - 1);
+                    elseif((row <= nx) && (col <= nu))
+                        B(row, col) = result.B(row - 1, col - 1);
+                    elseif((row <= ny) && (col <= nx))
+                        C(row, col) = result.C(row - 1, col - 1);
+                    elseif((row <= ny) && (col <= nu))
+                        D(row, col) = result.D(row - 1, col - 1);
+                    end
+                end
+            end
+            
         end
         
         function elem = find_element(obj, name)
