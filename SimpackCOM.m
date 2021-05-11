@@ -146,9 +146,11 @@ classdef SimpackCOM
             obj.COM.Spck.Slv.assmbl(obj.current_model, true);
         end
         
-        function [A, B, C, D, result] = state_space(obj)
+        function [A, B, C, D, res_str] = state_space(obj)
+            fprintf('Getting State-Space matrices...\n');
+            
             result = obj.COM.Spck.Slv.ssm(obj.model, ...
-                                          2, ... % 'new' MATLAB format
+                                          -1, ... % no file
                                           false); % don't re-use an existing solver
             nx = result.stateDim;
             nu = result.inputDim;
@@ -173,6 +175,18 @@ classdef SimpackCOM
                 end
             end
             
+            res_str = struct(result);
+            res_str.A = A;
+            res_str.B = B;
+            res_str.C = C;
+            res_str.D = D;
+            
+            solver_set = obj.find_element('$SLV_SolverSettings');
+            file_name = sprintf('%s/@NREL_5MW/output/%s', pwd, solver_set.output_file_basename.src);
+            file_name = strrep(file_name, 'data', 'SSM');
+            
+            save(file_name, 'res_str');
+            
         end
         
         function elem = find_element(obj, name)
@@ -187,6 +201,13 @@ classdef SimpackCOM
         function set_subvar(obj, var_name, val)
             elem = obj.find_element(var_name);
             elem.str.src = num2str(val, 10);
+        end
+        
+        function set_gravity(obj, val)
+            for idx = 1:3
+                obj.current_model.gravity(idx - 1).src = val(idx);
+            end
+            obj.save_file();
         end
         
         function initial_step(obj)
