@@ -380,7 +380,212 @@ classdef Bearing
             
         end
         
-        
+    end
+    
+    methods(Static)
+        function data_analysis(tag)
+            
+            tag = upper(tag);
+            switch(tag)
+                case 'SRB'
+                    type = 'spherical roller bearings';
+                    DD_ref =  1030.0;            dd_ref =   710.0;
+                    BB_ref =   315.0;            CC_ref = 11164.0;
+                    idx = 1;
+                case 'CRB1'
+                    type = 'cylindrical roller bearing (single row)';
+                    DD_ref = 1220.0;            dd_ref = 1000.0;
+                    BB_ref =  128.0;            CC_ref = 3690.0;
+                    idx = 2;
+                case 'CRB2'
+                    type = 'cylindrical roller bearing (double row, full complement)';
+                    DD_ref =  600.0;            dd_ref =  400.0;
+                    BB_ref =  272.0;            CC_ref = 5500.0;
+                    idx = 3;
+                case 'CARB'
+                    type = 'barrel-shaped and toroidal roller bearings';
+                    DD_ref = 1030.0;            dd_ref =  710.0;
+                    BB_ref =  236.0;            CC_ref = 8800.0;
+                    idx = 4;
+                case 'TRB1'
+                    type = 'tapered roller bearing (single row)';
+                    DD_ref =  550.0;            dd_ref =  410.0;
+                    BB_ref =   86.0;            CC_ref = 1467.0;
+                    idx = 5;
+                case 'ALL'
+                    tmp = {'SRB', 'CRB1', 'CRB2', 'CARB', 'TRB1'};
+                    for idx = 1:numel(tmp)
+                        Bearing.data_analysis(tmp{idx});
+                    end
+                    return;
+            end
+            
+            fig_dim = {'units'   , 'centimeters', ...
+                       'position', [5.0 5.0 23.0 16.0]};
+            font_style = {'fontName'   , 'Times', ...
+                          'fontSize'   , 12.0   , ...
+                          'interpreter', 'LaTeX'};
+            
+            %% Loading data:
+            load(sprintf('data\\data_bearing%02d', idx));
+            name = {'b', 'C', 'd', 'D', 'Dpw', 'Dw', 'e', 'Lw', 'X1', 'X2', 'Y1', 'Y2', 'Z'};
+            BB(BB == 0.0) = nan;            CC(CC == 0.0) = nan;
+            dd(dd == 0.0) = nan;            DD(DD == 0.0) = nan;
+            Dpw(Dpw == 0.0) = nan;          Dw(Dw == 0.0) = nan;
+            Lw(Lw == 0.0) = nan;            ZZ(ZZ == 0.0) = nan;
+            data = [BB; CC; dd; DD; Dpw; Dw; ee; Lw; X1; X2; Y1; Y2; ZZ]';
+            
+%             idx_B   = find(BB);            idx_C   = find(CC);
+%             index = intersect(idx_B, idx_C, 'stable');
+%             idx_d   = find(dd);            idx_D   = find(DD);
+%             index = intersect(index, intersect(idx_d, idx_D, 'stable'), 'stable');
+%             idx_Dpw = find(Dpw);           idx_Dw  = find(Dw);
+%             index = intersect(index, intersect(idx_Dpw, idx_Dw, 'stable'), 'stable');
+%             idx_e   = find(ee);            idx_Lw  = find(Lw);
+%             index = intersect(index, intersect(idx_e, idx_Lw, 'stable'), 'stable');
+%             idx_X1  = find(X1);            idx_X2  = find(X2);
+%             index = intersect(index, intersect(idx_X1, idx_X2, 'stable'), 'stable');
+%             idx_Y1  = find(Y1);            idx_Y2  = find(Y2);
+%             index = intersect(index, intersect(idx_Y1, idx_Y2, 'stable'), 'stable');
+%             idx_ZZ  = find(ZZ);
+%             index = intersect(index, idx_ZZ, 'stable');
+            
+            % Removing empty columns:
+            data_var = var(data, 'omitnan');
+            data_var(isnan(data_var)) = -1;
+            data_var(data_var < eps) = -1;
+            idx_0 = find(data_var < 0);
+            clear(name{idx_0});
+            data(:, idx_0) = [];
+            name(:, idx_0) = [];
+            
+            % Removing Zero elements:
+%             index = sort(intersect(intersect(idx_Dw, idx_Dpw, 'stable'), idx_ZZ, 'stable'));
+%             data = data(index, :);
+            
+            % Normalizing:
+            data = data./max(data);
+            
+            % Creating table:
+            tab = array2table(data);
+            tab.Properties.VariableNames = name;
+            
+            if(strcmpi(tag, 'CRB1'))
+%                 idx_Lw  = find(Lw(index));
+%                 data = data(idx_Lw, :);
+% %                 
+%                 idx_0 = (var(data) < eps);
+%                 clear(name{idx_0});
+%                 data(:, idx_0) = [];
+%                 name(:, idx_0) = [];
+%                 
+%                 % Updating table:
+%                 tab = array2table(data);
+%                 tab.Properties.VariableNames = name;
+                
+                mod_2 = @(b, x)(b(1) + b(2).*x(:, 1));
+                fitLw = fitnlm(tab.b, tab.Lw, mod_2, ones(2, 1), 'varNames', {'D', 'L_w'});
+                
+                figure(fig_dim{:});
+                subplot(211)
+                hold on;
+                scatter(tab.b, tab.Lw, 'filled');
+                plot(tab.b, fitLw.feval(tab.b), ...
+                     'lineStyle', '-', ...
+                     'lineWidth', 2.0);
+                xlabel('$B$, [-]'     , font_style{:});
+                ylabel('$L_{we}$, [-]', font_style{:});
+                
+                legend({'data', 'fit'}, 'location', 'best');
+                
+                subplot(212)
+                hold on;
+                scatter(tab.b, 35948.0*power(tab.Lw*max(Lw), 8.0/9.0), 'filled');
+                scatter(tab.b, 35948.0*power(fitLw.feval(tab.b)*max(Lw), 8.0/9.0), 'filled');
+                xlabel('$B$, [-]'           , font_style{:});
+                ylabel('$K$, [N/mm$^{8/9}$]', font_style{:});
+                title(type);
+                
+                legend({'K-form.', 'K-fit'}, 'location', 'best');
+                
+                fig_axes = findobj(gcf, 'Type', 'Axes');
+                set(fig_axes, 'fontName', 'Times', 'fontSize', 12.0);
+                set(fig_axes, 'box'     , 'on');
+            end
+            
+            %% Correlation analysis:
+            figure(fig_dim{:});
+            subplot(141)
+            plot(tab.d, tab.C, 'ko');
+            xlabel('$d$, [-]', font_style{:})
+            ylabel('$C$, [-]', font_style{:})
+            
+            subplot(142)
+            plot(tab.D, tab.C, 'ko');
+            xlabel('$D$, [-]', font_style{:})
+            title(type);
+            
+            subplot(143)
+            plot(tab.b, tab.C, 'ko');
+            xlabel('$B$, [-]', font_style{:})
+            
+            subplot(144)
+            plot(tab.Dw, tab.C, 'ko');
+            xlabel('$D_w$, [-]', font_style{:})
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'fontName', 'Times', ...
+                          'fontSize', 12.0);
+            set(fig_axes, 'box'     , 'on');
+            
+            warning('off', 'MATLAB:polyfit:RepeatedPointsOrRescale');
+            figure(fig_dim{:});
+            corrplot(tab);
+            title(type);
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'fontName', 'Times', ...
+                          'fontSize', 12.0);
+            set(fig_axes, 'box'     , 'on');
+            
+            warning('on', 'MATLAB:polyfit:RepeatedPointsOrRescale');
+
+            %% Regression analysis:
+            x_1ref = DD_ref./max(DD);
+            x_2ref = BB_ref./max(BB);
+            
+            x_1 = tab.D;
+            x_2 = tab.b;
+            y   = tab.C;
+            
+            mod_3 = @(b, x)(b(1).*x(:, 2).^2    + ...
+                            b(2).*x(:, 1).*x(:, 2));
+            b0 = ones(2, 1);
+            fitC3 = fitnlm([x_1 x_2], y, mod_3, b0, ...
+                           'varNames', {'D', 'B', 'C'});
+            fprintf('%s:\n', type);
+            fprintf('C_3 ~ %+.3e*B^2 %+.3e*D*B\t with R^2 = %.3e\n', fitC3.Coefficients.Estimate, fitC3.Rsquared.Adjusted);
+            fprintf('C_3: (REF.) = %.3e\t(FIT.) = %.3e [N]\n', CC_ref, max(CC)*fitC3.feval(x_1ref, x_2ref));
+            
+            figure(fig_dim{:});
+            hold on;
+            scatter3(x_1, x_2, y, 'filled');
+            scatter3(x_1, x_2, fitC3.feval(x_1, x_2), 'filled');
+            xlabel('$D$, [-]', font_style{:})
+            ylabel('$B$, [-]', font_style{:})
+            zlabel('$C$, [-]', font_style{:})
+            grid on;
+            box on;
+            set(gca, 'zScale', 'log');
+            title(type);
+            view(45.0, 45.0);
+            
+            legend({'data', 'fit'}, 'location', 'best');
+            
+            fig_axes = findobj(gcf, 'Type', 'Axes');
+            set(fig_axes, 'fontName', 'Times', ...
+                          'fontSize', 12.0);
+            set(fig_axes, 'box'     , 'on');
+        end
     end
     
 end

@@ -72,6 +72,7 @@ main_shaft
 *.kpro
 data/sample_all.csv
 data/sample_stiff_damp_load.csv
+data/tab_gm.csv
 notes/.ipynb_checkpoints
 notes/__pycache__
 notes/DA*

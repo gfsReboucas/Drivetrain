@@ -593,11 +593,14 @@ classdef NREL_5MW < Drivetrain
             x0 = rand(3,1);
             x = fmincon(@(x)(norm(f(x)))^2, x0, [], [], [], [], zeros(3, 1), [Inf, Inf, 1.0]');
             r_ext = x(2);           r_int = x(3)*r_ext;           h = x(1);
+            
+            J_other = (1.0/12.0)*m_r*(3.0*(r_ext^2 + r_int^2) + h^2);
 
             fprintf('Rotor mass moment of inertia using:\n');
             fprintf('\t Rigid free-fixed resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n', freq_fix, J_r_fix);
             fprintf('\t Rigid free-free  resonance: %3.4e [Hz]\t %3.4e [kg-m^2]\n', freq_free, J_r_free);
             fprintf('\t Ratio of the frequencies above: \t\t %3.4e [kg-m^2]\n', J_r_ratio);
+            fprintf('Rotor mass moment of inertia on the other axes: %3.4e [kg-m^2]\n', J_other);
             fprintf('Rotor dimensions assuming:\n');
             fprintf('\t Cylindric geometry: R = %.3f \t h = %.3f [m]\n', R_cyl, h_cyl);
             fprintf('\t Cylindric tube geometry, opt.: R_ext = %.3f \t R_int = %.3f \t h = %.3f [m]\n', r_ext, r_int, h);

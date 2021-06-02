@@ -253,22 +253,37 @@ classdef (Abstract) ISO_6336 < Gear_Set
             writetable(tab, sprintf('%s.dat', file_name));
         end
         
-        function [NL, sigH, sigF] = read_Woehler_KS(obj)
-            if(strcmpi(obj.configuration, 'planetary'))
+        function [N_L, sigH, sigF, par] = read_SNCurve_KS(obj, file_name)
+            %READ_SNCURVE_KS reads the S-N curve obtained using KISSsoft
+            % software. To generate this curve in KISSsoft go to the menu
+            % Graphics > Evaluation > Woehler lines (S-N curves). The data
+            % from these curves can be found at %temp%\KISS_XY\Z01.H1.TMP,
+            % where %temp% is Windows temporary folder.
+            %
+            
+            arguments
+                obj;
+                file_name = [];
+            end
+            
+            if(strcmpi(obj.configuration, 'parallel'))
+                format_spec = '  -        %f     %f N/mm²    %f N/mm²      %f N/mm² (2)  (2)     %f N/mm² (3)  (3)  ';
+                idx_F = 2:3;
+                idx_H = idx_F + 2;
+            elseif(strcmpi(obj.configuration, 'planetary'))
                 format_spec = '  -        %f     %f N/mm²    %f N/mm²    %f N/mm²      %f N/mm² (3)  (3)     %f N/mm² (4)  (4)     %f N/mm² (5)  (5)  ';
                 idx_F = 2:4;
                 idx_H = idx_F + 3;
-            elseif(strcmpi(obj.configuration, 'parallel'))
-                format_spec = '  -        %f     %f N/mm²    %f N/mm²    %f N/mm²      %f N/mm² (3)  (3)     %f N/mm² (4)  (4)     %f N/mm² (5)  (5)  ';
-                idx_F = 2:3;
-                idx_H = idx_F + 2;
             end
             
-            name = tempdir;
-            name = strrep(name, ':', '');
-            idx = find(ismember(name, 'Temp'), 1, 'last') + 1;
-            name = ['\\tsclient\', name(1:idx), 'KISS_*\Z01-H1.TMP'];
-            file = dir(name);
+            if(isempty(file_name))
+                file_name = tempdir;
+                file_name = strrep(file_name, ':', '');
+                idx = find(ismember(file_name, 'Temp'), 1, 'last') + 1;
+                file_name = ['\\tsclient\', file_name(1:idx), 'KISS_*\Z01-H1.TMP'];
+            end
+            
+            file = dir(file_name);
             file_full = [file.folder, '\', file.name];
             file_ID = fopen(file_full, 'r');
             
@@ -276,10 +291,40 @@ classdef (Abstract) ISO_6336 < Gear_Set
             line_start = line_start - 1;
             
             C = textscan(file_ID, format_spec, 1000, 'delimiter', '\n', 'headerlines', line_start);
-            NL = C{1};
+            N_L = C{1};
             sigH = cell2mat(C(idx_H));
             sigF = cell2mat(C(idx_F));
             
+            par = struct;
+            for idx = 1:numel(obj.z)
+                %% Root-bending:
+                jdx = find(sigF(:, idx) <  sigF(1  , idx), 1, 'first');
+                kdx = find(sigF(:, idx) <= sigF(end, idx), 1, 'first');
+                
+                b = nlinfit(log([N_L(jdx:kdx), sigF(jdx:kdx, idx)]), ... % x
+                            zeros(kdx - jdx + 1, 1), ... % y
+                            @log_SNC, ones(2, 1));
+                par.F.m(idx) = b(1);
+                par.F.logK(idx) = b(2);
+
+                %% Pitting:
+                jdx = find(sigH(:, idx) <  sigH(1  , idx), 1, 'first');
+                kdx = find(sigH(:, idx) <= sigH(end, idx), 1, 'first');
+                
+                b = nlinfit(log([N_L(jdx:kdx), sigH(jdx:kdx, idx)]), ... % x
+                            zeros(kdx - jdx + 1, 1), ... % y
+                            @log_SNC, ones(2, 1));
+                par.H.m(idx) = b(1);
+                par.H.logK(idx) = b(2);
+            end
+            
+            function e = log_SNC(b, x)
+                % Originally K = N S ^ m, then, after isolating S and
+                % applying log on both sides one obtains: b_1 y = b_2 - x,
+                % where: x = log(N), y = log(S), b_1 = m, b_2 = log(K).
+                % 
+                e = b(1)*x(:, 2) + x(:, 1) - b(2);
+            end
         end
         
         function D = Simpack_damage_analysis(obj, data)
