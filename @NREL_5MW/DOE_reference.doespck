@@ -1,0 +1,70 @@
+!file.version=3.5! Removing this line will make the file unreadable
+
+! General
+output                                                              = 'DOE_data/refs_caled'
+surfacemodel                                                        = 1
+experimentdesign                                                    = 3
+runs.num                                                            = 3
+runs.cand                                                           = 4
+seed                                                                = 0
+centerpoints.num                                                    = 0
+centerpoints.default                                                = 1
+
+! Factors
+
+factors.name (            1                                       ) = 'gamma_P'
+factors.size (            1                                       ) = 2
+factors.ele (             1 ,   1                                 ) = $SVG_loading.$_gamma_Power
+factors.type (            1 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             1 ,   1                                 ) = '0.5'
+factors.max (             1 ,   1                                 ) = '1.5'
+factors.order (           1 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.name (            2                                       ) = 'gamma_MS'
+factors.size (            2                                       ) = 2
+factors.ele (             2 ,   1                                 ) = $SVG_main_shaft.$_gamma_stiff
+factors.type (            2 ,   1                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   1                                 ) = '0.5'
+factors.max (             2 ,   1                                 ) = '1.5'
+factors.order (           2 ,   1                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             2 ,   2                                 ) = $SVG_stage_01.$_gamma_stiff
+factors.type (            2 ,   2                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   2                                 ) = '0.5'
+factors.max (             2 ,   2                                 ) = '1.5'
+factors.order (           2 ,   2                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             2 ,   3                                 ) = $SVG_stage_02.$_gamma_stiff
+factors.type (            2 ,   3                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   3                                 ) = '0.5'
+factors.max (             2 ,   3                                 ) = '1.5'
+factors.order (           2 ,   3                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+factors.ele (             2 ,   4                                 ) = $SVG_stage_03.$_gamma_stiff
+factors.type (            2 ,   4                                 ) = 1                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.min (             2 ,   4                                 ) = '0.5'
+factors.max (             2 ,   4                                 ) = '1.5'
+factors.order (           2 ,   4                                 ) = 0                       ! 0 (default) = Minimum to maximum, 1 = Maximum to minimum
+
+model.path (                        $Model1                       ) = 'NREL_5MW_scaled.spck'
+
+   ! Job definition
+
+model.task (              1 ,       $Model1                       ) = 'user-script'
+model.task.script (       1 ,       $Model1                       ) = 'print(\'SCRIPT:\\tSTART initial_step.sjs\')\nvar model = Spck.currentModel;\n\n// Disabling translation and tilting for shafts:\nprint(\'SCRIPT:\\t1. Disabling shaft translation and tilting...\')\nvar switch_AIC = Spck.currentModel.findElement(\'$DoE.$SVG_loading.$_switch_AIC\');\nswitch_AIC.str.src = \'1\';\n\n// Apply zero initial condtions:\nprint(\'SCRIPT:\\t2. Setting states to ZERO...\');\nvar zero_IC = Spck.currentModel.findElement(\'$DoE.$ST_all_zero\');\nzero_IC.copyToModel();\n\n// Gear force elements: basic\nprint(\'SCRIPT:\\t2.1. Setting gear mesh force to type 204 (basic)...\');\nvar mesh_flag = Spck.currentModel.findElement(\'$DoE.$SVG_loading.$_mesh_flag\');\nmesh_flag.str.src = \'204\';\n\nprint(\'SCRIPT:\\t2.2. Saving model...\');\nSpck.currentModel.save();\n\n// Apply Initial Conditions solver:\nprint(\'SCRIPT:\\t3. Running Assemble System solver...\');\nSpck.Slv.assmbl(Spck.currentModel);\n\n// Update state set:\nprint(\'SCRIPT:\\t3.1. Saving model with updated state sets from solver...\');\nvar state_AIC = Spck.currentModel.findElement(\'$DoE.$ST_AIC\');\nstate_AIC.copyFromModel();\n\nSpck.currentModel.save();\n\n// Re-enabling translation and tilting for shafts:\nprint(\'SCRIPT:\\t4. Re-enabling shaft translation and tilting...\');\nswitch_AIC.str.src = \'0\';\n\n// Calculating static equilibrium:\nprint(\'SCRIPT:\\t5. Calculating static equilibrium using:\');\nprint(\'SCRIPT:\\t5.1. Time integration method...\');\nSpck.currentModel.slv.active.src = \'$DoE.$SLV_static_eq_time_integ\';\nSpck.currentModel.save();\n\nSpck.Slv.equi(Spck.currentModel);\n\n// Update state set:\nprint(\'SCRIPT:\\t5.1.1. Updating state sets with result from solver (static equilibrium via time integration)...\');\n\nvar output_path = Spck.currentModel.origin;\nvar pos = output_path.lastIndexOf(\'/\');\noutput_path = output_path.slice(0, pos);\noutput_path = output_path + \'/output/\' + Spck.currentModel.name;\n\nvar static_eq = Spck.currentModel.findElement(\'$DoE.$ST_static_eq\');\nstatic_eq.importStateFile(output_path + \'.spckst\');\nstatic_eq.copyToModel();\n\nprint(\'SCRIPT:\\t5.2. Newton method...\');\nSpck.currentModel.slv.active.src = \'$DoE.$SLV_static_eq_Newton_acc\';\nSpck.currentModel.save();\nSpck.Slv.equi(Spck.currentModel);\n\n// Update state set:\nprint(\'SCRIPT:\\t5.2.2. Updating state sets with results from solver (static equilibrium via Newton method and convergence w.r.t. acceleration)...\');\nstatic_eq.importStateFile(output_path + \'.spckst\');\nstatic_eq.copyToModel();\n\nprint(\'SCRIPT:\\t5.3. Setting gear mesh force to type 225 (advanced)...\');\nmesh_flag.str.src = \'225\';\n\nprint(\'SCRIPT:\\t6. Saving model...\');\nSpck.currentModel.slv.active.src = \'$DoE.$SLV_SolverSettings\';\nSpck.currentModel.save();\n\nprint(\'SCRIPT:\\tEND initial_step.sjs\')\n'
+model.task (              2 ,       $Model1                       ) = 'eigenvalues'
+model.task (              3 ,       $Model1                       ) = 'ssm-export'
+model.task (              4 ,       $Model1                       ) = 'integration+measurements-target-model'
+
+   ! Responses
+
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_1     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_1     ) = 1
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_2     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_2     ) = 2
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_3     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_3     ) = 3
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_4     ) = '$DoE.$RS_PLC_A'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_4     ) = 4
+response.ref.ele (        1 ,       $Model1.$RS_defaultname_5     ) = '$DoE.$RS_torqe'
+response.ref.channel (    1 ,       $Model1.$RS_defaultname_5     ) = 1

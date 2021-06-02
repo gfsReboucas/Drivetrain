@@ -262,12 +262,12 @@ classdef (Abstract) Drivetrain
             
             for idx = 1:(ref.N_stage)
                 [~, tab_str] = stage_comparison(ref, sca, idx);
-                tab_tmp = table(tab_str(:, 4), tab_str(:, 5), tab_str(:, 6), 'variableNames', ['Reference', 'Scale', 'Ratio']);
-                tab_stg{idx} = table(tab_tmp, 'variableNames', sprintf('Stage_%d', idx));
+                tab_tmp = table(tab_str(:, 4), tab_str(:, 5), tab_str(:, 6), 'variableNames', {'Reference', 'Scale', 'Ratio'});
+                tab_stg{idx} = table(tab_tmp, 'variableNames', {sprintf('Stage_%d', idx)});
             end
             
-            tab_left =  table(tab_str(:, 1), tab_str(:, 2), 'variableNames', ['Parameter', 'Symbol']);
-            tab_right = table(tab_str(:, 3), 'variableNames', 'Unit');
+            tab_left =  table(tab_str(:, 1), tab_str(:, 2), 'variableNames', {'Parameter', 'Symbol'});
+            tab_right = table(tab_str(:, 3), 'variableNames', {'Unit'});
             
             tab = [tab_left, tab_stg{:}, tab_right];
             
@@ -1376,7 +1376,7 @@ classdef (Abstract) Drivetrain
             %
             
             % read folder:
-            folder_name = sprintf('@%s\\%s.%s.output\\*.mat', class(obj), class(obj), model_name);
+            folder_name = sprintf('@%s\\%s\\output\\*.mat', class(obj), class(obj), model_name);
             MAT_file = dir(folder_name);
             
             load([MAT_file.folder, '\', ...
@@ -1419,6 +1419,139 @@ classdef (Abstract) Drivetrain
             % those who are not gear related:
             idx = ~contains(field_name, {'B_sun', 'B_ge'});
             data.speed = rmfield(data.speed, field_name(idx));
+            
+        end
+        
+        function [X, Y_A, Y_B] = Simpack_DOE(obj, DOE_folder, t_transient)
+            %SIMPACK_DOE cleans the data set called model_name,
+            % neglecting the first t_transient seconds.
+            %
+
+            directory = dir(sprintf('@%s\\%s\\data_*.mat', class(obj), DOE_folder));
+            directory = directory(~contains({directory.name}, 'ev'));
+            
+            n = numel(directory);
+            Y_A = zeros(37, n);
+            Y_B = zeros(37, n);
+            
+            X = zeros(34, n);
+            
+            name_Y = {'INP-A', 'INP-B', 'PL-A1', 'PL-B1', 'PL-A2', 'PL-B2', 'PL-A3', ...
+                'PL-B3', 'PLC-A1', 'PLC-B2', 'S01-SP1', 'S01-SP2', 'S01-SP3', 'S01-RP1', 'S01-RP2', ...
+                'S01-RP3', 'IMS-PL-A1', 'IMS-PL-B1', 'IMS-PL-A2', 'IMS-PL-B2', ...
+                'IMS-PL-A3', 'IMS-PL-B3', 'IMS-PLC-A1', 'IMS-PLC-B2', 'S02-SP1', ...
+                'S02-SP2', 'S02-SP3', 'S02-RP1', 'S02-RP2', 'S02-RP3', 'HS-A1', ...
+                'HS-B2', 'HS-C3', 'IMS-A1', 'IMS-B2', 'IMS-C3', 'S03-PW'};
+            
+            for idx = 1:numel(directory)
+                %% cleaning:
+                % read folder:
+                folder_name = sprintf('%s\\%s', directory(idx).folder, directory(idx).name);
+                MAT_file = dir(folder_name);
+                
+                if(~isempty(MAT_file))
+                    load([MAT_file.folder, '\', ...
+                          MAT_file.name], 'timeInt');
+
+                    field_name = fieldnames(timeInt.subvar);
+                    index = contains(field_name, '__gamma_');
+                    name_X = field_name(index);
+
+                    for jdx = 1:numel(name_X)
+                        X(jdx, idx) = timeInt.subvar.(name_X{jdx}).value;
+                    end
+
+                    time  = timeInt.time.values;
+                    data.time_step = double(mean(diff(time)));
+                    idx_TRS = find(time <= t_transient, 1, 'last');
+
+                    data.load  = timeInt.forceOv;
+                    data.speed = timeInt.bodyVelRot;
+                    clear('timeInt', 'time');
+
+                    % get load field names:
+                    field_name = fieldnames(data.load);
+
+                    % removing irrelevant fields:
+                    data.load = rmfield(data.load, field_name(end-3:end));
+                    field_name = fieldnames(data.load);
+
+                    % remove transient data:
+                    for jdx = 1:length(field_name)
+                        sub_field = fieldnames(data.load.(field_name{jdx}));
+                        sub_field = sub_field(1:end-4);
+                        for kdx = 1:length(sub_field)
+                            if(~isstruct(data.load.(field_name{jdx}).(sub_field{kdx}).values))
+                                data.load.(field_name{jdx}).(sub_field{kdx}).values = ...
+                                    double(data.load.(field_name{jdx}).(sub_field{kdx}).values(idx_TRS:end));
+                            end
+                        end
+                    end
+
+                    % get speed field names:
+                    field_name = fieldnames(data.speed);
+
+                    % removing irrelevant fields:
+                    data.speed = rmfield(data.speed, field_name(end-3:end));
+                    % inertial frames:
+                    jdx = find((contains(field_name, 'R_I')), 1, 'last');
+                    data.speed = rmfield(data.speed, field_name(1:jdx));
+                    field_name = fieldnames(data.speed);
+                    % those who are not gear related:
+                    jdx = ~contains(field_name, {'B_sun', 'B_ge'});
+                    data.speed = rmfield(data.speed, field_name(jdx));
+
+                    %% Weibull:
+                    field_name  = fieldnames(data.load);
+
+                    %% Main shaft:
+                    data_idx = data;
+                    idx_MS = find(contains(field_name, 'main_shaft'));
+                    n = length(obj.main_shaft.bearing);
+
+                    a_sim = cell(obj.N_stage + 1, 1);
+                    b_sim = cell(obj.N_stage + 1, 1);
+
+                    a_MS = zeros(size(idx_MS));
+                    b_MS = zeros(size(idx_MS));
+                    for jdx = 1:n
+                        kdx = idx_MS(jdx);
+                        data_idx.load = data.load.(field_name{kdx});
+
+                        [a_idx, b_idx] = obj.main_shaft.bearing(jdx).Weibull(data_idx);
+    %                     name{cont} = obj.main_shaft.bearing(jdx).name;
+%                         fprintf('%s:\t%s\ta = %e\tb = %e\n', 'DoE', ...
+%                             obj.main_shaft.bearing(jdx).name, ...
+%                             a_idx, b_idx);
+
+                        a_MS(jdx) = a_idx;
+                        b_MS(jdx) = b_idx;
+                    end
+                    a_sim{1} = a_MS;
+                    b_sim{1} = b_MS;
+
+                    %% Gear stages:
+                    for jdx = 1:obj.N_stage
+                        % send only fields related to the current stage:
+                        field_name  = fieldnames(data.load);
+                        kdx = ~contains(field_name, sprintf('stage_0%d', jdx));
+                        data_idx.load  = rmfield(data.load , field_name(kdx));
+
+                        field_name  = fieldnames(data.speed);
+                        kdx = ~contains(field_name, sprintf('stage_0%d', jdx));
+                        data_idx.speed = rmfield(data.speed, field_name(kdx));
+
+                        [a_idx, b_idx] = obj.gear_calc{jdx}.Weibull(data_idx, 'DoE');
+                        a_sim{jdx + 1} = a_idx;
+                        b_sim{jdx + 1} = b_idx;
+                    end
+
+                    Y_A(:, idx) = cell2mat(a_sim);
+                    Y_B(:, idx) = cell2mat(b_sim);
+                end
+            end
+            
+            save(sprintf('%s\\DOE_coeffs.mat', directory(1).folder), 'Y_A', 'Y_B', 'X', 'name_X', 'name_Y');
             
         end
         

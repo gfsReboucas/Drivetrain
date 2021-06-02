@@ -58,9 +58,9 @@ prop2d.proj.dir                                                     = 2         
 ! Views
 !**********************************************************************
 view.type (                         $V_WorkingView                ) = 0                       ! Projection type
-view.pos (                1 ,       $V_WorkingView                ) = 5.25726318359375000E+00 ! Position
-view.pos (                2 ,       $V_WorkingView                ) = -8.12793540954589844E+00 ! Position
-view.pos (                3 ,       $V_WorkingView                ) = 5.77837896347045898E+00 ! Position
+view.pos (                1 ,       $V_WorkingView                ) = 4.26511001586914063E+00 ! Position
+view.pos (                2 ,       $V_WorkingView                ) = -2.86668491363525391E+00 ! Position
+view.pos (                3 ,       $V_WorkingView                ) = 2.70119047164916992E+00 ! Position
 view.orient (             1 ,       $V_WorkingView                ) = 5.00578582286834717E-01 ! Orientation
 view.orient (             2 ,       $V_WorkingView                ) = -1.63600016385316849E-02 ! Orientation
 view.orient (             3 ,       $V_WorkingView                ) = 1.88090875744819641E-01 ! Orientation
@@ -68,8 +68,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.44852149
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.13046681508421898E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.13046674728393555E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 9.99999977648258209E-03 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 5.12937736511230469E+00 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -245,6 +245,7 @@ prim.par (                3 ,       $P_Isys                       ) = 1.00000000
 ! Bodies
 !**********************************************************************
 body.m (                            $B_disc                       ) = $SVG_disc.$_mass        ! Mass of the Body
+body.cg.pos (             1 ,       $B_disc                       ) = { $SVG_disc.$_length/2.0 } ! Center of gravity
 body.I.tens (             1 ,   1 , $B_disc                       ) = $SVG_disc.$_mass_mom_inertia ! Moments of inertia
 body.I.tens (             2 ,   2 , $B_disc                       ) = { $SVG_disc.$_mass_mom_inertia/2.0 } ! Moments of inertia
 body.I.tens (             3 ,   3 , $B_disc                       ) = { $SVG_disc.$_mass_mom_inertia/2.0 } ! Moments of inertia

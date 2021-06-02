@@ -211,10 +211,14 @@ classdef Dynamic_Formulation
             default = {'solver'    , @ode23t  , ... 
                        'time_range', [    0.0 , ... % initial time instant, [s]
                                         100.0], ... % final time instant, [s]
-                       'IC'        ,    IC    , ... % initial condition in the form [x0; v0] size (2*n, 1)
-                       'K_p'       ,   2200.0 , ... % proportional gain
-                       'K_I'       ,    220.0 , ... % integral gain
-                       'f_sample'  ,    200.0};     % sampling frequency
+                       'IC'        ,    IC    , ... % [rad, 1/min]
+                       'K_p'       ,   2200.0 , ...
+                       'K_I'       ,    220.0 , ...
+                       'f_sample'  ,    200.0 , ...
+                       'gamma_c'   ,      1.0 , ... % damping
+                       'gamma_t'   ,      1.0 , ... % time
+                       'gamma_T'   ,      1.0 , ... % Torque
+                       'gamma_Om'  ,      1.0};     % Speed
             
             default = scaling_factor.process_varargin(default, varargin);
             
@@ -224,13 +228,17 @@ classdef Dynamic_Formulation
             K_p        = default.K_p;
             K_I        = default.K_I;
             T_sample   = 1.0/default.f_sample;
+            gamma_c    = default.gamma_c;
+            gamma_T    = default.gamma_T;
+            gamma_t    = default.gamma_t;
+            gamma_Om   = default.gamma_Om;
             
             time = time_range(1):T_sample:time_range(end);
             
             warning('off', 'Dynamic_Formulation:RB');
             
             MM = obj.M;
-            DD = obj.D;
+            DD = obj.D.*gamma_c;
             Km = obj.K_m;
             Kb = obj.K_b;
             bb = obj.b;
@@ -295,8 +303,11 @@ classdef Dynamic_Formulation
             
             data = load('data/input_load.mat');
             t_load = data.time;
+            t_load = t_load.*gamma_t;
             T_aero = data.Mx*1.0e3;
+            T_aero = T_aero.*gamma_T;
             gen_speed = data.w_GEN*(30.0/pi); % from [rad/s] to [1/min]
+            gen_speed = gen_speed.*gamma_Om;
 %             k = find(t_load >= 0.2*time_range(end), 1, 'first');
 %             transient = [linspace(0.0, 1.0, k), ...
 %                          ones(1, length(t_load) - k)]';

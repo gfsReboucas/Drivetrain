@@ -119,8 +119,8 @@ view.orient (             4 ,       $V_WorkingView                ) = 8.56237232
 view.angle (                        $V_WorkingView                ) = 7.85398185253143311E-01 ! Lens angle
 view.fclip.auto (                   $V_WorkingView                ) = 1                       ! Front clipping plane auto
 view.bclip.auto (                   $V_WorkingView                ) = 1                       ! Back clipping plane auto
-view.fclip.value (                  $V_WorkingView                ) = 1.57387498766183853E-02 ! Front clipping plane value
-view.bclip.value (                  $V_WorkingView                ) = 1.57387485504150391E+01 ! Back clipping plane value
+view.fclip.value (                  $V_WorkingView                ) = 1.57387517392635345E-02 ! Front clipping plane value
+view.bclip.value (                  $V_WorkingView                ) = 1.57387514114379883E+01 ! Back clipping plane value
 view.rotcenter.type (               $V_WorkingView                ) = 0                       ! Rotation center type
 view.rotcenter.adjust (             $V_WorkingView                ) = 1                       ! Adjust rotation center
 view.motion.active (                $V_WorkingView                ) = 0                       ! Camera is moved
@@ -1051,6 +1051,10 @@ subvargroup.begin (                 $SVG_loading                  )             
 
    subvar.str (                     $_gamma_Force                 ) = '1.0'                   ! $SVG_loading.$_gamma_Force, Definition
 
+   subvar.str (                     $_gamma_time                  ) = '1.0'                   ! $SVG_loading.$_gamma_time, Definition
+
+   subvar.str (                     $_gamma_Speed                 ) = '1.0'                   ! $SVG_loading.$_gamma_Speed, Definition
+
 subvargroup.end (                   $SVG_loading                  )                           ! $SVG_loading
 
 subvargroup.begin (                 $SVG_gear_params              )                           ! $SVG_gear_params
@@ -1129,7 +1133,7 @@ forcegroup.begin (                  $FEG_gen                      )             
    force.from (                     $F_nominal                    ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
    force.to (                       $F_nominal                    ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
    force.st.equi (        1 ,       $F_nominal                    ) = 0                       ! Equilibrium
-   force.disabled (                 $F_nominal                    ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   force.disabled (                 $F_nominal                    ) = 1                       ! Disabled
    force.par (            1 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force x
    force.par (            2 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force y
    force.par (            3 ,       $F_nominal                    ) = null                    ! [-] u-Vector Element force z
@@ -1142,13 +1146,13 @@ forcegroup.begin (                  $FEG_gen                      )             
    force.to (                       $F_Prop                       ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
    force.st.equi (        1 ,       $F_Prop                       ) = 0                       ! Equilibrium
    force.disabled (                 $F_Prop                       ) = $SVG_loading.$_use_Prop ! Disabled
-   force.par (            1 ,       $F_Prop                       ) = $C_Prop                 ! [-] Input Control Element 1
+   force.par (            1 ,       $F_Prop                       ) = $CEG_DLC.$C_Prop        ! [-] Input Control Element 1
    force.par (            2 ,       $F_Prop                       ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
    force.par (            3 ,       $F_Prop                       ) = null                    ! [-] Input Control Element 2
    force.par (            4 ,       $F_Prop                       ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
    force.par (            5 ,       $F_Prop                       ) = 2.00000000000000000E+00 ! [-] Output type
    force.par (            7 ,       $F_Prop                       ) = 1.00000000000000000E+00 ! [-] Axis of torque
-   force.par (            8 ,       $F_Prop                       ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
+   force.par (            8 ,       $F_Prop                       ) = $SVG_loading.$_gamma_Torque ! [Nm] K: Drive constant L=K*(u1+u2)
    force.attr.2d.substr (   1 ,     $F_Prop                       ) = $S_stage_03.$S_TPL
    force.attr.2d.pos.x (   1 ,      $F_Prop                       ) = 850
    force.attr.2d.pos.y (   1 ,      $F_Prop                       ) = 30
@@ -1163,34 +1167,47 @@ forcegroup.begin (                  $FEG_gen                      )             
    force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_Prop     ) = 520, 520, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 632.5, 670, 720, 720, 680, 600, 560, 540, 530, 520, 510, 503, 503, 503, 503, 503, 513
    force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_Prop     ) = 180, 170, 170, 165.77301025390625, 153.092041015625, 136.18408203125, 124.912109375, 109.8828125, 89.84375, 63.125, 27.5, -20, -20, -20, -10, -10, -10, -10, -10, -10, -10, -10, -10, -20, -30, -40, -110, -110
 
-   force.type (                     $F_PI                         ) = 110                     ! Type
-   force.from (                     $F_PI                         ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
-   force.to (                       $F_PI                         ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
-   force.st.equi (        1 ,       $F_PI                         ) = 0                       ! Equilibrium
-   force.disabled (                 $F_PI                         ) = $SVG_loading.$_use_PI   ! Disabled
-   force.par (            1 ,       $F_PI                         ) = $C_PI                   ! [-] Input Control Element 1
-   force.par (            2 ,       $F_PI                         ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
-   force.par (            3 ,       $F_PI                         ) = null                    ! [-] Input Control Element 2
-   force.par (            4 ,       $F_PI                         ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
-   force.par (            5 ,       $F_PI                         ) = 2.00000000000000000E+00 ! [-] Output type
-   force.par (            7 ,       $F_PI                         ) = 1.00000000000000000E+00 ! [-] Axis of torque
-   force.par (            8 ,       $F_PI                         ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
-   force.par (            9 ,       $F_PI                         ) = null                    ! [m⁻¹] P: Drive constant F=P*L
-   force.attr.2d.substr (   1 ,     $F_PI                         ) = $S_stage_03.$S_TPL
-   force.attr.2d.pos.x (   1 ,      $F_PI                         ) = 50
-   force.attr.2d.pos.y (   1 ,      $F_PI                         ) = -30
-   force.attr.2d.ori (    1 ,       $F_PI                         ) = 180
-   force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_PI     ) = 640, 640, 630, 97, 97, 97, 97, 97, 97, 87, 77, 67
-   force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_PI     ) = -120, -140, -140, -140, -120, -100, -90, -80, -30, -30, -30, -30
-   force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_PI       ) = 40, 40, 30, 30, 33
-   force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_PI       ) = -10, -7.5, -7.5, -30, -30
-   force.attr.2d.pos.x (   2 ,      $F_PI                         ) = 1250
-   force.attr.2d.pos.y (   2 ,      $F_PI                         ) = 120
-   force.attr.2d.ori (    2 ,       $F_PI                         ) = 180
-   force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_PI     ) = 1330, 1330, 1267
-   force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_PI     ) = 80, 120, 120
-   force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_PI       ) = 500, 494.375, 494.375, 507.5, 560, 1233
-   force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_PI       ) = 200, 200, 120, 120, 120, 120
+   force.type (                     $F_PI_DLC                     ) = 110                     ! Type
+   force.from (                     $F_PI_DLC                     ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_PI_DLC                     ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.st.equi (        1 ,       $F_PI_DLC                     ) = 0                       ! Equilibrium
+   force.disabled (                 $F_PI_DLC                     ) = $SVG_loading.$_use_PI   ! Disabled
+   force.par (            1 ,       $F_PI_DLC                     ) = $CEG_DLC.$C_PI          ! [-] Input Control Element 1
+   force.par (            2 ,       $F_PI_DLC                     ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
+   force.par (            3 ,       $F_PI_DLC                     ) = null                    ! [-] Input Control Element 2
+   force.par (            4 ,       $F_PI_DLC                     ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
+   force.par (            5 ,       $F_PI_DLC                     ) = 2.00000000000000000E+00 ! [-] Output type
+   force.par (            7 ,       $F_PI_DLC                     ) = 1.00000000000000000E+00 ! [-] Axis of torque
+   force.par (            8 ,       $F_PI_DLC                     ) = $SVG_loading.$_gamma_Torque ! [Nm] K: Drive constant L=K*(u1+u2)
+   force.par (            9 ,       $F_PI_DLC                     ) = null                    ! [m⁻¹] P: Drive constant F=P*L
+   force.attr.2d.substr (   1 ,     $F_PI_DLC                     ) = $S_stage_03.$S_TPL
+   force.attr.2d.pos.x (   1 ,      $F_PI_DLC                     ) = 50
+   force.attr.2d.pos.y (   1 ,      $F_PI_DLC                     ) = -30
+   force.attr.2d.ori (    1 ,       $F_PI_DLC                     ) = 180
+   force.attr.2d.paths.from.x (   1 ,   1 ,   1 ,   1 , $F_PI_DLC ) = 640, 640, 630, 97, 97, 97, 97, 97, 97, 87, 77, 67
+   force.attr.2d.paths.from.y (   1 ,   1 ,   1 ,   1 , $F_PI_DLC ) = -120, -140, -140, -140, -120, -100, -90, -80, -30, -30, -30, -30
+   force.attr.2d.paths.to.x (   1 ,   1 ,   1 ,   1 , $F_PI_DLC   ) = 40, 40, 30, 30, 33
+   force.attr.2d.paths.to.y (   1 ,   1 ,   1 ,   1 , $F_PI_DLC   ) = -10, -7.5, -7.5, -30, -30
+   force.attr.2d.pos.x (   2 ,      $F_PI_DLC                     ) = 1250
+   force.attr.2d.pos.y (   2 ,      $F_PI_DLC                     ) = 120
+   force.attr.2d.ori (    2 ,       $F_PI_DLC                     ) = 180
+   force.attr.2d.paths.from.x (   2 ,   1 ,   1 ,   1 , $F_PI_DLC ) = 1330, 1330, 1267
+   force.attr.2d.paths.from.y (   2 ,   1 ,   1 ,   1 , $F_PI_DLC ) = 80, 120, 120
+   force.attr.2d.paths.to.x (   2 ,   1 ,   1 ,   1 , $F_PI_DLC   ) = 500, 494.375, 494.375, 507.5, 560, 1233
+   force.attr.2d.paths.to.y (   2 ,   1 ,   1 ,   1 , $F_PI_DLC   ) = 200, 200, 120, 120, 120, 120
+
+   force.type (                     $F_PI_nominal                 ) = 110                     ! Type
+   force.from (                     $F_PI_nominal                 ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
+   force.to (                       $F_PI_nominal                 ) = $S_housing.$S_TPL.$M_housing_gen ! To Marker
+   force.st.equi (        1 ,       $F_PI_nominal                 ) = 0                       ! Equilibrium
+   force.disabled (                 $F_PI_nominal                 ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   force.par (            1 ,       $F_PI_nominal                 ) = $CEG_nominal.$C_PI      ! [-] Input Control Element 1
+   force.par (            2 ,       $F_PI_nominal                 ) = 1.00000000000000000E+00 ! [-] -> Output Value u1
+   force.par (            3 ,       $F_PI_nominal                 ) = null                    ! [-] Input Control Element 2
+   force.par (            4 ,       $F_PI_nominal                 ) = 0.00000000000000000E+00 ! [-] -> Output Value u2
+   force.par (            5 ,       $F_PI_nominal                 ) = 2.00000000000000000E+00 ! [-] Output type
+   force.par (            7 ,       $F_PI_nominal                 ) = 1.00000000000000000E+00 ! [-] Axis of torque
+   force.par (            8 ,       $F_PI_nominal                 ) = 1.00000000000000000E+00 ! [Nm] K: Drive constant L=K*(u1+u2)
 
    force.type (                     $F_time_series                ) = 93                      ! Type
    force.from (                     $F_time_series                ) = $S_stage_03.$S_TPL.$M_shaft_output ! From Marker
@@ -1223,43 +1240,6 @@ forcegroup.end (                    $FEG_gen                      )             
 !**********************************************************************
 ! Control Elements
 !**********************************************************************
-control.type (                      $C_Prop                       ) = 129                     ! Type
-control.st.dyn (          1 ,       $C_Prop                       ) = 0.00000000000000000E+00 ! Dynamic States
-control.st.equi (         1 ,       $C_Prop                       ) = 0                       ! Equilibrium
-control.par (             7 ,       $C_Prop                       ) = 1.00000000000000000E+00 ! [-] Number of input channels
-control.par (             8 ,       $C_Prop                       ) = $C_error_speed          ! [-] Input Element ch. 1
-control.par (             9 ,       $C_Prop                       ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
-control.par (            14 ,       $C_Prop                       ) = 0.00000000000000000E+00 ! [-] Controller type
-control.par (            15 ,       $C_Prop                       ) = $SVG_generator.$_K_P    ! [-] Proportional gain factor
-
-control.type (                      $C_PI                         ) = 129                     ! Type
-control.st.dyn (          1 ,       $C_PI                         ) = 0.00000000000000000E+00 ! Dynamic States
-control.st.equi (         1 ,       $C_PI                         ) = 0                       ! Equilibrium
-control.disabled (                  $C_PI                         ) = $SVG_loading.$_use_PI   ! Disabled
-control.par (             7 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Number of input channels
-control.par (             8 ,       $C_PI                         ) = $C_error_speed          ! [-] Input Element ch. 1
-control.par (             9 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
-control.par (            14 ,       $C_PI                         ) = 2.00000000000000000E+00 ! [-] Controller type
-control.par (            15 ,       $C_PI                         ) = $SVG_generator.$_K_P    ! [-] Proportional gain factor
-control.par (            16 ,       $C_PI                         ) = $SVG_generator.$_T_I    ! [s] Integral time constant
-control.par (            22 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Print converted coefficients
-
-control.type (                      $C_error_speed                ) = 143                     ! Type
-control.par (             1 ,       $C_error_speed                ) = $C_ref_speed            ! [-] Input Element ch. 1
-control.par (             2 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
-control.par (             3 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Gain factor C1 for ch. 1
-control.par (             4 ,       $C_error_speed                ) = $C_gen_speed            ! [-] Input Element ch. 2
-control.par (             5 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Output Value ch. 2
-control.par (             6 ,       $C_error_speed                ) = -1.00000000000000000E+00 ! [-] Gain factor C2 for ch. 2
-control.par (             7 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Connection type
-control.par (             8 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Function parameter P
-control.par (             9 ,       $C_error_speed                ) = 0.00000000000000000E+00 ! [-] Function type
-control.par (            13 ,       $C_error_speed                ) = 0.00000000000000000E+00 ! [-] Constant zero deviation K
-
-control.type (                      $C_ref_speed                  ) = 231                     ! Type
-control.par (             1 ,       $C_ref_speed                  ) = 1.00000000000000000E+00 ! [-] Number of input Expressions
-control.par (             2 ,       $C_ref_speed                  ) = $X_gen_speed_ref        ! [-]  Input Expression 1
-
 control.type (                      $C_gen_speed                  ) = 160                     ! Type
 control.par (             1 ,       $C_gen_speed                  ) = 1.00000000000000000E+00 ! [-] Number of Conn./Joint states
 control.par (            10 ,       $C_gen_speed                  ) = 1.00000000000000000E+00 ! [-]  Ch 1: State type
@@ -1269,14 +1249,84 @@ control.par (            13 ,       $C_gen_speed                  ) = 1.00000000
 control.par (            14 ,       $C_gen_speed                  ) = null                    ! [-]  Ch 1: Disturb. Ctrl. Element
 control.par (            15 ,       $C_gen_speed                  ) = 0.00000000000000000E+00 ! [-]  Ch 1: -> Output Value u
 
+controlgroup.begin (                $CEG_nominal                  )                           ! $CEG_nominal
+   control.type (                   $C_PI                         ) = 129                     ! Type
+   control.st.dyn (       1 ,       $C_PI                         ) = 0.00000000000000000E+00 ! Dynamic States
+   control.st.equi (      1 ,       $C_PI                         ) = 0                       ! Equilibrium
+   control.disabled (               $C_PI                         ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   control.par (          7 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Number of input channels
+   control.par (          8 ,       $C_PI                         ) = $CEG_nominal.$C_error_speed ! [-] Input Element ch. 1
+   control.par (          9 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
+   control.par (         14 ,       $C_PI                         ) = 2.00000000000000000E+00 ! [-] Controller type
+   control.par (         15 ,       $C_PI                         ) = $SVG_generator.$_K_P    ! [-] Proportional gain factor
+   control.par (         16 ,       $C_PI                         ) = $SVG_generator.$_T_I    ! [s] Integral time constant
+   control.par (         22 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Print converted coefficients
+
+   control.type (                   $C_error_speed                ) = 143                     ! Type
+   control.disabled (               $C_error_speed                ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   control.par (          1 ,       $C_error_speed                ) = $CEG_nominal.$C_ref_speed ! [-] Input Element ch. 1
+   control.par (          2 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
+   control.par (          3 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Gain factor C1 for ch. 1
+   control.par (          4 ,       $C_error_speed                ) = $C_gen_speed            ! [-] Input Element ch. 2
+   control.par (          5 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Output Value ch. 2
+   control.par (          6 ,       $C_error_speed                ) = -1.00000000000000000E+00 ! [-] Gain factor C2 for ch. 2
+   control.par (          7 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Connection type
+   control.par (          8 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Function parameter P
+   control.par (          9 ,       $C_error_speed                ) = 0.00000000000000000E+00 ! [-] Function type
+   control.par (         13 ,       $C_error_speed                ) = 0.00000000000000000E+00 ! [-] Constant zero deviation K
+
+   control.type (                   $C_ref_speed                  ) = 231                     ! Type
+   control.disabled (               $C_ref_speed                  ) = $SVG_loading.$_use_gen_nominal ! Disabled
+   control.par (          1 ,       $C_ref_speed                  ) = 1.00000000000000000E+00 ! [-] Number of input Expressions
+   control.par (          2 ,       $C_ref_speed                  ) = $X_gen_speed_ref_nom    ! [-]  Input Expression 1
+
+controlgroup.end (                  $CEG_nominal                  )                           ! $CEG_nominal
+
+controlgroup.begin (                $CEG_DLC                      )                           ! $CEG_DLC
+   control.type (                   $C_PI                         ) = 129                     ! Type
+   control.st.dyn (       1 ,       $C_PI                         ) = 0.00000000000000000E+00 ! Dynamic States
+   control.st.equi (      1 ,       $C_PI                         ) = 0                       ! Equilibrium
+   control.disabled (               $C_PI                         ) = $SVG_loading.$_use_PI   ! Disabled
+   control.par (          7 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Number of input channels
+   control.par (          8 ,       $C_PI                         ) = $CEG_DLC.$C_error_speed ! [-] Input Element ch. 1
+   control.par (          9 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
+   control.par (         14 ,       $C_PI                         ) = 2.00000000000000000E+00 ! [-] Controller type
+   control.par (         15 ,       $C_PI                         ) = $SVG_generator.$_K_P    ! [-] Proportional gain factor
+   control.par (         16 ,       $C_PI                         ) = $SVG_generator.$_T_I    ! [s] Integral time constant
+   control.par (         22 ,       $C_PI                         ) = 1.00000000000000000E+00 ! [-] Print converted coefficients
+
+   control.type (                   $C_Prop                       ) = 129                     ! Type
+   control.st.dyn (       1 ,       $C_Prop                       ) = 0.00000000000000000E+00 ! Dynamic States
+   control.st.equi (      1 ,       $C_Prop                       ) = 0                       ! Equilibrium
+   control.par (          7 ,       $C_Prop                       ) = 1.00000000000000000E+00 ! [-] Number of input channels
+   control.par (          8 ,       $C_Prop                       ) = $CEG_DLC.$C_error_speed ! [-] Input Element ch. 1
+   control.par (          9 ,       $C_Prop                       ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
+   control.par (         14 ,       $C_Prop                       ) = 0.00000000000000000E+00 ! [-] Controller type
+   control.par (         15 ,       $C_Prop                       ) = $SVG_generator.$_K_P    ! [-] Proportional gain factor
+
+   control.type (                   $C_error_speed                ) = 143                     ! Type
+   control.par (          1 ,       $C_error_speed                ) = $CEG_DLC.$C_ref_speed   ! [-] Input Element ch. 1
+   control.par (          2 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Output Value ch. 1
+   control.par (          3 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Gain factor C1 for ch. 1
+   control.par (          4 ,       $C_error_speed                ) = $C_gen_speed            ! [-] Input Element ch. 2
+   control.par (          5 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Output Value ch. 2
+   control.par (          6 ,       $C_error_speed                ) = -1.00000000000000000E+00 ! [-] Gain factor C2 for ch. 2
+   control.par (          7 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Connection type
+   control.par (          8 ,       $C_error_speed                ) = 1.00000000000000000E+00 ! [-] Function parameter P
+   control.par (          9 ,       $C_error_speed                ) = 0.00000000000000000E+00 ! [-] Function type
+   control.par (         13 ,       $C_error_speed                ) = 0.00000000000000000E+00 ! [-] Constant zero deviation K
+
+   control.type (                   $C_ref_speed                  ) = 231                     ! Type
+   control.par (          1 ,       $C_ref_speed                  ) = 1.00000000000000000E+00 ! [-] Number of input Expressions
+   control.par (          2 ,       $C_ref_speed                  ) = $X_gen_speed_ref        ! [-]  Input Expression 1
+
+controlgroup.end (                  $CEG_DLC                      )                           ! $CEG_DLC
+
 !**********************************************************************
 ! Input Functions
 !**********************************************************************
 ifctn.file (                        $I_F_x                        ) = '../ref_files/Fx.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_F_x                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_F_x                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_F_x                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_F_x                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_F_x                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_F_x                        ) = $SVG_loading.$_gamma_Force ! Scaling factor
 ifctn.range.handling (              $I_F_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_F_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1292,10 +1342,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_F_x                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_F_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_F_y                        ) = '../ref_files/Fy.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_F_y                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_F_y                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_F_y                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_F_y                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_F_y                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_F_y                        ) = $SVG_loading.$_gamma_Force ! Scaling factor
 ifctn.range.handling (              $I_F_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_F_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1311,10 +1358,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_F_y                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_F_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_F_z                        ) = '../ref_files/Fz.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_F_z                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_F_z                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_F_z                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_F_z                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_F_z                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_F_z                        ) = $SVG_loading.$_gamma_Force ! Scaling factor
 ifctn.range.handling (              $I_F_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_F_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1330,10 +1374,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_F_z                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_F_z                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_M_x                        ) = '../ref_files/Mx.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_M_x                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_M_x                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_M_x                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_M_x                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_M_x                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_M_x                        ) = $SVG_loading.$_gamma_Torque ! Scaling factor
 ifctn.range.handling (              $I_M_x                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_M_x                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1349,10 +1390,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_M_x                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_M_x                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_M_y                        ) = '../ref_files/My.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_M_y                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_M_y                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_M_y                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_M_y                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_M_y                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_M_y                        ) = $SVG_loading.$_gamma_Torque ! Scaling factor
 ifctn.range.handling (              $I_M_y                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_M_y                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1368,10 +1406,7 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_M_y                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_M_y                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_M_z                        ) = '../ref_files/Mz.if2'   ! File or URI
-ifctn.x (                 1 ,       $I_M_z                        ) = 0.00000000000000000E+00 ! X values
-ifctn.x (                 2 ,       $I_M_z                        ) = 1.00000000000000000E+00 ! X values
-ifctn.y (                 1 ,       $I_M_z                        ) = 0.00000000000000000E+00 ! Y values
-ifctn.y (                 2 ,       $I_M_z                        ) = 0.00000000000000000E+00 ! Y values
+ifctn.scal.x (                      $I_M_z                        ) = $SVG_loading.$_gamma_time ! Scaling factor
 ifctn.scal.z (                      $I_M_z                        ) = $SVG_loading.$_gamma_Torque ! Scaling factor
 ifctn.range.handling (              $I_M_z                        ) = 0                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_M_z                        ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1387,6 +1422,8 @@ ifctn.plot.par (          1 ,   9 ,   1 , $I_M_z                  ) = 0.00000000
 ifctn.plot.par (          1 ,  10 ,   1 , $I_M_z                  ) = 0.00000000000000000E+00 ! [-] Unknown plot parameter
 
 ifctn.file (                        $I_omega_gen                  ) = '../ref_files/GEN_SPD.if2' ! File or URI
+ifctn.scal.x (                      $I_omega_gen                  ) = $SVG_loading.$_gamma_time ! Scaling factor
+ifctn.scal.z (                      $I_omega_gen                  ) = $SVG_loading.$_gamma_Speed ! Scaling factor
 ifctn.desc (              1 ,       $I_omega_gen                  ) = 'in [rad/s]'            ! Description
 ifctn.range.handling (              $I_omega_gen                  ) = 2                       ! Handling when evaluating outside range: 0=Warning, continue; 1=Error, stop solver; 2=No message, continue
 ifctn.plot.par (          1 ,       $I_omega_gen                  ) = 1.00000000000000000E+00 ! [-] Unknown plot parameter
@@ -1408,6 +1445,10 @@ express.str (                       $X_gen_speed_ref              ) = 'IFCTNX(TI
 express.desc (            1 ,       $X_gen_speed_ref              ) = 'Reference generator speed in [rad/s]. Obtained from a time series' ! Description
 express.txt (                       $X_gen_speed_ref              ) = 'ifctn(xinp, id, kind_deriv, kind_spl, kind_extr)[br]+ xinp = TIME()[br]+ id = $I_w_gen[br]+ kind_deriv = 0[br]+ kind_spl = 2[br]+ kind_extr = -1[br][br]More info on: Simpack Assistant 2020x \\> Modeling Element Library \\> Expressions \\> Expressions: Library \\> FUNCTIONS \\> ifctn[br]' ! Comment
 
+express.str (                       $X_gen_speed_ref_nom          ) = '$_drive_ratio*$SVG_rotor.$_rated_speed' ! Definition
+express.desc (            1 ,       $X_gen_speed_ref_nom          ) = 'Reference generator speed in [rad/s].' ! Description
+express.txt (                       $X_gen_speed_ref_nom          ) = 'ifctn(xinp, id, kind_deriv, kind_spl, kind_extr)[br]+ xinp = TIME()[br]+ id = $I_w_gen[br]+ kind_deriv = 0[br]+ kind_spl = 2[br]+ kind_extr = -1[br][br]More info on: Simpack Assistant 2020x \\> Modeling Element Library \\> Expressions \\> Expressions: Library \\> FUNCTIONS \\> ifctn[br]' ! Comment
+
 express.str (                       $X_gen_speed_meas             ) = 'WX($S_stage_03.$S_TPL.$M_shaft_BRF ,0 , 0)' ! Definition
 express.desc (            1 ,       $X_gen_speed_meas             ) = 'Measured generator speed in [rad/s]' ! Description
 express.txt (                       $X_gen_speed_meas             ) = 'WX(M_j, M_i, M_ref)[br]+ M_j: ID of To Marker M_j whose velocity is measured[br]+ M_i: ID of From Marker M_i, origin of measurement;  if 0 defaults to Isys[br]+ M_ref: ID of reference Marker M_ref for coordinate representation;  if 0 defaults to Isys[br][br]More info on: Simpack Assistant 2020x \\> Modeling Element Library \\> Expressions \\> Expressions: Library \\> KINEMATIC \\> wx[br]' ! Comment
@@ -1419,9 +1460,7 @@ express.str (                       $X_T_gen_ref                  ) = '$SVG_load
 express.desc (            1 ,       $X_T_gen_ref                  ) = 'Reference generator torque in [Nm]. Obtained from time series manipulation' ! Description
 express.txt (                       $X_T_gen_ref                  ) = ''                      ! Comment
 
-express.str (                       $X_T_gen_nominal              ) = '0'                     ! Definition
-
-express.str (                       $X_T_gen_nominal_Copy_1       ) = '0'                     ! Definition
+express.str (                       $X_T_gen_nominal              ) = '$SVG_loading.$_T_gen_nominal' ! Definition
 
 !**********************************************************************
 ! Excitations
@@ -2569,7 +2608,17 @@ receiver.ref (                      $COM_gamma_Torque             ) = $SVG_loadi
 
 receiver.ref (                      $COM_gamma_Force              ) = $SVG_loading.$_gamma_Force ! Destination object
 
+receiver.ref (                      $COM_gamma_time               ) = $SVG_loading.$_gamma_time ! Destination object
+
 receiver.ref (                      $COM_aero_excitation_flag     ) = $SVG_loading.$_aero_flag ! Destination object
+
+receiver.ref (                      $COM_gamma_Speed              ) = $SVG_loading.$_gamma_Speed ! Destination object
+
+receiver.ref (                      $COM_rated_speed              ) = $SVG_rotor.$_rated_speed ! Destination object
+
+receiver.ref (                      $COM_generator_K_P            ) = $SVG_generator.$_K_P    ! Destination object
+
+receiver.ref (                      $COM_generator_K_I            ) = $SVG_generator.$_K_I    ! Destination object
 
 
 ! Overwritten substructure values

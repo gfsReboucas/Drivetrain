@@ -687,8 +687,8 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     data_idx.load = data.load.(field_name{jdx});
 
                     [a, b] = obj.bearing(1).Weibull(data_idx);
-                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(1).name, ...
-                                                        idx, a, b);
+%                     fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(1).name, ...
+%                                                         idx, a, b);
 
                     a_PL(2*idx - 1) = a;
                     b_PL(2*idx - 1) = b;
@@ -697,8 +697,8 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     data_idx.load = data.load.(field_name{jdx});
 
                     [a, b] = obj.bearing(2).Weibull(data_idx);
-                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(2).name, ...
-                                                        idx, a, b);
+%                     fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(2).name, ...
+%                                                         idx, a, b);
 
                     a_PL(2*idx) = a;
                     b_PL(2*idx) = b;
@@ -713,15 +713,15 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     data_idx.load = data.load.(field_name{jdx});
 
                     [a, b] = obj.bearing(idx + 2).Weibull(data_idx);
-                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx + 2).name, ...
-                                                        idx, a, b);
+%                     fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx + 2).name, ...
+%                                                         idx, a, b);
 
                     a_PLC(idx) = a;
                     b_PLC(idx) = b;
                 end
                 
                 % Sun-planet gear contact:
-                jdx_SP = find(contains(field_name, 'sun_planet'));
+                jdx_SP = find(contains(field_name, 'sun_pla'));
                 a_SP = zeros(obj.N_p, 1);
                 b_SP = zeros(obj.N_p, 1);
                 for idx = 1:obj.N_p
@@ -733,13 +733,13 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     a = wbull.a; % scale param.
                     b = wbull.b; % shape param.
                     
-                    fprintf('%s:\tSP%d\ta = %e\tb = %e\n', name, idx, a, b);
+%                     fprintf('%s:\tSP%d\ta = %e\tb = %e\n', name, idx, a, b);
                     a_SP(idx) = a;
                     b_SP(idx) = b;
                 end
                 
                 % Ring-planet gear contact:
-                jdx_RP = find(contains(field_name, 'ring_planet'));
+                jdx_RP = find(contains(field_name, 'ring_pl'));
                 a_RP = zeros(obj.N_p, 1);
                 b_RP = zeros(obj.N_p, 1);
                 for idx = 1:obj.N_p
@@ -751,7 +751,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     a = wbull.a; % scale param.
                     b = wbull.b; % shape param.
                     
-                    fprintf('%s:\tRP%d\ta = %e\tb = %e\n', name, idx, a, b);
+%                     fprintf('%s:\tRP%d\ta = %e\tb = %e\n', name, idx, a, b);
                     a_RP(idx) = a;
                     b_RP(idx) = b;
                 end
@@ -770,8 +770,8 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     data_idx.load = data.load.(field_name{jdx});
                     
                     [a, b] = obj.bearing(idx).Weibull(data_idx);
-                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx).name, ...
-                                                        idx, a, b);
+%                     fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(idx).name, ...
+%                                                         idx, a, b);
 
                     a_PIN(idx) = a;
                     b_PIN(idx) = b;
@@ -788,8 +788,8 @@ classdef (Abstract) ISO_6336 < Gear_Set
                     kdx = n_PIN + idx;
                     
                     [a, b] = obj.bearing(kdx).Weibull(data_idx);
-                    fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(kdx).name, ...
-                                                        idx, a, b);
+%                     fprintf('%s\t%s%d\ta = %e\tb = %e\n', name, obj.bearing(kdx).name, ...
+%                                                         idx, a, b);
 
                     a_WHE(idx) = a;
                     b_WHE(idx) = b;
@@ -803,7 +803,7 @@ classdef (Abstract) ISO_6336 < Gear_Set
                 a = wbull.a; % scale param.
                 b = wbull.b; % shape param.
                 
-                fprintf('%s:\tPW\ta = %e\tb = %e\n', name, a, b);
+%                 fprintf('%s:\tPW\ta = %e\tb = %e\n', name, a, b);
                 
                 a = [a_PIN; a_WHE; a];
                 b = [b_PIN; b_WHE; b];
