@@ -1,0 +1,41 @@
+!file.version=3.5! Removing this line will make the file unreadable
+
+! General
+output                                                              = 'DOE_data/data_X'
+surfacemodel                                                        = 0
+experimentdesign                                                    = 0
+runs.num                                                            = 2
+runs.cand                                                           = 0
+seed                                                                = 0
+centerpoints.num                                                    = 0
+centerpoints.default                                                = 0
+
+! Factors
+
+factors.name (            1                                       ) = 'factor'
+factors.size (            1                                       ) = 2
+factors.ele (             1 ,   1                                 ) = $SVG_loading.$_gamma_Power
+factors.type (            1 ,   1                                 ) = 0                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.val (             1 ,   1 ,   1                           ) = '0.5'
+factors.val (             1 ,   1 ,   2                           ) = '1.5'
+
+factors.ele (             1 ,   2                                 ) = $SVG_loading.$_gamma_Torque
+factors.type (            1 ,   2                                 ) = 0                       ! 1 = numerical by min/max absolute, 2 = min/max/relative, 3 = min/max/percentage, 0 = by table
+factors.val (             1 ,   2 ,   1                           ) = '0.5'
+factors.val (             1 ,   2 ,   2                           ) = '1.5'
+
+model.path (                        $Model1                       ) = 'NREL_5MW_reference.spck'
+
+   ! Job definition
+
+model.task (              1 ,       $Model1                       ) = 'user-script'
+model.task.script (       1 ,       $Model1                       ) = 'print(\'SCRIPT:\\tSTART initial_step.sjs\')\nvar model = Spck.currentModel;\n\n// Disabling translation and tilting for shafts:\nprint(\'SCRIPT:\\t1. Disabling shaft translation and tilting...\')\nvar switch_AIC = Spck.currentModel.findElement(\'$DoE.$SVG_loading.$_switch_AIC\');\nswitch_AIC.str.src = \'1\';\n\n// Apply zero initial condtions:\nprint(\'SCRIPT:\\t2. Setting states to ZERO...\');\nvar zero_IC = Spck.currentModel.findElement(\'$DoE.$ST_all_zero\');\nzero_IC.copyToModel();\n\n// Gear force elements: basic\nprint(\'SCRIPT:\\t2.1. Setting gear mesh force to type 204 (basic)...\');\nvar mesh_flag = Spck.currentModel.findElement(\'$DoE.$SVG_loading.$_mesh_flag\');\nmesh_flag.str.src = \'204\';\n\nprint(\'SCRIPT:\\t2.2. Saving model...\');\nSpck.currentModel.save();\n\n// Apply Initial Conditions solver:\nprint(\'SCRIPT:\\t3. Running Assemble System solver...\');\nSpck.Slv.assmbl(Spck.currentModel);\n\n// Update state set:\nprint(\'SCRIPT:\\t3.1. Saving model with updated state sets from solver...\');\nvar state_AIC = Spck.currentModel.findElement(\'$DoE.$ST_AIC\');\nstate_AIC.copyFromModel();\n\nSpck.currentModel.save();\n\n// Re-enabling translation and tilting for shafts:\nprint(\'SCRIPT:\\t4. Re-enabling shaft translation and tilting...\');\nswitch_AIC.str.src = \'0\';\n\n// Calculating static equilibrium:\nprint(\'SCRIPT:\\t5. Calculating static equilibrium using:\');\nprint(\'SCRIPT:\\t5.1. Time integration method...\');\nSpck.currentModel.slv.active.src = \'$DoE.$SLV_static_eq_time_integ\';\nSpck.currentModel.save();\n\nSpck.Slv.equi(Spck.currentModel);\n\n// Update state set:\nprint(\'SCRIPT:\\t5.1.1. Updating state sets with result from solver (static equilibrium via time integration)...\');\n\nvar output_path = Spck.currentModel.origin;\nvar pos = output_path.lastIndexOf(\'/\');\noutput_path = output_path.slice(0, pos);\noutput_path = output_path + \'/output/\' + Spck.currentModel.name;\n\nvar static_eq = Spck.currentModel.findElement(\'$DoE.$ST_static_eq\');\nstatic_eq.importStateFile(output_path + \'.spckst\');\nstatic_eq.copyToModel();\n\nprint(\'SCRIPT:\\t5.2. Newton method...\');\nSpck.currentModel.slv.active.src = \'$DoE.$SLV_static_eq_Newton_acc\';\nSpck.currentModel.save();\nSpck.Slv.equi(Spck.currentModel);\n\n// Update state set:\nprint(\'SCRIPT:\\t5.2.2. Updating state sets with results from solver (static equilibrium via Newton method and convergence w.r.t. acceleration)...\');\nstatic_eq.importStateFile(output_path + \'.spckst\');\nstatic_eq.copyToModel();\n\nprint(\'SCRIPT:\\t5.3. Setting gear mesh force to type 225 (advanced)...\');\nmesh_flag.str.src = \'225\';\n\nprint(\'SCRIPT:\\t6. Saving model...\');\nSpck.currentModel.slv.active.src = \'$DoE.$SLV_SolverSettings\';\nSpck.currentModel.save();\n\nprint(\'SCRIPT:\\tEND initial_step.sjs\')\n'
+model.task (              2 ,       $Model1                       ) = 'integration+measurements-target-model'
+
+   ! Responses
+
+response.ref.ele (        1 ,       $Model1.$torque               ) = '$DoE.$RS_torque'
+response.ref.channel (    1 ,       $Model1.$torque               ) = 1
+response.filter (                   $Model1.$torque_rain          ) = '$DoE.$FT_rainflow'
+response.ref.ele (        1 ,       $Model1.$torque_rain          ) = '$DoE.$RS_torque'
+response.ref.channel (    1 ,       $Model1.$torque_rain          ) = 1
