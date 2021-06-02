@@ -262,12 +262,12 @@ classdef (Abstract) Drivetrain
             
             for idx = 1:(ref.N_stage)
                 [~, tab_str] = stage_comparison(ref, sca, idx);
-                tab_tmp = table(tab_str(:, 4), tab_str(:, 5), tab_str(:, 6), 'variableNames', ['Reference', 'Scale', 'Ratio']);
-                tab_stg{idx} = table(tab_tmp, 'variableNames', sprintf('Stage_%d', idx));
+                tab_tmp = table(tab_str(:, 4), tab_str(:, 5), tab_str(:, 6), 'variableNames', {'Reference', 'Scale', 'Ratio'});
+                tab_stg{idx} = table(tab_tmp, 'variableNames', {sprintf('Stage_%d', idx)});
             end
             
-            tab_left =  table(tab_str(:, 1), tab_str(:, 2), 'variableNames', ['Parameter', 'Symbol']);
-            tab_right = table(tab_str(:, 3), 'variableNames', 'Unit');
+            tab_left =  table(tab_str(:, 1), tab_str(:, 2), 'variableNames', {'Parameter', 'Symbol'});
+            tab_right = table(tab_str(:, 3), 'variableNames', {'Unit'});
             
             tab = [tab_left, tab_stg{:}, tab_right];
             
